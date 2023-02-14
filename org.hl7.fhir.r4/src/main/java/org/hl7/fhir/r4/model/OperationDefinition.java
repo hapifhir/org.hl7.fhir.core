@@ -123,18 +123,18 @@ public class OperationDefinition extends MetadataResource {
           return OperationKind.QUERY;
         throw new IllegalArgumentException("Unknown OperationKind code '"+codeString+"'");
         }
-        public Enumeration<OperationKind> fromType(Base code) throws FHIRException {
+        public Enumeration<OperationKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<OperationKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<OperationKind>(this, OperationKind.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<OperationKind>(this, OperationKind.NULL, code);
         if ("operation".equals(codeString))
-          return new Enumeration<OperationKind>(this, OperationKind.OPERATION);
+          return new Enumeration<OperationKind>(this, OperationKind.OPERATION, code);
         if ("query".equals(codeString))
-          return new Enumeration<OperationKind>(this, OperationKind.QUERY);
+          return new Enumeration<OperationKind>(this, OperationKind.QUERY, code);
         throw new FHIRException("Unknown OperationKind code '"+codeString+"'");
         }
     public String toCode(OperationKind code) {
@@ -219,18 +219,18 @@ public class OperationDefinition extends MetadataResource {
           return OperationParameterUse.OUT;
         throw new IllegalArgumentException("Unknown OperationParameterUse code '"+codeString+"'");
         }
-        public Enumeration<OperationParameterUse> fromType(Base code) throws FHIRException {
+        public Enumeration<OperationParameterUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<OperationParameterUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<OperationParameterUse>(this, OperationParameterUse.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<OperationParameterUse>(this, OperationParameterUse.NULL, code);
         if ("in".equals(codeString))
-          return new Enumeration<OperationParameterUse>(this, OperationParameterUse.IN);
+          return new Enumeration<OperationParameterUse>(this, OperationParameterUse.IN, code);
         if ("out".equals(codeString))
-          return new Enumeration<OperationParameterUse>(this, OperationParameterUse.OUT);
+          return new Enumeration<OperationParameterUse>(this, OperationParameterUse.OUT, code);
         throw new FHIRException("Unknown OperationParameterUse code '"+codeString+"'");
         }
     public String toCode(OperationParameterUse code) {

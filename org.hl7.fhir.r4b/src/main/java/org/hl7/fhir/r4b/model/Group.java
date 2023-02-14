@@ -171,26 +171,26 @@ public class Group extends DomainResource {
           return GroupType.SUBSTANCE;
         throw new IllegalArgumentException("Unknown GroupType code '"+codeString+"'");
         }
-        public Enumeration<GroupType> fromType(Base code) throws FHIRException {
+        public Enumeration<GroupType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GroupType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<GroupType>(this, GroupType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GroupType>(this, GroupType.NULL, code);
         if ("person".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.PERSON);
+          return new Enumeration<GroupType>(this, GroupType.PERSON, code);
         if ("animal".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.ANIMAL);
+          return new Enumeration<GroupType>(this, GroupType.ANIMAL, code);
         if ("practitioner".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.PRACTITIONER);
+          return new Enumeration<GroupType>(this, GroupType.PRACTITIONER, code);
         if ("device".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.DEVICE);
+          return new Enumeration<GroupType>(this, GroupType.DEVICE, code);
         if ("medication".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.MEDICATION);
+          return new Enumeration<GroupType>(this, GroupType.MEDICATION, code);
         if ("substance".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.SUBSTANCE);
+          return new Enumeration<GroupType>(this, GroupType.SUBSTANCE, code);
         throw new FHIRException("Unknown GroupType code '"+codeString+"'");
         }
     public String toCode(GroupType code) {
@@ -1915,4 +1915,3 @@ public class Group extends DomainResource {
 
 
 }
-

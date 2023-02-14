@@ -145,12 +145,12 @@ public class PaymentReconciliation extends DomainResource {
           return PaymentReconciliationStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown PaymentReconciliationStatus code '"+codeString+"'");
         }
-        public Enumeration<PaymentReconciliationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<PaymentReconciliationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<PaymentReconciliationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

@@ -14,12 +14,12 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>5.6.89-SNAPSHOT</version>
+    <version>5.6.98-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <hapi_fhir_version>6.2.1</hapi_fhir_version>
-        <validator_test_case_version>1.2.5-SNAPSHOT</validator_test_case_version>
+        <validator_test_case_version>1.2.12-SNAPSHOT</validator_test_case_version>
         <junit_jupiter_version>5.7.1</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
         <maven_surefire_version>3.0.0-M5</maven_surefire_version>
@@ -84,6 +84,13 @@
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Use saxon for xml processing -->
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+            <version>${saxon_he_version}</version>
         </dependency>
     </dependencies>
 
@@ -158,7 +165,7 @@
                 <groupId>net.sf.saxon</groupId>
                 <artifactId>Saxon-HE</artifactId>
                 <version>${saxon_he_version}</version>
-                <scope>test</scope>
+
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -383,6 +390,29 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>animal-sniffer-maven-plugin</artifactId>
+                <version>1.22</version>
+                <configuration>
+                    <signature>
+                        <groupId>net.sf.androidscents.signature</groupId>
+                        <artifactId>android-api-level-26</artifactId>
+                        <version>8.0.0_r2</version>
+                    </signature>
+                    <failOnError>false</failOnError>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>check-android-26-compliance</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

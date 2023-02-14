@@ -126,12 +126,12 @@ public class ImplementationGuide extends MetadataResource {
           return GuideDependencyType.INCLUSION;
         throw new IllegalArgumentException("Unknown GuideDependencyType code '"+codeString+"'");
         }
-        public Enumeration<GuideDependencyType> fromType(Base code) throws FHIRException {
+        public Enumeration<GuideDependencyType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<GuideDependencyType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("reference".equals(codeString))
@@ -294,12 +294,12 @@ public class ImplementationGuide extends MetadataResource {
           return GuidePageKind.RESOURCE;
         throw new IllegalArgumentException("Unknown GuidePageKind code '"+codeString+"'");
         }
-        public Enumeration<GuidePageKind> fromType(Base code) throws FHIRException {
+        public Enumeration<GuidePageKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<GuidePageKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("page".equals(codeString))

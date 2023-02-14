@@ -45,7 +45,9 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
 
 import ca.uhn.fhir.parser.DataFormatException;
+
 import org.hl7.fhir.utilities.DateTimeUtil;
+import org.hl7.fhir.utilities.Utilities;
 
 public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
@@ -286,6 +288,13 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 		return getFieldValue(Calendar.MONTH);
 	}
 
+  public float getSecondsMilli() {
+    int sec = getSecond();
+    int milli = getMillis();
+    String s = Integer.toString(sec)+"."+Utilities.padLeft(Integer.toString(milli), '0', 3);
+    return Float.parseFloat(s);
+  }
+	
 	/**
 	 * Returns the nanoseconds within the current second
 	 * <p>
@@ -867,84 +876,157 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    * </ul>
    */
   public Boolean equalsUsingFhirPathRules(BaseDateTimeType theOther) {
-
-    BaseDateTimeType me = this;
-
-    // Per FHIRPath rules, we compare equivalence at the lowest precision of the two values,
-    // so if we need to, we'll clone either side and reduce its precision
-    int lowestPrecision = Math.min(me.getPrecision().ordinal(), theOther.getPrecision().ordinal());
-    TemporalPrecisionEnum lowestPrecisionEnum = TemporalPrecisionEnum.values()[lowestPrecision];
-    if (me.getPrecision() != lowestPrecisionEnum) {
-      me = new DateTimeType(me.getValueAsString());
-      me.setPrecision(lowestPrecisionEnum);
-    }
-    if (theOther.getPrecision() != lowestPrecisionEnum) {
-      theOther = new DateTimeType(theOther.getValueAsString());
-      theOther.setPrecision(lowestPrecisionEnum);
-    }
-
-    if (me.hasTimezoneIfRequired() != theOther.hasTimezoneIfRequired()) {
-      if (me.getPrecision() == theOther.getPrecision()) {
-        if (me.getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal() && theOther.getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal()) {
-          boolean couldBeTheSameTime = couldBeTheSameTime(me, theOther) || couldBeTheSameTime(theOther, me);
-          if (!couldBeTheSameTime) {
-            return false;
-          }
-        }
-      }
-      return null;
-    }
-
-    // Same precision
-    if (me.getPrecision() == theOther.getPrecision()) {
-      if (me.getPrecision().ordinal() >= TemporalPrecisionEnum.MINUTE.ordinal()) {
-        long leftTime = me.getValue().getTime();
-        long rightTime = theOther.getValue().getTime();
-        return leftTime == rightTime;
+    if (hasTimezone() != theOther.hasTimezone()) {
+      if (!couldBeTheSameTime(this, theOther)) {
+        return false;
       } else {
-        String leftTime = me.getValueAsString();
-        String rightTime = theOther.getValueAsString();
-        return leftTime.equals(rightTime);
+        return null;
       }
-    }
-
-    // Both represent 0 millis but the millis are optional
-    if (((Integer)0).equals(me.getMillis())) {
-      if (((Integer)0).equals(theOther.getMillis())) {
-        if (me.getPrecision().ordinal() >= TemporalPrecisionEnum.SECOND.ordinal()) {
-          if (theOther.getPrecision().ordinal() >= TemporalPrecisionEnum.SECOND.ordinal()) {
-            return me.getValue().getTime() == theOther.getValue().getTime();
-          }
-        }
+    } else {
+      BaseDateTimeType left = (BaseDateTimeType) this.copy();
+      BaseDateTimeType right = (BaseDateTimeType) theOther.copy();
+      if (left.hasTimezone() && left.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
+        left.setTimeZoneZulu(true);
       }
-    }
-
-    return false;
+      if (right.hasTimezone() && right.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
+        right.setTimeZoneZulu(true);
+      }
+      Integer i = compareTimes(left, right, null);
+      return i == null ? null : i == 0;
+    }    
   }
 
-    private boolean couldBeTheSameTime(BaseDateTimeType theArg1, BaseDateTimeType theArg2) {
-        boolean theCouldBeTheSameTime = false;
-        if (theArg1.getTimeZone() == null && theArg2.getTimeZone() != null) {
-            long lowLeft = new DateTimeType(theArg1.getValueAsString()+"Z").getValue().getTime() - (14 * DateUtils.MILLIS_PER_HOUR);
-            long highLeft = new DateTimeType(theArg1.getValueAsString()+"Z").getValue().getTime() + (14 * DateUtils.MILLIS_PER_HOUR);
-            long right = theArg2.getValue().getTime();
-            if (right >= lowLeft && right <= highLeft) {
-                theCouldBeTheSameTime = true;
-            }
-        }
-        return theCouldBeTheSameTime;
+  private boolean couldBeTheSameTime(BaseDateTimeType theArg1, BaseDateTimeType theArg2) {
+    long lowLeft = theArg1.getValue().getTime();
+    long highLeft = theArg1.getHighEdge().getValue().getTime();
+    if (!theArg1.hasTimezone()) {
+      lowLeft = lowLeft - (14 * DateUtils.MILLIS_PER_HOUR);
+      highLeft = highLeft + (14 * DateUtils.MILLIS_PER_HOUR);
+    }
+    long lowRight = theArg2.getValue().getTime();
+    long highRight = theArg2.getHighEdge().getValue().getTime();
+    if (!theArg2.hasTimezone()) {
+      lowRight = lowRight - (14 * DateUtils.MILLIS_PER_HOUR);
+      highRight = highRight + (14 * DateUtils.MILLIS_PER_HOUR);
+    }
+    if (highRight < lowLeft) {
+      return false;
+    }
+    if (highLeft < lowRight) {
+      return false;
+    }
+    return true;
+  }
+
+    private BaseDateTimeType getHighEdge() {
+      BaseDateTimeType result = (BaseDateTimeType) copy();
+      switch (getPrecision()) {
+      case DAY:
+        result.add(Calendar.DATE, 1);
+        break;
+      case MILLI:
+        break;
+      case MINUTE:
+        result.add(Calendar.MINUTE, 1);
+        break;
+      case MONTH:
+        result.add(Calendar.MONTH, 1);
+        break;
+      case SECOND:
+        result.add(Calendar.SECOND, 1);
+        break;
+      case YEAR:
+        result.add(Calendar.YEAR, 1);
+        break;
+      default:
+        break;      
+      }
+      return result;
     }
 
     boolean hasTimezoneIfRequired() {
-		return getPrecision().ordinal() <= TemporalPrecisionEnum.DAY.ordinal() ||
-				getTimeZone() != null;
-	}
+      return getPrecision().ordinal() <= TemporalPrecisionEnum.DAY.ordinal() ||
+          getTimeZone() != null;
+    }
 
 
-  @Override
-  public String fpValue() {
-    return "@"+primitiveValue();
-  }
+    boolean hasTimezone() {
+      return getTimeZone() != null;
+    }
+
+    public static Integer compareTimes(BaseDateTimeType left, BaseDateTimeType right, Integer def) {
+      if (left.getYear() < right.getYear()) {
+        return -1;
+      } else if (left.getYear() > right.getYear()) {
+        return 1;
+      } else if (left.getPrecision() == TemporalPrecisionEnum.YEAR && right.getPrecision() == TemporalPrecisionEnum.YEAR) {
+        return 0;
+      } else if (left.getPrecision() == TemporalPrecisionEnum.YEAR || right.getPrecision() == TemporalPrecisionEnum.YEAR) {
+        return def;
+      }
+
+      if (left.getMonth() < right.getMonth()) {
+        return -1;
+      } else if (left.getMonth() > right.getMonth()) {
+        return 1;
+      } else if (left.getPrecision() == TemporalPrecisionEnum.MONTH && right.getPrecision() == TemporalPrecisionEnum.MONTH) {
+        return 0;
+      } else if (left.getPrecision() == TemporalPrecisionEnum.MONTH || right.getPrecision() == TemporalPrecisionEnum.MONTH) {
+        return def;
+      }
+
+      if (left.getDay() < right.getDay()) {
+        return -1;
+      } else if (left.getDay() > right.getDay()) {
+        return 1;
+      } else if (left.getPrecision() == TemporalPrecisionEnum.DAY && right.getPrecision() == TemporalPrecisionEnum.DAY) {
+        return 0;
+      } else if (left.getPrecision() == TemporalPrecisionEnum.DAY || right.getPrecision() == TemporalPrecisionEnum.DAY) {
+        return def;
+      }
+
+      if (left.getHour() < right.getHour()) {
+        return -1;
+      } else if (left.getHour() > right.getHour()) {
+        return 1;
+        // hour is not a valid precision 
+//      } else if (dateLeft.getPrecision() == TemporalPrecisionEnum.YEAR && dateRight.getPrecision() == TemporalPrecisionEnum.YEAR) {
+//        return 0;
+//      } else if (dateLeft.getPrecision() == TemporalPrecisionEnum.HOUR || dateRight.getPrecision() == TemporalPrecisionEnum.HOUR) {
+//        return null;
+      }
+
+      if (left.getMinute() < right.getMinute()) {
+        return -1;
+      } else if (left.getMinute() > right.getMinute()) {
+        return 1;
+      } else if (left.getPrecision() == TemporalPrecisionEnum.MINUTE && right.getPrecision() == TemporalPrecisionEnum.MINUTE) {
+        return 0;
+      } else if (left.getPrecision() == TemporalPrecisionEnum.MINUTE || right.getPrecision() == TemporalPrecisionEnum.MINUTE) {
+        return def;
+      }
+
+      if (left.getSecond() < right.getSecond()) {
+        return -1;
+      } else if (left.getSecond() > right.getSecond()) {
+        return 1;
+      } else if (left.getPrecision() == TemporalPrecisionEnum.SECOND && right.getPrecision() == TemporalPrecisionEnum.SECOND) {
+        return 0;
+      }
+
+      if (left.getSecondsMilli() < right.getSecondsMilli()) {
+        return -1;
+      } else if (left.getSecondsMilli() > right.getSecondsMilli()) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+
+    @Override
+    public String fpValue() {
+      return "@"+primitiveValue();
+    }
 
   private TimeZone getTimeZone(String offset) {
     return timezoneCache.computeIfAbsent(offset, TimeZone::getTimeZone);

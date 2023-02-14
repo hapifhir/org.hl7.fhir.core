@@ -1,16 +1,12 @@
 package org.hl7.fhir.convertors.conv40_50;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.commons.codec.binary.Base64;
+import javax.annotation.Nullable;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.junit.jupiter.api.DisplayName;
@@ -22,8 +18,8 @@ public class StructureDefinition40_50Test {
   @Test
   @DisplayName("Test r5 -> r4 AuditEvent conversion.")
   public void testR5_R4() throws IOException {
-    byte[] r4_input = TextFile.streamToBytes(this.getClass().getResourceAsStream("/sd-xpath-constraint-r4.xml"));
-    byte[] r5_input = TextFile.streamToBytes(this.getClass().getResourceAsStream("/sd-xpath-constraint-r5.xml"));
+    byte[] r4_input = getLineSeparatorNormalizedBytes("/sd-xpath-constraint-r4.xml");
+    byte[] r5_input = getLineSeparatorNormalizedBytes("/sd-xpath-constraint-r5.xml");
 
     org.hl7.fhir.r5.model.StructureDefinition r5_actual = (org.hl7.fhir.r5.model.StructureDefinition) new org.hl7.fhir.r5.formats.XmlParser().parse(r5_input);
     org.hl7.fhir.r4.model.StructureDefinition r4_conv = (org.hl7.fhir.r4.model.StructureDefinition) VersionConvertorFactory_40_50.convertResource(r5_actual);
@@ -36,12 +32,17 @@ public class StructureDefinition40_50Test {
     assertArrayEquals(r4_input, r4_output);
   }
 
+  @Nullable
+  private byte[] getLineSeparatorNormalizedBytes(String fileName) throws IOException {
+    return new String(TextFile.streamToBytes(this.getClass().getResourceAsStream(fileName))).replace(System.lineSeparator(), "\n").getBytes();
+  }
+
 
   @Test
   @DisplayName("Test r4 -> r5 AuditEvent conversion.")
   public void testR4_R5() throws IOException {
-    byte[] r4_input = TextFile.streamToBytes(this.getClass().getResourceAsStream("/sd-xpath-constraint-r4.xml"));
-    byte[] r5_input = TextFile.streamToBytes(this.getClass().getResourceAsStream("/sd-xpath-constraint-r5.xml"));
+    byte[] r4_input = getLineSeparatorNormalizedBytes("/sd-xpath-constraint-r4.xml");
+    byte[] r5_input = getLineSeparatorNormalizedBytes("/sd-xpath-constraint-r5.xml");
 
     org.hl7.fhir.r4.model.StructureDefinition r4_actual = (org.hl7.fhir.r4.model.StructureDefinition) new org.hl7.fhir.r4.formats.XmlParser().parse(r4_input);
     org.hl7.fhir.r5.model.StructureDefinition r5_conv = (org.hl7.fhir.r5.model.StructureDefinition) VersionConvertorFactory_40_50.convertResource(r4_actual);

@@ -250,7 +250,7 @@ public class ToolingExtensions {
     Extension ex = new Extension();
     // todo: write this up and get it published with the pack (and handle the redirect?)
     ex.setUrl(ToolingExtensions.EXT_ISSUE_SOURCE);
-    CodeType c = new CodeType();
+    StringType c = new StringType();
     c.setValue(source.toString());
     ex.setValue(c);
     return ex;

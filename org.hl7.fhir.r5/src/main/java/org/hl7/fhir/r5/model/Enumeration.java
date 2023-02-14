@@ -37,7 +37,6 @@ import java.io.ObjectOutput;
 import java.util.ArrayList;
 
 import org.hl7.fhir.instance.model.api.IBaseEnumeration;
-
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /*
@@ -117,6 +116,18 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
 		myEnumFactory = theEnumFactory;
 		setValue(theValue);
 	}
+	
+  /**
+   * Constructor
+   */
+  public Enumeration(EnumFactory<T> theEnumFactory, T theValue, Element source) {
+    if (theEnumFactory == null)
+      throw new IllegalArgumentException("An enumeration factory must be provided");
+    myEnumFactory = theEnumFactory;
+    setValue(theValue);
+    setId(source.getId());
+    getExtension().addAll(source.getExtension());
+  }
 
   @Override
   public Enumeration<T> copy() {

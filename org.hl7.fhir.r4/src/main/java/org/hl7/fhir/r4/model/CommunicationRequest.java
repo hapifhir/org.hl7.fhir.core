@@ -181,28 +181,28 @@ public class CommunicationRequest extends DomainResource {
           return CommunicationRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown CommunicationRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<CommunicationRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CommunicationRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CommunicationRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.DRAFT);
+          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.DRAFT, code);
         if ("active".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.ACTIVE);
+          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.ACTIVE, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.ONHOLD);
+          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.ONHOLD, code);
         if ("revoked".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.REVOKED);
+          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.REVOKED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.COMPLETED);
+          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.ENTEREDINERROR);
+          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.UNKNOWN);
+          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.UNKNOWN, code);
         throw new FHIRException("Unknown CommunicationRequestStatus code '"+codeString+"'");
         }
     public String toCode(CommunicationRequestStatus code) {
@@ -321,22 +321,22 @@ public class CommunicationRequest extends DomainResource {
           return CommunicationPriority.STAT;
         throw new IllegalArgumentException("Unknown CommunicationPriority code '"+codeString+"'");
         }
-        public Enumeration<CommunicationPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<CommunicationPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CommunicationPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CommunicationPriority>(this, CommunicationPriority.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CommunicationPriority>(this, CommunicationPriority.NULL, code);
         if ("routine".equals(codeString))
-          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.ROUTINE);
+          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.ROUTINE, code);
         if ("urgent".equals(codeString))
-          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.URGENT);
+          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.URGENT, code);
         if ("asap".equals(codeString))
-          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.ASAP);
+          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.ASAP, code);
         if ("stat".equals(codeString))
-          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.STAT);
+          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.STAT, code);
         throw new FHIRException("Unknown CommunicationPriority code '"+codeString+"'");
         }
     public String toCode(CommunicationPriority code) {

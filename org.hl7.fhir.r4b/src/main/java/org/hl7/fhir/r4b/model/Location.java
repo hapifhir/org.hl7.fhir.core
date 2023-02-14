@@ -124,18 +124,18 @@ public class Location extends DomainResource {
           return LocationMode.KIND;
         throw new IllegalArgumentException("Unknown LocationMode code '"+codeString+"'");
         }
-        public Enumeration<LocationMode> fromType(Base code) throws FHIRException {
+        public Enumeration<LocationMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<LocationMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<LocationMode>(this, LocationMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<LocationMode>(this, LocationMode.NULL, code);
         if ("instance".equals(codeString))
-          return new Enumeration<LocationMode>(this, LocationMode.INSTANCE);
+          return new Enumeration<LocationMode>(this, LocationMode.INSTANCE, code);
         if ("kind".equals(codeString))
-          return new Enumeration<LocationMode>(this, LocationMode.KIND);
+          return new Enumeration<LocationMode>(this, LocationMode.KIND, code);
         throw new FHIRException("Unknown LocationMode code '"+codeString+"'");
         }
     public String toCode(LocationMode code) {
@@ -232,20 +232,20 @@ public class Location extends DomainResource {
           return LocationStatus.INACTIVE;
         throw new IllegalArgumentException("Unknown LocationStatus code '"+codeString+"'");
         }
-        public Enumeration<LocationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<LocationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<LocationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<LocationStatus>(this, LocationStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<LocationStatus>(this, LocationStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<LocationStatus>(this, LocationStatus.ACTIVE);
+          return new Enumeration<LocationStatus>(this, LocationStatus.ACTIVE, code);
         if ("suspended".equals(codeString))
-          return new Enumeration<LocationStatus>(this, LocationStatus.SUSPENDED);
+          return new Enumeration<LocationStatus>(this, LocationStatus.SUSPENDED, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<LocationStatus>(this, LocationStatus.INACTIVE);
+          return new Enumeration<LocationStatus>(this, LocationStatus.INACTIVE, code);
         throw new FHIRException("Unknown LocationStatus code '"+codeString+"'");
         }
     public String toCode(LocationStatus code) {
@@ -2612,4 +2612,3 @@ Requires the near-distance parameter to be provided also</b><br>
 
 
 }
-

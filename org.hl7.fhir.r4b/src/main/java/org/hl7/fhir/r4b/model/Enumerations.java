@@ -150,18 +150,18 @@ public class Enumerations {
           return ActionCardinalityBehavior.MULTIPLE;
         throw new IllegalArgumentException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionCardinalityBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionCardinalityBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ActionCardinalityBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ActionCardinalityBehavior>(this, ActionCardinalityBehavior.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ActionCardinalityBehavior>(this, ActionCardinalityBehavior.NULL, code);
         if ("single".equals(codeString))
-          return new Enumeration<ActionCardinalityBehavior>(this, ActionCardinalityBehavior.SINGLE);
+          return new Enumeration<ActionCardinalityBehavior>(this, ActionCardinalityBehavior.SINGLE, code);
         if ("multiple".equals(codeString))
-          return new Enumeration<ActionCardinalityBehavior>(this, ActionCardinalityBehavior.MULTIPLE);
+          return new Enumeration<ActionCardinalityBehavior>(this, ActionCardinalityBehavior.MULTIPLE, code);
         throw new FHIRException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
         }
     public String toCode(ActionCardinalityBehavior code) {
@@ -255,20 +255,20 @@ public class Enumerations {
           return ActionConditionKind.STOP;
         throw new IllegalArgumentException("Unknown ActionConditionKind code '"+codeString+"'");
         }
-        public Enumeration<ActionConditionKind> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionConditionKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ActionConditionKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ActionConditionKind>(this, ActionConditionKind.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ActionConditionKind>(this, ActionConditionKind.NULL, code);
         if ("applicability".equals(codeString))
-          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.APPLICABILITY);
+          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.APPLICABILITY, code);
         if ("start".equals(codeString))
-          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.START);
+          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.START, code);
         if ("stop".equals(codeString))
-          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.STOP);
+          return new Enumeration<ActionConditionKind>(this, ActionConditionKind.STOP, code);
         throw new FHIRException("Unknown ActionConditionKind code '"+codeString+"'");
         }
     public String toCode(ActionConditionKind code) {
@@ -364,20 +364,20 @@ public class Enumerations {
           return ActionGroupingBehavior.SENTENCEGROUP;
         throw new IllegalArgumentException("Unknown ActionGroupingBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionGroupingBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionGroupingBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ActionGroupingBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.NULL, code);
         if ("visual-group".equals(codeString))
-          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.VISUALGROUP);
+          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.VISUALGROUP, code);
         if ("logical-group".equals(codeString))
-          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.LOGICALGROUP);
+          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.LOGICALGROUP, code);
         if ("sentence-group".equals(codeString))
-          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.SENTENCEGROUP);
+          return new Enumeration<ActionGroupingBehavior>(this, ActionGroupingBehavior.SENTENCEGROUP, code);
         throw new FHIRException("Unknown ActionGroupingBehavior code '"+codeString+"'");
         }
     public String toCode(ActionGroupingBehavior code) {
@@ -485,22 +485,22 @@ public class Enumerations {
           return ActionParticipantType.DEVICE;
         throw new IllegalArgumentException("Unknown ActionParticipantType code '"+codeString+"'");
         }
-        public Enumeration<ActionParticipantType> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionParticipantType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ActionParticipantType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ActionParticipantType>(this, ActionParticipantType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ActionParticipantType>(this, ActionParticipantType.NULL, code);
         if ("patient".equals(codeString))
-          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.PATIENT);
+          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.PATIENT, code);
         if ("practitioner".equals(codeString))
-          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.PRACTITIONER);
+          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.PRACTITIONER, code);
         if ("related-person".equals(codeString))
-          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.RELATEDPERSON);
+          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.RELATEDPERSON, code);
         if ("device".equals(codeString))
-          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.DEVICE);
+          return new Enumeration<ActionParticipantType>(this, ActionParticipantType.DEVICE, code);
         throw new FHIRException("Unknown ActionParticipantType code '"+codeString+"'");
         }
     public String toCode(ActionParticipantType code) {
@@ -586,18 +586,18 @@ public class Enumerations {
           return ActionPrecheckBehavior.NO;
         throw new IllegalArgumentException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionPrecheckBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionPrecheckBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ActionPrecheckBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ActionPrecheckBehavior>(this, ActionPrecheckBehavior.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ActionPrecheckBehavior>(this, ActionPrecheckBehavior.NULL, code);
         if ("yes".equals(codeString))
-          return new Enumeration<ActionPrecheckBehavior>(this, ActionPrecheckBehavior.YES);
+          return new Enumeration<ActionPrecheckBehavior>(this, ActionPrecheckBehavior.YES, code);
         if ("no".equals(codeString))
-          return new Enumeration<ActionPrecheckBehavior>(this, ActionPrecheckBehavior.NO);
+          return new Enumeration<ActionPrecheckBehavior>(this, ActionPrecheckBehavior.NO, code);
         throw new FHIRException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
         }
     public String toCode(ActionPrecheckBehavior code) {
@@ -763,32 +763,32 @@ public class Enumerations {
           return ActionRelationshipType.AFTEREND;
         throw new IllegalArgumentException("Unknown ActionRelationshipType code '"+codeString+"'");
         }
-        public Enumeration<ActionRelationshipType> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionRelationshipType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ActionRelationshipType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.NULL, code);
         if ("before-start".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFORESTART);
+          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFORESTART, code);
         if ("before".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFORE);
+          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFORE, code);
         if ("before-end".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFOREEND);
+          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.BEFOREEND, code);
         if ("concurrent-with-start".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENTWITHSTART);
+          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENTWITHSTART, code);
         if ("concurrent".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENT);
+          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENT, code);
         if ("concurrent-with-end".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENTWITHEND);
+          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.CONCURRENTWITHEND, code);
         if ("after-start".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTERSTART);
+          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTERSTART, code);
         if ("after".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTER);
+          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTER, code);
         if ("after-end".equals(codeString))
-          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTEREND);
+          return new Enumeration<ActionRelationshipType>(this, ActionRelationshipType.AFTEREND, code);
         throw new FHIRException("Unknown ActionRelationshipType code '"+codeString+"'");
         }
     public String toCode(ActionRelationshipType code) {
@@ -896,20 +896,20 @@ public class Enumerations {
           return ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
         throw new IllegalArgumentException("Unknown ActionRequiredBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionRequiredBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionRequiredBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ActionRequiredBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.NULL, code);
         if ("must".equals(codeString))
-          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.MUST);
+          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.MUST, code);
         if ("could".equals(codeString))
-          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.COULD);
+          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.COULD, code);
         if ("must-unless-documented".equals(codeString))
-          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.MUSTUNLESSDOCUMENTED);
+          return new Enumeration<ActionRequiredBehavior>(this, ActionRequiredBehavior.MUSTUNLESSDOCUMENTED, code);
         throw new FHIRException("Unknown ActionRequiredBehavior code '"+codeString+"'");
         }
     public String toCode(ActionRequiredBehavior code) {
@@ -1041,26 +1041,26 @@ public class Enumerations {
           return ActionSelectionBehavior.ONEORMORE;
         throw new IllegalArgumentException("Unknown ActionSelectionBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionSelectionBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionSelectionBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ActionSelectionBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.NULL, code);
         if ("any".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ANY);
+          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ANY, code);
         if ("all".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ALL);
+          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ALL, code);
         if ("all-or-none".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ALLORNONE);
+          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ALLORNONE, code);
         if ("exactly-one".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.EXACTLYONE);
+          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.EXACTLYONE, code);
         if ("at-most-one".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ATMOSTONE);
+          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ATMOSTONE, code);
         if ("one-or-more".equals(codeString))
-          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ONEORMORE);
+          return new Enumeration<ActionSelectionBehavior>(this, ActionSelectionBehavior.ONEORMORE, code);
         throw new FHIRException("Unknown ActionSelectionBehavior code '"+codeString+"'");
         }
     public String toCode(ActionSelectionBehavior code) {
@@ -1174,22 +1174,22 @@ public class Enumerations {
           return AdministrativeGender.UNKNOWN;
         throw new IllegalArgumentException("Unknown AdministrativeGender code '"+codeString+"'");
         }
-        public Enumeration<AdministrativeGender> fromType(Base code) throws FHIRException {
+        public Enumeration<AdministrativeGender> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AdministrativeGender>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<AdministrativeGender>(this, AdministrativeGender.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AdministrativeGender>(this, AdministrativeGender.NULL, code);
         if ("male".equals(codeString))
-          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.MALE);
+          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.MALE, code);
         if ("female".equals(codeString))
-          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.FEMALE);
+          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.FEMALE, code);
         if ("other".equals(codeString))
-          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.OTHER);
+          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.OTHER, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.UNKNOWN);
+          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.UNKNOWN, code);
         throw new FHIRException("Unknown AdministrativeGender code '"+codeString+"'");
         }
     public String toCode(AdministrativeGender code) {
@@ -1299,22 +1299,22 @@ public class Enumerations {
           return BindingStrength.EXAMPLE;
         throw new IllegalArgumentException("Unknown BindingStrength code '"+codeString+"'");
         }
-        public Enumeration<BindingStrength> fromType(Base code) throws FHIRException {
+        public Enumeration<BindingStrength> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<BindingStrength>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<BindingStrength>(this, BindingStrength.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<BindingStrength>(this, BindingStrength.NULL, code);
         if ("required".equals(codeString))
-          return new Enumeration<BindingStrength>(this, BindingStrength.REQUIRED);
+          return new Enumeration<BindingStrength>(this, BindingStrength.REQUIRED, code);
         if ("extensible".equals(codeString))
-          return new Enumeration<BindingStrength>(this, BindingStrength.EXTENSIBLE);
+          return new Enumeration<BindingStrength>(this, BindingStrength.EXTENSIBLE, code);
         if ("preferred".equals(codeString))
-          return new Enumeration<BindingStrength>(this, BindingStrength.PREFERRED);
+          return new Enumeration<BindingStrength>(this, BindingStrength.PREFERRED, code);
         if ("example".equals(codeString))
-          return new Enumeration<BindingStrength>(this, BindingStrength.EXAMPLE);
+          return new Enumeration<BindingStrength>(this, BindingStrength.EXAMPLE, code);
         throw new FHIRException("Unknown BindingStrength code '"+codeString+"'");
         }
     public String toCode(BindingStrength code) {
@@ -1412,20 +1412,20 @@ public class Enumerations {
           return CapabilityStatementKind.REQUIREMENTS;
         throw new IllegalArgumentException("Unknown CapabilityStatementKind code '"+codeString+"'");
         }
-        public Enumeration<CapabilityStatementKind> fromType(Base code) throws FHIRException {
+        public Enumeration<CapabilityStatementKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CapabilityStatementKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.NULL, code);
         if ("instance".equals(codeString))
-          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.INSTANCE);
+          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.INSTANCE, code);
         if ("capability".equals(codeString))
-          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.CAPABILITY);
+          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.CAPABILITY, code);
         if ("requirements".equals(codeString))
-          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.REQUIREMENTS);
+          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.REQUIREMENTS, code);
         throw new FHIRException("Unknown CapabilityStatementKind code '"+codeString+"'");
         }
     public String toCode(CapabilityStatementKind code) {
@@ -1545,24 +1545,24 @@ public class Enumerations {
           return CompartmentType.DEVICE;
         throw new IllegalArgumentException("Unknown CompartmentType code '"+codeString+"'");
         }
-        public Enumeration<CompartmentType> fromType(Base code) throws FHIRException {
+        public Enumeration<CompartmentType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CompartmentType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CompartmentType>(this, CompartmentType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CompartmentType>(this, CompartmentType.NULL, code);
         if ("Patient".equals(codeString))
-          return new Enumeration<CompartmentType>(this, CompartmentType.PATIENT);
+          return new Enumeration<CompartmentType>(this, CompartmentType.PATIENT, code);
         if ("Encounter".equals(codeString))
-          return new Enumeration<CompartmentType>(this, CompartmentType.ENCOUNTER);
+          return new Enumeration<CompartmentType>(this, CompartmentType.ENCOUNTER, code);
         if ("RelatedPerson".equals(codeString))
-          return new Enumeration<CompartmentType>(this, CompartmentType.RELATEDPERSON);
+          return new Enumeration<CompartmentType>(this, CompartmentType.RELATEDPERSON, code);
         if ("Practitioner".equals(codeString))
-          return new Enumeration<CompartmentType>(this, CompartmentType.PRACTITIONER);
+          return new Enumeration<CompartmentType>(this, CompartmentType.PRACTITIONER, code);
         if ("Device".equals(codeString))
-          return new Enumeration<CompartmentType>(this, CompartmentType.DEVICE);
+          return new Enumeration<CompartmentType>(this, CompartmentType.DEVICE, code);
         throw new FHIRException("Unknown CompartmentType code '"+codeString+"'");
         }
     public String toCode(CompartmentType code) {
@@ -1674,22 +1674,22 @@ public class Enumerations {
           return CompositionStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown CompositionStatus code '"+codeString+"'");
         }
-        public Enumeration<CompositionStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CompositionStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CompositionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CompositionStatus>(this, CompositionStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CompositionStatus>(this, CompositionStatus.NULL, code);
         if ("preliminary".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.PRELIMINARY);
+          return new Enumeration<CompositionStatus>(this, CompositionStatus.PRELIMINARY, code);
         if ("final".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.FINAL);
+          return new Enumeration<CompositionStatus>(this, CompositionStatus.FINAL, code);
         if ("amended".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.AMENDED);
+          return new Enumeration<CompositionStatus>(this, CompositionStatus.AMENDED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.ENTEREDINERROR);
+          return new Enumeration<CompositionStatus>(this, CompositionStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown CompositionStatus code '"+codeString+"'");
         }
     public String toCode(CompositionStatus code) {
@@ -1835,28 +1835,28 @@ public class Enumerations {
           return DaysOfWeek.SUN;
         throw new IllegalArgumentException("Unknown DaysOfWeek code '"+codeString+"'");
         }
-        public Enumeration<DaysOfWeek> fromType(Base code) throws FHIRException {
+        public Enumeration<DaysOfWeek> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DaysOfWeek>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DaysOfWeek>(this, DaysOfWeek.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DaysOfWeek>(this, DaysOfWeek.NULL, code);
         if ("mon".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.MON);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.MON, code);
         if ("tue".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.TUE);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.TUE, code);
         if ("wed".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.WED);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.WED, code);
         if ("thu".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.THU);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.THU, code);
         if ("fri".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.FRI);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.FRI, code);
         if ("sat".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SAT);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SAT, code);
         if ("sun".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SUN);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SUN, code);
         throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
         }
     public String toCode(DaysOfWeek code) {
@@ -1996,26 +1996,26 @@ public class Enumerations {
           return DeviceNameType.OTHER;
         throw new IllegalArgumentException("Unknown DeviceNameType code '"+codeString+"'");
         }
-        public Enumeration<DeviceNameType> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceNameType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DeviceNameType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DeviceNameType>(this, DeviceNameType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DeviceNameType>(this, DeviceNameType.NULL, code);
         if ("udi-label-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.UDILABELNAME);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.UDILABELNAME, code);
         if ("user-friendly-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.USERFRIENDLYNAME);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.USERFRIENDLYNAME, code);
         if ("patient-reported-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.PATIENTREPORTEDNAME);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.PATIENTREPORTEDNAME, code);
         if ("manufacturer-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.MANUFACTURERNAME);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.MANUFACTURERNAME, code);
         if ("model-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.MODELNAME);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.MODELNAME, code);
         if ("other".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.OTHER);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.OTHER, code);
         throw new FHIRException("Unknown DeviceNameType code '"+codeString+"'");
         }
     public String toCode(DeviceNameType code) {
@@ -2117,20 +2117,20 @@ public class Enumerations {
           return DocumentReferenceStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown DocumentReferenceStatus code '"+codeString+"'");
         }
-        public Enumeration<DocumentReferenceStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<DocumentReferenceStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DocumentReferenceStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DocumentReferenceStatus>(this, DocumentReferenceStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DocumentReferenceStatus>(this, DocumentReferenceStatus.NULL, code);
         if ("current".equals(codeString))
-          return new Enumeration<DocumentReferenceStatus>(this, DocumentReferenceStatus.CURRENT);
+          return new Enumeration<DocumentReferenceStatus>(this, DocumentReferenceStatus.CURRENT, code);
         if ("superseded".equals(codeString))
-          return new Enumeration<DocumentReferenceStatus>(this, DocumentReferenceStatus.SUPERSEDED);
+          return new Enumeration<DocumentReferenceStatus>(this, DocumentReferenceStatus.SUPERSEDED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<DocumentReferenceStatus>(this, DocumentReferenceStatus.ENTEREDINERROR);
+          return new Enumeration<DocumentReferenceStatus>(this, DocumentReferenceStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown DocumentReferenceStatus code '"+codeString+"'");
         }
     public String toCode(DocumentReferenceStatus code) {
@@ -2238,22 +2238,22 @@ public class Enumerations {
           return DocumentRelationshipType.APPENDS;
         throw new IllegalArgumentException("Unknown DocumentRelationshipType code '"+codeString+"'");
         }
-        public Enumeration<DocumentRelationshipType> fromType(Base code) throws FHIRException {
+        public Enumeration<DocumentRelationshipType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DocumentRelationshipType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.NULL, code);
         if ("replaces".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.REPLACES);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.REPLACES, code);
         if ("transforms".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.TRANSFORMS);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.TRANSFORMS, code);
         if ("signs".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.SIGNS);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.SIGNS, code);
         if ("appends".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.APPENDS);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.APPENDS, code);
         throw new FHIRException("Unknown DocumentRelationshipType code '"+codeString+"'");
         }
     public String toCode(DocumentRelationshipType code) {
@@ -2411,30 +2411,30 @@ public class Enumerations {
           return EventStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown EventStatus code '"+codeString+"'");
         }
-        public Enumeration<EventStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EventStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EventStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<EventStatus>(this, EventStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EventStatus>(this, EventStatus.NULL, code);
         if ("preparation".equals(codeString))
-          return new Enumeration<EventStatus>(this, EventStatus.PREPARATION);
+          return new Enumeration<EventStatus>(this, EventStatus.PREPARATION, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<EventStatus>(this, EventStatus.INPROGRESS);
+          return new Enumeration<EventStatus>(this, EventStatus.INPROGRESS, code);
         if ("not-done".equals(codeString))
-          return new Enumeration<EventStatus>(this, EventStatus.NOTDONE);
+          return new Enumeration<EventStatus>(this, EventStatus.NOTDONE, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<EventStatus>(this, EventStatus.ONHOLD);
+          return new Enumeration<EventStatus>(this, EventStatus.ONHOLD, code);
         if ("stopped".equals(codeString))
-          return new Enumeration<EventStatus>(this, EventStatus.STOPPED);
+          return new Enumeration<EventStatus>(this, EventStatus.STOPPED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<EventStatus>(this, EventStatus.COMPLETED);
+          return new Enumeration<EventStatus>(this, EventStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<EventStatus>(this, EventStatus.ENTEREDINERROR);
+          return new Enumeration<EventStatus>(this, EventStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<EventStatus>(this, EventStatus.UNKNOWN);
+          return new Enumeration<EventStatus>(this, EventStatus.UNKNOWN, code);
         throw new FHIRException("Unknown EventStatus code '"+codeString+"'");
         }
     public String toCode(EventStatus code) {
@@ -2552,22 +2552,22 @@ public class Enumerations {
           return EvidenceVariableHandling.POLYCHOTOMOUS;
         throw new IllegalArgumentException("Unknown EvidenceVariableHandling code '"+codeString+"'");
         }
-        public Enumeration<EvidenceVariableHandling> fromType(Base code) throws FHIRException {
+        public Enumeration<EvidenceVariableHandling> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EvidenceVariableHandling>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.NULL, code);
         if ("continuous".equals(codeString))
-          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.CONTINUOUS);
+          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.CONTINUOUS, code);
         if ("dichotomous".equals(codeString))
-          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.DICHOTOMOUS);
+          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.DICHOTOMOUS, code);
         if ("ordinal".equals(codeString))
-          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.ORDINAL);
+          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.ORDINAL, code);
         if ("polychotomous".equals(codeString))
-          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.POLYCHOTOMOUS);
+          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.POLYCHOTOMOUS, code);
         throw new FHIRException("Unknown EvidenceVariableHandling code '"+codeString+"'");
         }
     public String toCode(EvidenceVariableHandling code) {
@@ -5152,434 +5152,434 @@ The primary difference between a medication statement and a medication administr
           return FHIRAllTypes.ANY;
         throw new IllegalArgumentException("Unknown FHIRAllTypes code '"+codeString+"'");
         }
-        public Enumeration<FHIRAllTypes> fromType(Base code) throws FHIRException {
+        public Enumeration<FHIRAllTypes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FHIRAllTypes>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NULL, code);
         if ("Address".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ADDRESS);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ADDRESS, code);
         if ("Age".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.AGE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.AGE, code);
         if ("Annotation".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ANNOTATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ANNOTATION, code);
         if ("Attachment".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ATTACHMENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ATTACHMENT, code);
         if ("BackboneElement".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BACKBONEELEMENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BACKBONEELEMENT, code);
         if ("CodeableConcept".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CODEABLECONCEPT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CODEABLECONCEPT, code);
         if ("CodeableReference".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CODEABLEREFERENCE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CODEABLEREFERENCE, code);
         if ("Coding".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CODING);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CODING, code);
         if ("ContactDetail".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONTACTDETAIL);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONTACTDETAIL, code);
         if ("ContactPoint".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONTACTPOINT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONTACTPOINT, code);
         if ("Contributor".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONTRIBUTOR);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONTRIBUTOR, code);
         if ("Count".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COUNT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COUNT, code);
         if ("DataRequirement".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DATAREQUIREMENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DATAREQUIREMENT, code);
         if ("DataType".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DATATYPE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DATATYPE, code);
         if ("Distance".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DISTANCE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DISTANCE, code);
         if ("Dosage".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DOSAGE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DOSAGE, code);
         if ("Duration".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DURATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DURATION, code);
         if ("Element".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ELEMENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ELEMENT, code);
         if ("ElementDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ELEMENTDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ELEMENTDEFINITION, code);
         if ("Expression".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXPRESSION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXPRESSION, code);
         if ("Extension".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXTENSION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXTENSION, code);
         if ("HumanName".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.HUMANNAME);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.HUMANNAME, code);
         if ("Identifier".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IDENTIFIER);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IDENTIFIER, code);
         if ("MarketingStatus".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MARKETINGSTATUS);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MARKETINGSTATUS, code);
         if ("Meta".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.META);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.META, code);
         if ("Money".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MONEY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MONEY, code);
         if ("MoneyQuantity".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MONEYQUANTITY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MONEYQUANTITY, code);
         if ("Narrative".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NARRATIVE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NARRATIVE, code);
         if ("ParameterDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PARAMETERDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PARAMETERDEFINITION, code);
         if ("Period".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PERIOD);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PERIOD, code);
         if ("Population".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.POPULATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.POPULATION, code);
         if ("ProdCharacteristic".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PRODCHARACTERISTIC);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PRODCHARACTERISTIC, code);
         if ("ProductShelfLife".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PRODUCTSHELFLIFE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PRODUCTSHELFLIFE, code);
         if ("Quantity".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.QUANTITY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.QUANTITY, code);
         if ("Range".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RANGE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RANGE, code);
         if ("Ratio".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RATIO);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RATIO, code);
         if ("RatioRange".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RATIORANGE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RATIORANGE, code);
         if ("Reference".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.REFERENCE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.REFERENCE, code);
         if ("RelatedArtifact".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RELATEDARTIFACT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RELATEDARTIFACT, code);
         if ("SampledData".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SAMPLEDDATA);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SAMPLEDDATA, code);
         if ("Signature".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SIGNATURE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SIGNATURE, code);
         if ("SimpleQuantity".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SIMPLEQUANTITY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SIMPLEQUANTITY, code);
         if ("Timing".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TIMING);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TIMING, code);
         if ("TriggerDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TRIGGERDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TRIGGERDEFINITION, code);
         if ("UsageContext".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.USAGECONTEXT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.USAGECONTEXT, code);
         if ("base64Binary".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BASE64BINARY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BASE64BINARY, code);
         if ("boolean".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BOOLEAN);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BOOLEAN, code);
         if ("canonical".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CANONICAL);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CANONICAL, code);
         if ("code".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CODE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CODE, code);
         if ("date".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DATE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DATE, code);
         if ("dateTime".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DATETIME);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DATETIME, code);
         if ("decimal".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DECIMAL);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DECIMAL, code);
         if ("id".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ID);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ID, code);
         if ("instant".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INSTANT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INSTANT, code);
         if ("integer".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INTEGER);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INTEGER, code);
         if ("markdown".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MARKDOWN);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MARKDOWN, code);
         if ("oid".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.OID);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.OID, code);
         if ("positiveInt".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.POSITIVEINT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.POSITIVEINT, code);
         if ("string".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.STRING);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.STRING, code);
         if ("time".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TIME);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TIME, code);
         if ("unsignedInt".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.UNSIGNEDINT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.UNSIGNEDINT, code);
         if ("uri".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.URI);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.URI, code);
         if ("url".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.URL);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.URL, code);
         if ("uuid".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.UUID);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.UUID, code);
         if ("xhtml".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.XHTML);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.XHTML, code);
         if ("Resource".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RESOURCE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RESOURCE, code);
         if ("Binary".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BINARY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BINARY, code);
         if ("Bundle".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BUNDLE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BUNDLE, code);
         if ("DomainResource".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DOMAINRESOURCE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DOMAINRESOURCE, code);
         if ("Account".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ACCOUNT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ACCOUNT, code);
         if ("ActivityDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ACTIVITYDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ACTIVITYDEFINITION, code);
         if ("AdministrableProductDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ADMINISTRABLEPRODUCTDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ADMINISTRABLEPRODUCTDEFINITION, code);
         if ("AdverseEvent".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ADVERSEEVENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ADVERSEEVENT, code);
         if ("AllergyIntolerance".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ALLERGYINTOLERANCE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ALLERGYINTOLERANCE, code);
         if ("Appointment".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.APPOINTMENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.APPOINTMENT, code);
         if ("AppointmentResponse".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.APPOINTMENTRESPONSE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.APPOINTMENTRESPONSE, code);
         if ("AuditEvent".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.AUDITEVENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.AUDITEVENT, code);
         if ("Basic".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BASIC);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BASIC, code);
         if ("BiologicallyDerivedProduct".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BIOLOGICALLYDERIVEDPRODUCT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BIOLOGICALLYDERIVEDPRODUCT, code);
         if ("BodyStructure".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BODYSTRUCTURE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.BODYSTRUCTURE, code);
         if ("CapabilityStatement".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CAPABILITYSTATEMENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CAPABILITYSTATEMENT, code);
         if ("CarePlan".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CAREPLAN);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CAREPLAN, code);
         if ("CareTeam".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CARETEAM);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CARETEAM, code);
         if ("CatalogEntry".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CATALOGENTRY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CATALOGENTRY, code);
         if ("ChargeItem".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CHARGEITEM);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CHARGEITEM, code);
         if ("ChargeItemDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CHARGEITEMDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CHARGEITEMDEFINITION, code);
         if ("Citation".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CITATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CITATION, code);
         if ("Claim".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CLAIM);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CLAIM, code);
         if ("ClaimResponse".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CLAIMRESPONSE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CLAIMRESPONSE, code);
         if ("ClinicalImpression".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CLINICALIMPRESSION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CLINICALIMPRESSION, code);
         if ("ClinicalUseDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CLINICALUSEDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CLINICALUSEDEFINITION, code);
         if ("CodeSystem".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CODESYSTEM);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CODESYSTEM, code);
         if ("Communication".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COMMUNICATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COMMUNICATION, code);
         if ("CommunicationRequest".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COMMUNICATIONREQUEST);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COMMUNICATIONREQUEST, code);
         if ("CompartmentDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COMPARTMENTDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COMPARTMENTDEFINITION, code);
         if ("Composition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COMPOSITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COMPOSITION, code);
         if ("ConceptMap".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONCEPTMAP);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONCEPTMAP, code);
         if ("Condition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONDITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONDITION, code);
         if ("Consent".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONSENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONSENT, code);
         if ("Contract".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONTRACT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONTRACT, code);
         if ("Coverage".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COVERAGE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COVERAGE, code);
         if ("CoverageEligibilityRequest".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COVERAGEELIGIBILITYREQUEST);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COVERAGEELIGIBILITYREQUEST, code);
         if ("CoverageEligibilityResponse".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COVERAGEELIGIBILITYRESPONSE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COVERAGEELIGIBILITYRESPONSE, code);
         if ("DetectedIssue".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DETECTEDISSUE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DETECTEDISSUE, code);
         if ("Device".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DEVICE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DEVICE, code);
         if ("DeviceDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DEVICEDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DEVICEDEFINITION, code);
         if ("DeviceMetric".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DEVICEMETRIC);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DEVICEMETRIC, code);
         if ("DeviceRequest".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DEVICEREQUEST);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DEVICEREQUEST, code);
         if ("DeviceUseStatement".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DEVICEUSESTATEMENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DEVICEUSESTATEMENT, code);
         if ("DiagnosticReport".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DIAGNOSTICREPORT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DIAGNOSTICREPORT, code);
         if ("DocumentManifest".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DOCUMENTMANIFEST);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DOCUMENTMANIFEST, code);
         if ("DocumentReference".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DOCUMENTREFERENCE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.DOCUMENTREFERENCE, code);
         if ("Encounter".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ENCOUNTER);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ENCOUNTER, code);
         if ("Endpoint".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ENDPOINT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ENDPOINT, code);
         if ("EnrollmentRequest".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ENROLLMENTREQUEST);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ENROLLMENTREQUEST, code);
         if ("EnrollmentResponse".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ENROLLMENTRESPONSE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ENROLLMENTRESPONSE, code);
         if ("EpisodeOfCare".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EPISODEOFCARE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EPISODEOFCARE, code);
         if ("EventDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVENTDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVENTDEFINITION, code);
         if ("Evidence".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVIDENCE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVIDENCE, code);
         if ("EvidenceReport".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVIDENCEREPORT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVIDENCEREPORT, code);
         if ("EvidenceVariable".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVIDENCEVARIABLE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVIDENCEVARIABLE, code);
         if ("ExampleScenario".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXAMPLESCENARIO);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXAMPLESCENARIO, code);
         if ("ExplanationOfBenefit".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXPLANATIONOFBENEFIT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXPLANATIONOFBENEFIT, code);
         if ("FamilyMemberHistory".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.FAMILYMEMBERHISTORY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.FAMILYMEMBERHISTORY, code);
         if ("Flag".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.FLAG);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.FLAG, code);
         if ("Goal".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.GOAL);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.GOAL, code);
         if ("GraphDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.GRAPHDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.GRAPHDEFINITION, code);
         if ("Group".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.GROUP);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.GROUP, code);
         if ("GuidanceResponse".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.GUIDANCERESPONSE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.GUIDANCERESPONSE, code);
         if ("HealthcareService".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.HEALTHCARESERVICE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.HEALTHCARESERVICE, code);
         if ("ImagingStudy".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IMAGINGSTUDY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IMAGINGSTUDY, code);
         if ("Immunization".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IMMUNIZATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IMMUNIZATION, code);
         if ("ImmunizationEvaluation".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IMMUNIZATIONEVALUATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IMMUNIZATIONEVALUATION, code);
         if ("ImmunizationRecommendation".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IMMUNIZATIONRECOMMENDATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IMMUNIZATIONRECOMMENDATION, code);
         if ("ImplementationGuide".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IMPLEMENTATIONGUIDE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.IMPLEMENTATIONGUIDE, code);
         if ("Ingredient".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INGREDIENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INGREDIENT, code);
         if ("InsurancePlan".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INSURANCEPLAN);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INSURANCEPLAN, code);
         if ("Invoice".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INVOICE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.INVOICE, code);
         if ("Library".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.LIBRARY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.LIBRARY, code);
         if ("Linkage".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.LINKAGE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.LINKAGE, code);
         if ("List".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.LIST);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.LIST, code);
         if ("Location".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.LOCATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.LOCATION, code);
         if ("ManufacturedItemDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MANUFACTUREDITEMDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MANUFACTUREDITEMDEFINITION, code);
         if ("Measure".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEASURE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEASURE, code);
         if ("MeasureReport".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEASUREREPORT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEASUREREPORT, code);
         if ("Media".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDIA);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDIA, code);
         if ("Medication".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATION, code);
         if ("MedicationAdministration".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATIONADMINISTRATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATIONADMINISTRATION, code);
         if ("MedicationDispense".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATIONDISPENSE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATIONDISPENSE, code);
         if ("MedicationKnowledge".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATIONKNOWLEDGE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATIONKNOWLEDGE, code);
         if ("MedicationRequest".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATIONREQUEST);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATIONREQUEST, code);
         if ("MedicationStatement".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATIONSTATEMENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICATIONSTATEMENT, code);
         if ("MedicinalProductDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICINALPRODUCTDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEDICINALPRODUCTDEFINITION, code);
         if ("MessageDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MESSAGEDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MESSAGEDEFINITION, code);
         if ("MessageHeader".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MESSAGEHEADER);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MESSAGEHEADER, code);
         if ("MolecularSequence".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MOLECULARSEQUENCE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MOLECULARSEQUENCE, code);
         if ("NamingSystem".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NAMINGSYSTEM);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NAMINGSYSTEM, code);
         if ("NutritionOrder".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NUTRITIONORDER);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NUTRITIONORDER, code);
         if ("NutritionProduct".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NUTRITIONPRODUCT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NUTRITIONPRODUCT, code);
         if ("Observation".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.OBSERVATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.OBSERVATION, code);
         if ("ObservationDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.OBSERVATIONDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.OBSERVATIONDEFINITION, code);
         if ("OperationDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.OPERATIONDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.OPERATIONDEFINITION, code);
         if ("OperationOutcome".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.OPERATIONOUTCOME);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.OPERATIONOUTCOME, code);
         if ("Organization".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ORGANIZATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ORGANIZATION, code);
         if ("OrganizationAffiliation".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ORGANIZATIONAFFILIATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ORGANIZATIONAFFILIATION, code);
         if ("PackagedProductDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PACKAGEDPRODUCTDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PACKAGEDPRODUCTDEFINITION, code);
         if ("Patient".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PATIENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PATIENT, code);
         if ("PaymentNotice".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PAYMENTNOTICE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PAYMENTNOTICE, code);
         if ("PaymentReconciliation".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PAYMENTRECONCILIATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PAYMENTRECONCILIATION, code);
         if ("Person".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PERSON);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PERSON, code);
         if ("PlanDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PLANDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PLANDEFINITION, code);
         if ("Practitioner".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PRACTITIONER);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PRACTITIONER, code);
         if ("PractitionerRole".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PRACTITIONERROLE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PRACTITIONERROLE, code);
         if ("Procedure".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PROCEDURE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PROCEDURE, code);
         if ("Provenance".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PROVENANCE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PROVENANCE, code);
         if ("Questionnaire".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.QUESTIONNAIRE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.QUESTIONNAIRE, code);
         if ("QuestionnaireResponse".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.QUESTIONNAIRERESPONSE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.QUESTIONNAIRERESPONSE, code);
         if ("RegulatedAuthorization".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.REGULATEDAUTHORIZATION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.REGULATEDAUTHORIZATION, code);
         if ("RelatedPerson".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RELATEDPERSON);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RELATEDPERSON, code);
         if ("RequestGroup".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.REQUESTGROUP);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.REQUESTGROUP, code);
         if ("ResearchDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RESEARCHDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RESEARCHDEFINITION, code);
         if ("ResearchElementDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RESEARCHELEMENTDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RESEARCHELEMENTDEFINITION, code);
         if ("ResearchStudy".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RESEARCHSTUDY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RESEARCHSTUDY, code);
         if ("ResearchSubject".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RESEARCHSUBJECT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RESEARCHSUBJECT, code);
         if ("RiskAssessment".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RISKASSESSMENT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.RISKASSESSMENT, code);
         if ("Schedule".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SCHEDULE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SCHEDULE, code);
         if ("SearchParameter".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SEARCHPARAMETER);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SEARCHPARAMETER, code);
         if ("ServiceRequest".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SERVICEREQUEST);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SERVICEREQUEST, code);
         if ("Slot".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SLOT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SLOT, code);
         if ("Specimen".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SPECIMEN);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SPECIMEN, code);
         if ("SpecimenDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SPECIMENDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SPECIMENDEFINITION, code);
         if ("StructureDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.STRUCTUREDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.STRUCTUREDEFINITION, code);
         if ("StructureMap".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.STRUCTUREMAP);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.STRUCTUREMAP, code);
         if ("Subscription".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSCRIPTION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSCRIPTION, code);
         if ("SubscriptionStatus".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSCRIPTIONSTATUS);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSCRIPTIONSTATUS, code);
         if ("SubscriptionTopic".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSCRIPTIONTOPIC);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSCRIPTIONTOPIC, code);
         if ("Substance".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSTANCE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSTANCE, code);
         if ("SubstanceDefinition".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSTANCEDEFINITION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSTANCEDEFINITION, code);
         if ("SupplyDelivery".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUPPLYDELIVERY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUPPLYDELIVERY, code);
         if ("SupplyRequest".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUPPLYREQUEST);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUPPLYREQUEST, code);
         if ("Task".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TASK);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TASK, code);
         if ("TerminologyCapabilities".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TERMINOLOGYCAPABILITIES);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TERMINOLOGYCAPABILITIES, code);
         if ("TestReport".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TESTREPORT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TESTREPORT, code);
         if ("TestScript".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TESTSCRIPT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TESTSCRIPT, code);
         if ("ValueSet".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.VALUESET);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.VALUESET, code);
         if ("VerificationResult".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.VERIFICATIONRESULT);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.VERIFICATIONRESULT, code);
         if ("VisionPrescription".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.VISIONPRESCRIPTION);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.VISIONPRESCRIPTION, code);
         if ("Parameters".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PARAMETERS);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PARAMETERS, code);
         if ("Type".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TYPE);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TYPE, code);
         if ("Any".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ANY);
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ANY, code);
         throw new FHIRException("Unknown FHIRAllTypes code '"+codeString+"'");
         }
     public String toCode(FHIRAllTypes code) {
@@ -6819,124 +6819,124 @@ The primary difference between a medication statement and a medication administr
           return FHIRVersion._5_0_0BALLOT;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
-        public Enumeration<FHIRVersion> fromType(Base code) throws FHIRException {
+        public Enumeration<FHIRVersion> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FHIRVersion>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<FHIRVersion>(this, FHIRVersion.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FHIRVersion>(this, FHIRVersion.NULL, code);
         if ("0.01".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_01);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_01, code);
         if ("0.05".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_05);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_05, code);
         if ("0.06".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_06);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_06, code);
         if ("0.11".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_11);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_11, code);
         if ("0.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0, code);
         if ("0.0.80".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_80);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_80, code);
         if ("0.0.81".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_81);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_81, code);
         if ("0.0.82".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_82);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_82, code);
         if ("0.4".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4, code);
         if ("0.4.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4_0, code);
         if ("0.5".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5, code);
         if ("0.5.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5_0, code);
         if ("1.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0, code);
         if ("1.0.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_0, code);
         if ("1.0.1".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_1);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_1, code);
         if ("1.0.2".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_2);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_2, code);
         if ("1.1".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1, code);
         if ("1.1.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1_0, code);
         if ("1.4".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4, code);
         if ("1.4.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4_0, code);
         if ("1.6".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6, code);
         if ("1.6.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6_0, code);
         if ("1.8".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8, code);
         if ("1.8.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8_0, code);
         if ("3.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0, code);
         if ("3.0.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_0, code);
         if ("3.0.1".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_1);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_1, code);
         if ("3.0.2".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_2);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_2, code);
         if ("3.3".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3, code);
         if ("3.3.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3_0, code);
         if ("3.5".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5, code);
         if ("3.5.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5_0, code);
         if ("4.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0, code);
         if ("4.0.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_0, code);
         if ("4.0.1".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_1);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_1, code);
         if ("4.1".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1, code);
         if ("4.1.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1_0, code);
         if ("4.2".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2, code);
         if ("4.2.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0, code);
         if ("4.3.0-snapshot1".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_SNAPSHOT1);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_SNAPSHOT1, code);
         if ("4.3.0-cibuild".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_CIBUILD);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_CIBUILD, code);
         if ("4.3".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3, code);
         if ("4.3.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0, code);
         if ("4.4".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4, code);
         if ("4.4.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0, code);
         if ("4.5".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5, code);
         if ("4.5.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5_0, code);
         if ("4.6".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6, code);
         if ("4.6.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6_0, code);
         if ("5.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0, code);
         if ("5.0.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0, code);
         if ("5.0.0-cibuild".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0CIBUILD);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0CIBUILD, code);
         if ("5.0.0-snapshot1".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT1);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT1, code);
         if ("5.0.0-snapshot2".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT2);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT2, code);
         if ("5.0.0-ballot".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0BALLOT);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0BALLOT, code);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -7208,32 +7208,32 @@ The primary difference between a medication statement and a medication administr
           return FilterOperator.EXISTS;
         throw new IllegalArgumentException("Unknown FilterOperator code '"+codeString+"'");
         }
-        public Enumeration<FilterOperator> fromType(Base code) throws FHIRException {
+        public Enumeration<FilterOperator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FilterOperator>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<FilterOperator>(this, FilterOperator.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FilterOperator>(this, FilterOperator.NULL, code);
         if ("=".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.EQUAL);
+          return new Enumeration<FilterOperator>(this, FilterOperator.EQUAL, code);
         if ("is-a".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.ISA);
+          return new Enumeration<FilterOperator>(this, FilterOperator.ISA, code);
         if ("descendent-of".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.DESCENDENTOF);
+          return new Enumeration<FilterOperator>(this, FilterOperator.DESCENDENTOF, code);
         if ("is-not-a".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.ISNOTA);
+          return new Enumeration<FilterOperator>(this, FilterOperator.ISNOTA, code);
         if ("regex".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.REGEX);
+          return new Enumeration<FilterOperator>(this, FilterOperator.REGEX, code);
         if ("in".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.IN);
+          return new Enumeration<FilterOperator>(this, FilterOperator.IN, code);
         if ("not-in".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.NOTIN);
+          return new Enumeration<FilterOperator>(this, FilterOperator.NOTIN, code);
         if ("generalizes".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.GENERALIZES);
+          return new Enumeration<FilterOperator>(this, FilterOperator.GENERALIZES, code);
         if ("exists".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.EXISTS);
+          return new Enumeration<FilterOperator>(this, FilterOperator.EXISTS, code);
         throw new FHIRException("Unknown FilterOperator code '"+codeString+"'");
         }
     public String toCode(FilterOperator code) {
@@ -7353,22 +7353,22 @@ The primary difference between a medication statement and a medication administr
           return FinancialResourceStatusCodes.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown FinancialResourceStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<FinancialResourceStatusCodes> fromType(Base code) throws FHIRException {
+        public Enumeration<FinancialResourceStatusCodes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FinancialResourceStatusCodes>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<FinancialResourceStatusCodes>(this, FinancialResourceStatusCodes.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FinancialResourceStatusCodes>(this, FinancialResourceStatusCodes.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<FinancialResourceStatusCodes>(this, FinancialResourceStatusCodes.ACTIVE);
+          return new Enumeration<FinancialResourceStatusCodes>(this, FinancialResourceStatusCodes.ACTIVE, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<FinancialResourceStatusCodes>(this, FinancialResourceStatusCodes.CANCELLED);
+          return new Enumeration<FinancialResourceStatusCodes>(this, FinancialResourceStatusCodes.CANCELLED, code);
         if ("draft".equals(codeString))
-          return new Enumeration<FinancialResourceStatusCodes>(this, FinancialResourceStatusCodes.DRAFT);
+          return new Enumeration<FinancialResourceStatusCodes>(this, FinancialResourceStatusCodes.DRAFT, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<FinancialResourceStatusCodes>(this, FinancialResourceStatusCodes.ENTEREDINERROR);
+          return new Enumeration<FinancialResourceStatusCodes>(this, FinancialResourceStatusCodes.ENTEREDINERROR, code);
         throw new FHIRException("Unknown FinancialResourceStatusCodes code '"+codeString+"'");
         }
     public String toCode(FinancialResourceStatusCodes code) {
@@ -7502,26 +7502,26 @@ The primary difference between a medication statement and a medication administr
           return GroupMeasure.MEDIANOFMEDIAN;
         throw new IllegalArgumentException("Unknown GroupMeasure code '"+codeString+"'");
         }
-        public Enumeration<GroupMeasure> fromType(Base code) throws FHIRException {
+        public Enumeration<GroupMeasure> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GroupMeasure>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<GroupMeasure>(this, GroupMeasure.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GroupMeasure>(this, GroupMeasure.NULL, code);
         if ("mean".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEAN, code);
         if ("median".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIAN, code);
         if ("mean-of-mean".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEAN, code);
         if ("mean-of-median".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEDIAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEDIAN, code);
         if ("median-of-mean".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEAN, code);
         if ("median-of-median".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEDIAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEDIAN, code);
         throw new FHIRException("Unknown GroupMeasure code '"+codeString+"'");
         }
     public String toCode(GroupMeasure code) {
@@ -7659,26 +7659,26 @@ The primary difference between a medication statement and a medication administr
           return InvoicePriceComponentType.INFORMATIONAL;
         throw new IllegalArgumentException("Unknown InvoicePriceComponentType code '"+codeString+"'");
         }
-        public Enumeration<InvoicePriceComponentType> fromType(Base code) throws FHIRException {
+        public Enumeration<InvoicePriceComponentType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<InvoicePriceComponentType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.NULL, code);
         if ("base".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.BASE);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.BASE, code);
         if ("surcharge".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.SURCHARGE);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.SURCHARGE, code);
         if ("deduction".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.DEDUCTION);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.DEDUCTION, code);
         if ("discount".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.DISCOUNT);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.DISCOUNT, code);
         if ("tax".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.TAX);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.TAX, code);
         if ("informational".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.INFORMATIONAL);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.INFORMATIONAL, code);
         throw new FHIRException("Unknown InvoicePriceComponentType code '"+codeString+"'");
         }
     public String toCode(InvoicePriceComponentType code) {
@@ -7780,20 +7780,20 @@ The primary difference between a medication statement and a medication administr
           return ListMode.CHANGES;
         throw new IllegalArgumentException("Unknown ListMode code '"+codeString+"'");
         }
-        public Enumeration<ListMode> fromType(Base code) throws FHIRException {
+        public Enumeration<ListMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ListMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ListMode>(this, ListMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ListMode>(this, ListMode.NULL, code);
         if ("working".equals(codeString))
-          return new Enumeration<ListMode>(this, ListMode.WORKING);
+          return new Enumeration<ListMode>(this, ListMode.WORKING, code);
         if ("snapshot".equals(codeString))
-          return new Enumeration<ListMode>(this, ListMode.SNAPSHOT);
+          return new Enumeration<ListMode>(this, ListMode.SNAPSHOT, code);
         if ("changes".equals(codeString))
-          return new Enumeration<ListMode>(this, ListMode.CHANGES);
+          return new Enumeration<ListMode>(this, ListMode.CHANGES, code);
         throw new FHIRException("Unknown ListMode code '"+codeString+"'");
         }
     public String toCode(ListMode code) {
@@ -7877,18 +7877,18 @@ The primary difference between a medication statement and a medication administr
           return MeasureImprovementNotation.DECREASE;
         throw new IllegalArgumentException("Unknown MeasureImprovementNotation code '"+codeString+"'");
         }
-        public Enumeration<MeasureImprovementNotation> fromType(Base code) throws FHIRException {
+        public Enumeration<MeasureImprovementNotation> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MeasureImprovementNotation>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MeasureImprovementNotation>(this, MeasureImprovementNotation.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MeasureImprovementNotation>(this, MeasureImprovementNotation.NULL, code);
         if ("increase".equals(codeString))
-          return new Enumeration<MeasureImprovementNotation>(this, MeasureImprovementNotation.INCREASE);
+          return new Enumeration<MeasureImprovementNotation>(this, MeasureImprovementNotation.INCREASE, code);
         if ("decrease".equals(codeString))
-          return new Enumeration<MeasureImprovementNotation>(this, MeasureImprovementNotation.DECREASE);
+          return new Enumeration<MeasureImprovementNotation>(this, MeasureImprovementNotation.DECREASE, code);
         throw new FHIRException("Unknown MeasureImprovementNotation code '"+codeString+"'");
         }
     public String toCode(MeasureImprovementNotation code) {
@@ -7946,14 +7946,14 @@ The primary difference between a medication statement and a medication administr
                 return null;
         throw new IllegalArgumentException("Unknown MimeTypes code '"+codeString+"'");
         }
-        public Enumeration<MimeTypes> fromType(Base code) throws FHIRException {
+        public Enumeration<MimeTypes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MimeTypes>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MimeTypes>(this, MimeTypes.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MimeTypes>(this, MimeTypes.NULL, code);
         throw new FHIRException("Unknown MimeTypes code '"+codeString+"'");
         }
     public String toCode(MimeTypes code) {
@@ -8043,20 +8043,20 @@ The primary difference between a medication statement and a medication administr
           return NoteType.PRINTOPER;
         throw new IllegalArgumentException("Unknown NoteType code '"+codeString+"'");
         }
-        public Enumeration<NoteType> fromType(Base code) throws FHIRException {
+        public Enumeration<NoteType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<NoteType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<NoteType>(this, NoteType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<NoteType>(this, NoteType.NULL, code);
         if ("display".equals(codeString))
-          return new Enumeration<NoteType>(this, NoteType.DISPLAY);
+          return new Enumeration<NoteType>(this, NoteType.DISPLAY, code);
         if ("print".equals(codeString))
-          return new Enumeration<NoteType>(this, NoteType.PRINT);
+          return new Enumeration<NoteType>(this, NoteType.PRINT, code);
         if ("printoper".equals(codeString))
-          return new Enumeration<NoteType>(this, NoteType.PRINTOPER);
+          return new Enumeration<NoteType>(this, NoteType.PRINTOPER, code);
         throw new FHIRException("Unknown NoteType code '"+codeString+"'");
         }
     public String toCode(NoteType code) {
@@ -8212,30 +8212,30 @@ The primary difference between a medication statement and a medication administr
           return ObservationStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown ObservationStatus code '"+codeString+"'");
         }
-        public Enumeration<ObservationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ObservationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ObservationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ObservationStatus>(this, ObservationStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ObservationStatus>(this, ObservationStatus.NULL, code);
         if ("registered".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.REGISTERED);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.REGISTERED, code);
         if ("preliminary".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.PRELIMINARY);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.PRELIMINARY, code);
         if ("final".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.FINAL);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.FINAL, code);
         if ("amended".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.AMENDED);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.AMENDED, code);
         if ("corrected".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.CORRECTED);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.CORRECTED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.CANCELLED);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.CANCELLED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.ENTEREDINERROR);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.UNKNOWN);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.UNKNOWN, code);
         throw new FHIRException("Unknown ObservationStatus code '"+codeString+"'");
         }
     public String toCode(ObservationStatus code) {
@@ -8329,18 +8329,18 @@ The primary difference between a medication statement and a medication administr
           return OperationParameterUse.OUT;
         throw new IllegalArgumentException("Unknown OperationParameterUse code '"+codeString+"'");
         }
-        public Enumeration<OperationParameterUse> fromType(Base code) throws FHIRException {
+        public Enumeration<OperationParameterUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<OperationParameterUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<OperationParameterUse>(this, OperationParameterUse.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<OperationParameterUse>(this, OperationParameterUse.NULL, code);
         if ("in".equals(codeString))
-          return new Enumeration<OperationParameterUse>(this, OperationParameterUse.IN);
+          return new Enumeration<OperationParameterUse>(this, OperationParameterUse.IN, code);
         if ("out".equals(codeString))
-          return new Enumeration<OperationParameterUse>(this, OperationParameterUse.OUT);
+          return new Enumeration<OperationParameterUse>(this, OperationParameterUse.OUT, code);
         throw new FHIRException("Unknown OperationParameterUse code '"+codeString+"'");
         }
     public String toCode(OperationParameterUse code) {
@@ -8446,22 +8446,22 @@ The primary difference between a medication statement and a medication administr
           return ParticipationStatus.NEEDSACTION;
         throw new IllegalArgumentException("Unknown ParticipationStatus code '"+codeString+"'");
         }
-        public Enumeration<ParticipationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ParticipationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ParticipationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ParticipationStatus>(this, ParticipationStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ParticipationStatus>(this, ParticipationStatus.NULL, code);
         if ("accepted".equals(codeString))
-          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.ACCEPTED);
+          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.ACCEPTED, code);
         if ("declined".equals(codeString))
-          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.DECLINED);
+          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.DECLINED, code);
         if ("tentative".equals(codeString))
-          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.TENTATIVE);
+          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.TENTATIVE, code);
         if ("needs-action".equals(codeString))
-          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.NEEDSACTION);
+          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.NEEDSACTION, code);
         throw new FHIRException("Unknown ParticipationStatus code '"+codeString+"'");
         }
     public String toCode(ParticipationStatus code) {
@@ -8571,22 +8571,22 @@ The primary difference between a medication statement and a medication administr
           return PublicationStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown PublicationStatus code '"+codeString+"'");
         }
-        public Enumeration<PublicationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<PublicationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<PublicationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<PublicationStatus>(this, PublicationStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<PublicationStatus>(this, PublicationStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<PublicationStatus>(this, PublicationStatus.DRAFT);
+          return new Enumeration<PublicationStatus>(this, PublicationStatus.DRAFT, code);
         if ("active".equals(codeString))
-          return new Enumeration<PublicationStatus>(this, PublicationStatus.ACTIVE);
+          return new Enumeration<PublicationStatus>(this, PublicationStatus.ACTIVE, code);
         if ("retired".equals(codeString))
-          return new Enumeration<PublicationStatus>(this, PublicationStatus.RETIRED);
+          return new Enumeration<PublicationStatus>(this, PublicationStatus.RETIRED, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<PublicationStatus>(this, PublicationStatus.UNKNOWN);
+          return new Enumeration<PublicationStatus>(this, PublicationStatus.UNKNOWN, code);
         throw new FHIRException("Unknown PublicationStatus code '"+codeString+"'");
         }
     public String toCode(PublicationStatus code) {
@@ -8696,22 +8696,22 @@ The primary difference between a medication statement and a medication administr
           return QuantityComparator.GREATER_THAN;
         throw new IllegalArgumentException("Unknown QuantityComparator code '"+codeString+"'");
         }
-        public Enumeration<QuantityComparator> fromType(Base code) throws FHIRException {
+        public Enumeration<QuantityComparator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<QuantityComparator>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<QuantityComparator>(this, QuantityComparator.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<QuantityComparator>(this, QuantityComparator.NULL, code);
         if ("<".equals(codeString))
-          return new Enumeration<QuantityComparator>(this, QuantityComparator.LESS_THAN);
+          return new Enumeration<QuantityComparator>(this, QuantityComparator.LESS_THAN, code);
         if ("<=".equals(codeString))
-          return new Enumeration<QuantityComparator>(this, QuantityComparator.LESS_OR_EQUAL);
+          return new Enumeration<QuantityComparator>(this, QuantityComparator.LESS_OR_EQUAL, code);
         if (">=".equals(codeString))
-          return new Enumeration<QuantityComparator>(this, QuantityComparator.GREATER_OR_EQUAL);
+          return new Enumeration<QuantityComparator>(this, QuantityComparator.GREATER_OR_EQUAL, code);
         if (">".equals(codeString))
-          return new Enumeration<QuantityComparator>(this, QuantityComparator.GREATER_THAN);
+          return new Enumeration<QuantityComparator>(this, QuantityComparator.GREATER_THAN, code);
         throw new FHIRException("Unknown QuantityComparator code '"+codeString+"'");
         }
     public String toCode(QuantityComparator code) {
@@ -8821,22 +8821,22 @@ The primary difference between a medication statement and a medication administr
           return RemittanceOutcome.PARTIAL;
         throw new IllegalArgumentException("Unknown RemittanceOutcome code '"+codeString+"'");
         }
-        public Enumeration<RemittanceOutcome> fromType(Base code) throws FHIRException {
+        public Enumeration<RemittanceOutcome> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RemittanceOutcome>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.NULL, code);
         if ("queued".equals(codeString))
-          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.QUEUED);
+          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.QUEUED, code);
         if ("complete".equals(codeString))
-          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.COMPLETE);
+          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.COMPLETE, code);
         if ("error".equals(codeString))
-          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.ERROR);
+          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.ERROR, code);
         if ("partial".equals(codeString))
-          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.PARTIAL);
+          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.PARTIAL, code);
         throw new FHIRException("Unknown RemittanceOutcome code '"+codeString+"'");
         }
     public String toCode(RemittanceOutcome code) {
@@ -9006,32 +9006,32 @@ The primary difference between a medication statement and a medication administr
           return RequestIntent.OPTION;
         throw new IllegalArgumentException("Unknown RequestIntent code '"+codeString+"'");
         }
-        public Enumeration<RequestIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RequestIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RequestIntent>(this, RequestIntent.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RequestIntent>(this, RequestIntent.NULL, code);
         if ("proposal".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PROPOSAL);
+          return new Enumeration<RequestIntent>(this, RequestIntent.PROPOSAL, code);
         if ("plan".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PLAN);
+          return new Enumeration<RequestIntent>(this, RequestIntent.PLAN, code);
         if ("directive".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.DIRECTIVE);
+          return new Enumeration<RequestIntent>(this, RequestIntent.DIRECTIVE, code);
         if ("order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.ORDER, code);
         if ("original-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORIGINALORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.ORIGINALORDER, code);
         if ("reflex-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.REFLEXORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.REFLEXORDER, code);
         if ("filler-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.FILLERORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.FILLERORDER, code);
         if ("instance-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.INSTANCEORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.INSTANCEORDER, code);
         if ("option".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.OPTION);
+          return new Enumeration<RequestIntent>(this, RequestIntent.OPTION, code);
         throw new FHIRException("Unknown RequestIntent code '"+codeString+"'");
         }
     public String toCode(RequestIntent code) {
@@ -9151,22 +9151,22 @@ The primary difference between a medication statement and a medication administr
           return RequestPriority.STAT;
         throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
         }
-        public Enumeration<RequestPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RequestPriority>(this, RequestPriority.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RequestPriority>(this, RequestPriority.NULL, code);
         if ("routine".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE);
+          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE, code);
         if ("urgent".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT);
+          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT, code);
         if ("asap".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP);
+          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP, code);
         if ("stat".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.STAT);
+          return new Enumeration<RequestPriority>(this, RequestPriority.STAT, code);
         throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
         }
     public String toCode(RequestPriority code) {
@@ -9312,28 +9312,28 @@ The primary difference between a medication statement and a medication administr
           return RequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown RequestStatus code '"+codeString+"'");
         }
-        public Enumeration<RequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RequestStatus>(this, RequestStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RequestStatus>(this, RequestStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.DRAFT);
+          return new Enumeration<RequestStatus>(this, RequestStatus.DRAFT, code);
         if ("active".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.ACTIVE);
+          return new Enumeration<RequestStatus>(this, RequestStatus.ACTIVE, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.ONHOLD);
+          return new Enumeration<RequestStatus>(this, RequestStatus.ONHOLD, code);
         if ("revoked".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.REVOKED);
+          return new Enumeration<RequestStatus>(this, RequestStatus.REVOKED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.COMPLETED);
+          return new Enumeration<RequestStatus>(this, RequestStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.ENTEREDINERROR);
+          return new Enumeration<RequestStatus>(this, RequestStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<RequestStatus>(this, RequestStatus.UNKNOWN);
+          return new Enumeration<RequestStatus>(this, RequestStatus.UNKNOWN, code);
         throw new FHIRException("Unknown RequestStatus code '"+codeString+"'");
         }
     public String toCode(RequestStatus code) {
@@ -11120,300 +11120,300 @@ The primary difference between a medication statement and a medication administr
           return ResourceTypeEnum.PARAMETERS;
         throw new IllegalArgumentException("Unknown ResourceTypeEnum code '"+codeString+"'");
         }
-        public Enumeration<ResourceTypeEnum> fromType(Base code) throws FHIRException {
+        public Enumeration<ResourceTypeEnum> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ResourceTypeEnum>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NULL, code);
         if ("Resource".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESOURCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESOURCE, code);
         if ("Binary".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BINARY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BINARY, code);
         if ("Bundle".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BUNDLE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BUNDLE, code);
         if ("DomainResource".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DOMAINRESOURCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DOMAINRESOURCE, code);
         if ("Account".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ACCOUNT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ACCOUNT, code);
         if ("ActivityDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ACTIVITYDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ACTIVITYDEFINITION, code);
         if ("AdministrableProductDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ADMINISTRABLEPRODUCTDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ADMINISTRABLEPRODUCTDEFINITION, code);
         if ("AdverseEvent".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ADVERSEEVENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ADVERSEEVENT, code);
         if ("AllergyIntolerance".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ALLERGYINTOLERANCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ALLERGYINTOLERANCE, code);
         if ("Appointment".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.APPOINTMENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.APPOINTMENT, code);
         if ("AppointmentResponse".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.APPOINTMENTRESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.APPOINTMENTRESPONSE, code);
         if ("AuditEvent".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.AUDITEVENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.AUDITEVENT, code);
         if ("Basic".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BASIC);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BASIC, code);
         if ("BiologicallyDerivedProduct".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BIOLOGICALLYDERIVEDPRODUCT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BIOLOGICALLYDERIVEDPRODUCT, code);
         if ("BodyStructure".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BODYSTRUCTURE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BODYSTRUCTURE, code);
         if ("CapabilityStatement".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CAPABILITYSTATEMENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CAPABILITYSTATEMENT, code);
         if ("CarePlan".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CAREPLAN);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CAREPLAN, code);
         if ("CareTeam".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CARETEAM);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CARETEAM, code);
         if ("CatalogEntry".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CATALOGENTRY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CATALOGENTRY, code);
         if ("ChargeItem".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CHARGEITEM);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CHARGEITEM, code);
         if ("ChargeItemDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CHARGEITEMDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CHARGEITEMDEFINITION, code);
         if ("Citation".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CITATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CITATION, code);
         if ("Claim".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLAIM);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLAIM, code);
         if ("ClaimResponse".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLAIMRESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLAIMRESPONSE, code);
         if ("ClinicalImpression".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLINICALIMPRESSION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLINICALIMPRESSION, code);
         if ("ClinicalUseDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLINICALUSEDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLINICALUSEDEFINITION, code);
         if ("CodeSystem".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CODESYSTEM);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CODESYSTEM, code);
         if ("Communication".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMMUNICATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMMUNICATION, code);
         if ("CommunicationRequest".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMMUNICATIONREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMMUNICATIONREQUEST, code);
         if ("CompartmentDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMPARTMENTDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMPARTMENTDEFINITION, code);
         if ("Composition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMPOSITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMPOSITION, code);
         if ("ConceptMap".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONCEPTMAP);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONCEPTMAP, code);
         if ("Condition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONDITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONDITION, code);
         if ("Consent".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONSENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONSENT, code);
         if ("Contract".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONTRACT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONTRACT, code);
         if ("Coverage".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COVERAGE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COVERAGE, code);
         if ("CoverageEligibilityRequest".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COVERAGEELIGIBILITYREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COVERAGEELIGIBILITYREQUEST, code);
         if ("CoverageEligibilityResponse".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COVERAGEELIGIBILITYRESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COVERAGEELIGIBILITYRESPONSE, code);
         if ("DetectedIssue".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DETECTEDISSUE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DETECTEDISSUE, code);
         if ("Device".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICE, code);
         if ("DeviceDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEDEFINITION, code);
         if ("DeviceMetric".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEMETRIC);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEMETRIC, code);
         if ("DeviceRequest".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEREQUEST, code);
         if ("DeviceUseStatement".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEUSESTATEMENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEUSESTATEMENT, code);
         if ("DiagnosticReport".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DIAGNOSTICREPORT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DIAGNOSTICREPORT, code);
         if ("DocumentManifest".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DOCUMENTMANIFEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DOCUMENTMANIFEST, code);
         if ("DocumentReference".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DOCUMENTREFERENCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DOCUMENTREFERENCE, code);
         if ("Encounter".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENCOUNTER);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENCOUNTER, code);
         if ("Endpoint".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENDPOINT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENDPOINT, code);
         if ("EnrollmentRequest".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENROLLMENTREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENROLLMENTREQUEST, code);
         if ("EnrollmentResponse".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENROLLMENTRESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENROLLMENTRESPONSE, code);
         if ("EpisodeOfCare".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EPISODEOFCARE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EPISODEOFCARE, code);
         if ("EventDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVENTDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVENTDEFINITION, code);
         if ("Evidence".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCE, code);
         if ("EvidenceReport".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCEREPORT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCEREPORT, code);
         if ("EvidenceVariable".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCEVARIABLE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCEVARIABLE, code);
         if ("ExampleScenario".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EXAMPLESCENARIO);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EXAMPLESCENARIO, code);
         if ("ExplanationOfBenefit".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EXPLANATIONOFBENEFIT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EXPLANATIONOFBENEFIT, code);
         if ("FamilyMemberHistory".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.FAMILYMEMBERHISTORY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.FAMILYMEMBERHISTORY, code);
         if ("Flag".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.FLAG);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.FLAG, code);
         if ("Goal".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GOAL);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GOAL, code);
         if ("GraphDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GRAPHDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GRAPHDEFINITION, code);
         if ("Group".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GROUP);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GROUP, code);
         if ("GuidanceResponse".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GUIDANCERESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GUIDANCERESPONSE, code);
         if ("HealthcareService".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.HEALTHCARESERVICE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.HEALTHCARESERVICE, code);
         if ("ImagingStudy".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMAGINGSTUDY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMAGINGSTUDY, code);
         if ("Immunization".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMMUNIZATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMMUNIZATION, code);
         if ("ImmunizationEvaluation".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMMUNIZATIONEVALUATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMMUNIZATIONEVALUATION, code);
         if ("ImmunizationRecommendation".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMMUNIZATIONRECOMMENDATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMMUNIZATIONRECOMMENDATION, code);
         if ("ImplementationGuide".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMPLEMENTATIONGUIDE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMPLEMENTATIONGUIDE, code);
         if ("Ingredient".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.INGREDIENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.INGREDIENT, code);
         if ("InsurancePlan".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.INSURANCEPLAN);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.INSURANCEPLAN, code);
         if ("Invoice".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.INVOICE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.INVOICE, code);
         if ("Library".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LIBRARY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LIBRARY, code);
         if ("Linkage".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LINKAGE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LINKAGE, code);
         if ("List".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LIST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LIST, code);
         if ("Location".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LOCATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LOCATION, code);
         if ("ManufacturedItemDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MANUFACTUREDITEMDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MANUFACTUREDITEMDEFINITION, code);
         if ("Measure".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEASURE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEASURE, code);
         if ("MeasureReport".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEASUREREPORT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEASUREREPORT, code);
         if ("Media".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDIA);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDIA, code);
         if ("Medication".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATION, code);
         if ("MedicationAdministration".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONADMINISTRATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONADMINISTRATION, code);
         if ("MedicationDispense".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONDISPENSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONDISPENSE, code);
         if ("MedicationKnowledge".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONKNOWLEDGE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONKNOWLEDGE, code);
         if ("MedicationRequest".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONREQUEST, code);
         if ("MedicationStatement".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONSTATEMENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONSTATEMENT, code);
         if ("MedicinalProductDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICINALPRODUCTDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICINALPRODUCTDEFINITION, code);
         if ("MessageDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MESSAGEDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MESSAGEDEFINITION, code);
         if ("MessageHeader".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MESSAGEHEADER);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MESSAGEHEADER, code);
         if ("MolecularSequence".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MOLECULARSEQUENCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MOLECULARSEQUENCE, code);
         if ("NamingSystem".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NAMINGSYSTEM);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NAMINGSYSTEM, code);
         if ("NutritionOrder".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NUTRITIONORDER);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NUTRITIONORDER, code);
         if ("NutritionProduct".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NUTRITIONPRODUCT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NUTRITIONPRODUCT, code);
         if ("Observation".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OBSERVATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OBSERVATION, code);
         if ("ObservationDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OBSERVATIONDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OBSERVATIONDEFINITION, code);
         if ("OperationDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OPERATIONDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OPERATIONDEFINITION, code);
         if ("OperationOutcome".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OPERATIONOUTCOME);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OPERATIONOUTCOME, code);
         if ("Organization".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ORGANIZATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ORGANIZATION, code);
         if ("OrganizationAffiliation".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ORGANIZATIONAFFILIATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ORGANIZATIONAFFILIATION, code);
         if ("PackagedProductDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PACKAGEDPRODUCTDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PACKAGEDPRODUCTDEFINITION, code);
         if ("Patient".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PATIENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PATIENT, code);
         if ("PaymentNotice".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PAYMENTNOTICE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PAYMENTNOTICE, code);
         if ("PaymentReconciliation".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PAYMENTRECONCILIATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PAYMENTRECONCILIATION, code);
         if ("Person".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PERSON);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PERSON, code);
         if ("PlanDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PLANDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PLANDEFINITION, code);
         if ("Practitioner".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PRACTITIONER);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PRACTITIONER, code);
         if ("PractitionerRole".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PRACTITIONERROLE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PRACTITIONERROLE, code);
         if ("Procedure".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PROCEDURE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PROCEDURE, code);
         if ("Provenance".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PROVENANCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PROVENANCE, code);
         if ("Questionnaire".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.QUESTIONNAIRE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.QUESTIONNAIRE, code);
         if ("QuestionnaireResponse".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.QUESTIONNAIRERESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.QUESTIONNAIRERESPONSE, code);
         if ("RegulatedAuthorization".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.REGULATEDAUTHORIZATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.REGULATEDAUTHORIZATION, code);
         if ("RelatedPerson".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RELATEDPERSON);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RELATEDPERSON, code);
         if ("RequestGroup".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.REQUESTGROUP);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.REQUESTGROUP, code);
         if ("ResearchDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESEARCHDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESEARCHDEFINITION, code);
         if ("ResearchElementDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESEARCHELEMENTDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESEARCHELEMENTDEFINITION, code);
         if ("ResearchStudy".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESEARCHSTUDY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESEARCHSTUDY, code);
         if ("ResearchSubject".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESEARCHSUBJECT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESEARCHSUBJECT, code);
         if ("RiskAssessment".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RISKASSESSMENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RISKASSESSMENT, code);
         if ("Schedule".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SCHEDULE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SCHEDULE, code);
         if ("SearchParameter".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SEARCHPARAMETER);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SEARCHPARAMETER, code);
         if ("ServiceRequest".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SERVICEREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SERVICEREQUEST, code);
         if ("Slot".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SLOT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SLOT, code);
         if ("Specimen".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SPECIMEN);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SPECIMEN, code);
         if ("SpecimenDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SPECIMENDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SPECIMENDEFINITION, code);
         if ("StructureDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.STRUCTUREDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.STRUCTUREDEFINITION, code);
         if ("StructureMap".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.STRUCTUREMAP);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.STRUCTUREMAP, code);
         if ("Subscription".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTION, code);
         if ("SubscriptionStatus".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTIONSTATUS);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTIONSTATUS, code);
         if ("SubscriptionTopic".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTIONTOPIC);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTIONTOPIC, code);
         if ("Substance".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCE, code);
         if ("SubstanceDefinition".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCEDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCEDEFINITION, code);
         if ("SupplyDelivery".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUPPLYDELIVERY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUPPLYDELIVERY, code);
         if ("SupplyRequest".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUPPLYREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUPPLYREQUEST, code);
         if ("Task".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TASK);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TASK, code);
         if ("TerminologyCapabilities".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TERMINOLOGYCAPABILITIES);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TERMINOLOGYCAPABILITIES, code);
         if ("TestReport".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TESTREPORT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TESTREPORT, code);
         if ("TestScript".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TESTSCRIPT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TESTSCRIPT, code);
         if ("ValueSet".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.VALUESET);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.VALUESET, code);
         if ("VerificationResult".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.VERIFICATIONRESULT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.VERIFICATIONRESULT, code);
         if ("VisionPrescription".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.VISIONPRESCRIPTION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.VISIONPRESCRIPTION, code);
         if ("Parameters".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PARAMETERS);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PARAMETERS, code);
         throw new FHIRException("Unknown ResourceTypeEnum code '"+codeString+"'");
         }
     public String toCode(ResourceTypeEnum code) {
@@ -11861,32 +11861,32 @@ The primary difference between a medication statement and a medication administr
           return SearchParamType.SPECIAL;
         throw new IllegalArgumentException("Unknown SearchParamType code '"+codeString+"'");
         }
-        public Enumeration<SearchParamType> fromType(Base code) throws FHIRException {
+        public Enumeration<SearchParamType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SearchParamType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SearchParamType>(this, SearchParamType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SearchParamType>(this, SearchParamType.NULL, code);
         if ("number".equals(codeString))
-          return new Enumeration<SearchParamType>(this, SearchParamType.NUMBER);
+          return new Enumeration<SearchParamType>(this, SearchParamType.NUMBER, code);
         if ("date".equals(codeString))
-          return new Enumeration<SearchParamType>(this, SearchParamType.DATE);
+          return new Enumeration<SearchParamType>(this, SearchParamType.DATE, code);
         if ("string".equals(codeString))
-          return new Enumeration<SearchParamType>(this, SearchParamType.STRING);
+          return new Enumeration<SearchParamType>(this, SearchParamType.STRING, code);
         if ("token".equals(codeString))
-          return new Enumeration<SearchParamType>(this, SearchParamType.TOKEN);
+          return new Enumeration<SearchParamType>(this, SearchParamType.TOKEN, code);
         if ("reference".equals(codeString))
-          return new Enumeration<SearchParamType>(this, SearchParamType.REFERENCE);
+          return new Enumeration<SearchParamType>(this, SearchParamType.REFERENCE, code);
         if ("composite".equals(codeString))
-          return new Enumeration<SearchParamType>(this, SearchParamType.COMPOSITE);
+          return new Enumeration<SearchParamType>(this, SearchParamType.COMPOSITE, code);
         if ("quantity".equals(codeString))
-          return new Enumeration<SearchParamType>(this, SearchParamType.QUANTITY);
+          return new Enumeration<SearchParamType>(this, SearchParamType.QUANTITY, code);
         if ("uri".equals(codeString))
-          return new Enumeration<SearchParamType>(this, SearchParamType.URI);
+          return new Enumeration<SearchParamType>(this, SearchParamType.URI, code);
         if ("special".equals(codeString))
-          return new Enumeration<SearchParamType>(this, SearchParamType.SPECIAL);
+          return new Enumeration<SearchParamType>(this, SearchParamType.SPECIAL, code);
         throw new FHIRException("Unknown SearchParamType code '"+codeString+"'");
         }
     public String toCode(SearchParamType code) {
@@ -12006,22 +12006,22 @@ The primary difference between a medication statement and a medication administr
           return SubscriptionStatus.OFF;
         throw new IllegalArgumentException("Unknown SubscriptionStatus code '"+codeString+"'");
         }
-        public Enumeration<SubscriptionStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<SubscriptionStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SubscriptionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.NULL, code);
         if ("requested".equals(codeString))
-          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.REQUESTED);
+          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.REQUESTED, code);
         if ("active".equals(codeString))
-          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.ACTIVE);
+          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.ACTIVE, code);
         if ("error".equals(codeString))
-          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.ERROR);
+          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.ERROR, code);
         if ("off".equals(codeString))
-          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.OFF);
+          return new Enumeration<SubscriptionStatus>(this, SubscriptionStatus.OFF, code);
         throw new FHIRException("Unknown SubscriptionStatus code '"+codeString+"'");
         }
     public String toCode(SubscriptionStatus code) {
@@ -12119,20 +12119,20 @@ The primary difference between a medication statement and a medication administr
           return Use.PREDETERMINATION;
         throw new IllegalArgumentException("Unknown Use code '"+codeString+"'");
         }
-        public Enumeration<Use> fromType(Base code) throws FHIRException {
+        public Enumeration<Use> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<Use>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<Use>(this, Use.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<Use>(this, Use.NULL, code);
         if ("claim".equals(codeString))
-          return new Enumeration<Use>(this, Use.CLAIM);
+          return new Enumeration<Use>(this, Use.CLAIM, code);
         if ("preauthorization".equals(codeString))
-          return new Enumeration<Use>(this, Use.PREAUTHORIZATION);
+          return new Enumeration<Use>(this, Use.PREAUTHORIZATION, code);
         if ("predetermination".equals(codeString))
-          return new Enumeration<Use>(this, Use.PREDETERMINATION);
+          return new Enumeration<Use>(this, Use.PREDETERMINATION, code);
         throw new FHIRException("Unknown Use code '"+codeString+"'");
         }
     public String toCode(Use code) {
@@ -12151,4 +12151,3 @@ The primary difference between a medication statement and a medication administr
 
 
 }
-

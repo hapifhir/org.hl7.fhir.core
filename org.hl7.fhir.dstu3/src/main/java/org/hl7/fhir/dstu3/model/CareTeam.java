@@ -156,12 +156,12 @@ public class CareTeam extends DomainResource {
           return CareTeamStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown CareTeamStatus code '"+codeString+"'");
         }
-        public Enumeration<CareTeamStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CareTeamStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CareTeamStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("proposed".equals(codeString))

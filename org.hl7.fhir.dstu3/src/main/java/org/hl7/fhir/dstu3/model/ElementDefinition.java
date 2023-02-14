@@ -160,12 +160,12 @@ public class ElementDefinition extends Type implements ICompositeType {
           return PropertyRepresentation.XHTML;
         throw new IllegalArgumentException("Unknown PropertyRepresentation code '"+codeString+"'");
         }
-        public Enumeration<PropertyRepresentation> fromType(Base code) throws FHIRException {
+        public Enumeration<PropertyRepresentation> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<PropertyRepresentation>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("xmlAttr".equals(codeString))
@@ -304,12 +304,12 @@ public class ElementDefinition extends Type implements ICompositeType {
           return DiscriminatorType.PROFILE;
         throw new IllegalArgumentException("Unknown DiscriminatorType code '"+codeString+"'");
         }
-        public Enumeration<DiscriminatorType> fromType(Base code) throws FHIRException {
+        public Enumeration<DiscriminatorType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DiscriminatorType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("value".equals(codeString))
@@ -424,12 +424,12 @@ public class ElementDefinition extends Type implements ICompositeType {
           return SlicingRules.OPENATEND;
         throw new IllegalArgumentException("Unknown SlicingRules code '"+codeString+"'");
         }
-        public Enumeration<SlicingRules> fromType(Base code) throws FHIRException {
+        public Enumeration<SlicingRules> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SlicingRules>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("closed".equals(codeString))
@@ -536,12 +536,12 @@ public class ElementDefinition extends Type implements ICompositeType {
           return AggregationMode.BUNDLED;
         throw new IllegalArgumentException("Unknown AggregationMode code '"+codeString+"'");
         }
-        public Enumeration<AggregationMode> fromType(Base code) throws FHIRException {
+        public Enumeration<AggregationMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AggregationMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("contained".equals(codeString))
@@ -648,12 +648,12 @@ public class ElementDefinition extends Type implements ICompositeType {
           return ReferenceVersionRules.SPECIFIC;
         throw new IllegalArgumentException("Unknown ReferenceVersionRules code '"+codeString+"'");
         }
-        public Enumeration<ReferenceVersionRules> fromType(Base code) throws FHIRException {
+        public Enumeration<ReferenceVersionRules> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ReferenceVersionRules>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("either".equals(codeString))
@@ -748,12 +748,12 @@ public class ElementDefinition extends Type implements ICompositeType {
           return ConstraintSeverity.WARNING;
         throw new IllegalArgumentException("Unknown ConstraintSeverity code '"+codeString+"'");
         }
-        public Enumeration<ConstraintSeverity> fromType(Base code) throws FHIRException {
+        public Enumeration<ConstraintSeverity> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ConstraintSeverity>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("error".equals(codeString))

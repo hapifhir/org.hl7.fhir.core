@@ -1533,12 +1533,12 @@ The primary difference between a medication statement and a medication administr
           return ActivityDefinitionKind.VISIONPRESCRIPTION;
         throw new IllegalArgumentException("Unknown ActivityDefinitionKind code '"+codeString+"'");
         }
-        public Enumeration<ActivityDefinitionKind> fromType(Base code) throws FHIRException {
+        public Enumeration<ActivityDefinitionKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActivityDefinitionKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("Account".equals(codeString))
@@ -2109,12 +2109,12 @@ The primary difference between a medication statement and a medication administr
           return ActivityParticipantType.RELATEDPERSON;
         throw new IllegalArgumentException("Unknown ActivityParticipantType code '"+codeString+"'");
         }
-        public Enumeration<ActivityParticipantType> fromType(Base code) throws FHIRException {
+        public Enumeration<ActivityParticipantType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActivityParticipantType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("patient".equals(codeString))

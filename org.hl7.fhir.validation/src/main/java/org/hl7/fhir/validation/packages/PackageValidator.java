@@ -11,6 +11,7 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageClient;
 import org.hl7.fhir.utilities.npm.PackageInfo;
+import org.hl7.fhir.utilities.npm.PackageServer;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 public class PackageValidator {
@@ -22,7 +23,7 @@ public class PackageValidator {
   private void execute() throws IOException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     
-    PackageClient pc = new PackageClient(PackageClient.PRIMARY_SERVER);
+    PackageClient pc = new PackageClient(PackageServer.primaryServer());
     for (PackageInfo t : pc.search(null, null, null, false)) {
       System.out.println("Check Package "+t.getId());
       List<PackageInfo> vl = pc.getVersions(t.getId());

@@ -179,12 +179,12 @@ public class EpisodeOfCare extends DomainResource {
           return EpisodeOfCareStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown EpisodeOfCareStatus code '"+codeString+"'");
         }
-        public Enumeration<EpisodeOfCareStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EpisodeOfCareStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<EpisodeOfCareStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("planned".equals(codeString))

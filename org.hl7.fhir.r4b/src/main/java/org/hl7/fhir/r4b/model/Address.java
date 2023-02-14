@@ -133,20 +133,20 @@ public class Address extends DataType implements ICompositeType {
           return AddressType.BOTH;
         throw new IllegalArgumentException("Unknown AddressType code '"+codeString+"'");
         }
-        public Enumeration<AddressType> fromType(Base code) throws FHIRException {
+        public Enumeration<AddressType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AddressType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<AddressType>(this, AddressType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AddressType>(this, AddressType.NULL, code);
         if ("postal".equals(codeString))
-          return new Enumeration<AddressType>(this, AddressType.POSTAL);
+          return new Enumeration<AddressType>(this, AddressType.POSTAL, code);
         if ("physical".equals(codeString))
-          return new Enumeration<AddressType>(this, AddressType.PHYSICAL);
+          return new Enumeration<AddressType>(this, AddressType.PHYSICAL, code);
         if ("both".equals(codeString))
-          return new Enumeration<AddressType>(this, AddressType.BOTH);
+          return new Enumeration<AddressType>(this, AddressType.BOTH, code);
         throw new FHIRException("Unknown AddressType code '"+codeString+"'");
         }
     public String toCode(AddressType code) {
@@ -269,24 +269,24 @@ public class Address extends DataType implements ICompositeType {
           return AddressUse.BILLING;
         throw new IllegalArgumentException("Unknown AddressUse code '"+codeString+"'");
         }
-        public Enumeration<AddressUse> fromType(Base code) throws FHIRException {
+        public Enumeration<AddressUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AddressUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<AddressUse>(this, AddressUse.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AddressUse>(this, AddressUse.NULL, code);
         if ("home".equals(codeString))
-          return new Enumeration<AddressUse>(this, AddressUse.HOME);
+          return new Enumeration<AddressUse>(this, AddressUse.HOME, code);
         if ("work".equals(codeString))
-          return new Enumeration<AddressUse>(this, AddressUse.WORK);
+          return new Enumeration<AddressUse>(this, AddressUse.WORK, code);
         if ("temp".equals(codeString))
-          return new Enumeration<AddressUse>(this, AddressUse.TEMP);
+          return new Enumeration<AddressUse>(this, AddressUse.TEMP, code);
         if ("old".equals(codeString))
-          return new Enumeration<AddressUse>(this, AddressUse.OLD);
+          return new Enumeration<AddressUse>(this, AddressUse.OLD, code);
         if ("billing".equals(codeString))
-          return new Enumeration<AddressUse>(this, AddressUse.BILLING);
+          return new Enumeration<AddressUse>(this, AddressUse.BILLING, code);
         throw new FHIRException("Unknown AddressUse code '"+codeString+"'");
         }
     public String toCode(AddressUse code) {
@@ -1123,4 +1123,3 @@ public class Address extends DataType implements ICompositeType {
 
 
 }
-

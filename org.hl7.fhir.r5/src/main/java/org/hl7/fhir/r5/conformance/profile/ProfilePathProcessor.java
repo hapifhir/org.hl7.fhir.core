@@ -164,6 +164,7 @@ public class ProfilePathProcessor {
       debugProcessPathsIteration(cursors, currentBasePath);
       List<ElementDefinition> diffMatches = profileUtilities.getDiffMatches(getDifferential(), currentBasePath, cursors.diffCursor, getDiffLimit(), getProfileName()); // get a list of matching elements in scope
 
+      
       // in the simple case, source is not sliced.
       if (!currentBase.hasSlicing() || currentBasePath.equals(getSlicing().getPath()))
       {
@@ -268,8 +269,10 @@ public class ProfilePathProcessor {
         outcome.setSlicing(profileUtilities.makeExtensionSlicing());
       else
         outcome.setSlicing(diffMatches.get(0).getSlicing().copy());
-      if (!outcome.getPath().startsWith(cursors.resultPathBase))
-        throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH));
+      if (cursors.resultPathBase != null) {
+        if (!outcome.getPath().startsWith(cursors.resultPathBase))
+          throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH));
+      }
       getResult().getElement().add(outcome);
       slicerElement = outcome;
 
@@ -277,12 +280,16 @@ public class ProfilePathProcessor {
       if (!diffMatches.get(0).hasSliceName()) {
         profileUtilities.updateFromDefinition(outcome, diffMatches.get(0), getProfileName(), isTrimDifferential(), getUrl(),getSourceStructureDefinition(), getDerived());
         profileUtilities.removeStatusExtensions(outcome);
-        if (!outcome.hasContentReference() && !outcome.hasType()) {
+        if (!outcome.hasContentReference() && !outcome.hasType() && outcome.getPath().contains(".")) {
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.NOT_DONE_YET));
         }
         if (profileUtilities.hasInnerDiffMatches(getDifferential(), currentBasePath, cursors.diffCursor, getDiffLimit(), cursors.base.getElement(), false)) {
           if (baseHasChildren(cursors.base, currentBase)) { // not a new type here
-            throw new Error("This situation is not yet handled (constrain slicing to 1..1 and fix base slice for inline structure - please report issue to grahame@fhir.org along with a test case that reproduces this error (@ " + currentBasePath + " | " + currentBase.getPath() + ")");
+            if (cursors.diffCursor == 0) {
+              throw new DefinitionException("Error: The profile has slicing at the root, which is illegal"); 
+            } else {
+              throw new Error("This situation is not yet handled (constrain slicing to 1..1 and fix base slice for inline structure - please report issue to grahame@fhir.org along with a test case that reproduces this error (@ " + currentBasePath + " | " + currentBase.getPath() + ")");
+            }
           } else {
             StructureDefinition dt = profileUtilities.getTypeForElement(getDifferential(), cursors.diffCursor, getProfileName(), diffMatches, outcome, getWebUrl(), getDerived());
             cursors.contextName = dt.getUrl();

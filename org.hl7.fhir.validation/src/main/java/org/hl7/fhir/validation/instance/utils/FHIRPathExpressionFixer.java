@@ -47,9 +47,9 @@ public class FHIRPathExpressionFixer {
     if (expr.equals("url.matches('([^|#])*')")) {
       return ("$this.matches('([^|#])*')");
     }
-    
-    
-    
+    if (expr.equals("((kind in 'resource' | 'complex-type') and (specialization = 'derivation')) implies differential.element.where((min != 0 and min != 1) or (max != '1' and max != '*')).empty()")) {
+      return "((kind in 'resource' | 'complex-type') and (derivation = 'specialization')) implies differential.element.where((min.exists() and min != 0 and min != 1) or (max.exists() and max != '1' and max != '*')).empty()";
+    }  
     
     // clarification in FHIRPath spec
     if ("eld-19".equals(key)) {

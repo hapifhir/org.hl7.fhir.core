@@ -293,7 +293,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
 
       ref = context.fixReference(ref);
       XhtmlNode a = li.ah(ref == null ? "?ngen-11?" : ref.replace("\\", "/"));
-      a.addText(value);
+      a.addText(vs.present());
     } else {
       CodeSystem cs = getContext().getWorker().fetchCodeSystem(value);
       if (cs != null) {

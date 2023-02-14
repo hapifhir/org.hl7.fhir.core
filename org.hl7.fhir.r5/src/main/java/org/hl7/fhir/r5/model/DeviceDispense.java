@@ -207,32 +207,32 @@ public class DeviceDispense extends DomainResource {
           return DeviceDispenseStatusCodes.UNKNOWN;
         throw new IllegalArgumentException("Unknown DeviceDispenseStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<DeviceDispenseStatusCodes> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceDispenseStatusCodes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DeviceDispenseStatusCodes>(this);
+            return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.NULL, code);
         if ("preparation".equals(codeString))
-          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.PREPARATION);
+          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.PREPARATION, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.INPROGRESS);
+          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.INPROGRESS, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.CANCELLED);
+          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.CANCELLED, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.ONHOLD);
+          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.ONHOLD, code);
         if ("completed".equals(codeString))
-          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.COMPLETED);
+          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.ENTEREDINERROR);
+          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.ENTEREDINERROR, code);
         if ("stopped".equals(codeString))
-          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.STOPPED);
+          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.STOPPED, code);
         if ("declined".equals(codeString))
-          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.DECLINED);
+          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.DECLINED, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.UNKNOWN);
+          return new Enumeration<DeviceDispenseStatusCodes>(this, DeviceDispenseStatusCodes.UNKNOWN, code);
         throw new FHIRException("Unknown DeviceDispenseStatusCodes code '"+codeString+"'");
         }
     public String toCode(DeviceDispenseStatusCodes code) {
@@ -1925,4 +1925,3 @@ public class DeviceDispense extends DomainResource {
 
 
 }
-

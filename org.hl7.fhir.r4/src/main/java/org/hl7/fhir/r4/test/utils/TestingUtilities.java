@@ -46,17 +46,20 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.ToolGlobalSettings;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
+import org.hl7.fhir.utilities.tests.TestConfig;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -476,6 +479,38 @@ public class TestingUtilities {
     ResourceLoaderTests.copyResourceToFile(TestingUtilities.class, newFilePath, resourcePath);
   }
 
+  public static String loadTestResource(String... paths) throws IOException {
+    /**
+     * This 'if' condition checks to see if the fhir-test-cases project (https://github.com/FHIR/fhir-test-cases) is
+     * installed locally at the same directory level as the core library project is. If so, the test case data is read
+     * directly from that project, instead of the imported maven dependency jar. It is important, that if you want to
+     * test against the dependency imported from sonatype nexus, instead of your local copy, you need to either change
+     * the name of the project directory to something other than 'fhir-test-cases', or move it to another location, not
+     * at the same directory level as the core project.
+     */
 
+    String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
+    if (dir == null && ToolGlobalSettings.hasTestsPath()) {
+      dir = ToolGlobalSettings.getTestsPath();
+    }
+    if (dir != null && new CSFile(dir).exists()) {
+      String n = Utilities.path(dir, Utilities.path(paths));
+      // ok, we'll resolve this locally
+      return TextFile.fileToString(new CSFile(n));
+    } else {
+      // resolve from the package
+      String contents;
+      String classpath = ("/org/hl7/fhir/testcases/" + Utilities.pathURL(paths));
+      try (InputStream inputStream = BaseTestingUtilities.class.getResourceAsStream(classpath)) {
+        if (inputStream == null) {
+          throw new IOException("Can't find file on classpath: " + classpath);
+        }
+        contents = IOUtils.toString(inputStream, java.nio.charset.StandardCharsets.UTF_8);
+      }
+      return contents;
+    }
+  }
+
+  
 
 }

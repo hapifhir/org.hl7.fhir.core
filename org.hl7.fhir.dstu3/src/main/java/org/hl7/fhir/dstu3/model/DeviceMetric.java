@@ -144,12 +144,12 @@ public class DeviceMetric extends DomainResource {
           return DeviceMetricOperationalStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown DeviceMetricOperationalStatus code '"+codeString+"'");
         }
-        public Enumeration<DeviceMetricOperationalStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceMetricOperationalStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DeviceMetricOperationalStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("on".equals(codeString))
@@ -320,12 +320,12 @@ public class DeviceMetric extends DomainResource {
           return DeviceMetricColor.WHITE;
         throw new IllegalArgumentException("Unknown DeviceMetricColor code '"+codeString+"'");
         }
-        public Enumeration<DeviceMetricColor> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceMetricColor> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DeviceMetricColor>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("black".equals(codeString))
@@ -464,12 +464,12 @@ public class DeviceMetric extends DomainResource {
           return DeviceMetricCategory.UNSPECIFIED;
         throw new IllegalArgumentException("Unknown DeviceMetricCategory code '"+codeString+"'");
         }
-        public Enumeration<DeviceMetricCategory> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceMetricCategory> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DeviceMetricCategory>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("measurement".equals(codeString))
@@ -592,12 +592,12 @@ public class DeviceMetric extends DomainResource {
           return DeviceMetricCalibrationType.TWOPOINT;
         throw new IllegalArgumentException("Unknown DeviceMetricCalibrationType code '"+codeString+"'");
         }
-        public Enumeration<DeviceMetricCalibrationType> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceMetricCalibrationType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DeviceMetricCalibrationType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("unspecified".equals(codeString))
@@ -720,12 +720,12 @@ public class DeviceMetric extends DomainResource {
           return DeviceMetricCalibrationState.UNSPECIFIED;
         throw new IllegalArgumentException("Unknown DeviceMetricCalibrationState code '"+codeString+"'");
         }
-        public Enumeration<DeviceMetricCalibrationState> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceMetricCalibrationState> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DeviceMetricCalibrationState>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("not-calibrated".equals(codeString))

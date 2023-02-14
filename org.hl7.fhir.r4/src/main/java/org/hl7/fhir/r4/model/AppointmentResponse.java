@@ -145,22 +145,22 @@ public class AppointmentResponse extends DomainResource {
           return ParticipantStatus.NEEDSACTION;
         throw new IllegalArgumentException("Unknown ParticipantStatus code '"+codeString+"'");
         }
-        public Enumeration<ParticipantStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ParticipantStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ParticipantStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ParticipantStatus>(this, ParticipantStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ParticipantStatus>(this, ParticipantStatus.NULL, code);
         if ("accepted".equals(codeString))
-          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.ACCEPTED);
+          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.ACCEPTED, code);
         if ("declined".equals(codeString))
-          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.DECLINED);
+          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.DECLINED, code);
         if ("tentative".equals(codeString))
-          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.TENTATIVE);
+          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.TENTATIVE, code);
         if ("needs-action".equals(codeString))
-          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.NEEDSACTION);
+          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.NEEDSACTION, code);
         throw new FHIRException("Unknown ParticipantStatus code '"+codeString+"'");
         }
     public String toCode(ParticipantStatus code) {

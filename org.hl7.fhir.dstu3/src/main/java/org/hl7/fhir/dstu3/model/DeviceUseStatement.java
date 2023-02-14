@@ -167,12 +167,12 @@ public class DeviceUseStatement extends DomainResource {
           return DeviceUseStatementStatus.ONHOLD;
         throw new IllegalArgumentException("Unknown DeviceUseStatementStatus code '"+codeString+"'");
         }
-        public Enumeration<DeviceUseStatementStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceUseStatementStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DeviceUseStatementStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

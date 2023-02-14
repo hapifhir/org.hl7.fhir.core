@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://standardterms.edqm.eu",
+  "code" : "20049000",
+  "display" : "Nasal use"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Nasal use",
+  "code" : "20049000",
+  "system" : "http://standardterms.edqm.eu"
+}
+-------------------------------------------------------------------------------------

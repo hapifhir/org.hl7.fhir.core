@@ -159,24 +159,24 @@ public class CareTeam extends DomainResource {
           return CareTeamStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown CareTeamStatus code '"+codeString+"'");
         }
-        public Enumeration<CareTeamStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CareTeamStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CareTeamStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CareTeamStatus>(this, CareTeamStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CareTeamStatus>(this, CareTeamStatus.NULL, code);
         if ("proposed".equals(codeString))
-          return new Enumeration<CareTeamStatus>(this, CareTeamStatus.PROPOSED);
+          return new Enumeration<CareTeamStatus>(this, CareTeamStatus.PROPOSED, code);
         if ("active".equals(codeString))
-          return new Enumeration<CareTeamStatus>(this, CareTeamStatus.ACTIVE);
+          return new Enumeration<CareTeamStatus>(this, CareTeamStatus.ACTIVE, code);
         if ("suspended".equals(codeString))
-          return new Enumeration<CareTeamStatus>(this, CareTeamStatus.SUSPENDED);
+          return new Enumeration<CareTeamStatus>(this, CareTeamStatus.SUSPENDED, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<CareTeamStatus>(this, CareTeamStatus.INACTIVE);
+          return new Enumeration<CareTeamStatus>(this, CareTeamStatus.INACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<CareTeamStatus>(this, CareTeamStatus.ENTEREDINERROR);
+          return new Enumeration<CareTeamStatus>(this, CareTeamStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown CareTeamStatus code '"+codeString+"'");
         }
     public String toCode(CareTeamStatus code) {
@@ -1908,4 +1908,3 @@ public class CareTeam extends DomainResource {
 
 
 }
-

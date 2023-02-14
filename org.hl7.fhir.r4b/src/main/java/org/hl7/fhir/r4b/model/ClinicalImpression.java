@@ -135,20 +135,20 @@ public class ClinicalImpression extends DomainResource {
           return ClinicalImpressionStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ClinicalImpressionStatus code '"+codeString+"'");
         }
-        public Enumeration<ClinicalImpressionStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ClinicalImpressionStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ClinicalImpressionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.NULL, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.INPROGRESS);
+          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.INPROGRESS, code);
         if ("completed".equals(codeString))
-          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.COMPLETED);
+          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.ENTEREDINERROR);
+          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown ClinicalImpressionStatus code '"+codeString+"'");
         }
     public String toCode(ClinicalImpressionStatus code) {
@@ -2584,4 +2584,3 @@ public class ClinicalImpression extends DomainResource {
 
 
 }
-

@@ -117,12 +117,12 @@ public class ParameterDefinition extends Type implements ICompositeType {
           return ParameterUse.OUT;
         throw new IllegalArgumentException("Unknown ParameterUse code '"+codeString+"'");
         }
-        public Enumeration<ParameterUse> fromType(Base code) throws FHIRException {
+        public Enumeration<ParameterUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ParameterUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("in".equals(codeString))

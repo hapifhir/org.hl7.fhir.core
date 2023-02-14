@@ -157,24 +157,24 @@ public class Identifier extends Type implements ICompositeType {
           return IdentifierUse.OLD;
         throw new IllegalArgumentException("Unknown IdentifierUse code '"+codeString+"'");
         }
-        public Enumeration<IdentifierUse> fromType(Base code) throws FHIRException {
+        public Enumeration<IdentifierUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<IdentifierUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<IdentifierUse>(this, IdentifierUse.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<IdentifierUse>(this, IdentifierUse.NULL, code);
         if ("usual".equals(codeString))
-          return new Enumeration<IdentifierUse>(this, IdentifierUse.USUAL);
+          return new Enumeration<IdentifierUse>(this, IdentifierUse.USUAL, code);
         if ("official".equals(codeString))
-          return new Enumeration<IdentifierUse>(this, IdentifierUse.OFFICIAL);
+          return new Enumeration<IdentifierUse>(this, IdentifierUse.OFFICIAL, code);
         if ("temp".equals(codeString))
-          return new Enumeration<IdentifierUse>(this, IdentifierUse.TEMP);
+          return new Enumeration<IdentifierUse>(this, IdentifierUse.TEMP, code);
         if ("secondary".equals(codeString))
-          return new Enumeration<IdentifierUse>(this, IdentifierUse.SECONDARY);
+          return new Enumeration<IdentifierUse>(this, IdentifierUse.SECONDARY, code);
         if ("old".equals(codeString))
-          return new Enumeration<IdentifierUse>(this, IdentifierUse.OLD);
+          return new Enumeration<IdentifierUse>(this, IdentifierUse.OLD, code);
         throw new FHIRException("Unknown IdentifierUse code '"+codeString+"'");
         }
     public String toCode(IdentifierUse code) {

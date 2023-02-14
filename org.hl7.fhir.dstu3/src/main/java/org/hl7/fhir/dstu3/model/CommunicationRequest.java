@@ -181,12 +181,12 @@ public class CommunicationRequest extends DomainResource {
           return CommunicationRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown CommunicationRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<CommunicationRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CommunicationRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CommunicationRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("draft".equals(codeString))
@@ -321,12 +321,12 @@ public class CommunicationRequest extends DomainResource {
           return CommunicationPriority.STAT;
         throw new IllegalArgumentException("Unknown CommunicationPriority code '"+codeString+"'");
         }
-        public Enumeration<CommunicationPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<CommunicationPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CommunicationPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("routine".equals(codeString))

@@ -147,22 +147,22 @@ public class Claim extends DomainResource {
           return ClaimStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ClaimStatus code '"+codeString+"'");
         }
-        public Enumeration<ClaimStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ClaimStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ClaimStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ClaimStatus>(this, ClaimStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ClaimStatus>(this, ClaimStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<ClaimStatus>(this, ClaimStatus.ACTIVE);
+          return new Enumeration<ClaimStatus>(this, ClaimStatus.ACTIVE, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<ClaimStatus>(this, ClaimStatus.CANCELLED);
+          return new Enumeration<ClaimStatus>(this, ClaimStatus.CANCELLED, code);
         if ("draft".equals(codeString))
-          return new Enumeration<ClaimStatus>(this, ClaimStatus.DRAFT);
+          return new Enumeration<ClaimStatus>(this, ClaimStatus.DRAFT, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ClaimStatus>(this, ClaimStatus.ENTEREDINERROR);
+          return new Enumeration<ClaimStatus>(this, ClaimStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown ClaimStatus code '"+codeString+"'");
         }
     public String toCode(ClaimStatus code) {
@@ -263,20 +263,20 @@ public class Claim extends DomainResource {
           return Use.PREDETERMINATION;
         throw new IllegalArgumentException("Unknown Use code '"+codeString+"'");
         }
-        public Enumeration<Use> fromType(Base code) throws FHIRException {
+        public Enumeration<Use> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<Use>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<Use>(this, Use.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<Use>(this, Use.NULL, code);
         if ("claim".equals(codeString))
-          return new Enumeration<Use>(this, Use.CLAIM);
+          return new Enumeration<Use>(this, Use.CLAIM, code);
         if ("preauthorization".equals(codeString))
-          return new Enumeration<Use>(this, Use.PREAUTHORIZATION);
+          return new Enumeration<Use>(this, Use.PREAUTHORIZATION, code);
         if ("predetermination".equals(codeString))
-          return new Enumeration<Use>(this, Use.PREDETERMINATION);
+          return new Enumeration<Use>(this, Use.PREDETERMINATION, code);
         throw new FHIRException("Unknown Use code '"+codeString+"'");
         }
     public String toCode(Use code) {
