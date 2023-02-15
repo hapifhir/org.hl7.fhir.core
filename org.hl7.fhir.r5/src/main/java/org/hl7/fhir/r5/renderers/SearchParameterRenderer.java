@@ -75,7 +75,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     if (spd.hasProcessingMode()) {
       tr = tbl.tr();
-      tr.td().tx("Usage");
+      tr.td().tx("Processing Mode");
       tr.td().tx(spd.getProcessingMode().getDisplay());      
     }
     if (spd.hasTarget()) {
