@@ -219,34 +219,34 @@ public class DiagnosticReport extends DomainResource {
           return DiagnosticReportStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown DiagnosticReportStatus code '"+codeString+"'");
         }
-        public Enumeration<DiagnosticReportStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<DiagnosticReportStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DiagnosticReportStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.NULL, code);
         if ("registered".equals(codeString))
-          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.REGISTERED);
+          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.REGISTERED, code);
         if ("partial".equals(codeString))
-          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.PARTIAL);
+          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.PARTIAL, code);
         if ("preliminary".equals(codeString))
-          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.PRELIMINARY);
+          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.PRELIMINARY, code);
         if ("final".equals(codeString))
-          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.FINAL);
+          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.FINAL, code);
         if ("amended".equals(codeString))
-          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.AMENDED);
+          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.AMENDED, code);
         if ("corrected".equals(codeString))
-          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.CORRECTED);
+          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.CORRECTED, code);
         if ("appended".equals(codeString))
-          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.APPENDED);
+          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.APPENDED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.CANCELLED);
+          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.CANCELLED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.ENTEREDINERROR);
+          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.UNKNOWN);
+          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.UNKNOWN, code);
         throw new FHIRException("Unknown DiagnosticReportStatus code '"+codeString+"'");
         }
     public String toCode(DiagnosticReportStatus code) {
@@ -2564,4 +2564,3 @@ public class DiagnosticReport extends DomainResource {
 
 
 }
-

@@ -180,12 +180,12 @@ public class HumanName extends Type implements ICompositeType {
           return NameUse.MAIDEN;
         throw new IllegalArgumentException("Unknown NameUse code '"+codeString+"'");
         }
-        public Enumeration<NameUse> fromType(Base code) throws FHIRException {
+        public Enumeration<NameUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<NameUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("usual".equals(codeString))

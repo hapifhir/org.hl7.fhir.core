@@ -1,8 +1,12 @@
 package org.hl7.fhir.utilities.json.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +53,7 @@ public class JsonObject extends JsonElement {
 
   public JsonObject add(String name, String value) throws JsonException {
     check(name != null, "Name is null");
-    return add(name, new JsonString(value));
+    return add(name, value == null ? new JsonNull() : new JsonString(value));
   }
 
   public JsonObject add(String name, boolean value) throws JsonException {
@@ -74,14 +78,20 @@ public class JsonObject extends JsonElement {
     }
   }
 
+  public JsonObject set(String name, Instant value) throws JsonException {
+    String v = value == null ? null : value.toString();
+    return set(name, v);
+  }
+    
+
   public JsonObject set(String name, String value) throws JsonException {
     check(name != null, "Name is null");
     JsonProperty p = propMap.get(name);
     if (p != null) {
-      p.setValue(new JsonString(value));
+      p.setValue(value == null ? new JsonNull() : new JsonString(value));
       return this;
     } else {
-      return add(name, new JsonString(value));
+      return add(name, value == null ? new JsonNull() : new JsonString(value));
     }
   }
 
@@ -250,6 +260,19 @@ public class JsonObject extends JsonElement {
     String source = asString(name);
     if (Utilities.noString(source)) {
       return null;
+    } else {
+      OffsetDateTime odt = OffsetDateTime.parse(source);
+      return odt.toInstant();
+    }
+  }
+  
+  public Instant asInstant(String name) throws ParseException {
+    String source = asString(name);
+    if (Utilities.noString(source) || "null".equals(source)) {
+      return null;
+    } else if (source.length() <= 10) {
+      Date d = new SimpleDateFormat("yyyy-mm-dd").parse(source);
+      return d.toInstant();
     } else {
       OffsetDateTime odt = OffsetDateTime.parse(source);
       return odt.toInstant();

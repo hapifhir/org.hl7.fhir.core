@@ -142,12 +142,12 @@ public class EnrollmentRequest extends DomainResource {
           return EnrollmentRequestStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown EnrollmentRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<EnrollmentRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EnrollmentRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<EnrollmentRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

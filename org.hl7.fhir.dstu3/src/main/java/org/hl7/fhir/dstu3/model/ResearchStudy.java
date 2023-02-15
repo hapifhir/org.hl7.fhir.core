@@ -168,12 +168,12 @@ public class ResearchStudy extends DomainResource {
           return ResearchStudyStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ResearchStudyStatus code '"+codeString+"'");
         }
-        public Enumeration<ResearchStudyStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ResearchStudyStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ResearchStudyStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("draft".equals(codeString))

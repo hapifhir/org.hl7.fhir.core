@@ -65,11 +65,11 @@ public class TerminologyCacheManager {
     }
     if (!version.equals(getCacheVersion())) {
       clearCache();
-      fillCache("http://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip");
+      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip");
     }
     if (!version.equals(getCacheVersion())) {
       clearCache();
-      fillCache("http://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/default.zip");
+      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/default.zip");
     }
     if (!version.equals(getCacheVersion())) {
       clearCache();
@@ -97,7 +97,7 @@ public class TerminologyCacheManager {
   public static void unzip(InputStream is, String targetDir) throws IOException {
     try (ZipInputStream zipIn = new ZipInputStream(is)) {
       for (ZipEntry ze; (ze = zipIn.getNextEntry()) != null; ) {
-        String path = Utilities.path(targetDir, ze.getName());
+        String path = Path.of(Utilities.path(targetDir, ze.getName())).normalize().toFile().getAbsolutePath();
         if (!path.startsWith(targetDir)) {
           // see: https://snyk.io/research/zip-slip-vulnerability
           throw new RuntimeException("Entry with an illegal path: " + ze.getName());

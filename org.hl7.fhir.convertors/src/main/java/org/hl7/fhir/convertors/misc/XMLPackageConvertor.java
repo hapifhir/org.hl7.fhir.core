@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.misc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Map.Entry;
 
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;

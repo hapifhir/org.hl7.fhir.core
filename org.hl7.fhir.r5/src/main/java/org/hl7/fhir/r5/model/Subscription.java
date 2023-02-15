@@ -135,20 +135,20 @@ public class Subscription extends DomainResource {
           return SubscriptionPayloadContent.FULLRESOURCE;
         throw new IllegalArgumentException("Unknown SubscriptionPayloadContent code '"+codeString+"'");
         }
-        public Enumeration<SubscriptionPayloadContent> fromType(Base code) throws FHIRException {
+        public Enumeration<SubscriptionPayloadContent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SubscriptionPayloadContent>(this);
+            return new Enumeration<SubscriptionPayloadContent>(this, SubscriptionPayloadContent.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SubscriptionPayloadContent>(this, SubscriptionPayloadContent.NULL, code);
         if ("empty".equals(codeString))
-          return new Enumeration<SubscriptionPayloadContent>(this, SubscriptionPayloadContent.EMPTY);
+          return new Enumeration<SubscriptionPayloadContent>(this, SubscriptionPayloadContent.EMPTY, code);
         if ("id-only".equals(codeString))
-          return new Enumeration<SubscriptionPayloadContent>(this, SubscriptionPayloadContent.IDONLY);
+          return new Enumeration<SubscriptionPayloadContent>(this, SubscriptionPayloadContent.IDONLY, code);
         if ("full-resource".equals(codeString))
-          return new Enumeration<SubscriptionPayloadContent>(this, SubscriptionPayloadContent.FULLRESOURCE);
+          return new Enumeration<SubscriptionPayloadContent>(this, SubscriptionPayloadContent.FULLRESOURCE, code);
         throw new FHIRException("Unknown SubscriptionPayloadContent code '"+codeString+"'");
         }
     public String toCode(SubscriptionPayloadContent code) {
@@ -1990,4 +1990,3 @@ public class Subscription extends DomainResource {
 
 
 }
-

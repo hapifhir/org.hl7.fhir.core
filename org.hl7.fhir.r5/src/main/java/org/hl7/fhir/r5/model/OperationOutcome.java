@@ -148,22 +148,22 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return IssueSeverity.INFORMATION;
         throw new IllegalArgumentException("Unknown IssueSeverity code '"+codeString+"'");
         }
-        public Enumeration<IssueSeverity> fromType(Base code) throws FHIRException {
+        public Enumeration<IssueSeverity> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<IssueSeverity>(this);
+            return new Enumeration<IssueSeverity>(this, IssueSeverity.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<IssueSeverity>(this, IssueSeverity.NULL, code);
         if ("fatal".equals(codeString))
-          return new Enumeration<IssueSeverity>(this, IssueSeverity.FATAL);
+          return new Enumeration<IssueSeverity>(this, IssueSeverity.FATAL, code);
         if ("error".equals(codeString))
-          return new Enumeration<IssueSeverity>(this, IssueSeverity.ERROR);
+          return new Enumeration<IssueSeverity>(this, IssueSeverity.ERROR, code);
         if ("warning".equals(codeString))
-          return new Enumeration<IssueSeverity>(this, IssueSeverity.WARNING);
+          return new Enumeration<IssueSeverity>(this, IssueSeverity.WARNING, code);
         if ("information".equals(codeString))
-          return new Enumeration<IssueSeverity>(this, IssueSeverity.INFORMATION);
+          return new Enumeration<IssueSeverity>(this, IssueSeverity.INFORMATION, code);
         throw new FHIRException("Unknown IssueSeverity code '"+codeString+"'");
         }
     public String toCode(IssueSeverity code) {
@@ -600,76 +600,76 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return IssueType.INFORMATIONAL;
         throw new IllegalArgumentException("Unknown IssueType code '"+codeString+"'");
         }
-        public Enumeration<IssueType> fromType(Base code) throws FHIRException {
+        public Enumeration<IssueType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<IssueType>(this);
+            return new Enumeration<IssueType>(this, IssueType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<IssueType>(this, IssueType.NULL, code);
         if ("invalid".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.INVALID);
+          return new Enumeration<IssueType>(this, IssueType.INVALID, code);
         if ("structure".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.STRUCTURE);
+          return new Enumeration<IssueType>(this, IssueType.STRUCTURE, code);
         if ("required".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.REQUIRED);
+          return new Enumeration<IssueType>(this, IssueType.REQUIRED, code);
         if ("value".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.VALUE);
+          return new Enumeration<IssueType>(this, IssueType.VALUE, code);
         if ("invariant".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.INVARIANT);
+          return new Enumeration<IssueType>(this, IssueType.INVARIANT, code);
         if ("security".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.SECURITY);
+          return new Enumeration<IssueType>(this, IssueType.SECURITY, code);
         if ("login".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.LOGIN);
+          return new Enumeration<IssueType>(this, IssueType.LOGIN, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.UNKNOWN);
+          return new Enumeration<IssueType>(this, IssueType.UNKNOWN, code);
         if ("expired".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.EXPIRED);
+          return new Enumeration<IssueType>(this, IssueType.EXPIRED, code);
         if ("forbidden".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.FORBIDDEN);
+          return new Enumeration<IssueType>(this, IssueType.FORBIDDEN, code);
         if ("suppressed".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.SUPPRESSED);
+          return new Enumeration<IssueType>(this, IssueType.SUPPRESSED, code);
         if ("processing".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.PROCESSING);
+          return new Enumeration<IssueType>(this, IssueType.PROCESSING, code);
         if ("not-supported".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.NOTSUPPORTED);
+          return new Enumeration<IssueType>(this, IssueType.NOTSUPPORTED, code);
         if ("duplicate".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.DUPLICATE);
+          return new Enumeration<IssueType>(this, IssueType.DUPLICATE, code);
         if ("multiple-matches".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.MULTIPLEMATCHES);
+          return new Enumeration<IssueType>(this, IssueType.MULTIPLEMATCHES, code);
         if ("not-found".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.NOTFOUND);
+          return new Enumeration<IssueType>(this, IssueType.NOTFOUND, code);
         if ("deleted".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.DELETED);
+          return new Enumeration<IssueType>(this, IssueType.DELETED, code);
         if ("too-long".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.TOOLONG);
+          return new Enumeration<IssueType>(this, IssueType.TOOLONG, code);
         if ("code-invalid".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.CODEINVALID);
+          return new Enumeration<IssueType>(this, IssueType.CODEINVALID, code);
         if ("extension".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.EXTENSION);
+          return new Enumeration<IssueType>(this, IssueType.EXTENSION, code);
         if ("too-costly".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.TOOCOSTLY);
+          return new Enumeration<IssueType>(this, IssueType.TOOCOSTLY, code);
         if ("business-rule".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.BUSINESSRULE);
+          return new Enumeration<IssueType>(this, IssueType.BUSINESSRULE, code);
         if ("conflict".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.CONFLICT);
+          return new Enumeration<IssueType>(this, IssueType.CONFLICT, code);
         if ("transient".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.TRANSIENT);
+          return new Enumeration<IssueType>(this, IssueType.TRANSIENT, code);
         if ("lock-error".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.LOCKERROR);
+          return new Enumeration<IssueType>(this, IssueType.LOCKERROR, code);
         if ("no-store".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.NOSTORE);
+          return new Enumeration<IssueType>(this, IssueType.NOSTORE, code);
         if ("exception".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.EXCEPTION);
+          return new Enumeration<IssueType>(this, IssueType.EXCEPTION, code);
         if ("timeout".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.TIMEOUT);
+          return new Enumeration<IssueType>(this, IssueType.TIMEOUT, code);
         if ("incomplete".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.INCOMPLETE);
+          return new Enumeration<IssueType>(this, IssueType.INCOMPLETE, code);
         if ("throttled".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.THROTTLED);
+          return new Enumeration<IssueType>(this, IssueType.THROTTLED, code);
         if ("informational".equals(codeString))
-          return new Enumeration<IssueType>(this, IssueType.INFORMATIONAL);
+          return new Enumeration<IssueType>(this, IssueType.INFORMATIONAL, code);
         throw new FHIRException("Unknown IssueType code '"+codeString+"'");
         }
     public String toCode(IssueType code) {
@@ -1513,4 +1513,3 @@ public String toString() {
 
 
 }
-

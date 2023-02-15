@@ -36,6 +36,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
+import org.hl7.fhir.r5.elementmodel.ParserBase;
 import org.hl7.fhir.r5.elementmodel.SHCParser;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -623,10 +624,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public org.hl7.fhir.r5.elementmodel.Element transform(byte[] source, FhirFormat cntType, String mapUri) throws FHIRException, IOException {
     List<Base> outputs = new ArrayList<>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
-    org.hl7.fhir.r5.elementmodel.Element src = Manager.parseSingle(context, new ByteArrayInputStream(source), cntType);
     StructureMap map = context.fetchResource(StructureMap.class, mapUri);
     if (map == null) throw new Error("Unable to find map " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
+    StructureDefinition sourceSD = getSourceResourceFromStructureMap(map);
+    ParserBase parser = Manager.makeParser(context, cntType);
+    if (sourceSD.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL) {
+      parser.setLogical(sourceSD);
+    }
+    org.hl7.fhir.r5.elementmodel.Element src = parser.parseSingle(new ByteArrayInputStream(source));    
     scu.transform(null, src, map, resource);
     resource.populatePaths(null);
     return resource;
@@ -655,6 +661,39 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     return Manager.build(getContext(), structureDefinition);
   }
+  
+  private StructureDefinition getSourceResourceFromStructureMap(StructureMap map) {
+	StructureMap.StructureMapGroupComponent g = map.getGroup().get(0);
+	String type = null;
+	for (StructureMap.StructureMapGroupInputComponent inp : g.getInput()) {
+	  if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
+	    if (type != null)
+	      throw new DefinitionException("This engine does not support multiple source inputs");
+	    else
+	      type = inp.getType();
+	}	  
+	  
+	String sourceTypeUrl = null;
+	for (StructureMap.StructureMapStructureComponent component : map.getStructure()) {
+	  if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE
+	      && component.getAlias().equalsIgnoreCase(type)) {
+	    sourceTypeUrl = component.getUrl();
+	    break;
+	  }
+	}
+	    
+	StructureDefinition structureDefinition = null;
+	for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
+	  if (sd.getUrl().equalsIgnoreCase(sourceTypeUrl)) {
+	    structureDefinition = sd;
+	  	break;
+	  }
+	}
+
+	if (structureDefinition == null) throw new FHIRException("Unable to find StructureDefinition for source type ('" + sourceTypeUrl + "')");
+	return structureDefinition;
+  }
+
 
   public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = igLoader.loadContent(source, "validate", false);
@@ -764,9 +803,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         makeSnapshot(sd);
       } catch (Exception e) {
         System.out.println("Process Note: Unable to generate snapshot for " + sd.present() + ": " + e.getMessage());
-//        if (debug) {
+        if (context.getLogger().isDebugLogging()) {
           e.printStackTrace();
-//        }
+        }
       }
     }
   }

@@ -43,7 +43,7 @@ correct implementation of the core FHIR specification that it implements.
 
 ### Prerequisites
 
-This project uses [Java](https://www.java.com) (minumum version 11), [Apache Maven](http://maven.apache.org), and [Lombok](https://projectlombok.org/) to build. You can find detailed instructions on setting up this project in your IDE [here](https://hl7.github.io/docs/core/ide).
+This project uses [Java](https://www.java.com) (minumum version 11), [Apache Maven](http://maven.apache.org), and [Lombok](https://projectlombok.org/) to build. You can find detailed instructions on setting up this project in your IDE [here](https://hl7.github.io/docs/core/getting-started).
 
 ### Build Commands
 

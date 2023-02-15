@@ -157,12 +157,12 @@ public class Condition extends DomainResource {
           return ConditionClinicalStatus.RESOLVED;
         throw new IllegalArgumentException("Unknown ConditionClinicalStatus code '"+codeString+"'");
         }
-        public Enumeration<ConditionClinicalStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ConditionClinicalStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ConditionClinicalStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))
@@ -313,12 +313,12 @@ public class Condition extends DomainResource {
           return ConditionVerificationStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown ConditionVerificationStatus code '"+codeString+"'");
         }
-        public Enumeration<ConditionVerificationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ConditionVerificationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ConditionVerificationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("provisional".equals(codeString))

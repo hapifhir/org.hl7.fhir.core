@@ -170,12 +170,12 @@ public class Consent extends DomainResource {
           return ConsentState.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ConsentState code '"+codeString+"'");
         }
-        public Enumeration<ConsentState> fromType(Base code) throws FHIRException {
+        public Enumeration<ConsentState> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ConsentState>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("draft".equals(codeString))
@@ -306,12 +306,12 @@ public class Consent extends DomainResource {
           return ConsentDataMeaning.AUTHOREDBY;
         throw new IllegalArgumentException("Unknown ConsentDataMeaning code '"+codeString+"'");
         }
-        public Enumeration<ConsentDataMeaning> fromType(Base code) throws FHIRException {
+        public Enumeration<ConsentDataMeaning> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ConsentDataMeaning>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("instance".equals(codeString))
@@ -410,12 +410,12 @@ public class Consent extends DomainResource {
           return ConsentExceptType.PERMIT;
         throw new IllegalArgumentException("Unknown ConsentExceptType code '"+codeString+"'");
         }
-        public Enumeration<ConsentExceptType> fromType(Base code) throws FHIRException {
+        public Enumeration<ConsentExceptType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ConsentExceptType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("deny".equals(codeString))

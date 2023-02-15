@@ -930,7 +930,7 @@ public class XhtmlParser {
 
   private boolean isNameChar(char ch)
   {
-    return Character.isLetterOrDigit(ch) || ch == '_' || ch == '-' || ch == ':';
+    return Character.isLetterOrDigit(ch) || ch == '_' || ch == '-' || ch == ':' || ch == '.';
   }
 
   private String readName() throws IOException
@@ -979,8 +979,8 @@ public class XhtmlParser {
           error(I18nConstants.XHTML_XHTML_Entity_Illegal, "&"+c+";");
         }
       }
-      if (definedEntities.containsKey(c)) {
-        s.append(definedEntities.get(c));
+      if (definedEntities.containsKey("&"+c+";")) {
+        s.append(definedEntities.get("&"+c+";"));
         // what's going on here? 
         // the contents that follow already existed, and then I added the routine to populate the entities 
         // which was generated from other code. The code that follows is probably redundant, but I haven't

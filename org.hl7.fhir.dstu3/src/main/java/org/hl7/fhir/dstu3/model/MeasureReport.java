@@ -135,12 +135,12 @@ public class MeasureReport extends DomainResource {
           return MeasureReportStatus.ERROR;
         throw new IllegalArgumentException("Unknown MeasureReportStatus code '"+codeString+"'");
         }
-        public Enumeration<MeasureReportStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MeasureReportStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<MeasureReportStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("complete".equals(codeString))
@@ -247,12 +247,12 @@ public class MeasureReport extends DomainResource {
           return MeasureReportType.SUMMARY;
         throw new IllegalArgumentException("Unknown MeasureReportType code '"+codeString+"'");
         }
-        public Enumeration<MeasureReportType> fromType(Base code) throws FHIRException {
+        public Enumeration<MeasureReportType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<MeasureReportType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("individual".equals(codeString))

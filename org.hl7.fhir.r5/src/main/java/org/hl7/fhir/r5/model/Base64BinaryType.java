@@ -156,7 +156,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
    * @throws DataFormatException
    */
   public void checkValidBase64(String toCheck) throws DataFormatException {
-    if (!Base64.isBase64(toCheck.getBytes())) {
+    if (!org.hl7.fhir.utilities.Base64.isBase64(toCheck.getBytes())) {
       throw new DataFormatException("");
     }
   }

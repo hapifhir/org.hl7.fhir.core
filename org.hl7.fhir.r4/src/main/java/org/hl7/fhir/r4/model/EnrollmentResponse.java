@@ -146,22 +146,22 @@ public class EnrollmentResponse extends DomainResource {
           return EnrollmentResponseStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown EnrollmentResponseStatus code '"+codeString+"'");
         }
-        public Enumeration<EnrollmentResponseStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EnrollmentResponseStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EnrollmentResponseStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<EnrollmentResponseStatus>(this, EnrollmentResponseStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EnrollmentResponseStatus>(this, EnrollmentResponseStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<EnrollmentResponseStatus>(this, EnrollmentResponseStatus.ACTIVE);
+          return new Enumeration<EnrollmentResponseStatus>(this, EnrollmentResponseStatus.ACTIVE, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<EnrollmentResponseStatus>(this, EnrollmentResponseStatus.CANCELLED);
+          return new Enumeration<EnrollmentResponseStatus>(this, EnrollmentResponseStatus.CANCELLED, code);
         if ("draft".equals(codeString))
-          return new Enumeration<EnrollmentResponseStatus>(this, EnrollmentResponseStatus.DRAFT);
+          return new Enumeration<EnrollmentResponseStatus>(this, EnrollmentResponseStatus.DRAFT, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<EnrollmentResponseStatus>(this, EnrollmentResponseStatus.ENTEREDINERROR);
+          return new Enumeration<EnrollmentResponseStatus>(this, EnrollmentResponseStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown EnrollmentResponseStatus code '"+codeString+"'");
         }
     public String toCode(EnrollmentResponseStatus code) {
