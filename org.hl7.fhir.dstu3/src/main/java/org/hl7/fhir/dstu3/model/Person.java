@@ -146,12 +146,12 @@ public class Person extends DomainResource {
           return IdentityAssuranceLevel.LEVEL4;
         throw new IllegalArgumentException("Unknown IdentityAssuranceLevel code '"+codeString+"'");
         }
-        public Enumeration<IdentityAssuranceLevel> fromType(Base code) throws FHIRException {
+        public Enumeration<IdentityAssuranceLevel> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<IdentityAssuranceLevel>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("level1".equals(codeString))

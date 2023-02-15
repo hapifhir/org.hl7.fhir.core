@@ -280,44 +280,44 @@ public class Contract extends DomainResource {
           return ContractResourcePublicationStatusCodes.TERMINATED;
         throw new IllegalArgumentException("Unknown ContractResourcePublicationStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<ContractResourcePublicationStatusCodes> fromType(Base code) throws FHIRException {
+        public Enumeration<ContractResourcePublicationStatusCodes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ContractResourcePublicationStatusCodes>(this);
+            return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.NULL, code);
         if ("amended".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.AMENDED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.AMENDED, code);
         if ("appended".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.APPENDED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.APPENDED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.CANCELLED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.CANCELLED, code);
         if ("disputed".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.DISPUTED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.DISPUTED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.ENTEREDINERROR);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.ENTEREDINERROR, code);
         if ("executable".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.EXECUTABLE);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.EXECUTABLE, code);
         if ("executed".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.EXECUTED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.EXECUTED, code);
         if ("negotiable".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.NEGOTIABLE);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.NEGOTIABLE, code);
         if ("offered".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.OFFERED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.OFFERED, code);
         if ("policy".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.POLICY);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.POLICY, code);
         if ("rejected".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.REJECTED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.REJECTED, code);
         if ("renewed".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.RENEWED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.RENEWED, code);
         if ("revoked".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.REVOKED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.REVOKED, code);
         if ("resolved".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.RESOLVED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.RESOLVED, code);
         if ("terminated".equals(codeString))
-          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.TERMINATED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.TERMINATED, code);
         throw new FHIRException("Unknown ContractResourcePublicationStatusCodes code '"+codeString+"'");
         }
     public String toCode(ContractResourcePublicationStatusCodes code) {
@@ -584,44 +584,44 @@ public class Contract extends DomainResource {
           return ContractResourceStatusCodes.TERMINATED;
         throw new IllegalArgumentException("Unknown ContractResourceStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<ContractResourceStatusCodes> fromType(Base code) throws FHIRException {
+        public Enumeration<ContractResourceStatusCodes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ContractResourceStatusCodes>(this);
+            return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.NULL, code);
         if ("amended".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.AMENDED);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.AMENDED, code);
         if ("appended".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.APPENDED);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.APPENDED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.CANCELLED);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.CANCELLED, code);
         if ("disputed".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.DISPUTED);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.DISPUTED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.ENTEREDINERROR);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.ENTEREDINERROR, code);
         if ("executable".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.EXECUTABLE);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.EXECUTABLE, code);
         if ("executed".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.EXECUTED);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.EXECUTED, code);
         if ("negotiable".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.NEGOTIABLE);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.NEGOTIABLE, code);
         if ("offered".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.OFFERED);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.OFFERED, code);
         if ("policy".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.POLICY);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.POLICY, code);
         if ("rejected".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.REJECTED);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.REJECTED, code);
         if ("renewed".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.RENEWED);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.RENEWED, code);
         if ("revoked".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.REVOKED);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.REVOKED, code);
         if ("resolved".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.RESOLVED);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.RESOLVED, code);
         if ("terminated".equals(codeString))
-          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.TERMINATED);
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.TERMINATED, code);
         throw new FHIRException("Unknown ContractResourceStatusCodes code '"+codeString+"'");
         }
     public String toCode(ContractResourceStatusCodes code) {
@@ -11670,4 +11670,3 @@ public class Contract extends DomainResource {
 
 
 }
-

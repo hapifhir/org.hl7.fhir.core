@@ -150,12 +150,12 @@ public class StructureDefinition extends MetadataResource {
           return StructureDefinitionKind.LOGICAL;
         throw new IllegalArgumentException("Unknown StructureDefinitionKind code '"+codeString+"'");
         }
-        public Enumeration<StructureDefinitionKind> fromType(Base code) throws FHIRException {
+        public Enumeration<StructureDefinitionKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<StructureDefinitionKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("primitive-type".equals(codeString))
@@ -266,12 +266,12 @@ public class StructureDefinition extends MetadataResource {
           return ExtensionContext.EXTENSION;
         throw new IllegalArgumentException("Unknown ExtensionContext code '"+codeString+"'");
         }
-        public Enumeration<ExtensionContext> fromType(Base code) throws FHIRException {
+        public Enumeration<ExtensionContext> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ExtensionContext>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("resource".equals(codeString))
@@ -366,12 +366,12 @@ public class StructureDefinition extends MetadataResource {
           return TypeDerivationRule.CONSTRAINT;
         throw new IllegalArgumentException("Unknown TypeDerivationRule code '"+codeString+"'");
         }
-        public Enumeration<TypeDerivationRule> fromType(Base code) throws FHIRException {
+        public Enumeration<TypeDerivationRule> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<TypeDerivationRule>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("specialization".equals(codeString))

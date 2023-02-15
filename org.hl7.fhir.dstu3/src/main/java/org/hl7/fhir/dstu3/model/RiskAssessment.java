@@ -196,12 +196,12 @@ public class RiskAssessment extends DomainResource {
           return RiskAssessmentStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown RiskAssessmentStatus code '"+codeString+"'");
         }
-        public Enumeration<RiskAssessmentStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<RiskAssessmentStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<RiskAssessmentStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("registered".equals(codeString))

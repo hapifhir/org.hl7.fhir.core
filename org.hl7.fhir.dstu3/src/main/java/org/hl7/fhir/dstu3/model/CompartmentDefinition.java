@@ -161,12 +161,12 @@ public class CompartmentDefinition extends MetadataResource {
           return CompartmentType.DEVICE;
         throw new IllegalArgumentException("Unknown CompartmentType code '"+codeString+"'");
         }
-        public Enumeration<CompartmentType> fromType(Base code) throws FHIRException {
+        public Enumeration<CompartmentType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CompartmentType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("Patient".equals(codeString))

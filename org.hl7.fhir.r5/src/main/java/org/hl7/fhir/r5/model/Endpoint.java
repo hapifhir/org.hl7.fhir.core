@@ -159,24 +159,24 @@ public class Endpoint extends DomainResource {
           return EndpointStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown EndpointStatus code '"+codeString+"'");
         }
-        public Enumeration<EndpointStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EndpointStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EndpointStatus>(this);
+            return new Enumeration<EndpointStatus>(this, EndpointStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EndpointStatus>(this, EndpointStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<EndpointStatus>(this, EndpointStatus.ACTIVE);
+          return new Enumeration<EndpointStatus>(this, EndpointStatus.ACTIVE, code);
         if ("suspended".equals(codeString))
-          return new Enumeration<EndpointStatus>(this, EndpointStatus.SUSPENDED);
+          return new Enumeration<EndpointStatus>(this, EndpointStatus.SUSPENDED, code);
         if ("error".equals(codeString))
-          return new Enumeration<EndpointStatus>(this, EndpointStatus.ERROR);
+          return new Enumeration<EndpointStatus>(this, EndpointStatus.ERROR, code);
         if ("off".equals(codeString))
-          return new Enumeration<EndpointStatus>(this, EndpointStatus.OFF);
+          return new Enumeration<EndpointStatus>(this, EndpointStatus.OFF, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<EndpointStatus>(this, EndpointStatus.ENTEREDINERROR);
+          return new Enumeration<EndpointStatus>(this, EndpointStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown EndpointStatus code '"+codeString+"'");
         }
     public String toCode(EndpointStatus code) {
@@ -1390,4 +1390,3 @@ public class Endpoint extends DomainResource {
 
 
 }
-

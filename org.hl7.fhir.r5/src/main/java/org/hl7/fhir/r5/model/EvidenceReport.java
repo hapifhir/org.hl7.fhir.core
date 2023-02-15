@@ -195,30 +195,30 @@ public class EvidenceReport extends MetadataResource {
           return ReportRelationshipType.TRANSFORMEDWITH;
         throw new IllegalArgumentException("Unknown ReportRelationshipType code '"+codeString+"'");
         }
-        public Enumeration<ReportRelationshipType> fromType(Base code) throws FHIRException {
+        public Enumeration<ReportRelationshipType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ReportRelationshipType>(this);
+            return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.NULL, code);
         if ("replaces".equals(codeString))
-          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.REPLACES);
+          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.REPLACES, code);
         if ("amends".equals(codeString))
-          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.AMENDS);
+          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.AMENDS, code);
         if ("appends".equals(codeString))
-          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.APPENDS);
+          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.APPENDS, code);
         if ("transforms".equals(codeString))
-          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.TRANSFORMS);
+          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.TRANSFORMS, code);
         if ("replacedWith".equals(codeString))
-          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.REPLACEDWITH);
+          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.REPLACEDWITH, code);
         if ("amendedWith".equals(codeString))
-          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.AMENDEDWITH);
+          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.AMENDEDWITH, code);
         if ("appendedWith".equals(codeString))
-          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.APPENDEDWITH);
+          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.APPENDEDWITH, code);
         if ("transformedWith".equals(codeString))
-          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.TRANSFORMEDWITH);
+          return new Enumeration<ReportRelationshipType>(this, ReportRelationshipType.TRANSFORMEDWITH, code);
         throw new FHIRException("Unknown ReportRelationshipType code '"+codeString+"'");
         }
     public String toCode(ReportRelationshipType code) {
@@ -5138,4 +5138,3 @@ public class EvidenceReport extends MetadataResource {
 
 
 }
-

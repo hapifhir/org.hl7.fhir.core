@@ -108,17 +108,27 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
         }
         addCell(headerRow, i+coffset, titles[i], styles.get("header"));
       }
-      int i = titles.length - 1;
-      for (StructureDefinitionMappingComponent map : sd.getMapping()) {
-        i++;
-        addCell(headerRow, i+coffset, "Mapping: " + map.getName(), styles.get("header"));
+      if (!forMultiple) {
+        int i = titles.length - 1;
+        for (StructureDefinitionMappingComponent map : sd.getMapping()) {
+          i++;
+          addCell(headerRow, i+coffset, "Mapping: " + map.getName(), styles.get("header"));
+        }
       }
     }
 
     for (ElementDefinition child : sd.getSnapshot().getElement()) {
       processElement(sheet, sd, child, forMultiple);
     }
-    configureSheet(sheet, sd);
+    if (!forMultiple) {
+      configureSheet(sheet, sd);
+    }
+    return this;
+  }
+  
+  public StructureDefinitionSpreadsheetGenerator configure() throws Exception {
+    Sheet sheet = hasSheet("Elements") ? getSheet("Elements") : makeSheet("Elements");
+    configureSheet(sheet, null);
     return this;
   }
 
@@ -207,13 +217,15 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
     }
     addCell(row, i++, itemList(ed.getCondition()));
     addCell(row, i++, itemList(ed.getConstraint()));
-    for (StructureDefinitionMappingComponent mapKey : sd.getMapping()) {
-      String mapString = "";
-      for (ElementDefinitionMappingComponent map : ed.getMapping()) {
-        if (map.getIdentity().equals(mapKey.getIdentity()))
-          mapString = map.getMap();        
+    if (!forMultiple) {
+      for (StructureDefinitionMappingComponent mapKey : sd.getMapping()) {
+        String mapString = "";
+        for (ElementDefinitionMappingComponent map : ed.getMapping()) {
+          if (map.getIdentity().equals(mapKey.getIdentity()))
+            mapString = map.getMap();        
+        }
+        addCell(row, i++, mapString);
       }
-      addCell(row, i++, mapString);
     }
   }
 
@@ -327,13 +339,15 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
     sheet.setColumnWidth(18, columnPixels(20));
     sheet.setColumnWidth(34, columnPixels(100));
 
-    int i = titles.length - 1;
-    for (StructureDefinitionMappingComponent map : sd.getMapping()) {
-      i++;
-      sheet.setColumnWidth(i, columnPixels(50));
-      sheet.autoSizeColumn(i);
-      //  sheet.setColumnHidden(i,  true);
-    }    
+    if (sd != null) {
+      int i = titles.length - 1;
+      for (StructureDefinitionMappingComponent map : sd.getMapping()) {
+        i++;
+        sheet.setColumnWidth(i, columnPixels(50));
+        sheet.autoSizeColumn(i);
+        //  sheet.setColumnHidden(i,  true);
+      }    
+    }
     sheet.createFreezePane(2,1);
 
     if (hideMustSupportFalse) {
@@ -355,7 +369,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
 
       sheetCF.addConditionalFormatting(regions, rule1, rule2);
 
-      sheet.setAutoFilter(new CellRangeAddress(0,sheet.getLastRowNum(), 0, titles.length+sd.getMapping().size() - 1));
+      sheet.setAutoFilter(new CellRangeAddress(0,sheet.getLastRowNum(), 0, titles.length+(sd == null ? 0 : sd.getMapping().size() - 1)));
 
 
       XSSFSheet xSheet = (XSSFSheet)sheet;

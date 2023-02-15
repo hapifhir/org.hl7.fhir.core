@@ -10,7 +10,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Bool
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Date30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Immunization;

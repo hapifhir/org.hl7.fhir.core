@@ -173,12 +173,12 @@ public class DataElement extends MetadataResource {
           return DataElementStringency.FLEXIBLE;
         throw new IllegalArgumentException("Unknown DataElementStringency code '"+codeString+"'");
         }
-        public Enumeration<DataElementStringency> fromType(Base code) throws FHIRException {
+        public Enumeration<DataElementStringency> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DataElementStringency>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("comparable".equals(codeString))

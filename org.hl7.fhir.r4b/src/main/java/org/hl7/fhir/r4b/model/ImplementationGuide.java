@@ -147,22 +147,22 @@ public class ImplementationGuide extends CanonicalResource {
           return GuidePageGeneration.GENERATED;
         throw new IllegalArgumentException("Unknown GuidePageGeneration code '"+codeString+"'");
         }
-        public Enumeration<GuidePageGeneration> fromType(Base code) throws FHIRException {
+        public Enumeration<GuidePageGeneration> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GuidePageGeneration>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<GuidePageGeneration>(this, GuidePageGeneration.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GuidePageGeneration>(this, GuidePageGeneration.NULL, code);
         if ("html".equals(codeString))
-          return new Enumeration<GuidePageGeneration>(this, GuidePageGeneration.HTML);
+          return new Enumeration<GuidePageGeneration>(this, GuidePageGeneration.HTML, code);
         if ("markdown".equals(codeString))
-          return new Enumeration<GuidePageGeneration>(this, GuidePageGeneration.MARKDOWN);
+          return new Enumeration<GuidePageGeneration>(this, GuidePageGeneration.MARKDOWN, code);
         if ("xml".equals(codeString))
-          return new Enumeration<GuidePageGeneration>(this, GuidePageGeneration.XML);
+          return new Enumeration<GuidePageGeneration>(this, GuidePageGeneration.XML, code);
         if ("generated".equals(codeString))
-          return new Enumeration<GuidePageGeneration>(this, GuidePageGeneration.GENERATED);
+          return new Enumeration<GuidePageGeneration>(this, GuidePageGeneration.GENERATED, code);
         throw new FHIRException("Unknown GuidePageGeneration code '"+codeString+"'");
         }
     public String toCode(GuidePageGeneration code) {
@@ -347,34 +347,34 @@ public class ImplementationGuide extends CanonicalResource {
           return GuideParameterCode.HTMLTEMPLATE;
         throw new IllegalArgumentException("Unknown GuideParameterCode code '"+codeString+"'");
         }
-        public Enumeration<GuideParameterCode> fromType(Base code) throws FHIRException {
+        public Enumeration<GuideParameterCode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GuideParameterCode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<GuideParameterCode>(this, GuideParameterCode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GuideParameterCode>(this, GuideParameterCode.NULL, code);
         if ("apply".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.APPLY);
+          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.APPLY, code);
         if ("path-resource".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.PATHRESOURCE);
+          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.PATHRESOURCE, code);
         if ("path-pages".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.PATHPAGES);
+          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.PATHPAGES, code);
         if ("path-tx-cache".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.PATHTXCACHE);
+          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.PATHTXCACHE, code);
         if ("expansion-parameter".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.EXPANSIONPARAMETER);
+          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.EXPANSIONPARAMETER, code);
         if ("rule-broken-links".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.RULEBROKENLINKS);
+          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.RULEBROKENLINKS, code);
         if ("generate-xml".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.GENERATEXML);
+          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.GENERATEXML, code);
         if ("generate-json".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.GENERATEJSON);
+          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.GENERATEJSON, code);
         if ("generate-turtle".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.GENERATETURTLE);
+          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.GENERATETURTLE, code);
         if ("html-template".equals(codeString))
-          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.HTMLTEMPLATE);
+          return new Enumeration<GuideParameterCode>(this, GuideParameterCode.HTMLTEMPLATE, code);
         throw new FHIRException("Unknown GuideParameterCode code '"+codeString+"'");
         }
     public String toCode(GuideParameterCode code) {
@@ -4603,706 +4603,706 @@ public class ImplementationGuide extends CanonicalResource {
           return SPDXLicense.ZPL2_1;
         throw new IllegalArgumentException("Unknown SPDXLicense code '"+codeString+"'");
         }
-        public Enumeration<SPDXLicense> fromType(Base code) throws FHIRException {
+        public Enumeration<SPDXLicense> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SPDXLicense>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SPDXLicense>(this, SPDXLicense.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SPDXLicense>(this, SPDXLicense.NULL, code);
         if ("not-open-source".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NOTOPENSOURCE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NOTOPENSOURCE, code);
         if ("0BSD".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense._0BSD);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense._0BSD, code);
         if ("AAL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AAL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AAL, code);
         if ("Abstyles".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ABSTYLES);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ABSTYLES, code);
         if ("Adobe-2006".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ADOBE2006);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ADOBE2006, code);
         if ("Adobe-Glyph".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ADOBEGLYPH);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ADOBEGLYPH, code);
         if ("ADSL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ADSL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ADSL, code);
         if ("AFL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFL1_1, code);
         if ("AFL-1.2".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFL1_2);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFL1_2, code);
         if ("AFL-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFL2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFL2_0, code);
         if ("AFL-2.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFL2_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFL2_1, code);
         if ("AFL-3.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFL3_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFL3_0, code);
         if ("Afmparse".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFMPARSE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AFMPARSE, code);
         if ("AGPL-1.0-only".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AGPL1_0ONLY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AGPL1_0ONLY, code);
         if ("AGPL-1.0-or-later".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AGPL1_0ORLATER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AGPL1_0ORLATER, code);
         if ("AGPL-3.0-only".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AGPL3_0ONLY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AGPL3_0ONLY, code);
         if ("AGPL-3.0-or-later".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AGPL3_0ORLATER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AGPL3_0ORLATER, code);
         if ("Aladdin".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ALADDIN);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ALADDIN, code);
         if ("AMDPLPA".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AMDPLPA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AMDPLPA, code);
         if ("AML".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AML);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AML, code);
         if ("AMPAS".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.AMPAS);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.AMPAS, code);
         if ("ANTLR-PD".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ANTLRPD);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ANTLRPD, code);
         if ("Apache-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.APACHE1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.APACHE1_0, code);
         if ("Apache-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.APACHE1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.APACHE1_1, code);
         if ("Apache-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.APACHE2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.APACHE2_0, code);
         if ("APAFML".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.APAFML);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.APAFML, code);
         if ("APL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.APL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.APL1_0, code);
         if ("APSL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.APSL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.APSL1_0, code);
         if ("APSL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.APSL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.APSL1_1, code);
         if ("APSL-1.2".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.APSL1_2);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.APSL1_2, code);
         if ("APSL-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.APSL2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.APSL2_0, code);
         if ("Artistic-1.0-cl8".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ARTISTIC1_0CL8);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ARTISTIC1_0CL8, code);
         if ("Artistic-1.0-Perl".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ARTISTIC1_0PERL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ARTISTIC1_0PERL, code);
         if ("Artistic-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ARTISTIC1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ARTISTIC1_0, code);
         if ("Artistic-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ARTISTIC2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ARTISTIC2_0, code);
         if ("Bahyph".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BAHYPH);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BAHYPH, code);
         if ("Barr".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BARR);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BARR, code);
         if ("Beerware".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BEERWARE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BEERWARE, code);
         if ("BitTorrent-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BITTORRENT1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BITTORRENT1_0, code);
         if ("BitTorrent-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BITTORRENT1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BITTORRENT1_1, code);
         if ("Borceux".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BORCEUX);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BORCEUX, code);
         if ("BSD-1-Clause".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD1CLAUSE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD1CLAUSE, code);
         if ("BSD-2-Clause-FreeBSD".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD2CLAUSEFREEBSD);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD2CLAUSEFREEBSD, code);
         if ("BSD-2-Clause-NetBSD".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD2CLAUSENETBSD);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD2CLAUSENETBSD, code);
         if ("BSD-2-Clause-Patent".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD2CLAUSEPATENT);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD2CLAUSEPATENT, code);
         if ("BSD-2-Clause".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD2CLAUSE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD2CLAUSE, code);
         if ("BSD-3-Clause-Attribution".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSEATTRIBUTION);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSEATTRIBUTION, code);
         if ("BSD-3-Clause-Clear".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSECLEAR);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSECLEAR, code);
         if ("BSD-3-Clause-LBNL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSELBNL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSELBNL, code);
         if ("BSD-3-Clause-No-Nuclear-License-2014".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSENONUCLEARLICENSE2014);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSENONUCLEARLICENSE2014, code);
         if ("BSD-3-Clause-No-Nuclear-License".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSENONUCLEARLICENSE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSENONUCLEARLICENSE, code);
         if ("BSD-3-Clause-No-Nuclear-Warranty".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSENONUCLEARWARRANTY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSENONUCLEARWARRANTY, code);
         if ("BSD-3-Clause".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD3CLAUSE, code);
         if ("BSD-4-Clause-UC".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD4CLAUSEUC);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD4CLAUSEUC, code);
         if ("BSD-4-Clause".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD4CLAUSE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSD4CLAUSE, code);
         if ("BSD-Protection".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSDPROTECTION);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSDPROTECTION, code);
         if ("BSD-Source-Code".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSDSOURCECODE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSDSOURCECODE, code);
         if ("BSL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BSL1_0, code);
         if ("bzip2-1.0.5".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BZIP21_0_5);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BZIP21_0_5, code);
         if ("bzip2-1.0.6".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.BZIP21_0_6);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.BZIP21_0_6, code);
         if ("Caldera".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CALDERA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CALDERA, code);
         if ("CATOSL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CATOSL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CATOSL1_1, code);
         if ("CC-BY-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBY1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBY1_0, code);
         if ("CC-BY-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBY2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBY2_0, code);
         if ("CC-BY-2.5".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBY2_5);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBY2_5, code);
         if ("CC-BY-3.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBY3_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBY3_0, code);
         if ("CC-BY-4.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBY4_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBY4_0, code);
         if ("CC-BY-NC-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNC1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNC1_0, code);
         if ("CC-BY-NC-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNC2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNC2_0, code);
         if ("CC-BY-NC-2.5".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNC2_5);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNC2_5, code);
         if ("CC-BY-NC-3.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNC3_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNC3_0, code);
         if ("CC-BY-NC-4.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNC4_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNC4_0, code);
         if ("CC-BY-NC-ND-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCND1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCND1_0, code);
         if ("CC-BY-NC-ND-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCND2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCND2_0, code);
         if ("CC-BY-NC-ND-2.5".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCND2_5);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCND2_5, code);
         if ("CC-BY-NC-ND-3.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCND3_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCND3_0, code);
         if ("CC-BY-NC-ND-4.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCND4_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCND4_0, code);
         if ("CC-BY-NC-SA-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCSA1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCSA1_0, code);
         if ("CC-BY-NC-SA-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCSA2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCSA2_0, code);
         if ("CC-BY-NC-SA-2.5".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCSA2_5);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCSA2_5, code);
         if ("CC-BY-NC-SA-3.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCSA3_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCSA3_0, code);
         if ("CC-BY-NC-SA-4.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCSA4_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYNCSA4_0, code);
         if ("CC-BY-ND-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYND1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYND1_0, code);
         if ("CC-BY-ND-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYND2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYND2_0, code);
         if ("CC-BY-ND-2.5".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYND2_5);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYND2_5, code);
         if ("CC-BY-ND-3.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYND3_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYND3_0, code);
         if ("CC-BY-ND-4.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYND4_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYND4_0, code);
         if ("CC-BY-SA-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYSA1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYSA1_0, code);
         if ("CC-BY-SA-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYSA2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYSA2_0, code);
         if ("CC-BY-SA-2.5".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYSA2_5);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYSA2_5, code);
         if ("CC-BY-SA-3.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYSA3_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYSA3_0, code);
         if ("CC-BY-SA-4.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYSA4_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CCBYSA4_0, code);
         if ("CC0-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CC01_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CC01_0, code);
         if ("CDDL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CDDL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CDDL1_0, code);
         if ("CDDL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CDDL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CDDL1_1, code);
         if ("CDLA-Permissive-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CDLAPERMISSIVE1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CDLAPERMISSIVE1_0, code);
         if ("CDLA-Sharing-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CDLASHARING1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CDLASHARING1_0, code);
         if ("CECILL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILL1_0, code);
         if ("CECILL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILL1_1, code);
         if ("CECILL-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILL2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILL2_0, code);
         if ("CECILL-2.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILL2_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILL2_1, code);
         if ("CECILL-B".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILLB);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILLB, code);
         if ("CECILL-C".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILLC);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CECILLC, code);
         if ("ClArtistic".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CLARTISTIC);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CLARTISTIC, code);
         if ("CNRI-Jython".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CNRIJYTHON);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CNRIJYTHON, code);
         if ("CNRI-Python-GPL-Compatible".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CNRIPYTHONGPLCOMPATIBLE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CNRIPYTHONGPLCOMPATIBLE, code);
         if ("CNRI-Python".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CNRIPYTHON);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CNRIPYTHON, code);
         if ("Condor-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CONDOR1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CONDOR1_1, code);
         if ("CPAL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CPAL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CPAL1_0, code);
         if ("CPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CPL1_0, code);
         if ("CPOL-1.02".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CPOL1_02);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CPOL1_02, code);
         if ("Crossword".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CROSSWORD);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CROSSWORD, code);
         if ("CrystalStacker".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CRYSTALSTACKER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CRYSTALSTACKER, code);
         if ("CUA-OPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CUAOPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CUAOPL1_0, code);
         if ("Cube".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CUBE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CUBE, code);
         if ("curl".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.CURL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.CURL, code);
         if ("D-FSL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.DFSL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.DFSL1_0, code);
         if ("diffmark".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.DIFFMARK);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.DIFFMARK, code);
         if ("DOC".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.DOC);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.DOC, code);
         if ("Dotseqn".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.DOTSEQN);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.DOTSEQN, code);
         if ("DSDP".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.DSDP);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.DSDP, code);
         if ("dvipdfm".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.DVIPDFM);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.DVIPDFM, code);
         if ("ECL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ECL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ECL1_0, code);
         if ("ECL-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ECL2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ECL2_0, code);
         if ("EFL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.EFL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.EFL1_0, code);
         if ("EFL-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.EFL2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.EFL2_0, code);
         if ("eGenix".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.EGENIX);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.EGENIX, code);
         if ("Entessa".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ENTESSA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ENTESSA, code);
         if ("EPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.EPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.EPL1_0, code);
         if ("EPL-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.EPL2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.EPL2_0, code);
         if ("ErlPL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ERLPL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ERLPL1_1, code);
         if ("EUDatagrid".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.EUDATAGRID);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.EUDATAGRID, code);
         if ("EUPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.EUPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.EUPL1_0, code);
         if ("EUPL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.EUPL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.EUPL1_1, code);
         if ("EUPL-1.2".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.EUPL1_2);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.EUPL1_2, code);
         if ("Eurosym".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.EUROSYM);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.EUROSYM, code);
         if ("Fair".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.FAIR);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.FAIR, code);
         if ("Frameworx-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.FRAMEWORX1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.FRAMEWORX1_0, code);
         if ("FreeImage".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.FREEIMAGE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.FREEIMAGE, code);
         if ("FSFAP".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.FSFAP);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.FSFAP, code);
         if ("FSFUL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.FSFUL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.FSFUL, code);
         if ("FSFULLR".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.FSFULLR);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.FSFULLR, code);
         if ("FTL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.FTL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.FTL, code);
         if ("GFDL-1.1-only".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_1ONLY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_1ONLY, code);
         if ("GFDL-1.1-or-later".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_1ORLATER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_1ORLATER, code);
         if ("GFDL-1.2-only".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_2ONLY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_2ONLY, code);
         if ("GFDL-1.2-or-later".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_2ORLATER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_2ORLATER, code);
         if ("GFDL-1.3-only".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_3ONLY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_3ONLY, code);
         if ("GFDL-1.3-or-later".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_3ORLATER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GFDL1_3ORLATER, code);
         if ("Giftware".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GIFTWARE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GIFTWARE, code);
         if ("GL2PS".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GL2PS);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GL2PS, code);
         if ("Glide".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GLIDE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GLIDE, code);
         if ("Glulxe".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GLULXE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GLULXE, code);
         if ("gnuplot".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GNUPLOT);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GNUPLOT, code);
         if ("GPL-1.0-only".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL1_0ONLY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL1_0ONLY, code);
         if ("GPL-1.0-or-later".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL1_0ORLATER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL1_0ORLATER, code);
         if ("GPL-2.0-only".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL2_0ONLY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL2_0ONLY, code);
         if ("GPL-2.0-or-later".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL2_0ORLATER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL2_0ORLATER, code);
         if ("GPL-3.0-only".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL3_0ONLY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL3_0ONLY, code);
         if ("GPL-3.0-or-later".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL3_0ORLATER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GPL3_0ORLATER, code);
         if ("gSOAP-1.3b".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.GSOAP1_3B);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.GSOAP1_3B, code);
         if ("HaskellReport".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.HASKELLREPORT);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.HASKELLREPORT, code);
         if ("HPND".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.HPND);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.HPND, code);
         if ("IBM-pibs".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.IBMPIBS);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.IBMPIBS, code);
         if ("ICU".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ICU);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ICU, code);
         if ("IJG".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.IJG);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.IJG, code);
         if ("ImageMagick".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.IMAGEMAGICK);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.IMAGEMAGICK, code);
         if ("iMatix".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.IMATIX);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.IMATIX, code);
         if ("Imlib2".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.IMLIB2);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.IMLIB2, code);
         if ("Info-ZIP".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.INFOZIP);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.INFOZIP, code);
         if ("Intel-ACPI".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.INTELACPI);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.INTELACPI, code);
         if ("Intel".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.INTEL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.INTEL, code);
         if ("Interbase-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.INTERBASE1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.INTERBASE1_0, code);
         if ("IPA".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.IPA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.IPA, code);
         if ("IPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.IPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.IPL1_0, code);
         if ("ISC".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ISC);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ISC, code);
         if ("JasPer-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.JASPER2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.JASPER2_0, code);
         if ("JSON".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.JSON);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.JSON, code);
         if ("LAL-1.2".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LAL1_2);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LAL1_2, code);
         if ("LAL-1.3".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LAL1_3);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LAL1_3, code);
         if ("Latex2e".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LATEX2E);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LATEX2E, code);
         if ("Leptonica".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LEPTONICA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LEPTONICA, code);
         if ("LGPL-2.0-only".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL2_0ONLY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL2_0ONLY, code);
         if ("LGPL-2.0-or-later".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL2_0ORLATER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL2_0ORLATER, code);
         if ("LGPL-2.1-only".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL2_1ONLY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL2_1ONLY, code);
         if ("LGPL-2.1-or-later".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL2_1ORLATER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL2_1ORLATER, code);
         if ("LGPL-3.0-only".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL3_0ONLY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL3_0ONLY, code);
         if ("LGPL-3.0-or-later".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL3_0ORLATER);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPL3_0ORLATER, code);
         if ("LGPLLR".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPLLR);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LGPLLR, code);
         if ("Libpng".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LIBPNG);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LIBPNG, code);
         if ("libtiff".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LIBTIFF);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LIBTIFF, code);
         if ("LiLiQ-P-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LILIQP1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LILIQP1_1, code);
         if ("LiLiQ-R-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LILIQR1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LILIQR1_1, code);
         if ("LiLiQ-Rplus-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LILIQRPLUS1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LILIQRPLUS1_1, code);
         if ("Linux-OpenIB".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LINUXOPENIB);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LINUXOPENIB, code);
         if ("LPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPL1_0, code);
         if ("LPL-1.02".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPL1_02);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPL1_02, code);
         if ("LPPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPPL1_0, code);
         if ("LPPL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPPL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPPL1_1, code);
         if ("LPPL-1.2".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPPL1_2);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPPL1_2, code);
         if ("LPPL-1.3a".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPPL1_3A);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPPL1_3A, code);
         if ("LPPL-1.3c".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPPL1_3C);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.LPPL1_3C, code);
         if ("MakeIndex".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MAKEINDEX);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MAKEINDEX, code);
         if ("MirOS".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MIROS);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MIROS, code);
         if ("MIT-0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MIT0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MIT0, code);
         if ("MIT-advertising".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MITADVERTISING);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MITADVERTISING, code);
         if ("MIT-CMU".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MITCMU);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MITCMU, code);
         if ("MIT-enna".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MITENNA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MITENNA, code);
         if ("MIT-feh".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MITFEH);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MITFEH, code);
         if ("MIT".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MIT);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MIT, code);
         if ("MITNFA".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MITNFA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MITNFA, code);
         if ("Motosoto".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MOTOSOTO);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MOTOSOTO, code);
         if ("mpich2".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MPICH2);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MPICH2, code);
         if ("MPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MPL1_0, code);
         if ("MPL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MPL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MPL1_1, code);
         if ("MPL-2.0-no-copyleft-exception".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MPL2_0NOCOPYLEFTEXCEPTION);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MPL2_0NOCOPYLEFTEXCEPTION, code);
         if ("MPL-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MPL2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MPL2_0, code);
         if ("MS-PL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MSPL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MSPL, code);
         if ("MS-RL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MSRL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MSRL, code);
         if ("MTLL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MTLL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MTLL, code);
         if ("Multics".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MULTICS);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MULTICS, code);
         if ("Mup".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.MUP);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.MUP, code);
         if ("NASA-1.3".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NASA1_3);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NASA1_3, code);
         if ("Naumen".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NAUMEN);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NAUMEN, code);
         if ("NBPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NBPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NBPL1_0, code);
         if ("NCSA".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NCSA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NCSA, code);
         if ("Net-SNMP".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NETSNMP);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NETSNMP, code);
         if ("NetCDF".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NETCDF);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NETCDF, code);
         if ("Newsletr".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NEWSLETR);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NEWSLETR, code);
         if ("NGPL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NGPL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NGPL, code);
         if ("NLOD-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NLOD1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NLOD1_0, code);
         if ("NLPL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NLPL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NLPL, code);
         if ("Nokia".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NOKIA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NOKIA, code);
         if ("NOSL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NOSL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NOSL, code);
         if ("Noweb".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NOWEB);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NOWEB, code);
         if ("NPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NPL1_0, code);
         if ("NPL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NPL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NPL1_1, code);
         if ("NPOSL-3.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NPOSL3_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NPOSL3_0, code);
         if ("NRL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NRL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NRL, code);
         if ("NTP".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.NTP);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.NTP, code);
         if ("OCCT-PL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OCCTPL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OCCTPL, code);
         if ("OCLC-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OCLC2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OCLC2_0, code);
         if ("ODbL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ODBL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ODBL1_0, code);
         if ("OFL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OFL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OFL1_0, code);
         if ("OFL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OFL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OFL1_1, code);
         if ("OGTSL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OGTSL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OGTSL, code);
         if ("OLDAP-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP1_1, code);
         if ("OLDAP-1.2".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP1_2);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP1_2, code);
         if ("OLDAP-1.3".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP1_3);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP1_3, code);
         if ("OLDAP-1.4".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP1_4);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP1_4, code);
         if ("OLDAP-2.0.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_0_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_0_1, code);
         if ("OLDAP-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_0, code);
         if ("OLDAP-2.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_1, code);
         if ("OLDAP-2.2.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_2_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_2_1, code);
         if ("OLDAP-2.2.2".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_2_2);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_2_2, code);
         if ("OLDAP-2.2".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_2);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_2, code);
         if ("OLDAP-2.3".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_3);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_3, code);
         if ("OLDAP-2.4".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_4);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_4, code);
         if ("OLDAP-2.5".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_5);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_5, code);
         if ("OLDAP-2.6".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_6);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_6, code);
         if ("OLDAP-2.7".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_7);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_7, code);
         if ("OLDAP-2.8".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_8);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OLDAP2_8, code);
         if ("OML".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OML);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OML, code);
         if ("OpenSSL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OPENSSL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OPENSSL, code);
         if ("OPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OPL1_0, code);
         if ("OSET-PL-2.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSETPL2_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSETPL2_1, code);
         if ("OSL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSL1_0, code);
         if ("OSL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSL1_1, code);
         if ("OSL-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSL2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSL2_0, code);
         if ("OSL-2.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSL2_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSL2_1, code);
         if ("OSL-3.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSL3_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.OSL3_0, code);
         if ("PDDL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.PDDL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.PDDL1_0, code);
         if ("PHP-3.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.PHP3_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.PHP3_0, code);
         if ("PHP-3.01".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.PHP3_01);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.PHP3_01, code);
         if ("Plexus".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.PLEXUS);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.PLEXUS, code);
         if ("PostgreSQL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.POSTGRESQL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.POSTGRESQL, code);
         if ("psfrag".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.PSFRAG);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.PSFRAG, code);
         if ("psutils".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.PSUTILS);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.PSUTILS, code);
         if ("Python-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.PYTHON2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.PYTHON2_0, code);
         if ("Qhull".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.QHULL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.QHULL, code);
         if ("QPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.QPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.QPL1_0, code);
         if ("Rdisc".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.RDISC);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.RDISC, code);
         if ("RHeCos-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.RHECOS1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.RHECOS1_1, code);
         if ("RPL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.RPL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.RPL1_1, code);
         if ("RPL-1.5".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.RPL1_5);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.RPL1_5, code);
         if ("RPSL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.RPSL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.RPSL1_0, code);
         if ("RSA-MD".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.RSAMD);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.RSAMD, code);
         if ("RSCPL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.RSCPL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.RSCPL, code);
         if ("Ruby".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.RUBY);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.RUBY, code);
         if ("SAX-PD".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SAXPD);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SAXPD, code);
         if ("Saxpath".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SAXPATH);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SAXPATH, code);
         if ("SCEA".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SCEA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SCEA, code);
         if ("Sendmail".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SENDMAIL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SENDMAIL, code);
         if ("SGI-B-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SGIB1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SGIB1_0, code);
         if ("SGI-B-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SGIB1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SGIB1_1, code);
         if ("SGI-B-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SGIB2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SGIB2_0, code);
         if ("SimPL-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SIMPL2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SIMPL2_0, code);
         if ("SISSL-1.2".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SISSL1_2);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SISSL1_2, code);
         if ("SISSL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SISSL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SISSL, code);
         if ("Sleepycat".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SLEEPYCAT);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SLEEPYCAT, code);
         if ("SMLNJ".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SMLNJ);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SMLNJ, code);
         if ("SMPPL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SMPPL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SMPPL, code);
         if ("SNIA".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SNIA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SNIA, code);
         if ("Spencer-86".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SPENCER86);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SPENCER86, code);
         if ("Spencer-94".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SPENCER94);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SPENCER94, code);
         if ("Spencer-99".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SPENCER99);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SPENCER99, code);
         if ("SPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SPL1_0, code);
         if ("SugarCRM-1.1.3".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SUGARCRM1_1_3);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SUGARCRM1_1_3, code);
         if ("SWL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.SWL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.SWL, code);
         if ("TCL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.TCL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.TCL, code);
         if ("TCP-wrappers".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.TCPWRAPPERS);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.TCPWRAPPERS, code);
         if ("TMate".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.TMATE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.TMATE, code);
         if ("TORQUE-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.TORQUE1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.TORQUE1_1, code);
         if ("TOSL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.TOSL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.TOSL, code);
         if ("Unicode-DFS-2015".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.UNICODEDFS2015);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.UNICODEDFS2015, code);
         if ("Unicode-DFS-2016".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.UNICODEDFS2016);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.UNICODEDFS2016, code);
         if ("Unicode-TOU".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.UNICODETOU);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.UNICODETOU, code);
         if ("Unlicense".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.UNLICENSE);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.UNLICENSE, code);
         if ("UPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.UPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.UPL1_0, code);
         if ("Vim".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.VIM);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.VIM, code);
         if ("VOSTROM".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.VOSTROM);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.VOSTROM, code);
         if ("VSL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.VSL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.VSL1_0, code);
         if ("W3C-19980720".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.W3C19980720);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.W3C19980720, code);
         if ("W3C-20150513".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.W3C20150513);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.W3C20150513, code);
         if ("W3C".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.W3C);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.W3C, code);
         if ("Watcom-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.WATCOM1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.WATCOM1_0, code);
         if ("Wsuipa".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.WSUIPA);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.WSUIPA, code);
         if ("WTFPL".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.WTFPL);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.WTFPL, code);
         if ("X11".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.X11);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.X11, code);
         if ("Xerox".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.XEROX);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.XEROX, code);
         if ("XFree86-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.XFREE861_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.XFREE861_1, code);
         if ("xinetd".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.XINETD);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.XINETD, code);
         if ("Xnet".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.XNET);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.XNET, code);
         if ("xpp".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.XPP);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.XPP, code);
         if ("XSkat".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.XSKAT);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.XSKAT, code);
         if ("YPL-1.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.YPL1_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.YPL1_0, code);
         if ("YPL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.YPL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.YPL1_1, code);
         if ("Zed".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZED);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZED, code);
         if ("Zend-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZEND2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZEND2_0, code);
         if ("Zimbra-1.3".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZIMBRA1_3);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZIMBRA1_3, code);
         if ("Zimbra-1.4".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZIMBRA1_4);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZIMBRA1_4, code);
         if ("zlib-acknowledgement".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZLIBACKNOWLEDGEMENT);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZLIBACKNOWLEDGEMENT, code);
         if ("Zlib".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZLIB);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZLIB, code);
         if ("ZPL-1.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZPL1_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZPL1_1, code);
         if ("ZPL-2.0".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZPL2_0);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZPL2_0, code);
         if ("ZPL-2.1".equals(codeString))
-          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZPL2_1);
+          return new Enumeration<SPDXLicense>(this, SPDXLicense.ZPL2_1, code);
         throw new FHIRException("Unknown SPDXLicense code '"+codeString+"'");
         }
     public String toCode(SPDXLicense code) {
@@ -12440,4 +12440,3 @@ public class ImplementationGuide extends CanonicalResource {
       
 
 }
-

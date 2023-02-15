@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 public class PackageClientTest implements ResourceLoaderTests {
 
-  PackageClient packageClient = new PackageClient(PackageClient.PRIMARY_SERVER);
+  PackageClient packageClient = new PackageClient(PackageServer.primaryServer());
 
   private void assertExpectedFields(final PackageInfo packageInfo) {
     assertEquals("dummy.package", packageInfo.getId());

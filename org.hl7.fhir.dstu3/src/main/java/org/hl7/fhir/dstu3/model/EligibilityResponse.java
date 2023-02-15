@@ -146,12 +146,12 @@ public class EligibilityResponse extends DomainResource {
           return EligibilityResponseStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown EligibilityResponseStatus code '"+codeString+"'");
         }
-        public Enumeration<EligibilityResponseStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EligibilityResponseStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<EligibilityResponseStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

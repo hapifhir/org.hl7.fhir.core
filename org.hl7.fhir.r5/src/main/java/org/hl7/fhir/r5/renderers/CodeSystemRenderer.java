@@ -112,7 +112,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
       if (hasURI) {
-        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "URL", getContext().getLang()));
+        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "URI", getContext().getLang()));
       }
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Type", getContext().getLang()));
       if (hasDescription) {
@@ -371,7 +371,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
           for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) 
             if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "definition") && cd.hasLanguage() && !c.getDefinition().equalsIgnoreCase(cd.getValue())) 
               sl = true;
-          td.addText((sl ? cs.getLanguage("en")+": " : "")+c.getDefinition());
+          td.addText((sl ? cs.getLanguage("en")+": " : ""));
+          if (hasMarkdownInDefinitions(cs))
+            addMarkdown(td, c.getDefinition());
+          else
+            td.addText(c.getDefinition());
           for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
             if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "definition") && cd.hasLanguage() && !c.getDefinition().equalsIgnoreCase(cd.getValue())) {
               td.br();

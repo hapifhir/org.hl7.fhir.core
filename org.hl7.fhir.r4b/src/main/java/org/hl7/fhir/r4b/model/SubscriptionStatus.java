@@ -159,24 +159,24 @@ public class SubscriptionStatus extends DomainResource {
           return SubscriptionNotificationType.QUERYEVENT;
         throw new IllegalArgumentException("Unknown SubscriptionNotificationType code '"+codeString+"'");
         }
-        public Enumeration<SubscriptionNotificationType> fromType(Base code) throws FHIRException {
+        public Enumeration<SubscriptionNotificationType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SubscriptionNotificationType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.NULL, code);
         if ("handshake".equals(codeString))
-          return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.HANDSHAKE);
+          return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.HANDSHAKE, code);
         if ("heartbeat".equals(codeString))
-          return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.HEARTBEAT);
+          return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.HEARTBEAT, code);
         if ("event-notification".equals(codeString))
-          return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.EVENTNOTIFICATION);
+          return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.EVENTNOTIFICATION, code);
         if ("query-status".equals(codeString))
-          return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.QUERYSTATUS);
+          return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.QUERYSTATUS, code);
         if ("query-event".equals(codeString))
-          return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.QUERYEVENT);
+          return new Enumeration<SubscriptionNotificationType>(this, SubscriptionNotificationType.QUERYEVENT, code);
         throw new FHIRException("Unknown SubscriptionNotificationType code '"+codeString+"'");
         }
     public String toCode(SubscriptionNotificationType code) {
@@ -1260,4 +1260,3 @@ public class SubscriptionStatus extends DomainResource {
 
 
 }
-

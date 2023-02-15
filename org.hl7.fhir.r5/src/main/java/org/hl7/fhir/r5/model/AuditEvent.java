@@ -159,24 +159,24 @@ public class AuditEvent extends DomainResource {
           return AuditEventAction.E;
         throw new IllegalArgumentException("Unknown AuditEventAction code '"+codeString+"'");
         }
-        public Enumeration<AuditEventAction> fromType(Base code) throws FHIRException {
+        public Enumeration<AuditEventAction> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AuditEventAction>(this);
+            return new Enumeration<AuditEventAction>(this, AuditEventAction.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AuditEventAction>(this, AuditEventAction.NULL, code);
         if ("C".equals(codeString))
-          return new Enumeration<AuditEventAction>(this, AuditEventAction.C);
+          return new Enumeration<AuditEventAction>(this, AuditEventAction.C, code);
         if ("R".equals(codeString))
-          return new Enumeration<AuditEventAction>(this, AuditEventAction.R);
+          return new Enumeration<AuditEventAction>(this, AuditEventAction.R, code);
         if ("U".equals(codeString))
-          return new Enumeration<AuditEventAction>(this, AuditEventAction.U);
+          return new Enumeration<AuditEventAction>(this, AuditEventAction.U, code);
         if ("D".equals(codeString))
-          return new Enumeration<AuditEventAction>(this, AuditEventAction.D);
+          return new Enumeration<AuditEventAction>(this, AuditEventAction.D, code);
         if ("E".equals(codeString))
-          return new Enumeration<AuditEventAction>(this, AuditEventAction.E);
+          return new Enumeration<AuditEventAction>(this, AuditEventAction.E, code);
         throw new FHIRException("Unknown AuditEventAction code '"+codeString+"'");
         }
     public String toCode(AuditEventAction code) {
@@ -339,30 +339,30 @@ public class AuditEvent extends DomainResource {
           return AuditEventSeverity.DEBUG;
         throw new IllegalArgumentException("Unknown AuditEventSeverity code '"+codeString+"'");
         }
-        public Enumeration<AuditEventSeverity> fromType(Base code) throws FHIRException {
+        public Enumeration<AuditEventSeverity> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AuditEventSeverity>(this);
+            return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.NULL, code);
         if ("emergency".equals(codeString))
-          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.EMERGENCY);
+          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.EMERGENCY, code);
         if ("alert".equals(codeString))
-          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.ALERT);
+          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.ALERT, code);
         if ("critical".equals(codeString))
-          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.CRITICAL);
+          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.CRITICAL, code);
         if ("error".equals(codeString))
-          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.ERROR);
+          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.ERROR, code);
         if ("warning".equals(codeString))
-          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.WARNING);
+          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.WARNING, code);
         if ("notice".equals(codeString))
-          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.NOTICE);
+          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.NOTICE, code);
         if ("informational".equals(codeString))
-          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.INFORMATIONAL);
+          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.INFORMATIONAL, code);
         if ("debug".equals(codeString))
-          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.DEBUG);
+          return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.DEBUG, code);
         throw new FHIRException("Unknown AuditEventSeverity code '"+codeString+"'");
         }
     public String toCode(AuditEventSeverity code) {
@@ -3913,4 +3913,3 @@ public class AuditEvent extends DomainResource {
 
 
 }
-

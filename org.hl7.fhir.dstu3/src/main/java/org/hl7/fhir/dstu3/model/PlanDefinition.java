@@ -138,12 +138,12 @@ public class PlanDefinition extends MetadataResource {
           return ActionConditionKind.STOP;
         throw new IllegalArgumentException("Unknown ActionConditionKind code '"+codeString+"'");
         }
-        public Enumeration<ActionConditionKind> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionConditionKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionConditionKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("applicability".equals(codeString))
@@ -322,12 +322,12 @@ public class PlanDefinition extends MetadataResource {
           return ActionRelationshipType.AFTEREND;
         throw new IllegalArgumentException("Unknown ActionRelationshipType code '"+codeString+"'");
         }
-        public Enumeration<ActionRelationshipType> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionRelationshipType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionRelationshipType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("before-start".equals(codeString))
@@ -458,12 +458,12 @@ public class PlanDefinition extends MetadataResource {
           return ActionParticipantType.RELATEDPERSON;
         throw new IllegalArgumentException("Unknown ActionParticipantType code '"+codeString+"'");
         }
-        public Enumeration<ActionParticipantType> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionParticipantType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionParticipantType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("patient".equals(codeString))
@@ -570,12 +570,12 @@ public class PlanDefinition extends MetadataResource {
           return ActionGroupingBehavior.SENTENCEGROUP;
         throw new IllegalArgumentException("Unknown ActionGroupingBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionGroupingBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionGroupingBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionGroupingBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("visual-group".equals(codeString))
@@ -718,12 +718,12 @@ public class PlanDefinition extends MetadataResource {
           return ActionSelectionBehavior.ONEORMORE;
         throw new IllegalArgumentException("Unknown ActionSelectionBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionSelectionBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionSelectionBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionSelectionBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("any".equals(codeString))
@@ -842,12 +842,12 @@ public class PlanDefinition extends MetadataResource {
           return ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
         throw new IllegalArgumentException("Unknown ActionRequiredBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionRequiredBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionRequiredBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionRequiredBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("must".equals(codeString))
@@ -942,12 +942,12 @@ public class PlanDefinition extends MetadataResource {
           return ActionPrecheckBehavior.NO;
         throw new IllegalArgumentException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionPrecheckBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionPrecheckBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionPrecheckBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("yes".equals(codeString))
@@ -1038,12 +1038,12 @@ public class PlanDefinition extends MetadataResource {
           return ActionCardinalityBehavior.MULTIPLE;
         throw new IllegalArgumentException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionCardinalityBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionCardinalityBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionCardinalityBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("single".equals(codeString))

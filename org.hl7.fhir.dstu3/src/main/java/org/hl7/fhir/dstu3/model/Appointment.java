@@ -193,12 +193,12 @@ public class Appointment extends DomainResource {
           return AppointmentStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown AppointmentStatus code '"+codeString+"'");
         }
-        public Enumeration<AppointmentStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<AppointmentStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AppointmentStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("proposed".equals(codeString))
@@ -325,12 +325,12 @@ public class Appointment extends DomainResource {
           return ParticipantRequired.INFORMATIONONLY;
         throw new IllegalArgumentException("Unknown ParticipantRequired code '"+codeString+"'");
         }
-        public Enumeration<ParticipantRequired> fromType(Base code) throws FHIRException {
+        public Enumeration<ParticipantRequired> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ParticipantRequired>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("required".equals(codeString))
@@ -449,12 +449,12 @@ public class Appointment extends DomainResource {
           return ParticipationStatus.NEEDSACTION;
         throw new IllegalArgumentException("Unknown ParticipationStatus code '"+codeString+"'");
         }
-        public Enumeration<ParticipationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ParticipationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ParticipationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("accepted".equals(codeString))

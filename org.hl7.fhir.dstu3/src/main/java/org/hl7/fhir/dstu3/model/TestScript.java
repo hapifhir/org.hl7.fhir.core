@@ -149,12 +149,12 @@ public class TestScript extends MetadataResource {
           return ContentType.NONE;
         throw new IllegalArgumentException("Unknown ContentType code '"+codeString+"'");
         }
-        public Enumeration<ContentType> fromType(Base code) throws FHIRException {
+        public Enumeration<ContentType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ContentType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("xml".equals(codeString))
@@ -253,12 +253,12 @@ public class TestScript extends MetadataResource {
           return AssertionDirectionType.REQUEST;
         throw new IllegalArgumentException("Unknown AssertionDirectionType code '"+codeString+"'");
         }
-        public Enumeration<AssertionDirectionType> fromType(Base code) throws FHIRException {
+        public Enumeration<AssertionDirectionType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AssertionDirectionType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("response".equals(codeString))
@@ -457,12 +457,12 @@ public class TestScript extends MetadataResource {
           return AssertionOperatorType.EVAL;
         throw new IllegalArgumentException("Unknown AssertionOperatorType code '"+codeString+"'");
         }
-        public Enumeration<AssertionOperatorType> fromType(Base code) throws FHIRException {
+        public Enumeration<AssertionOperatorType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AssertionOperatorType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("equals".equals(codeString))
@@ -637,12 +637,12 @@ public class TestScript extends MetadataResource {
           return TestScriptRequestMethodCode.PUT;
         throw new IllegalArgumentException("Unknown TestScriptRequestMethodCode code '"+codeString+"'");
         }
-        public Enumeration<TestScriptRequestMethodCode> fromType(Base code) throws FHIRException {
+        public Enumeration<TestScriptRequestMethodCode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<TestScriptRequestMethodCode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("delete".equals(codeString))
@@ -869,12 +869,12 @@ public class TestScript extends MetadataResource {
           return AssertionResponseTypes.UNPROCESSABLE;
         throw new IllegalArgumentException("Unknown AssertionResponseTypes code '"+codeString+"'");
         }
-        public Enumeration<AssertionResponseTypes> fromType(Base code) throws FHIRException {
+        public Enumeration<AssertionResponseTypes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AssertionResponseTypes>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("okay".equals(codeString))

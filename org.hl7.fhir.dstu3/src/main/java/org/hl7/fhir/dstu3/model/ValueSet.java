@@ -210,12 +210,12 @@ public class ValueSet extends MetadataResource {
           return FilterOperator.EXISTS;
         throw new IllegalArgumentException("Unknown FilterOperator code '"+codeString+"'");
         }
-        public Enumeration<FilterOperator> fromType(Base code) throws FHIRException {
+        public Enumeration<FilterOperator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<FilterOperator>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("=".equals(codeString))
