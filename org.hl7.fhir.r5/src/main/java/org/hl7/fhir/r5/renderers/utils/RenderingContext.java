@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
@@ -143,6 +144,7 @@ public class RenderingContext {
   private String definitionsTarget;
   private String destDir;
   private boolean inlineGraphics;
+  private StandardsStatus defaultStandardsStatus;
 
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
   private StructureDefinitionRendererMode structureMode = StructureDefinitionRendererMode.SUMMARY;
@@ -184,6 +186,7 @@ public class RenderingContext {
  // default to US locale - discussion here: https://github.com/hapifhir/org.hl7.fhir.core/issues/666
     this.locale = new Locale.Builder().setLanguageTag("en-US").build(); 
   }
+  
   public RenderingContext copy() {
     RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC), localPrefix, lang, mode, rules);
 
@@ -223,6 +226,7 @@ public class RenderingContext {
     res.showComments = showComments;
     res.copyButton = copyButton;
     res.pkp = pkp;
+    res.defaultStandardsStatus = defaultStandardsStatus;
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
     return res;
@@ -659,6 +663,13 @@ public class RenderingContext {
   }
   public void setRules(GenerationRules rules) {
     this.rules = rules;
+  }
+  public StandardsStatus getDefaultStandardsStatus() {
+    return defaultStandardsStatus;
+  }
+  public RenderingContext setDefaultStandardsStatus(StandardsStatus defaultStandardsStatus) {
+    this.defaultStandardsStatus = defaultStandardsStatus;
+    return this;
   }
 
 }

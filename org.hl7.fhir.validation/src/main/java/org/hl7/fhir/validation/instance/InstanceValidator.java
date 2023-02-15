@@ -863,8 +863,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       int i = 0;
       while (i < profiles.size()) {
         StructureDefinition sd = profiles.get(i);
-        if (sd.hasExtension(ToolingExtensions.EXT_SD_DEPENDENCY)) {
-          for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_DEPENDENCY)) {
+        if (sd.hasExtension(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
+          for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
             StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue(), sd);
             if (dep == null) {
               warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
@@ -4794,8 +4794,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (pctOwned) {
                 pct.done();
               }
-              if (sd.hasExtension(ToolingExtensions.EXT_SD_DEPENDENCY)) {
-                for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_DEPENDENCY)) {
+              if (sd.hasExtension(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
+                for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
                   StructureDefinition sdi = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue());
                   if (sdi == null) {
                     warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
