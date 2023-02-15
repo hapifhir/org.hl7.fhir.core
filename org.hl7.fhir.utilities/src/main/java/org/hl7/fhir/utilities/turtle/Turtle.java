@@ -472,7 +472,7 @@ public class Turtle {
 	  writer.ln();
 	  if (!section.comments.isEmpty()) {
 	    for (String s : section.comments) {
-	      writer.ln("# "+s);		  
+	      writer.ln("# "+formatMultilineComment(s));
 	    }
 	    writer.ln();
 	  }
@@ -508,7 +508,7 @@ public class Turtle {
 						writer.write("]");
 				}
         }
-				String comment = p.comment == null? "" : " # "+p.comment;
+				String comment = p.comment == null? "" : " # "+formatMultilineComment(p.comment);
 				if (p.asList) writer.write(" )");	
 				i++;
 				if (i < sbj.predicates.size())
@@ -521,6 +521,11 @@ public class Turtle {
 	  }
 	}
   }
+	
+  private String formatMultilineComment(String s) {
+	  return s.replace("\n", "\n#");
+  }
+
 
   private void commitSection(StringBuilder b, Section section) throws Exception {
     b.append("# - "+section.name+" "+Utilities.padLeft("", '-', 75-section.name.length())+"\r\n");
@@ -558,7 +563,7 @@ public class Turtle {
               b.append("]");
           }
         }
-        String comment = p.comment == null? "" : " # "+p.comment;
+        String comment = p.comment == null? "" : " # "+formatMultilineComment(p.comment);
         if (p.asList) b.append(" )");
         i++;
         if (i < sbj.predicates.size())
