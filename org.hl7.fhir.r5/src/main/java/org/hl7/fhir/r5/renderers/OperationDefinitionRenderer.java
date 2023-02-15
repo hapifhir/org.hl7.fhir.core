@@ -110,12 +110,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     XhtmlNode td = tr.td();
     td.addText(path+p.getName());
     StandardsStatus ss = ToolingExtensions.getStandardsStatus(p);
-    if (ss != null) {
-      td.tx(" ");
-      XhtmlNode a = td.ah("versions.html#std-process", "Standards Status = "+ss.toDisplay());
-      a.style("padding-left: 3px; padding-right: 3px; border: 1px grey solid; font-weight: bold; color: black; background-color: "+ss.getColor());
-      a.tx(ss.getAbbrev());
-    }
+    genStandardsStatus(td, ss);
     td = tr.td();
     if (p.hasScope()) {
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
@@ -160,5 +155,6 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       }
     }
   }
+
 
 }

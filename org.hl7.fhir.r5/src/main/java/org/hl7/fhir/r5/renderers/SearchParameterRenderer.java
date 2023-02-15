@@ -19,6 +19,8 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -37,7 +39,12 @@ public class SearchParameterRenderer extends TerminologyRenderer {
   }
 
   public boolean render(XhtmlNode x, SearchParameter spd) throws IOException, FHIRException, EOperationOutcome {
-    x.h2().addText(spd.getName());
+    XhtmlNode h2 = x.h2();
+    h2.addText(spd.getName());
+    StandardsStatus ss = ToolingExtensions.getStandardsStatus(spd);
+    if (ss != context.getDefaultStandardsStatus()) {
+      genStandardsStatus(h2, ss);
+    }
     XhtmlNode p =  x.para();
     p.tx("Parameter ");
     p.code().tx(spd.getCode());
@@ -52,9 +59,11 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     for (CodeType t : spd.getBase()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.toString());
       if (sd != null && sd.hasUserData("path")) {
-        td.ah(sd.getUserString("path")).sep(", ").tx(t.getCode());
+        td.sep(", ");
+        td.ah(sd.getUserString("path")).tx(t.getCode());
       } else {
-        td.sep(", ").tx(t.getCode());
+        td.sep(", ");
+        td.tx(t.getCode());
       }
     }
     tr = tbl.tr();
