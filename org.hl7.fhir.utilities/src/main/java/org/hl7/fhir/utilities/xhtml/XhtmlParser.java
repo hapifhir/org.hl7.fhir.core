@@ -1325,7 +1325,7 @@ public class XhtmlParser {
 
   private void defineEntities() {
     definedEntities.put("&AElig;", "\u00C6");
-    definedEntities.put("&AMP;", "\u0026");
+//    definedEntities.put("&AMP;", "\u0026");
     definedEntities.put("&Aacute;", "\u00C1");
     definedEntities.put("&Abreve;", "\u0102");
     definedEntities.put("&Acirc;", "\u00C2");
@@ -1477,7 +1477,7 @@ public class XhtmlParser {
     definedEntities.put("&Fouriertrf;", "\u2131");
     definedEntities.put("&Fscr;", "\u2131");
     definedEntities.put("&GJcy;", "\u0403");
-    definedEntities.put("&GT;", "\u003E");
+//    definedEntities.put("&GT;", "\u003E");
     definedEntities.put("&Gamma;", "\u0393");
     definedEntities.put("&Gammad;", "\u03DC");
     definedEntities.put("&Gbreve;", "\u011E");
@@ -1550,7 +1550,7 @@ public class XhtmlParser {
     definedEntities.put("&Kopf;", "\uD835\uDD42");
     definedEntities.put("&Kscr;", "\uD835\uDCA6");
     definedEntities.put("&LJcy;", "\u0409");
-    definedEntities.put("&LT;", "\u003C");
+//    definedEntities.put("&LT;", "\u003C");
     definedEntities.put("&Lacute;", "\u0139");
     definedEntities.put("&Lambda;", "\u039B");
     definedEntities.put("&Lang;", "\u27EA");
@@ -1730,7 +1730,7 @@ public class XhtmlParser {
     definedEntities.put("&Proportional;", "\u221D");
     definedEntities.put("&Pscr;", "\uD835\uDCAB");
     definedEntities.put("&Psi;", "\u03A8");
-    definedEntities.put("&QUOT;", "\\u0022");
+    //definedEntities.put("&QUOT;", "\\u0022");
     definedEntities.put("&Qfr;", "\uD835\uDD14");
     definedEntities.put("&Qopf;", "\u211A");
     definedEntities.put("&Qscr;", "\uD835\uDCAC");
@@ -1939,7 +1939,7 @@ public class XhtmlParser {
     definedEntities.put("&alpha;", "\u03B1");
     definedEntities.put("&amacr;", "\u0101");
     definedEntities.put("&amalg;", "\u2A3F");
-    definedEntities.put("&amp;", "\u0026");
+//    definedEntities.put("&amp;", "\u0026");
     definedEntities.put("&and;", "\u2227");
     definedEntities.put("&andand;", "\u2A55");
     definedEntities.put("&andd;", "\u2A5C");
@@ -1970,7 +1970,7 @@ public class XhtmlParser {
     definedEntities.put("&apacir;", "\u2A6F");
     definedEntities.put("&ape;", "\u224A");
     definedEntities.put("&apid;", "\u224B");
-    definedEntities.put("&apos;", "\u0027");
+//    definedEntities.put("&apos;", "\u0027");
     definedEntities.put("&approx;", "\u2248");
     definedEntities.put("&approxeq;", "\u224A");
     definedEntities.put("&aring;", "\u00E5");
@@ -2397,7 +2397,7 @@ public class XhtmlParser {
     definedEntities.put("&gsim;", "\u2273");
     definedEntities.put("&gsime;", "\u2A8E");
     definedEntities.put("&gsiml;", "\u2A90");
-    definedEntities.put("&gt;", "\u003E");
+//    definedEntities.put("&gt;", "\u003E");
     definedEntities.put("&gtcc;", "\u2AA7");
     definedEntities.put("&gtcir;", "\u2A7A");
     definedEntities.put("&gtdot;", "\u22D7");
@@ -2644,7 +2644,7 @@ public class XhtmlParser {
     definedEntities.put("&lsquo;", "\u2018");
     definedEntities.put("&lsquor;", "\u201A");
     definedEntities.put("&lstrok;", "\u0142");
-    definedEntities.put("&lt;", "\u003C");
+//    definedEntities.put("&lt;", "\u003C");
     definedEntities.put("&ltcc;", "\u2AA6");
     definedEntities.put("&ltcir;", "\u2A79");
     definedEntities.put("&ltdot;", "\u22D6");
@@ -2990,7 +2990,7 @@ public class XhtmlParser {
     definedEntities.put("&quatint;", "\u2A16");
     definedEntities.put("&quest;", "\u003F");
     definedEntities.put("&questeq;", "\u225F");
-    definedEntities.put("&quot;", "\\u0022");
+//    definedEntities.put("&quot;", "\\u0022");
     definedEntities.put("&rAarr;", "\u21DB");
     definedEntities.put("&rArr;", "\u21D2");
     definedEntities.put("&rAtail;", "\u291C");
