@@ -208,7 +208,7 @@ public class ToolingExtensions {
   public static final String EXT_REND_MD = "http://hl7.org/fhir/StructureDefinition/rendering-markdown";
   public static final String EXT_CAP_STMT_EXPECT = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation";
   public static final String EXT_ED_HEIRARCHY = "http://hl7.org/fhir/StructureDefinition/elementdefinition-heirarchy";
-  public static final String EXT_SD_DEPENDENCY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies";
+  public static final String EXT_SD_IMPOSE_PROFILE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-imposeProfile";
   public static final String EXT_XML_NO_ORDER = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-no-order";
   public static final String EXT_DEF_TYPE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype";
   public static final String EXT_TYPE_SPEC = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier";
