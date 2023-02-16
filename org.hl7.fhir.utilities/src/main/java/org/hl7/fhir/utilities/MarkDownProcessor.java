@@ -114,4 +114,42 @@ public class MarkDownProcessor {
     return !description.contains("\n");
   }
   
+  public static String makeStringSafeAsMarkdown(String content) {
+    StringBuilder b = new StringBuilder();
+    for (char c : content.toCharArray()) {
+      if (isEscableMarkdownChar(c)) {
+        b.append('\\');
+      }
+      b.append(c);
+    }
+    return b.toString();
+  }
+  
+  private static boolean isEscableMarkdownChar(char c) {
+    switch (c) {
+    case '*':
+    case '&':
+    case '#':
+    case '[':
+    case '>':
+    case '<':
+    case '`':
+      return true;  
+    default: 
+      return false;
+    }
+  }
+
+
+  public static String makeMarkdownForString(String content) {
+    StringBuilder b = new StringBuilder();
+    for (int i = 0; i < content.length(); i++) {
+      char c = content.charAt(i);
+      if (c != '\\' || i == content.length() - 1 || !isEscableMarkdownChar(content.charAt(i+1))) {
+        b.append(c);
+      }
+    }
+    return b.toString();
+  }
+
 }
