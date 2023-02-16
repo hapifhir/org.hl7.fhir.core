@@ -13,6 +13,6 @@ public class TerminologyClientFactoryTest {
   public void testMakeClient() throws URISyntaxException {
     TerminologyClient terminologyClient = TerminologyClientFactory.makeClient("https://tx.fhir.org", "dummyUserAgent", FhirPublication.R4);
     String expectedAddress = "https://tx.fhir.org/r4";
-    assertEquals(expectedAddress, terminologyClient.getAddress();
+    assertEquals(expectedAddress, terminologyClient.getAddress());
   }
 }
