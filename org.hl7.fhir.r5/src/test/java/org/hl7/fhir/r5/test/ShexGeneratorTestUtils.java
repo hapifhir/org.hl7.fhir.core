@@ -7,6 +7,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * ShexGeneratorTestUtils
+ *
+ * This class provides auxiliary methos to perform testing of
+ * Shape Expressions (ShEx) translation of various FHIR Resources.
+ *
+ * Author: Deepak Sharma
+ */
 public class ShexGeneratorTestUtils {
   public class resDef {
     public String name;
@@ -28,6 +36,14 @@ public class ShexGeneratorTestUtils {
   public enum RESOURCE_CATEGORY{
     LOGICAL_NAMES, STRUCTURE_DEFINITIONS, EXTENSIONS, PROFILES, ALL
   }
+
+  /**
+   * Filters Structure Definitions from a given list of
+   * mixed types of StructureDefinitons based on resource categories
+   * @param sds  List of StructureDefiniton of any resource type
+   * @param cat  Resource category filter criteria (inclusive)
+   * @return List of resDef with just Structure Definition's name, url and description.
+   */
   public List<resDef> getSDs(List<StructureDefinition> sds, RESOURCE_CATEGORY cat) {
     List<resDef> selSDs = new ArrayList<resDef>();
     sds.forEach((StructureDefinition sd) -> {
@@ -64,6 +80,14 @@ public class ShexGeneratorTestUtils {
 
     return selSDs;
   }
+
+  /**
+   * This method is used in testing only - during Resource Constraint translation to ShEx constructs.
+   * It can be used by future developers to avoid unnecessary processing of constraints
+   * that belong to these Meta Level Resources of FHIR.  This list was created by FHIRCat
+   * Project group for testing (fhircat.org).  It does not skip these SDs for the build.
+   * @return List of StructureDefinitions at meta Level
+   */
   public static List<String> getMetaStructureDefinitionsToSkip(){
     List<String> skipSDs = new ArrayList<String>();
     skipSDs.add("http://hl7.org/fhir/StructureDefinition/ActivityDefinition");
@@ -114,6 +138,11 @@ public class ShexGeneratorTestUtils {
     return selectedExtesnsions;
   }
 
+  /**
+   * Structure Definition Information for debug/printing purpose during testing.
+   * @param sd  Structure Definition
+   * @return  String representation of basic SD Information
+   */
   public static String getSDInfo(StructureDefinition sd) {
     if (sd != null) {
       String kind = " ";
@@ -157,6 +186,11 @@ public class ShexGeneratorTestUtils {
     return "";
   }
 
+  /**
+   * Utility Print method to print interim resDef object for debug/testing purpose.
+   * @param title  title of resDef types (Resources, Extensions, profiles, etc.)
+   * @param items List of resDef objects
+   */
   public static void printList(String title, List<ShexGeneratorTestUtils.resDef> items) {
     System.out.println("************************************************************************");
     System.out.println("Printing " + title);
