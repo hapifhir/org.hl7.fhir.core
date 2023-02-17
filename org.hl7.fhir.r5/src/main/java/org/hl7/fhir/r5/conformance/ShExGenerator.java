@@ -55,7 +55,7 @@ public class ShExGenerator {
     CONTEXT_OF_USE_ONLY  // Translate only Extensions with context-of-use
   }
 
-  public boolean doDatatypes = true;                 // add data types
+  public boolean doDatatypes = false;                 // add data types
   public boolean withComments = true;                // include comments
   public boolean completeModel = false;              // doing complete build (fhir.shex)
 
@@ -436,26 +436,34 @@ public class ShExGenerator {
     }
 
     shapeDefinitions.append(emitInnerTypes());
+
+    // If data types are to be put in the same file
     if(doDatatypes) {
       shapeDefinitions.append("\n#---------------------- Data Types -------------------\n");
       while (emittedDatatypes.size() < datatypes.size() ||
         emittedInnerTypes.size() < innerTypes.size()) {
         shapeDefinitions.append(emitDataTypes());
+        // As process data types, it may introduce some more inner types, so we repeat the call here.
         shapeDefinitions.append(emitInnerTypes());
       }
     }
 
-    shapeDefinitions.append("\n#---------------------- Cardinality Types (OneOrMore) -------------------\n");
-    oneOrMoreTypes.forEach((String oomType) -> {
-      shapeDefinitions.append(getOneOrMoreType(oomType));
-    });
-
-    shapeDefinitions.append("\n#---------------------- Reference Types -------------------\n");
-    for(String r: references) {
-      shapeDefinitions.append("\n").append(tmplt(TYPED_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
-      if (!"Resource".equals(r) && !known_resources.contains(r))
-        shapeDefinitions.append("\n").append(tmplt(TARGET_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
+    if (oneOrMoreTypes.size() > 0) {
+      shapeDefinitions.append("\n#---------------------- Cardinality Types (OneOrMore) -------------------\n");
+      oneOrMoreTypes.forEach((String oomType) -> {
+        shapeDefinitions.append(getOneOrMoreType(oomType));
+      });
     }
+
+    if (references.size() > 0) {
+      shapeDefinitions.append("\n#---------------------- Reference Types -------------------\n");
+      for (String r : references) {
+        shapeDefinitions.append("\n").append(tmplt(TYPED_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
+        if (!"Resource".equals(r) && !known_resources.contains(r))
+          shapeDefinitions.append("\n").append(tmplt(TARGET_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
+      }
+    }
+
     shex_def.add("shapeDefinitions", shapeDefinitions);
 
     if(completeModel && known_resources.size() > 0) {
@@ -468,9 +476,11 @@ public class ShExGenerator {
         .add("all_entries", StringUtils.join(all_entries, " OR\n\t")).render());
     }
 
-    shapeDefinitions.append("\n#---------------------- Value Sets ------------------------\n");
-    for(ValueSet vs: required_value_sets)
-      shapeDefinitions.append("\n").append(genValueSet(vs));
+    if (required_value_sets.size() > 0) {
+      shapeDefinitions.append("\n#---------------------- Value Sets ------------------------\n");
+      for (ValueSet vs : required_value_sets)
+        shapeDefinitions.append("\n").append(genValueSet(vs));
+    }
 
     if ((unMappedFunctions != null)&&(!unMappedFunctions.isEmpty())) {
       debug("------------------------- Unmapped Functions ---------------------");
@@ -1136,10 +1146,11 @@ public class ShExGenerator {
     String shortId = id;
     String typ = id;
 
+    if (ed.getType().size() > 0)
+      typ = ed.getType().get(0).getCode();
+
     if (id.equals("Element.extension") && ed.hasSliceName()) {
       shortId = ed.getSliceName();
-      if (ed.getType().size() > 0)
-        typ = ed.getType().get(0).getCode();
     }
     else
       shortId = id.substring(id.lastIndexOf(".") + 1);
@@ -1147,6 +1158,7 @@ public class ShExGenerator {
     if ((ed.getType().size() > 0) &&
       (ed.getType().get(0).getCode().startsWith(Constants.NS_SYSTEM_TYPE))) {
       shortId = "v";
+      typ = ed.getType().get(0).getWorkingCode();
     }
 
     String defn = "";
@@ -1179,7 +1191,7 @@ public class ShExGenerator {
     } else {
       if (ed.getType().size() == 1) {
         // Single entry
-        if (defn.isEmpty())
+        if ((defn.isEmpty())||(typ.equals(sd.getName())))
           defn = genTypeRef(sd, ed, id, ed.getType().get(0));
       } else if (ed.getContentReference() != null) {
         // Reference to another element

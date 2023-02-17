@@ -44,7 +44,9 @@ public class ShexGeneratorTests {
     Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
     TextFile.stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
 
-    //this.doTestThis(name.toLowerCase(), name, false, ShExGenerator.ConstraintTranslationPolicy.ALL, false, false);
+    // For Testing Schema Processing and Constraint Mapping related Development
+    // If you un-comment the following lines, please comment all other lines in this method.
+    //this.doTestThis(name.toLowerCase(), name, false, ShExGenerator.ConstraintTranslationPolicy.ALL, false, true);
   }
   @Test
   public void testId() throws FHIRException, IOException, UcumException {
@@ -94,6 +96,11 @@ public class ShexGeneratorTests {
   @Test
   public void testSignature() throws FHIRException, IOException, UcumException {
     doTest("Signature");
+  }
+
+  @Test
+  public void testString() throws FHIRException, IOException, UcumException {
+    doTest("string");
   }
 
   private void doTestThis(String shortName, String name, boolean useSelectedExtensions, ShExGenerator.ConstraintTranslationPolicy policy, boolean debugMode, boolean validateShEx) {
