@@ -50,6 +50,13 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!-- ShEx -->
+		<dependency>
+			<groupId>es.weso</groupId>
+			<artifactId>shexs_2.12</artifactId>
+			<version>0.2.31</version>
+		</dependency>
+
 		<!-- JSON Parsers -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
