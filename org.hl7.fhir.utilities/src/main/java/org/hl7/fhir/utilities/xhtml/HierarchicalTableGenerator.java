@@ -83,9 +83,14 @@ import org.commonmark.renderer.html.HtmlRenderer;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.TranslatingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableGenerationMode;
 
 
 public class HierarchicalTableGenerator extends TranslatingUtilities {
+  public enum TableGenerationMode {
+    XML, XHTML
+  }
+
   public static final String TEXT_ICON_REFERENCE = "Reference to another Resource";
   public static final String TEXT_ICON_PRIMITIVE = "Primitive Data Type";
   public static final String TEXT_ICON_KEY = "JSON Key Value";
@@ -599,6 +604,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
    */
   private boolean inLineGraphics;  
   
+  private TableGenerationMode mode;
+  
   public HierarchicalTableGenerator() {
     super();
   }
@@ -626,7 +633,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     checkSetup();
   }
 
-  public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating, String id, boolean isActive) {
+  public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating, String id, boolean isActive, TableGenerationMode mode) {
+    this.mode = mode;
+    
     TableModel model = new TableModel(id, isActive);
     
     model.setAlternating(alternating);
@@ -686,12 +695,16 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     tr.setAttribute("style", "border: " + Integer.toString(1 + border) + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top");
     XhtmlNode tc = null;
     for (Title t : model.getTitles()) {
-      tc = renderCell(tr, t, "th", null, null, null, false, null, "white", 0, imagePath, border, outputTracker, model, null);
+      tc = renderCell(tr, t, "th", null, null, null, false, null, "white", 0, imagePath, border, outputTracker, model, null, true);
       if (t.width != 0)
         tc.setAttribute("style", "width: "+Integer.toString(t.width)+"px");
     }
     if (tc != null && model.getDocoRef() != null) {
-      XhtmlNode img = tc.addTag("span").setAttribute("style", "float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef()).addTag("img");
+      XhtmlNode a = tc.addTag("span").setAttribute("style", "float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef());
+      if (mode == TableGenerationMode.XHTML) {
+        a.setAttribute("no-external", "true");
+      }
+      XhtmlNode img = a.addTag("img");
       img.setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
       if (model.isActive()) {
         img.setAttribute("onLoad", "fhirTableInit(this)");
@@ -732,7 +745,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     }
     boolean first = true;
     for (Cell t : r.getCells()) {
-      renderCell(tr, t, "td", first ? r.getIcon() : null, first ? r.getHint() : null, first ? indents : null, !r.getSubRows().isEmpty(), first ? r.getAnchor() : null, color, r.getLineColor(), imagePath, border, outputTracker, model, r);
+      renderCell(tr, t, "td", first ? r.getIcon() : null, first ? r.getHint() : null, first ? indents : null, !r.getSubRows().isEmpty(), first ? r.getAnchor() : null, color, r.getLineColor(), imagePath, border, outputTracker, model, r, first);
       first = false;
     }
     table.addText("\r\n");
@@ -751,7 +764,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   }
 
 
-  private XhtmlNode renderCell(XhtmlNode tr, Cell c, String name, String icon, String hint, List<Integer> indents, boolean hasChildren, String anchor, String color, int lineColor, String imagePath, int border, Set<String> outputTracker, TableModel table, Row row) throws IOException  {
+  private XhtmlNode renderCell(XhtmlNode tr, Cell c, String name, String icon, String hint, List<Integer> indents, boolean hasChildren, String anchor, String color, int lineColor, String imagePath, int border, Set<String> outputTracker, TableModel table, Row row, boolean suppressExternals) throws IOException  {
     XhtmlNode tc = tr.addTag(name);
     tc.setAttribute("class", "hierarchy");
     if (c.span > 1) {
@@ -837,6 +850,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       } else if (!Utilities.noString(p.getReference())) {
         XhtmlNode a = addStyle(tc.addTag("a"), p);
         a.setAttribute("href", p.getReference());
+        if (mode == TableGenerationMode.XHTML && suppressExternals) {
+          a.setAttribute("no-external", "true");
+        }
         if (!Utilities.noString(p.getHint()))
           a.setAttribute("title", p.getHint());
         if (p.getText() != null) {
