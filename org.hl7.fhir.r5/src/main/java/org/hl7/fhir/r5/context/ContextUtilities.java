@@ -42,6 +42,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   private boolean ignoreProfileErrors;
   private XVerExtensionManager xverManager;
   private Map<String, String> oidCache = new HashMap<>();
+  private List<StructureDefinition> allStructuresList = new ArrayList<StructureDefinition>();
   
   public ContextUtilities(IWorkerContext context) {
     super();
@@ -209,28 +210,29 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
    * @return a list of all structure definitions, with snapshots generated (if possible)
    */
   public List<StructureDefinition> allStructures(){
-    List<StructureDefinition> result = new ArrayList<StructureDefinition>();
-    Set<StructureDefinition> set = new HashSet<StructureDefinition>();
-    for (StructureDefinition sd : getStructures()) {
-      if (!set.contains(sd)) {
-        try {
-          generateSnapshot(sd);
-          // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
-        } catch (Exception e) {
-          if (!isSuppressDebugMessages()) {
-            System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-            if (context.getLogger().isDebugLogging()) {
-              e.printStackTrace();
+    if (allStructuresList.isEmpty()) {
+      Set<StructureDefinition> set = new HashSet<StructureDefinition>();
+      for (StructureDefinition sd : getStructures()) {
+        if (!set.contains(sd)) {
+          try {
+            generateSnapshot(sd);
+            // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
+          } catch (Exception e) {
+            if (!isSuppressDebugMessages()) {
+              System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+              if (context.getLogger().isDebugLogging()) {
+                e.printStackTrace();
+              }
             }
           }
+          allStructuresList.add(sd);
+          set.add(sd);
         }
-        result.add(sd);
-        set.add(sd);
       }
     }
-    return result;
+    return allStructuresList;
   }
-  
+
   /**
    * @return a list of all structure definitions, without trying to generate snapshots
    */
