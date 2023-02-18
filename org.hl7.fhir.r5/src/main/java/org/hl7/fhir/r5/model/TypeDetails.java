@@ -151,6 +151,7 @@ public class TypeDetails {
     addType(pt);
     return res;
   }
+  
   public void addType(ProfiledType pt) {
     for (ProfiledType et : types) {
       if (et.uri.equals(pt.uri)) {
@@ -175,7 +176,29 @@ public class TypeDetails {
     }
     types.add(pt); 
   }
-  
+
+  public void addType(CollectionStatus status, ProfiledType pt) {
+    addType(pt);
+    if (collectionStatus == null) {
+      collectionStatus = status;      
+    } else {
+      switch (status) {
+      case ORDERED:
+        if (collectionStatus == CollectionStatus.SINGLETON) {
+          collectionStatus = status;
+        }
+        break;
+      case SINGLETON:
+        break;
+      case UNORDERED:
+        collectionStatus = status;
+        break;
+      default:
+        break;    
+      }
+    }
+  }
+
   public void addTypes(Collection<String> names) {
     for (String n : names) 
       addType(new ProfiledType(n));
