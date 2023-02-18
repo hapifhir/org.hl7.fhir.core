@@ -386,6 +386,7 @@ public class FHIRPathEngine {
       }
     }
     initFlags();
+    cu = new ContextUtilities(worker);
   }
 
   private void initFlags() {
@@ -578,6 +579,22 @@ public class FHIRPathEngine {
    * @if the path is not valid
    */
   public TypeDetails check(Object appContext, String resourceType, String context, ExpressionNode expr) throws FHIRLexerException, PathEngineException, DefinitionException {
+    return check(appContext, resourceType, context, expr, null);
+  }
+
+  /**
+   * check that paths referred to in the ExpressionNode are valid
+   * 
+   * xPathStartsWithValueRef is a hack work around for the fact that FHIR Path sometimes needs a different starting point than the xpath
+   * 
+   * returns a list of the possible types that might be returned by executing the ExpressionNode against a particular context
+   * 
+   * @param context - the logical type against which this path is applied
+   * @throws DefinitionException
+   * @throws PathEngineException 
+   * @if the path is not valid
+   */
+  public TypeDetails check(Object appContext, String resourceType, String context, ExpressionNode expr, Set<ElementDefinition> elementDependencies) throws FHIRLexerException, PathEngineException, DefinitionException {
     // if context is a path that refers to a type, do that conversion now 
     TypeDetails types; 
     if (context == null) {
@@ -610,7 +627,7 @@ public class FHIRPathEngine {
       }
     }
 
-    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, true);
+    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, elementDependencies, true);
   }
 
   private FHIRException makeExceptionPlural(Integer num, ExpressionNode holder, String constName, Object... args) {
@@ -659,13 +676,13 @@ public class FHIRPathEngine {
       }
     }
 
-    return executeType(new ExecutionTypeContext(appContext, sd.getUrl(), types, types), types, expr, true);
+    return executeType(new ExecutionTypeContext(appContext, sd.getUrl(), types, types), types, expr, null, true);
   }
 
   public TypeDetails check(Object appContext, StructureDefinition sd, ExpressionNode expr) throws FHIRLexerException, PathEngineException, DefinitionException {
     // if context is a path that refers to a type, do that conversion now 
     TypeDetails types = null; // this is a special case; the first path reference will have to resolve to something in the context
-    return executeType(new ExecutionTypeContext(appContext, sd == null ? null : sd.getUrl(), null, types), types, expr, true);
+    return executeType(new ExecutionTypeContext(appContext, sd == null ? null : sd.getUrl(), null, types), types, expr, null, true);
   }
 
   public TypeDetails check(Object appContext, String resourceType, String context, String expr) throws FHIRLexerException, PathEngineException, DefinitionException {
@@ -1557,7 +1574,7 @@ public class FHIRPathEngine {
     return new TypeDetails(CollectionStatus.SINGLETON, exp.getName());
   }
 
-  private TypeDetails executeType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, boolean atEntry) throws PathEngineException, DefinitionException {
+  private TypeDetails executeType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies, boolean atEntry) throws PathEngineException, DefinitionException {
     TypeDetails result = new TypeDetails(null);
     switch (exp.getKind()) {
     case Name:
@@ -1571,7 +1588,7 @@ public class FHIRPathEngine {
         result.update(executeContextType(context, exp.getName(), exp));
       } else {
         for (String s : focus.getTypes()) {
-          result.update(executeType(s, exp, atEntry));
+          result.update(executeType(s, exp, atEntry, elementDependencies));
         }
         if (result.hasNoTypes()) { 
           throw makeException(exp, I18nConstants.FHIRPATH_UNKNOWN_NAME, exp.getName(), focus.describe());
@@ -1579,7 +1596,7 @@ public class FHIRPathEngine {
       }
       break;
     case Function:
-      result.update(evaluateFunctionType(context, focus, exp));
+      result.update(evaluateFunctionType(context, focus, exp, elementDependencies));
       break;
     case Unary:
       result.addType(TypeDetails.FP_Integer);
@@ -1590,12 +1607,12 @@ public class FHIRPathEngine {
       result.update(resolveConstantType(context, exp.getConstant(), exp));
       break;
     case Group:
-      result.update(executeType(context, focus, exp.getGroup(), atEntry));
+      result.update(executeType(context, focus, exp.getGroup(), elementDependencies, atEntry));
     }
     exp.setTypes(result);
 
     if (exp.getInner() != null) {
-      result = executeType(context, result, exp.getInner(), false);
+      result = executeType(context, result, exp.getInner(), elementDependencies, false);
     }
 
     if (exp.isProximal() && exp.getOperation() != null) {
@@ -1606,7 +1623,7 @@ public class FHIRPathEngine {
         if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work = executeTypeName(context, focus, next, atEntry);
         } else {
-          work = executeType(context, focus, next, atEntry);
+          work = executeType(context, focus, next, elementDependencies, atEntry);
         }
         result = operateTypes(result, last.getOperation(), work, last);
         last = next;
@@ -3102,12 +3119,12 @@ public class FHIRPathEngine {
     return hostServices.resolveConstantType(context.appInfo, name);
   }
 
-  private TypeDetails executeType(String type, ExpressionNode exp, boolean atEntry) throws PathEngineException, DefinitionException {
+  private TypeDetails executeType(String type, ExpressionNode exp, boolean atEntry, Set<ElementDefinition> elementDependencies) throws PathEngineException, DefinitionException {
     if (atEntry && Character.isUpperCase(exp.getName().charAt(0)) && hashTail(type).equals(exp.getName())) { // special case for start up
       return new TypeDetails(CollectionStatus.SINGLETON, type);
     }
     TypeDetails result = new TypeDetails(null);
-    getChildTypesByName(type, exp.getName(), result, exp);
+    getChildTypesByName(type, exp.getName(), result, exp, elementDependencies);
     return result;
   }
 
@@ -3118,7 +3135,7 @@ public class FHIRPathEngine {
 
 
   @SuppressWarnings("unchecked")
-  private TypeDetails evaluateFunctionType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp) throws PathEngineException, DefinitionException {
+  private TypeDetails evaluateFunctionType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies) throws PathEngineException, DefinitionException {
     List<TypeDetails> paramTypes = new ArrayList<TypeDetails>();
     if (exp.getFunction() == Function.Is || exp.getFunction() == Function.As || exp.getFunction() == Function.OfType) {
       paramTypes.add(new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
@@ -3126,9 +3143,9 @@ public class FHIRPathEngine {
       int i = 0;
       for (ExpressionNode expr : exp.getParameters()) {
         if (isExpressionParameter(exp, i)) {
-          paramTypes.add(executeType(changeThis(context, focus), focus, expr, true));
+          paramTypes.add(executeType(changeThis(context, focus), focus, expr, elementDependencies, true));
         } else {
-          paramTypes.add(executeType(context, context.thisItem, expr, true));
+          paramTypes.add(executeType(context, context.thisItem, expr, elementDependencies, true));
         }
         i++;
       }
@@ -3159,11 +3176,11 @@ public class FHIRPathEngine {
     case Where : 
       return focus;
     case Select : 
-      return anything(focus.getCollectionStatus());
+      return paramTypes.get(0);
     case All : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Repeat : 
-      return anything(focus.getCollectionStatus());
+      return paramTypes.get(0); // this might be a little more complicated...
     case Aggregate : 
       return anything(focus.getCollectionStatus());
     case Item : {
@@ -3572,7 +3589,7 @@ public class FHIRPathEngine {
   private TypeDetails childTypes(TypeDetails focus, String mask, ExpressionNode expr) throws PathEngineException, DefinitionException {
     TypeDetails result = new TypeDetails(CollectionStatus.UNORDERED);
     for (String f : focus.getTypes()) {
-      getChildTypesByName(f, mask, result, expr);
+      getChildTypesByName(f, mask, result, expr, null);
     }
     return result;
   }
@@ -4011,6 +4028,7 @@ public class FHIRPathEngine {
   }
 
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+  private ContextUtilities cu;
   public static String bytesToHex(byte[] bytes) {
     char[] hexChars = new char[bytes.length * 2];
     for (int j = 0; j < bytes.length; j++) {
@@ -5693,7 +5711,7 @@ public class FHIRPathEngine {
 
   }
 
-  private void getChildTypesByName(String type, String name, TypeDetails result, ExpressionNode expr) throws PathEngineException, DefinitionException {
+  private void getChildTypesByName(String type, String name, TypeDetails result, ExpressionNode expr, Set<ElementDefinition> elementDependencies) throws PathEngineException, DefinitionException {
     if (Utilities.noString(type)) {
       throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, "", "getChildTypesByName");
     } 
@@ -5703,6 +5721,8 @@ public class FHIRPathEngine {
     if (type.startsWith(Constants.NS_SYSTEM_TYPE)) {
       return;
     } 
+
+
 
     if (type.equals(TypeDetails.FP_SimpleTypeInfo)) { 
       getSimpleTypeChildTypesByName(name, result);
@@ -5737,11 +5757,11 @@ public class FHIRPathEngine {
             if (dt == null) {
               throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ProfileUtilities.sdNs(t.getCode(), null), "getChildTypesByName");
             }
-            addTypeAndDescendents(sdl, dt, new ContextUtilities(worker).allStructures());
+            addTypeAndDescendents(sdl, dt, cu.allStructures());
             // also add any descendant types
           }
       } else {
-        addTypeAndDescendents(sdl, sd, new ContextUtilities(worker).allStructures());
+        addTypeAndDescendents(sdl, sd, cu.allStructures());
         if (type.contains("#")) {
           tail = type.substring(type.indexOf("#")+1);
           tail = tail.substring(tail.indexOf("."));
@@ -5753,26 +5773,44 @@ public class FHIRPathEngine {
         if (name.equals("**")) {
           assert(result.getCollectionStatus() == CollectionStatus.UNORDERED);
           for (ElementDefinition ed : sdi.getSnapshot().getElement()) {
-            if (ed.getPath().startsWith(path))
-              for (TypeRefComponent t : ed.getType()) {
-                if (t.hasCode() && t.getCodeElement().hasValue()) {
-                  String tn = null;
-                  if (t.getCode().equals("Element") || t.getCode().equals("BackboneElement")) {
-                    tn = sdi.getType()+"#"+ed.getPath();
-                  } else {
-                    tn = t.getCode();
+            if (ed.getPath().startsWith(path)) {
+              if (ed.hasContentReference()) {
+                String cpath = ed.getContentReference();
+                String tn = sdi.getType()+cpath;
+                if (!result.hasType(worker, tn)) {
+                  if (elementDependencies != null) {
+                    elementDependencies.add(ed);
                   }
-                  if (t.getCode().equals("Resource")) {
-                    for (String rn : worker.getResourceNames()) {
-                      if (!result.hasType(worker, rn)) {
-                        getChildTypesByName(result.addType(rn), "**", result, expr);
-                      }                  
+                  getChildTypesByName(result.addType(tn), "**", result, expr, elementDependencies);
+                }
+              } else {
+                for (TypeRefComponent t : ed.getType()) {
+                  if (t.hasCode() && t.getCodeElement().hasValue()) {
+                    String tn = null;
+                    if (t.getCode().equals("Element") || t.getCode().equals("BackboneElement")) {
+                      tn = sdi.getType()+"#"+ed.getPath();
+                    } else {
+                      tn = t.getCode();
                     }
-                  } else if (!result.hasType(worker, tn)) {
-                    getChildTypesByName(result.addType(tn), "**", result, expr);
+                    if (t.getCode().equals("Resource")) {
+                      for (String rn : worker.getResourceNames()) {
+                        if (!result.hasType(worker, rn)) {
+                          if (elementDependencies != null) {
+                            elementDependencies.add(ed);
+                          }
+                          getChildTypesByName(result.addType(rn), "**", result, expr, elementDependencies);
+                        }                  
+                      }
+                    } else if (!result.hasType(worker, tn)) {
+                      if (elementDependencies != null) {
+                        elementDependencies.add(ed);
+                      }
+                      getChildTypesByName(result.addType(tn), "**", result, expr, elementDependencies);
+                    }
                   }
                 }
               }
+            }
           }      
         } else if (name.equals("*")) {
           assert(result.getCollectionStatus() == CollectionStatus.UNORDERED);
@@ -5780,12 +5818,24 @@ public class FHIRPathEngine {
             if (ed.getPath().startsWith(path) && !ed.getPath().substring(path.length()).contains("."))
               for (TypeRefComponent t : ed.getType()) {
                 if (Utilities.noString(t.getCode())) { // Element.id or Extension.url
+                  if (elementDependencies != null) {
+                    elementDependencies.add(ed);
+                  }
                   result.addType("System.string");
                 } else if (t.getCode().equals("Element") || t.getCode().equals("BackboneElement")) {
+                  if (elementDependencies != null) {
+                    elementDependencies.add(ed);
+                  }
                   result.addType(sdi.getType()+"#"+ed.getPath());
                 } else if (t.getCode().equals("Resource")) {
+                  if (elementDependencies != null) {
+                    elementDependencies.add(ed);
+                  }
                   result.addTypes(worker.getResourceNames());
                 } else {
+                  if (elementDependencies != null) {
+                    elementDependencies.add(ed);
+                  }
                   result.addType(t.getCode());
                 }
               }
@@ -5795,12 +5845,18 @@ public class FHIRPathEngine {
 
           ElementDefinitionMatch ed = getElementDefinition(sdi, path, isAllowPolymorphicNames(), expr);
           if (ed != null) {
-            if (!Utilities.noString(ed.getFixedType()))
+            if (!Utilities.noString(ed.getFixedType())) {
+              if (elementDependencies != null) {
+                elementDependencies.add(ed.definition);
+              }
               result.addType(ed.getFixedType());
-            else {
+            } else {
               for (TypeRefComponent t : ed.getDefinition().getType()) {
                 if (Utilities.noString(t.getCode())) {
                   if (Utilities.existsInList(ed.getDefinition().getId(), "Element.id", "Extension.url") || Utilities.existsInList(ed.getDefinition().getBase().getPath(), "Resource.id", "Element.id", "Extension.url")) { 
+                    if (elementDependencies != null) {
+                      elementDependencies.add(ed.definition);
+                    }
                     result.addType(TypeDetails.FP_NS, "string");
                   }
                   break; // throw new PathEngineException("Illegal reference to primitive value attribute @ "+path);
@@ -5810,6 +5866,9 @@ public class FHIRPathEngine {
                 if (t.getCode().equals("Element") || t.getCode().equals("BackboneElement")) {
                   pt = new ProfiledType(sdi.getUrl()+"#"+path);
                 } else if (t.getCode().equals("Resource")) {
+                  if (elementDependencies != null) {
+                    elementDependencies.add(ed.definition);
+                  }
                   result.addTypes(worker.getResourceNames());
                 } else {
                   pt = new ProfiledType(t.getCode());
@@ -5821,7 +5880,10 @@ public class FHIRPathEngine {
                   if (ed.getDefinition().hasBinding()) {
                     pt.addBinding(ed.getDefinition().getBinding());
                   }
-                  result.addType(pt);
+                  if (elementDependencies != null) {
+                    elementDependencies.add(ed.definition);
+                  }
+                  result.addType(ed.definition.unbounded() ? CollectionStatus.ORDERED : CollectionStatus.SINGLETON, pt);
                 }
               }
             }
