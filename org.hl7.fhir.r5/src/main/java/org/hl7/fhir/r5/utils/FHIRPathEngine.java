@@ -595,6 +595,7 @@ public class FHIRPathEngine {
    * @if the path is not valid
    */
   public TypeDetails check(Object appContext, String resourceType, String context, ExpressionNode expr, Set<ElementDefinition> elementDependencies) throws FHIRLexerException, PathEngineException, DefinitionException {
+
     // if context is a path that refers to a type, do that conversion now 
     TypeDetails types; 
     if (context == null) {
@@ -624,6 +625,32 @@ public class FHIRPathEngine {
         for (TypeRefComponent t : ed.getDefinition().getType()) { 
           types.addType(t.getCode());
         }
+      }
+    }
+
+    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, elementDependencies, true);
+  }
+  
+  /**
+   * check that paths referred to in the ExpressionNode are valid
+   * 
+   * xPathStartsWithValueRef is a hack work around for the fact that FHIR Path sometimes needs a different starting point than the xpath
+   * 
+   * returns a list of the possible types that might be returned by executing the ExpressionNode against a particular context
+   * 
+   * @throws DefinitionException
+   * @throws PathEngineException 
+   * @if the path is not valid
+   */
+  public TypeDetails check(Object appContext, String resourceType, List<String> resourceTypes, ExpressionNode expr, Set<ElementDefinition> elementDependencies) throws FHIRLexerException, PathEngineException, DefinitionException {
+
+    // if context is a path that refers to a type, do that conversion now 
+    TypeDetails types = null;
+    for (String rt : resourceTypes) {
+      if (types == null) {
+        types = new TypeDetails(CollectionStatus.SINGLETON, rt);
+      } else {
+        types.addType(rt);
       }
     }
 
@@ -3343,11 +3370,19 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);
     case Resolve : {
       checkContextReference(focus, "resolve", exp);
-      return new TypeDetails(CollectionStatus.SINGLETON, "DomainResource"); 
+      return new TypeDetails(CollectionStatus.ORDERED, "DomainResource"); 
     }
     case Extension : {
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      return new TypeDetails(CollectionStatus.SINGLETON, "Extension"); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+      ExpressionNode p = exp.getParameters().get(0);
+      if (p.getKind() == Kind.Constant && p.getConstant() != null) {
+        String url = exp.getParameters().get(0).getConstant().primitiveValue();
+        StructureDefinition sd = worker.fetchResource(StructureDefinition.class, url);
+        if (sd != null) {
+          return new TypeDetails(CollectionStatus.ORDERED, new ProfiledType(url));
+        } 
+        return new TypeDetails(CollectionStatus.SINGLETON, "Extension");
+      }
     }
     case AnyTrue: 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
