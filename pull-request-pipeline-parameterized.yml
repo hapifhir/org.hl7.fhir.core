@@ -32,7 +32,7 @@ jobs:
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
-              options: '-pl -org.hl7.fhir.validation.cli'
+              options: '-pl "!org.hl7.fhir.validation.cli"'
               publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
               goals: 'test'
