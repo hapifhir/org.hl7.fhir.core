@@ -18,8 +18,7 @@ jobs:
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
-              options: '-Dmaven.wagon.http.pool=false -Dhttp.keepAlive=false'
-              mavenOptions: '-Xmx3072m'
+              mavenOptions: '-Xmx3072m -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryHandler.class=standard -Dmaven.wagon.http.retryHandler.count=3'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
@@ -30,11 +29,11 @@ jobs:
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
-              mavenOptions: '-Xmx3072m -Dmaven.wagon.http.pool=false -Dhttp.keepAlive=false'
+              mavenOptions: '-Xmx3072m -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryHandler.class=standard -Dmaven.wagon.http.retryHandler.count=3'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
-              options: '-pl org.hl7.fhir.validation.cli -Dmaven.wagon.http.pool=false -Dhttp.keepAlive=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=240'
+              options: '-pl org.hl7.fhir.validation.cli'
               publishJUnitResults: false
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
               goals: 'exec:exec'
