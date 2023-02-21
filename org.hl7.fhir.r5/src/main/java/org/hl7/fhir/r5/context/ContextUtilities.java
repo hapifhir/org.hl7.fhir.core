@@ -43,6 +43,8 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   private XVerExtensionManager xverManager;
   private Map<String, String> oidCache = new HashMap<>();
   private List<StructureDefinition> allStructuresList = new ArrayList<StructureDefinition>();
+  private List<String> canonicalResourceNames;
+  private List<String> concreteResourceNames;
   
   public ContextUtilities(IWorkerContext context) {
     super();
@@ -197,15 +199,19 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
    * @return a list of the resource names that are canonical resources defined for this version
    */
   public List<String> getCanonicalResourceNames() {
-    List<String> names = new ArrayList<>();
-    for (StructureDefinition sd : allStructures()) {
-      if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract() && hasUrlProperty(sd)) {
-        names.add(sd.getType());
+    if (canonicalResourceNames == null) {
+      canonicalResourceNames =  new ArrayList<>();
+      Set<String> names = new HashSet<>();
+      for (StructureDefinition sd : allStructures()) {
+        if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract() && hasUrlProperty(sd)) {
+          names.add(sd.getType());
+        }
       }
+      canonicalResourceNames.addAll(Utilities.sorted(names));
     }
-    return names;
+    return canonicalResourceNames;
   }
-    
+
   /**
    * @return a list of all structure definitions, with snapshots generated (if possible)
    */
@@ -368,6 +374,20 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       }
     }
     return null;
+  }
+
+  public List<String>  getConcreteResources() {
+    if (concreteResourceNames == null) {
+      concreteResourceNames =  new ArrayList<>();
+      Set<String> names = new HashSet<>();
+      for (StructureDefinition sd : allStructures()) {
+        if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract()) {
+          names.add(sd.getType());
+        }
+      }
+      concreteResourceNames.addAll(Utilities.sorted(names));
+    }
+    return concreteResourceNames;
   }
 
 }

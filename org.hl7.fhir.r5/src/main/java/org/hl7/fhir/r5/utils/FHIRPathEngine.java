@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DateTimeType;
@@ -1615,7 +1616,7 @@ public class FHIRPathEngine {
         result.update(executeContextType(context, exp.getName(), exp));
       } else {
         for (String s : focus.getTypes()) {
-          result.update(executeType(s, exp, atEntry, elementDependencies));
+          result.update(executeType(s, exp, atEntry, focus, elementDependencies));
         }
         if (result.hasNoTypes()) { 
           throw makeException(exp, I18nConstants.FHIRPATH_UNKNOWN_NAME, exp.getName(), focus.describe());
@@ -1961,7 +1962,12 @@ public class FHIRPathEngine {
     case LessOrEqual: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case GreaterOrEqual: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Is: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case As: return new TypeDetails(CollectionStatus.SINGLETON, right.getTypes());
+    case As: 
+      TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, right.getTypes());
+      if (td.typesHaveTargets()) {
+        td.addTargets(left.getTargets());
+      }
+      return td;
     case Union: return left.union(right);
     case Or: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case And: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
@@ -3146,12 +3152,12 @@ public class FHIRPathEngine {
     return hostServices.resolveConstantType(context.appInfo, name);
   }
 
-  private TypeDetails executeType(String type, ExpressionNode exp, boolean atEntry, Set<ElementDefinition> elementDependencies) throws PathEngineException, DefinitionException {
+  private TypeDetails executeType(String type, ExpressionNode exp, boolean atEntry, TypeDetails focus, Set<ElementDefinition> elementDependencies) throws PathEngineException, DefinitionException {
     if (atEntry && Character.isUpperCase(exp.getName().charAt(0)) && hashTail(type).equals(exp.getName())) { // special case for start up
       return new TypeDetails(CollectionStatus.SINGLETON, type);
     }
     TypeDetails result = new TypeDetails(null);
-    getChildTypesByName(type, exp.getName(), result, exp, elementDependencies);
+    getChildTypesByName(type, exp.getName(), result, exp, focus, elementDependencies);
     return result;
   }
 
@@ -3216,12 +3222,20 @@ public class FHIRPathEngine {
       return focus; 
     }
     case As : {
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      return new TypeDetails(CollectionStatus.SINGLETON, exp.getParameters().get(0).getName());
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+      TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, exp.getParameters().get(0).getName());
+      if (td.typesHaveTargets()) {
+        td.addTargets(focus.getTargets());
+      }
+      return td;
     }
     case OfType : { 
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      return new TypeDetails(CollectionStatus.SINGLETON, exp.getParameters().get(0).getName());
+      TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, exp.getParameters().get(0).getName());
+      if (td.typesHaveTargets()) {
+        td.addTargets(focus.getTargets());
+      }
+      return td;
     }
     case Type : { 
       boolean s = false;
@@ -3624,7 +3638,7 @@ public class FHIRPathEngine {
   private TypeDetails childTypes(TypeDetails focus, String mask, ExpressionNode expr) throws PathEngineException, DefinitionException {
     TypeDetails result = new TypeDetails(CollectionStatus.UNORDERED);
     for (String f : focus.getTypes()) {
-      getChildTypesByName(f, mask, result, expr, null);
+      getChildTypesByName(f, mask, result, expr, null, null);
     }
     return result;
   }
@@ -5746,7 +5760,7 @@ public class FHIRPathEngine {
 
   }
 
-  private void getChildTypesByName(String type, String name, TypeDetails result, ExpressionNode expr, Set<ElementDefinition> elementDependencies) throws PathEngineException, DefinitionException {
+  private void getChildTypesByName(String type, String name, TypeDetails result, ExpressionNode expr, TypeDetails focus, Set<ElementDefinition> elementDependencies) throws PathEngineException, DefinitionException {
     if (Utilities.noString(type)) {
       throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, "", "getChildTypesByName");
     } 
@@ -5756,8 +5770,6 @@ public class FHIRPathEngine {
     if (type.startsWith(Constants.NS_SYSTEM_TYPE)) {
       return;
     } 
-
-
 
     if (type.equals(TypeDetails.FP_SimpleTypeInfo)) { 
       getSimpleTypeChildTypesByName(name, result);
@@ -5816,7 +5828,7 @@ public class FHIRPathEngine {
                   if (elementDependencies != null) {
                     elementDependencies.add(ed);
                   }
-                  getChildTypesByName(result.addType(tn), "**", result, expr, elementDependencies);
+                  getChildTypesByName(result.addType(tn), "**", result, expr, null, elementDependencies);
                 }
               } else {
                 for (TypeRefComponent t : ed.getType()) {
@@ -5833,14 +5845,14 @@ public class FHIRPathEngine {
                           if (elementDependencies != null) {
                             elementDependencies.add(ed);
                           }
-                          getChildTypesByName(result.addType(rn), "**", result, expr, elementDependencies);
+                          getChildTypesByName(result.addType(rn), "**", result, expr, null, elementDependencies);
                         }                  
                       }
                     } else if (!result.hasType(worker, tn)) {
                       if (elementDependencies != null) {
                         elementDependencies.add(ed);
                       }
-                      getChildTypesByName(result.addType(tn), "**", result, expr, elementDependencies);
+                      getChildTypesByName(result.addType(tn), "**", result, expr, null, elementDependencies);
                     }
                   }
                 }
@@ -5872,6 +5884,7 @@ public class FHIRPathEngine {
                     elementDependencies.add(ed);
                   }
                   result.addType(t.getCode());
+                  copyTargetProfiles(ed, t, focus, result);
                 }
               }
           }
@@ -5919,11 +5932,24 @@ public class FHIRPathEngine {
                     elementDependencies.add(ed.definition);
                   }
                   result.addType(ed.definition.unbounded() ? CollectionStatus.ORDERED : CollectionStatus.SINGLETON, pt);
+                  copyTargetProfiles(ed.getDefinition(), t, focus, result);
                 }
               }
             }
           }
         }
+      }
+    }
+  }
+
+  private void copyTargetProfiles(ElementDefinition ed, TypeRefComponent t, TypeDetails focus, TypeDetails result) {
+    if (t.hasTargetProfile()) {
+      for (CanonicalType u : t.getTargetProfile()) {
+        result.addTarget(u.primitiveValue());
+      }
+    } else if (focus != null && focus.hasType("CodeableReference") && ed.getPath().endsWith(".reference") && focus.getTargets() != null) { // special case, targets are on parent
+      for (String s : focus.getTargets()) {
+        result.addTarget(s);
       }
     }
   }
