@@ -70,6 +70,125 @@ public class MarkDownProcessor {
   }
 
   /**
+   * Returns true if this is intended to be processed as markdown
+   * 
+   * this is guess, based on textual analysis of the content. 
+   * 
+   * Uses of this routine:
+   *   In general, the main use of this is to decide to escape the string so erroneous markdown processing doesn't munge characters
+   *   If it's a plain string, and it's being put into something that's markdown, then you should escape the content
+   *   If it's markdown, but you're not sure whether to process it as markdown
+   *   
+   * The underlying problem is that markdown processing plain strings is problematic because some technical characters might 
+   * get lost. So it's good to escape them... but if it's meant to be markdown, then it'll get trashed. 
+   * 
+   * This method works by looking for character patterns that are unlikely to occur outside markdown - but it's still only unlikely
+   *  
+   * @param content
+   * @return
+   */
+  // todo: dialect dependency?
+  public boolean isProbablyMarkdown(String content, boolean mdIfParagrapghs) {
+    if (mdIfParagrapghs && content.contains("\n")) {
+      return true;
+    }
+    String[] lines = content.split("\\r?\\n");
+    for (String s : lines) {
+      if (s.startsWith("* ") || isHeading(s) || s.startsWith("1. ") || s.startsWith("    ")) {
+        return true;
+      }
+      if (s.contains("```") || s.contains("~~~") || s.contains("[[[")) {
+        return true;
+      }
+      if (hasLink(s)) {
+        return true;
+      }
+      if (hasTextSpecial(s, '*') || hasTextSpecial(s, '_') ) {
+        return true;
+      }
+    }
+      
+    return false;
+  }
+  
+  private boolean isHeading(String s) {
+    if (s.length() > 7 && s.startsWith("###### ") && !Character.isWhitespace(s.charAt(7))) {
+      return true;
+    }
+    if (s.length() > 6 && s.startsWith("##### ") && !Character.isWhitespace(s.charAt(6))) {
+      return true;
+    }
+    if (s.length() > 5 && s.startsWith("#### ") && !Character.isWhitespace(s.charAt(5))) {
+      return true;
+    }
+    if (s.length() > 4 && s.startsWith("### ") && !Character.isWhitespace(s.charAt(4))) {
+      return true;
+    }
+    if (s.length() > 3 && s.startsWith("## ") && !Character.isWhitespace(s.charAt(3))) {
+      return true;
+    }
+    //
+    // not sure about this one. # [string] is something that could easily arise in non-markdown, 
+    // so this appearing isn't enough to call it markdown
+    //
+//    if (s.length() > 2 && s.startsWith("# ") && !Character.isWhitespace(s.charAt(2))) {
+//      return true;
+//    }
+    return false;
+  }
+
+
+  private boolean hasLink(String s) {
+    int left = -1;
+    int mid = -1;
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      if (c == '[') {
+        mid = -1;
+        left = i;
+      } else if (left > -1 && i < s.length()-1 && c == ']' && s.charAt(i+1) == '(') {
+        mid = i;
+      } else if (left > -1 && c == ']') {
+        left = -1;
+      } else if (left > -1 && mid > -1 && c == ')') {
+        return true;
+      } else if (mid > -1 && c == '[' || c == ']' || (c == '(' && i > mid+1)) {
+        left = -1;
+        mid = -1;
+      }
+    }
+    return false;
+  }
+
+
+  private boolean hasTextSpecial(String s, char c) {
+    boolean second = false;
+    for (int i = 0; i < s.length(); i++) {
+      char prev = i == 0 ? ' ' : s.charAt(i-1);
+      char next = i < s.length() - 1 ? s.charAt(i+1) : ' ';
+      if (s.charAt(i) != c) {
+        // nothing
+      } else if (second) {
+        if (Character.isWhitespace(next) && (isPunctation(prev) || Character.isLetterOrDigit(prev))) {
+          return true;
+        }
+        second = false;        
+      } else {
+        if (Character.isWhitespace(prev) && (isPunctation(next) || Character.isLetterOrDigit(next))) {
+          second = true;
+        }            
+      }
+    }
+    return false;
+  }
+
+
+  private boolean isPunctation(char ch) {
+    return Utilities.existsInList(ch, '.', ',', '!', '?');
+  }
+
+
+  /**
    * This deals with a painful problem created by the intersection of previous publishing processes 
    * and the way commonmark specifies that < is handled in content. For control reasons, the FHIR specification does 
    * not allow raw html tags in the markdown 
