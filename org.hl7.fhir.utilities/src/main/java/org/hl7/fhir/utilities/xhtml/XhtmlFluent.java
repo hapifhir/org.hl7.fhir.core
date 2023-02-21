@@ -150,7 +150,9 @@ public abstract class XhtmlFluent {
 
 
   public XhtmlNode code(String text) {
-    return addTag("code").tx(text);
+    XhtmlNode code = addTag("code");
+    code.tx(text);
+    return code;
   }
 
   public XhtmlNode code() {

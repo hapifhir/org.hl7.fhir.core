@@ -774,6 +774,7 @@ public class I18nConstants {
   public static final String EXT_VER_URL_REVERSION = "EXT_VER_URL_REVERSION";
   public static final String ILLEGAL_COMMENT_TYPE = "ILLEGAL_COMMENT_TYPE";
   public static final String SD_NO_SLICING_ON_ROOT = "SD_NO_SLICING_ON_ROOT";
+  public static final String REFERENCE_REF_QUERY_INVALID = "REFERENCE_REF_QUERY_INVALID";
 }
 
 
