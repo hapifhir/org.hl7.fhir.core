@@ -22,9 +22,19 @@ jobs:
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
+              options: '-DskipTests'
+              goals: 'install'
+
+          - task: Maven@3
+            inputs:
+              mavenPomFile: 'pom.xml'
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '${{image.jdkVersion}}'
+              jdkArchitectureOption: 'x64'
               publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              goals: 'install'
+              goals: 'test'
 
           - task: Maven@3
             inputs:
