@@ -45,7 +45,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>4.9.0</version>
+            <version>${okhttp.version}</version>
             <optional>true</optional>
         </dependency>
 
@@ -159,7 +159,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>logging-interceptor</artifactId>
-            <version>4.9.0</version>
+            <version>${okhttp.version}</version>
             <scope>compile</scope>
         </dependency>
         -->

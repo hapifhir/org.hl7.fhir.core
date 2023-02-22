@@ -225,7 +225,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
-            <version>4.9.0</version>
+            <version>${okhttp.version}</version>
             <optional>false</optional>
             <scope>compile</scope>
         </dependency>
@@ -273,7 +273,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>4.9.0</version>
+            <version>${okhttp.version}</version>
       </dependency>
         <dependency>
             <groupId>com.atlassian.commonmark</groupId>
