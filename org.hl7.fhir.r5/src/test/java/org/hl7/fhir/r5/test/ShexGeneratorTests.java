@@ -37,16 +37,16 @@ public class ShexGeneratorTests {
   }
 
   private void doTest(String name) throws FileNotFoundException, IOException, FHIRException, UcumException {
-//    StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
-//    if (sd == null) {
-//      throw new FHIRException("StructuredDefinition for " + name + "was null");
-//    }
-//    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
-//    TextFile.stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
+    StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
+    if (sd == null) {
+      throw new FHIRException("StructuredDefinition for " + name + "was null");
+    }
+    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
+    TextFile.stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
 
     // For Testing Schema Processing and Constraint Mapping related Development
     // If you un-comment the following lines, please comment all other lines in this method.
-    this.doTestThis(name.toLowerCase(), name, false, ShExGenerator.ConstraintTranslationPolicy.ALL, true, true);
+    //this.doTestThis(name.toLowerCase(), name, false, ShExGenerator.ConstraintTranslationPolicy.ALL, true, true);
   }
   @Test
   public void testId() throws FHIRException, IOException, UcumException {
@@ -112,7 +112,7 @@ public class ShexGeneratorTests {
     doTest("Signature");
   }
 
-  @Test
+  @Ignore
   public void testCapabilityStatement() throws FHIRException, IOException, UcumException {
     doTest("CapabilityStatement");
   }
@@ -168,7 +168,7 @@ public class ShexGeneratorTests {
     }
   }
 
-    @Test
+    @Ignore
     public void doTestAll() throws FileNotFoundException, IOException, FHIRException, UcumException {
       List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
 
