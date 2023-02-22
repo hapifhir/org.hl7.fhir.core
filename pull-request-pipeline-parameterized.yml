@@ -1,7 +1,7 @@
 jobs:
   - ${{ each image in parameters.images }}:
       - job:
-
+        dependsOn: [ 'setup' ]
         displayName: ${{image.displayName}}
         
         pool:
@@ -14,17 +14,22 @@ jobs:
           JAVA_TOOL_OPTIONS: ${{image.javaToolOptions}}
 
         steps:
-          # Runs 'mvn clean install'
+          - task: Cache@2
+            inputs:
+              key: maven | $(Build.BuildId)
+              path: $(MAVEN_CACHE_FOLDER)
+          # Runs 'mvn test'
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
+              options: '-pl "!org.hl7.fhir.validation.cli" -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
               mavenOptions: '-Xmx3072m'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
               publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              goals: 'install'
+              goals: 'test'
 
           - task: Maven@3
             inputs:
@@ -33,7 +38,7 @@ jobs:
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
-              options: '-pl org.hl7.fhir.validation.cli'
+              options: '-pl org.hl7.fhir.validation.cli -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
               publishJUnitResults: false
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
               goals: 'exec:exec'
