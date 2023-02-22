@@ -112,9 +112,9 @@ public class ShExGenerator {
     "hasValue",
     "matches",
     "contains",
-    "toString",
-    "is",
-    "where"
+    //"toString",
+    "is"
+    //"where"
   );
 
   private static String ONE_OR_MORE_PREFIX = "OneOrMore_";
@@ -661,7 +661,7 @@ public class ShExGenerator {
           String[] backRefs = toStore.split("\\.");
           toStore = "a [fhir:" + backRefs[0] + "]";
           for (int i = 1; i < backRefs.length; i++)
-            toStore = "^fhir:" + backRefs[i] + " {" + toStore + "}";
+            toStore = "( ^fhir:" + backRefs[i] + " {" + toStore + "} )";
 
           if (!contextOfUse.contains(toStore)) {
             contextOfUse.add(toStore);
@@ -688,7 +688,7 @@ public class ShExGenerator {
       String ce = constraint.getExpression();
       String constItem = "FHIR-SD-Path:" + ed.getPath() + " Expression: " + ce;
       try {
-        translated = "# Constraint: UniqueKey:" + constraint.getKey() + "\n# Human readable:" + constraint.getHuman() + "\n# Constraint:" + constraint.getExpression() + "\n# ShEx:\n";
+        translated = "# Constraint UniqueKey:" + constraint.getKey() + "\n# Human readable:" + constraint.getHuman() + "\n\n# Constraint: " + constraint.getExpression() + "\n# ShEx:\n";
 
         ExpressionNode expr = fpe.parse(ce);
         String shexConstraint = processExpressionNode(sd, ed, expr, false, 0);
@@ -710,7 +710,7 @@ public class ShExGenerator {
         debug(message);
       }
     }
-    return translated;
+    return commentUnmapped(translated);
   }
 
   /**
@@ -723,7 +723,11 @@ public class ShExGenerator {
       return "";
     boolean toQuote  = quote;
 
-    String innerShEx = processExpressionNode(sd, ed, node.getInner(), quote, depth + 1);
+    String innerShEx = "";
+
+    if (node.getInner() != null){
+        innerShEx = processExpressionNode(sd, ed, node.getInner(), quote, depth + 1);
+    }
 
     String translatedShEx = "";
 
@@ -738,19 +742,32 @@ public class ShExGenerator {
           ops = " OR ";
           break;
         case "Union":
-          ops = " | ";
+          //ops = " | ";
+          ops = " ";
           break;
         case "In" :
         case "Equals":
         case "Contains":
-          ops = " { fhir:v [";
-          endOps = "] } ";
-          toQuote = true;
+          if (!node.getOpNext().getKind().equals(ExpressionNode.Kind.Name)) {
+            ops = " { fhir:v [";
+            endOps = "] } ";
+            toQuote = true;
+          } else {
+            String toStore = "UNMAPPED_OPERATOR_" + opName + " in Node type: " + node.getKind();
+            addUnmappedFunction(opName);
+            ops = TBD(opName);
+          }
           break;
         case "NotEquals":
-          ops = " [fhir:v  . -";
-          endOps = "] ";
-          toQuote = true;
+          if (!node.getOpNext().getKind().equals(ExpressionNode.Kind.Name)) {
+            ops = " [fhir:v  . -";
+            endOps = "] ";
+            toQuote = true;
+          } else {
+            String toStore = "UNMAPPED_OPERATOR_" + opName + " in Node type: " + node.getKind();
+            addUnmappedFunction(opName);
+            ops = TBD(opName);
+          }
           break;
         case "Greater":
           if (node.getOpNext().getKind().equals(ExpressionNode.Kind.Constant)) {
@@ -825,8 +842,7 @@ public class ShExGenerator {
           if ("not".equals(funcName))
             fExp = " NOT { CALLER }";
           else {
-            fExp = " " + funcName + "( CALLER )";
-
+            fExp = " " + TBD(funcName) + "( CALLER )";
             addUnmappedFunction(node.getFunction().toCode());
             String toStore = addUnmappedFunction(node.getFunction().toCode());
           }
@@ -847,18 +863,18 @@ public class ShExGenerator {
             ops = " { fhir:v /";
             endOps = "/ } ";
             break;
-          case "where": // 'where' just states an assertion
-            ops = "{ ";
-            endOps = " }";
-            break;
+          //case "where": // 'where' just states an assertion
+           // ops = "{ ";
+           // endOps = " }";
+           // break;
           case "contains":
             ops = " { fhir:v [";
             endOps = "] } ";
             toQuote = true;
             break;
-          case "toString":  // skip this function call because values gets stringitize anyway
-            pExp = "";
-            break;
+          //case "toString":  // skip this function call because values gets stringitize anyway
+           // pExp = "";
+           // break;
           case "is":
             ops = " { a [";
             endOps = "] } ";
@@ -895,13 +911,18 @@ public class ShExGenerator {
         depth, false);
 
     } else  if (kind == ExpressionNode.Kind.Name) {
-      translatedShEx += positionParts(innerShEx, "fhir:" + node.getName(),
+      String mT = (depth == 0)? "fhir:" + node.getName() : node.getName();
+      translatedShEx += positionParts(innerShEx, mT,
         getNextOps(ops, processExpressionNode(sd, ed, node.getOpNext(), toQuote, depth), endOps, treatBothOpsSame),
         depth, true);
+      //if (depth == 0)
+       // translatedShEx = commentUnmapped(translatedShEx);
     }else if (kind == ExpressionNode.Kind.Group) {
       translatedShEx += positionParts(innerShEx, processExpressionNode(sd, ed, node.getGroup(), toQuote, depth),
         getNextOps(ops , processExpressionNode(sd, ed, node.getOpNext(), toQuote, depth), endOps, treatBothOpsSame),
         depth, true);
+      //if (depth == 0)
+       // translatedShEx = commentUnmapped(translatedShEx);
     } else if (kind == ExpressionNode.Kind.Constant) {
       Base constantB = node.getConstant();
       boolean toQt = (constantB instanceof StringType) || (!constantB.isPrimitive());
@@ -937,6 +958,34 @@ public class ShExGenerator {
     return translatedShEx;
   }
 
+  private String commentUnmapped(String text) {
+
+    String pre = "";
+    String token = "NNNNN";
+    String temp = text;
+    if ((text != null)&&(text.indexOf("SHEX_") != -1)) {
+      pre = "\n# This constraint does not have mapping to a ShEx construct yet.";
+      temp = text.replaceAll("\n", token);
+      while (temp.indexOf("SHEX_") != -1) {
+        pre += "\n# Unmapped construct found: " + StringUtils.substringBetween(temp, "SHEX_", "_SHEX");
+        temp = temp.replaceFirst("SHEX_", " ").replaceFirst("_SHEX", " ");
+      }
+
+      pre += "\n# ";
+    }
+
+    if (temp.indexOf(token) != -1) {
+      temp = "#" + temp;
+      temp = temp.replaceAll(token, "\n#");
+      temp = temp.replaceAll("##", "#");
+      temp = temp.replaceAll("# #", "#");
+      temp = temp.replaceAll("# #", "#");
+      temp += "\n{}";
+    }
+
+    return pre + temp;
+  }
+
   private String addUnmappedFunction(String func) {
     String toStore = "UNMAPPED_FUNCTION_" + func;
     if (!unMappedFunctions.contains(toStore))
@@ -963,7 +1012,9 @@ public class ShExGenerator {
         return toReturn.replaceAll("CALLER", "");
       }
       else{
-        return  postProcessing(funCall.replaceFirst("CALLER", "CALLER " + mainTxt ), nextText) ;
+        String mT = (mainTxt != null) ? mainTxt.trim() : "";
+        String dR = (mT.startsWith(".") || mT.startsWith("{") || mT.startsWith("[")) ? "" : ".";
+        return  postProcessing(funCall.replaceFirst("CALLER", "CALLER" + dR + mainTxt ), nextText) ;
       }
     }
 
@@ -976,14 +1027,31 @@ public class ShExGenerator {
         if ("".equals(funCall)) {
           return "{ " + postProcessing(mainTxt, nextText) + " }";
         }
-        return postProcessing("{ " + mainTxt + fc + " }", nextText);
+
+        if ((fc!= null)&&(!fc.isEmpty())) {
+          String fT = fc.trim();
+          String dR = (fT.startsWith(".") || fT.startsWith("{") || fT.startsWith("[")) ? "" : ".";
+          fc = dR + fc;
+        }
+
+        return "{" + postProcessing(mainTxt + fc, nextText) + "}";
       }
-      mainTxt = "(" + mainTxt + ")";
+
+      if (mainTxt.startsWith("'"))
+          mainTxt = mainTxt;
+      else
+          mainTxt = "(" + mainTxt + ")";
+
       if ("".equals(funCall)) {
         return postProcessing(mainTxt, nextText);
       }
     }
 
+    if ((fc!= null)&&(!fc.isEmpty())) {
+      String fT = fc.trim();
+      String dR = (fT.startsWith(".") || fT.startsWith("{") || fT.startsWith("[")) ? "" : ".";
+      fc = dR + fc;
+    }
     return postProcessing(mainTxt + fc,  nextText);
   }
 
