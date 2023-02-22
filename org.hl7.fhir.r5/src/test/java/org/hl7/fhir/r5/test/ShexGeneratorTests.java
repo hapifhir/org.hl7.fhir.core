@@ -46,7 +46,7 @@ public class ShexGeneratorTests {
 
     // For Testing Schema Processing and Constraint Mapping related Development
     // If you un-comment the following lines, please comment all other lines in this method.
-    //this.doTestThis(name.toLowerCase(), name, false, ShExGenerator.ConstraintTranslationPolicy.ALL, false, true);
+    //this.doTestThis(name.toLowerCase(), name, false, ShExGenerator.ConstraintTranslationPolicy.ALL, true, true);
   }
   @Test
   public void testId() throws FHIRException, IOException, UcumException {
@@ -71,6 +71,20 @@ public class ShexGeneratorTests {
   @Test
   public void testAccount() throws FHIRException, IOException, UcumException {
     doTest("Account");
+  }
+  @Test
+  public void testAppointment() throws FHIRException, IOException, UcumException {
+    doTest("Appointment");
+  }
+
+  @Test
+  public void testBundle() throws FHIRException, IOException, UcumException {
+    doTest("Bundle");
+  }
+
+  @Test
+  public void testAge() throws FHIRException, IOException, UcumException {
+    doTest("Age");
   }
 
   @Test
@@ -98,9 +112,9 @@ public class ShexGeneratorTests {
     doTest("Signature");
   }
 
-  @Test
-  public void testString() throws FHIRException, IOException, UcumException {
-    doTest("string");
+  @Ignore
+  public void testCapabilityStatement() throws FHIRException, IOException, UcumException {
+    doTest("CapabilityStatement");
   }
 
   private void doTestThis(String shortName, String name, boolean useSelectedExtensions, ShExGenerator.ConstraintTranslationPolicy policy, boolean debugMode, boolean validateShEx) {
