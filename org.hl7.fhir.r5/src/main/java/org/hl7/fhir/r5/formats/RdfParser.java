@@ -31,7 +31,7 @@ package org.hl7.fhir.r5.formats;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Thu, Jan 5, 2023 12:34-0500 for FHIR v5.0.0-snapshot3
 
 
 
@@ -57,8 +57,8 @@ public class RdfParser extends RdfParserBase {
   private void composeEnum(Complex parent, String parentType, String name, Enumeration<? extends Enum> value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
     decorateCode(t, value);
   }
@@ -67,24 +67,24 @@ public class RdfParser extends RdfParserBase {
   protected void composeDate(Complex parent, String parentType, String name, DateType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeDateTime(Complex parent, String parentType, String name, DateTimeType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeCode(Complex parent, String parentType, String name, CodeType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
     decorateCode(t, value);
   }
@@ -92,136 +92,136 @@ public class RdfParser extends RdfParserBase {
   protected void composeString(Complex parent, String parentType, String name, StringType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeInteger(Complex parent, String parentType, String name, IntegerType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeInteger64(Complex parent, String parentType, String name, Integer64Type value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeOid(Complex parent, String parentType, String name, OidType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeCanonical(Complex parent, String parentType, String name, CanonicalType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeUri(Complex parent, String parentType, String name, UriType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeUuid(Complex parent, String parentType, String name, UuidType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeUrl(Complex parent, String parentType, String name, UrlType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeInstant(Complex parent, String parentType, String name, InstantType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeBoolean(Complex parent, String parentType, String name, BooleanType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeBase64Binary(Complex parent, String parentType, String name, Base64BinaryType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeUnsignedInt(Complex parent, String parentType, String name, UnsignedIntType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeMarkdown(Complex parent, String parentType, String name, MarkdownType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeTime(Complex parent, String parentType, String name, TimeType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeId(Complex parent, String parentType, String name, IdType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composePositiveInt(Complex parent, String parentType, String name, PositiveIntType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
   protected void composeDecimal(Complex parent, String parentType, String name, DecimalType value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+parentType+"."+name);
-    t.predicate("fhir:value", ttlLiteral(value.asStringValue()));
+    Complex t = parent.predicate("fhir:"+name, index > -1);
+    t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
 
@@ -260,7 +260,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Address", name, element, index);
     if (element.hasUseElement()) {
@@ -302,7 +302,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeQuantity(t, "Age", name, element, index);
   }
@@ -314,7 +314,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Annotation", name, element, index);
     if (element.hasAuthor()) {
@@ -335,7 +335,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Attachment", name, element, index);
     if (element.hasContentTypeElement()) {
@@ -386,7 +386,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Availability", name, element, index);
     for (int i = 0; i < element.getAvailableTime().size(); i++) {
@@ -404,7 +404,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "availableTime", name, element, index);
     for (int i = 0; i < element.getDaysOfWeek().size(); i++) {
@@ -428,7 +428,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "notAvailableTime", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -446,7 +446,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "CodeableConcept", name, element, index);
     decorateCodeableConcept(t, element);
@@ -465,7 +465,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "CodeableReference", name, element, index);
     if (element.hasConcept()) {
@@ -483,7 +483,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Coding", name, element, index);
     decorateCoding(t, element);
@@ -511,7 +511,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "ContactDetail", name, element, index);
     if (element.hasNameElement()) {
@@ -529,7 +529,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "ContactPoint", name, element, index);
     if (element.hasSystemElement()) {
@@ -556,7 +556,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Contributor", name, element, index);
     if (element.hasTypeElement()) {
@@ -577,7 +577,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeQuantity(t, "Count", name, element, index);
   }
@@ -589,7 +589,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "DataRequirement", name, element, index);
     if (element.hasTypeElement()) {
@@ -628,7 +628,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "codeFilter", name, element, index);
     if (element.hasPathElement()) {
@@ -652,7 +652,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "dateFilter", name, element, index);
     if (element.hasPathElement()) {
@@ -673,7 +673,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "valueFilter", name, element, index);
     if (element.hasPathElement()) {
@@ -697,7 +697,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "sort", name, element, index);
     if (element.hasPathElement()) {
@@ -715,7 +715,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeQuantity(t, "Distance", name, element, index);
   }
@@ -727,7 +727,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneType(t, "Dosage", name, element, index);
     if (element.hasSequenceElement()) {
@@ -781,7 +781,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "doseAndRate", name, element, index);
     if (element.hasType()) {
@@ -802,7 +802,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeQuantity(t, "Duration", name, element, index);
   }
@@ -814,7 +814,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneType(t, "ElementDefinition", name, element, index);
     if (element.hasPathElement()) {
@@ -937,7 +937,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "slicing", name, element, index);
     for (int i = 0; i < element.getDiscriminator().size(); i++) {
@@ -961,7 +961,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "discriminator", name, element, index);
     if (element.hasTypeElement()) {
@@ -979,7 +979,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "base", name, element, index);
     if (element.hasPathElement()) {
@@ -1000,7 +1000,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "type", name, element, index);
     if (element.hasCodeElement()) {
@@ -1027,7 +1027,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "example", name, element, index);
     if (element.hasLabelElement()) {
@@ -1045,7 +1045,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "constraint", name, element, index);
     if (element.hasKeyElement()) {
@@ -1078,7 +1078,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "obligation", name, element, index);
     if (element.hasCode()) {
@@ -1111,7 +1111,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "binding", name, element, index);
     if (element.hasStrengthElement()) {
@@ -1135,7 +1135,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "additional", name, element, index);
     if (element.hasPurposeElement()) {
@@ -1165,7 +1165,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "mapping", name, element, index);
     if (element.hasIdentityElement()) {
@@ -1189,7 +1189,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Expression", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -1216,7 +1216,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "ExtendedContactDetail", name, element, index);
     if (element.hasPurpose()) {
@@ -1246,7 +1246,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Extension", name, element, index);
     if (element.hasUrlElement()) {
@@ -1264,7 +1264,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "HumanName", name, element, index);
     if (element.hasUseElement()) {
@@ -1297,7 +1297,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Identifier", name, element, index);
     if (element.hasUseElement()) {
@@ -1327,7 +1327,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneType(t, "MarketingStatus", name, element, index);
     if (element.hasCountry()) {
@@ -1354,7 +1354,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Meta", name, element, index);
     if (element.hasVersionIdElement()) {
@@ -1384,7 +1384,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "MonetaryComponent", name, element, index);
     if (element.hasTypeElement()) {
@@ -1408,7 +1408,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Money", name, element, index);
     if (element.hasValueElement()) {
@@ -1426,7 +1426,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Narrative", name, element, index);
     if (element.hasStatusElement()) {
@@ -1444,7 +1444,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "ParameterDefinition", name, element, index);
     if (element.hasNameElement()) {
@@ -1477,7 +1477,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Period", name, element, index);
     if (element.hasStartElement()) {
@@ -1495,7 +1495,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneType(t, "Population", name, element, index);
     if (element.hasAge()) {
@@ -1519,7 +1519,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneType(t, "ProductShelfLife", name, element, index);
     if (element.hasType()) {
@@ -1540,7 +1540,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Quantity", name, element, index);
     if (element.hasValueElement()) {
@@ -1567,7 +1567,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Range", name, element, index);
     if (element.hasLow()) {
@@ -1585,7 +1585,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Ratio", name, element, index);
     if (element.hasNumerator()) {
@@ -1603,7 +1603,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "RatioRange", name, element, index);
     if (element.hasLowNumerator()) {
@@ -1624,7 +1624,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Reference", name, element, index);
     if (element.hasReferenceElement()) {
@@ -1648,7 +1648,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "RelatedArtifact", name, element, index);
     if (element.hasTypeElement()) {
@@ -1690,7 +1690,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "SampledData", name, element, index);
     if (element.hasOrigin()) {
@@ -1726,7 +1726,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "Signature", name, element, index);
     for (int i = 0; i < element.getType().size(); i++) {
@@ -1759,7 +1759,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneType(t, "Timing", name, element, index);
     for (int i = 0; i < element.getEvent().size(); i++) {
@@ -1780,7 +1780,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeElement(t, "repeat", name, element, index);
     if (element.hasBounds()) {
@@ -1837,7 +1837,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "TriggerDefinition", name, element, index);
     if (element.hasTypeElement()) {
@@ -1870,7 +1870,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "UsageContext", name, element, index);
     if (element.hasCode()) {
@@ -1888,7 +1888,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDataType(t, "VirtualServiceDetail", name, element, index);
     if (element.hasChannelType()) {
@@ -2033,7 +2033,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Account", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -2090,7 +2090,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "coverage", name, element, index);
     if (element.hasCoverage()) {
@@ -2108,7 +2108,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "guarantor", name, element, index);
     if (element.hasParty()) {
@@ -2129,7 +2129,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "relatedAccount", name, element, index);
     if (element.hasRelationship()) {
@@ -2147,7 +2147,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "balance", name, element, index);
     if (element.hasAggregate()) {
@@ -2171,7 +2171,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "ActivityDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -2324,7 +2324,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     if (element.hasTypeElement()) {
@@ -2351,7 +2351,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dynamicValue", name, element, index);
     if (element.hasPathElement()) {
@@ -2369,7 +2369,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "ActorDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -2444,7 +2444,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "AdministrableProductDefinition", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -2486,7 +2486,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "property", name, element, index);
     if (element.hasType()) {
@@ -2507,7 +2507,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "routeOfAdministration", name, element, index);
     if (element.hasCode()) {
@@ -2540,7 +2540,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "targetSpecies", name, element, index);
     if (element.hasCode()) {
@@ -2558,7 +2558,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "withdrawalPeriod", name, element, index);
     if (element.hasTissue()) {
@@ -2579,7 +2579,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "AdverseEvent", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -2663,7 +2663,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     if (element.hasFunction()) {
@@ -2681,7 +2681,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "suspectEntity", name, element, index);
     if (element.hasInstance()) {
@@ -2699,7 +2699,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "causality", name, element, index);
     if (element.hasAssessmentMethod()) {
@@ -2720,7 +2720,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "contributingFactor", name, element, index);
     if (element.hasItem()) {
@@ -2735,7 +2735,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "preventiveAction", name, element, index);
     if (element.hasItem()) {
@@ -2750,7 +2750,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "mitigatingAction", name, element, index);
     if (element.hasItem()) {
@@ -2765,7 +2765,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "supportingInfo", name, element, index);
     if (element.hasItem()) {
@@ -2780,7 +2780,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "AllergyIntolerance", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -2837,7 +2837,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     if (element.hasFunction()) {
@@ -2855,7 +2855,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "reaction", name, element, index);
     if (element.hasSubstance()) {
@@ -2888,7 +2888,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Appointment", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -2993,7 +2993,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     for (int i = 0; i < element.getType().size(); i++) {
@@ -3020,7 +3020,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "recurrenceTemplate", name, element, index);
     if (element.hasTimezone()) {
@@ -3062,7 +3062,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "weeklyTemplate", name, element, index);
     if (element.hasMondayElement()) {
@@ -3098,7 +3098,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "monthlyTemplate", name, element, index);
     if (element.hasDayOfMonthElement()) {
@@ -3122,7 +3122,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "yearlyTemplate", name, element, index);
     if (element.hasYearIntervalElement()) {
@@ -3137,7 +3137,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "AppointmentResponse", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -3185,7 +3185,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ArtifactAssessment", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -3227,7 +3227,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "content", name, element, index);
     if (element.hasInformationTypeElement()) {
@@ -3266,7 +3266,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "AuditEvent", name, element, index);
     for (int i = 0; i < element.getCategory().size(); i++) {
@@ -3320,7 +3320,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "outcome", name, element, index);
     if (element.hasCode()) {
@@ -3338,7 +3338,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "agent", name, element, index);
     if (element.hasType()) {
@@ -3374,7 +3374,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "source", name, element, index);
     if (element.hasSite()) {
@@ -3395,7 +3395,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "entity", name, element, index);
     if (element.hasWhat()) {
@@ -3425,7 +3425,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "detail", name, element, index);
     if (element.hasType()) {
@@ -3443,7 +3443,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Basic", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -3470,7 +3470,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeResource(t, "Binary", name, element, index);
     if (element.hasContentTypeElement()) {
@@ -3491,7 +3491,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "BiologicallyDerivedProduct", name, element, index);
     if (element.hasProductCategory()) {
@@ -3542,7 +3542,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "collection", name, element, index);
     if (element.hasCollector()) {
@@ -3563,7 +3563,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "property", name, element, index);
     if (element.hasType()) {
@@ -3581,7 +3581,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "BodyStructure", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -3617,7 +3617,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "includedStructure", name, element, index);
     if (element.hasStructure()) {
@@ -3638,7 +3638,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "excludedStructure", name, element, index);
     if (element.hasStructure()) {
@@ -3659,7 +3659,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeResource(t, "Bundle", name, element, index);
     if (element.hasIdentifier()) {
@@ -3695,7 +3695,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "link", name, element, index);
     if (element.hasRelationElement()) {
@@ -3713,7 +3713,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "entry", name, element, index);
     for (int i = 0; i < element.getLink().size(); i++) {
@@ -3743,7 +3743,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "search", name, element, index);
     if (element.hasModeElement()) {
@@ -3761,7 +3761,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "request", name, element, index);
     if (element.hasMethodElement()) {
@@ -3791,7 +3791,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "response", name, element, index);
     if (element.hasStatusElement()) {
@@ -3818,7 +3818,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "CapabilityStatement", name, element, index);
     if (element.hasUrlElement()) {
@@ -3917,7 +3917,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "software", name, element, index);
     if (element.hasNameElement()) {
@@ -3938,7 +3938,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "implementation", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -3959,7 +3959,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "rest", name, element, index);
     if (element.hasModeElement()) {
@@ -3995,7 +3995,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "security", name, element, index);
     if (element.hasCorsElement()) {
@@ -4016,7 +4016,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "resource", name, element, index);
     if (element.hasTypeElement()) {
@@ -4082,7 +4082,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "interaction", name, element, index);
     if (element.hasCodeElement()) {
@@ -4100,7 +4100,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "searchParam", name, element, index);
     if (element.hasNameElement()) {
@@ -4124,7 +4124,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "operation", name, element, index);
     if (element.hasNameElement()) {
@@ -4145,7 +4145,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "interaction", name, element, index);
     if (element.hasCodeElement()) {
@@ -4163,7 +4163,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "messaging", name, element, index);
     for (int i = 0; i < element.getEndpoint().size(); i++) {
@@ -4187,7 +4187,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "endpoint", name, element, index);
     if (element.hasProtocol()) {
@@ -4205,7 +4205,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "supportedMessage", name, element, index);
     if (element.hasModeElement()) {
@@ -4223,7 +4223,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "document", name, element, index);
     if (element.hasModeElement()) {
@@ -4244,7 +4244,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "CarePlan", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -4325,7 +4325,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "activity", name, element, index);
     for (int i = 0; i < element.getPerformedActivity().size(); i++) {
@@ -4349,7 +4349,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "plannedActivityDetail", name, element, index);
     if (element.hasKindElement()) {
@@ -4412,7 +4412,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "CareTeam", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -4457,7 +4457,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     if (element.hasRole()) {
@@ -4481,7 +4481,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ChargeItem", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -4571,7 +4571,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "performer", name, element, index);
     if (element.hasFunction()) {
@@ -4589,7 +4589,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "ChargeItemDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -4673,7 +4673,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "applicability", name, element, index);
     if (element.hasCondition()) {
@@ -4694,7 +4694,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "propertyGroup", name, element, index);
     for (int i = 0; i < element.getApplicability().size(); i++) {
@@ -4712,7 +4712,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "Citation", name, element, index);
     if (element.hasUrlElement()) {
@@ -4811,7 +4811,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "summary", name, element, index);
     if (element.hasStyle()) {
@@ -4829,7 +4829,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "classification", name, element, index);
     if (element.hasType()) {
@@ -4847,7 +4847,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "statusDate", name, element, index);
     if (element.hasActivity()) {
@@ -4868,7 +4868,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "citedArtifact", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -4925,7 +4925,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "version", name, element, index);
     if (element.hasValueElement()) {
@@ -4943,7 +4943,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "statusDate", name, element, index);
     if (element.hasActivity()) {
@@ -4964,7 +4964,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "title", name, element, index);
     for (int i = 0; i < element.getType().size(); i++) {
@@ -4985,7 +4985,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "abstract", name, element, index);
     if (element.hasType()) {
@@ -5009,7 +5009,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "part", name, element, index);
     if (element.hasType()) {
@@ -5030,7 +5030,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "relatesTo", name, element, index);
     if (element.hasTypeElement()) {
@@ -5066,7 +5066,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "publicationForm", name, element, index);
     if (element.hasPublishedIn()) {
@@ -5132,7 +5132,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "publishedIn", name, element, index);
     if (element.hasType()) {
@@ -5159,7 +5159,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "webLocation", name, element, index);
     for (int i = 0; i < element.getClassifier().size(); i++) {
@@ -5177,7 +5177,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "classification", name, element, index);
     if (element.hasType()) {
@@ -5198,7 +5198,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "contributorship", name, element, index);
     if (element.hasCompleteElement()) {
@@ -5219,7 +5219,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "entry", name, element, index);
     if (element.hasContributor()) {
@@ -5255,7 +5255,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "contributionInstance", name, element, index);
     if (element.hasType()) {
@@ -5273,7 +5273,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "summary", name, element, index);
     if (element.hasType()) {
@@ -5297,7 +5297,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Claim", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -5399,7 +5399,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "related", name, element, index);
     if (element.hasClaim()) {
@@ -5420,7 +5420,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "payee", name, element, index);
     if (element.hasType()) {
@@ -5438,7 +5438,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "careTeam", name, element, index);
     if (element.hasSequenceElement()) {
@@ -5465,7 +5465,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "supportingInfo", name, element, index);
     if (element.hasSequenceElement()) {
@@ -5495,7 +5495,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "diagnosis", name, element, index);
     if (element.hasSequenceElement()) {
@@ -5519,7 +5519,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "procedure", name, element, index);
     if (element.hasSequenceElement()) {
@@ -5546,7 +5546,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "insurance", name, element, index);
     if (element.hasSequenceElement()) {
@@ -5579,7 +5579,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "accident", name, element, index);
     if (element.hasDateElement()) {
@@ -5600,7 +5600,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "item", name, element, index);
     if (element.hasSequenceElement()) {
@@ -5681,7 +5681,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "bodySite", name, element, index);
     for (int i = 0; i < element.getSite().size(); i++) {
@@ -5699,7 +5699,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "detail", name, element, index);
     if (element.hasSequenceElement()) {
@@ -5756,7 +5756,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "subDetail", name, element, index);
     if (element.hasSequenceElement()) {
@@ -5810,7 +5810,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ClaimResponse", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -5912,7 +5912,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "item", name, element, index);
     if (element.hasItemSequenceElement()) {
@@ -5939,7 +5939,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "adjudication", name, element, index);
     if (element.hasCategory()) {
@@ -5963,7 +5963,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "detail", name, element, index);
     if (element.hasDetailSequenceElement()) {
@@ -5990,7 +5990,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "subDetail", name, element, index);
     if (element.hasSubDetailSequenceElement()) {
@@ -6014,7 +6014,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "addItem", name, element, index);
     for (int i = 0; i < element.getItemSequence().size(); i++) {
@@ -6089,7 +6089,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "bodySite", name, element, index);
     for (int i = 0; i < element.getSite().size(); i++) {
@@ -6107,7 +6107,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "detail", name, element, index);
     if (element.hasRevenue()) {
@@ -6158,7 +6158,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "subDetail", name, element, index);
     if (element.hasRevenue()) {
@@ -6206,7 +6206,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "total", name, element, index);
     if (element.hasCategory()) {
@@ -6224,7 +6224,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "payment", name, element, index);
     if (element.hasType()) {
@@ -6254,7 +6254,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "processNote", name, element, index);
     if (element.hasNumberElement()) {
@@ -6278,7 +6278,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "insurance", name, element, index);
     if (element.hasSequenceElement()) {
@@ -6305,7 +6305,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "error", name, element, index);
     if (element.hasItemSequenceElement()) {
@@ -6329,7 +6329,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ClinicalImpression", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -6398,7 +6398,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "finding", name, element, index);
     if (element.hasItem()) {
@@ -6416,7 +6416,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ClinicalUseDefinition", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -6464,7 +6464,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "contraindication", name, element, index);
     if (element.hasDiseaseSymptomProcedure()) {
@@ -6494,7 +6494,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "otherTherapy", name, element, index);
     if (element.hasRelationshipType()) {
@@ -6512,7 +6512,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "indication", name, element, index);
     if (element.hasDiseaseSymptomProcedure()) {
@@ -6548,7 +6548,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "interaction", name, element, index);
     for (int i = 0; i < element.getInteractant().size(); i++) {
@@ -6575,7 +6575,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "interactant", name, element, index);
     if (element.hasItem()) {
@@ -6590,7 +6590,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "undesirableEffect", name, element, index);
     if (element.hasSymptomConditionEffect()) {
@@ -6611,7 +6611,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "warning", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -6629,7 +6629,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "CodeSystem", name, element, index);
     if (element.hasUrlElement()) {
@@ -6746,7 +6746,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "filter", name, element, index);
     if (element.hasCodeElement()) {
@@ -6770,7 +6770,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "property", name, element, index);
     if (element.hasCodeElement()) {
@@ -6794,7 +6794,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "concept", name, element, index);
     if (element.hasCodeElement()) {
@@ -6824,7 +6824,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "designation", name, element, index);
     if (element.hasLanguageElement()) {
@@ -6848,7 +6848,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "property", name, element, index);
     if (element.hasCodeElement()) {
@@ -6866,7 +6866,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Communication", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -6944,7 +6944,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "payload", name, element, index);
     if (element.hasContent()) {
@@ -6959,7 +6959,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "CommunicationRequest", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -7037,7 +7037,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "payload", name, element, index);
     if (element.hasContent()) {
@@ -7052,7 +7052,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "CompartmentDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -7112,7 +7112,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "resource", name, element, index);
     if (element.hasCodeElement()) {
@@ -7139,7 +7139,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Composition", name, element, index);
     if (element.hasUrlElement()) {
@@ -7208,7 +7208,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "attester", name, element, index);
     if (element.hasMode()) {
@@ -7229,7 +7229,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "event", name, element, index);
     for (int i = 0; i < element.getCode().size(); i++) {
@@ -7250,7 +7250,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "section", name, element, index);
     if (element.hasTitleElement()) {
@@ -7292,7 +7292,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "ConceptMap", name, element, index);
     if (element.hasUrlElement()) {
@@ -7385,7 +7385,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "group", name, element, index);
     if (element.hasSourceElement()) {
@@ -7409,7 +7409,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "element", name, element, index);
     if (element.hasCodeElement()) {
@@ -7436,7 +7436,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "target", name, element, index);
     if (element.hasCodeElement()) {
@@ -7469,7 +7469,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dependsOn", name, element, index);
     if (element.hasPropertyElement()) {
@@ -7490,7 +7490,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "unmapped", name, element, index);
     if (element.hasModeElement()) {
@@ -7520,7 +7520,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Condition", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -7580,7 +7580,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     if (element.hasFunction()) {
@@ -7598,7 +7598,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "stage", name, element, index);
     if (element.hasSummary()) {
@@ -7619,7 +7619,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "ConditionDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -7715,7 +7715,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "observation", name, element, index);
     if (element.hasCategory()) {
@@ -7733,7 +7733,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "medication", name, element, index);
     if (element.hasCategory()) {
@@ -7751,7 +7751,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "precondition", name, element, index);
     if (element.hasTypeElement()) {
@@ -7772,7 +7772,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "questionnaire", name, element, index);
     if (element.hasPurposeElement()) {
@@ -7790,7 +7790,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "plan", name, element, index);
     if (element.hasRole()) {
@@ -7808,7 +7808,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Consent", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -7871,7 +7871,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "policyBasis", name, element, index);
     if (element.hasReference()) {
@@ -7889,7 +7889,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "verification", name, element, index);
     if (element.hasVerifiedElement()) {
@@ -7916,7 +7916,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "provision", name, element, index);
     if (element.hasTypeElement()) {
@@ -7967,7 +7967,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "actor", name, element, index);
     if (element.hasRole()) {
@@ -7985,7 +7985,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "data", name, element, index);
     if (element.hasMeaningElement()) {
@@ -8003,7 +8003,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Contract", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -8114,7 +8114,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "contentDefinition", name, element, index);
     if (element.hasType()) {
@@ -8144,7 +8144,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "term", name, element, index);
     if (element.hasIdentifier()) {
@@ -8192,7 +8192,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "securityLabel", name, element, index);
     for (int i = 0; i < element.getNumber().size(); i++) {
@@ -8216,7 +8216,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "offer", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -8258,7 +8258,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "party", name, element, index);
     for (int i = 0; i < element.getReference().size(); i++) {
@@ -8276,7 +8276,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "answer", name, element, index);
     if (element.hasValue()) {
@@ -8291,7 +8291,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "asset", name, element, index);
     if (element.hasScope()) {
@@ -8348,7 +8348,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "context", name, element, index);
     if (element.hasReference()) {
@@ -8369,7 +8369,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "valuedItem", name, element, index);
     if (element.hasEntity()) {
@@ -8423,7 +8423,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "action", name, element, index);
     if (element.hasDoNotPerformElement()) {
@@ -8492,7 +8492,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "subject", name, element, index);
     for (int i = 0; i < element.getReference().size(); i++) {
@@ -8510,7 +8510,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "signer", name, element, index);
     if (element.hasType()) {
@@ -8531,7 +8531,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "friendly", name, element, index);
     if (element.hasContent()) {
@@ -8546,7 +8546,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "legal", name, element, index);
     if (element.hasContent()) {
@@ -8561,7 +8561,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "rule", name, element, index);
     if (element.hasContent()) {
@@ -8576,7 +8576,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Coverage", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -8648,7 +8648,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "paymentBy", name, element, index);
     if (element.hasParty()) {
@@ -8666,7 +8666,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "class", name, element, index);
     if (element.hasType()) {
@@ -8687,7 +8687,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "costToBeneficiary", name, element, index);
     if (element.hasType()) {
@@ -8720,7 +8720,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "exception", name, element, index);
     if (element.hasType()) {
@@ -8738,7 +8738,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "CoverageEligibilityRequest", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -8792,7 +8792,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "supportingInfo", name, element, index);
     if (element.hasSequenceElement()) {
@@ -8813,7 +8813,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "insurance", name, element, index);
     if (element.hasFocalElement()) {
@@ -8834,7 +8834,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "item", name, element, index);
     for (int i = 0; i < element.getSupportingInfoSequence().size(); i++) {
@@ -8876,7 +8876,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "diagnosis", name, element, index);
     if (element.hasDiagnosis()) {
@@ -8891,7 +8891,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "CoverageEligibilityResponse", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -8948,7 +8948,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "insurance", name, element, index);
     if (element.hasCoverage()) {
@@ -8972,7 +8972,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "item", name, element, index);
     if (element.hasCategory()) {
@@ -9026,7 +9026,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "benefit", name, element, index);
     if (element.hasType()) {
@@ -9047,7 +9047,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "error", name, element, index);
     if (element.hasCode()) {
@@ -9062,7 +9062,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "DetectedIssue", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -9113,7 +9113,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "evidence", name, element, index);
     for (int i = 0; i < element.getCode().size(); i++) {
@@ -9131,7 +9131,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "mitigation", name, element, index);
     if (element.hasAction()) {
@@ -9152,7 +9152,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Device", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -9257,7 +9257,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "udiCarrier", name, element, index);
     if (element.hasDeviceIdentifierElement()) {
@@ -9287,7 +9287,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "deviceName", name, element, index);
     if (element.hasNameElement()) {
@@ -9305,7 +9305,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "version", name, element, index);
     if (element.hasType()) {
@@ -9329,7 +9329,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "specialization", name, element, index);
     if (element.hasSystemType()) {
@@ -9350,7 +9350,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "property", name, element, index);
     if (element.hasType()) {
@@ -9368,7 +9368,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "operation", name, element, index);
     if (element.hasStatus()) {
@@ -9398,7 +9398,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "association", name, element, index);
     if (element.hasStatus()) {
@@ -9422,7 +9422,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "DeviceDefinition", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -9515,7 +9515,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "udiDeviceIdentifier", name, element, index);
     if (element.hasDeviceIdentifierElement()) {
@@ -9539,7 +9539,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "marketDistribution", name, element, index);
     if (element.hasMarketPeriod()) {
@@ -9557,7 +9557,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "regulatoryIdentifier", name, element, index);
     if (element.hasTypeElement()) {
@@ -9581,7 +9581,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "deviceName", name, element, index);
     if (element.hasNameElement()) {
@@ -9599,7 +9599,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "classification", name, element, index);
     if (element.hasType()) {
@@ -9617,7 +9617,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "hasPart", name, element, index);
     if (element.hasReference()) {
@@ -9635,7 +9635,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "packaging", name, element, index);
     if (element.hasIdentifier()) {
@@ -9665,7 +9665,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "distributor", name, element, index);
     if (element.hasNameElement()) {
@@ -9683,7 +9683,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "version", name, element, index);
     if (element.hasType()) {
@@ -9704,7 +9704,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "property", name, element, index);
     if (element.hasType()) {
@@ -9722,7 +9722,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "link", name, element, index);
     if (element.hasRelation()) {
@@ -9740,7 +9740,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "material", name, element, index);
     if (element.hasSubstance()) {
@@ -9761,7 +9761,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "guideline", name, element, index);
     for (int i = 0; i < element.getUseContext().size(); i++) {
@@ -9794,7 +9794,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "correctiveAction", name, element, index);
     if (element.hasRecallElement()) {
@@ -9815,7 +9815,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "chargeItem", name, element, index);
     if (element.hasChargeItemCode()) {
@@ -9839,7 +9839,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "DeviceDispense", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -9911,7 +9911,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "performer", name, element, index);
     if (element.hasFunction()) {
@@ -9929,7 +9929,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "DeviceMetric", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -9971,7 +9971,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "calibration", name, element, index);
     if (element.hasTypeElement()) {
@@ -9992,7 +9992,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "DeviceRequest", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -10085,7 +10085,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "parameter", name, element, index);
     if (element.hasCode()) {
@@ -10103,7 +10103,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "DeviceUsage", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -10166,7 +10166,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "adherence", name, element, index);
     if (element.hasCode()) {
@@ -10184,7 +10184,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "DiagnosticReport", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -10259,7 +10259,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "supportingInfo", name, element, index);
     if (element.hasType()) {
@@ -10277,7 +10277,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "media", name, element, index);
     if (element.hasCommentElement()) {
@@ -10295,7 +10295,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "DocumentManifest", name, element, index);
     if (element.hasMasterIdentifier()) {
@@ -10343,7 +10343,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "related", name, element, index);
     if (element.hasIdentifier()) {
@@ -10361,7 +10361,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "DocumentReference", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -10433,7 +10433,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "attester", name, element, index);
     if (element.hasMode()) {
@@ -10454,7 +10454,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "relatesTo", name, element, index);
     if (element.hasCode()) {
@@ -10472,7 +10472,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "content", name, element, index);
     if (element.hasAttachment()) {
@@ -10490,7 +10490,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "profile", name, element, index);
     if (element.hasValue()) {
@@ -10505,7 +10505,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Encounter", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -10598,7 +10598,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "statusHistory", name, element, index);
     if (element.hasStatusElement()) {
@@ -10616,7 +10616,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "classHistory", name, element, index);
     if (element.hasClass_()) {
@@ -10634,7 +10634,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     for (int i = 0; i < element.getType().size(); i++) {
@@ -10655,7 +10655,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "diagnosis", name, element, index);
     if (element.hasCondition()) {
@@ -10676,7 +10676,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "admission", name, element, index);
     if (element.hasPreAdmissionIdentifier()) {
@@ -10715,7 +10715,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "location", name, element, index);
     if (element.hasLocation()) {
@@ -10739,7 +10739,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Endpoint", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -10790,7 +10790,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "EnrollmentRequest", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -10823,7 +10823,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "EnrollmentResponse", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -10859,7 +10859,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "EpisodeOfCare", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -10907,7 +10907,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "statusHistory", name, element, index);
     if (element.hasStatusElement()) {
@@ -10925,7 +10925,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "diagnosis", name, element, index);
     if (element.hasCondition()) {
@@ -10946,7 +10946,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "EventDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -11042,7 +11042,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "Evidence", name, element, index);
     if (element.hasUrlElement()) {
@@ -11135,7 +11135,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "variableDefinition", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -11165,7 +11165,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "statistic", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -11207,7 +11207,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "sampleSize", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -11234,7 +11234,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "attributeEstimate", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -11267,7 +11267,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "modelCharacteristic", name, element, index);
     if (element.hasCode()) {
@@ -11291,7 +11291,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "variable", name, element, index);
     if (element.hasVariableDefinition()) {
@@ -11318,7 +11318,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "certainty", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -11348,7 +11348,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "EvidenceReport", name, element, index);
     if (element.hasUrlElement()) {
@@ -11414,7 +11414,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "subject", name, element, index);
     for (int i = 0; i < element.getCharacteristic().size(); i++) {
@@ -11432,7 +11432,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "characteristic", name, element, index);
     if (element.hasCode()) {
@@ -11456,7 +11456,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "relatesTo", name, element, index);
     if (element.hasCodeElement()) {
@@ -11474,7 +11474,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "target", name, element, index);
     if (element.hasUrlElement()) {
@@ -11498,7 +11498,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "section", name, element, index);
     if (element.hasTitleElement()) {
@@ -11546,7 +11546,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "EvidenceVariable", name, element, index);
     if (element.hasUrlElement()) {
@@ -11642,7 +11642,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "characteristic", name, element, index);
     if (element.hasLinkIdElement()) {
@@ -11690,7 +11690,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "definitionByTypeAndValue", name, element, index);
     if (element.hasType()) {
@@ -11717,7 +11717,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "definitionByCombination", name, element, index);
     if (element.hasCodeElement()) {
@@ -11738,7 +11738,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "timeFromEvent", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -11765,7 +11765,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "category", name, element, index);
     if (element.hasNameElement()) {
@@ -11783,7 +11783,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "ExampleScenario", name, element, index);
     if (element.hasUrlElement()) {
@@ -11855,7 +11855,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "actor", name, element, index);
     if (element.hasKeyElement()) {
@@ -11879,7 +11879,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "instance", name, element, index);
     if (element.hasKeyElement()) {
@@ -11918,7 +11918,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "version", name, element, index);
     if (element.hasKeyElement()) {
@@ -11942,7 +11942,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "containedInstance", name, element, index);
     if (element.hasInstanceReferenceElement()) {
@@ -11960,7 +11960,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "process", name, element, index);
     if (element.hasTitleElement()) {
@@ -11987,7 +11987,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "step", name, element, index);
     if (element.hasNumberElement()) {
@@ -12017,7 +12017,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "operation", name, element, index);
     if (element.hasType()) {
@@ -12056,7 +12056,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "alternative", name, element, index);
     if (element.hasTitleElement()) {
@@ -12077,7 +12077,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ExplanationOfBenefit", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -12230,7 +12230,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "related", name, element, index);
     if (element.hasClaim()) {
@@ -12251,7 +12251,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "payee", name, element, index);
     if (element.hasType()) {
@@ -12269,7 +12269,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "careTeam", name, element, index);
     if (element.hasSequenceElement()) {
@@ -12296,7 +12296,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "supportingInfo", name, element, index);
     if (element.hasSequenceElement()) {
@@ -12326,7 +12326,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "diagnosis", name, element, index);
     if (element.hasSequenceElement()) {
@@ -12350,7 +12350,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "procedure", name, element, index);
     if (element.hasSequenceElement()) {
@@ -12377,7 +12377,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "insurance", name, element, index);
     if (element.hasFocalElement()) {
@@ -12398,7 +12398,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "accident", name, element, index);
     if (element.hasDateElement()) {
@@ -12419,7 +12419,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "item", name, element, index);
     if (element.hasSequenceElement()) {
@@ -12509,7 +12509,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "bodySite", name, element, index);
     for (int i = 0; i < element.getSite().size(); i++) {
@@ -12527,7 +12527,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "adjudication", name, element, index);
     if (element.hasCategory()) {
@@ -12551,7 +12551,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "detail", name, element, index);
     if (element.hasSequenceElement()) {
@@ -12617,7 +12617,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "subDetail", name, element, index);
     if (element.hasSequenceElement()) {
@@ -12680,7 +12680,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "addItem", name, element, index);
     for (int i = 0; i < element.getItemSequence().size(); i++) {
@@ -12758,7 +12758,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "bodySite", name, element, index);
     for (int i = 0; i < element.getSite().size(); i++) {
@@ -12776,7 +12776,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "detail", name, element, index);
     if (element.hasRevenue()) {
@@ -12830,7 +12830,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "subDetail", name, element, index);
     if (element.hasRevenue()) {
@@ -12881,7 +12881,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "total", name, element, index);
     if (element.hasCategory()) {
@@ -12899,7 +12899,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "payment", name, element, index);
     if (element.hasType()) {
@@ -12929,7 +12929,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "processNote", name, element, index);
     if (element.hasNumberElement()) {
@@ -12953,7 +12953,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "benefitBalance", name, element, index);
     if (element.hasCategory()) {
@@ -12989,7 +12989,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "financial", name, element, index);
     if (element.hasType()) {
@@ -13010,7 +13010,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "FamilyMemberHistory", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -13079,7 +13079,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     if (element.hasFunction()) {
@@ -13097,7 +13097,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "condition", name, element, index);
     if (element.hasCode()) {
@@ -13124,7 +13124,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "procedure", name, element, index);
     if (element.hasCode()) {
@@ -13151,7 +13151,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Flag", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -13187,7 +13187,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "FormularyItem", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -13208,7 +13208,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "GenomicStudy", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -13265,7 +13265,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "analysis", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -13331,7 +13331,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "input", name, element, index);
     if (element.hasFile()) {
@@ -13352,7 +13352,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "output", name, element, index);
     if (element.hasFile()) {
@@ -13370,7 +13370,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "performer", name, element, index);
     if (element.hasActor()) {
@@ -13388,7 +13388,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "device", name, element, index);
     if (element.hasDevice()) {
@@ -13406,7 +13406,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Goal", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -13466,7 +13466,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "target", name, element, index);
     if (element.hasMeasure()) {
@@ -13487,7 +13487,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "GraphDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -13550,7 +13550,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "node", name, element, index);
     if (element.hasNodeIdElement()) {
@@ -13574,7 +13574,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "link", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -13613,7 +13613,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "compartment", name, element, index);
     if (element.hasUseElement()) {
@@ -13640,7 +13640,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Group", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -13685,7 +13685,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "characteristic", name, element, index);
     if (element.hasCode()) {
@@ -13709,7 +13709,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "member", name, element, index);
     if (element.hasEntity()) {
@@ -13730,7 +13730,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "GuidanceResponse", name, element, index);
     if (element.hasRequestIdentifier()) {
@@ -13784,7 +13784,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "HealthcareService", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -13865,7 +13865,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "eligibility", name, element, index);
     if (element.hasCode()) {
@@ -13883,7 +13883,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ImagingSelection", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -13949,7 +13949,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "performer", name, element, index);
     if (element.hasFunction()) {
@@ -13967,7 +13967,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "instance", name, element, index);
     if (element.hasUidElement()) {
@@ -13994,7 +13994,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "imageRegion", name, element, index);
     if (element.hasRegionTypeElement()) {
@@ -14012,7 +14012,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "imageRegion", name, element, index);
     if (element.hasRegionTypeElement()) {
@@ -14030,7 +14030,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ImagingStudy", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -14096,7 +14096,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "series", name, element, index);
     if (element.hasUidElement()) {
@@ -14144,7 +14144,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "performer", name, element, index);
     if (element.hasFunction()) {
@@ -14162,7 +14162,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "instance", name, element, index);
     if (element.hasUidElement()) {
@@ -14186,7 +14186,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Immunization", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -14282,7 +14282,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "performer", name, element, index);
     if (element.hasFunction()) {
@@ -14300,7 +14300,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "programEligibility", name, element, index);
     if (element.hasProgram()) {
@@ -14318,7 +14318,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "reaction", name, element, index);
     if (element.hasDateElement()) {
@@ -14339,7 +14339,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "protocolApplied", name, element, index);
     if (element.hasSeriesElement()) {
@@ -14366,7 +14366,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ImmunizationEvaluation", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -14417,7 +14417,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ImmunizationRecommendation", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -14444,7 +14444,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "recommendation", name, element, index);
     for (int i = 0; i < element.getVaccineCode().size(); i++) {
@@ -14492,7 +14492,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dateCriterion", name, element, index);
     if (element.hasCode()) {
@@ -14510,7 +14510,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "ImplementationGuide", name, element, index);
     if (element.hasUrlElement()) {
@@ -14588,7 +14588,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dependsOn", name, element, index);
     if (element.hasUriElement()) {
@@ -14612,7 +14612,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "global", name, element, index);
     if (element.hasTypeElement()) {
@@ -14630,7 +14630,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "definition", name, element, index);
     for (int i = 0; i < element.getGrouping().size(); i++) {
@@ -14657,7 +14657,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "grouping", name, element, index);
     if (element.hasNameElement()) {
@@ -14675,7 +14675,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "resource", name, element, index);
     if (element.hasReference()) {
@@ -14708,7 +14708,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "page", name, element, index);
     if (element.hasSource()) {
@@ -14735,7 +14735,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "parameter", name, element, index);
     if (element.hasCode()) {
@@ -14753,7 +14753,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "template", name, element, index);
     if (element.hasCodeElement()) {
@@ -14774,7 +14774,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "manifest", name, element, index);
     if (element.hasRenderingElement()) {
@@ -14801,7 +14801,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "resource", name, element, index);
     if (element.hasReference()) {
@@ -14825,7 +14825,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "page", name, element, index);
     if (element.hasNameElement()) {
@@ -14846,7 +14846,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Ingredient", name, element, index);
     if (element.hasIdentifier()) {
@@ -14885,7 +14885,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "manufacturer", name, element, index);
     if (element.hasRoleElement()) {
@@ -14903,7 +14903,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "substance", name, element, index);
     if (element.hasCode()) {
@@ -14921,7 +14921,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "strength", name, element, index);
     if (element.hasPresentation()) {
@@ -14957,7 +14957,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "referenceStrength", name, element, index);
     if (element.hasSubstance()) {
@@ -14981,7 +14981,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "InsurancePlan", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -15035,7 +15035,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "coverage", name, element, index);
     if (element.hasType()) {
@@ -15056,7 +15056,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "benefit", name, element, index);
     if (element.hasType()) {
@@ -15077,7 +15077,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "limit", name, element, index);
     if (element.hasValue()) {
@@ -15095,7 +15095,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "plan", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -15125,7 +15125,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "generalCost", name, element, index);
     if (element.hasType()) {
@@ -15149,7 +15149,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "specificCost", name, element, index);
     if (element.hasCategory()) {
@@ -15167,7 +15167,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "benefit", name, element, index);
     if (element.hasType()) {
@@ -15185,7 +15185,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "cost", name, element, index);
     if (element.hasType()) {
@@ -15209,7 +15209,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "InventoryReport", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -15251,7 +15251,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "inventoryListing", name, element, index);
     if (element.hasLocation()) {
@@ -15275,7 +15275,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "items", name, element, index);
     if (element.hasCategory()) {
@@ -15308,7 +15308,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Invoice", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -15374,7 +15374,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     if (element.hasRole()) {
@@ -15392,7 +15392,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "lineItem", name, element, index);
     if (element.hasSequenceElement()) {
@@ -15416,7 +15416,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "Library", name, element, index);
     if (element.hasUrlElement()) {
@@ -15521,7 +15521,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Linkage", name, element, index);
     if (element.hasActiveElement()) {
@@ -15542,7 +15542,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "item", name, element, index);
     if (element.hasTypeElement()) {
@@ -15560,7 +15560,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "List", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -15611,7 +15611,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "entry", name, element, index);
     if (element.hasFlag()) {
@@ -15635,7 +15635,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Location", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -15701,7 +15701,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "position", name, element, index);
     if (element.hasLongitudeElement()) {
@@ -15722,7 +15722,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ManufacturedItemDefinition", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -15764,7 +15764,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "property", name, element, index);
     if (element.hasType()) {
@@ -15782,7 +15782,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "component", name, element, index);
     if (element.hasType()) {
@@ -15812,7 +15812,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "constituent", name, element, index);
     for (int i = 0; i < element.getAmount().size(); i++) {
@@ -15836,7 +15836,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "Measure", name, element, index);
     if (element.hasUrlElement()) {
@@ -15977,7 +15977,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "term", name, element, index);
     if (element.hasCode()) {
@@ -15995,7 +15995,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "group", name, element, index);
     if (element.hasCode()) {
@@ -16034,7 +16034,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "population", name, element, index);
     if (element.hasCode()) {
@@ -16061,7 +16061,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "stratifier", name, element, index);
     if (element.hasCode()) {
@@ -16085,7 +16085,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "component", name, element, index);
     if (element.hasCode()) {
@@ -16106,7 +16106,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "supplementalData", name, element, index);
     if (element.hasCode()) {
@@ -16130,7 +16130,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "MeasureReport", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -16190,7 +16190,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "group", name, element, index);
     if (element.hasCode()) {
@@ -16214,7 +16214,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "population", name, element, index);
     if (element.hasCode()) {
@@ -16235,7 +16235,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "stratifier", name, element, index);
     if (element.hasCode()) {
@@ -16253,7 +16253,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "stratum", name, element, index);
     if (element.hasValue()) {
@@ -16277,7 +16277,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "component", name, element, index);
     if (element.hasCode()) {
@@ -16295,7 +16295,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "population", name, element, index);
     if (element.hasCode()) {
@@ -16316,7 +16316,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Medication", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -16352,7 +16352,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "ingredient", name, element, index);
     if (element.hasItem()) {
@@ -16373,7 +16373,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "batch", name, element, index);
     if (element.hasLotNumberElement()) {
@@ -16391,7 +16391,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "MedicationAdministration", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -16466,7 +16466,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "performer", name, element, index);
     if (element.hasFunction()) {
@@ -16484,7 +16484,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dosage", name, element, index);
     if (element.hasTextElement()) {
@@ -16514,7 +16514,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "MedicationDispense", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -16607,7 +16607,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "performer", name, element, index);
     if (element.hasFunction()) {
@@ -16625,7 +16625,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "substitution", name, element, index);
     if (element.hasWasSubstitutedElement()) {
@@ -16649,7 +16649,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "MedicationKnowledge", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -16721,7 +16721,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "relatedMedicationKnowledge", name, element, index);
     if (element.hasType()) {
@@ -16739,7 +16739,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "monograph", name, element, index);
     if (element.hasType()) {
@@ -16757,7 +16757,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "cost", name, element, index);
     for (int i = 0; i < element.getEffectiveDate().size(); i++) {
@@ -16781,7 +16781,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "monitoringProgram", name, element, index);
     if (element.hasType()) {
@@ -16799,7 +16799,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "indicationGuideline", name, element, index);
     for (int i = 0; i < element.getIndication().size(); i++) {
@@ -16817,7 +16817,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dosingGuideline", name, element, index);
     if (element.hasTreatmentIntent()) {
@@ -16841,7 +16841,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dosage", name, element, index);
     if (element.hasType()) {
@@ -16859,7 +16859,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "patientCharacteristic", name, element, index);
     if (element.hasType()) {
@@ -16877,7 +16877,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "medicineClassification", name, element, index);
     if (element.hasType()) {
@@ -16898,7 +16898,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "packaging", name, element, index);
     for (int i = 0; i < element.getCost().size(); i++) {
@@ -16916,7 +16916,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "storageGuideline", name, element, index);
     if (element.hasReferenceElement()) {
@@ -16940,7 +16940,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "environmentalSetting", name, element, index);
     if (element.hasType()) {
@@ -16958,7 +16958,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "regulatory", name, element, index);
     if (element.hasRegulatoryAuthority()) {
@@ -16982,7 +16982,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "substitution", name, element, index);
     if (element.hasType()) {
@@ -17000,7 +17000,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "maxDispense", name, element, index);
     if (element.hasQuantity()) {
@@ -17018,7 +17018,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "definitional", name, element, index);
     for (int i = 0; i < element.getDefinition().size(); i++) {
@@ -17045,7 +17045,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "ingredient", name, element, index);
     if (element.hasItem()) {
@@ -17066,7 +17066,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "drugCharacteristic", name, element, index);
     if (element.hasType()) {
@@ -17084,7 +17084,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "MedicationRequest", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -17189,7 +17189,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dose", name, element, index);
     if (element.hasRenderedDosageInstructionElement()) {
@@ -17210,7 +17210,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dispenseRequest", name, element, index);
     if (element.hasInitialFill()) {
@@ -17249,7 +17249,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "initialFill", name, element, index);
     if (element.hasQuantity()) {
@@ -17267,7 +17267,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "substitution", name, element, index);
     if (element.hasAllowed()) {
@@ -17285,7 +17285,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "MedicationUsage", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -17348,7 +17348,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "adherence", name, element, index);
     if (element.hasCode()) {
@@ -17366,7 +17366,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "MedicinalProductDefinition", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -17465,7 +17465,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "contact", name, element, index);
     if (element.hasType()) {
@@ -17483,7 +17483,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "name", name, element, index);
     if (element.hasProductNameElement()) {
@@ -17507,7 +17507,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "part", name, element, index);
     if (element.hasPartElement()) {
@@ -17525,7 +17525,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "usage", name, element, index);
     if (element.hasCountry()) {
@@ -17546,7 +17546,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "crossReference", name, element, index);
     if (element.hasProduct()) {
@@ -17564,7 +17564,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "operation", name, element, index);
     if (element.hasType()) {
@@ -17588,7 +17588,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "characteristic", name, element, index);
     if (element.hasType()) {
@@ -17606,7 +17606,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "MessageDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -17690,7 +17690,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "focus", name, element, index);
     if (element.hasCodeElement()) {
@@ -17714,7 +17714,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "allowedResponse", name, element, index);
     if (element.hasMessageElement()) {
@@ -17732,7 +17732,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "MessageHeader", name, element, index);
     if (element.hasEvent()) {
@@ -17777,7 +17777,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "destination", name, element, index);
     if (element.hasNameElement()) {
@@ -17801,7 +17801,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "source", name, element, index);
     if (element.hasNameElement()) {
@@ -17828,7 +17828,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "response", name, element, index);
     if (element.hasIdentifier()) {
@@ -17849,7 +17849,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "MolecularSequence", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -17888,7 +17888,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "relative", name, element, index);
     if (element.hasCoordinateSystem()) {
@@ -17915,7 +17915,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "startingSequence", name, element, index);
     if (element.hasGenomeAssembly()) {
@@ -17948,7 +17948,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "edit", name, element, index);
     if (element.hasStartElement()) {
@@ -17972,7 +17972,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "NamingSystem", name, element, index);
     if (element.hasUrlElement()) {
@@ -18071,7 +18071,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "uniqueId", name, element, index);
     if (element.hasTypeElement()) {
@@ -18101,7 +18101,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "NutritionIntake", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -18173,7 +18173,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "consumedItem", name, element, index);
     if (element.hasType()) {
@@ -18206,7 +18206,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "ingredientLabel", name, element, index);
     if (element.hasNutrient()) {
@@ -18224,7 +18224,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "performer", name, element, index);
     if (element.hasFunction()) {
@@ -18242,7 +18242,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "NutritionOrder", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -18320,7 +18320,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "oralDiet", name, element, index);
     for (int i = 0; i < element.getType().size(); i++) {
@@ -18350,7 +18350,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "schedule", name, element, index);
     for (int i = 0; i < element.getTiming().size(); i++) {
@@ -18371,7 +18371,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "nutrient", name, element, index);
     if (element.hasModifier()) {
@@ -18389,7 +18389,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "texture", name, element, index);
     if (element.hasModifier()) {
@@ -18407,7 +18407,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "supplement", name, element, index);
     if (element.hasType()) {
@@ -18434,7 +18434,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "schedule", name, element, index);
     for (int i = 0; i < element.getTiming().size(); i++) {
@@ -18455,7 +18455,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "enteralFormula", name, element, index);
     if (element.hasBaseFormulaType()) {
@@ -18494,7 +18494,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "additive", name, element, index);
     if (element.hasType()) {
@@ -18515,7 +18515,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "administration", name, element, index);
     if (element.hasSchedule()) {
@@ -18536,7 +18536,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "schedule", name, element, index);
     for (int i = 0; i < element.getTiming().size(); i++) {
@@ -18557,7 +18557,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "NutritionProduct", name, element, index);
     if (element.hasCode()) {
@@ -18599,7 +18599,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "nutrient", name, element, index);
     if (element.hasItem()) {
@@ -18617,7 +18617,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "ingredient", name, element, index);
     if (element.hasItem()) {
@@ -18635,7 +18635,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "characteristic", name, element, index);
     if (element.hasType()) {
@@ -18653,7 +18653,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "instance", name, element, index);
     if (element.hasQuantity()) {
@@ -18686,7 +18686,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Observation", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -18779,7 +18779,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "triggeredBy", name, element, index);
     if (element.hasObservation()) {
@@ -18800,7 +18800,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "referenceRange", name, element, index);
     if (element.hasLow()) {
@@ -18833,7 +18833,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "component", name, element, index);
     if (element.hasCode()) {
@@ -18860,7 +18860,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ObservationDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -18977,7 +18977,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "quantitativeDetails", name, element, index);
     if (element.hasUnit()) {
@@ -19001,7 +19001,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "qualifiedValue", name, element, index);
     if (element.hasContext()) {
@@ -19049,7 +19049,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "component", name, element, index);
     if (element.hasCode()) {
@@ -19073,7 +19073,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "OperationDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -19172,7 +19172,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "parameter", name, element, index);
     if (element.hasNameElement()) {
@@ -19223,7 +19223,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "binding", name, element, index);
     if (element.hasStrengthElement()) {
@@ -19241,7 +19241,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "referencedFrom", name, element, index);
     if (element.hasSourceElement()) {
@@ -19259,7 +19259,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "overload", name, element, index);
     for (int i = 0; i < element.getParameterName().size(); i++) {
@@ -19277,7 +19277,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "OperationOutcome", name, element, index);
     for (int i = 0; i < element.getIssue().size(); i++) {
@@ -19292,7 +19292,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "issue", name, element, index);
     if (element.hasSeverityElement()) {
@@ -19322,7 +19322,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Organization", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -19364,7 +19364,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "qualification", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -19388,7 +19388,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "OrganizationAffiliation", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -19436,7 +19436,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "PackagedProductDefinition", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -19493,7 +19493,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "legalStatusOfSupply", name, element, index);
     if (element.hasCode()) {
@@ -19511,7 +19511,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "packaging", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -19556,7 +19556,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "property", name, element, index);
     if (element.hasType()) {
@@ -19574,7 +19574,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "containedItem", name, element, index);
     if (element.hasItem()) {
@@ -19592,7 +19592,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeResource(t, "Parameters", name, element, index);
     for (int i = 0; i < element.getParameter().size(); i++) {
@@ -19607,7 +19607,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "parameter", name, element, index);
     if (element.hasNameElement()) {
@@ -19631,7 +19631,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Patient", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -19691,7 +19691,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "contact", name, element, index);
     for (int i = 0; i < element.getRelationship().size(); i++) {
@@ -19724,7 +19724,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "communication", name, element, index);
     if (element.hasLanguage()) {
@@ -19742,7 +19742,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "link", name, element, index);
     if (element.hasOther()) {
@@ -19760,7 +19760,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "PaymentNotice", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -19808,7 +19808,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "PaymentReconciliation", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -19907,7 +19907,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "allocation", name, element, index);
     if (element.hasIdentifier()) {
@@ -19958,7 +19958,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "processNote", name, element, index);
     if (element.hasTypeElement()) {
@@ -19976,7 +19976,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Permission", name, element, index);
     if (element.hasStatusElement()) {
@@ -19998,7 +19998,7 @@ public class RdfParser extends RdfParserBase {
       composeEnum(t, "Permission", "combining", element.getCombiningElement(), -1);
     }
     for (int i = 0; i < element.getRule().size(); i++) {
-      composePermissionrRuleComponent(t, "Permission", "rule", element.getRule().get(i), i);
+      composePermissionRuleComponent(t, "Permission", "rule", element.getRule().get(i), i);
     }
   }
 
@@ -20009,7 +20009,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "justification", name, element, index);
     for (int i = 0; i < element.getBasis().size(); i++) {
@@ -20020,42 +20020,42 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composePermissionrRuleComponent(Complex parent, String parentType, String name, Permission.RuleComponent element, int index) {
+  protected void composePermissionRuleComponent(Complex parent, String parentType, String name, Permission.RuleComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "rule", name, element, index);
     if (element.hasTypeElement()) {
       composeEnum(t, "RuleComponent", "type", element.getTypeElement(), -1);
     }
     for (int i = 0; i < element.getData().size(); i++) {
-      composePermissionrRuleDataComponent(t, "RuleComponent", "data", element.getData().get(i), i);
+      composePermissionRuleDataComponent(t, "RuleComponent", "data", element.getData().get(i), i);
     }
     for (int i = 0; i < element.getActivity().size(); i++) {
-      composePermissionrRuleActivityComponent(t, "RuleComponent", "activity", element.getActivity().get(i), i);
+      composePermissionRuleActivityComponent(t, "RuleComponent", "activity", element.getActivity().get(i), i);
     }
     for (int i = 0; i < element.getLimit().size(); i++) {
       composeCodeableConcept(t, "RuleComponent", "limit", element.getLimit().get(i), i);
     }
   }
 
-  protected void composePermissionrRuleDataComponent(Complex parent, String parentType, String name, Permission.RuleDataComponent element, int index) {
+  protected void composePermissionRuleDataComponent(Complex parent, String parentType, String name, Permission.RuleDataComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "data", name, element, index);
     for (int i = 0; i < element.getResource().size(); i++) {
-      composePermissionrRuleDataResourceComponent(t, "RuleDataComponent", "resource", element.getResource().get(i), i);
+      composePermissionRuleDataResourceComponent(t, "RuleDataComponent", "resource", element.getResource().get(i), i);
     }
     for (int i = 0; i < element.getSecurity().size(); i++) {
       composeCoding(t, "RuleDataComponent", "security", element.getSecurity().get(i), i);
@@ -20068,14 +20068,14 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composePermissionrRuleDataResourceComponent(Complex parent, String parentType, String name, Permission.RuleDataResourceComponent element, int index) {
+  protected void composePermissionRuleDataResourceComponent(Complex parent, String parentType, String name, Permission.RuleDataResourceComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "resource", name, element, index);
     if (element.hasMeaningElement()) {
@@ -20086,14 +20086,14 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composePermissionrRuleActivityComponent(Complex parent, String parentType, String name, Permission.RuleActivityComponent element, int index) {
+  protected void composePermissionRuleActivityComponent(Complex parent, String parentType, String name, Permission.RuleActivityComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "activity", name, element, index);
     for (int i = 0; i < element.getActor().size(); i++) {
@@ -20114,7 +20114,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Person", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -20165,7 +20165,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "communication", name, element, index);
     if (element.hasLanguage()) {
@@ -20183,7 +20183,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "link", name, element, index);
     if (element.hasTarget()) {
@@ -20201,7 +20201,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "PlanDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -20312,7 +20312,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "goal", name, element, index);
     if (element.hasCategory()) {
@@ -20345,7 +20345,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "target", name, element, index);
     if (element.hasMeasure()) {
@@ -20366,7 +20366,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "actor", name, element, index);
     if (element.hasTitleElement()) {
@@ -20387,7 +20387,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "option", name, element, index);
     if (element.hasTypeElement()) {
@@ -20411,7 +20411,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "action", name, element, index);
     if (element.hasLinkIdElement()) {
@@ -20510,7 +20510,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "condition", name, element, index);
     if (element.hasKindElement()) {
@@ -20528,7 +20528,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "input", name, element, index);
     if (element.hasTitleElement()) {
@@ -20549,7 +20549,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "output", name, element, index);
     if (element.hasTitleElement()) {
@@ -20570,7 +20570,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "relatedAction", name, element, index);
     if (element.hasTargetIdElement()) {
@@ -20591,7 +20591,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     if (element.hasActorIdElement()) {
@@ -20621,7 +20621,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dynamicValue", name, element, index);
     if (element.hasPathElement()) {
@@ -20639,7 +20639,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Practitioner", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -20684,7 +20684,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "qualification", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -20708,7 +20708,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "PractitionerRole", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -20756,7 +20756,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Procedure", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -20852,7 +20852,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "performer", name, element, index);
     if (element.hasFunction()) {
@@ -20876,7 +20876,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "focalDevice", name, element, index);
     if (element.hasAction()) {
@@ -20894,7 +20894,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Provenance", name, element, index);
     for (int i = 0; i < element.getTarget().size(); i++) {
@@ -20945,7 +20945,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "agent", name, element, index);
     if (element.hasType()) {
@@ -20969,7 +20969,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "entity", name, element, index);
     if (element.hasRoleElement()) {
@@ -20990,7 +20990,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "Questionnaire", name, element, index);
     if (element.hasUrlElement()) {
@@ -21074,7 +21074,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "item", name, element, index);
     if (element.hasLinkIdElement()) {
@@ -21140,7 +21140,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "enableWhen", name, element, index);
     if (element.hasQuestionElement()) {
@@ -21161,7 +21161,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "answerOption", name, element, index);
     if (element.hasValue()) {
@@ -21179,7 +21179,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "initial", name, element, index);
     if (element.hasValue()) {
@@ -21194,7 +21194,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "QuestionnaireResponse", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -21239,7 +21239,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "item", name, element, index);
     if (element.hasLinkIdElement()) {
@@ -21266,7 +21266,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "answer", name, element, index);
     if (element.hasValue()) {
@@ -21284,7 +21284,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "RegulatedAuthorization", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -21341,7 +21341,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "case", name, element, index);
     if (element.hasIdentifier()) {
@@ -21368,7 +21368,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "RelatedPerson", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -21416,7 +21416,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "communication", name, element, index);
     if (element.hasLanguage()) {
@@ -21434,7 +21434,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "RequestOrchestration", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -21500,7 +21500,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "action", name, element, index);
     if (element.hasLinkIdElement()) {
@@ -21593,7 +21593,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "condition", name, element, index);
     if (element.hasKindElement()) {
@@ -21611,7 +21611,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "input", name, element, index);
     if (element.hasTitleElement()) {
@@ -21632,7 +21632,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "output", name, element, index);
     if (element.hasTitleElement()) {
@@ -21653,7 +21653,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "relatedAction", name, element, index);
     if (element.hasTargetIdElement()) {
@@ -21674,7 +21674,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     if (element.hasTypeElement()) {
@@ -21704,7 +21704,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dynamicValue", name, element, index);
     if (element.hasPathElement()) {
@@ -21722,7 +21722,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "Requirements", name, element, index);
     if (element.hasUrlElement()) {
@@ -21791,7 +21791,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "statement", name, element, index);
     if (element.hasKeyElement()) {
@@ -21833,7 +21833,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ResearchStudy", name, element, index);
     if (element.hasUrlElement()) {
@@ -21941,7 +21941,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "label", name, element, index);
     if (element.hasType()) {
@@ -21959,7 +21959,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "associatedParty", name, element, index);
     if (element.hasNameElement()) {
@@ -21986,7 +21986,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "progressStatus", name, element, index);
     if (element.hasState()) {
@@ -22007,7 +22007,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "recruitment", name, element, index);
     if (element.hasTargetNumberElement()) {
@@ -22031,7 +22031,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "comparisonGroup", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -22061,7 +22061,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "objective", name, element, index);
     if (element.hasNameElement()) {
@@ -22082,7 +22082,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "outcomeMeasure", name, element, index);
     if (element.hasNameElement()) {
@@ -22106,7 +22106,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ResearchSubject", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -22145,7 +22145,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "progress", name, element, index);
     if (element.hasType()) {
@@ -22175,7 +22175,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "RiskAssessment", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -22235,7 +22235,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "prediction", name, element, index);
     if (element.hasOutcome()) {
@@ -22265,7 +22265,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Schedule", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -22304,7 +22304,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "SearchParameter", name, element, index);
     if (element.hasUrlElement()) {
@@ -22400,7 +22400,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "component", name, element, index);
     if (element.hasDefinitionElement()) {
@@ -22418,7 +22418,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "ServiceRequest", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -22529,7 +22529,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Slot", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -22574,7 +22574,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Specimen", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -22634,7 +22634,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "feature", name, element, index);
     if (element.hasType()) {
@@ -22652,7 +22652,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "collection", name, element, index);
     if (element.hasCollector()) {
@@ -22691,7 +22691,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "processing", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -22715,7 +22715,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "container", name, element, index);
     if (element.hasDevice()) {
@@ -22736,7 +22736,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "SpecimenDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -22823,7 +22823,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "typeTested", name, element, index);
     if (element.hasIsDerivedElement()) {
@@ -22865,7 +22865,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "container", name, element, index);
     if (element.hasMaterial()) {
@@ -22901,7 +22901,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "additive", name, element, index);
     if (element.hasAdditive()) {
@@ -22916,7 +22916,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "handling", name, element, index);
     if (element.hasTemperatureQualifier()) {
@@ -22940,7 +22940,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "StructureDefinition", name, element, index);
     if (element.hasUrlElement()) {
@@ -23039,7 +23039,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "mapping", name, element, index);
     if (element.hasIdentityElement()) {
@@ -23063,7 +23063,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "context", name, element, index);
     if (element.hasTypeElement()) {
@@ -23081,7 +23081,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "snapshot", name, element, index);
     for (int i = 0; i < element.getElement().size(); i++) {
@@ -23096,7 +23096,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "differential", name, element, index);
     for (int i = 0; i < element.getElement().size(); i++) {
@@ -23111,7 +23111,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "StructureMap", name, element, index);
     if (element.hasUrlElement()) {
@@ -23183,7 +23183,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "structure", name, element, index);
     if (element.hasUrlElement()) {
@@ -23207,7 +23207,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "group", name, element, index);
     if (element.hasNameElement()) {
@@ -23237,7 +23237,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "input", name, element, index);
     if (element.hasNameElement()) {
@@ -23261,7 +23261,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "rule", name, element, index);
     if (element.hasNameElement()) {
@@ -23291,7 +23291,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "source", name, element, index);
     if (element.hasContextElement()) {
@@ -23336,7 +23336,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "target", name, element, index);
     if (element.hasContextElement()) {
@@ -23369,7 +23369,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "parameter", name, element, index);
     if (element.hasValue()) {
@@ -23384,7 +23384,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "dependent", name, element, index);
     if (element.hasNameElement()) {
@@ -23402,7 +23402,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Subscription", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -23465,7 +23465,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "filterBy", name, element, index);
     if (element.hasResourceTypeElement()) {
@@ -23489,7 +23489,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "SubscriptionStatus", name, element, index);
     if (element.hasStatusElement()) {
@@ -23522,7 +23522,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "notificationEvent", name, element, index);
     if (element.hasEventNumberElement()) {
@@ -23546,7 +23546,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "SubscriptionTopic", name, element, index);
     if (element.hasUrlElement()) {
@@ -23627,7 +23627,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "resourceTrigger", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -23654,7 +23654,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "queryCriteria", name, element, index);
     if (element.hasPreviousElement()) {
@@ -23681,7 +23681,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "eventTrigger", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -23702,7 +23702,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "canFilterBy", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -23729,7 +23729,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "notificationShape", name, element, index);
     if (element.hasResourceElement()) {
@@ -23750,7 +23750,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Substance", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -23789,7 +23789,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "ingredient", name, element, index);
     if (element.hasQuantity()) {
@@ -23807,7 +23807,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "SubstanceDefinition", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -23891,7 +23891,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "moiety", name, element, index);
     if (element.hasRole()) {
@@ -23927,7 +23927,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "characterization", name, element, index);
     if (element.hasTechnique()) {
@@ -23951,7 +23951,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "property", name, element, index);
     if (element.hasType()) {
@@ -23969,7 +23969,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "molecularWeight", name, element, index);
     if (element.hasMethod()) {
@@ -23990,7 +23990,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "structure", name, element, index);
     if (element.hasStereochemistry()) {
@@ -24026,7 +24026,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "representation", name, element, index);
     if (element.hasType()) {
@@ -24050,7 +24050,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "code", name, element, index);
     if (element.hasCode()) {
@@ -24077,7 +24077,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "name", name, element, index);
     if (element.hasNameElement()) {
@@ -24122,7 +24122,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "official", name, element, index);
     if (element.hasAuthority()) {
@@ -24143,7 +24143,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "relationship", name, element, index);
     if (element.hasSubstanceDefinition()) {
@@ -24176,7 +24176,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "sourceMaterial", name, element, index);
     if (element.hasType()) {
@@ -24203,7 +24203,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "SubstanceNucleicAcid", name, element, index);
     if (element.hasSequenceType()) {
@@ -24230,7 +24230,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "subunit", name, element, index);
     if (element.hasSubunitElement()) {
@@ -24266,7 +24266,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "linkage", name, element, index);
     if (element.hasConnectivityElement()) {
@@ -24290,7 +24290,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "sugar", name, element, index);
     if (element.hasIdentifier()) {
@@ -24311,7 +24311,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "SubstancePolymer", name, element, index);
     if (element.hasIdentifier()) {
@@ -24344,7 +24344,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "monomerSet", name, element, index);
     if (element.hasRatioType()) {
@@ -24362,7 +24362,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "startingMaterial", name, element, index);
     if (element.hasCode()) {
@@ -24386,7 +24386,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "repeat", name, element, index);
     if (element.hasAverageMolecularFormulaElement()) {
@@ -24407,7 +24407,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "repeatUnit", name, element, index);
     if (element.hasUnitElement()) {
@@ -24434,7 +24434,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "degreeOfPolymerisation", name, element, index);
     if (element.hasType()) {
@@ -24458,7 +24458,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "structuralRepresentation", name, element, index);
     if (element.hasType()) {
@@ -24482,7 +24482,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "SubstanceProtein", name, element, index);
     if (element.hasSequenceType()) {
@@ -24506,7 +24506,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "subunit", name, element, index);
     if (element.hasSubunitElement()) {
@@ -24542,7 +24542,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "SubstanceReferenceInformation", name, element, index);
     if (element.hasCommentElement()) {
@@ -24566,7 +24566,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "gene", name, element, index);
     if (element.hasGeneSequenceOrigin()) {
@@ -24587,7 +24587,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "geneElement", name, element, index);
     if (element.hasType()) {
@@ -24608,7 +24608,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "target", name, element, index);
     if (element.hasTarget()) {
@@ -24644,7 +24644,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "SubstanceSourceMaterial", name, element, index);
     if (element.hasSourceMaterialClass()) {
@@ -24695,7 +24695,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "fractionDescription", name, element, index);
     if (element.hasFractionElement()) {
@@ -24713,7 +24713,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "organism", name, element, index);
     if (element.hasFamily()) {
@@ -24749,7 +24749,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "author", name, element, index);
     if (element.hasAuthorType()) {
@@ -24767,7 +24767,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "hybrid", name, element, index);
     if (element.hasMaternalOrganismIdElement()) {
@@ -24794,7 +24794,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "organismGeneral", name, element, index);
     if (element.hasKingdom()) {
@@ -24818,7 +24818,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "partDescription", name, element, index);
     if (element.hasPart()) {
@@ -24836,7 +24836,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "SupplyDelivery", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -24881,7 +24881,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "suppliedItem", name, element, index);
     if (element.hasQuantity()) {
@@ -24899,7 +24899,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "SupplyRequest", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -24959,7 +24959,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "parameter", name, element, index);
     if (element.hasCode()) {
@@ -24977,7 +24977,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Task", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -25085,7 +25085,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "restriction", name, element, index);
     if (element.hasRepetitionsElement()) {
@@ -25106,7 +25106,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "input", name, element, index);
     if (element.hasType()) {
@@ -25124,7 +25124,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "output", name, element, index);
     if (element.hasType()) {
@@ -25142,7 +25142,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "TerminologyCapabilities", name, element, index);
     if (element.hasUrlElement()) {
@@ -25229,7 +25229,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "software", name, element, index);
     if (element.hasNameElement()) {
@@ -25247,7 +25247,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "implementation", name, element, index);
     if (element.hasDescriptionElement()) {
@@ -25265,7 +25265,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "codeSystem", name, element, index);
     if (element.hasUriElement()) {
@@ -25289,7 +25289,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "version", name, element, index);
     if (element.hasCodeElement()) {
@@ -25319,7 +25319,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "filter", name, element, index);
     if (element.hasCodeElement()) {
@@ -25337,7 +25337,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "expansion", name, element, index);
     if (element.hasHierarchicalElement()) {
@@ -25364,7 +25364,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "parameter", name, element, index);
     if (element.hasNameElement()) {
@@ -25382,7 +25382,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "validateCode", name, element, index);
     if (element.hasTranslationsElement()) {
@@ -25397,7 +25397,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "translation", name, element, index);
     if (element.hasNeedsMapElement()) {
@@ -25412,7 +25412,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "closure", name, element, index);
     if (element.hasTranslationElement()) {
@@ -25427,7 +25427,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "TestReport", name, element, index);
     if (element.hasIdentifier()) {
@@ -25475,7 +25475,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "participant", name, element, index);
     if (element.hasTypeElement()) {
@@ -25496,7 +25496,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "setup", name, element, index);
     for (int i = 0; i < element.getAction().size(); i++) {
@@ -25511,7 +25511,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "action", name, element, index);
     if (element.hasOperation()) {
@@ -25529,7 +25529,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "operation", name, element, index);
     if (element.hasResultElement()) {
@@ -25550,7 +25550,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "assert", name, element, index);
     if (element.hasResultElement()) {
@@ -25571,7 +25571,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "test", name, element, index);
     if (element.hasNameElement()) {
@@ -25592,7 +25592,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "action", name, element, index);
     if (element.hasOperation()) {
@@ -25610,7 +25610,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "teardown", name, element, index);
     for (int i = 0; i < element.getAction().size(); i++) {
@@ -25625,7 +25625,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "action", name, element, index);
     if (element.hasOperation()) {
@@ -25640,7 +25640,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeCanonicalResource(t, "TestScript", name, element, index);
     if (element.hasUrlElement()) {
@@ -25733,7 +25733,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "origin", name, element, index);
     if (element.hasIndexElement()) {
@@ -25754,7 +25754,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "destination", name, element, index);
     if (element.hasIndexElement()) {
@@ -25775,7 +25775,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "metadata", name, element, index);
     for (int i = 0; i < element.getLink().size(); i++) {
@@ -25793,7 +25793,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "link", name, element, index);
     if (element.hasUrlElement()) {
@@ -25811,7 +25811,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "capability", name, element, index);
     if (element.hasRequiredElement()) {
@@ -25844,7 +25844,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "scope", name, element, index);
     if (element.hasArtifactElement()) {
@@ -25865,7 +25865,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "fixture", name, element, index);
     if (element.hasAutocreateElement()) {
@@ -25886,7 +25886,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "variable", name, element, index);
     if (element.hasNameElement()) {
@@ -25922,7 +25922,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "setup", name, element, index);
     for (int i = 0; i < element.getAction().size(); i++) {
@@ -25937,7 +25937,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "action", name, element, index);
     if (element.hasOperation()) {
@@ -25955,7 +25955,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "operation", name, element, index);
     if (element.hasType()) {
@@ -26018,7 +26018,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "requestHeader", name, element, index);
     if (element.hasFieldElement()) {
@@ -26036,7 +26036,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "assert", name, element, index);
     if (element.hasLabelElement()) {
@@ -26117,7 +26117,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "test", name, element, index);
     if (element.hasNameElement()) {
@@ -26138,7 +26138,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "action", name, element, index);
     if (element.hasOperation()) {
@@ -26156,7 +26156,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "teardown", name, element, index);
     for (int i = 0; i < element.getAction().size(); i++) {
@@ -26171,7 +26171,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "action", name, element, index);
     if (element.hasOperation()) {
@@ -26186,7 +26186,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "Transport", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -26297,7 +26297,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "restriction", name, element, index);
     if (element.hasRepetitionsElement()) {
@@ -26318,7 +26318,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "input", name, element, index);
     if (element.hasType()) {
@@ -26336,7 +26336,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "output", name, element, index);
     if (element.hasType()) {
@@ -26354,7 +26354,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeMetadataResource(t, "ValueSet", name, element, index);
     if (element.hasUrlElement()) {
@@ -26450,7 +26450,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "compose", name, element, index);
     if (element.hasLockedDateElement()) {
@@ -26477,7 +26477,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "include", name, element, index);
     if (element.hasSystemElement()) {
@@ -26507,7 +26507,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "concept", name, element, index);
     if (element.hasCodeElement()) {
@@ -26528,7 +26528,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "designation", name, element, index);
     if (element.hasLanguageElement()) {
@@ -26552,7 +26552,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "filter", name, element, index);
     if (element.hasPropertyElement()) {
@@ -26573,7 +26573,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "expansion", name, element, index);
     if (element.hasIdentifierElement()) {
@@ -26609,7 +26609,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "parameter", name, element, index);
     if (element.hasNameElement()) {
@@ -26627,7 +26627,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "property", name, element, index);
     if (element.hasCodeElement()) {
@@ -26645,7 +26645,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "contains", name, element, index);
     if (element.hasSystemElement()) {
@@ -26684,7 +26684,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "property", name, element, index);
     if (element.hasCodeElement()) {
@@ -26705,7 +26705,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "subProperty", name, element, index);
     if (element.hasCodeElement()) {
@@ -26723,7 +26723,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "scope", name, element, index);
     if (element.hasInclusionCriteriaElement()) {
@@ -26741,7 +26741,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "VerificationResult", name, element, index);
     for (int i = 0; i < element.getTarget().size(); i++) {
@@ -26795,7 +26795,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "primarySource", name, element, index);
     if (element.hasWho()) {
@@ -26828,7 +26828,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "attestation", name, element, index);
     if (element.hasWho()) {
@@ -26864,7 +26864,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "validator", name, element, index);
     if (element.hasOrganization()) {
@@ -26885,7 +26885,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeDomainResource(t, "VisionPrescription", name, element, index);
     for (int i = 0; i < element.getIdentifier().size(); i++) {
@@ -26921,7 +26921,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "lensSpecification", name, element, index);
     if (element.hasProduct()) {
@@ -26975,7 +26975,7 @@ public class RdfParser extends RdfParserBase {
     if (Utilities.noString(parentType))
       t = parent;
     else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+      t = parent.predicate("fhir:"+name,index > -1);
     }
     composeBackboneElement(t, "prism", name, element, index);
     if (element.hasAmountElement()) {
