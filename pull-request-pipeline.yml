@@ -29,7 +29,7 @@ jobs:
         inputs:
           mavenPomFile: 'pom.xml'
           mavenOptions: '-Xmx3072m'
-          options: '-DskipTests -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+          options: '-pl "!org.hl7.fhir.validation.cli" -DskipTests -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
