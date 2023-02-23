@@ -9418,10 +9418,10 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseConceptMapOtherElementComponentProperties(JsonObject json, ConceptMap.OtherElementComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    if (json.has("property"))
-      res.setPropertyElement(parseUri(json.get("property").getAsString()));
-    if (json.has("_property"))
-      parseElementProperties(getJObject(json, "_property"), res.getPropertyElement());
+    if (json.has(FormatUtilities.WORKING_CM_PROP_NAME))
+      res.setPropertyElement(parseUri(json.get(FormatUtilities.WORKING_CM_PROP_NAME).getAsString()));
+    if (json.has("_"+FormatUtilities.WORKING_CM_PROP_NAME))
+      parseElementProperties(getJObject(json, "_"+FormatUtilities.WORKING_CM_PROP_NAME), res.getPropertyElement());
     DataType value = parseType("value", json);
     if (value != null)
       res.setValue(value);
@@ -44920,8 +44920,8 @@ public class JsonParser extends JsonParserBase {
   protected void composeOtherElementComponentProperties(ConceptMap.OtherElementComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasPropertyElement()) {
-        composeUriCore("property", element.getPropertyElement(), false);
-        composeUriExtras("property", element.getPropertyElement(), false);
+        composeUriCore(FormatUtilities.WORKING_CM_PROP_NAME, element.getPropertyElement(), false);
+        composeUriExtras(FormatUtilities.WORKING_CM_PROP_NAME, element.getPropertyElement(), false);
       }
       if (element.hasValue()) {
         composeType("value", element.getValue());
