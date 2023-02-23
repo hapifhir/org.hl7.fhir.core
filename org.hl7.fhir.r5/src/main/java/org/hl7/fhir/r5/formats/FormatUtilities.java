@@ -82,7 +82,7 @@ public abstract class FormatUtilities {
   private static final int MAX_SCAN_LENGTH = 1000; // how many characters to scan into content when autodetermining format
   
   public static final String MAP_ATTRIBUTE_NAME = "mapAttribute";
-  public static final String PROPERTY_NAME = "mapAttribute";
+  public static final String PROPERTY_NAME = "property";
   public static String WORKING_CM_PROP_NAME = PROPERTY_NAME;
   
   protected String toString(String value) {
