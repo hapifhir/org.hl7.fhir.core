@@ -60,7 +60,7 @@ public class TerminologyClientFactory {
   private static String checkEndsWith(String term, String url) {
     if (url.endsWith(term))
       return url;
-    if (url.startsWith("http://tx.fhir.org"))
+    if (url.startsWith("http://tx.fhir.org") || url.startsWith("https://tx.fhir.org"))
       return Utilities.pathURL(url, term);
     if (url.equals("http://local.fhir.org:8080"))
       return Utilities.pathURL(url, term);
