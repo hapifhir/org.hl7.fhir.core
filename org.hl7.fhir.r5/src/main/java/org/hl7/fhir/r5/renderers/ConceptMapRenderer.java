@@ -212,7 +212,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         } else
           tr.td().b().tx("Code");
         for (String s : sources.keySet()) {
-          if (!s.equals("code")) {
+          if (s != null && !s.equals("code")) {
             if (sources.get(s).size() == 1) {
               String url = sources.get(s).iterator().next();
               renderCSDetailsLink(tr, url, false);           
@@ -229,7 +229,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         } else
           tr.td().b().tx("Code");
         for (String s : targets.keySet()) {
-          if (!s.equals("code")) {
+          if (s != null && !s.equals("code")) {
             if (targets.get(s).size() == 1) {
               String url = targets.get(s).iterator().next();
               renderCSDetailsLink(tr, url, false);           
@@ -291,7 +291,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
                   td.style("border-top-style: none; border-left-width: 0px");
               }
               for (String s : sources.keySet()) {
-                if (!s.equals("code")) {
+                if (s != null && !s.equals("code")) {
                   td = tr.td();
                   if (first) {
                     td.addText(getValue(ccm.getDependsOn(), s, sources.get(s).size() != 1));
@@ -323,7 +323,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
 
               for (String s : targets.keySet()) {
-                if (!s.equals("code")) {
+                if (s != null && !s.equals("code")) {
                   td = tr.td();
                   td.addText(getValue(ccm.getProduct(), s, targets.get(s).size() != 1));
                   display = getDisplay(ccm.getProduct(), s);
