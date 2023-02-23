@@ -333,20 +333,22 @@ public class TurtleParser extends ParserBase {
     }
     String subjId = genSubjectId(e);
 
-    String ontologyId = subjId.replace(">", ".ttl>");
-    Section ontology = ttl.section("ontology header");
-    ontology.triple(ontologyId, "a", "owl:Ontology");
-    ontology.triple(ontologyId, "owl:imports", "fhir:fhir.ttl");
-    if(ontologyId.startsWith("<" + FHIR_URI_BASE))
-      ontology.triple(ontologyId, "owl:versionIRI", ontologyId.replace(FHIR_URI_BASE, FHIR_VERSION_BASE));
+    Subject subject;
+    if (hasModifierExtension(e)) 
+    	subject = section.triple(subjId, "a", "fhir:_" + e.getType());
+     else 
+    	subject = section.triple(subjId, "a", "fhir:" + e.getType());
+     
+	subject.linkedPredicate("fhir:nodeRole", "fhir:treeRoot", linkResolver == null ? null : linkResolver.resolvePage("rdf.html#tree-root"), null);
 
-    Subject subject = section.triple(subjId, "a", "fhir:" + e.getType());
-		subject.linkedPredicate("fhir:nodeRole", "fhir:treeRoot", linkResolver == null ? null : linkResolver.resolvePage("rdf.html#tree-root"), null);
+	for (Element child : e.getChildren()) {
+		composeElement(section, subject, child, null);
+	}
 
-		for (Element child : e.getChildren()) {
-			composeElement(section, subject, child, null);
-		}
-
+  }
+  
+  private boolean hasModifierExtension(Element e) {
+	  return e.getChildren().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
   }
   
   protected String getURIType(String uri) {
@@ -415,17 +417,18 @@ public class TurtleParser extends ParserBase {
 	  Complex t;
 	  if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY && parent != null && parent.getNamedChildValue("fullUrl") != null) {
 	    String url = "<"+parent.getNamedChildValue("fullUrl")+">";
-	    ctxt.linkedPredicate("fhir:"+en, url, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment);
+	    ctxt.linkedPredicate("fhir:"+en, url, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
 	    t = section.subject(url);
 	  } else {
-	    t = ctxt.linkedPredicate("fhir:"+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment);
+	    t = ctxt.linkedPredicate("fhir:"+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
 	  }
+	if (element.getProperty().getName().endsWith("[x]") && !element.hasValue()) {
+	  t.linkedPredicate("a", "fhir:" + element.fhirType(), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
+	}
     if (element.getSpecial() != null)
       t.linkedPredicate("a", "fhir:"+element.fhirType(), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
 	  if (element.hasValue())
-	  	t.linkedPredicate("fhir:value", ttlLiteral(element.getValue(), element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
-	  if (element.getProperty().isList() && (!element.isResource() || element.getSpecial() == SpecialElement.CONTAINED))
-	  	t.linkedPredicate("fhir:index", Integer.toString(element.getIndex()), linkResolver == null ? null : linkResolver.resolvePage("rdf.html#index"), null);
+	  	t.linkedPredicate("fhir:v", ttlLiteral(element.getValue(), element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
 
 	  if ("Coding".equals(element.getType()))
 	  	decorateCoding(t, element, section);
@@ -463,37 +466,27 @@ public class TurtleParser extends ParserBase {
 
   private String getFormalName(Element element) {
     String en = null;
-    if (element.getSpecial() == null) {
-      if (element.getProperty().getDefinition().hasBase())
-        en = element.getProperty().getDefinition().getBase().getPath();
-    }
+    if (element.getSpecial() == null) 
+    	en = element.getProperty().getName();
     else if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY)
-      en = "Bundle.entry.resource";
+      en = "resource";
     else if (element.getSpecial() == SpecialElement.BUNDLE_OUTCOME)
-      en = "Bundle.entry.response.outcome";
+      en = "outcome";
     else if (element.getSpecial() == SpecialElement.PARAMETER)
       en = element.getElementProperty().getDefinition().getPath();
     else // CONTAINED
-      en = "DomainResource.contained";
+      en = "contained";
 
-    if (en == null)
-      en = element.getProperty().getDefinition().getPath();
-    boolean doType = false;
-      if (en.endsWith("[x]")) {
-        en = en.substring(0, en.length()-3);
-        doType = true;
-      }
-     if (doType || (element.getProperty().getDefinition().getType().size() > 1 && !allReference(element.getProperty().getDefinition().getType())))
-       en = en + Utilities.capitalize(element.getType());
-    return en;
-  }
-
-	private boolean allReference(List<TypeRefComponent> types) {
-	  for (TypeRefComponent t : types) {
-	    if (!t.getCode().equals("Reference"))
-	      return false;
-	  }
-    return true;
+    if (en == null) 
+      en = element.getProperty().getName();
+    
+    if (en.endsWith("[x]")) 
+      en = en.substring(0, en.length()-3);
+    
+    if (hasModifierExtension(element))
+    	return "_" + en;
+    else
+      return en;
   }
 
   static public String ttlLiteral(String value, String type) {
@@ -550,10 +543,14 @@ public class TurtleParser extends ParserBase {
       else
         t.linkedPredicate("a", "sct:" + urlescape(code), null, null);
     } else if ("http://loinc.org".equals(system)) {
-      t.prefix("loinc", "http://loinc.org/rdf#");
+      t.prefix("loinc", "https://loinc.org/rdf/");
       t.linkedPredicate("a", "loinc:"+urlescape(code).toUpperCase(), null, null);
+    } else if ("https://www.nlm.nih.gov/mesh".equals(system)) {
+    	t.prefix("mesh", "http://id.nlm.nih.gov/mesh/");
+    	t.linkedPredicate("a", "mesh:"+urlescape(code), null, null);
     }  
   }
+
   private void generateLinkedPredicate(Complex t, String code) throws FHIRException {
     Expression expression = SnomedExpressions.parse(code);
     
