@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>org.hl7.fhir.core</artifactId>
-		<version>5.6.99-SNAPSHOT</version>
+		<version>5.6.100-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -111,13 +111,13 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
-			<version>4.9.0</version>
+			<version>${okhttp.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>logging-interceptor</artifactId>
-			<version>4.9.0</version>
+			<version>${okhttp.version}</version>
 			<optional>true</optional>
 		</dependency>
 
@@ -148,7 +148,7 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>mockwebserver</artifactId>
-			<version>4.9.0</version>
+			<version>${okhttp.version}</version>
 			<optional>true</optional>
 			<scope>test</scope>
 		</dependency>

@@ -3262,6 +3262,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         refType = "bundled";
       }
     }
+    boolean conditional = ref.contains("?") && Utilities.existsInList(ref.substring(0, ref.indexOf("?")), context.getResourceNames());
     ReferenceValidationPolicy pol;
     if (refType.equals("contained") || refType.equals("bundled")) {
       pol = ReferenceValidationPolicy.CHECK_VALID;
@@ -3273,7 +3274,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 
-    if (pol.checkExists()) {
+    if (conditional) {
+      String query = ref.substring(ref.indexOf("?"));
+      boolean test = !Utilities.noString(query) && query.matches("\\?([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*)(&([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*))*");
+          //("^\\?([\\w-]+(=[\\w-]*)?(&[\\w-]+(=[\\w-]*)?)*)?$"),
+      ok = rule(errors, "2023-02-20", IssueType.INVALID, element.line(), element.col(), path, test, I18nConstants.REFERENCE_REF_QUERY_INVALID, ref) && ok;
+  
+    } else if (pol.checkExists()) {
       if (we == null) {
         if (!refType.equals("contained")) {
           if (fetcher == null) {

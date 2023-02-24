@@ -115,10 +115,13 @@ public class TypeDetails {
     public boolean isSystemType() {
       return uri.startsWith(FP_NS);
     }
+    
   }
   
   private List<ProfiledType> types = new ArrayList<ProfiledType>();
   private CollectionStatus collectionStatus;
+  private Set<String> targets; // or, not and, canonical urls
+
   public TypeDetails(CollectionStatus collectionStatus, String... names) {
     super();
     this.collectionStatus = collectionStatus;
@@ -151,6 +154,7 @@ public class TypeDetails {
     addType(pt);
     return res;
   }
+  
   public void addType(ProfiledType pt) {
     for (ProfiledType et : types) {
       if (et.uri.equals(pt.uri)) {
@@ -175,7 +179,29 @@ public class TypeDetails {
     }
     types.add(pt); 
   }
-  
+
+  public void addType(CollectionStatus status, ProfiledType pt) {
+    addType(pt);
+    if (collectionStatus == null) {
+      collectionStatus = status;      
+    } else {
+      switch (status) {
+      case ORDERED:
+        if (collectionStatus == CollectionStatus.SINGLETON) {
+          collectionStatus = status;
+        }
+        break;
+      case SINGLETON:
+        break;
+      case UNORDERED:
+        collectionStatus = status;
+        break;
+      default:
+        break;    
+      }
+    }
+  }
+
   public void addTypes(Collection<String> names) {
     for (String n : names) 
       addType(new ProfiledType(n));
@@ -245,7 +271,14 @@ public class TypeDetails {
       collectionStatus = source.collectionStatus;
     else
       collectionStatus = CollectionStatus.ORDERED;
+    if (source.targets != null) {
+      if (targets == null) {
+        targets = new HashSet<>();
+      }
+      targets.addAll(source.targets);
+    }
   }
+  
   public TypeDetails union(TypeDetails right) {
     TypeDetails result = new TypeDetails(null);
     if (right.collectionStatus == CollectionStatus.UNORDERED || collectionStatus == CollectionStatus.UNORDERED)
@@ -256,6 +289,16 @@ public class TypeDetails {
       result.addType(pt);
     for (ProfiledType pt : right.types)
       result.addType(pt);
+    if (targets != null || right.targets != null) {
+      result.targets = new HashSet<>();
+      if (targets != null) {
+        result.targets.addAll(targets);
+      }
+      if (right.targets != null) {
+        result.targets.addAll(right.targets);
+      }
+    }
+
     return result;
   }
   
@@ -274,6 +317,15 @@ public class TypeDetails {
     }
     for (ProfiledType pt : right.types)
       result.addType(pt);
+    if (targets != null && right.targets != null) {
+      result.targets = new HashSet<>();
+      for (String s : targets) {
+        if (right.targets.contains(s)) {
+          result.targets.add(s);
+        }
+      }
+    }
+
     return result;
   }
   
@@ -359,5 +411,31 @@ public class TypeDetails {
     return null;
   }
  
+
+  public void addTarget(String url) {
+    if (targets == null) {
+      targets = new HashSet<>();
+    }
+    targets.add(url);
+  }
+  public Set<String> getTargets() {
+    return targets;
+  }
+  public boolean typesHaveTargets() {
+    for (ProfiledType pt : types) {
+      if (Utilities.existsInList(pt.getUri(), "Reference", "CodeableReference", "canonical",  "http://hl7.org/fhir/StructureDefinition/Reference", "http://hl7.org/fhir/StructureDefinition/CodeableReference", "http://hl7.org/fhir/StructureDefinition/canonical")) {
+        return true;
+      }
+    }
+    return false;
+  }
+  public void addTargets(Set<String> src) {
+    if (src != null) {
+      for (String s : src) {
+        addTarget(s);
+      }
+    }
+    
+  }
   
 }
