@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* Fix for Extensions moving in R5
+* Bump HAPI FHIR version to 6.4.1
