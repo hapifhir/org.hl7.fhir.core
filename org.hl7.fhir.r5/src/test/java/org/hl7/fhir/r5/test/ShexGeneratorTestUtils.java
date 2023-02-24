@@ -20,21 +20,23 @@ public class ShexGeneratorTestUtils {
     public String name;
     public String url;
     public String info;
+    public RESOURCE_CATEGORY kind;
 
-    public resDef(String _name, String _url, String _info){
+    public resDef(String _name, String _url, String _info, RESOURCE_CATEGORY _kind){
       this.name = _name;
       this.url = _url;
       this.info = _info;
+      this.kind = _kind;
     }
 
     @Override
     public String toString() {
-      return " " + name + "[ " + url + " ] ";
+      return " " + name + " (Kind: " + kind + " ) [ " + url + " ]";
     }
   }
 
   public enum RESOURCE_CATEGORY{
-    LOGICAL_NAMES, STRUCTURE_DEFINITIONS, EXTENSIONS, PROFILES, ALL
+    LOGICAL_NAME, STRUCTURE_DEFINITION, EXTENSION, PROFILE, ALL, META_OR_EXAMPLE_OR_OTHER_IGNORE
   }
 
   /**
@@ -48,26 +50,25 @@ public class ShexGeneratorTestUtils {
     List<resDef> selSDs = new ArrayList<resDef>();
     sds.forEach((StructureDefinition sd) -> {
       switch(cat) {
-        case STRUCTURE_DEFINITIONS:
-          if (sd.getType().trim().equals(sd.getName().trim()))
-              selSDs.add(new resDef(sd.getName(), sd.getUrl(), getSDInfo(sd)));
+        case STRUCTURE_DEFINITION:
+          if (getCategory(sd).equals(RESOURCE_CATEGORY.STRUCTURE_DEFINITION))
+              selSDs.add(new resDef(sd.getName(), sd.getUrl(), getSDInfo(sd), RESOURCE_CATEGORY.STRUCTURE_DEFINITION));
           break;
-        case LOGICAL_NAMES:
-          if (sd.getBaseDefinition() == null)
-            selSDs.add(new resDef(sd.getName(), sd.getUrl(), getSDInfo(sd)));
+        case LOGICAL_NAME:
+          if (getCategory(sd).equals(RESOURCE_CATEGORY.LOGICAL_NAME))
+            selSDs.add(new resDef(sd.getName(), sd.getUrl(), getSDInfo(sd), RESOURCE_CATEGORY.LOGICAL_NAME));
           break;
-        case EXTENSIONS:
-          if ("Extension".equals(sd.getType()))
-            selSDs.add(new resDef(sd.getName(), sd.getUrl(), getSDInfo(sd)));
+        case EXTENSION:
+          if (getCategory(sd).equals(RESOURCE_CATEGORY.EXTENSION))
+            selSDs.add(new resDef(sd.getName(), sd.getUrl(), getSDInfo(sd), RESOURCE_CATEGORY.EXTENSION));
           break;
-        case PROFILES:
-          if (!((sd.getBaseDefinition() == null) ||
-              ("Extension".equals(sd.getType())) ||
-              (sd.getType().trim().equals(sd.getName().trim()))))
-            selSDs.add(new resDef(sd.getName(), sd.getUrl(), getSDInfo(sd)));
+        case PROFILE:
+          if (getCategory(sd).equals(RESOURCE_CATEGORY.PROFILE))
+            selSDs.add(new resDef(sd.getName(), sd.getUrl(), getSDInfo(sd), RESOURCE_CATEGORY.PROFILE));
           break;
         default:
-          selSDs.add(new resDef(sd.getName(), sd.getUrl(), getSDInfo(sd)));
+          selSDs.add(new resDef(sd.getName(), sd.getUrl(), getSDInfo(sd), getCategory(sd)));
+
       }
     });
 
@@ -79,6 +80,24 @@ public class ShexGeneratorTestUtils {
     });
 
     return selSDs;
+  }
+
+  private RESOURCE_CATEGORY getCategory(StructureDefinition sd) {
+    if ("Extension".equals(sd.getType()))
+      return RESOURCE_CATEGORY.EXTENSION;
+
+    if (sd.getBaseDefinition() == null)
+      return RESOURCE_CATEGORY.LOGICAL_NAME;
+
+    if (sd.getType().trim().equals(sd.getName().trim()))
+      return RESOURCE_CATEGORY.STRUCTURE_DEFINITION;
+
+    if (!((sd.getBaseDefinition() == null) ||
+      ("Extension".equals(sd.getType())) ||
+      (sd.getType().trim().equals(sd.getName().trim()))))
+       return RESOURCE_CATEGORY.PROFILE;
+
+    return RESOURCE_CATEGORY.META_OR_EXAMPLE_OR_OTHER_IGNORE;
   }
 
   /**
@@ -196,7 +215,7 @@ public class ShexGeneratorTestUtils {
     System.out.println("Printing " + title);
     System.out.println("************************************************************************");
     items.forEach((resDef item) -> {
-      System.out.println(item.name + " [" + item.url + "]");
+      System.out.println(item.name + " \t[" + item.url + "]\t" + item.info);
     });
   }
 }
