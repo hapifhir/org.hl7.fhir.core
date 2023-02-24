@@ -32,6 +32,8 @@ package org.hl7.fhir.r5.conformance;
 
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -63,9 +65,10 @@ public class ShExGenerator {
 
   public ConstraintTranslationPolicy constraintPolicy = ConstraintTranslationPolicy.ALL;
 
-  private static String SHEX_TEMPLATE = "$header$\n\n" +
-
-    "$shapeDefinitions$";
+  private static String SHEX_TEMPLATE =
+      "$header$\n" +
+      "$imports$\n" +
+      "$shapeDefinitions$";
 
   // A header is a list of prefixes, a base declaration and a start node
   private static String FHIR = "http://hl7.org/fhir/";
@@ -75,7 +78,9 @@ public class ShExGenerator {
       "PREFIX fhirvs: <$fhirvs$>\n" +
       "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
       "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
-      "BASE <http://hl7.org/fhir/shape/>\n$start$";
+      "BASE <http://hl7.org/fhir/shape/>\n";
+
+  private static String IMPORT_TEMPLATE = "IMPORT <$import$$fileExt$>\n";
 
   // Start template for single (open) entry
   private static String START_TEMPLATE = "\n\nstart=@<$id$> AND {fhir:nodeRole [fhir:treeRoot]}\n";
@@ -257,6 +262,8 @@ public class ShExGenerator {
   // Extensions are Structure Definitions with type as "Extension".
   private List<StructureDefinition> selectedExtensions;
   private List<String> selectedExtensionUrls;
+
+  private List<String> imports;
   private FHIRPathEngine fpe;
 
   public ShExGenerator(IWorkerContext context) {
@@ -276,6 +283,7 @@ public class ShExGenerator {
     excludedSDUrls = new ArrayList<String>();
     selectedExtensions = new ArrayList<StructureDefinition>();
     selectedExtensionUrls = new ArrayList<String>();
+    imports = new ArrayList<String>();
 
     fpe = new FHIRPathEngine(context);
   }
@@ -293,6 +301,7 @@ public class ShExGenerator {
     references.clear();
     required_value_sets.clear();
     known_resources.clear();
+    imports.clear();
     return generate(links, list);
   }
 
@@ -369,7 +378,6 @@ public class ShExGenerator {
 
     shex_def.add("header",
       tmplt(HEADER_TEMPLATE).
-        add("start", start_cmd).
         add("fhir", FHIR).
         add("fhirvs", FHIR_VS).render());
 
@@ -380,6 +388,7 @@ public class ShExGenerator {
     // We remove them.  Also, it is possible for the same sd to have multiple hashes...
     uniq_structures = new LinkedList<StructureDefinition>();
     uniq_structure_urls = new HashSet<String>();
+    StringBuffer allStructures = new StringBuffer("");
     for (StructureDefinition sd : structures) {
       // Exclusion Criteria...
       if ((excludedSDUrls != null) &&
@@ -415,79 +424,89 @@ public class ShExGenerator {
       }
     }
 
-    boolean isShapeDefinitionEmpty = true;
     for (StructureDefinition sd : uniq_structures) {
       printBuildMessage(" ---- Generating ShEx for : " + sd.getName() + "  [ " + sd.getUrl() + " ] ...");
       String shapeDefinitionStr = genShapeDefinition(sd, true);
 
       if (!shapeDefinitionStr.isEmpty()) {
-        isShapeDefinitionEmpty = false;
         shapeDefinitions.append(shapeDefinitionStr);
+      } else {
+        printBuildMessage(" ---- WARNING! EMPTY/No ShEx SCHEMA Body generated for : " + sd.getName() + "  [ " + sd.getUrl() + " ].\n" +
+          "This might not be an issue, if this resource is normative base or a meta resource");
+        shapeDefinitions.append("<" + sd.getName() + "> CLOSED {\n}");
       }
-      else {
-        printBuildMessage(" ---- EMPTY/No ShEx SCHEMA generated for : " + sd.getName() + "  [ " + sd.getUrl() + " ].");
+
+      if (!imports.isEmpty())
+        imports.removeIf(s -> s.contains(sd.getName()));
+    }
+      shapeDefinitions.append(emitInnerTypes());
+
+      // If data types are to be put in the same file
+      if (doDatatypes) {
+        shapeDefinitions.append("\n#---------------------- Data Types -------------------\n");
+        while (emittedDatatypes.size() < datatypes.size() ||
+          emittedInnerTypes.size() < innerTypes.size()) {
+          shapeDefinitions.append(emitDataTypes());
+          // As process data types, it may introduce some more inner types, so we repeat the call here.
+          shapeDefinitions.append(emitInnerTypes());
+        }
       }
-    }
 
-    // There was not shape generated. return empty.
-    // No need to generate data types, references and valuesets
-    if (isShapeDefinitionEmpty) {
-      return "";
-    }
-
-    shapeDefinitions.append(emitInnerTypes());
-
-    // If data types are to be put in the same file
-    if(doDatatypes) {
-      shapeDefinitions.append("\n#---------------------- Data Types -------------------\n");
-      while (emittedDatatypes.size() < datatypes.size() ||
-        emittedInnerTypes.size() < innerTypes.size()) {
-        shapeDefinitions.append(emitDataTypes());
-        // As process data types, it may introduce some more inner types, so we repeat the call here.
-        shapeDefinitions.append(emitInnerTypes());
+      if (oneOrMoreTypes.size() > 0) {
+        shapeDefinitions.append("\n#---------------------- Cardinality Types (OneOrMore) -------------------\n");
+        oneOrMoreTypes.forEach((String oomType) -> {
+          shapeDefinitions.append(getOneOrMoreType(oomType));
+        });
       }
-    }
 
-    if (oneOrMoreTypes.size() > 0) {
-      shapeDefinitions.append("\n#---------------------- Cardinality Types (OneOrMore) -------------------\n");
-      oneOrMoreTypes.forEach((String oomType) -> {
-        shapeDefinitions.append(getOneOrMoreType(oomType));
+      if (references.size() > 0) {
+        shapeDefinitions.append("\n#---------------------- Reference Types -------------------\n");
+        for (String r : references) {
+          shapeDefinitions.append("\n").append(tmplt(TYPED_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
+          if (!"Resource".equals(r) && !known_resources.contains(r))
+            shapeDefinitions.append("\n").append(tmplt(TARGET_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
+        }
+      }
+
+      if (completeModel && known_resources.size() > 0) {
+        shapeDefinitions.append("\n").append(tmplt(COMPLETE_RESOURCE_TEMPLATE)
+          .add("resources", StringUtils.join(known_resources, "> OR\n\t@<")).render());
+        List<String> all_entries = new ArrayList<String>();
+        for (String kr : known_resources)
+          all_entries.add(tmplt(ALL_ENTRY_TEMPLATE).add("id", kr).render());
+        shapeDefinitions.append("\n").append(tmplt(ALL_TEMPLATE)
+          .add("all_entries", StringUtils.join(all_entries, " OR\n\t")).render());
+      }
+
+      if (required_value_sets.size() > 0) {
+        shapeDefinitions.append("\n#---------------------- Value Sets ------------------------\n");
+        for (ValueSet vs : required_value_sets)
+          shapeDefinitions.append("\n").append(genValueSet(vs));
+      }
+
+      if ((unMappedFunctions != null) && (!unMappedFunctions.isEmpty())) {
+        debug("------------------------- Unmapped Functions ---------------------");
+        for (String um : unMappedFunctions) {
+          debug(um);
+        }
+      }
+
+      allStructures.append(shapeDefinitions + "\n");
+
+    StringBuffer allImports = new StringBuffer("");
+    if (!imports.isEmpty()) {
+      imports.sort(Comparator.comparingInt(String::length));
+      imports.forEach((String imp) -> {
+        ST import_def = tmplt(IMPORT_TEMPLATE);
+        import_def.add("import", imp);
+        import_def.add("fileExt", ".shex");
+        allImports.append(import_def.render());
       });
     }
 
-    if (references.size() > 0) {
-      shapeDefinitions.append("\n#---------------------- Reference Types -------------------\n");
-      for (String r : references) {
-        shapeDefinitions.append("\n").append(tmplt(TYPED_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
-        if (!"Resource".equals(r) && !known_resources.contains(r))
-          shapeDefinitions.append("\n").append(tmplt(TARGET_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
-      }
-    }
-
-    shex_def.add("shapeDefinitions", shapeDefinitions);
-
-    if(completeModel && known_resources.size() > 0) {
-      shapeDefinitions.append("\n").append(tmplt(COMPLETE_RESOURCE_TEMPLATE)
-        .add("resources", StringUtils.join(known_resources, "> OR\n\t@<")).render());
-      List<String> all_entries = new ArrayList<String>();
-      for(String kr: known_resources)
-        all_entries.add(tmplt(ALL_ENTRY_TEMPLATE).add("id", kr).render());
-      shapeDefinitions.append("\n").append(tmplt(ALL_TEMPLATE)
-        .add("all_entries", StringUtils.join(all_entries, " OR\n\t")).render());
-    }
-
-    if (required_value_sets.size() > 0) {
-      shapeDefinitions.append("\n#---------------------- Value Sets ------------------------\n");
-      for (ValueSet vs : required_value_sets)
-        shapeDefinitions.append("\n").append(genValueSet(vs));
-    }
-
-    if ((unMappedFunctions != null)&&(!unMappedFunctions.isEmpty())) {
-      debug("------------------------- Unmapped Functions ---------------------");
-      for (String um : unMappedFunctions) {
-        debug(um);
-      }
-    }
+    allImports.append(start_cmd);
+    shex_def.add("imports", allImports);
+    shex_def.add("shapeDefinitions", allStructures.toString());
 
     return shex_def.render();
   }
@@ -502,7 +521,7 @@ public class ShExGenerator {
       bd = sd.getBaseDefinition();
       String[] els = bd.split("/");
       bd = els[els.length - 1];
-
+      addImport("<" + bd + ">");
       sId += "> EXTENDS @<" + bd;
     }
 
@@ -514,6 +533,7 @@ public class ShExGenerator {
       return "";
     String bd = (ed.getType().size() > 0)? (ed.getType().get(0).getCode()) : "";
     if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd)) {
+      addImport("<" + bd + ">");
       bd = "> EXTENDS @<" + bd;
     }
     return bd;
@@ -661,14 +681,14 @@ public class ShExGenerator {
           String[] backRefs = toStore.split("\\.");
           toStore = "a [fhir:" + backRefs[0] + "]";
           for (int i = 1; i < backRefs.length; i++)
-            toStore = "( ^fhir:" + backRefs[i] + " {" + toStore + "} )";
+            toStore = "^fhir:" + backRefs[i] + " {" + toStore + "}";
 
           if (!contextOfUse.contains(toStore)) {
             contextOfUse.add(toStore);
           }
         }
       }
-      contextOfUseStr = "^fhir:extension { " + StringUtils.join(contextOfUse, " OR \n\t\t\t\t") + "\n\t\t}";
+      contextOfUseStr = "^fhir:extension { " + StringUtils.join(contextOfUse, " OR \n      ") + "\n    }";
     }
 
     shape_defn.add("contextOfUse", contextOfUseStr);
@@ -684,7 +704,7 @@ public class ShExGenerator {
   private String translateConstraint(StructureDefinition sd, ElementDefinition ed, ElementDefinition.ElementDefinitionConstraintComponent constraint){
     String translated = "";
 
-    if (constraint != null) {
+    if (false) {
       String ce = constraint.getExpression();
       String constItem = "FHIR-SD-Path:" + ed.getPath() + " Expression: " + ce;
       try {
@@ -700,11 +720,9 @@ public class ShExGenerator {
         debug("        TRANSLATED\t"+ed.getPath()+"\t"+constraint.getHuman()+"\t"+constraint.getExpression()+"\t"+shexConstraint);
 
       } catch (Exception e) {
-        String message = "        FAILED to parse the constraint: " + constItem + " [ " + e.getMessage() + " ]";
-        // Now make this a comment so that it does not fail when schema is resolved in validator
-        // TODO: This needs to be fixed
-        // TODO: it should be
-        //  translated = message
+        //String message = "        FAILED to parse the constraint from Structure Definition: " + constItem + " [ " + e.getMessage() + " ]";
+        String message = "        FAILED to parse the constraint from Structure Definition: " + constItem;
+        e.printStackTrace();
 
         translated = "";
         debug(message);
@@ -1320,12 +1338,31 @@ public class ShExGenerator {
     }
 
     element_def.add("defn", defn);
+    addImport(defn);
     element_def.add("card", card);
     addComment(element_def, ed);
 
     return element_def.render();
   }
 
+  private void addImport(String typeDefn) {
+      if ((typeDefn != null) && (!typeDefn.isEmpty())) {
+  //        String importType = StringUtils.substringBetween(typeDefn, "<", ">");
+  //        if ((importType.indexOf(ONE_OR_MORE_PREFIX) == -1) &&
+  //          (!imports.contains(importType)))
+  //            imports.add(importType);
+  //    }
+        Pattern p = Pattern.compile("<([^\\s>/]+)");
+        Matcher m = p.matcher(typeDefn);
+        while (m.find()) {
+          String tag = m.group(1);
+          //System.out.println("FOUND IMPORT: " + tag);
+          if ((tag.indexOf(ONE_OR_MORE_PREFIX) == -1) &&
+            (!imports.contains(tag)))
+            imports.add(tag);
+        }
+      }
+  }
   private List<ElementDefinition> getChildren(StructureDefinition derived, ElementDefinition element) {
     List<ElementDefinition> elements = derived.getSnapshot().getElement();
     int index = elements.indexOf(element) + 1;
@@ -1573,7 +1610,9 @@ public class ShExGenerator {
     // shex_choice_entry.add("id", "fhir:" + base+Character.toUpperCase(ext.charAt(0)) + ext.substring(1) + " ");
     shex_choice_entry.add("id", "");
     shex_choice_entry.add("card", "");
-    shex_choice_entry.add("defn", genTypeRef(sd, ed, id, typ));
+    String typeDefn = genTypeRef(sd, ed, id, typ);
+    shex_choice_entry.add("defn", typeDefn);
+    addImport(typeDefn);
     shex_choice_entry.add("comment", " ");
     return shex_choice_entry.render();
   }
@@ -1604,6 +1643,8 @@ public class ShExGenerator {
     one_or_more_type.add("oomType", oomType);
     one_or_more_type.add("origType", origType);
     one_or_more_type.add("restriction", restriction);
+    addImport(origType);
+    addImport(restriction);
     one_or_more_type.add("comment", "");
     return one_or_more_type.render();
   }
