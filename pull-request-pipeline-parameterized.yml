@@ -1,7 +1,7 @@
 jobs:
   - ${{ each image in parameters.images }}:
       - job:
-
+        dependsOn: [ 'setup' ]
         displayName: ${{image.displayName}}
         
         pool:
@@ -9,23 +9,44 @@ jobs:
         
         variables:
           currentImage: ${{image.vmImage}}
+          currentName: ${{image.displayName}}
           codecov: $(CODECOV_TOKEN)
           VERSION:
           JAVA_TOOL_OPTIONS: ${{image.javaToolOptions}}
 
         steps:
-          # Runs 'mvn clean install'
+          - task: Cache@2
+            inputs:
+              key: maven | $(Build.BuildId)
+              path: $(MAVEN_CACHE_FOLDER)
+          # Runs 'mvn test'
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
+              options: '-pl "!org.hl7.fhir.validation.cli" -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
               mavenOptions: '-Xmx3072m'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
               publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              goals: 'install'
+              goals: 'test'
 
+          # Upload test results to codecov
+          - script: bash <(curl https://codecov.io/bash) -t $(codecov)
+            displayName: 'codecov Bash Uploader'
+            condition: eq(variables.currentName, 'ubuntu-latest-java-11')
+
+          # Publishes the test results to build artifacts.
+          - task: PublishCodeCoverageResults@1
+            displayName: 'Publish JaCoCo test results'
+            condition: eq(variables.currentName, 'ubuntu-latest-java-11')
+            inputs:
+              codeCoverageTool: 'JaCoCo'
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
+              reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
+
+          # Builds the CLI jar
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
@@ -33,21 +54,19 @@ jobs:
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
-              options: '-pl org.hl7.fhir.validation.cli'
+              options: '-pl org.hl7.fhir.validation.cli -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
               publishJUnitResults: false
-              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              goals: 'install'
+
+          # Executes the CLI jar
+          - task: Maven@3
+            inputs:
+              mavenPomFile: 'pom.xml'
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '${{image.jdkVersion}}'
+              jdkArchitectureOption: 'x64'
+              options: '-pl org.hl7.fhir.validation.cli -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+              publishJUnitResults: false
               goals: 'exec:exec'
 
-          # Upload test results to codecov    
-          - script: bash <(curl https://codecov.io/bash) -t $(codecov)
-            displayName: 'codecov Bash Uploader'
-            condition: eq(variables.currentImage, 'ubuntu-latest')
-
-          # Publishes the test results to build artifacts.
-          - task: PublishCodeCoverageResults@1
-            displayName: 'Publish JaCoCo test results'
-            condition: eq(variables.currentImage, 'ubuntu-latest')
-            inputs:
-              codeCoverageTool: 'JaCoCo'
-              summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
-              reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
