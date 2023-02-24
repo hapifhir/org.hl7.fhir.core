@@ -108,7 +108,7 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
     composer.append("    if (Utilities.noString(parentType))\r\n");
     composer.append("      t = parent;\r\n");
     composer.append("    else {\r\n");
-    composer.append("      t = parent.predicate(\"fhir:\"+parentType+'.'+name);\r\n");
+    composer.append("      t = parent.predicate(\"fhir:\"+name,index > -1);\r\n");
     composer.append("    }\r\n");
     composer.append("    compose"+ti.getAncestorName()+"(t, \""+ti.getDefn().getName()+"\", name, element, index);\r\n");
     if (tn.equals("Coding")) 

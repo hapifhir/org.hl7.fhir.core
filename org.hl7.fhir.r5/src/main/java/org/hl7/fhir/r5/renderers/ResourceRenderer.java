@@ -223,12 +223,15 @@ public abstract class ResourceRenderer extends DataRenderer {
       tr = resolveReference(rw, r.getReference());
 
       if (!r.getReference().startsWith("#")) {
-        if (tr != null && tr.getReference() != null)
+        if (tr != null && tr.getReference() != null) {
           c = x.ah(tr.getReference());
-        else
+        } else if (r.getReference().contains("?")) {
+          x.tx("Conditional Reference: ");
+          c = x.code("");
+        } else {
           c = x.ah(r.getReference());
+        }
       } else {
-        
         c = x.ah(r.getReference());
       }
     } else {
