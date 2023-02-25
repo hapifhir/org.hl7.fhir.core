@@ -19,18 +19,30 @@ jobs:
             inputs:
               key: maven | $(Build.BuildId)
               path: $(MAVEN_CACHE_FOLDER)
-          # Runs 'mvn test'
+          # Runs 'mvn install'
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
-              options: '-pl "!org.hl7.fhir.validation.cli" -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+              options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
               mavenOptions: '-Xmx3072m'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
               publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              goals: 'test'
+              goals: 'install'
+
+          - task: Maven@3
+            inputs:
+              mavenPomFile: 'pom.xml'
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '${{image.jdkVersion}}'
+              jdkArchitectureOption: 'x64'
+              options: '-pl org.hl7.fhir.validation.cli -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+              publishJUnitResults: false
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              goals: 'exec:exec'
 
           # Upload test results to codecov
           - script: bash <(curl https://codecov.io/bash) -t $(codecov)
@@ -45,28 +57,4 @@ jobs:
               codeCoverageTool: 'JaCoCo'
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
               reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
-
-          # Builds the CLI jar
-          - task: Maven@3
-            inputs:
-              mavenPomFile: 'pom.xml'
-              mavenOptions: '-Xmx3072m'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '${{image.jdkVersion}}'
-              jdkArchitectureOption: 'x64'
-              options: '-pl org.hl7.fhir.validation.cli -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
-              publishJUnitResults: false
-              goals: 'install'
-
-          # Executes the CLI jar
-          - task: Maven@3
-            inputs:
-              mavenPomFile: 'pom.xml'
-              mavenOptions: '-Xmx3072m'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '${{image.jdkVersion}}'
-              jdkArchitectureOption: 'x64'
-              options: '-pl org.hl7.fhir.validation.cli -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
-              publishJUnitResults: false
-              goals: 'exec:exec'
 
