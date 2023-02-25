@@ -184,9 +184,22 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                        <configuration>
+                            <failsOnError>true</failsOnError>
+                            <suppressionsLocation>${project.basedir}/checkstyle_suppressions.xml</suppressionsLocation>
+                            <enableRulesSummary>true</enableRulesSummary>
+                            <enableSeveritySummary>true</enableSeveritySummary>
+                            <consoleOutput>true</consoleOutput>
+                            <configLocation>${project.basedir}/../checkstyle.xml</configLocation>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -417,6 +430,7 @@
                 </executions>
             </plugin>
         </plugins>
+
     </build>
 
     <profiles>
