@@ -11,7 +11,7 @@ pr:
 # Azure doesn't always have the same Java versions on each system, so they are enumerated for each system independently.
 jobs:
   - job: setup
-    displayName: setup-and-cache-build
+    displayName: cache-maven-dependencies
     pool:
       vmImage: ubuntu-latest
     steps:
@@ -28,13 +28,23 @@ jobs:
       - task: Maven@3
         inputs:
           mavenPomFile: 'pom.xml'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
           mavenOptions: '-Xmx3072m'
-          options: '-pl "!org.hl7.fhir.validation.cli" -DskipTests -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'install'
+          goals: 'dependency:resolve'
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+          mavenOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'dependency:resolve-plugins'
   - template: pull-request-pipeline-parameterized.yml
     parameters:
       images:
