@@ -108,7 +108,14 @@ public class ShExGenerator {
   // Base DataTypes
   private List<String> baseDataTypes = Arrays.asList(
     "DataType",
-    "PrimitiveType"
+    "PrimitiveType",
+    "BackboneElement"
+  );
+
+  private List<String> shortIdException = Arrays.asList(
+    "Element", "Resource", "Extension", "base64Binary", "boolean",
+    "date", "dateTime", "decimal", "instant", "integer64",
+    "integer", "string", "time", "uri"
   );
 
   private List<String> mappedFunctions = Arrays.asList(
@@ -133,7 +140,7 @@ public class ShExGenerator {
   // Resource Definition
   //      an open shape of type Resource.  Used when completeModel = false.
   private static String RESOURCE_SHAPE_TEMPLATE =
-    "$comment$\n<Resource> {a .+;" +
+    "$comment$\n<Resource> {" +
       "\n    $elements$" +
       "\n    $contextOfUse$" +
       "\n} $constraints$ \n";
@@ -147,10 +154,10 @@ public class ShExGenerator {
   // Resource Declaration
   //      a type node
   //      an optional treeRoot declaration (identifies the entry point)
-  private static String RESOURCE_DECL_TEMPLATE = "\na [fhir:$id$];$root$";
+  private static String RESOURCE_DECL_TEMPLATE = "\na [fhir:$id$]?;$root$";
 
   // Root Declaration.
-  private static String ROOT_TEMPLATE = "\nfhir:nodeRole [fhir:treeRoot]?;";
+  private static String ROOT_TEMPLATE = "\nfhir:nodeRole [fhir:treeRoot]?;\n";
 
   // Element
   //    a predicate, type and cardinality triple
@@ -511,16 +518,32 @@ public class ShExGenerator {
     return shex_def.render();
   }
 
-  private String getExtendedType(StructureDefinition sd){
+  private String getBaseTypeName(StructureDefinition sd){
     if (sd == null)
       return null;
 
-    String sId = sd.getId();
-    String bd = "";
+    String bd = null;
     if (sd.hasBaseDefinition()) {
       bd = sd.getBaseDefinition();
       String[] els = bd.split("/");
       bd = els[els.length - 1];
+    }
+
+    return bd;
+  }
+
+  private String getBaseTypeName(ElementDefinition ed){
+    if (ed == null)
+      return null;
+
+    return (ed.getType().size() > 0)? (ed.getType().get(0).getCode()) : null;
+  }
+
+  private String getExtendedType(StructureDefinition sd){
+    String bd = getBaseTypeName(sd);
+    String sId = sd.getId();
+
+    if (bd!=null) {
       addImport("<" + bd + ">");
       sId += "> EXTENDS @<" + bd;
     }
@@ -529,10 +552,8 @@ public class ShExGenerator {
   }
 
   private String getExtendedType(ElementDefinition ed){
-    if (ed == null)
-      return "";
-    String bd = (ed.getType().size() > 0)? (ed.getType().get(0).getCode()) : "";
-    if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd)) {
+    String bd = getBaseTypeName(ed);
+    if (bd != null  && !baseDataTypes.contains(bd)) {
       addImport("<" + bd + ">");
       bd = "> EXTENDS @<" + bd;
     }
@@ -555,19 +576,31 @@ public class ShExGenerator {
     //    if (sd.getName().equals("ActivityDefinition")){
     //      debug("ActivityDefinition found");
     //    }
-    if("Resource".equals(sd.getName())) {
-      shape_defn = tmplt(RESOURCE_SHAPE_TEMPLATE);
-      known_resources.add(sd.getName());
-    } else {
-      shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", getExtendedType(sd));
-      known_resources.add(sd.getName());
-      ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
-        add("id", sd.getId()).
-        add("root", tmplt(ROOT_TEMPLATE));
-      shape_defn.add("resourceDecl", resource_decl.render());
+      if("Resource".equals(sd.getName())) {
+        shape_defn = tmplt(RESOURCE_SHAPE_TEMPLATE);
+        known_resources.add(sd.getName());
+        } else {
+        shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", getExtendedType(sd));
+        known_resources.add(sd.getName());
 
+        if (baseDataTypes.contains(sd.getType())) {
+          shape_defn.add("resourceDecl", "\n");
+        } else {
+          if ("Element".equals(sd.getName()))
+            shape_defn.add("resourceDecl", tmplt(ROOT_TEMPLATE).render());
+          else {
+                String rootTmpl = tmplt(ROOT_TEMPLATE).render();
+                if (baseDataTypes.contains(getBaseTypeName(sd)))
+                  rootTmpl = "";
+              ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
+                add("id", sd.getId()).
+                add("root", rootTmpl);
+
+            shape_defn.add("resourceDecl", resource_decl.render());
+          }
+        }
+      }
       shape_defn.add("fhirType", " ");
-    }
 
     // Generate the defining elements
     List<String> elements = new ArrayList<String>();
@@ -1243,7 +1276,12 @@ public class ShExGenerator {
 
     if ((ed.getType().size() > 0) &&
       (ed.getType().get(0).getCode().startsWith(Constants.NS_SYSTEM_TYPE))) {
-      shortId = "v";
+
+      if (changeShortName(sd, ed)) {
+        debug("VALUE NAME CHANGED to v from " + shortId + " for " + sd.getName() + ":" + ed.getPath());
+        shortId = "v";
+      }
+
       typ = ed.getType().get(0).getWorkingCode();
     }
 
@@ -1273,7 +1311,7 @@ public class ShExGenerator {
 
     if (id.endsWith("[x]")) {
       defn = " (" + genChoiceTypes(sd, ed, shortId) + ") ";
-      defn += " AND { rdf:type IRI } ";
+      //defn += " AND { rdf:type IRI } ";
     } else {
       if (ed.getType().size() == 1) {
         // Single entry
@@ -1343,6 +1381,10 @@ public class ShExGenerator {
     addComment(element_def, ed);
 
     return element_def.render();
+  }
+
+  private boolean changeShortName(StructureDefinition sd, ElementDefinition ed){
+      return !shortIdException.contains(sd.getName());
   }
 
   private void addImport(String typeDefn) {
@@ -1678,7 +1720,7 @@ public class ShExGenerator {
     for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
       String sdType = sd.getType();
       String cstype = constraint.getSource();
-      if ((!cstype.isEmpty()) && (cstype.indexOf("/") != -1)) {
+      if ((cstype != null) && (cstype.indexOf("/") != -1)) {
         String[] els = cstype.split("/");
         cstype = els[els.length - 1];
       }

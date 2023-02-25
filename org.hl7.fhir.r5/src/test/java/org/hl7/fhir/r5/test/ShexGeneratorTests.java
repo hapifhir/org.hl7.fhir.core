@@ -27,8 +27,6 @@ import org.junit.jupiter.api.Test;
 import static org.hl7.fhir.r5.test.ShexGeneratorTestUtils.printList;
 
 public class ShexGeneratorTests {
-  public static List<String> selectedExtesnsions = new ArrayList<String>();
-
   public ShExGenerator shexGenerator;
 
   @BeforeAll
@@ -45,8 +43,11 @@ public class ShexGeneratorTests {
 
     // For Testing Schema Processing and Constraint Mapping related Development
     // If you un-comment the following lines, please comment all other lines in this method.
-    this.doTestSingleSD(name.toLowerCase(), cat, name, false, ShExGenerator.ConstraintTranslationPolicy.ALL, true, true, false);
+    this.doTestSingleSD(name.toLowerCase(), cat, name,
+      false, ShExGenerator.ConstraintTranslationPolicy.ALL,
+      true, true, false);
   }
+
   @Test
   public void testId() throws FHIRException, IOException, UcumException {
     doTest("id", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
@@ -71,6 +72,7 @@ public class ShexGeneratorTests {
   public void testAccount() throws FHIRException, IOException, UcumException {
     doTest("Account", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
+
   @Test
   public void testAppointment() throws FHIRException, IOException, UcumException {
     doTest("Appointment", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
@@ -111,167 +113,87 @@ public class ShexGeneratorTests {
     doTest("Signature", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
-  @Ignore
+  @Test
   public void testCapabilityStatement() throws FHIRException, IOException, UcumException {
     doTest("CapabilityStatement", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
-  private void doTestSingleSD(String shortName, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat, String name, boolean useSelectedExtensions, ShExGenerator.ConstraintTranslationPolicy policy, boolean debugMode, boolean validateShEx, boolean excludeMetaSDs) {
-    IWorkerContext ctx = TestingUtilities.getSharedWorkerContext();
-    StructureDefinition sd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
-    if (sd == null) {
-      throw new FHIRException("StructuredDefinition for " + name + "(Kind:" + cat + ") was null");
-    }
-    //Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
-    Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas", shortName + ".shex");
-    try {
-      this.shexGenerator = new ShExGenerator(ctx);
-
-      this.shexGenerator.debugMode = debugMode;
-      this.shexGenerator.constraintPolicy = policy;
-
-      if (excludeMetaSDs) {
-        // ShEx Generator skips resources which are at Meta level of FHIR Resource definitions
-        this.shexGenerator.setExcludedStructureDefinitionUrls(
-          ShexGeneratorTestUtils.getMetaStructureDefinitionsToSkip());
-      }
-
-      // when ShEx translates only selected resource extensions
-      if (useSelectedExtensions) {
-        List<StructureDefinition> selExtns = new ArrayList<StructureDefinition>();
-        for (String eUrl : ShexGeneratorTestUtils.getSelectedExtensions()) {
-          StructureDefinition esd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(eUrl, null));
-          if (esd != null)
-            selExtns.add(esd);
-        }
-        this.shexGenerator.setSelectedExtension(selExtns);
-      }
-
-      String schema = this.shexGenerator.generate(HTMLLinkPolicy.NONE, sd);
-      if (!schema.isEmpty()) {
-
-        if (validateShEx) {
-          try {
-            ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
-            Schema sch = validator.schema();
-
-            Assert.assertNotNull(sch);
-            System.out.println("VALIDATION PASSED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")" );
-          } catch (Exception e) {
-            System.out.println("VALIDATION FAILED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")" );
-            e.printStackTrace();
-          }
-        }
-        TextFile.stringToFile(schema, outPath.toString());
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  @Test
+  public void testElement() throws FHIRException, IOException, UcumException {
+    doTest("Element", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
-  private void doTestBatchSD(List<StructureDefinition> sds, boolean useSelectedExtensions, ShExGenerator.ConstraintTranslationPolicy policy, boolean debugMode, boolean validateShEx, boolean excludeMetaSDs) {
-    IWorkerContext ctx = TestingUtilities.getSharedWorkerContext();
-    //Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
-    Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas", "ShEx.shex");
-    try {
-      this.shexGenerator = new ShExGenerator(ctx);
+  @Test
+  public void doTestAllSingleSDMode() throws FileNotFoundException, IOException, FHIRException, UcumException {
+    List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
 
-      this.shexGenerator.debugMode = debugMode;
-      this.shexGenerator.constraintPolicy = policy;
-
-      if (excludeMetaSDs) {
-        // ShEx Generator skips resources which are at Meta level of FHIR Resource definitions
-        this.shexGenerator.setExcludedStructureDefinitionUrls(
-          ShexGeneratorTestUtils.getMetaStructureDefinitionsToSkip());
-      }
-
-      // when ShEx translates only selected resource extensions
-      if (useSelectedExtensions) {
-        List<StructureDefinition> selExtns = new ArrayList<StructureDefinition>();
-        for (String eUrl : ShexGeneratorTestUtils.getSelectedExtensions()) {
-          StructureDefinition esd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(eUrl, null));
-          if (esd != null)
-            selExtns.add(esd);
-        }
-        this.shexGenerator.setSelectedExtension(selExtns);
-      }
-
-      String schema = this.shexGenerator.generate(HTMLLinkPolicy.NONE, sds);
-      if (!schema.isEmpty()) {
-        if (validateShEx) {
-          try {
-            ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
-            Schema sch = validator.schema();
-
-            Assert.assertNotNull(sch);
-            System.out.println("VALIDATION PASSED for ShEx Schema ALL SHEX STRUCTURES");
-          } catch (Exception e) {
-            System.out.println("VALIDATION FAILED for ShEx Schema ALL SHEX STRUCTURES");
-            e.printStackTrace();
-          }
-        }
-        TextFile.stringToFile(schema, outPath.toString());
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    processSDList(
+      ShexGeneratorTestUtils.RESOURCE_CATEGORY.ALL, // Processing All kinds of Structure Definitions
+      sds, // List of Structure Definitions
+      false,  //Process all extensions
+      // Process all types of constraints, do not skip
+      ShExGenerator.ConstraintTranslationPolicy.ALL,
+      // BatchMode - All Shex Schemas in one single file
+      false
+    );
   }
 
-    @Test
-    public void doTestAll() throws FileNotFoundException, IOException, FHIRException, UcumException {
-      List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
+  @Test
+  public void doTestAllBatchMode() throws FileNotFoundException, IOException, FHIRException, UcumException {
+    List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
 
-      processSDList(
-        ShexGeneratorTestUtils.RESOURCE_CATEGORY.ALL, // Processing All kinds of Structure Definitions
-        sds, // List of Structure Definitions
-        false,  //Process all extensions
-        ShExGenerator.ConstraintTranslationPolicy.ALL,
-        // Process all types of constraints, do not skip
-        true
-      );
-    }
+    processSDList(
+      ShexGeneratorTestUtils.RESOURCE_CATEGORY.ALL, // Processing All kinds of Structure Definitions
+      sds, // List of Structure Definitions
+      false,  //Process all extensions
+      // Process all types of constraints, do not skip
+      ShExGenerator.ConstraintTranslationPolicy.ALL,
+      // BatchMode - All Shex Schemas in one single file
+      true
+    );
+  }
 
-    @Ignore
-    public void doTestGenericExtensionsOnlyPolicy() throws FileNotFoundException, IOException, FHIRException, UcumException {
-      List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
+  @Ignore
+  public void doTestGenericExtensionsOnlyPolicy() throws FileNotFoundException, IOException, FHIRException, UcumException {
+    List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
 
-      processSDList(
-        ShexGeneratorTestUtils.RESOURCE_CATEGORY.ALL, // Processing All kinds of Structure Definitions
-        sds, // List of Structure Definitions
-        false,  //Process all extensions
-        ShExGenerator.ConstraintTranslationPolicy.GENERIC_ONLY,
-        // Process generic constraints only, ignore constraints of type 'context of use'
-        false
-      );
+    processSDList(
+      ShexGeneratorTestUtils.RESOURCE_CATEGORY.ALL, // Processing All kinds of Structure Definitions
+      sds, // List of Structure Definitions
+      false,  //Process all extensions
+      ShExGenerator.ConstraintTranslationPolicy.GENERIC_ONLY,
+      // Process generic constraints only, ignore constraints of type 'context of use'
+      false
+    );
 
-    }
+  }
 
-    @Ignore
-    public void doTestContextOfUseExtensionsOnlyPolicy() throws FileNotFoundException, IOException, FHIRException, UcumException {
-      List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
+  @Ignore
+  public void doTestContextOfUseExtensionsOnlyPolicy() throws FileNotFoundException, IOException, FHIRException, UcumException {
+    List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
 
-      processSDList(
-        ShexGeneratorTestUtils.RESOURCE_CATEGORY.ALL, // Processing All kinds of Structure Definitions
-        sds, // List of Structure Definitions
-        false,  //Process all extensions
-        ShExGenerator.ConstraintTranslationPolicy.CONTEXT_OF_USE_ONLY,
-            // Process constraints only where context of use found, skip otherwise
-        false
-      );
-    }
+    processSDList(
+      ShexGeneratorTestUtils.RESOURCE_CATEGORY.ALL, // Processing All kinds of Structure Definitions
+      sds, // List of Structure Definitions
+      false,  //Process all extensions
+      ShExGenerator.ConstraintTranslationPolicy.CONTEXT_OF_USE_ONLY,
+      // Process constraints only where context of use found, skip otherwise
+      false
+    );
+  }
 
-    @Ignore
-    public void doTestSelectedExtensions() throws FileNotFoundException, IOException, FHIRException, UcumException {
-      List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
+  @Ignore
+  public void doTestSelectedExtensions() throws FileNotFoundException, IOException, FHIRException, UcumException {
+    List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
 
-      processSDList(
-        ShexGeneratorTestUtils.RESOURCE_CATEGORY.ALL, // Processing All kinds of Structure Definitions
-        sds, // List of Structure Definitions
-        true,  //Process only given/selected extensions, ignore other extensions
-        ShExGenerator.ConstraintTranslationPolicy.ALL, // Process all type of constraints
-        false
-      );
-    }
+    processSDList(
+      ShexGeneratorTestUtils.RESOURCE_CATEGORY.ALL, // Processing All kinds of Structure Definitions
+      sds, // List of Structure Definitions
+      true,  //Process only given/selected extensions, ignore other extensions
+      ShExGenerator.ConstraintTranslationPolicy.ALL, // Process all type of constraints
+      false
+    );
+  }
 
   @Ignore
   public void testStructureDefinitionsOnly() throws FileNotFoundException, IOException, FHIRException, UcumException {
@@ -326,8 +248,8 @@ public class ShexGeneratorTests {
 
   private void processSDList(ShexGeneratorTestUtils.RESOURCE_CATEGORY cat,
                              List<StructureDefinition> sds,
-                           boolean useSelectedExtensions,
-                           ShExGenerator.ConstraintTranslationPolicy policy,
+                             boolean useSelectedExtensions,
+                             ShExGenerator.ConstraintTranslationPolicy policy,
                              boolean batchMode) {
     if ((sds == null) || (sds.isEmpty())) {
       throw new FHIRException("No StructuredDefinition found!");
@@ -362,5 +284,112 @@ public class ShexGeneratorTests {
     List<String> skipped = this.shexGenerator.getExcludedStructureDefinitionUrls();
     System.out.println("Total Items processed: " + sds.size());
     System.out.println("************************************************************************");
+  }
+
+  private void doTestSingleSD(String shortName, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat,
+                              String name, boolean useSelectedExtensions,
+                              ShExGenerator.ConstraintTranslationPolicy policy,
+                              boolean debugMode, boolean validateShEx,
+                              boolean excludeMetaSDs) {
+    IWorkerContext ctx = TestingUtilities.getSharedWorkerContext();
+    StructureDefinition sd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
+    if (sd == null) {
+      throw new FHIRException("StructuredDefinition for " + name + "(Kind:" + cat + ") was null");
+    }
+    //Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
+    Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas", shortName + ".shex");
+    try {
+      this.shexGenerator = new ShExGenerator(ctx);
+
+      this.shexGenerator.debugMode = debugMode;
+      this.shexGenerator.constraintPolicy = policy;
+
+      if (excludeMetaSDs) {
+        // ShEx Generator skips resources which are at Meta level of FHIR Resource definitions
+        this.shexGenerator.setExcludedStructureDefinitionUrls(
+          ShexGeneratorTestUtils.getMetaStructureDefinitionsToSkip());
+      }
+
+      // when ShEx translates only selected resource extensions
+      if (useSelectedExtensions) {
+        List<StructureDefinition> selExtns = new ArrayList<StructureDefinition>();
+        for (String eUrl : ShexGeneratorTestUtils.getSelectedExtensions()) {
+          StructureDefinition esd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(eUrl, null));
+          if (esd != null)
+            selExtns.add(esd);
+        }
+        this.shexGenerator.setSelectedExtension(selExtns);
+      }
+
+      String schema = this.shexGenerator.generate(HTMLLinkPolicy.NONE, sd);
+      if (!schema.isEmpty()) {
+
+        if (validateShEx) {
+          try {
+            ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
+            Schema sch = validator.schema();
+
+            Assert.assertNotNull(sch);
+            System.out.println("VALIDATION PASSED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
+          } catch (Exception e) {
+            System.out.println("VALIDATION FAILED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
+            e.printStackTrace();
+          }
+        }
+        TextFile.stringToFile(schema, outPath.toString());
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private void doTestBatchSD(List<StructureDefinition> sds, boolean useSelectedExtensions,
+                             ShExGenerator.ConstraintTranslationPolicy policy, boolean debugMode,
+                             boolean validateShEx, boolean excludeMetaSDs) {
+    IWorkerContext ctx = TestingUtilities.getSharedWorkerContext();
+    //Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
+    Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas", "ShEx.shex");
+    try {
+      this.shexGenerator = new ShExGenerator(ctx);
+
+      this.shexGenerator.debugMode = debugMode;
+      this.shexGenerator.constraintPolicy = policy;
+
+      if (excludeMetaSDs) {
+        // ShEx Generator skips resources which are at Meta level of FHIR Resource definitions
+        this.shexGenerator.setExcludedStructureDefinitionUrls(
+          ShexGeneratorTestUtils.getMetaStructureDefinitionsToSkip());
+      }
+
+      // when ShEx translates only selected resource extensions
+      if (useSelectedExtensions) {
+        List<StructureDefinition> selExtns = new ArrayList<StructureDefinition>();
+        for (String eUrl : ShexGeneratorTestUtils.getSelectedExtensions()) {
+          StructureDefinition esd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(eUrl, null));
+          if (esd != null)
+            selExtns.add(esd);
+        }
+        this.shexGenerator.setSelectedExtension(selExtns);
+      }
+
+      String schema = this.shexGenerator.generate(HTMLLinkPolicy.NONE, sds);
+      if (!schema.isEmpty()) {
+        if (validateShEx) {
+          try {
+            ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
+            Schema sch = validator.schema();
+
+            Assert.assertNotNull(sch);
+            System.out.println("VALIDATION PASSED for ShEx Schema ALL SHEX STRUCTURES");
+          } catch (Exception e) {
+            System.out.println("VALIDATION FAILED for ShEx Schema ALL SHEX STRUCTURES");
+            e.printStackTrace();
+          }
+        }
+        TextFile.stringToFile(schema, outPath.toString());
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
