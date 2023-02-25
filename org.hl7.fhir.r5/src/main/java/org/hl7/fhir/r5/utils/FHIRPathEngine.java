@@ -5983,7 +5983,7 @@ public class FHIRPathEngine {
   }
 
 
-  private ElementDefinitionMatch getElementDefinition(StructureDefinition sd, String path, boolean allowTypedName, ExpressionNode expr) throws PathEngineException {
+  public ElementDefinitionMatch getElementDefinition(StructureDefinition sd, String path, boolean allowTypedName, ExpressionNode expr) throws PathEngineException {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ed.getPath().equals(path)) {
         if (ed.hasContentReference()) {
