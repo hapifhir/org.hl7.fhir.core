@@ -43,8 +43,8 @@ public class ResourceChecker {
       if (Utilities.existsInList(ext, "ttl")) {
         return FhirFormat.TURTLE;            
       }
-      if (Utilities.existsInList(ext, "map")) {
-        return Manager.FhirFormat.TEXT;
+      if (Utilities.existsInList(ext, "map", "fml")) {
+        return Manager.FhirFormat.FML;
       }
       if (Utilities.existsInList(ext, "jwt", "jws")) {
         return Manager.FhirFormat.SHC;

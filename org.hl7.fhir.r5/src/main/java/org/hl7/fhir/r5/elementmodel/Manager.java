@@ -48,7 +48,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 public class Manager {
 
   //TODO use EnumMap
-  public enum FhirFormat { XML, JSON, TURTLE, TEXT, VBAR, SHC; 
+  public enum FhirFormat { XML, JSON, TURTLE, TEXT, VBAR, SHC, FML; 
     // SHC = smart health cards, including as text versions of QR codes
 
     public String getExtension() {
@@ -65,6 +65,8 @@ public class Manager {
           return "hl7";
         case SHC:
           return "shc";
+        case FML:
+          return "fml";
       }
       return null;
     }
@@ -81,6 +83,8 @@ public class Manager {
           return TEXT;
         case "hl7":
           return VBAR;
+        case "fml":
+          return FML;
       }
       return null;
     }
@@ -115,6 +119,7 @@ public class Manager {
     case TURTLE : return new TurtleParser(context);
     case VBAR : return new VerticalBarParser(context);
     case SHC : return new SHCParser(context);
+    case FML : return new FmlParser(context);
     case TEXT : throw new Error("Programming logic error: do not call makeParser for a text resource");
     }
     return null;
@@ -123,6 +128,7 @@ public class Manager {
   public static Element build(IWorkerContext context, StructureDefinition sd) {
     Property p = new Property(context, sd.getSnapshot().getElementFirstRep(), sd);
     Element e = new Element(p.getName(), p);
+    e.setPath(sd.getType());
     return e;
   }
 

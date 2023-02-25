@@ -270,8 +270,9 @@ public class Property {
       String tc = definition.getType().get(0).getCode();
       return definition.getType().size() == 1 && (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  Utilities.existsInList(tc, context.getResourceNames()));
     }
-	  else
+	  else {
 	    return !definition.getPath().contains(".") && (structure.getKind() == StructureDefinitionKind.RESOURCE);
+	  }
 	}
 
   public boolean isList() {
