@@ -13521,6 +13521,9 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     return hasPath() ? getPath().contains(".") ? getPath().substring(getPath().lastIndexOf(".")+1) : getPath() : null;
   }
 
+  public String getNameBase() {
+    return getName().replace("[x]", "");
+  }
   public boolean unbounded() {
     return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
   }
@@ -13553,6 +13556,8 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
   public boolean isRequired() { 
     return getMin() == 1; 
   }
+
+
 
 // end addition
 

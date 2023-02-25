@@ -129,6 +129,7 @@ public class Element extends Base {
   private int instanceId;
   private boolean isNull;
   private Base source;
+  private boolean ignorePropertyOrder;
 
 	public Element(String name) {
 		super();
@@ -148,6 +149,9 @@ public class Element extends Base {
 		super();
 		this.name = name;
 		this.property = property;
+		if (property.isResource()) {
+		  children = new ArrayList<>();
+		}
 	}
 
 	public Element(String name, Property property, String type, String value) {
@@ -211,8 +215,9 @@ public class Element extends Base {
 		this.value = value;
 	}
 
-	public void setType(String type) {
+	public Element setType(String type) {
 		this.type = type;
+		return this;
 
 	}
 
@@ -598,7 +603,7 @@ public class Element extends Base {
 
 	@Override
 	public String primitiveValue() {
-		if (isPrimitive())
+		if (isPrimitive() || value != null)
 		  return value;
 		else {
 			if (hasPrimitiveValue() && children != null) {
@@ -1359,6 +1364,19 @@ public class Element extends Base {
   public Base setProperty(String name, Base value) throws FHIRException {
     setChildValue(name, value.primitiveValue());
     return this;
+  }
+
+  public boolean isIgnorePropertyOrder() {
+    return ignorePropertyOrder;
+  }
+
+  public void setIgnorePropertyOrder(boolean ignorePropertyOrder) {
+    this.ignorePropertyOrder = ignorePropertyOrder;
+    if (children != null) {
+      for (Element e : children) {
+        e.setIgnorePropertyOrder(ignorePropertyOrder);
+      }
+    }
   }
   
   

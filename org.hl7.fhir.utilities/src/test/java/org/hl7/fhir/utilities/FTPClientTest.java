@@ -30,7 +30,7 @@ public class FTPClientTest implements ResourceLoaderTests {
   public static final String DUMMY_FILE_TO_DELETE = "dummyFileToDelete";
 
   public static final String DUMMY_FILE_TO_UPLOAD = "dummyFileToUpload";
-  public static final int FAKE_FTP_PORT = 8021;
+  public static final int FAKE_FTP_PORT = 8022;
   public static final String DUMMY_FILE_CONTENT = "Dummy file content\nMore content\n";
   public static final String LOCALHOST = "localhost";
 
