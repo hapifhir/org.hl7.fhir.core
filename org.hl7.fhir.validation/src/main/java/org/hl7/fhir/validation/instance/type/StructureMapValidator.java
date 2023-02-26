@@ -18,6 +18,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -34,6 +35,9 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
+import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent;
+import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupInputComponent;
+import org.hl7.fhir.r5.model.StructureMap.StructureMapInputMode;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
@@ -226,6 +230,8 @@ public class StructureMapValidator extends BaseValidator {
 
   private FHIRPathEngine fpe;
   private ProfileUtilities profileUtilities;
+  private ContextUtilities cu;
+  private List<StructureMap> imports = new ArrayList<>();
 
   public StructureMapValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, XVerExtensionManager xverManager, ProfileUtilities profileUtilities, Coding jurisdiction) {
     super(context, xverManager);
@@ -234,13 +240,21 @@ public class StructureMapValidator extends BaseValidator {
     this.timeTracker = timeTracker;
     this.jurisdiction = jurisdiction;
     this.profileUtilities = profileUtilities;
+    this.cu = new ContextUtilities(context);
 
   }
   
   public boolean validateStructureMap(List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
-    List<Element> groups = src.getChildrenByName("group");
+    List<Element> imports = src.getChildrenByName("import");
     int cc = 0;
+    for (Element import_ : imports) {
+      ok = validateImport(errors, src, import_, stack.push(import_, cc, null, null)) && ok;
+      cc++;
+    }
+    
+    List<Element> groups = src.getChildrenByName("group");
+    cc = 0;
     for (Element group : groups) {
       ok = validateGroup(errors, src, group, stack.push(group, cc, null, null)) && ok;
       cc++;
@@ -248,14 +262,34 @@ public class StructureMapValidator extends BaseValidator {
     return ok;
   }
 
+  private boolean validateImport(List<ValidationMessage> errors, Element src, Element import_, NodeStack stack) {
+    String url = import_.primitiveValue();
+    boolean ok = false;
+    StructureMap map = context.fetchResource(StructureMap.class, url);
+    if (map != null) {
+      imports.add(map);
+      ok = true;
+    } else if (url.contains("*")) {
+      List<StructureMap> maps = cu.listMaps(url);
+      ok = !maps.isEmpty();
+      imports.addAll(maps);
+    }
+    warning(errors, "2023-03-01", IssueType.INVALID, import_.line(), import_.col(), stack.getLiteralPath(), ok, I18nConstants.SM_IMPORT_NOT_FOUND, url);
+    return true;
+  }
+
   private boolean validateGroup(List<ValidationMessage> errors, Element src, Element group, NodeStack stack) {
     String name = group.getChildValue("name");
-    boolean ok = rule(errors, "2023-02-17", IssueType.INVALID, group.line(), group.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name);
+    boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, group.line(), group.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name);
     
-    Element extend = src.getNamedChild("extends");
+    Element extend = group.getNamedChild("extends");
     if (extend != null) {
-      rule(errors, "2023-02-17", IssueType.NOTSUPPORTED, extend.line(), extend.col(), stack.push(extend, -1, null, null).getLiteralPath(), false, I18nConstants.SM_EXTENDS_NOT_SUPPORTED, extend.primitiveValue());
-      ok = false;
+      StructureMapGroupComponent grp = resolveGroup(extend.primitiveValue(), src);
+      if (rule(errors, "2023-03-01", IssueType.NOTSUPPORTED, extend.line(), extend.col(), stack.push(extend, -1, null, null).getLiteralPath(), grp != null, I18nConstants.SM_RULEGROUP_NOT_FOUND, extend.primitiveValue())) {
+        // check inputs 
+      } else {
+        ok = false;
+      }
     }
     
     VariableSet variables = new VariableSet(); 
@@ -280,24 +314,62 @@ public class StructureMapValidator extends BaseValidator {
     return ok;
   }
 
+  private StructureMapGroupComponent resolveGroup(String grpName, Element src) {
+    if (grpName == null) {
+      return null;
+    }
+    List<Element> groups = src.getChildrenByName("group");
+    for (Element group : groups) {
+      String name = group.getChildValue("name");
+      if (grpName.equals(name)) {
+        return makeGroupComponent(group);
+      }
+    }  
+    for (StructureMap map : imports) {
+      for (StructureMapGroupComponent grp : map.getGroup()) {
+        if (grpName.equals(grp.getName())) {
+          return grp;
+        }
+      }
+    }
+    return null;
+  }
+
+  private StructureMapGroupComponent makeGroupComponent(Element group) {
+    StructureMapGroupComponent grp = new StructureMapGroupComponent();
+    grp.setName(group.getChildValue("name"));
+    List<Element> inputs = group.getChildrenByName("input");
+    for (Element input : inputs) {
+      StructureMapGroupInputComponent inp = grp.addInput();
+      inp.setName(input.getChildValue("name"));
+      inp.setType(input.getChildValue("type"));
+      try {
+        inp.setMode(StructureMapInputMode.fromCode(input.getChildValue("mode")));
+      } catch (Exception e) {
+        // nothing; will be an error elsewhere
+      }
+    }
+    return grp;
+  }
+
   private boolean validateInput(List<ValidationMessage> errors, Element src, Element group, Element input, NodeStack stack, List<Element> structures, VariableSet variables) {
     boolean ok = false;
     String name = input.getChildValue("name"); 
     String type = input.getChildValue("type"); 
     String mode = input.getChildValue("mode"); 
 
-    if (rule(errors, "2023-02-17", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name) &&  // the name {0} is not valid)
-        rule(errors, "2023-02-17", IssueType.DUPLICATE, input.line(), input.col(), stack.getLiteralPath(), !variables.hasVariable(name), I18nConstants.SM_GROUP_INPUT_DUPLICATE, name)) {  // the name {0} is not valid)      
+    if (rule(errors, "2023-03-01", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name) &&  // the name {0} is not valid)
+        rule(errors, "2023-03-01", IssueType.DUPLICATE, input.line(), input.col(), stack.getLiteralPath(), !variables.hasVariable(name), I18nConstants.SM_GROUP_INPUT_DUPLICATE, name)) {  // the name {0} is not valid)      
       VariableDefn v = variables.add(name, mode);
-      if (rule(errors, "2023-02-17", IssueType.INVALID, input.line(), input.col(), stack.getLiteralPath(), Utilities.existsInList(mode, "source", "target"), I18nConstants.SM_GROUP_INPUT_MODE_INVALID, name, mode) && // the group parameter {0} mode {1} isn't valid
-          warning(errors, "2023-02-17", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), type != null, I18nConstants.SM_GROUP_INPUT_NO_TYPE, name)) { // the group parameter {0} has no type, so the paths cannot be validated
+      if (rule(errors, "2023-03-01", IssueType.INVALID, input.line(), input.col(), stack.getLiteralPath(), Utilities.existsInList(mode, "source", "target"), I18nConstants.SM_GROUP_INPUT_MODE_INVALID, name, mode) && // the group parameter {0} mode {1} isn't valid
+          warning(errors, "2023-03-01", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), type != null, I18nConstants.SM_GROUP_INPUT_NO_TYPE, name)) { // the group parameter {0} has no type, so the paths cannot be validated
         Element structure = findStructure(structures, type);
-        if (rule(errors, "2023-02-17", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), structure != null, I18nConstants.SM_GROUP_INPUT_TYPE_NOT_DECLARED, type)) { // the type {0} was not declared and is unknown
+        if (rule(errors, "2023-03-01", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), structure != null, I18nConstants.SM_GROUP_INPUT_TYPE_NOT_DECLARED, type)) { // the type {0} was not declared and is unknown
           String url = structure.getChildValue("url");
           String smode = structure.getChildValue("mode");
           StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
-          if (rule(errors, "2023-02-17", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), mode.equals(smode), I18nConstants.SM_GROUP_INPUT_MODE_MISMATCH, type, mode, smode) && // the type {0} has mode {1} which doesn't match the structure definition {2}
-            rule(errors, "2023-02-17", IssueType.INVALID, input.line(), input.col(), stack.getLiteralPath(), sd != null, I18nConstants.SM_GROUP_INPUT_TYPE_UNKNOWN, type, url)) { // the type {0} which maps to the canonical URL {1} is not known, so the paths cannot be validated
+          if (rule(errors, "2023-03-01", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), mode.equals(smode), I18nConstants.SM_GROUP_INPUT_MODE_MISMATCH, type, mode, smode) && // the type {0} has mode {1} which doesn't match the structure definition {2}
+            rule(errors, "2023-03-01", IssueType.INVALID, input.line(), input.col(), stack.getLiteralPath(), sd != null, I18nConstants.SM_GROUP_INPUT_TYPE_UNKNOWN, type, url)) { // the type {0} which maps to the canonical URL {1} is not known, so the paths cannot be validated
             v.setType(1, sd, sd.getSnapshot().getElementFirstRep(), null);
             ok = true;
           }
@@ -323,7 +395,7 @@ public class StructureMapValidator extends BaseValidator {
 
   private boolean validateRule(List<ValidationMessage> errors, Element src, Element group, Element rule, NodeStack stack, VariableSet variables) {
     String name = rule.getChildValue("name");
-    boolean ok = rule(errors, "2023-02-17", IssueType.INVALID, rule.line(), rule.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name);
+    boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, rule.line(), rule.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name);
     
     RuleInformation ruleInfo = new RuleInformation();
     // process the sources
@@ -350,14 +422,19 @@ public class StructureMapValidator extends BaseValidator {
       cc++;
     }
     // todo: check dependents
-    
+    List<Element> dependents = rule.getChildrenByName("dependent");
+    cc = 0;
+    for (Element dependent : dependents) {
+      ok = validateDependent(errors, src, group, dependent, stack.push(dependent, cc, null, null), lvars) && ok;
+      cc++;
+    }
     return ok;
   }
 
   private boolean validateRuleSource(List<ValidationMessage> errors, Element src, Element group, Element rule, Element source, NodeStack stack, VariableSet variables, RuleInformation ruleInfo) {
     String context = source.getChildValue("context");
-    boolean ok = rule(errors, "2023-02-17", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), idIsValid(context), I18nConstants.SM_NAME_INVALID, context) &&
-        rule(errors, "2023-02-17", IssueType.UNKNOWN, source.line(), source.col(), stack.getLiteralPath(), variables.hasVariable(context, SOURCE), I18nConstants.SM_SOURCE_CONTEXT_UNKNOWN, context);
+    boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), idIsValid(context), I18nConstants.SM_NAME_INVALID, context) &&
+        rule(errors, "2023-03-01", IssueType.UNKNOWN, source.line(), source.col(), stack.getLiteralPath(), variables.hasVariable(context, SOURCE), I18nConstants.SM_SOURCE_CONTEXT_UNKNOWN, context);
     if (ok) {
       VariableDefn v = variables.getVariable(context, SOURCE);
       if (v.hasTypeInfo()) { // if it doesn't, that's already an issue elsewhere 
@@ -369,8 +446,8 @@ public class StructureMapValidator extends BaseValidator {
           String path = v.getEd().getPath()+"."+element;
           String variable = source.getChildValue("variable");
           VariableDefn vn = null;
-          if (hint(errors, "2023-02-17", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), variable != null, I18nConstants.SM_RULE_SOURCE_UNASSIGNED)) {
-            if (rule(errors, "2023-02-17", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), idIsValid(variable), I18nConstants.SM_NAME_INVALID, variable)) {
+          if (hint(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), variable != null, I18nConstants.SM_RULE_SOURCE_UNASSIGNED)) {
+            if (rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), idIsValid(variable), I18nConstants.SM_NAME_INVALID, variable)) {
               vn = variables.add(variable, v.getMode()); // may overwrite
             } else {
               ok = false;
@@ -378,20 +455,20 @@ public class StructureMapValidator extends BaseValidator {
           }            
           
           List<ElementDefinitionSource> els = getElementDefinitions(v.getSd(), v.getEd(), v.getType(), element);
-          if (rule(errors, "2023-02-17", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), !els.isEmpty(), I18nConstants.SM_SOURCE_PATH_INVALID, context, element, path)) {
-            if (warning(errors, "2023-02-17", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), els.size() == 1, I18nConstants.SM_TARGET_PATH_MULTIPLE_MATCHES, context, element, v.getEd().getPath()+"."+element, render(els))) {
+          if (rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), !els.isEmpty(), I18nConstants.SM_SOURCE_PATH_INVALID, context, element, path)) {
+            if (warning(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), els.size() == 1, I18nConstants.SM_TARGET_PATH_MULTIPLE_MATCHES, context, element, v.getEd().getPath()+"."+element, render(els))) {
               ElementDefinitionSource el = els.get(0);
               String type = source.getChildValue("type"); 
               if (type != null) {
-                ok = rule(errors, "2023-02-17", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), hasType(el.getEd(), type), I18nConstants.SM_SOURCE_TYPE_INVALID, type, path, el.getEd().typeSummary()) && ok;
+                ok = rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), hasType(el.getEd(), type), I18nConstants.SM_SOURCE_TYPE_INVALID, type, path, el.getEd().typeSummary()) && ok;
               }
               String min = source.getChildValue("min");
-              hint(errors, "2023-02-17", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), min == null || isMoreOrEqual(min, v.getEd().getMin()), I18nConstants.SM_RULE_SOURCE_MIN_REDUNDANT, min, v.getEd().getMin());
+              hint(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), min == null || isMoreOrEqual(min, v.getEd().getMin()), I18nConstants.SM_RULE_SOURCE_MIN_REDUNDANT, min, v.getEd().getMin());
 
               int existingMax = multiplyCardinality(v.getMax(), el.getEd().getMax());
               String max = source.getChildValue("max");
               int iMax = readMax(max, existingMax);
-              warning(errors, "2023-02-17", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), iMax <= existingMax, I18nConstants.SM_RULE_SOURCE_MAX_REDUNDANT, max, v.getMax());
+              warning(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), iMax <= existingMax, I18nConstants.SM_RULE_SOURCE_MAX_REDUNDANT, max, v.getMax());
               ruleInfo.seeCardinality(iMax);
 
 
@@ -440,22 +517,22 @@ public class StructureMapValidator extends BaseValidator {
     if (context == null) {
       return true;
     }
-    boolean ok = rule(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), idIsValid(context), I18nConstants.SM_NAME_INVALID, context) &&
-        rule(errors, "2023-02-17", IssueType.UNKNOWN, target.line(), target.col(), stack.getLiteralPath(), variables.hasVariable(context, TARGET), I18nConstants.SM_TARGET_CONTEXT_UNKNOWN, context);
+    boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), idIsValid(context), I18nConstants.SM_NAME_INVALID, context) &&
+        rule(errors, "2023-03-01", IssueType.UNKNOWN, target.line(), target.col(), stack.getLiteralPath(), variables.hasVariable(context, TARGET), I18nConstants.SM_TARGET_CONTEXT_UNKNOWN, context);
     if (ok) {
       VariableDefn v = variables.getVariable(context, TARGET);
       if (v.hasTypeInfo()) {
         String listMode = target.getChildValue("listMode");
         String listRuleId = target.getChildValue("listRuleId");
-        warning(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), listRuleId == null || "share".equals(listMode), I18nConstants.SM_LIST_RULE_ID_ONLY_WHEN_SHARE);
+        warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), listRuleId == null || "share".equals(listMode), I18nConstants.SM_LIST_RULE_ID_ONLY_WHEN_SHARE);
         if (!ruleInfo.isList()) {
-          warning(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), listMode == null, I18nConstants.SM_NO_LIST_MODE_NEEDED);
-          warning(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), listRuleId == null, I18nConstants.SM_NO_LIST_RULE_ID_NEEDED);
+          warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), listMode == null, I18nConstants.SM_NO_LIST_MODE_NEEDED);
+          warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), listRuleId == null, I18nConstants.SM_NO_LIST_RULE_ID_NEEDED);
         }
         VariableDefn vn = null;
         String variable = target.getChildValue("variable");
         if (variable != null) {
-          if (rule(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), idIsValid(variable), I18nConstants.SM_NAME_INVALID, variable)) {
+          if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), idIsValid(variable), I18nConstants.SM_NAME_INVALID, variable)) {
             vn = variables.add(variable, v.getMode()); // may overwrite
           } else {
             ok = false;
@@ -465,21 +542,21 @@ public class StructureMapValidator extends BaseValidator {
         String element = target.getChildValue("element");
         if (element != null) {
           List<ElementDefinitionSource> els = getElementDefinitions(v.getSd(), v.getEd(), v.getType(), element);
-          if (rule(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), !els.isEmpty(), I18nConstants.SM_TARGET_PATH_INVALID, context, element, v.getEd().getPath()+"."+element)) {
-            if (warning(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), els.size() == 1, I18nConstants.SM_TARGET_PATH_MULTIPLE_MATCHES, context, element, v.getEd().getPath()+"."+element, render(els))) {
+          if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), !els.isEmpty(), I18nConstants.SM_TARGET_PATH_INVALID, context, element, v.getEd().getPath()+"."+element)) {
+            if (warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), els.size() == 1, I18nConstants.SM_TARGET_PATH_MULTIPLE_MATCHES, context, element, v.getEd().getPath()+"."+element, render(els))) {
               ElementDefinitionSource el = els.get(0);
               String type = null; // maybe inferred / derived from transform in the future
               String transform = target.getChildValue("transform");
               List<Element> params = target.getChildren("parameter");
               if (transform == null) {
-                rule(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 0, I18nConstants.SM_TARGET_NO_TRANSFORM_NO_CHECKED, transform);
+                rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 0, I18nConstants.SM_TARGET_NO_TRANSFORM_NO_CHECKED, transform);
               } else {
                 switch (transform) {
                 case "create":
-                  if (rule(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() < 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, "create", "0", "1", params.size())) {
+                  if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() < 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, "create", "0", "1", params.size())) {
                     if (params.size() == 1) {
                       type = params.get(0).primitiveValue();
-                      warning(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(),type != null, I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE);
+                      warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(),type != null, I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE);
                     } else {
                       // maybe can guess? maybe not ... type = 
                     }
@@ -488,23 +565,23 @@ public class StructureMapValidator extends BaseValidator {
                   }
                   break;
                 case "reference":
-                  if (rule(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, "reference", "0", "1", params.size())) {
+                  if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, "reference", "0", "1", params.size())) {
                     type = "string";
                   } else {
                     ok = false;
                   }
                   break;
                 case "evaluate":
-                  if (rule(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_SINGLE, "evaluate", "1", params.size())) {
+                  if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_SINGLE, "evaluate", "1", params.size())) {
                     String exp = params.get(0).primitiveValue();
-                    if (rule(errors, "2023-02-17", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), exp != null, I18nConstants.SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE, "0", params.size())) {
+                    if (rule(errors, "2023-03-01", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), exp != null, I18nConstants.SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE, "0", params.size())) {
                       try {
                         TypeDetails td = fpe.check(null, v.getSd().getType(), v.getEd().getPath(), fpe.parse(exp));
                         if (td.getTypes().size() == 1) {
                           type = td.getType();
                         }
                       } catch (Exception e) {
-                        rule(errors, "2023-02-17", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_EXPRESSION_ERROR, e.getMessage());
+                        rule(errors, "2023-03-01", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_EXPRESSION_ERROR, e.getMessage());
                       }
                     } else {
                       ok = false;
@@ -514,7 +591,7 @@ public class StructureMapValidator extends BaseValidator {
                   }
                   break;
                 default:
-                  rule(errors, "2023-02-17", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
+                  rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
                   ok = false;
                 }
               }
@@ -588,6 +665,19 @@ public class StructureMapValidator extends BaseValidator {
       return v >= limit;
     }
     return true; // no issue in this case
+  }
+
+
+  private boolean validateDependent(List<ValidationMessage> errors, Element src, Element group, Element dependent, NodeStack stack, VariableSet lvars) {
+    boolean ok = true;
+    String name = dependent.getChildValue("name");
+    StructureMapGroupComponent grp = resolveGroup(name, src);
+    if (rule(errors, "2023-03-01", IssueType.NOTSUPPORTED, dependent.line(), dependent.col(), stack.push(dependent, -1, null, null).getLiteralPath(), grp != null, I18nConstants.SM_RULEGROUP_NOT_FOUND, name)) {
+      // check inputs 
+    } else {
+      ok = false;
+    }
+    return ok;
   }
 
 }

@@ -89,6 +89,7 @@ public class FHIRLexer {
   private String name;
   private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
   private SourceLocation commentLocation;
+  private boolean metadataFormat;
 
   public FHIRLexer(String source, String name) throws FHIRLexerException {
     this.source = source == null ? "" : source;
@@ -99,6 +100,13 @@ public class FHIRLexer {
   public FHIRLexer(String source, int i) throws FHIRLexerException {
     this.source = source;
     this.cursor = i;
+    currentLocation = new SourceLocation(1, 1);
+    next();
+  }
+  public FHIRLexer(String source, String name, boolean metadataFormat) throws FHIRLexerException {
+    this.source = source == null ? "" : source;
+    this.name = name == null ? "??" : name;
+    this.metadataFormat = metadataFormat;
     currentLocation = new SourceLocation(1, 1);
     next();
   }
@@ -211,10 +219,13 @@ public class FHIRLexer {
       } else if (ch == '/') {
         cursor++;
         if (cursor < source.length() && (source.charAt(cursor) == '/')) {
-          // this is en error - should already have been skipped
-          error("This shouldn't happen?");
+          // we've run into metadata
+          cursor++;
+          cursor++;
+          current = source.substring(currentStart, cursor);
+        } else {
+          current = source.substring(currentStart, cursor);
         }
-        current = source.substring(currentStart, cursor);
       } else if (ch == '$') {
         cursor++;
         while (cursor < source.length() && (source.charAt(cursor) >= 'a' && source.charAt(cursor) <= 'z'))
@@ -309,7 +320,7 @@ public class FHIRLexer {
     boolean last13 = false;
     boolean done = false;
     while (cursor < source.length() && !done) {
-      if (cursor < source.length() -1 && "//".equals(source.substring(cursor, cursor+2))) {
+      if (cursor < source.length() -1 && "//".equals(source.substring(cursor, cursor+2)) && !isMetadataStart()) {
         commentLocation = currentLocation;
         int start = cursor+2;
         while (cursor < source.length() && !((source.charAt(cursor) == '\r') || source.charAt(cursor) == '\n')) { 
@@ -336,6 +347,10 @@ public class FHIRLexer {
         done = true;
       }
     }
+  }
+  
+  private boolean isMetadataStart() {
+    return metadataFormat && cursor < source.length() - 2 && "///".equals(source.substring(cursor, cursor+3));
   }
   
   private boolean isDateChar(char ch,int start) {
@@ -549,6 +564,12 @@ public class FHIRLexer {
   }
   public SourceLocation getCommentLocation() {
     return this.commentLocation;
+  }
+  public boolean isMetadataFormat() {
+    return metadataFormat;
+  }
+  public void setMetadataFormat(boolean metadataFormat) {
+    this.metadataFormat = metadataFormat;
   }
 
 }
