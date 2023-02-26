@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.model.Identifier;
@@ -388,6 +389,19 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       concreteResourceNames.addAll(Utilities.sorted(names));
     }
     return concreteResourceNames;
+  }
+
+  public List<StructureMap> listMaps(String url) {
+    List<StructureMap> res = new ArrayList<>();
+    String start = url.substring(0, url.indexOf("*"));
+    String end = url.substring(url.indexOf("*")+1);
+    for (StructureMap map : context.fetchResourcesByType(StructureMap.class)) {
+      String u = map.getUrl();
+      if (u.startsWith(start) && u.endsWith(end)) {
+        res.add(map);
+      }
+    }
+    return res;
   }
 
 }

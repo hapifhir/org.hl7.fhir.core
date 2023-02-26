@@ -265,8 +265,10 @@ public class StructureMapUtilities {
   public StructureMapUtilities(IWorkerContext worker) {
     super();
     this.worker = worker;
-    fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    if (worker != null) {
+      fpe = new FHIRPathEngine(worker);
+      fpe.setHostServices(new FFHIRPathHostServices());
+    }
   }
 
 	public static String render(StructureMap map) {

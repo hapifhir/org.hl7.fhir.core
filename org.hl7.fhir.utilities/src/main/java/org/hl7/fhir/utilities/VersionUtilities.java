@@ -214,9 +214,17 @@ public class VersionUtilities {
     } else if (Utilities.charCount(version, '.') == 2) {
       String[] p = version.split("\\.");
       return p[0]+"."+p[1];
-    } else {
-      return null;
-    }
+    } else if (Utilities.existsInList(version, "R2", "R2B", "R3", "R4", "R4B", "R5")) {
+      switch (version) {
+      case "R2": return "1.0";
+      case "R2B": return "1.4";
+      case "R3": return "3.0";
+      case "R4": return "4.0";
+      case "R4B": return "4.3";
+      case "R5": return "5.0";
+      }
+    }  
+    return null;
   }
 
   public static String getPatch(String version) {
