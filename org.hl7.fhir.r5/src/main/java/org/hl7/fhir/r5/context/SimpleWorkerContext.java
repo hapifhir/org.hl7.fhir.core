@@ -97,7 +97,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     private final IContextResourceLoader loader;
 
     public PackageResourceLoader(PackageResourceInformation pri, IContextResourceLoader loader) {
-      super(pri.getResourceType(), pri.getId(), pri.getUrl(),pri.getVersion());
+      super(pri.getResourceType(), pri.getId(), loader == null ? pri.getUrl() :loader.patchUrl(pri.getUrl(), pri.getResourceType()), pri.getVersion());
       this.filename = pri.getFilename();
       this.loader = loader;
     }

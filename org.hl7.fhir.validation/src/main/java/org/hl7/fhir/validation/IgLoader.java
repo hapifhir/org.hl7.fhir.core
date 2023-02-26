@@ -20,6 +20,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -112,7 +113,9 @@ public class IgLoader {
       if (!srcPackage.contains("#")) {
         System.out.print("#" + npm.version());
       }
-      int count = getContext().loadFromPackage(npm, ValidatorUtils.loaderForVersion(npm.fhirVersion()));
+      IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
+      loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
+      int count = getContext().loadFromPackage(npm, loader);
       System.out.println(" - " + count + " resources (" + getContext().clock().milestone() + ")");
     } else {
       System.out.print("  Load " + srcPackage);
@@ -183,8 +186,10 @@ public class IgLoader {
         res.cntType = Manager.FhirFormat.TURTLE;
       else if (t.getKey().endsWith(".shc"))
         res.cntType = Manager.FhirFormat.SHC;
-      else if (t.getKey().endsWith(".txt") || t.getKey().endsWith(".map"))
+      else if (t.getKey().endsWith(".txt"))
         res.cntType = Manager.FhirFormat.TEXT;
+      else if (t.getKey().endsWith(".fml") || t.getKey().endsWith(".map"))
+        res.cntType = Manager.FhirFormat.FML;
       else
         throw new FHIRException("Todo: Determining resource type is not yet done");
     }
@@ -762,6 +767,7 @@ public class IgLoader {
       if (isDebug() || ((e.getMessage() != null && e.getMessage().contains("cannot be cast")))) {
         e.printStackTrace();
       }
+      e.printStackTrace();
     }
     return r;
   }
@@ -774,7 +780,7 @@ public class IgLoader {
         res = new org.hl7.fhir.dstu3.formats.XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(new ByteArrayInputStream(content));
-      else if (fn.endsWith(".txt") || fn.endsWith(".map"))
+      else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
         res = new org.hl7.fhir.dstu3.utils.StructureMapUtilities(null).parse(new String(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
@@ -785,7 +791,7 @@ public class IgLoader {
         res = new org.hl7.fhir.r4.formats.XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.r4.formats.JsonParser().parse(new ByteArrayInputStream(content));
-      else if (fn.endsWith(".txt") || fn.endsWith(".map"))
+      else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
         res = new org.hl7.fhir.r4.utils.StructureMapUtilities(null).parse(new String(content), fn);
       else
         throw new FHIRException("Unsupported format for " + fn);
@@ -796,7 +802,7 @@ public class IgLoader {
         res = new org.hl7.fhir.r4b.formats.XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.r4b.formats.JsonParser().parse(new ByteArrayInputStream(content));
-      else if (fn.endsWith(".txt") || fn.endsWith(".map"))
+      else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
         res = new org.hl7.fhir.r4b.utils.structuremap.StructureMapUtilities(null).parse(new String(content), fn);
       else
         throw new FHIRException("Unsupported format for " + fn);
@@ -819,15 +825,15 @@ public class IgLoader {
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_10_50.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
-    } else if (fhirVersion.startsWith("5.0")) {
+    } else if (fhirVersion.startsWith("5.0") || "current".equals(fhirVersion)) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         r = new XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         r = new JsonParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".txt"))
         r = new StructureMapUtilities(getContext(), null, null).parse(TextFile.bytesToString(content), fn);
-      else if (fn.endsWith(".map"))
-        r = new StructureMapUtilities(null).parse(new String(content), fn);
+      else if (fn.endsWith(".map") || fn.endsWith(".fml"))
+        r = new StructureMapUtilities(context).parse(new String(content), fn);
       else
         throw new FHIRException("Unsupported format for " + fn);
     } else

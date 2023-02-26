@@ -6352,5 +6352,8 @@ public class FHIRPathEngine {
     this.liquidMode = liquidMode;
   }
 
+  public ProfileUtilities getProfileUtilities() {
+    return profileUtilities;
+  }
 
 }

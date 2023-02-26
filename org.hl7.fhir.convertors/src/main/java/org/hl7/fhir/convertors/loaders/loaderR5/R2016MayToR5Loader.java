@@ -98,13 +98,10 @@ public class R2016MayToR5Loader extends BaseLoaderR5 {
       }
       b.getEntry().removeAll(remove);
     }
-    for (BundleEntryComponent be : b.getEntry()) {
-      if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-        StructureDefinition sd = (StructureDefinition) be.getResource();
-        new ProfileUtilities(null, null, null, null).setIds(sd, false);
-        if (patchUrls) {
-          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2016MAY));
-          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+    if (patchUrls) {
+      for (BundleEntryComponent be : b.getEntry()) {
+        if (be.hasResource()) {
+          doPatchUrls(be.getResource());
         }
       }
     }
@@ -128,33 +125,20 @@ public class R2016MayToR5Loader extends BaseLoaderR5 {
       throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
     if (patchUrls) {
-      if (r5 instanceof StructureDefinition) {
-        StructureDefinition sd = (StructureDefinition) r5;
-        sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
-        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-        for (ElementDefinition ed : sd.getSnapshot().getElement())
-          patchUrl(ed);
-        for (ElementDefinition ed : sd.getDifferential().getElement())
-          patchUrl(ed);
-      }
+      doPatchUrls(r5);
     }
     return r5;
   }
 
-  private void patchUrl(ElementDefinition ed) {
-    for (TypeRefComponent tr : ed.getType()) {
-      for (CanonicalType s : tr.getTargetProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU2016MAY));
-      }
-      for (CanonicalType s : tr.getProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU2016MAY));
-      }
-    }
-  }
 
   @Override
   public List<CodeSystem> getCodeSystems() {
     return new ArrayList<>();
+  }
+
+  @Override
+  protected String versionString() {
+    return "4.3";
   }
 
 }

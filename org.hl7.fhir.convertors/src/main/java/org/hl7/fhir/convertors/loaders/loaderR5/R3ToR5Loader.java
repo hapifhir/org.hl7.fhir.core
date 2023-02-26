@@ -99,15 +99,9 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     }
     if (patchUrls) {
       for (BundleEntryComponent be : b.getEntry()) {
-        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-          StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU3));
-          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-          for (ElementDefinition ed : sd.getSnapshot().getElement())
-            patchUrl(ed);
-          for (ElementDefinition ed : sd.getDifferential().getElement())
-            patchUrl(ed);
-        }
+        if (be.hasResource()) {
+          doPatchUrls(be.getResource());
+        }          
       }
     }
     return b;
@@ -130,33 +124,19 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
     if (patchUrls) {
-      if (r5 instanceof StructureDefinition) {
-        StructureDefinition sd = (StructureDefinition) r5;
-        sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
-        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-        for (ElementDefinition ed : sd.getSnapshot().getElement())
-          patchUrl(ed);
-        for (ElementDefinition ed : sd.getDifferential().getElement())
-          patchUrl(ed);
-      }
+      doPatchUrls(r5);
     }
     return r5;
   }
 
-  private void patchUrl(ElementDefinition ed) {
-    for (TypeRefComponent tr : ed.getType()) {
-      for (CanonicalType s : tr.getTargetProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU3));
-      }
-      for (CanonicalType s : tr.getProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU3));
-      }
-    }
-  }
-  
   @Override
   public List<CodeSystem> getCodeSystems() {
     return new ArrayList<>();
+  }
+
+  @Override
+  protected String versionString() {
+    return "3.0";
   }
 
 }

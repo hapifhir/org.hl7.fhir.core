@@ -55,18 +55,29 @@ public class FmlParser extends ParserBase {
   }
 
   public Element parse(String text) throws FHIRException {
-    FHIRLexer lexer = new FHIRLexer(text, "source");
+    FHIRLexer lexer = new FHIRLexer(text, "source", true);
     if (lexer.done())
       throw lexer.error("Map Input cannot be empty");
-    lexer.token("map");
     Element result = Manager.build(context, context.fetchTypeDefinition("StructureMap"));
     try {
-      result.makeElement("url").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("url"));
-      lexer.token("=");
-      result.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("name"));
-      if (lexer.hasComments()) {
-        result.makeElement("description").markLocation(lexer.getCurrentLocation()).setValue(lexer.getAllComments());
+      if (lexer.hasToken("map")) {
+        lexer.token("map");
+        result.makeElement("url").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("url"));
+        lexer.token("=");
+        result.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("name"));
+        if (lexer.hasComments()) {
+          result.makeElement("description").markLocation(lexer.getCurrentLocation()).setValue(lexer.getAllComments());
+        }
+      } else {
+        while (lexer.hasToken("///")) {
+          lexer.next();
+          String fid = lexer.takeDottedToken();
+          Element e = result.makeElement(fid).markLocation(lexer.getCurrentLocation());
+          lexer.token("=");
+          e.setValue(lexer.readConstant("meta value"));
+        }
       }
+      lexer.setMetadataFormat(false);
       while (lexer.hasToken("conceptmap"))
         parseConceptMap(result, lexer);
 
@@ -366,7 +377,7 @@ public class FmlParser extends ParserBase {
 
   private void parseRuleReference(Element rule, FHIRLexer lexer) throws FHIRLexerException {
     Element ref = rule.addElement("dependent");
-    rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+    ref.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
     lexer.token("(");
     boolean done = false;
     while (!done) {
