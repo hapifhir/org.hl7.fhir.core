@@ -619,16 +619,38 @@ public class StructureMapUtilities {
   }
 
   public StructureMap parse(String text, String srcName) throws FHIRException {
-    FHIRLexer lexer = new FHIRLexer(text, srcName);
+    FHIRLexer lexer = new FHIRLexer(Utilities.stripBOM(text), srcName, true);
     if (lexer.done())
       throw lexer.error("Map Input cannot be empty");
-    lexer.token("map");
     StructureMap result = new StructureMap();
-    result.setUrl(lexer.readConstant("url"));
-    lexer.token("=");
-    result.setName(lexer.readConstant("name"));
-    result.setDescription(lexer.getAllComments());
-    result.setStatus(PublicationStatus.DRAFT);
+    if (lexer.hasToken("map")) { 
+      lexer.token("map");
+      result.setUrl(lexer.readConstant("url"));
+      lexer.token("=");
+      result.setName(lexer.readConstant("name"));
+      result.setDescription(lexer.getAllComments());
+      result.setStatus(PublicationStatus.DRAFT);
+    } else {
+      while (lexer.hasToken("///")) {
+        lexer.next();
+        String fid = lexer.takeDottedToken();
+        lexer.token("=");
+        switch (fid) {
+        case "url" :
+          result.setUrl(lexer.readConstant("url"));
+          break;
+        case "name" :
+          result.setName(lexer.readConstant("name"));
+          break;
+        case "title" : 
+          result.setTitle(lexer.readConstant("title"));
+          break;
+        default:
+          lexer.readConstant("nothing");
+          // nothing
+        }
+      }
+    }
     while (lexer.hasToken("conceptmap"))
       parseConceptMap(result, lexer);
 
@@ -978,11 +1000,11 @@ public class StructureMapUtilities {
       // type and cardinality
       lexer.token(":");
       source.setType(lexer.takeDottedToken());
-      if (!lexer.hasToken("as", "first", "last", "not_first", "not_last", "only_one", "default")) {
-        source.setMin(lexer.takeInt());
-        lexer.token("..");
-        source.setMax(lexer.take());
-      }
+    }
+    if (Utilities.isInteger(lexer.getCurrent())) {
+      source.setMin(lexer.takeInt());
+      lexer.token("..");
+      source.setMax(lexer.take());
     }
     if (lexer.hasToken("default")) {
       lexer.token("default");

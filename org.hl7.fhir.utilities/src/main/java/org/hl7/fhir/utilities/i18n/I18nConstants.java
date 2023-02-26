@@ -775,7 +775,7 @@ public class I18nConstants {
   public static final String ILLEGAL_COMMENT_TYPE = "ILLEGAL_COMMENT_TYPE";
   public static final String SD_NO_SLICING_ON_ROOT = "SD_NO_SLICING_ON_ROOT";
   public static final String REFERENCE_REF_QUERY_INVALID = "REFERENCE_REF_QUERY_INVALID";
-  public static final String SM_EXTENDS_NOT_SUPPORTED = "";
+  public static final String SM_RULEGROUP_NOT_FOUND = "SM_RULEGROUP_NOT_FOUND";
   public static final String SM_NAME_INVALID = "SM_NAME_INVALID";
   public static final String SM_GROUP_INPUT_DUPLICATE = "SM_GROUP_INPUT_DUPLICATE";
   public static final String SM_GROUP_INPUT_MODE_INVALID = "SM_GROUP_INPUT_MODE_INVALID";
@@ -803,6 +803,7 @@ public class I18nConstants {
   public static final String SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE = "SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE";
   public static final String SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE = "SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE";
   public static final String SM_TARGET_TRANSFORM_EXPRESSION_ERROR = "SM_TARGET_TRANSFORM_EXPRESSION_ERROR";
+  public static final String SM_IMPORT_NOT_FOUND = "SM_IMPORT_NOT_FOUND";
 }
 
 

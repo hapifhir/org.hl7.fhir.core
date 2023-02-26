@@ -103,14 +103,8 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     }
     if (patchUrls) {
       for (BundleEntryComponent be : b.getEntry()) {
-        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-          StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
-          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-          for (ElementDefinition ed : sd.getSnapshot().getElement())
-            patchUrl(ed);
-          for (ElementDefinition ed : sd.getDifferential().getElement())
-            patchUrl(ed);
+        if (be.hasResource()) {
+          doPatchUrls(be.getResource());
         }
       }
     }
@@ -137,33 +131,20 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       r5 = new StructureDefinitionHacker(version).fixSD((StructureDefinition) r5);
     }
     if (patchUrls) {
-      if (r5 instanceof StructureDefinition) {
-        StructureDefinition sd = (StructureDefinition) r5;
-        sd.setUrl(sd.getUrl().replace(URL_BASE, "http://hl7.org/fhir/4.0/"));
-        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType("http://hl7.org/fhir"));
-        for (ElementDefinition ed : sd.getSnapshot().getElement())
-          patchUrl(ed);
-        for (ElementDefinition ed : sd.getDifferential().getElement())
-          patchUrl(ed);
-      }
+      doPatchUrls(r5);
     }
     return r5;
   }
 
-  private void patchUrl(ElementDefinition ed) {
-    for (TypeRefComponent tr : ed.getType()) {
-      for (CanonicalType s : tr.getTargetProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, "http://hl7.org/fhir/4.0/"));
-      }
-      for (CanonicalType s : tr.getProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, "http://hl7.org/fhir/4.0/"));
-      }
-    }
-  }
   
   @Override
   public List<CodeSystem> getCodeSystems() {
     return new ArrayList<>();
+  }
+
+  @Override
+  protected String versionString() {
+    return "4.0";
   }
 
 
