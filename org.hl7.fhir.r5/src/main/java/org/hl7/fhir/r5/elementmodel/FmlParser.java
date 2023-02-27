@@ -354,6 +354,10 @@ public class FmlParser extends ParserBase {
       rule.forceElement("source").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
       rule.forceElement("target").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
       rule.forceElement("target").makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
+      Element dep = rule.forceElement("dependent");
+      dep.makeElement("name").setValue(StructureMapUtilities.DEF_GROUP_NAME);
+      dep.makeElement("parameter").makeElement("valueId").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+      dep.makeElement("parameter").makeElement("valueId").setValue(StructureMapUtilities.AUTO_VAR_NAME);
       // no dependencies - imply what is to be done based on types
     }
     if (newFmt) {
@@ -480,7 +484,7 @@ public class FmlParser extends ParserBase {
       loc = lexer.getCurrentLocation();
       ExpressionNode node = fpe.parse(lexer);
       target.setUserData(StructureMapUtilities.MAP_EXPRESSION, node);
-      target.addElement("parameter").markLocation(loc).setValue(node.toString());
+      target.addElement("parameter").markLocation(loc).makeElement("valueString").setValue(node.toString());
       lexer.token(")");
     } else if (lexer.hasToken("(")) {
       target.makeElement("transform").markLocation(loc).setValue(name);
@@ -529,11 +533,11 @@ public class FmlParser extends ParserBase {
 
   private void parseParameter(Element ref, FHIRLexer lexer) throws FHIRLexerException, FHIRFormatError {
     if (!lexer.isConstant()) {
-      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).setType("string").setValue(lexer.take());
+      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).makeElement("valueId").setValue(lexer.take());
     } else if (lexer.isStringConstant())
-      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).setType("string").setValue(lexer.readConstant("??"));
+      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).makeElement("valueString").setValue(lexer.readConstant("??"));
     else {
-      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).setType("string").setValue(readConstant(lexer.take(), lexer));
+      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).makeElement("valueString").setValue(readConstant(lexer.take(), lexer));
     }
   }
  
