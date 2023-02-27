@@ -292,8 +292,20 @@ public class Element extends Base {
 			if (name.equals(child.getName()))
 				return child.getValue();
 		}
+		for (Element child : children) {
+      if (name.equals(child.getNameBase()))
+        return child.getValue();
+    }
   	return null;
 	}
+
+  private String getNameBase() {
+    if (property.isChoice()) {
+      return property.getName().replace("[x]", "");
+    } else  {
+      return getName();
+    }
+  }
 
   public void setChildValue(String name, String value) {
     if (children == null)
@@ -543,6 +555,16 @@ public class Element extends Base {
         Element ne = new Element(name, p);
         children.add(ne);
         return ne;
+      } else if (p.getDefinition().isChoice() && name.startsWith(p.getName().replace("[x]", ""))) {
+        String type = name.substring(p.getName().length()-3);
+        if (new ContextUtilities(property.getContext()).isPrimitiveDatatype(Utilities.uncapitalize(type))) {
+          type = Utilities.uncapitalize(type);
+        }
+        Element ne = new Element(name, p);
+        ne.setType(type);
+        children.add(ne);
+        return ne;
+        
       }
     }
       
