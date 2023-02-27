@@ -505,6 +505,8 @@ public class TurtleParser extends ParserBase {
       xst = "^^xsd:decimal";
     else if (type.equals("base64Binary"))
       xst = "^^xsd:base64Binary";
+    else if (type.equals("canonical") || type.equals("oid") || type.equals("uri") || type.equals("url") || type.equals("uuid"))
+  	  xst = "^^xsd:anyURI";
     else if (type.equals("instant"))
       xst = "^^xsd:dateTime";
     else if (type.equals("time"))
