@@ -63,7 +63,7 @@ public class ShExGenerator {
 
   public boolean debugMode = false;     // Used for Debugging and testing the code
 
-  public boolean processConstraints = true;   // set to false - to skip processing constraints
+  public boolean processConstraints = false;   // set to false - to skip processing constraints
 
   public ConstraintTranslationPolicy constraintPolicy = ConstraintTranslationPolicy.ALL;
 
@@ -79,8 +79,8 @@ public class ShExGenerator {
     "PREFIX fhir: <$fhir$> \n" +
       "PREFIX fhirvs: <$fhirvs$>\n" +
       "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-      "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
-      "BASE <http://hl7.org/fhir/shape/>\n";
+      "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n";
+      //"BASE <http://hl7.org/fhir/shape/>\n";
 
   private static String IMPORT_TEMPLATE = "IMPORT <$import$$fileExt$>\n";
 
@@ -486,8 +486,27 @@ public class ShExGenerator {
 
       if (required_value_sets.size() > 0) {
         shapeDefinitions.append("\n#---------------------- Value Sets ------------------------\n");
+        List<String> sortedVS = new ArrayList<String>();
         for (ValueSet vs : required_value_sets)
-          shapeDefinitions.append("\n").append(genValueSet(vs));
+          sortedVS.add(genValueSet(vs));
+
+        Collections.sort(sortedVS, new Comparator<String>() {
+          @Override
+          public int compare(String o1, String o2) {
+            try {
+              return StringUtils.substringBetween(o1, "fhirvs:", " ")
+                .compareTo(StringUtils.substringBetween(o2, "fhirvs:", " "));
+            }
+            catch(Exception e){
+              debug("SORT COMPARISON FAILED BETWEEN \n\t\t" + o1 + "\n\t\t and \n\t\t" + o2);
+              debug(e.getMessage());
+              return 0;
+            }
+          }
+      });
+
+        for (String svs : sortedVS)
+          shapeDefinitions.append("\n").append(svs);
       }
 
       if ((unMappedFunctions != null) && (!unMappedFunctions.isEmpty())) {
@@ -1426,8 +1445,14 @@ public class ShExGenerator {
         while (m.find()) {
           String tag = m.group(1);
           //System.out.println("FOUND IMPORT: " + tag);
-          if ((tag.indexOf(ONE_OR_MORE_PREFIX) == -1) &&
-            (!imports.contains(tag)))
+          if (tag.indexOf(ONE_OR_MORE_PREFIX) != -1) {
+            tag = tag.substring(ONE_OR_MORE_PREFIX.length());
+          }
+
+          if ((tag.indexOf("_") != -1)||(tag.indexOf("_OR_") != -1))
+            continue;
+
+           if (!imports.contains(tag))
             imports.add(tag);
         }
       }

@@ -46,10 +46,10 @@ public class ShexGeneratorTests {
     // If you un-comment the following lines, please comment all other lines in this method.
     // Test with processing constraints flag
     // ----------------- Uncomment following to testing/Debugging -----
-//    boolean processConstraints = true;
-//    this.doTestSingleSD(name.toLowerCase(), cat, name,
-//      false, ShExGenerator.ConstraintTranslationPolicy.ALL,
-//      true, true, false, processConstraints);
+    //    boolean processConstraints = false;
+    //    this.doTestSingleSD(name.toLowerCase(), cat, name,
+    //      false, ShExGenerator.ConstraintTranslationPolicy.ALL,
+    //      true, true, false, processConstraints);
   }
 
   @Test
@@ -145,7 +145,7 @@ public class ShexGeneratorTests {
       // BatchMode - All Shex Schemas in one single file
       false,
       // process constraints or not
-      true
+      false
     );
   }
 
