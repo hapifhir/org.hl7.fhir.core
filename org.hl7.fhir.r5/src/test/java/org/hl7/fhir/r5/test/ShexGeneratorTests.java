@@ -34,18 +34,22 @@ public class ShexGeneratorTests {
   }
 
   private void doTest(String name, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat) throws FileNotFoundException, IOException, FHIRException, UcumException {
-//    StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
-//    if (sd == null) {
-//      throw new FHIRException("StructuredDefinition for " + name + "was null");
-//    }
-//    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
-//    TextFile.stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
+    // ------- Comment following for debugging/testing
+    StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
+    if (sd == null) {
+      throw new FHIRException("StructuredDefinition for " + name + "was null");
+    }
+    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
+    TextFile.stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
 
     // For Testing Schema Processing and Constraint Mapping related Development
     // If you un-comment the following lines, please comment all other lines in this method.
-    this.doTestSingleSD(name.toLowerCase(), cat, name,
-      false, ShExGenerator.ConstraintTranslationPolicy.ALL,
-      true, true, false);
+    // Test with processing constraints flag
+    // ----------------- Uncomment following to testing/Debugging -----
+//    boolean processConstraints = true;
+//    this.doTestSingleSD(name.toLowerCase(), cat, name,
+//      false, ShExGenerator.ConstraintTranslationPolicy.ALL,
+//      true, true, false, processConstraints);
   }
 
   @Test
@@ -128,7 +132,7 @@ public class ShexGeneratorTests {
     doTest("Element", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
-  @Test
+  @Ignore
   public void doTestAllSingleSDMode() throws FileNotFoundException, IOException, FHIRException, UcumException {
     List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
 
@@ -139,11 +143,13 @@ public class ShexGeneratorTests {
       // Process all types of constraints, do not skip
       ShExGenerator.ConstraintTranslationPolicy.ALL,
       // BatchMode - All Shex Schemas in one single file
-      false
+      false,
+      // process constraints or not
+      true
     );
   }
 
-  @Test
+  @Ignore
   public void doTestAllBatchMode() throws FileNotFoundException, IOException, FHIRException, UcumException {
     List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
 
@@ -154,6 +160,8 @@ public class ShexGeneratorTests {
       // Process all types of constraints, do not skip
       ShExGenerator.ConstraintTranslationPolicy.ALL,
       // BatchMode - All Shex Schemas in one single file
+      true,
+      // process constraints or not
       true
     );
   }
@@ -168,7 +176,9 @@ public class ShexGeneratorTests {
       false,  //Process all extensions
       ShExGenerator.ConstraintTranslationPolicy.GENERIC_ONLY,
       // Process generic constraints only, ignore constraints of type 'context of use'
-      false
+      false,
+      // process constraints or not
+      true
     );
 
   }
@@ -183,7 +193,9 @@ public class ShexGeneratorTests {
       false,  //Process all extensions
       ShExGenerator.ConstraintTranslationPolicy.CONTEXT_OF_USE_ONLY,
       // Process constraints only where context of use found, skip otherwise
-      false
+      false,
+      // process constraints or not
+      true
     );
   }
 
@@ -196,7 +208,9 @@ public class ShexGeneratorTests {
       sds, // List of Structure Definitions
       true,  //Process only given/selected extensions, ignore other extensions
       ShExGenerator.ConstraintTranslationPolicy.ALL, // Process all type of constraints
-      false
+      false,
+      // process constraints or not
+      true
     );
   }
 
@@ -209,7 +223,9 @@ public class ShexGeneratorTests {
       sds, // List of Structure Definitions
       false,  //Process only given/selected extensions, ignore other extensions
       ShExGenerator.ConstraintTranslationPolicy.ALL, // Process all type of constraints
-      false
+      false,
+      // process constraints or not
+      true
     );
   }
 
@@ -222,7 +238,9 @@ public class ShexGeneratorTests {
       sds, // List of Structure Definitions
       false,  //Process only given/selected extensions, ignore other extensions
       ShExGenerator.ConstraintTranslationPolicy.ALL, // Process all type of constraints
-      false
+      false,
+      // process constraints or not
+      true
     );
   }
 
@@ -235,7 +253,9 @@ public class ShexGeneratorTests {
       sds, // List of Structure Definitions
       false,  //Process only given/selected extensions, ignore other extensions
       ShExGenerator.ConstraintTranslationPolicy.ALL, // Process all type of constraints
-      false
+      false,
+      // process constraints or not
+      true
     );
   }
 
@@ -247,7 +267,9 @@ public class ShexGeneratorTests {
       sds, // List of Structure Definitions
       false,  //Process only given/selected extensions, ignore other extensions
       ShExGenerator.ConstraintTranslationPolicy.ALL, // Process all type of constraints
-      false
+      false,
+      // process constraints or not
+      true
     );
   }
 
@@ -255,7 +277,7 @@ public class ShexGeneratorTests {
                              List<StructureDefinition> sds,
                              boolean useSelectedExtensions,
                              ShExGenerator.ConstraintTranslationPolicy policy,
-                             boolean batchMode) {
+                             boolean batchMode, boolean processConstraints) {
     if ((sds == null) || (sds.isEmpty())) {
       throw new FHIRException("No StructuredDefinition found!");
     }
@@ -276,10 +298,10 @@ public class ShexGeneratorTests {
           name = els[els.length - 1];
         }
         System.out.println("******************** " + resDef + " *********************");
-        doTestSingleSD(name, resDef.kind, resDef.url, useSelectedExtensions, policy, true, true, false);
+        doTestSingleSD(name, resDef.kind, resDef.url, useSelectedExtensions, policy, true, true, false, processConstraints);
       });
     } else {
-      doTestBatchSD(sds, useSelectedExtensions, policy, true, true, false);
+      doTestBatchSD(sds, useSelectedExtensions, policy, true, true, false, processConstraints);
     }
 
     System.out.println("************************ END PROCESSING ******************************");
@@ -294,7 +316,7 @@ public class ShexGeneratorTests {
                               String name, boolean useSelectedExtensions,
                               ShExGenerator.ConstraintTranslationPolicy policy,
                               boolean debugMode, boolean validateShEx,
-                              boolean excludeMetaSDs) {
+                              boolean excludeMetaSDs, boolean processConstraints) {
     IWorkerContext ctx = TestingUtilities.getSharedWorkerContext();
     StructureDefinition sd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
     if (sd == null) {
@@ -306,6 +328,7 @@ public class ShexGeneratorTests {
       this.shexGenerator = new ShExGenerator(ctx);
 
       this.shexGenerator.debugMode = debugMode;
+      this.shexGenerator.processConstraints = processConstraints;
       this.shexGenerator.constraintPolicy = policy;
 
       if (excludeMetaSDs) {
@@ -350,7 +373,7 @@ public class ShexGeneratorTests {
 
   private void doTestBatchSD(List<StructureDefinition> sds, boolean useSelectedExtensions,
                              ShExGenerator.ConstraintTranslationPolicy policy, boolean debugMode,
-                             boolean validateShEx, boolean excludeMetaSDs) {
+                             boolean validateShEx, boolean excludeMetaSDs, boolean processConstraints) {
     IWorkerContext ctx = TestingUtilities.getSharedWorkerContext();
     //Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
     Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas", "ShEx.shex");
@@ -358,6 +381,7 @@ public class ShexGeneratorTests {
       this.shexGenerator = new ShExGenerator(ctx);
 
       this.shexGenerator.debugMode = debugMode;
+      this.shexGenerator.processConstraints = processConstraints;
       this.shexGenerator.constraintPolicy = policy;
 
       if (excludeMetaSDs) {

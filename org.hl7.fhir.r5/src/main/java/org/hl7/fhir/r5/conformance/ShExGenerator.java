@@ -61,7 +61,9 @@ public class ShExGenerator {
   public boolean withComments = true;                // include comments
   public boolean completeModel = false;              // doing complete build (fhir.shex)
 
-  public boolean debugMode = false;
+  public boolean debugMode = false;     // Used for Debugging and testing the code
+
+  public boolean processConstraints = true;   // set to false - to skip processing constraints
 
   public ConstraintTranslationPolicy constraintPolicy = ConstraintTranslationPolicy.ALL;
 
@@ -643,25 +645,27 @@ public class ShExGenerator {
           isInnerType = true;
         }
 
-        // Process constraints
-        for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
-          String sdType = sd.getType();
-          String cstype = constraint.getSource();
-          if ((!cstype.isEmpty()) && (cstype.indexOf("/") != -1)) {
-            String[] els = cstype.split("/");
-            cstype = els[els.length - 1];
-          }
+        if (processConstraints) {
+          // Process constraints
+          for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
+            String sdType = sd.getType();
+            String cstype = constraint.getSource();
+            if ((!cstype.isEmpty()) && (cstype.indexOf("/") != -1)) {
+              String[] els = cstype.split("/");
+              cstype = els[els.length - 1];
+            }
 
-          String id = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
-          String shortId = id.substring(id.lastIndexOf(".") + 1);
-          if ((ed.hasContentReference() && (!ed.hasType())) || (id.equals(sd.getName() + "." + shortId))) {
-            if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType)) {
-              if (!isInnerType) {
-                debug("\n        Key: " + constraint.getKey() + " SD type: " + sd.getType() + " Element: " + ed.getPath() + " Constraint Source: " + constraint.getSource() + " Constraint:" + constraint.getExpression());
-                String transl = translateConstraint(sd, ed, constraint);
-                if (transl.isEmpty() || constraintsList.contains(transl))
-                  continue;
-                constraintsList.add(transl);
+            String id = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
+            String shortId = id.substring(id.lastIndexOf(".") + 1);
+            if ((ed.hasContentReference() && (!ed.hasType())) || (id.equals(sd.getName() + "." + shortId))) {
+              if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType)) {
+                if (!isInnerType) {
+                  debug("\n        Key: " + constraint.getKey() + " SD type: " + sd.getType() + " Element: " + ed.getPath() + " Constraint Source: " + constraint.getSource() + " Constraint:" + constraint.getExpression());
+                  String transl = translateConstraint(sd, ed, constraint);
+                  if (transl.isEmpty() || constraintsList.contains(transl))
+                    continue;
+                  constraintsList.add(transl);
+                }
               }
             }
           }
@@ -679,24 +683,27 @@ public class ShExGenerator {
       }
     }
 
-    // Constraints for differential to cover constraints on SD itself without any elements of its own
-    for (ElementDefinition ded : sd.getDifferential().getElement()) {
-      // Process constraints
-      for (ElementDefinition.ElementDefinitionConstraintComponent dconstraint : ded.getConstraint()) {
-        String sdType = sd.getType();
+    if (processConstraints) {
+      // Constraints for differential to cover constraints on SD itself without any elements of its own
+      for (ElementDefinition ded : sd.getDifferential().getElement()) {
+        // Process constraints
+        for (ElementDefinition.ElementDefinitionConstraintComponent dconstraint : ded.getConstraint()) {
+          String sdType = sd.getType();
 
-        String id = ded.hasBase() ? ded.getBase().getPath() : ded.getPath();
-        String shortId = id.substring(id.lastIndexOf(".") + 1);
+          String id = ded.hasBase() ? ded.getBase().getPath() : ded.getPath();
+          String shortId = id.substring(id.lastIndexOf(".") + 1);
 
-        if (!isInInnerTypes(ded)) {
-          debug("\n        Key: " + dconstraint.getKey() + " SD type: " + sd.getType() + " Element: " + ded.getPath() + " Constraint Source: " + dconstraint.getSource() + " Constraint:" + dconstraint.getExpression());
-          String dtransl = translateConstraint(sd, ded, dconstraint);
-          if (dtransl.isEmpty() || constraintsList.contains(dtransl))
-            continue;
-          constraintsList.add(dtransl);
+          if (!isInInnerTypes(ded)) {
+            debug("\n        Key: " + dconstraint.getKey() + " SD type: " + sd.getType() + " Element: " + ded.getPath() + " Constraint Source: " + dconstraint.getSource() + " Constraint:" + dconstraint.getExpression());
+            String dtransl = translateConstraint(sd, ded, dconstraint);
+            if (dtransl.isEmpty() || constraintsList.contains(dtransl))
+              continue;
+            constraintsList.add(dtransl);
+          }
         }
       }
     }
+
     shape_defn.add("elements", StringUtils.join(elements, "\n"));
     shape_defn.add("comment", root_comment == null? " " : "# " + root_comment);
 
@@ -713,7 +720,12 @@ public class ShExGenerator {
     if (!sd.getContext().isEmpty()) {
       for (StructureDefinition.StructureDefinitionContextComponent uc : sd.getContext()) {
         if (!uc.getExpression().isEmpty()) {
-          String toStore = uc.getExpression() ;
+          String toStore = uc.getExpression();
+          debug("CONTEXT-OF-USE FOUND: " + toStore);
+          if (toStore.indexOf("http") != -1) {
+            debug("\t\tWARNING: CONTEXT-OF-USE SKIPPED as it has 'http' in it, might be a URL, instead of '.' delimited string");
+            continue;  // some erroneous context of use may use a URL; ignore them
+          }
           String[] backRefs = toStore.split("\\.");
           toStore = "a [fhir:" + backRefs[0] + "]";
           for (int i = 1; i < backRefs.length; i++)
@@ -724,7 +736,13 @@ public class ShExGenerator {
           }
         }
       }
-      contextOfUseStr = "^fhir:extension { " + StringUtils.join(contextOfUse, " OR \n      ") + "\n    }";
+
+      if (!contextOfUse.isEmpty()) {
+        if (contextOfUse.size() > 1)
+          contextOfUseStr = "^fhir:extension { " + StringUtils.join(contextOfUse, "} OR \n      {") + "}\n";
+        else
+          contextOfUseStr = "^fhir:extension { " + contextOfUse.get(0) + "}\n";
+      }
     }
 
     shape_defn.add("contextOfUse", contextOfUseStr);
@@ -740,7 +758,8 @@ public class ShExGenerator {
   private String translateConstraint(StructureDefinition sd, ElementDefinition ed, ElementDefinition.ElementDefinitionConstraintComponent constraint){
     String translated = "";
 
-    if (false) {
+    if (constraint != null) {
+    //if (false) {
       String ce = constraint.getExpression();
       String constItem = "FHIR-SD-Path:" + ed.getPath() + " Expression: " + ce;
       try {
@@ -865,16 +884,16 @@ public class ShExGenerator {
           }
           break;
         case "And":
-        case "Implies" :
-          ops = " AND ";
-          break;
+        //case "Implies" :
+        ops = " AND ";
+        break;
         case "As":
         case "Is":
           ops = " a ";
           break;
-        case "Xor":
-          ops = " XOR ";
-          break;
+        //case "Xor":
+          //ops = " XOR ";  // Although I implemented a routine for XOR, but that needs more testing.
+         // break;
         default:
           String toStore = "UNMAPPED_OPERATOR_" + opName + " in Node type: " + node.getKind();
           if (!unMappedFunctions.contains(toStore))
@@ -1068,7 +1087,7 @@ public class ShExGenerator {
       else{
         String mT = (mainTxt != null) ? mainTxt.trim() : "";
         String dR = (mT.startsWith(".") || mT.startsWith("{") || mT.startsWith("[")) ? "" : ".";
-        return  postProcessing(funCall.replaceFirst("CALLER", "CALLER" + dR + mainTxt ), nextText) ;
+        return  postProcessing(funCall.replaceFirst("CALLER", Matcher.quoteReplacement("CALLER" + dR + mT )), nextText) ;
       }
     }
 
@@ -1115,7 +1134,8 @@ public class ShExGenerator {
       qp = q.split("XOR")[1];
 
       // because p xor q = ( p and not q) OR (not p and q)
-      return "(" + p + " AND NOT " + qp + ") OR ( NOT " + p + " AND " + qp + ")";
+      //return "(" + p + " AND NOT " + qp + ") OR ( NOT " + p + " AND " + qp + ")";
+      return "{" + p + "} AND NOT {" + qp + "} OR { NOT {" + p + "} AND " + qp + "} ";
     }
 
     return p + qp;
@@ -1625,7 +1645,7 @@ public class ShExGenerator {
     String base = id.replace("[x]", "");
 
     for (ElementDefinition.TypeRefComponent typ : ed.getType()) {
-      String entry = genChoiceEntry(sd, ed, "", "", typ);
+      String entry = genChoiceEntry(sd, ed, base, typ);
       refValues.clear();
       if (typ.hasTargetProfile()) {
         typ.getTargetProfile().forEach((CanonicalType tps) -> {
@@ -1644,14 +1664,13 @@ public class ShExGenerator {
 
   /**
    * Generate an entry in a choice list
-   * @param base base identifier
+   * @param id base identifier
    * @param typ type/discriminant
    * @return ShEx fragment for choice entry
    */
   private String genChoiceEntry(StructureDefinition sd,
                                 ElementDefinition ed,
                                 String id,
-                                String base,
                                 ElementDefinition.TypeRefComponent typ) {
     ST shex_choice_entry = tmplt(ELEMENT_TEMPLATE);
 
@@ -1723,26 +1742,29 @@ public class ShExGenerator {
     element_reference.add("elements", StringUtils.join(elements, "\n"));
 
     List<String> innerConstraintsList = new ArrayList<String>();
-    // Process constraints
-    for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
-      String sdType = sd.getType();
-      String cstype = constraint.getSource();
-      if ((cstype != null) && (cstype.indexOf("/") != -1)) {
-        String[] els = cstype.split("/");
-        cstype = els[els.length - 1];
-      }
 
-      String id = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
-      String shortId = id.substring(id.lastIndexOf(".") + 1);
-      if ((ed.hasContentReference() && (!ed.hasType())) || (id.equals(sd.getName() + "." + shortId))) {
-        if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType)) {
-          //if (!isInInnerTypes(ed)) {
-          debug("\n        (INNER ED) Key: " + constraint.getKey() + " SD type: " + sd.getType() + " Element: " + ed.getPath() + " Constraint Source: " + constraint.getSource() + " Constraint:" + constraint.getExpression());
-          String transl = translateConstraint(sd, ed, constraint);
-          if (transl.isEmpty() || innerConstraintsList.contains(transl))
-            continue;
-          innerConstraintsList.add(transl);
-          //}
+    if (processConstraints) {
+      // Process constraints
+      for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
+        String sdType = sd.getType();
+        String cstype = constraint.getSource();
+        if ((cstype != null) && (cstype.indexOf("/") != -1)) {
+          String[] els = cstype.split("/");
+          cstype = els[els.length - 1];
+        }
+
+        String id = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
+        String shortId = id.substring(id.lastIndexOf(".") + 1);
+        if ((ed.hasContentReference() && (!ed.hasType())) || (id.equals(sd.getName() + "." + shortId))) {
+          if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType)) {
+            //if (!isInInnerTypes(ed)) {
+            debug("\n        (INNER ED) Key: " + constraint.getKey() + " SD type: " + sd.getType() + " Element: " + ed.getPath() + " Constraint Source: " + constraint.getSource() + " Constraint:" + constraint.getExpression());
+            String transl = translateConstraint(sd, ed, constraint);
+            if (transl.isEmpty() || innerConstraintsList.contains(transl))
+              continue;
+            innerConstraintsList.add(transl);
+            //}
+          }
         }
       }
     }
