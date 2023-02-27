@@ -72,22 +72,35 @@ public class Turtle {
 		protected List<Predicate> predicates = new ArrayList<Predicate>();
 
 		public Complex predicate(String predicate, String object) {
+			return predicate(predicate, object, false);
+		}
+		
+		public Complex predicate(String predicate, String object, boolean asList) {
 			predicateSet.add(predicate);
 			objectSet.add(object);
-			return predicate(predicate, new StringType(object));
+			return predicate(predicate, new StringType(object), asList);
 		}
 
-    public Complex linkedPredicate(String predicate, String object, String link, String comment) {
+	public Complex linkedPredicate(String predicate, String object, String link, String comment) {
+		return linkedPredicate(predicate, object, link, comment, false);
+	}
+		
+    public Complex linkedPredicate(String predicate, String object, String link, String comment, boolean asList) {
       predicateSet.add(predicate);
       objectSet.add(object);
-      return linkedPredicate(predicate, new StringType(object), link, comment);
+      return linkedPredicate(predicate, new StringType(object), link, comment, asList);
+    }
+    
+    public Complex predicate(String predicate, Triple object) {
+    	return predicate(predicate, object, false);
     }
 
-		public Complex predicate(String predicate, Triple object) {
+	public Complex predicate(String predicate, Triple object, boolean asList) {
       Predicate p = getPredicate(predicate);
       if (p == null) {
         p = new Predicate();
 			p.predicate = predicate;
+			p.asList = asList;
 			predicateSet.add(predicate);
         predicates.add(p);
       }
@@ -95,7 +108,7 @@ public class Turtle {
 				objectSet.add(((StringType) object).value);
       p.objects.add(object);
 			return this;
-		}
+	}
 
     protected Predicate getPredicate(String predicate) {
       for (Predicate p : predicates)
@@ -103,14 +116,19 @@ public class Turtle {
           return p;
       return null;
     }
-
+    
     public Complex linkedPredicate(String predicate, Triple object, String link, String comment) {
+    	return linkedPredicate(predicate, object, link, comment, false);
+    }
+
+    public Complex linkedPredicate(String predicate, Triple object, String link, String comment, boolean asList) {
       Predicate p = getPredicate(predicate);
       if (p == null) {
         p = new Predicate();
       p.predicate = predicate;
       p.link = link;
       p.comment = comment;
+      p.asList = asList;
       predicateSet.add(predicate);
         predicates.add(p);
       }
@@ -119,18 +137,26 @@ public class Turtle {
       p.objects.add(object);
       return this;
     }
+    
+    public Complex predicate(String predicate) {
+		return predicate(predicate, false);
+	}
 
-		public Complex predicate(String predicate) {
-			predicateSet.add(predicate);
-			Complex c = complex();
-			predicate(predicate, c);
-			return c;
-		}
+	public Complex predicate(String predicate, boolean asList) {
+		predicateSet.add(predicate);
+		Complex c = complex();
+		predicate(predicate, c, asList);
+		return c;
+	}
 
-    public Complex linkedPredicate(String predicate, String link, String comment) {
+	public Complex linkedPredicate(String predicate, String link, String comment) {
+		return linkedPredicate(predicate, link, comment, false);
+	}
+	
+    public Complex linkedPredicate(String predicate, String link, String comment, boolean asList) {
       predicateSet.add(predicate);
       Complex c = complex();
-      linkedPredicate(predicate, c, link, comment);
+      linkedPredicate(predicate, c, link, comment, asList);
       return c;
     }
 
@@ -144,6 +170,7 @@ public class Turtle {
 		protected String link;
     protected List<Triple> objects = new ArrayList<Turtle.Triple>();
 		protected String comment;
+		protected boolean asList = false;
 
 		public String getPredicate() {
 			return predicate;
@@ -183,15 +210,15 @@ public class Turtle {
 
 		public void comment(String comment) {
 			if (!Utilities.noString(comment)) {
-				predicate("rdfs:comment", literal(comment));
-				predicate("dcterms:description", literal(comment));
+				predicate("rdfs:comment", literal(comment), false);
+				predicate("dcterms:description", literal(comment), false);
 			}
 		}
 
 		public void label(String label) {
 			if (!Utilities.noString(label)) {
-				predicate("rdfs:label", literal(label));
-				predicate("dc:title", literal(label));
+				predicate("rdfs:label", literal(label), false);
+				predicate("dc:title", literal(label), false);
 			}
 		}
 
@@ -445,7 +472,7 @@ public class Turtle {
 	  writer.ln();
 	  if (!section.comments.isEmpty()) {
 	    for (String s : section.comments) {
-	      writer.ln("# "+s);		  
+	      writer.ln("# "+formatMultilineComment(s));
 	    }
 	    writer.ln();
 	  }
@@ -464,10 +491,13 @@ public class Turtle {
 				writer.write(" ");
         boolean first = true;
         for (Triple o : p.getObjects()) {
-          if (first)
+          if (first) {
             first = false;
-          else
-            writer.write(", ");
+            if (p.asList) writer.write("( ");
+          } else {
+        	  if (!p.asList) writer.write(", ");
+        	  else writer.write(" ");
+          }
           if (o instanceof StringType)
             writer.write(((StringType) o).value);
 				else {
@@ -478,10 +508,11 @@ public class Turtle {
 						writer.write("]");
 				}
         }
-				String comment = p.comment == null? "" : " # "+p.comment;
+				String comment = p.comment == null? "" : " # "+formatMultilineComment(p.comment);
+				if (p.asList) writer.write(" )");	
 				i++;
 				if (i < sbj.predicates.size())
-					writer.write(";"+comment+"\r\n  ");
+					writer.write(" ;"+comment+"\r\n  ");
         else {
           if (Utilities.noString(sbj.id)) 
             writer.write("]");
@@ -490,6 +521,11 @@ public class Turtle {
 	  }
 	}
   }
+	
+  private String formatMultilineComment(String s) {
+	  return s.replace("\n", "\n#");
+  }
+
 
   private void commitSection(StringBuilder b, Section section) throws Exception {
     b.append("# - "+section.name+" "+Utilities.padLeft("", '-', 75-section.name.length())+"\r\n");
@@ -511,10 +547,12 @@ public class Turtle {
         b.append(" ");
         boolean first = true;
         for (Triple o : p.getObjects()) {
-          if (first)
-            first = false;
-          else
-            b.append(", ");
+        if (first) {
+          first = false;
+          if (p.asList) b.append("( ");
+        } else
+        	if (!p.asList) b.append(", ");
+        	else b.append(" ");
           if (o instanceof StringType)
             b.append(Utilities.escapeXml(((StringType) o).value));
           else {
@@ -525,12 +563,13 @@ public class Turtle {
               b.append("]");
           }
         }
-        String comment = p.comment == null? "" : " # "+p.comment;
+        String comment = p.comment == null? "" : " # "+formatMultilineComment(p.comment);
+        if (p.asList) b.append(" )");
         i++;
         if (i < sbj.predicates.size())
-          b.append(";"+Utilities.escapeXml(comment)+"\r\n  ");
+          b.append(" ;"+Utilities.escapeXml(comment)+"\r\n  ");
         else
-          b.append("."+Utilities.escapeXml(comment)+"\r\n\r\n");
+          b.append(" ."+Utilities.escapeXml(comment)+"\r\n\r\n");
       }
     }
   }
@@ -566,8 +605,11 @@ public class Turtle {
         if (first) {
           first = false;
           writer.write(left+" "+po.getPredicate()+" ");
-        } else
-          writer.write(", ");
+          if (po.asList) writer.write("( ");
+        } else {
+        	  if (!po.asList) writer.write(", ");
+        	  else writer.write(" ");
+        }
         if (o instanceof StringType)
           writer.write(((StringType) o).value);
 			else {
@@ -578,9 +620,10 @@ public class Turtle {
 					writer.write(" ]");
 			}
       }
+      if (po.asList) writer.write(" )");
 			i++;
 			if (i < complex.predicates.size())
-				writer.write(";");
+				writer.write(" ;");
 			if (!Utilities.noString(po.comment)) 
 				writer.write(" # "+escape(po.comment, false));
 		}
@@ -602,9 +645,11 @@ public class Turtle {
       for (Triple o : po.getObjects()) {
         if (first) {
           first = false;
-          b.append(left+" "+po.makelink()+" ");
+          if (po.asList) b.append(left+"( ");
+          b.append(po.makelink()+" ");
         } else
-          b.append(", ");
+        	if (!po.asList) b.append(", ");
+        	else b.append(" ");
         if (o instanceof StringType)
           b.append(Utilities.escapeXml(((StringType) o).value));
       else {
@@ -615,9 +660,10 @@ public class Turtle {
           b.append(" ]");
       }
       }
+      if (po.asList) b.append(" )");
       i++;
       if (i < complex.predicates.size())
-        b.append(";");
+        b.append(" ;");
       if (!Utilities.noString(po.comment)) 
         b.append(" # "+Utilities.escapeXml(escape(po.comment, false)));
     }

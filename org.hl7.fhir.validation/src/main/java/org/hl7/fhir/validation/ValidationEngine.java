@@ -219,6 +219,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private Coding jurisdiction;
 
 
+  private ContextUtilities cu = null;
+  
   /**
    * Creating a validation engine is an expensive operation - takes seconds. 
    * Once you have a validation engine created, you can quickly clone it to 
@@ -842,7 +844,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         new org.hl7.fhir.dstu3.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         new org.hl7.fhir.dstu3.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(s, res);
-      else if (fn.endsWith(".txt") || fn.endsWith(".map"))
+      else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
         TextFile.stringToStream(org.hl7.fhir.dstu3.utils.StructureMapUtilities.render((org.hl7.fhir.dstu3.model.StructureMap) res), s, false);
       else
         throw new FHIRException("Unsupported format for " + fn);
@@ -852,7 +854,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         new org.hl7.fhir.r4.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(s, res);
-      else if (fn.endsWith(".txt") || fn.endsWith(".map"))
+      else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
         TextFile.stringToStream(org.hl7.fhir.r4.utils.StructureMapUtilities.render((org.hl7.fhir.r4.model.StructureMap) res), s, false);
       else
         throw new FHIRException("Unsupported format for " + fn);
@@ -877,7 +879,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         new XmlParser().setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY).compose(s, r);
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         new JsonParser().setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY).compose(s, r);
-      else if (fn.endsWith(".txt") || fn.endsWith(".map"))
+      else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
         TextFile.stringToStream(StructureMapUtilities.render((org.hl7.fhir.r5.model.StructureMap) r), s, false);
       else
         throw new FHIRException("Unsupported format for " + fn);
@@ -1060,6 +1062,16 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (url.contains("example.org") || url.contains("acme.com")) {
       resolvedUrls.put(type+"|"+url, false);
       return false; // todo... how to access settings from here?
+    }
+    if (url.contains("*") && !url.contains("?")) {
+      if (cu == null) {
+        cu = new ContextUtilities(context);
+      }
+      List<StructureMap> maps = cu.listMaps(url);
+      if (!maps.isEmpty()) {
+        return true;
+      }
+      
     }
     if (fetcher != null) {
       try {

@@ -34,8 +34,11 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
@@ -429,6 +432,15 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       throw new FHIRException("Extension could not be converted to a string");
     return ext.get(0).getValue().primitiveValue();
   }
+
+  public StandardsStatus getStandardsStatus() {
+    return ToolingExtensions.getStandardsStatus(this);
+  }
+  
+  public void setStandardsStatus(StandardsStatus status) {
+    ToolingExtensions.setStandardsStatus(this, status, null);
+  }
+
 
 // end addition
 

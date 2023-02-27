@@ -129,6 +129,7 @@ public class Element extends Base {
   private int instanceId;
   private boolean isNull;
   private Base source;
+  private boolean ignorePropertyOrder;
 
 	public Element(String name) {
 		super();
@@ -148,6 +149,9 @@ public class Element extends Base {
 		super();
 		this.name = name;
 		this.property = property;
+		if (property.isResource()) {
+		  children = new ArrayList<>();
+		}
 	}
 
 	public Element(String name, Property property, String type, String value) {
@@ -211,8 +215,9 @@ public class Element extends Base {
 		this.value = value;
 	}
 
-	public void setType(String type) {
+	public Element setType(String type) {
 		this.type = type;
+		return this;
 
 	}
 
@@ -287,8 +292,20 @@ public class Element extends Base {
 			if (name.equals(child.getName()))
 				return child.getValue();
 		}
+		for (Element child : children) {
+      if (name.equals(child.getNameBase()))
+        return child.getValue();
+    }
   	return null;
 	}
+
+  private String getNameBase() {
+    if (property.isChoice()) {
+      return property.getName().replace("[x]", "");
+    } else  {
+      return getName();
+    }
+  }
 
   public void setChildValue(String name, String value) {
     if (children == null)
@@ -538,6 +555,16 @@ public class Element extends Base {
         Element ne = new Element(name, p);
         children.add(ne);
         return ne;
+      } else if (p.getDefinition().isChoice() && name.startsWith(p.getName().replace("[x]", ""))) {
+        String type = name.substring(p.getName().length()-3);
+        if (new ContextUtilities(property.getContext()).isPrimitiveDatatype(Utilities.uncapitalize(type))) {
+          type = Utilities.uncapitalize(type);
+        }
+        Element ne = new Element(name, p);
+        ne.setType(type);
+        children.add(ne);
+        return ne;
+        
       }
     }
       
@@ -598,7 +625,7 @@ public class Element extends Base {
 
 	@Override
 	public String primitiveValue() {
-		if (isPrimitive())
+		if (isPrimitive() || value != null)
 		  return value;
 		else {
 			if (hasPrimitiveValue() && children != null) {
@@ -1359,6 +1386,19 @@ public class Element extends Base {
   public Base setProperty(String name, Base value) throws FHIRException {
     setChildValue(name, value.primitiveValue());
     return this;
+  }
+
+  public boolean isIgnorePropertyOrder() {
+    return ignorePropertyOrder;
+  }
+
+  public void setIgnorePropertyOrder(boolean ignorePropertyOrder) {
+    this.ignorePropertyOrder = ignorePropertyOrder;
+    if (children != null) {
+      for (Element e : children) {
+        e.setIgnorePropertyOrder(ignorePropertyOrder);
+      }
+    }
   }
   
   

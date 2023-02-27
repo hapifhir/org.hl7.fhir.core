@@ -189,6 +189,7 @@ import org.hl7.fhir.validation.instance.type.MeasureValidator;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator;
 import org.hl7.fhir.validation.instance.type.SearchParameterValidator;
 import org.hl7.fhir.validation.instance.type.StructureDefinitionValidator;
+import org.hl7.fhir.validation.instance.type.StructureMapValidator;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator;
 import org.hl7.fhir.validation.instance.utils.ChildIterator;
 import org.hl7.fhir.validation.instance.utils.ElementInfo;
@@ -3262,6 +3263,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         refType = "bundled";
       }
     }
+    boolean conditional = ref.contains("?") && Utilities.existsInList(ref.substring(0, ref.indexOf("?")), context.getResourceNames());
     ReferenceValidationPolicy pol;
     if (refType.equals("contained") || refType.equals("bundled")) {
       pol = ReferenceValidationPolicy.CHECK_VALID;
@@ -3273,7 +3275,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 
-    if (pol.checkExists()) {
+    if (conditional) {
+      String query = ref.substring(ref.indexOf("?"));
+      boolean test = !Utilities.noString(query) && query.matches("\\?([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*)(&([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*))*");
+          //("^\\?([\\w-]+(=[\\w-]*)?(&[\\w-]+(=[\\w-]*)?)*)?$"),
+      ok = rule(errors, "2023-02-20", IssueType.INVALID, element.line(), element.col(), path, test, I18nConstants.REFERENCE_REF_QUERY_INVALID, ref) && ok;
+  
+    } else if (pol.checkExists()) {
       if (we == null) {
         if (!refType.equals("contained")) {
           if (fetcher == null) {
@@ -3766,7 +3774,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     TypedElementDefinition ted = null;
-    String fp = FHIRPathExpressionFixer.fixExpr(discriminator, null);
+    String fp = FHIRPathExpressionFixer.fixExpr(discriminator, null, context.getVersion());
     ExpressionNode expr = null;
     try {
       expr = fpe.parse(fp);
@@ -4384,7 +4392,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       try {
-        n = fpe.parse(FHIRPathExpressionFixer.fixExpr(expression.toString(), null));
+        n = fpe.parse(FHIRPathExpressionFixer.fixExpr(expression.toString(), null, context.getVersion()));
       } catch (FHIRLexerException e) {
         if (STACK_TRACE) e.printStackTrace();
         throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, expression, profile.getVersionedUrl(), path, e.getMessage()));
@@ -4993,6 +5001,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return new SearchParameterValidator(context, timeTracker, fpe, xverManager, jurisdiction).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {
       return new StructureDefinitionValidator(context, timeTracker, fpe, wantCheckSnapshotUnchanged, xverManager, jurisdiction).validateStructureDefinition(errors, element, stack);
+    } else if (element.getType().equals("StructureMap")) {
+      return new StructureMapValidator(context, timeTracker, fpe, xverManager,profileUtilities, jurisdiction).validateStructureMap(errors, element, stack);
     } else if (element.getType().equals("ValueSet")) {
       return new ValueSetValidator(context, timeTracker, this, xverManager, jurisdiction).validateValueSet(errors, element, stack);
     } else {
@@ -5849,7 +5859,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       if (!ToolingExtensions.readBoolExtension(profile, "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-no-order")) {
-        boolean ok = (ei.definition == null) || (ei.index >= last) || isXmlAttr;
+        boolean ok = (ei.definition == null) || (ei.index >= last) || isXmlAttr || ei.getElement().isIgnorePropertyOrder();
         rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), ok, I18nConstants.VALIDATION_VAL_PROFILE_OUTOFORDER, profile.getVersionedUrl(), ei.getName(), lastei == null ? "(null)" : lastei.getName());
       }
       if (ei.slice != null && ei.index == last && ei.slice.getSlicing().getOrdered()) {
@@ -6010,7 +6020,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         List<ValidationMessage> invErrors = null;
         // We key based on inv.expression rather than inv.key because expressions can change in derived profiles and aren't guaranteed to be consistent across profiles.
-        String key = FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey());
+        String key = FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey(), context.getVersion());
         if (!invMap.keySet().contains(key)) {
           invErrors = new ArrayList<ValidationMessage>();
           invMap.put(key, invErrors);
@@ -6064,7 +6074,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (n == null) {
       long t = System.nanoTime();
       try {
-        String expr = FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey());
+        String expr = FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey(), context.getVersion());
         n = fpe.parse(expr);
       } catch (FHIRException e) {
         rule(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, false, I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, inv.getExpression(), profile.getVersionedUrl(), path, e.getMessage());
@@ -6275,7 +6285,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               try {
                 ExpressionNode n = (ExpressionNode) inv.getUserData("validator.expression.cache");
                 if (n == null) {
-                  n = fpe.parse(FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey()));
+                  n = fpe.parse(FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey(), context.getVersion()));
                   inv.setUserData("validator.expression.cache", n);
                 }
                 fpe.check(null, sd.getKind() == StructureDefinitionKind.RESOURCE ? sd.getType() : "DomainResource", ed.getPath(), n);

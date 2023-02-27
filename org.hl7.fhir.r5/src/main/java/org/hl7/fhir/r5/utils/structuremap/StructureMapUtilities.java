@@ -103,7 +103,8 @@ public class StructureMapUtilities {
   public static final String MAP_SEARCH_EXPRESSION = "map.search.expression";
   public static final String MAP_EXPRESSION = "map.transform.expression";
   private static final boolean RENDER_MULTIPLE_TARGETS_ONELINE = true;
-  private static final String AUTO_VAR_NAME = "vvv";
+  public static final String AUTO_VAR_NAME = "vvv";
+  public static final String DEF_GROUP_NAME = "DefaultMappingGroupAnonymousAlias";
 
   private final IWorkerContext worker;
   private final FHIRPathEngine fpe;
@@ -619,15 +620,38 @@ public class StructureMapUtilities {
   }
 
   public StructureMap parse(String text, String srcName) throws FHIRException {
-    FHIRLexer lexer = new FHIRLexer(text, srcName);
+    FHIRLexer lexer = new FHIRLexer(Utilities.stripBOM(text), srcName, true);
     if (lexer.done())
       throw lexer.error("Map Input cannot be empty");
-    lexer.token("map");
     StructureMap result = new StructureMap();
-    result.setUrl(lexer.readConstant("url"));
-    lexer.token("=");
-    result.setName(lexer.readConstant("name"));
-    result.setDescription(lexer.getAllComments());
+    if (lexer.hasToken("map")) { 
+      lexer.token("map");
+      result.setUrl(lexer.readConstant("url"));
+      lexer.token("=");
+      result.setName(lexer.readConstant("name"));
+      result.setDescription(lexer.getAllComments());
+      result.setStatus(PublicationStatus.DRAFT);
+    } else {
+      while (lexer.hasToken("///")) {
+        lexer.next();
+        String fid = lexer.takeDottedToken();
+        lexer.token("=");
+        switch (fid) {
+        case "url" :
+          result.setUrl(lexer.readConstant("url"));
+          break;
+        case "name" :
+          result.setName(lexer.readConstant("name"));
+          break;
+        case "title" : 
+          result.setTitle(lexer.readConstant("title"));
+          break;
+        default:
+          lexer.readConstant("nothing");
+          // nothing
+        }
+      }
+    }
     while (lexer.hasToken("conceptmap"))
       parseConceptMap(result, lexer);
 
@@ -643,37 +667,7 @@ public class StructureMapUtilities {
     return result;
   }
 
-  public Element parseEM(String text, String srcName, List<ValidationMessage> list) throws FHIRException {
-    FHIRLexer lexer = new FHIRLexer(text, srcName);
-    if (lexer.done())
-      throw lexer.error("Map Input cannot be empty");
-    lexer.token("map");
-    Element result = Manager.build(worker, worker.fetchTypeDefinition("StructureMap"));
-    try {
-      result.makeElement("url").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("url"));
-      lexer.token("=");
-      result.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("name"));
-      result.makeElement("description").markLocation(lexer.getCurrentLocation()).setValue(lexer.getAllComments());
-      while (lexer.hasToken("conceptmap"))
-        parseConceptMapEM(result, lexer);
-
-      while (lexer.hasToken("uses"))
-        parseUsesEM(result, lexer);
-      while (lexer.hasToken("imports"))
-        parseImportsEM(result, lexer);
-
-      while (!lexer.done()) {
-        parseGroupEM(result, lexer);
-      }
-    } catch (FHIRLexerException e) {
-      list.add(new ValidationMessage(Source.InstanceValidator, IssueType.INVALID, e.getLocation().getLine(), e.getLocation().getColumn(), null, e.getMessage(), IssueSeverity.FATAL));
-    } catch (Exception e) {
-      list.add(new ValidationMessage(Source.InstanceValidator, IssueType.INVALID, null, e.getMessage(), IssueSeverity.FATAL));
-    }
-
-    return result;
-  }
-
+  
   private void parseConceptMap(StructureMap result, FHIRLexer lexer) throws FHIRLexerException {
     lexer.token("conceptmap");
     ConceptMap map = new ConceptMap();
@@ -730,63 +724,7 @@ public class StructureMapUtilities {
     lexer.token("}");
   }
 
-  private void parseConceptMapEM(Element result, FHIRLexer lexer) throws FHIRLexerException {
-    lexer.token("conceptmap");
-    Element map = Manager.build(worker, worker.fetchTypeDefinition("ConceptMap"));
-    Element eid = map.makeElement("id").markLocation(lexer.getCurrentLocation());
-    String id = lexer.readConstant("map id");
-    if (id.startsWith("#"))
-      throw lexer.error("Concept Map identifier must start with #");
-    eid.setValue(id);
-    map.makeElement("status").setValue(PublicationStatus.DRAFT.toCode()); // todo: how to add this to the text format
-    result.makeElement("contained").setElement("resource", map);
-    lexer.token("{");
-    //    lexer.token("source");
-    //    map.setSource(new UriType(lexer.readConstant("source")));
-    //    lexer.token("target");
-    //    map.setSource(new UriType(lexer.readConstant("target")));
-    Map<String, String> prefixes = new HashMap<String, String>();
-    while (lexer.hasToken("prefix")) {
-      lexer.token("prefix");
-      String n = lexer.take();
-      lexer.token("=");
-      String v = lexer.readConstant("prefix url");
-      prefixes.put(n, v);
-    }
-    while (lexer.hasToken("unmapped")) {
-      lexer.token("unmapped");
-      lexer.token("for");
-      String n = readPrefix(prefixes, lexer);
-      Element g = getGroupE(map, n, null);
-      lexer.token("=");
-      SourceLocation loc = lexer.getCurrentLocation();
-      String v = lexer.take();
-      if (v.equals("provided")) {
-        g.makeElement("unmapped").makeElement("mode").markLocation(loc).setValue(ConceptMapGroupUnmappedMode.USESOURCECODE.toCode());
-      } else
-        throw lexer.error("Only unmapped mode PROVIDED is supported at this time");
-    }
-    while (!lexer.hasToken("}")) {
-      String srcs = readPrefix(prefixes, lexer);
-      lexer.token(":");
-      SourceLocation scloc = lexer.getCurrentLocation();
-      String sc = lexer.getCurrent().startsWith("\"") ? lexer.readConstant("code") : lexer.take();
-      SourceLocation relLoc = lexer.getCurrentLocation();
-      ConceptMapRelationship rel = readRelationship(lexer);
-      String tgts = readPrefix(prefixes, lexer);
-      Element g = getGroupE(map, srcs, tgts);
-      Element e = g.addElement("element");
-      e.makeElement("code").markLocation(scloc).setValue(sc.startsWith("\"") ? lexer.processConstant(sc) : sc);
-      Element tgt = e.addElement("target");
-      tgt.makeElement("relationship").markLocation(relLoc).setValue(rel.toCode());
-      lexer.token(":");
-      tgt.makeElement("code").markLocation(lexer.getCurrentLocation()).setValue(lexer.getCurrent().startsWith("\"") ? lexer.readConstant("code") : lexer.take());
-      if (lexer.hasComments()) {
-        tgt.makeElement("comment").markLocation(lexer.getCommentLocation()).setValue(lexer.getFirstComment());
-      }
-    }
-    lexer.token("}");
-  }
+ 
 
   private ConceptMapGroupComponent getGroup(ConceptMap map, String srcs, String tgts) {
     for (ConceptMapGroupComponent grp : map.getGroup()) {
@@ -803,23 +741,7 @@ public class StructureMapUtilities {
     return grp;
   }
   
-  private Element getGroupE(Element map, String srcs, String tgts) {
-    for (Element grp : map.getChildrenByName("group")) {
-      if (grp.getChildValue("source").equals(srcs)) {
-        Element tgt = grp.getNamedChild("target");
-        if (tgt == null || tgts == null || tgts.equals(tgt.getValue())) {
-          if (tgt == null && tgts != null)
-            grp.makeElement("target").setValue(tgts);
-          return grp;
-        }
-      }
-    }
-    Element grp = map.addElement("group");
-    grp.makeElement("source").setValue(srcs);
-    grp.makeElement("target").setValue(tgts);
-    return grp;
-  }
-
+ 
 
   private String readPrefix(Map<String, String> prefixes, FHIRLexer lexer) throws FHIRLexerException {
     String prefix = lexer.take();
@@ -859,21 +781,7 @@ public class StructureMapUtilities {
     st.setDocumentation(lexer.getFirstComment());
   }
   
-  private void parseUsesEM(Element result, FHIRLexer lexer) throws FHIRException {
-    lexer.token("uses");
-    Element st = result.addElement("structure");
-    st.makeElement("url").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("url"));
-    if (lexer.hasToken("alias")) {
-      lexer.token("alias");
-      st.makeElement("alias").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    }
-    lexer.token("as");
-    st.makeElement("mode").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    lexer.skipToken(";");
-    if (lexer.hasComments()) {
-      st.makeElement("documentation").markLocation(lexer.getCommentLocation()).setValue(lexer.getFirstComment());
-    }
-  }
+  
 
   private void parseImports(StructureMap result, FHIRLexer lexer) throws FHIRException {
     lexer.token("imports");
@@ -881,12 +789,6 @@ public class StructureMapUtilities {
     lexer.skipToken(";");
   }
   
-  private void parseImportsEM(Element result, FHIRLexer lexer) throws FHIRException {
-    lexer.token("imports");
-    result.addElement("import").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("url"));
-    lexer.skipToken(";");
-  }
-
   private void parseGroup(StructureMap result, FHIRLexer lexer) throws FHIRException {
     String comment = lexer.getAllComments();
     lexer.token("group");
@@ -959,78 +861,7 @@ public class StructureMapUtilities {
       lexer.next();
   }
 
-  private void parseGroupEM(Element result, FHIRLexer lexer) throws FHIRException {
-    SourceLocation commLoc = lexer.getCommentLocation();
-    String comment = lexer.getAllComments();
-    lexer.token("group");
-    Element group = result.addElement("group");
-    if (comment != null) {
-      group.makeElement("documentation").markLocation(commLoc).setValue(comment);
-    }
-    boolean newFmt = false;
-    if (lexer.hasToken("for")) {
-      lexer.token("for");
-      SourceLocation loc = lexer.getCurrentLocation();
-      if ("type".equals(lexer.getCurrent())) {
-        lexer.token("type");
-        lexer.token("+");
-        lexer.token("types");
-        group.makeElement("typeMode").markLocation(loc).setValue(StructureMapGroupTypeMode.TYPEANDTYPES.toCode());
-      } else {
-        lexer.token("types");
-        group.makeElement("typeMode").markLocation(loc).setValue(StructureMapGroupTypeMode.TYPES.toCode());
-      }
-    }
-    group.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    if (lexer.hasToken("(")) {
-      newFmt = true;
-      lexer.take();
-      while (!lexer.hasToken(")")) {
-        parseInputEM(group, lexer, true);
-        if (lexer.hasToken(","))
-          lexer.token(",");
-      }
-      lexer.take();
-    }
-    if (lexer.hasToken("extends")) {
-      lexer.next();
-      group.makeElement("extends").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    }
-    if (newFmt) {
-      if (lexer.hasToken("<")) {
-        lexer.token("<");
-        lexer.token("<");
-        if (lexer.hasToken("types")) {
-          group.makeElement("typeMode").markLocation(lexer.getCurrentLocation()).setValue(StructureMapGroupTypeMode.TYPES.toCode());
-        } else {
-          group.makeElement("typeMode").markLocation(lexer.getCurrentLocation()).setValue(StructureMapGroupTypeMode.TYPEANDTYPES.toCode());
-          lexer.token("type");
-          lexer.token("+");
-        }
-        lexer.token(">");
-        lexer.token(">");
-      }
-      lexer.token("{");
-    }
-    if (newFmt) {
-      while (!lexer.hasToken("}")) {
-        if (lexer.done())
-          throw lexer.error("premature termination expecting 'endgroup'");
-        parseRuleEM(result, group, lexer, true);
-      }
-    } else {
-      while (lexer.hasToken("input"))
-        parseInputEM(group, lexer, false);
-      while (!lexer.hasToken("endgroup")) {
-        if (lexer.done())
-          throw lexer.error("premature termination expecting 'endgroup'");
-        parseRuleEM(result, group, lexer, false);
-      }
-    }
-    lexer.next();
-    if (newFmt && lexer.hasToken(";"))
-      lexer.next();
-  }
+ 
   
   private void parseInput(StructureMapGroupComponent group, FHIRLexer lexer, boolean newFmt) throws FHIRException {
     StructureMapGroupInputComponent input = group.addInput();
@@ -1051,26 +882,7 @@ public class StructureMapUtilities {
     }
   }
 
-  private void parseInputEM(Element group, FHIRLexer lexer, boolean newFmt) throws FHIRException {
-    Element input = group.addElement("input");
-    if (newFmt) {
-      input.makeElement("mode").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    } else
-      lexer.token("input");
-    input.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    if (lexer.hasToken(":")) {
-      lexer.token(":");
-      input.makeElement("type").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    }
-    if (!newFmt) {
-      lexer.token("as");
-      input.makeElement("mode").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-      if (lexer.hasComments()) {
-        input.makeElement("documentation").markLocation(lexer.getCommentLocation()).setValue(lexer.getFirstComment());
-      }
-      lexer.skipToken(";");
-    }
-  }
+
 
   private void parseRule(StructureMap map, List<StructureMapGroupRuleComponent> list, FHIRLexer lexer, boolean newFmt) throws FHIRException {
     StructureMapGroupRuleComponent rule = new StructureMapGroupRuleComponent();
@@ -1147,84 +959,6 @@ public class StructureMapUtilities {
     }
   }
 
-  private void parseRuleEM(Element map, Element context, FHIRLexer lexer, boolean newFmt) throws FHIRException {
-    Element rule = context.addElement("rule");
-    if (!newFmt) {
-      rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.takeDottedToken());
-      lexer.token(":");
-      lexer.token("for");
-    } else {
-      if (lexer.hasComments()) {
-        rule.makeElement("documentation").markLocation(lexer.getCommentLocation()).setValue(lexer.getFirstComment());
-      }
-    }
-
-    boolean done = false;
-    while (!done) {
-      parseSourceEM(rule, lexer);
-      done = !lexer.hasToken(",");
-      if (!done)
-        lexer.next();
-    }
-    if ((newFmt && lexer.hasToken("->")) || (!newFmt && lexer.hasToken("make"))) {
-      lexer.token(newFmt ? "->" : "make");
-      done = false;
-      while (!done) {
-        parseTargetEM(rule, lexer);
-        done = !lexer.hasToken(",");
-        if (!done)
-          lexer.next();
-      }
-    }
-    if (lexer.hasToken("then")) {
-      lexer.token("then");
-      if (lexer.hasToken("{")) {
-        lexer.token("{");
-        while (!lexer.hasToken("}")) {
-          if (lexer.done())
-            throw lexer.error("premature termination expecting '}' in nested group");
-          parseRuleEM(map, rule, lexer, newFmt);
-        }
-        lexer.token("}");
-      } else {
-        done = false;
-        while (!done) {
-          parseRuleReferenceEM(rule, lexer);
-          done = !lexer.hasToken(",");
-          if (!done)
-            lexer.next();
-        }
-      }
-    }
-    if (!rule.hasChild("documentation") && lexer.hasComments()) {
-      rule.makeElement("documentation").markLocation(lexer.getCommentLocation()).setValue(lexer.getFirstComment());
-    }
-
-    if (isSimpleSyntaxEM(rule)) {
-      rule.forceElement("source").makeElement("variable").setValue(AUTO_VAR_NAME);
-      rule.forceElement("target").makeElement("variable").setValue(AUTO_VAR_NAME);
-      rule.forceElement("target").makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
-      // no dependencies - imply what is to be done based on types
-    }
-    if (newFmt) {
-      if (lexer.isConstant()) {
-        if (lexer.isStringConstant()) {
-          rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("ruleName"));
-        } else {
-          rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-        }
-      } else {
-        if (rule.getChildrenByName("source").size() != 1 || !rule.getChildrenByName("source").get(0).hasChild("element"))
-          throw lexer.error("Complex rules must have an explicit name");
-        if (rule.getChildrenByName("source").get(0).hasChild("type"))
-          rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element") + "-" + rule.getChildrenByName("source").get(0).getNamedChildValue("type"));
-        else
-          rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element"));
-      }
-      lexer.token(";");
-    }
-  }
-
   private boolean isSimpleSyntax(StructureMapGroupRuleComponent rule) {
     return
       (rule.getSource().size() == 1 && rule.getSourceFirstRep().hasContext() && rule.getSourceFirstRep().hasElement() && !rule.getSourceFirstRep().hasVariable()) &&
@@ -1233,14 +967,7 @@ public class StructureMapUtilities {
   }
 
 
-  private boolean isSimpleSyntaxEM(Element rule) {
-    return
-      (rule.getChildren("source").size() == 1 && rule.getChildren("source").get(0).hasChild("context") && rule.getChildren("source").get(0).hasChild("element") && !rule.getChildren("source").get(0).hasChild("variable")) &&
-        (rule.getChildren("target").size() == 1 && rule.getChildren("target").get(0).hasChild("context") && rule.getChildren("target").get(0).hasChild("element") && !rule.getChildren("target").get(0).hasChild("variable") && 
-           !rule.getChildren("target").get(0).hasChild("parameter")) &&
-        (rule.getChildren("dependent").size() == 0 && rule.getChildren("rule").size() == 0);
-  }
-
+ 
   private void parseRuleReference(StructureMapGroupRuleComponent rule, FHIRLexer lexer) throws FHIRLexerException {
     StructureMapGroupRuleDependentComponent ref = rule.addDependent();
     ref.setName(lexer.take());
@@ -1255,20 +982,7 @@ public class StructureMapUtilities {
     lexer.token(")");
   }
 
-  private void parseRuleReferenceEM(Element rule, FHIRLexer lexer) throws FHIRLexerException {
-    Element ref = rule.addElement("dependent");
-    rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    lexer.token("(");
-    boolean done = false;
-    while (!done) {
-      parseParameterEM(ref, lexer);
-      done = !lexer.hasToken(",");
-      if (!done)
-        lexer.next();
-    }
-    lexer.token(")");
-  }
-
+ 
   private void parseSource(StructureMapGroupRuleComponent rule, FHIRLexer lexer) throws FHIRException {
     StructureMapGroupRuleSourceComponent source = rule.addSource();
     source.setContext(lexer.take());
@@ -1287,11 +1001,11 @@ public class StructureMapUtilities {
       // type and cardinality
       lexer.token(":");
       source.setType(lexer.takeDottedToken());
-      if (!lexer.hasToken("as", "first", "last", "not_first", "not_last", "only_one", "default")) {
-        source.setMin(lexer.takeInt());
-        lexer.token("..");
-        source.setMax(lexer.take());
-      }
+    }
+    if (Utilities.isInteger(lexer.getCurrent())) {
+      source.setMin(lexer.takeInt());
+      lexer.token("..");
+      source.setMax(lexer.take());
     }
     if (lexer.hasToken("default")) {
       lexer.token("default");
@@ -1324,66 +1038,7 @@ public class StructureMapUtilities {
     }
   }
 
-  private void parseSourceEM(Element rule, FHIRLexer lexer) throws FHIRException {
-    Element source = rule.addElement("source");
-    source.makeElement("context").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    if (source.getChildValue("context").equals("search") && lexer.hasToken("(")) {
-      source.makeElement("context").markLocation(lexer.getCurrentLocation()).setValue("@search");
-      lexer.take();
-      SourceLocation loc = lexer.getCurrentLocation();
-      ExpressionNode node = fpe.parse(lexer);
-      source.setUserData(MAP_SEARCH_EXPRESSION, node);
-      source.makeElement("element").markLocation(loc).setValue(node.toString());
-      lexer.token(")");
-    } else if (lexer.hasToken(".")) {
-      lexer.token(".");
-      source.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    }
-    if (lexer.hasToken(":")) {
-      // type and cardinality
-      lexer.token(":");
-      source.setType(lexer.takeDottedToken());
-      if (!lexer.hasToken("as", "first", "last", "not_first", "not_last", "only_one", "default")) {
-        source.makeElement("min").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-        lexer.token("..");
-        source.makeElement("max").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-      }
-    }
-    if (lexer.hasToken("default")) {
-      lexer.token("default");
-     source.makeElement("defaultValue").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("default value"));
-    }
-    if (Utilities.existsInList(lexer.getCurrent(), "first", "last", "not_first", "not_last", "only_one")) {
-      source.makeElement("listMode").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    }
-
-    if (lexer.hasToken("as")) {
-      lexer.take();
-      source.makeElement("variable").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    }
-    if (lexer.hasToken("where")) {
-      lexer.take();
-      SourceLocation loc = lexer.getCurrentLocation();
-      ExpressionNode node = fpe.parse(lexer);
-      source.setUserData(MAP_WHERE_EXPRESSION, node);
-      source.makeElement("condition").markLocation(loc).setValue(node.toString());
-    }
-    if (lexer.hasToken("check")) {
-      lexer.take();
-      SourceLocation loc = lexer.getCurrentLocation();
-      ExpressionNode node = fpe.parse(lexer);
-      source.setUserData(MAP_WHERE_CHECK, node);
-      source.makeElement("check").markLocation(loc).setValue(node.toString());
-    }
-    if (lexer.hasToken("log")) {
-      lexer.take();
-      SourceLocation loc = lexer.getCurrentLocation();
-      ExpressionNode node = fpe.parse(lexer);
-      source.setUserData(MAP_WHERE_CHECK, node);
-      source.makeElement("logMessage").markLocation(loc).setValue(lexer.take());
-    }
-  }
-
+ 
   private void parseTarget(StructureMapGroupRuleComponent rule, FHIRLexer lexer) throws FHIRException {
     StructureMapGroupRuleTargetComponent target = rule.addTarget();
     String start = lexer.take();
@@ -1458,85 +1113,7 @@ public class StructureMapUtilities {
     }
   }
 
-  private void parseTargetEM(Element rule, FHIRLexer lexer) throws FHIRException {
-    Element target = rule.addElement("target");
-    SourceLocation loc = lexer.getCurrentLocation();
-    String start = lexer.take();
-    if (lexer.hasToken(".")) {
-      target.makeElement("context").markLocation(loc).setValue(start);
-      start = null;
-      lexer.token(".");
-      target.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    }
-    String name;
-    boolean isConstant = false;
-    if (lexer.hasToken("=")) {
-      if (start != null) {
-        target.makeElement("context").markLocation(loc).setValue(start);
-      }
-      lexer.token("=");
-      isConstant = lexer.isConstant();
-      loc = lexer.getCurrentLocation();
-      name = lexer.take();
-    } else {
-      loc = lexer.getCurrentLocation();
-      name = start;
-    }
-
-    if ("(".equals(name)) {
-      // inline fluentpath expression
-      target.makeElement("transform").markLocation(lexer.getCurrentLocation()).setValue(StructureMapTransform.EVALUATE.toCode());
-      loc = lexer.getCurrentLocation();
-      ExpressionNode node = fpe.parse(lexer);
-      target.setUserData(MAP_EXPRESSION, node);
-      target.addElement("parameter").markLocation(loc).setValue(node.toString());
-      lexer.token(")");
-    } else if (lexer.hasToken("(")) {
-      target.makeElement("transform").markLocation(loc).setValue(name);
-      lexer.token("(");
-      if (target.getChildValue("transform").equals(StructureMapTransform.EVALUATE.toCode())) {
-        parseParameterEM(target, lexer);
-        lexer.token(",");
-        loc = lexer.getCurrentLocation();
-        ExpressionNode node = fpe.parse(lexer);
-        target.setUserData(MAP_EXPRESSION, node);
-        target.addElement("parameter").markLocation(loc).setValue(node.toString());
-      } else {
-        while (!lexer.hasToken(")")) {
-          parseParameterEM(target, lexer);
-          if (!lexer.hasToken(")"))
-            lexer.token(",");
-        }
-      }
-      lexer.token(")");
-    } else if (name != null) {
-      target.makeElement("transform").markLocation(loc).setValue(StructureMapTransform.COPY.toCode());
-      if (!isConstant) {
-        loc = lexer.getCurrentLocation();
-        String id = name;
-        while (lexer.hasToken(".")) {
-          id = id + lexer.take() + lexer.take();
-        }
-        target.addElement("parameter").markLocation(loc).setValue(id);
-      } else {
-        target.addElement("parameter").markLocation(lexer.getCurrentLocation()).setValue(readConstantEM(name, lexer));
-      }
-    }
-    if (lexer.hasToken("as")) {
-      lexer.take();
-      target.makeElement("variable").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    }
-    while (Utilities.existsInList(lexer.getCurrent(), "first", "last", "share", "collate")) {
-      if (lexer.getCurrent().equals("share")) {
-        target.makeElement("listMode").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-        target.makeElement("listRuleId").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-      } else {
-        target.makeElement("listMode").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-      }
-    }
-  }
-
-
+ 
   private void parseParameter(StructureMapGroupRuleDependentComponent ref, FHIRLexer lexer) throws FHIRLexerException, FHIRFormatError {
     if (!lexer.isConstant()) {
       ref.addParameter().setValue(new IdType(lexer.take()));
@@ -1557,16 +1134,7 @@ public class StructureMapUtilities {
     }
   }
 
-  private void parseParameterEM(Element ref, FHIRLexer lexer) throws FHIRLexerException, FHIRFormatError {
-    if (!lexer.isConstant()) {
-      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    } else if (lexer.isStringConstant())
-      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("??"));
-    else {
-      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).setValue(readConstantEM(lexer.take(), lexer));
-    }
-  }
-  
+ 
   private DataType readConstant(String s, FHIRLexer lexer) throws FHIRLexerException {
     if (Utilities.isInteger(s))
       return new IntegerType(s);
@@ -1578,16 +1146,6 @@ public class StructureMapUtilities {
       return new StringType(lexer.processConstant(s));
   }
 
-  private String readConstantEM(String s, FHIRLexer lexer) throws FHIRLexerException {
-    if (Utilities.isInteger(s))
-      return s;
-    else if (Utilities.isDecimal(s, false))
-      return s;
-    else if (Utilities.existsInList(s, "true", "false"))
-      return s;
-    else
-      return lexer.processConstant(s);
-  }
 
   public StructureDefinition getTargetType(StructureMap map) throws FHIRException {
     boolean found = false;

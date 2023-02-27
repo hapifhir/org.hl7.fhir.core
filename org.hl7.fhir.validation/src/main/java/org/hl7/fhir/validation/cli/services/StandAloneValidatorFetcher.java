@@ -105,6 +105,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
     }
     if (base.equals("http://terminology.hl7.org")) {
       pid = "hl7.terminology";
+    } else if (base.equals("http://hl7.org/fhir")) {
+      return false;
     } else if (url.startsWith("http://hl7.org/fhir")) {
       pid = pcm.getPackageId(base);
     } else {

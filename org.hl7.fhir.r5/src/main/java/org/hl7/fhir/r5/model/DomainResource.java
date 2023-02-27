@@ -34,7 +34,11 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
@@ -467,7 +471,7 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
      }
    }
   
-      public Resource getContained(String ref) {
+    public Resource getContained(String ref) {
         if (ref == null)
           return null;
         
@@ -509,6 +513,15 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
       }
       return Collections.unmodifiableList(retVal);
     }
+    
+    public StandardsStatus getStandardsStatus() {
+      return ToolingExtensions.getStandardsStatus(this);
+    }
+    
+    public void setStandardsStatus(StandardsStatus status) {
+      ToolingExtensions.setStandardsStatus(this, status, null);
+    }
+
 // end addition
 
 }

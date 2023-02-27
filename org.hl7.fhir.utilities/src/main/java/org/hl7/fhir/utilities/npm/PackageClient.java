@@ -27,19 +27,13 @@ public class PackageClient {
 
 
   private PackageServer server;
-  private String cacheFolder;
   private String address;
 
 
   public PackageClient(PackageServer server) {
     super();
     this.server = server;
-    address = server.getUrl();
-    try {
-      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "package-client");
-      Utilities.createDirectory(cacheFolder);
-    } catch (IOException e) {
-    }
+    address = this.server.getUrl();
   }
 
   public boolean exists(String id, String ver) throws IOException {
