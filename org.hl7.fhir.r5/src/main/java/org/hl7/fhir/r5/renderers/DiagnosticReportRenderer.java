@@ -125,7 +125,11 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
     pw = getProperty(dr, "conclusion");
     if (valued(pw)) {
-      render(x.para(), pw.value());
+      if (pw.fhirType().equals("markdown")) {        
+        render(x, pw.value());        
+      } else {
+        render(x.para(), pw.value());
+      }
     }
 
     pw = getProperty(dr, "conclusionCode");

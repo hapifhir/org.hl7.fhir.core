@@ -1065,7 +1065,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     if (!context.getResourceNames().contains(tn)) {
       return false;
     } else {
-      return q.matches("([_a-zA-Z][_a-zA-Z0-9]*=[^=&]+)(&([_a-zA-Z][_a-zA-Z0-9]*=[^=&]+))*");
+      return q.matches("([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*)(&([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*))*");
     }
   }
 

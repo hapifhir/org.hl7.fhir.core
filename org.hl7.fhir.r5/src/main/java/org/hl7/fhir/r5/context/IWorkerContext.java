@@ -320,7 +320,23 @@ public interface IWorkerContext {
      * 
      * @return
      */
-    List<CodeSystem> getCodeSystems();   
+    List<CodeSystem> getCodeSystems();  
+    
+    /**
+     * if this is true, then the loader will patch canonical URLs and cross-links 
+     * to add /X.X/ into the URL so that different versions can be loaded safely 
+     * 
+     * default is false
+     */
+    void setPatchUrls(boolean value);
+
+    /**
+     * patch the URL if necessary
+     * 
+     * @param url
+     * @return
+     */
+    String patchUrl(String url, String resourceType);
   }
 
   /**

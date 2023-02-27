@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>5.6.99-SNAPSHOT</version>
+        <version>5.6.100-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -90,7 +90,7 @@
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
                     <configuration>
-                        <skip>true</skip>
+                        <skipStaging>true</skipStaging>
                     </configuration>
                 </plugin>
                 <plugin>

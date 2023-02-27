@@ -1,16 +1,22 @@
 package org.hl7.fhir.validation.instance.utils;
 
+import org.hl7.fhir.utilities.VersionUtilities;
+
 public class FHIRPathExpressionFixer {
 
 
-  public static String fixExpr(String expr, String key) {
+  public static String fixExpr(String expr, String key, String version) {
     // this is a hack work around for past publication of wrong FHIRPath expressions
-    // R4
-    // waiting for 4.0.2
+
+    boolean r5 = VersionUtilities.isR5Ver(version);
+//    if (r5) {
+//      return expr;
+//    }
+
     //TODO is this expression below correct? @grahamegrieve
-    if ("probability is decimal implies (probability as decimal) <= 100".equals(expr)) {
-      return "probability.empty() or ((probability is decimal) implies ((probability as decimal) <= 100))";
-    }
+//    if ("probability is decimal implies (probability as decimal) <= 100".equals(expr)) {
+//      return "probability.empty() or ((probability is decimal) implies ((probability as decimal) <= 100))";
+//    }
     if ("enableWhen.count() > 2 implies enableBehavior.exists()".equals(expr)) {
       return "enableWhen.count() >= 2 implies enableBehavior.exists()";
     }
@@ -52,10 +58,10 @@ public class FHIRPathExpressionFixer {
     }  
     
     // clarification in FHIRPath spec
-    if ("eld-19".equals(key)) {
+    if (!r5 && "eld-19".equals(key)) {
       return "path.matches('^[^\\\\s\\\\.,:;\\\\\\'\"\\\\/|?!@#$%&*()\\\\[\\\\]{}]{1,64}(\\\\.[^\\\\s\\\\.,:;\\\\\\'\"\\\\/|?!@#$%&*()\\\\[\\\\]{}]{1,64}(\\\\[x\\\\])?(\\\\:[^\\\\s\\\\.]+)?)*$')";
     }
-    if ("eld-20".equals(key)) {
+    if (!r5 && "eld-20".equals(key)) {
       return "path.matches('^[A-Za-z][A-Za-z0-9]*(\\\\.[a-z][A-Za-z0-9]*(\\\\[x])?)*$')";
     }
   

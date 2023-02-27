@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.model.Identifier;
@@ -42,6 +43,9 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   private boolean ignoreProfileErrors;
   private XVerExtensionManager xverManager;
   private Map<String, String> oidCache = new HashMap<>();
+  private List<StructureDefinition> allStructuresList = new ArrayList<StructureDefinition>();
+  private List<String> canonicalResourceNames;
+  private List<String> concreteResourceNames;
   
   public ContextUtilities(IWorkerContext context) {
     super();
@@ -196,41 +200,46 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
    * @return a list of the resource names that are canonical resources defined for this version
    */
   public List<String> getCanonicalResourceNames() {
-    List<String> names = new ArrayList<>();
-    for (StructureDefinition sd : allStructures()) {
-      if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract() && hasUrlProperty(sd)) {
-        names.add(sd.getType());
+    if (canonicalResourceNames == null) {
+      canonicalResourceNames =  new ArrayList<>();
+      Set<String> names = new HashSet<>();
+      for (StructureDefinition sd : allStructures()) {
+        if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract() && hasUrlProperty(sd)) {
+          names.add(sd.getType());
+        }
       }
+      canonicalResourceNames.addAll(Utilities.sorted(names));
     }
-    return names;
+    return canonicalResourceNames;
   }
-    
+
   /**
    * @return a list of all structure definitions, with snapshots generated (if possible)
    */
   public List<StructureDefinition> allStructures(){
-    List<StructureDefinition> result = new ArrayList<StructureDefinition>();
-    Set<StructureDefinition> set = new HashSet<StructureDefinition>();
-    for (StructureDefinition sd : getStructures()) {
-      if (!set.contains(sd)) {
-        try {
-          generateSnapshot(sd);
-          // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
-        } catch (Exception e) {
-          if (!isSuppressDebugMessages()) {
-            System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-            if (context.getLogger().isDebugLogging()) {
-              e.printStackTrace();
+    if (allStructuresList.isEmpty()) {
+      Set<StructureDefinition> set = new HashSet<StructureDefinition>();
+      for (StructureDefinition sd : getStructures()) {
+        if (!set.contains(sd)) {
+          try {
+            generateSnapshot(sd);
+            // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
+          } catch (Exception e) {
+            if (!isSuppressDebugMessages()) {
+              System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+              if (context.getLogger().isDebugLogging()) {
+                e.printStackTrace();
+              }
             }
           }
+          allStructuresList.add(sd);
+          set.add(sd);
         }
-        result.add(sd);
-        set.add(sd);
       }
     }
-    return result;
+    return allStructuresList;
   }
-  
+
   /**
    * @return a list of all structure definitions, without trying to generate snapshots
    */
@@ -366,6 +375,33 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       }
     }
     return null;
+  }
+
+  public List<String>  getConcreteResources() {
+    if (concreteResourceNames == null) {
+      concreteResourceNames =  new ArrayList<>();
+      Set<String> names = new HashSet<>();
+      for (StructureDefinition sd : allStructures()) {
+        if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract()) {
+          names.add(sd.getType());
+        }
+      }
+      concreteResourceNames.addAll(Utilities.sorted(names));
+    }
+    return concreteResourceNames;
+  }
+
+  public List<StructureMap> listMaps(String url) {
+    List<StructureMap> res = new ArrayList<>();
+    String start = url.substring(0, url.indexOf("*"));
+    String end = url.substring(url.indexOf("*")+1);
+    for (StructureMap map : context.fetchResourcesByType(StructureMap.class)) {
+      String u = map.getUrl();
+      if (u.startsWith(start) && u.endsWith(end)) {
+        res.add(map);
+      }
+    }
+    return res;
   }
 
 }

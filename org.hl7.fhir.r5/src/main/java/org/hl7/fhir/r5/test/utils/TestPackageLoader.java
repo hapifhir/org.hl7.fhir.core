@@ -52,4 +52,14 @@ public class TestPackageLoader implements IContextResourceLoader {
     return new ArrayList<>();
   }
 
+  @Override
+  public void setPatchUrls(boolean value) {
+    
+  }
+
+  @Override
+  public String patchUrl(String url, String resourceType) {
+    return url;
+  }
+
 }

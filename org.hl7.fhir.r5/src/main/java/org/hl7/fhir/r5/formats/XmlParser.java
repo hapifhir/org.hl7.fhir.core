@@ -8204,7 +8204,7 @@ public class XmlParser extends XmlParserBase {
   }
 
   protected boolean parseConceptMapOtherElementComponentContent(int eventType, XmlPullParser xpp, ConceptMap.OtherElementComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("property")) {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals(FormatUtilities.WORKING_CM_PROP_NAME)) {
       res.setPropertyElement(parseUri(xpp));
     } else if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "value")) {
       res.setValue(parseType("value", xpp));
@@ -38972,7 +38972,7 @@ public class XmlParser extends XmlParserBase {
   protected void composeConceptMapOtherElementComponentElements(ConceptMap.OtherElementComponent element) throws IOException {
     composeBackboneElementElements(element);
     if (element.hasPropertyElement()) {
-      composeUri("property", element.getPropertyElement());
+      composeUri(FormatUtilities.WORKING_CM_PROP_NAME, element.getPropertyElement());
     }
     if (element.hasValue()) {
       composeType("value", element.getValue());

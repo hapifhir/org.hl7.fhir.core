@@ -14,6 +14,7 @@ import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 public class Params {
 
   public static final String VERSION = "-version";
+  public static final String ALT_VERSION = "-alt-version";
   public static final String OUTPUT = "-output";
 
   public static final String OUTPUT_SUFFIX = "-outputSuffix";
@@ -307,8 +308,28 @@ public class Params {
           if (version == null) {
             cliContext.addIg(s);
           } else {
-            cliContext.setSv(version);
+            String v = getParam(args, VERSION);
+            if (v != null && !v.equals(version)) {
+              throw new Error("Parameters are inconsistent: specified version is "+v+" but -ig parameter "+s+" implies a different version");
+            } else if (cliContext.getSv() != null && !version.equals(cliContext.getSv())) {
+              throw new Error("Parameters are inconsistent: multiple -ig parameters implying differetion versions ("+cliContext.getSv()+","+version+")");
+            } else {
+              cliContext.setSv(version);
+            }
           }
+        }
+      } else if (args[i].equals(ALT_VERSION)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified " + args[i] + " without indicating version");
+        else {
+          String s = args[++i];
+          String v = VersionUtilities.getMajMin(s);
+          if (v == null) {
+            throw new Error("Unsupported FHIR Version "+s);
+          }
+          String pid = VersionUtilities.packageForVersion(v);
+          pid = pid + "#"+VersionUtilities.getCurrentPackageVersion(v);
+          cliContext.addIg(pid);
         }
       } else if (args[i].equals(MAP)) {
         if (cliContext.getMap() == null) {
@@ -336,6 +357,7 @@ public class Params {
         cliContext.addSource(args[i]);
       }
     }
+    
     return cliContext;
   }
 
