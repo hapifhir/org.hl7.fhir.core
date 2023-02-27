@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
@@ -115,6 +116,7 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
       cr.setUrl(patchUrl(cr.getUrl(), cr.fhirType()));
       if (cr instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) cr;
+        sd.setBaseDefinition(patchUrl(sd.getBaseDefinition(), sd.fhirType()));
         new ProfileUtilities(null, null, null, null).setIds(sd, false);
         sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
         for (ElementDefinition ed : sd.getSnapshot().getElement())
@@ -152,6 +154,9 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
 
   private void patchUrl(ElementDefinition ed) {
     for (TypeRefComponent tr : ed.getType()) {
+      if (!Utilities.isAbsoluteUrl(tr.getCode())) {
+        tr.setCode(URL_BASE+versionString()+"/StructureDefinition/"+tr.getCode());
+      }
       for (CanonicalType s : tr.getTargetProfile()) {
         s.setValue(patchUrl(s.getValue(), "StructureDefinitino"));
       }

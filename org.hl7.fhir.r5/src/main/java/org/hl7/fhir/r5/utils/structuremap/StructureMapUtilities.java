@@ -104,6 +104,7 @@ public class StructureMapUtilities {
   public static final String MAP_EXPRESSION = "map.transform.expression";
   private static final boolean RENDER_MULTIPLE_TARGETS_ONELINE = true;
   public static final String AUTO_VAR_NAME = "vvv";
+  public static final String DEF_GROUP_NAME = "DefaultMappingGroupAnonymousAlias";
 
   private final IWorkerContext worker;
   private final FHIRPathEngine fpe;
