@@ -113,7 +113,7 @@ public class ShExGenerator {
   );
 
   private List<String> shortIdException = Arrays.asList(
-    "Element", "Resource", "Extension", "base64Binary", "boolean",
+    "base64Binary", "boolean",
     "date", "dateTime", "decimal", "instant", "integer64",
     "integer", "string", "time", "uri"
   );
@@ -174,7 +174,7 @@ public class ShExGenerator {
   private static String SIMPLE_ELEMENT_DEFN_TEMPLATE = "@<$typ$>$vsdef$";
 
   // Value Set Element
-  private static String VALUESET_DEFN_TEMPLATE = " AND\n\t{fhir:value @$vsn$}";
+  private static String VALUESET_DEFN_TEMPLATE = " AND\n\t{fhir:v @$vsn$}";
 
   // Fixed Value Template
   private static String FIXED_VALUE_TEMPLATE = " AND\n\t{fhir:value [\"$val$\"]}";
@@ -442,9 +442,6 @@ public class ShExGenerator {
           "This might not be an issue, if this resource is normative base or a meta resource");
         shapeDefinitions.append("<" + sd.getName() + "> CLOSED {\n}");
       }
-
-      if (!imports.isEmpty())
-        imports.removeIf(s -> s.contains(sd.getName()));
     }
       shapeDefinitions.append(emitInnerTypes());
 
@@ -502,6 +499,10 @@ public class ShExGenerator {
 
     StringBuffer allImports = new StringBuffer("");
     if (!imports.isEmpty()) {
+      uniq_structures.forEach((StructureDefinition sdstruct) -> {
+          imports.removeIf(s -> s.contains(sdstruct.getName()));
+      });
+
       imports.sort(Comparator.comparingInt(String::length));
       imports.forEach((String imp) -> {
         ST import_def = tmplt(IMPORT_TEMPLATE);
@@ -553,7 +554,8 @@ public class ShExGenerator {
 
   private String getExtendedType(ElementDefinition ed){
     String bd = getBaseTypeName(ed);
-    if (bd != null  && !baseDataTypes.contains(bd)) {
+    //if (bd != null  && !baseDataTypes.contains(bd)) {
+    if (bd!=null) {
       addImport("<" + bd + ">");
       bd = "> EXTENDS @<" + bd;
     }
@@ -589,12 +591,15 @@ public class ShExGenerator {
           if ("Element".equals(sd.getName()))
             shape_defn.add("resourceDecl", tmplt(ROOT_TEMPLATE).render());
           else {
-                String rootTmpl = tmplt(ROOT_TEMPLATE).render();
-                if (baseDataTypes.contains(getBaseTypeName(sd)))
-                  rootTmpl = "";
-              ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
-                add("id", sd.getId()).
-                add("root", rootTmpl);
+            String rootTmpl = tmplt(ROOT_TEMPLATE).render();
+            String btn = getBaseTypeName(sd);
+            if ((baseDataTypes.contains(btn))||
+              (shortIdException.contains(btn)))
+              rootTmpl = "\n";
+
+            ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
+              add("id", sd.getId()).
+              add("root", rootTmpl);
 
             shape_defn.add("resourceDecl", resource_decl.render());
           }
@@ -646,9 +651,7 @@ public class ShExGenerator {
             String[] els = cstype.split("/");
             cstype = els[els.length - 1];
           }
-          // Implement here if SD type == constraint source OR SD type is Primitive or DataType then add constraint to SD otherwise skip it.
-          //if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType) || baseDataTypes.contains(bd)) {
-          //if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType)) {
+
           String id = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
           String shortId = id.substring(id.lastIndexOf(".") + 1);
           if ((ed.hasContentReference() && (!ed.hasType())) || (id.equals(sd.getName() + "." + shortId))) {
@@ -1305,12 +1308,16 @@ public class ShExGenerator {
         innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
     }
 
+    if ("BackboneElement".equals(typ))
+      typ = id;
+
     defn = simpleElement(sd, ed, typ);
 
     String refChoices = "";
 
     if (id.endsWith("[x]")) {
-      defn = " (" + genChoiceTypes(sd, ed, shortId) + ") ";
+      //defn = " (" + genChoiceTypes(sd, ed, shortId) + ")";
+      defn = " " + genChoiceTypes(sd, ed, shortId) + " ";
       //defn += " AND { rdf:type IRI } ";
     } else {
       if (ed.getType().size() == 1) {
@@ -1371,7 +1378,7 @@ public class ShExGenerator {
     } else {
       if (!refChoices.isEmpty()) {
         defn += " AND {fhir:link \n\t\t\t@<" +
-          refChoices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> }";
+          refChoices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> ? }";
       }
     }
 
@@ -1384,7 +1391,7 @@ public class ShExGenerator {
   }
 
   private boolean changeShortName(StructureDefinition sd, ElementDefinition ed){
-      return !shortIdException.contains(sd.getName());
+      return shortIdException.contains(sd.getName());
   }
 
   private void addImport(String typeDefn) {
@@ -1803,7 +1810,7 @@ public class ShExGenerator {
       for(ValueSet.ValueSetExpansionContainsComponent vsec : vse.getValueset().getExpansion().getContains())
         valid_codes.add("\"" + vsec.getCode() + "\"");
     }
-    return vsd.add("val_list", valid_codes.size() > 0? " [" + StringUtils.join(valid_codes, " ") + ']' : " EXTERNAL").render();
+    return vsd.add("val_list", valid_codes.size() > 0? " [" + StringUtils.join(valid_codes, " ") + ']' : " xsd:string #EXTERNAL").render();
   }
 
 
