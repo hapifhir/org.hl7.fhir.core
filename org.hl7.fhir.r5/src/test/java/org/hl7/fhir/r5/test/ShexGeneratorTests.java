@@ -59,6 +59,11 @@ public class ShexGeneratorTests {
   }
 
   @Test
+  public void testPatient() throws FHIRException, IOException, UcumException {
+    doTest("Patient", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+  }
+
+  @Test
   public void testObservation() throws FHIRException, IOException, UcumException {
     doTest("Observation", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
@@ -277,7 +282,6 @@ public class ShexGeneratorTests {
       doTestBatchSD(sds, useSelectedExtensions, policy, true, true, false);
     }
 
-
     System.out.println("************************ END PROCESSING ******************************");
 
     System.out.println("************************************************************************");
@@ -330,6 +334,7 @@ public class ShexGeneratorTests {
             Schema sch = validator.schema();
 
             Assert.assertNotNull(sch);
+
             System.out.println("VALIDATION PASSED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
           } catch (Exception e) {
             System.out.println("VALIDATION FAILED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
