@@ -81,7 +81,7 @@ public abstract class FormatUtilities {
   public static final String NS_XSI = "http://www.w3.org/2001/XMLSchema-instance";
   private static final int MAX_SCAN_LENGTH = 1000; // how many characters to scan into content when autodetermining format
   
-  public static final String MAP_ATTRIBUTE_NAME = "mapAttribute";
+  public static final String MAP_ATTRIBUTE_NAME = "attribute";
   public static final String PROPERTY_NAME = "property";
   public static String WORKING_CM_PROP_NAME = PROPERTY_NAME;
   
