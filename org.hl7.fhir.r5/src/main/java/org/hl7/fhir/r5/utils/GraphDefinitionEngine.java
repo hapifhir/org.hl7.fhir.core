@@ -2,34 +2,26 @@ package org.hl7.fhir.r5.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.xmlbeans.xml.stream.ReferenceResolver;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.Expression;
-import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.GraphDefinition;
 import org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent;
-import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.Argument;
 import org.hl7.fhir.utilities.graphql.EGraphEngine;
 import org.hl7.fhir.utilities.graphql.EGraphQLException;
-import org.hl7.fhir.utilities.graphql.GraphQLResponse;
 import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
-import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices.ReferenceResolution;
 import org.hl7.fhir.utilities.graphql.StringValue;
-import org.hl7.fhir.instance.model.api.IBaseResource;
 
 public class GraphDefinitionEngine {
 
