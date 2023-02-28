@@ -30,24 +30,16 @@ POSSIBILITY OF SUCH DAMAGE.
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.hl7.fhir.core.generator.analysis.Analysis;
 import org.hl7.fhir.core.generator.analysis.EnumInfo;
 import org.hl7.fhir.core.generator.analysis.TypeInfo;
 import org.hl7.fhir.core.generator.engine.Definitions;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.ValueSet;
 
 public class JavaParserXmlGenerator extends JavaBaseGenerator {
 
