@@ -1,6 +1,5 @@
 package org.hl7.fhir.core.generator.analysis;
 
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 
 public class EnumInfo {
