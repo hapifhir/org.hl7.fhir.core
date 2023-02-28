@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.poi.hpsf.Array;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
@@ -141,6 +142,10 @@ public class TypeDetails {
     this.collectionStatus = collectionStatus;
     this.types.add(pt);
   }
+  
+  private TypeDetails() {
+  }
+  
   public String addType(String n) {
     ProfiledType pt = new ProfiledType(n);
     String res = pt.uri;
@@ -436,6 +441,16 @@ public class TypeDetails {
       }
     }
     
+  }
+  public TypeDetails copy() {
+    TypeDetails td = new TypeDetails();
+    td.types.addAll(types);
+    td.collectionStatus = collectionStatus;
+    if (targets != null ) {
+      td.targets = new HashSet<>();
+      td.targets.addAll(targets);
+    }
+    return td;
   }
   
 }

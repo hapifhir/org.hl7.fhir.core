@@ -2,9 +2,7 @@ package org.hl7.fhir.r5.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 
-import org.apache.poi.xssf.model.Comments;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*

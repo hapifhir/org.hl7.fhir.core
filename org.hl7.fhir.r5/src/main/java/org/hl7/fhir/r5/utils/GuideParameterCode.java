@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.utils;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Configuration;
 import org.hl7.fhir.r5.model.EnumFactory;
 import org.hl7.fhir.r5.model.Enumeration;

@@ -36,7 +36,6 @@ import java.util.List;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
 
 
 public class TypesUtilities {

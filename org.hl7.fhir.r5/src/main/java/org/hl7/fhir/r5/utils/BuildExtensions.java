@@ -3,9 +3,7 @@ package org.hl7.fhir.r5.utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BuildExtensions extends ToolingExtensions {
 
