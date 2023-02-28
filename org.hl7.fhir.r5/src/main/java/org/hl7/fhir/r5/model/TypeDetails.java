@@ -38,7 +38,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.poi.hpsf.Array;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
