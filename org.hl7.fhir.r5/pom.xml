@@ -55,6 +55,7 @@
 			<groupId>es.weso</groupId>
 			<artifactId>shexs_2.12</artifactId>
 			<version>0.2.31</version>
+			<optional>true</optional>
 		</dependency>
 
 		<!-- JSON Parsers -->
