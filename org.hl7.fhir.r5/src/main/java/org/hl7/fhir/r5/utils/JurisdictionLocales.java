@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.utils;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**

@@ -44,9 +44,9 @@ import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.model.ExpressionNode.Function;
 import org.hl7.fhir.r5.model.ExpressionNode.Kind;
 import org.hl7.fhir.r5.model.ExpressionNode.Operation;
-import org.hl7.fhir.r5.model.Property.PropertyMatcher;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Property;
+import org.hl7.fhir.r5.model.Property.PropertyMatcher;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
@@ -3207,7 +3207,29 @@ public class FHIRPathEngine {
     case Count : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);
     case Where : 
-      return focus;
+      // special case: where the focus is Reference, and the parameter to where is resolve() "is", we will suck up the target types
+      if (focus.hasType("Reference")) {
+        boolean canRestrictTargets = !exp.getParameters().isEmpty();
+        List<String> targets = new ArrayList<>();
+        if (canRestrictTargets) {
+          ExpressionNode p = exp.getParameters().get(0);
+          if (p.getKind() == Kind.Function && p.getName().equals("resolve") && p.getOperation() == Operation.Is) {
+            targets.add(p.getOpNext().getName());
+          } else {
+            canRestrictTargets = false;
+          }
+        }
+        if (canRestrictTargets) {
+          TypeDetails td = focus.copy();
+          td.getTargets().clear();
+          td.getTargets().addAll(targets);
+          return td;
+        } else {
+          return focus;
+        }
+      } else {
+        return focus;
+      }
     case Select : 
       return paramTypes.get(0);
     case All : 
