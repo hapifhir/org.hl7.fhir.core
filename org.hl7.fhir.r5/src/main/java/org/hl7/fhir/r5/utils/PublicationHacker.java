@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.utils;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.ServiceRequest;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
