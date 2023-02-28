@@ -1881,6 +1881,6 @@ public class ShExGenerator {
   }
 
   private void printBuildMessage(String message){
-    System.out.println("ShExGenerator: " + message);
+    // System.out.println("ShExGenerator: " + message);
   }
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.core.generator.engine.Definitions;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StructureDefinition;
 

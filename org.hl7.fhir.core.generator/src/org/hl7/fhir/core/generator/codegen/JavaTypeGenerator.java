@@ -28,19 +28,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.hl7.fhir.core.generator.analysis.TypeInfo;
-import org.hl7.fhir.core.generator.codegen.JavaBaseGenerator;
 import org.hl7.fhir.core.generator.engine.Definitions;
-import org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
