@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -149,6 +149,134 @@ public class TestScript extends CanonicalResource {
       }
     }
 
+    public enum AssertionManualCompletionType {
+        /**
+         * Mark the currently waiting test failed and proceed with the next assert if the stopTestOnFail is false or the next test in the TestScript if the stopTestOnFail is true.
+         */
+        FAIL, 
+        /**
+         * Mark the currently waiting test passed (if the test is not failed already) and proceed with the next action in the TestScript.
+         */
+        PASS, 
+        /**
+         * Mark this assert as skipped and proceed with the next action in the TestScript.
+         */
+        SKIP, 
+        /**
+         * Stop execution of this TestScript. The overall status of this TestScript is evaluated based on the status of the completed tests.
+         */
+        STOP, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static AssertionManualCompletionType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("fail".equals(codeString))
+          return FAIL;
+        if ("pass".equals(codeString))
+          return PASS;
+        if ("skip".equals(codeString))
+          return SKIP;
+        if ("stop".equals(codeString))
+          return STOP;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown AssertionManualCompletionType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case FAIL: return "fail";
+            case PASS: return "pass";
+            case SKIP: return "skip";
+            case STOP: return "stop";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case FAIL: return "http://hl7.org/fhir/assert-manual-completion-codes";
+            case PASS: return "http://hl7.org/fhir/assert-manual-completion-codes";
+            case SKIP: return "http://hl7.org/fhir/assert-manual-completion-codes";
+            case STOP: return "http://hl7.org/fhir/assert-manual-completion-codes";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case FAIL: return "Mark the currently waiting test failed and proceed with the next assert if the stopTestOnFail is false or the next test in the TestScript if the stopTestOnFail is true.";
+            case PASS: return "Mark the currently waiting test passed (if the test is not failed already) and proceed with the next action in the TestScript.";
+            case SKIP: return "Mark this assert as skipped and proceed with the next action in the TestScript.";
+            case STOP: return "Stop execution of this TestScript. The overall status of this TestScript is evaluated based on the status of the completed tests.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case FAIL: return "Fail";
+            case PASS: return "Pass";
+            case SKIP: return "Skip";
+            case STOP: return "Stop";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class AssertionManualCompletionTypeEnumFactory implements EnumFactory<AssertionManualCompletionType> {
+    public AssertionManualCompletionType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("fail".equals(codeString))
+          return AssertionManualCompletionType.FAIL;
+        if ("pass".equals(codeString))
+          return AssertionManualCompletionType.PASS;
+        if ("skip".equals(codeString))
+          return AssertionManualCompletionType.SKIP;
+        if ("stop".equals(codeString))
+          return AssertionManualCompletionType.STOP;
+        throw new IllegalArgumentException("Unknown AssertionManualCompletionType code '"+codeString+"'");
+        }
+        public Enumeration<AssertionManualCompletionType> fromType(PrimitiveType<?> code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<AssertionManualCompletionType>(this, AssertionManualCompletionType.NULL, code);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return new Enumeration<AssertionManualCompletionType>(this, AssertionManualCompletionType.NULL, code);
+        if ("fail".equals(codeString))
+          return new Enumeration<AssertionManualCompletionType>(this, AssertionManualCompletionType.FAIL, code);
+        if ("pass".equals(codeString))
+          return new Enumeration<AssertionManualCompletionType>(this, AssertionManualCompletionType.PASS, code);
+        if ("skip".equals(codeString))
+          return new Enumeration<AssertionManualCompletionType>(this, AssertionManualCompletionType.SKIP, code);
+        if ("stop".equals(codeString))
+          return new Enumeration<AssertionManualCompletionType>(this, AssertionManualCompletionType.STOP, code);
+        throw new FHIRException("Unknown AssertionManualCompletionType code '"+codeString+"'");
+        }
+    public String toCode(AssertionManualCompletionType code) {
+      if (code == AssertionManualCompletionType.FAIL)
+        return "fail";
+      if (code == AssertionManualCompletionType.PASS)
+        return "pass";
+      if (code == AssertionManualCompletionType.SKIP)
+        return "skip";
+      if (code == AssertionManualCompletionType.STOP)
+        return "stop";
+      return "?";
+      }
+    public String toSystem(AssertionManualCompletionType code) {
+      return code.getSystem();
+      }
+    }
+
     public enum AssertionOperatorType {
         /**
          * Default value. Equals comparison.
@@ -195,6 +323,10 @@ public class TestScript extends CanonicalResource {
          */
         EVAL, 
         /**
+         * Manually evaluate the condition described by this assert. The test engine SHALL pause and provide an input mechanism to set the outcome of this assert to 'pass', 'fail', 'skip' or 'stop'.
+         */
+        MANUALEVAL, 
+        /**
          * added to help the parsers with the generic types
          */
         NULL;
@@ -223,6 +355,8 @@ public class TestScript extends CanonicalResource {
           return NOTCONTAINS;
         if ("eval".equals(codeString))
           return EVAL;
+        if ("manualEval".equals(codeString))
+          return MANUALEVAL;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -241,6 +375,7 @@ public class TestScript extends CanonicalResource {
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
             case EVAL: return "eval";
+            case MANUALEVAL: return "manualEval";
             case NULL: return null;
             default: return "?";
           }
@@ -258,6 +393,7 @@ public class TestScript extends CanonicalResource {
             case CONTAINS: return "http://hl7.org/fhir/assert-operator-codes";
             case NOTCONTAINS: return "http://hl7.org/fhir/assert-operator-codes";
             case EVAL: return "http://hl7.org/fhir/assert-operator-codes";
+            case MANUALEVAL: return "http://hl7.org/fhir/assert-operator-codes";
             case NULL: return null;
             default: return "?";
           }
@@ -275,6 +411,7 @@ public class TestScript extends CanonicalResource {
             case CONTAINS: return "Compare value string contains a known value.";
             case NOTCONTAINS: return "Compare value string does not contain a known value.";
             case EVAL: return "Evaluate the FHIRPath expression as a boolean condition.";
+            case MANUALEVAL: return "Manually evaluate the condition described by this assert. The test engine SHALL pause and provide an input mechanism to set the outcome of this assert to 'pass', 'fail', 'skip' or 'stop'.";
             case NULL: return null;
             default: return "?";
           }
@@ -292,6 +429,7 @@ public class TestScript extends CanonicalResource {
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
             case EVAL: return "evaluate";
+            case MANUALEVAL: return "manualEvaluate";
             case NULL: return null;
             default: return "?";
           }
@@ -325,6 +463,8 @@ public class TestScript extends CanonicalResource {
           return AssertionOperatorType.NOTCONTAINS;
         if ("eval".equals(codeString))
           return AssertionOperatorType.EVAL;
+        if ("manualEval".equals(codeString))
+          return AssertionOperatorType.MANUALEVAL;
         throw new IllegalArgumentException("Unknown AssertionOperatorType code '"+codeString+"'");
         }
         public Enumeration<AssertionOperatorType> fromType(PrimitiveType<?> code) throws FHIRException {
@@ -357,6 +497,8 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.NOTCONTAINS, code);
         if ("eval".equals(codeString))
           return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.EVAL, code);
+        if ("manualEval".equals(codeString))
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.MANUALEVAL, code);
         throw new FHIRException("Unknown AssertionOperatorType code '"+codeString+"'");
         }
     public String toCode(AssertionOperatorType code) {
@@ -382,6 +524,8 @@ public class TestScript extends CanonicalResource {
         return "notContains";
       if (code == AssertionOperatorType.EVAL)
         return "eval";
+      if (code == AssertionOperatorType.MANUALEVAL)
+        return "manualEval";
       return "?";
       }
     public String toSystem(AssertionOperatorType code) {
@@ -391,6 +535,14 @@ public class TestScript extends CanonicalResource {
 
     public enum AssertionResponseTypes {
         /**
+         * Response code is 100.
+         */
+        CONTINUE, 
+        /**
+         * Response code is 101.
+         */
+        SWITCHINGPROTOCOLS, 
+        /**
          * Response code is 200.
          */
         OKAY, 
@@ -399,17 +551,69 @@ public class TestScript extends CanonicalResource {
          */
         CREATED, 
         /**
+         * Response code is 202.
+         */
+        ACCEPTED, 
+        /**
+         * Response code is 203.
+         */
+        NONAUTHORITATIVEINFORMATION, 
+        /**
          * Response code is 204.
          */
         NOCONTENT, 
+        /**
+         * Response code is 205.
+         */
+        RESETCONTENT, 
+        /**
+         * Response code is 206.
+         */
+        PARTIALCONTENT, 
+        /**
+         * Response code is 300.
+         */
+        MULTIPLECHOICES, 
+        /**
+         * Response code is 301.
+         */
+        MOVEDPERMANENTLY, 
+        /**
+         * Response code is 302.
+         */
+        FOUND, 
+        /**
+         * Response code is 303.
+         */
+        SEEOTHER, 
         /**
          * Response code is 304.
          */
         NOTMODIFIED, 
         /**
+         * Response code is 305.
+         */
+        USEPROXY, 
+        /**
+         * Response code is 307.
+         */
+        TEMPORARYREDIRECT, 
+        /**
+         * Response code is 308.
+         */
+        PERMANENTREDIRECT, 
+        /**
          * Response code is 400.
          */
-        BAD, 
+        BADREQUEST, 
+        /**
+         * Response code is 401.
+         */
+        UNAUTHORIZED, 
+        /**
+         * Response code is 402.
+         */
+        PAYMENTREQUIRED, 
         /**
          * Response code is 403.
          */
@@ -423,6 +627,18 @@ public class TestScript extends CanonicalResource {
          */
         METHODNOTALLOWED, 
         /**
+         * Response code is 406.
+         */
+        NOTACCEPTABLE, 
+        /**
+         * Response code is 407.
+         */
+        PROXYAUTHENTICATIONREQUIRED, 
+        /**
+         * Response code is 408.
+         */
+        REQUESTTIMEOUT, 
+        /**
          * Response code is 409.
          */
         CONFLICT, 
@@ -431,13 +647,69 @@ public class TestScript extends CanonicalResource {
          */
         GONE, 
         /**
+         * Response code is 411.
+         */
+        LENGTHREQUIRED, 
+        /**
          * Response code is 412.
          */
         PRECONDITIONFAILED, 
         /**
+         * Response code is 413.
+         */
+        CONTENTTOOLARGE, 
+        /**
+         * Response code is 414.
+         */
+        URITOOLONG, 
+        /**
+         * Response code is 415.
+         */
+        UNSUPPORTEDMEDIATYPE, 
+        /**
+         * Response code is 416.
+         */
+        RANGENOTSATISFIABLE, 
+        /**
+         * Response code is 417.
+         */
+        EXPECTATIONFAILED, 
+        /**
+         * Response code is 421.
+         */
+        MISDIRECTEDREQUEST, 
+        /**
          * Response code is 422.
          */
-        UNPROCESSABLE, 
+        UNPROCESSABLECONTENT, 
+        /**
+         * Response code is 426.
+         */
+        UPGRADEREQUIRED, 
+        /**
+         * Response code is 500.
+         */
+        INTERNALSERVERERROR, 
+        /**
+         * Response code is 501.
+         */
+        NOTIMPLEMENTED, 
+        /**
+         * Response code is 502.
+         */
+        BADGATEWAY, 
+        /**
+         * Response code is 503.
+         */
+        SERVICEUNAVAILABLE, 
+        /**
+         * Response code is 504.
+         */
+        GATEWAYTIMEOUT, 
+        /**
+         * Response code is 505.
+         */
+        HTTPVERSIONNOTSUPPORTED, 
         /**
          * added to help the parsers with the generic types
          */
@@ -445,30 +717,94 @@ public class TestScript extends CanonicalResource {
         public static AssertionResponseTypes fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
+        if ("continue".equals(codeString))
+          return CONTINUE;
+        if ("switchingProtocols".equals(codeString))
+          return SWITCHINGPROTOCOLS;
         if ("okay".equals(codeString))
           return OKAY;
         if ("created".equals(codeString))
           return CREATED;
+        if ("accepted".equals(codeString))
+          return ACCEPTED;
+        if ("nonAuthoritativeInformation".equals(codeString))
+          return NONAUTHORITATIVEINFORMATION;
         if ("noContent".equals(codeString))
           return NOCONTENT;
+        if ("resetContent".equals(codeString))
+          return RESETCONTENT;
+        if ("partialContent".equals(codeString))
+          return PARTIALCONTENT;
+        if ("multipleChoices".equals(codeString))
+          return MULTIPLECHOICES;
+        if ("movedPermanently".equals(codeString))
+          return MOVEDPERMANENTLY;
+        if ("found".equals(codeString))
+          return FOUND;
+        if ("seeOther".equals(codeString))
+          return SEEOTHER;
         if ("notModified".equals(codeString))
           return NOTMODIFIED;
-        if ("bad".equals(codeString))
-          return BAD;
+        if ("useProxy".equals(codeString))
+          return USEPROXY;
+        if ("temporaryRedirect".equals(codeString))
+          return TEMPORARYREDIRECT;
+        if ("permanentRedirect".equals(codeString))
+          return PERMANENTREDIRECT;
+        if ("badRequest".equals(codeString))
+          return BADREQUEST;
+        if ("unauthorized".equals(codeString))
+          return UNAUTHORIZED;
+        if ("paymentRequired".equals(codeString))
+          return PAYMENTREQUIRED;
         if ("forbidden".equals(codeString))
           return FORBIDDEN;
         if ("notFound".equals(codeString))
           return NOTFOUND;
         if ("methodNotAllowed".equals(codeString))
           return METHODNOTALLOWED;
+        if ("notAcceptable".equals(codeString))
+          return NOTACCEPTABLE;
+        if ("proxyAuthenticationRequired".equals(codeString))
+          return PROXYAUTHENTICATIONREQUIRED;
+        if ("requestTimeout".equals(codeString))
+          return REQUESTTIMEOUT;
         if ("conflict".equals(codeString))
           return CONFLICT;
         if ("gone".equals(codeString))
           return GONE;
+        if ("lengthRequired".equals(codeString))
+          return LENGTHREQUIRED;
         if ("preconditionFailed".equals(codeString))
           return PRECONDITIONFAILED;
-        if ("unprocessable".equals(codeString))
-          return UNPROCESSABLE;
+        if ("contentTooLarge".equals(codeString))
+          return CONTENTTOOLARGE;
+        if ("uriTooLong".equals(codeString))
+          return URITOOLONG;
+        if ("unsupportedMediaType".equals(codeString))
+          return UNSUPPORTEDMEDIATYPE;
+        if ("rangeNotSatisfiable".equals(codeString))
+          return RANGENOTSATISFIABLE;
+        if ("expectationFailed".equals(codeString))
+          return EXPECTATIONFAILED;
+        if ("misdirectedRequest".equals(codeString))
+          return MISDIRECTEDREQUEST;
+        if ("unprocessableContent".equals(codeString))
+          return UNPROCESSABLECONTENT;
+        if ("upgradeRequired".equals(codeString))
+          return UPGRADEREQUIRED;
+        if ("internalServerError".equals(codeString))
+          return INTERNALSERVERERROR;
+        if ("notImplemented".equals(codeString))
+          return NOTIMPLEMENTED;
+        if ("badGateway".equals(codeString))
+          return BADGATEWAY;
+        if ("serviceUnavailable".equals(codeString))
+          return SERVICEUNAVAILABLE;
+        if ("gatewayTimeout".equals(codeString))
+          return GATEWAYTIMEOUT;
+        if ("httpVersionNotSupported".equals(codeString))
+          return HTTPVERSIONNOTSUPPORTED;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -476,72 +812,200 @@ public class TestScript extends CanonicalResource {
         }
         public String toCode() {
           switch (this) {
+            case CONTINUE: return "continue";
+            case SWITCHINGPROTOCOLS: return "switchingProtocols";
             case OKAY: return "okay";
             case CREATED: return "created";
+            case ACCEPTED: return "accepted";
+            case NONAUTHORITATIVEINFORMATION: return "nonAuthoritativeInformation";
             case NOCONTENT: return "noContent";
+            case RESETCONTENT: return "resetContent";
+            case PARTIALCONTENT: return "partialContent";
+            case MULTIPLECHOICES: return "multipleChoices";
+            case MOVEDPERMANENTLY: return "movedPermanently";
+            case FOUND: return "found";
+            case SEEOTHER: return "seeOther";
             case NOTMODIFIED: return "notModified";
-            case BAD: return "bad";
+            case USEPROXY: return "useProxy";
+            case TEMPORARYREDIRECT: return "temporaryRedirect";
+            case PERMANENTREDIRECT: return "permanentRedirect";
+            case BADREQUEST: return "badRequest";
+            case UNAUTHORIZED: return "unauthorized";
+            case PAYMENTREQUIRED: return "paymentRequired";
             case FORBIDDEN: return "forbidden";
             case NOTFOUND: return "notFound";
             case METHODNOTALLOWED: return "methodNotAllowed";
+            case NOTACCEPTABLE: return "notAcceptable";
+            case PROXYAUTHENTICATIONREQUIRED: return "proxyAuthenticationRequired";
+            case REQUESTTIMEOUT: return "requestTimeout";
             case CONFLICT: return "conflict";
             case GONE: return "gone";
+            case LENGTHREQUIRED: return "lengthRequired";
             case PRECONDITIONFAILED: return "preconditionFailed";
-            case UNPROCESSABLE: return "unprocessable";
+            case CONTENTTOOLARGE: return "contentTooLarge";
+            case URITOOLONG: return "uriTooLong";
+            case UNSUPPORTEDMEDIATYPE: return "unsupportedMediaType";
+            case RANGENOTSATISFIABLE: return "rangeNotSatisfiable";
+            case EXPECTATIONFAILED: return "expectationFailed";
+            case MISDIRECTEDREQUEST: return "misdirectedRequest";
+            case UNPROCESSABLECONTENT: return "unprocessableContent";
+            case UPGRADEREQUIRED: return "upgradeRequired";
+            case INTERNALSERVERERROR: return "internalServerError";
+            case NOTIMPLEMENTED: return "notImplemented";
+            case BADGATEWAY: return "badGateway";
+            case SERVICEUNAVAILABLE: return "serviceUnavailable";
+            case GATEWAYTIMEOUT: return "gatewayTimeout";
+            case HTTPVERSIONNOTSUPPORTED: return "httpVersionNotSupported";
             case NULL: return null;
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
+            case CONTINUE: return "http://hl7.org/fhir/assert-response-code-types";
+            case SWITCHINGPROTOCOLS: return "http://hl7.org/fhir/assert-response-code-types";
             case OKAY: return "http://hl7.org/fhir/assert-response-code-types";
             case CREATED: return "http://hl7.org/fhir/assert-response-code-types";
+            case ACCEPTED: return "http://hl7.org/fhir/assert-response-code-types";
+            case NONAUTHORITATIVEINFORMATION: return "http://hl7.org/fhir/assert-response-code-types";
             case NOCONTENT: return "http://hl7.org/fhir/assert-response-code-types";
+            case RESETCONTENT: return "http://hl7.org/fhir/assert-response-code-types";
+            case PARTIALCONTENT: return "http://hl7.org/fhir/assert-response-code-types";
+            case MULTIPLECHOICES: return "http://hl7.org/fhir/assert-response-code-types";
+            case MOVEDPERMANENTLY: return "http://hl7.org/fhir/assert-response-code-types";
+            case FOUND: return "http://hl7.org/fhir/assert-response-code-types";
+            case SEEOTHER: return "http://hl7.org/fhir/assert-response-code-types";
             case NOTMODIFIED: return "http://hl7.org/fhir/assert-response-code-types";
-            case BAD: return "http://hl7.org/fhir/assert-response-code-types";
+            case USEPROXY: return "http://hl7.org/fhir/assert-response-code-types";
+            case TEMPORARYREDIRECT: return "http://hl7.org/fhir/assert-response-code-types";
+            case PERMANENTREDIRECT: return "http://hl7.org/fhir/assert-response-code-types";
+            case BADREQUEST: return "http://hl7.org/fhir/assert-response-code-types";
+            case UNAUTHORIZED: return "http://hl7.org/fhir/assert-response-code-types";
+            case PAYMENTREQUIRED: return "http://hl7.org/fhir/assert-response-code-types";
             case FORBIDDEN: return "http://hl7.org/fhir/assert-response-code-types";
             case NOTFOUND: return "http://hl7.org/fhir/assert-response-code-types";
             case METHODNOTALLOWED: return "http://hl7.org/fhir/assert-response-code-types";
+            case NOTACCEPTABLE: return "http://hl7.org/fhir/assert-response-code-types";
+            case PROXYAUTHENTICATIONREQUIRED: return "http://hl7.org/fhir/assert-response-code-types";
+            case REQUESTTIMEOUT: return "http://hl7.org/fhir/assert-response-code-types";
             case CONFLICT: return "http://hl7.org/fhir/assert-response-code-types";
             case GONE: return "http://hl7.org/fhir/assert-response-code-types";
+            case LENGTHREQUIRED: return "http://hl7.org/fhir/assert-response-code-types";
             case PRECONDITIONFAILED: return "http://hl7.org/fhir/assert-response-code-types";
-            case UNPROCESSABLE: return "http://hl7.org/fhir/assert-response-code-types";
+            case CONTENTTOOLARGE: return "http://hl7.org/fhir/assert-response-code-types";
+            case URITOOLONG: return "http://hl7.org/fhir/assert-response-code-types";
+            case UNSUPPORTEDMEDIATYPE: return "http://hl7.org/fhir/assert-response-code-types";
+            case RANGENOTSATISFIABLE: return "http://hl7.org/fhir/assert-response-code-types";
+            case EXPECTATIONFAILED: return "http://hl7.org/fhir/assert-response-code-types";
+            case MISDIRECTEDREQUEST: return "http://hl7.org/fhir/assert-response-code-types";
+            case UNPROCESSABLECONTENT: return "http://hl7.org/fhir/assert-response-code-types";
+            case UPGRADEREQUIRED: return "http://hl7.org/fhir/assert-response-code-types";
+            case INTERNALSERVERERROR: return "http://hl7.org/fhir/assert-response-code-types";
+            case NOTIMPLEMENTED: return "http://hl7.org/fhir/assert-response-code-types";
+            case BADGATEWAY: return "http://hl7.org/fhir/assert-response-code-types";
+            case SERVICEUNAVAILABLE: return "http://hl7.org/fhir/assert-response-code-types";
+            case GATEWAYTIMEOUT: return "http://hl7.org/fhir/assert-response-code-types";
+            case HTTPVERSIONNOTSUPPORTED: return "http://hl7.org/fhir/assert-response-code-types";
             case NULL: return null;
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
+            case CONTINUE: return "Response code is 100.";
+            case SWITCHINGPROTOCOLS: return "Response code is 101.";
             case OKAY: return "Response code is 200.";
             case CREATED: return "Response code is 201.";
+            case ACCEPTED: return "Response code is 202.";
+            case NONAUTHORITATIVEINFORMATION: return "Response code is 203.";
             case NOCONTENT: return "Response code is 204.";
+            case RESETCONTENT: return "Response code is 205.";
+            case PARTIALCONTENT: return "Response code is 206.";
+            case MULTIPLECHOICES: return "Response code is 300.";
+            case MOVEDPERMANENTLY: return "Response code is 301.";
+            case FOUND: return "Response code is 302.";
+            case SEEOTHER: return "Response code is 303.";
             case NOTMODIFIED: return "Response code is 304.";
-            case BAD: return "Response code is 400.";
+            case USEPROXY: return "Response code is 305.";
+            case TEMPORARYREDIRECT: return "Response code is 307.";
+            case PERMANENTREDIRECT: return "Response code is 308.";
+            case BADREQUEST: return "Response code is 400.";
+            case UNAUTHORIZED: return "Response code is 401.";
+            case PAYMENTREQUIRED: return "Response code is 402.";
             case FORBIDDEN: return "Response code is 403.";
             case NOTFOUND: return "Response code is 404.";
             case METHODNOTALLOWED: return "Response code is 405.";
+            case NOTACCEPTABLE: return "Response code is 406.";
+            case PROXYAUTHENTICATIONREQUIRED: return "Response code is 407.";
+            case REQUESTTIMEOUT: return "Response code is 408.";
             case CONFLICT: return "Response code is 409.";
             case GONE: return "Response code is 410.";
+            case LENGTHREQUIRED: return "Response code is 411.";
             case PRECONDITIONFAILED: return "Response code is 412.";
-            case UNPROCESSABLE: return "Response code is 422.";
+            case CONTENTTOOLARGE: return "Response code is 413.";
+            case URITOOLONG: return "Response code is 414.";
+            case UNSUPPORTEDMEDIATYPE: return "Response code is 415.";
+            case RANGENOTSATISFIABLE: return "Response code is 416.";
+            case EXPECTATIONFAILED: return "Response code is 417.";
+            case MISDIRECTEDREQUEST: return "Response code is 421.";
+            case UNPROCESSABLECONTENT: return "Response code is 422.";
+            case UPGRADEREQUIRED: return "Response code is 426.";
+            case INTERNALSERVERERROR: return "Response code is 500.";
+            case NOTIMPLEMENTED: return "Response code is 501.";
+            case BADGATEWAY: return "Response code is 502.";
+            case SERVICEUNAVAILABLE: return "Response code is 503.";
+            case GATEWAYTIMEOUT: return "Response code is 504.";
+            case HTTPVERSIONNOTSUPPORTED: return "Response code is 505.";
             case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case OKAY: return "okay";
-            case CREATED: return "created";
-            case NOCONTENT: return "noContent";
-            case NOTMODIFIED: return "notModified";
-            case BAD: return "bad";
-            case FORBIDDEN: return "forbidden";
-            case NOTFOUND: return "notFound";
-            case METHODNOTALLOWED: return "methodNotAllowed";
-            case CONFLICT: return "conflict";
-            case GONE: return "gone";
-            case PRECONDITIONFAILED: return "preconditionFailed";
-            case UNPROCESSABLE: return "unprocessable";
+            case CONTINUE: return "Continue";
+            case SWITCHINGPROTOCOLS: return "Switching Protocols";
+            case OKAY: return "OK";
+            case CREATED: return "Created";
+            case ACCEPTED: return "Accepted";
+            case NONAUTHORITATIVEINFORMATION: return "Non-Authoritative Information";
+            case NOCONTENT: return "No Content";
+            case RESETCONTENT: return "Reset Content";
+            case PARTIALCONTENT: return "Partial Content";
+            case MULTIPLECHOICES: return "Multiple Choices";
+            case MOVEDPERMANENTLY: return "Moved Permanently";
+            case FOUND: return "Found";
+            case SEEOTHER: return "See Other";
+            case NOTMODIFIED: return "Not Modified";
+            case USEPROXY: return "Use Proxy";
+            case TEMPORARYREDIRECT: return "Temporary Redirect";
+            case PERMANENTREDIRECT: return "Permanent Redirect";
+            case BADREQUEST: return "Bad Request";
+            case UNAUTHORIZED: return "Unauthorized";
+            case PAYMENTREQUIRED: return "Payment Required";
+            case FORBIDDEN: return "Forbidden";
+            case NOTFOUND: return "Not Found";
+            case METHODNOTALLOWED: return "Method Not Allowed";
+            case NOTACCEPTABLE: return "Not Acceptable";
+            case PROXYAUTHENTICATIONREQUIRED: return "Proxy Authentication Required";
+            case REQUESTTIMEOUT: return "Request Timeout";
+            case CONFLICT: return "Conflict";
+            case GONE: return "Gone";
+            case LENGTHREQUIRED: return "Length Required";
+            case PRECONDITIONFAILED: return "Precondition Failed";
+            case CONTENTTOOLARGE: return "Content Too Large";
+            case URITOOLONG: return "URI Too Long";
+            case UNSUPPORTEDMEDIATYPE: return "Unsupported Media Type";
+            case RANGENOTSATISFIABLE: return "Range Not Satisfiable";
+            case EXPECTATIONFAILED: return "Expectation Failed";
+            case MISDIRECTEDREQUEST: return "Misdirected Request";
+            case UNPROCESSABLECONTENT: return "Unprocessable Content";
+            case UPGRADEREQUIRED: return "Upgrade Required";
+            case INTERNALSERVERERROR: return "Internal Server Error";
+            case NOTIMPLEMENTED: return "Not Implemented";
+            case BADGATEWAY: return "Bad Gateway";
+            case SERVICEUNAVAILABLE: return "Service Unavailable";
+            case GATEWAYTIMEOUT: return "Gateway Timeout";
+            case HTTPVERSIONNOTSUPPORTED: return "HTTP Version Not Supported";
             case NULL: return null;
             default: return "?";
           }
@@ -553,30 +1017,94 @@ public class TestScript extends CanonicalResource {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
+        if ("continue".equals(codeString))
+          return AssertionResponseTypes.CONTINUE;
+        if ("switchingProtocols".equals(codeString))
+          return AssertionResponseTypes.SWITCHINGPROTOCOLS;
         if ("okay".equals(codeString))
           return AssertionResponseTypes.OKAY;
         if ("created".equals(codeString))
           return AssertionResponseTypes.CREATED;
+        if ("accepted".equals(codeString))
+          return AssertionResponseTypes.ACCEPTED;
+        if ("nonAuthoritativeInformation".equals(codeString))
+          return AssertionResponseTypes.NONAUTHORITATIVEINFORMATION;
         if ("noContent".equals(codeString))
           return AssertionResponseTypes.NOCONTENT;
+        if ("resetContent".equals(codeString))
+          return AssertionResponseTypes.RESETCONTENT;
+        if ("partialContent".equals(codeString))
+          return AssertionResponseTypes.PARTIALCONTENT;
+        if ("multipleChoices".equals(codeString))
+          return AssertionResponseTypes.MULTIPLECHOICES;
+        if ("movedPermanently".equals(codeString))
+          return AssertionResponseTypes.MOVEDPERMANENTLY;
+        if ("found".equals(codeString))
+          return AssertionResponseTypes.FOUND;
+        if ("seeOther".equals(codeString))
+          return AssertionResponseTypes.SEEOTHER;
         if ("notModified".equals(codeString))
           return AssertionResponseTypes.NOTMODIFIED;
-        if ("bad".equals(codeString))
-          return AssertionResponseTypes.BAD;
+        if ("useProxy".equals(codeString))
+          return AssertionResponseTypes.USEPROXY;
+        if ("temporaryRedirect".equals(codeString))
+          return AssertionResponseTypes.TEMPORARYREDIRECT;
+        if ("permanentRedirect".equals(codeString))
+          return AssertionResponseTypes.PERMANENTREDIRECT;
+        if ("badRequest".equals(codeString))
+          return AssertionResponseTypes.BADREQUEST;
+        if ("unauthorized".equals(codeString))
+          return AssertionResponseTypes.UNAUTHORIZED;
+        if ("paymentRequired".equals(codeString))
+          return AssertionResponseTypes.PAYMENTREQUIRED;
         if ("forbidden".equals(codeString))
           return AssertionResponseTypes.FORBIDDEN;
         if ("notFound".equals(codeString))
           return AssertionResponseTypes.NOTFOUND;
         if ("methodNotAllowed".equals(codeString))
           return AssertionResponseTypes.METHODNOTALLOWED;
+        if ("notAcceptable".equals(codeString))
+          return AssertionResponseTypes.NOTACCEPTABLE;
+        if ("proxyAuthenticationRequired".equals(codeString))
+          return AssertionResponseTypes.PROXYAUTHENTICATIONREQUIRED;
+        if ("requestTimeout".equals(codeString))
+          return AssertionResponseTypes.REQUESTTIMEOUT;
         if ("conflict".equals(codeString))
           return AssertionResponseTypes.CONFLICT;
         if ("gone".equals(codeString))
           return AssertionResponseTypes.GONE;
+        if ("lengthRequired".equals(codeString))
+          return AssertionResponseTypes.LENGTHREQUIRED;
         if ("preconditionFailed".equals(codeString))
           return AssertionResponseTypes.PRECONDITIONFAILED;
-        if ("unprocessable".equals(codeString))
-          return AssertionResponseTypes.UNPROCESSABLE;
+        if ("contentTooLarge".equals(codeString))
+          return AssertionResponseTypes.CONTENTTOOLARGE;
+        if ("uriTooLong".equals(codeString))
+          return AssertionResponseTypes.URITOOLONG;
+        if ("unsupportedMediaType".equals(codeString))
+          return AssertionResponseTypes.UNSUPPORTEDMEDIATYPE;
+        if ("rangeNotSatisfiable".equals(codeString))
+          return AssertionResponseTypes.RANGENOTSATISFIABLE;
+        if ("expectationFailed".equals(codeString))
+          return AssertionResponseTypes.EXPECTATIONFAILED;
+        if ("misdirectedRequest".equals(codeString))
+          return AssertionResponseTypes.MISDIRECTEDREQUEST;
+        if ("unprocessableContent".equals(codeString))
+          return AssertionResponseTypes.UNPROCESSABLECONTENT;
+        if ("upgradeRequired".equals(codeString))
+          return AssertionResponseTypes.UPGRADEREQUIRED;
+        if ("internalServerError".equals(codeString))
+          return AssertionResponseTypes.INTERNALSERVERERROR;
+        if ("notImplemented".equals(codeString))
+          return AssertionResponseTypes.NOTIMPLEMENTED;
+        if ("badGateway".equals(codeString))
+          return AssertionResponseTypes.BADGATEWAY;
+        if ("serviceUnavailable".equals(codeString))
+          return AssertionResponseTypes.SERVICEUNAVAILABLE;
+        if ("gatewayTimeout".equals(codeString))
+          return AssertionResponseTypes.GATEWAYTIMEOUT;
+        if ("httpVersionNotSupported".equals(codeString))
+          return AssertionResponseTypes.HTTPVERSIONNOTSUPPORTED;
         throw new IllegalArgumentException("Unknown AssertionResponseTypes code '"+codeString+"'");
         }
         public Enumeration<AssertionResponseTypes> fromType(PrimitiveType<?> code) throws FHIRException {
@@ -587,57 +1115,185 @@ public class TestScript extends CanonicalResource {
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NULL, code);
+        if ("continue".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.CONTINUE, code);
+        if ("switchingProtocols".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.SWITCHINGPROTOCOLS, code);
         if ("okay".equals(codeString))
           return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.OKAY, code);
         if ("created".equals(codeString))
           return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.CREATED, code);
+        if ("accepted".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.ACCEPTED, code);
+        if ("nonAuthoritativeInformation".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NONAUTHORITATIVEINFORMATION, code);
         if ("noContent".equals(codeString))
           return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NOCONTENT, code);
+        if ("resetContent".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.RESETCONTENT, code);
+        if ("partialContent".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.PARTIALCONTENT, code);
+        if ("multipleChoices".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.MULTIPLECHOICES, code);
+        if ("movedPermanently".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.MOVEDPERMANENTLY, code);
+        if ("found".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.FOUND, code);
+        if ("seeOther".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.SEEOTHER, code);
         if ("notModified".equals(codeString))
           return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NOTMODIFIED, code);
-        if ("bad".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.BAD, code);
+        if ("useProxy".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.USEPROXY, code);
+        if ("temporaryRedirect".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.TEMPORARYREDIRECT, code);
+        if ("permanentRedirect".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.PERMANENTREDIRECT, code);
+        if ("badRequest".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.BADREQUEST, code);
+        if ("unauthorized".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.UNAUTHORIZED, code);
+        if ("paymentRequired".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.PAYMENTREQUIRED, code);
         if ("forbidden".equals(codeString))
           return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.FORBIDDEN, code);
         if ("notFound".equals(codeString))
           return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NOTFOUND, code);
         if ("methodNotAllowed".equals(codeString))
           return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.METHODNOTALLOWED, code);
+        if ("notAcceptable".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NOTACCEPTABLE, code);
+        if ("proxyAuthenticationRequired".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.PROXYAUTHENTICATIONREQUIRED, code);
+        if ("requestTimeout".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.REQUESTTIMEOUT, code);
         if ("conflict".equals(codeString))
           return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.CONFLICT, code);
         if ("gone".equals(codeString))
           return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.GONE, code);
+        if ("lengthRequired".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.LENGTHREQUIRED, code);
         if ("preconditionFailed".equals(codeString))
           return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.PRECONDITIONFAILED, code);
-        if ("unprocessable".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.UNPROCESSABLE, code);
+        if ("contentTooLarge".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.CONTENTTOOLARGE, code);
+        if ("uriTooLong".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.URITOOLONG, code);
+        if ("unsupportedMediaType".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.UNSUPPORTEDMEDIATYPE, code);
+        if ("rangeNotSatisfiable".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.RANGENOTSATISFIABLE, code);
+        if ("expectationFailed".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.EXPECTATIONFAILED, code);
+        if ("misdirectedRequest".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.MISDIRECTEDREQUEST, code);
+        if ("unprocessableContent".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.UNPROCESSABLECONTENT, code);
+        if ("upgradeRequired".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.UPGRADEREQUIRED, code);
+        if ("internalServerError".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.INTERNALSERVERERROR, code);
+        if ("notImplemented".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NOTIMPLEMENTED, code);
+        if ("badGateway".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.BADGATEWAY, code);
+        if ("serviceUnavailable".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.SERVICEUNAVAILABLE, code);
+        if ("gatewayTimeout".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.GATEWAYTIMEOUT, code);
+        if ("httpVersionNotSupported".equals(codeString))
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.HTTPVERSIONNOTSUPPORTED, code);
         throw new FHIRException("Unknown AssertionResponseTypes code '"+codeString+"'");
         }
     public String toCode(AssertionResponseTypes code) {
+      if (code == AssertionResponseTypes.CONTINUE)
+        return "continue";
+      if (code == AssertionResponseTypes.SWITCHINGPROTOCOLS)
+        return "switchingProtocols";
       if (code == AssertionResponseTypes.OKAY)
         return "okay";
       if (code == AssertionResponseTypes.CREATED)
         return "created";
+      if (code == AssertionResponseTypes.ACCEPTED)
+        return "accepted";
+      if (code == AssertionResponseTypes.NONAUTHORITATIVEINFORMATION)
+        return "nonAuthoritativeInformation";
       if (code == AssertionResponseTypes.NOCONTENT)
         return "noContent";
+      if (code == AssertionResponseTypes.RESETCONTENT)
+        return "resetContent";
+      if (code == AssertionResponseTypes.PARTIALCONTENT)
+        return "partialContent";
+      if (code == AssertionResponseTypes.MULTIPLECHOICES)
+        return "multipleChoices";
+      if (code == AssertionResponseTypes.MOVEDPERMANENTLY)
+        return "movedPermanently";
+      if (code == AssertionResponseTypes.FOUND)
+        return "found";
+      if (code == AssertionResponseTypes.SEEOTHER)
+        return "seeOther";
       if (code == AssertionResponseTypes.NOTMODIFIED)
         return "notModified";
-      if (code == AssertionResponseTypes.BAD)
-        return "bad";
+      if (code == AssertionResponseTypes.USEPROXY)
+        return "useProxy";
+      if (code == AssertionResponseTypes.TEMPORARYREDIRECT)
+        return "temporaryRedirect";
+      if (code == AssertionResponseTypes.PERMANENTREDIRECT)
+        return "permanentRedirect";
+      if (code == AssertionResponseTypes.BADREQUEST)
+        return "badRequest";
+      if (code == AssertionResponseTypes.UNAUTHORIZED)
+        return "unauthorized";
+      if (code == AssertionResponseTypes.PAYMENTREQUIRED)
+        return "paymentRequired";
       if (code == AssertionResponseTypes.FORBIDDEN)
         return "forbidden";
       if (code == AssertionResponseTypes.NOTFOUND)
         return "notFound";
       if (code == AssertionResponseTypes.METHODNOTALLOWED)
         return "methodNotAllowed";
+      if (code == AssertionResponseTypes.NOTACCEPTABLE)
+        return "notAcceptable";
+      if (code == AssertionResponseTypes.PROXYAUTHENTICATIONREQUIRED)
+        return "proxyAuthenticationRequired";
+      if (code == AssertionResponseTypes.REQUESTTIMEOUT)
+        return "requestTimeout";
       if (code == AssertionResponseTypes.CONFLICT)
         return "conflict";
       if (code == AssertionResponseTypes.GONE)
         return "gone";
+      if (code == AssertionResponseTypes.LENGTHREQUIRED)
+        return "lengthRequired";
       if (code == AssertionResponseTypes.PRECONDITIONFAILED)
         return "preconditionFailed";
-      if (code == AssertionResponseTypes.UNPROCESSABLE)
-        return "unprocessable";
+      if (code == AssertionResponseTypes.CONTENTTOOLARGE)
+        return "contentTooLarge";
+      if (code == AssertionResponseTypes.URITOOLONG)
+        return "uriTooLong";
+      if (code == AssertionResponseTypes.UNSUPPORTEDMEDIATYPE)
+        return "unsupportedMediaType";
+      if (code == AssertionResponseTypes.RANGENOTSATISFIABLE)
+        return "rangeNotSatisfiable";
+      if (code == AssertionResponseTypes.EXPECTATIONFAILED)
+        return "expectationFailed";
+      if (code == AssertionResponseTypes.MISDIRECTEDREQUEST)
+        return "misdirectedRequest";
+      if (code == AssertionResponseTypes.UNPROCESSABLECONTENT)
+        return "unprocessableContent";
+      if (code == AssertionResponseTypes.UPGRADEREQUIRED)
+        return "upgradeRequired";
+      if (code == AssertionResponseTypes.INTERNALSERVERERROR)
+        return "internalServerError";
+      if (code == AssertionResponseTypes.NOTIMPLEMENTED)
+        return "notImplemented";
+      if (code == AssertionResponseTypes.BADGATEWAY)
+        return "badGateway";
+      if (code == AssertionResponseTypes.SERVICEUNAVAILABLE)
+        return "serviceUnavailable";
+      if (code == AssertionResponseTypes.GATEWAYTIMEOUT)
+        return "gatewayTimeout";
+      if (code == AssertionResponseTypes.HTTPVERSIONNOTSUPPORTED)
+        return "httpVersionNotSupported";
       return "?";
       }
     public String toSystem(AssertionResponseTypes code) {
@@ -3183,10 +3839,10 @@ public class TestScript extends CanonicalResource {
         protected StringType description;
 
         /**
-         * The FHIRPath expression to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.
+         * The FHIRPath expression for a specific value to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.
          */
         @Child(name = "expression", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The FHIRPath expression against the fixture body", formalDefinition="The FHIRPath expression to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified." )
+        @Description(shortDefinition="The FHIRPath expression against the fixture body", formalDefinition="The FHIRPath expression for a specific value to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified." )
         protected StringType expression;
 
         /**
@@ -3378,7 +4034,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return {@link #expression} (The FHIRPath expression to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.). This is the underlying object with id, value and extensions. The accessor "getExpression" gives direct access to the value
+         * @return {@link #expression} (The FHIRPath expression for a specific value to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.). This is the underlying object with id, value and extensions. The accessor "getExpression" gives direct access to the value
          */
         public StringType getExpressionElement() { 
           if (this.expression == null)
@@ -3398,7 +4054,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #expression} (The FHIRPath expression to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.). This is the underlying object with id, value and extensions. The accessor "getExpression" gives direct access to the value
+         * @param value {@link #expression} (The FHIRPath expression for a specific value to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.). This is the underlying object with id, value and extensions. The accessor "getExpression" gives direct access to the value
          */
         public TestScriptVariableComponent setExpressionElement(StringType value) { 
           this.expression = value;
@@ -3406,14 +4062,14 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return The FHIRPath expression to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.
+         * @return The FHIRPath expression for a specific value to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.
          */
         public String getExpression() { 
           return this.expression == null ? null : this.expression.getValue();
         }
 
         /**
-         * @param value The FHIRPath expression to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.
+         * @param value The FHIRPath expression for a specific value to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.
          */
         public TestScriptVariableComponent setExpression(String value) { 
           if (Utilities.noString(value))
@@ -3627,7 +4283,7 @@ public class TestScript extends CanonicalResource {
           children.add(new Property("name", "string", "Descriptive name for this variable.", 0, 1, name));
           children.add(new Property("defaultValue", "string", "A default, hard-coded, or user-defined value for this variable.", 0, 1, defaultValue));
           children.add(new Property("description", "string", "A free text natural language description of the variable and its purpose.", 0, 1, description));
-          children.add(new Property("expression", "string", "The FHIRPath expression to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.", 0, 1, expression));
+          children.add(new Property("expression", "string", "The FHIRPath expression for a specific value to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.", 0, 1, expression));
           children.add(new Property("headerField", "string", "Will be used to grab the HTTP header field value from the headers that sourceId is pointing to.", 0, 1, headerField));
           children.add(new Property("hint", "string", "Displayable text string with hint help information to the user when entering a default value.", 0, 1, hint));
           children.add(new Property("path", "string", "XPath or JSONPath to evaluate against the fixture body.  When variables are defined, only one of either expression, headerField or path must be specified.", 0, 1, path));
@@ -3640,7 +4296,7 @@ public class TestScript extends CanonicalResource {
           case 3373707: /*name*/  return new Property("name", "string", "Descriptive name for this variable.", 0, 1, name);
           case -659125328: /*defaultValue*/  return new Property("defaultValue", "string", "A default, hard-coded, or user-defined value for this variable.", 0, 1, defaultValue);
           case -1724546052: /*description*/  return new Property("description", "string", "A free text natural language description of the variable and its purpose.", 0, 1, description);
-          case -1795452264: /*expression*/  return new Property("expression", "string", "The FHIRPath expression to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.", 0, 1, expression);
+          case -1795452264: /*expression*/  return new Property("expression", "string", "The FHIRPath expression for a specific value to evaluate against the fixture body. When variables are defined, only one of either expression, headerField or path must be specified.", 0, 1, expression);
           case 1160732269: /*headerField*/  return new Property("headerField", "string", "Will be used to grab the HTTP header field value from the headers that sourceId is pointing to.", 0, 1, headerField);
           case 3202695: /*hint*/  return new Property("hint", "string", "Displayable text string with hint help information to the user when entering a default value.", 0, 1, hint);
           case 3433509: /*path*/  return new Property("path", "string", "XPath or JSONPath to evaluate against the fixture body.  When variables are defined, only one of either expression, headerField or path must be specified.", 0, 1, path);
@@ -4271,7 +4927,7 @@ public class TestScript extends CanonicalResource {
          * The mime-type to use for RESTful operation in the 'Accept' header.
          */
         @Child(name = "accept", type = {CodeType.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Mime type to accept in the payload of the response, with charset etc.", formalDefinition="The mime-type to use for RESTful operation in the 'Accept' header." )
+        @Description(shortDefinition="Mime type to accept in the payload of the response, with charset etc", formalDefinition="The mime-type to use for RESTful operation in the 'Accept' header." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/mimetypes")
         protected CodeType accept;
 
@@ -4279,7 +4935,7 @@ public class TestScript extends CanonicalResource {
          * The mime-type to use for RESTful operation in the 'Content-Type' header.
          */
         @Child(name = "contentType", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Mime type of the request payload contents, with charset etc.", formalDefinition="The mime-type to use for RESTful operation in the 'Content-Type' header." )
+        @Description(shortDefinition="Mime type of the request payload contents, with charset etc", formalDefinition="The mime-type to use for RESTful operation in the 'Content-Type' header." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/mimetypes")
         protected CodeType contentType;
 
@@ -5816,10 +6472,10 @@ public class TestScript extends CanonicalResource {
         protected StringType compareToSourceId;
 
         /**
-         * The FHIRPath expression to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.
+         * The FHIRPath expression for a specific value to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.
          */
         @Child(name = "compareToSourceExpression", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The FHIRPath expression to evaluate against the source fixture", formalDefinition="The FHIRPath expression to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both." )
+        @Description(shortDefinition="The FHIRPath expression to evaluate against the source fixture", formalDefinition="The FHIRPath expression for a specific value to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both." )
         protected StringType compareToSourceExpression;
 
         /**
@@ -5838,52 +6494,60 @@ public class TestScript extends CanonicalResource {
         protected CodeType contentType;
 
         /**
+         * The default manual completion outcome applied to this assertion.
+         */
+        @Child(name = "defaultManualCompletion", type = {CodeType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="fail | pass | skip | stop", formalDefinition="The default manual completion outcome applied to this assertion." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/assert-manual-completion-codes")
+        protected Enumeration<AssertionManualCompletionType> defaultManualCompletion;
+
+        /**
          * The FHIRPath expression to be evaluated against the request or response message contents - HTTP headers and payload.
          */
-        @Child(name = "expression", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "expression", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The FHIRPath expression to be evaluated", formalDefinition="The FHIRPath expression to be evaluated against the request or response message contents - HTTP headers and payload." )
         protected StringType expression;
 
         /**
          * The HTTP header field name e.g. 'Location'.
          */
-        @Child(name = "headerField", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "headerField", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="HTTP header field name", formalDefinition="The HTTP header field name e.g. 'Location'." )
         protected StringType headerField;
 
         /**
-         * The ID of a fixture.  Asserts that the response contains at a minimum the fixture specified by minimumId.
+         * The ID of a fixture. Asserts that the response contains at a minimum the fixture specified by minimumId.
          */
-        @Child(name = "minimumId", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Fixture Id of minimum content resource", formalDefinition="The ID of a fixture.  Asserts that the response contains at a minimum the fixture specified by minimumId." )
+        @Child(name = "minimumId", type = {StringType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Fixture Id of minimum content resource", formalDefinition="The ID of a fixture. Asserts that the response contains at a minimum the fixture specified by minimumId." )
         protected StringType minimumId;
 
         /**
          * Whether or not the test execution performs validation on the bundle navigation links.
          */
-        @Child(name = "navigationLinks", type = {BooleanType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "navigationLinks", type = {BooleanType.class}, order=12, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Perform validation on navigation links?", formalDefinition="Whether or not the test execution performs validation on the bundle navigation links." )
         protected BooleanType navigationLinks;
 
         /**
-         * The operator type defines the conditional behavior of the assert. If not defined, the default is equals.
+         * The operator type defines the conditional behavior of the assert.
          */
-        @Child(name = "operator", type = {CodeType.class}, order=12, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="equals | notEquals | in | notIn | greaterThan | lessThan | empty | notEmpty | contains | notContains | eval", formalDefinition="The operator type defines the conditional behavior of the assert. If not defined, the default is equals." )
+        @Child(name = "operator", type = {CodeType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="equals | notEquals | in | notIn | greaterThan | lessThan | empty | notEmpty | contains | notContains | eval | manualEval", formalDefinition="The operator type defines the conditional behavior of the assert." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/assert-operator-codes")
         protected Enumeration<AssertionOperatorType> operator;
 
         /**
          * The XPath or JSONPath expression to be evaluated against the fixture representing the response received from server.
          */
-        @Child(name = "path", type = {StringType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "path", type = {StringType.class}, order=14, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="XPath or JSONPath expression", formalDefinition="The XPath or JSONPath expression to be evaluated against the fixture representing the response received from server." )
         protected StringType path;
 
         /**
          * The request method or HTTP operation code to compare against that used by the client system under test.
          */
-        @Child(name = "requestMethod", type = {CodeType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "requestMethod", type = {CodeType.class}, order=15, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="delete | get | options | patch | post | put | head", formalDefinition="The request method or HTTP operation code to compare against that used by the client system under test." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/http-operations")
         protected Enumeration<TestScriptRequestMethodCode> requestMethod;
@@ -5891,69 +6555,76 @@ public class TestScript extends CanonicalResource {
         /**
          * The value to use in a comparison against the request URL path string.
          */
-        @Child(name = "requestURL", type = {StringType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "requestURL", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Request URL comparison value", formalDefinition="The value to use in a comparison against the request URL path string." )
         protected StringType requestURL;
 
         /**
          * The type of the resource.  See the [resource list](resourcelist.html).
          */
-        @Child(name = "resource", type = {UriType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "resource", type = {UriType.class}, order=17, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Resource type", formalDefinition="The type of the resource.  See the [resource list](resourcelist.html)." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/concrete-fhir-types")
         protected UriType resource;
 
         /**
-         * okay | created | noContent | notModified | bad | forbidden | notFound | methodNotAllowed | conflict | gone | preconditionFailed | unprocessable.
+         * continue | switchingProtocols | okay | created | accepted | nonAuthoritativeInformation | noContent | resetContent | partialContent | multipleChoices | movedPermanently | found | seeOther | notModified | useProxy | temporaryRedirect | permanentRedirect | badRequest | unauthorized | paymentRequired | forbidden | notFound | methodNotAllowed | notAcceptable | proxyAuthenticationRequired | requestTimeout | conflict | gone | lengthRequired | preconditionFailed | contentTooLarge | uriTooLong | unsupportedMediaType | rangeNotSatisfiable | expectationFailed | misdirectedRequest | unprocessableContent | upgradeRequired | internalServerError | notImplemented | badGateway | serviceUnavailable | gatewayTimeout | httpVersionNotSupported.
          */
-        @Child(name = "response", type = {CodeType.class}, order=17, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="okay | created | noContent | notModified | bad | forbidden | notFound | methodNotAllowed | conflict | gone | preconditionFailed | unprocessable", formalDefinition="okay | created | noContent | notModified | bad | forbidden | notFound | methodNotAllowed | conflict | gone | preconditionFailed | unprocessable." )
+        @Child(name = "response", type = {CodeType.class}, order=18, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="continue | switchingProtocols | okay | created | accepted | nonAuthoritativeInformation | noContent | resetContent | partialContent | multipleChoices | movedPermanently | found | seeOther | notModified | useProxy | temporaryRedirect | permanentRedirect | badRequest | unauthorized | paymentRequired | forbidden | notFound | methodNotAllowed | notAcceptable | proxyAuthenticationRequired | requestTimeout | conflict | gone | lengthRequired | preconditionFailed | contentTooLarge | uriTooLong | unsupportedMediaType | rangeNotSatisfiable | expectationFailed | misdirectedRequest | unprocessableContent | upgradeRequired | internalServerError | notImplemented | badGateway | serviceUnavailable | gatewayTimeout | httpVersionNotSupported", formalDefinition="continue | switchingProtocols | okay | created | accepted | nonAuthoritativeInformation | noContent | resetContent | partialContent | multipleChoices | movedPermanently | found | seeOther | notModified | useProxy | temporaryRedirect | permanentRedirect | badRequest | unauthorized | paymentRequired | forbidden | notFound | methodNotAllowed | notAcceptable | proxyAuthenticationRequired | requestTimeout | conflict | gone | lengthRequired | preconditionFailed | contentTooLarge | uriTooLong | unsupportedMediaType | rangeNotSatisfiable | expectationFailed | misdirectedRequest | unprocessableContent | upgradeRequired | internalServerError | notImplemented | badGateway | serviceUnavailable | gatewayTimeout | httpVersionNotSupported." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/assert-response-code-types")
         protected Enumeration<AssertionResponseTypes> response;
 
         /**
          * The value of the HTTP response code to be tested.
          */
-        @Child(name = "responseCode", type = {StringType.class}, order=18, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "responseCode", type = {StringType.class}, order=19, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="HTTP response code to test", formalDefinition="The value of the HTTP response code to be tested." )
         protected StringType responseCode;
 
         /**
          * Fixture to evaluate the XPath/JSONPath expression or the headerField  against.
          */
-        @Child(name = "sourceId", type = {IdType.class}, order=19, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "sourceId", type = {IdType.class}, order=20, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fixture Id of source expression or headerField", formalDefinition="Fixture to evaluate the XPath/JSONPath expression or the headerField  against." )
         protected IdType sourceId;
 
         /**
          * Whether or not the current test execution will stop on failure for this assert.
          */
-        @Child(name = "stopTestOnFail", type = {BooleanType.class}, order=20, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "stopTestOnFail", type = {BooleanType.class}, order=21, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="If this assert fails, will the current test execution stop?", formalDefinition="Whether or not the current test execution will stop on failure for this assert." )
         protected BooleanType stopTestOnFail;
 
         /**
          * The ID of the Profile to validate against.
          */
-        @Child(name = "validateProfileId", type = {IdType.class}, order=21, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "validateProfileId", type = {IdType.class}, order=22, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Profile Id of validation profile reference", formalDefinition="The ID of the Profile to validate against." )
         protected IdType validateProfileId;
 
         /**
          * The value to compare to.
          */
-        @Child(name = "value", type = {StringType.class}, order=22, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {StringType.class}, order=23, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The value to compare to", formalDefinition="The value to compare to." )
         protected StringType value;
 
         /**
          * Whether or not the test execution will produce a warning only on error for this assert.
          */
-        @Child(name = "warningOnly", type = {BooleanType.class}, order=23, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "warningOnly", type = {BooleanType.class}, order=24, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Will this assert produce a warning only on error?", formalDefinition="Whether or not the test execution will produce a warning only on error for this assert." )
         protected BooleanType warningOnly;
 
-        private static final long serialVersionUID = -350031410L;
+        /**
+         * Links or references providing traceability to the testing requirements for this assert.
+         */
+        @Child(name = "requirement", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Links or references to the testing requirements", formalDefinition="Links or references providing traceability to the testing requirements for this assert." )
+        protected List<SetupActionAssertRequirementComponent> requirement;
+
+        private static final long serialVersionUID = -1269963728L;
 
     /**
      * Constructor
@@ -6168,7 +6839,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return {@link #compareToSourceExpression} (The FHIRPath expression to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.). This is the underlying object with id, value and extensions. The accessor "getCompareToSourceExpression" gives direct access to the value
+         * @return {@link #compareToSourceExpression} (The FHIRPath expression for a specific value to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.). This is the underlying object with id, value and extensions. The accessor "getCompareToSourceExpression" gives direct access to the value
          */
         public StringType getCompareToSourceExpressionElement() { 
           if (this.compareToSourceExpression == null)
@@ -6188,7 +6859,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #compareToSourceExpression} (The FHIRPath expression to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.). This is the underlying object with id, value and extensions. The accessor "getCompareToSourceExpression" gives direct access to the value
+         * @param value {@link #compareToSourceExpression} (The FHIRPath expression for a specific value to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.). This is the underlying object with id, value and extensions. The accessor "getCompareToSourceExpression" gives direct access to the value
          */
         public SetupActionAssertComponent setCompareToSourceExpressionElement(StringType value) { 
           this.compareToSourceExpression = value;
@@ -6196,14 +6867,14 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return The FHIRPath expression to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.
+         * @return The FHIRPath expression for a specific value to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.
          */
         public String getCompareToSourceExpression() { 
           return this.compareToSourceExpression == null ? null : this.compareToSourceExpression.getValue();
         }
 
         /**
-         * @param value The FHIRPath expression to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.
+         * @param value The FHIRPath expression for a specific value to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.
          */
         public SetupActionAssertComponent setCompareToSourceExpression(String value) { 
           if (Utilities.noString(value))
@@ -6315,6 +6986,55 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
+         * @return {@link #defaultManualCompletion} (The default manual completion outcome applied to this assertion.). This is the underlying object with id, value and extensions. The accessor "getDefaultManualCompletion" gives direct access to the value
+         */
+        public Enumeration<AssertionManualCompletionType> getDefaultManualCompletionElement() { 
+          if (this.defaultManualCompletion == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SetupActionAssertComponent.defaultManualCompletion");
+            else if (Configuration.doAutoCreate())
+              this.defaultManualCompletion = new Enumeration<AssertionManualCompletionType>(new AssertionManualCompletionTypeEnumFactory()); // bb
+          return this.defaultManualCompletion;
+        }
+
+        public boolean hasDefaultManualCompletionElement() { 
+          return this.defaultManualCompletion != null && !this.defaultManualCompletion.isEmpty();
+        }
+
+        public boolean hasDefaultManualCompletion() { 
+          return this.defaultManualCompletion != null && !this.defaultManualCompletion.isEmpty();
+        }
+
+        /**
+         * @param value {@link #defaultManualCompletion} (The default manual completion outcome applied to this assertion.). This is the underlying object with id, value and extensions. The accessor "getDefaultManualCompletion" gives direct access to the value
+         */
+        public SetupActionAssertComponent setDefaultManualCompletionElement(Enumeration<AssertionManualCompletionType> value) { 
+          this.defaultManualCompletion = value;
+          return this;
+        }
+
+        /**
+         * @return The default manual completion outcome applied to this assertion.
+         */
+        public AssertionManualCompletionType getDefaultManualCompletion() { 
+          return this.defaultManualCompletion == null ? null : this.defaultManualCompletion.getValue();
+        }
+
+        /**
+         * @param value The default manual completion outcome applied to this assertion.
+         */
+        public SetupActionAssertComponent setDefaultManualCompletion(AssertionManualCompletionType value) { 
+          if (value == null)
+            this.defaultManualCompletion = null;
+          else {
+            if (this.defaultManualCompletion == null)
+              this.defaultManualCompletion = new Enumeration<AssertionManualCompletionType>(new AssertionManualCompletionTypeEnumFactory());
+            this.defaultManualCompletion.setValue(value);
+          }
+          return this;
+        }
+
+        /**
          * @return {@link #expression} (The FHIRPath expression to be evaluated against the request or response message contents - HTTP headers and payload.). This is the underlying object with id, value and extensions. The accessor "getExpression" gives direct access to the value
          */
         public StringType getExpressionElement() { 
@@ -6413,7 +7133,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return {@link #minimumId} (The ID of a fixture.  Asserts that the response contains at a minimum the fixture specified by minimumId.). This is the underlying object with id, value and extensions. The accessor "getMinimumId" gives direct access to the value
+         * @return {@link #minimumId} (The ID of a fixture. Asserts that the response contains at a minimum the fixture specified by minimumId.). This is the underlying object with id, value and extensions. The accessor "getMinimumId" gives direct access to the value
          */
         public StringType getMinimumIdElement() { 
           if (this.minimumId == null)
@@ -6433,7 +7153,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #minimumId} (The ID of a fixture.  Asserts that the response contains at a minimum the fixture specified by minimumId.). This is the underlying object with id, value and extensions. The accessor "getMinimumId" gives direct access to the value
+         * @param value {@link #minimumId} (The ID of a fixture. Asserts that the response contains at a minimum the fixture specified by minimumId.). This is the underlying object with id, value and extensions. The accessor "getMinimumId" gives direct access to the value
          */
         public SetupActionAssertComponent setMinimumIdElement(StringType value) { 
           this.minimumId = value;
@@ -6441,14 +7161,14 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return The ID of a fixture.  Asserts that the response contains at a minimum the fixture specified by minimumId.
+         * @return The ID of a fixture. Asserts that the response contains at a minimum the fixture specified by minimumId.
          */
         public String getMinimumId() { 
           return this.minimumId == null ? null : this.minimumId.getValue();
         }
 
         /**
-         * @param value The ID of a fixture.  Asserts that the response contains at a minimum the fixture specified by minimumId.
+         * @param value The ID of a fixture. Asserts that the response contains at a minimum the fixture specified by minimumId.
          */
         public SetupActionAssertComponent setMinimumId(String value) { 
           if (Utilities.noString(value))
@@ -6507,7 +7227,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return {@link #operator} (The operator type defines the conditional behavior of the assert. If not defined, the default is equals.). This is the underlying object with id, value and extensions. The accessor "getOperator" gives direct access to the value
+         * @return {@link #operator} (The operator type defines the conditional behavior of the assert.). This is the underlying object with id, value and extensions. The accessor "getOperator" gives direct access to the value
          */
         public Enumeration<AssertionOperatorType> getOperatorElement() { 
           if (this.operator == null)
@@ -6527,7 +7247,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #operator} (The operator type defines the conditional behavior of the assert. If not defined, the default is equals.). This is the underlying object with id, value and extensions. The accessor "getOperator" gives direct access to the value
+         * @param value {@link #operator} (The operator type defines the conditional behavior of the assert.). This is the underlying object with id, value and extensions. The accessor "getOperator" gives direct access to the value
          */
         public SetupActionAssertComponent setOperatorElement(Enumeration<AssertionOperatorType> value) { 
           this.operator = value;
@@ -6535,14 +7255,14 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return The operator type defines the conditional behavior of the assert. If not defined, the default is equals.
+         * @return The operator type defines the conditional behavior of the assert.
          */
         public AssertionOperatorType getOperator() { 
           return this.operator == null ? null : this.operator.getValue();
         }
 
         /**
-         * @param value The operator type defines the conditional behavior of the assert. If not defined, the default is equals.
+         * @param value The operator type defines the conditional behavior of the assert.
          */
         public SetupActionAssertComponent setOperator(AssertionOperatorType value) { 
           if (value == null)
@@ -6752,7 +7472,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return {@link #response} (okay | created | noContent | notModified | bad | forbidden | notFound | methodNotAllowed | conflict | gone | preconditionFailed | unprocessable.). This is the underlying object with id, value and extensions. The accessor "getResponse" gives direct access to the value
+         * @return {@link #response} (continue | switchingProtocols | okay | created | accepted | nonAuthoritativeInformation | noContent | resetContent | partialContent | multipleChoices | movedPermanently | found | seeOther | notModified | useProxy | temporaryRedirect | permanentRedirect | badRequest | unauthorized | paymentRequired | forbidden | notFound | methodNotAllowed | notAcceptable | proxyAuthenticationRequired | requestTimeout | conflict | gone | lengthRequired | preconditionFailed | contentTooLarge | uriTooLong | unsupportedMediaType | rangeNotSatisfiable | expectationFailed | misdirectedRequest | unprocessableContent | upgradeRequired | internalServerError | notImplemented | badGateway | serviceUnavailable | gatewayTimeout | httpVersionNotSupported.). This is the underlying object with id, value and extensions. The accessor "getResponse" gives direct access to the value
          */
         public Enumeration<AssertionResponseTypes> getResponseElement() { 
           if (this.response == null)
@@ -6772,7 +7492,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #response} (okay | created | noContent | notModified | bad | forbidden | notFound | methodNotAllowed | conflict | gone | preconditionFailed | unprocessable.). This is the underlying object with id, value and extensions. The accessor "getResponse" gives direct access to the value
+         * @param value {@link #response} (continue | switchingProtocols | okay | created | accepted | nonAuthoritativeInformation | noContent | resetContent | partialContent | multipleChoices | movedPermanently | found | seeOther | notModified | useProxy | temporaryRedirect | permanentRedirect | badRequest | unauthorized | paymentRequired | forbidden | notFound | methodNotAllowed | notAcceptable | proxyAuthenticationRequired | requestTimeout | conflict | gone | lengthRequired | preconditionFailed | contentTooLarge | uriTooLong | unsupportedMediaType | rangeNotSatisfiable | expectationFailed | misdirectedRequest | unprocessableContent | upgradeRequired | internalServerError | notImplemented | badGateway | serviceUnavailable | gatewayTimeout | httpVersionNotSupported.). This is the underlying object with id, value and extensions. The accessor "getResponse" gives direct access to the value
          */
         public SetupActionAssertComponent setResponseElement(Enumeration<AssertionResponseTypes> value) { 
           this.response = value;
@@ -6780,14 +7500,14 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return okay | created | noContent | notModified | bad | forbidden | notFound | methodNotAllowed | conflict | gone | preconditionFailed | unprocessable.
+         * @return continue | switchingProtocols | okay | created | accepted | nonAuthoritativeInformation | noContent | resetContent | partialContent | multipleChoices | movedPermanently | found | seeOther | notModified | useProxy | temporaryRedirect | permanentRedirect | badRequest | unauthorized | paymentRequired | forbidden | notFound | methodNotAllowed | notAcceptable | proxyAuthenticationRequired | requestTimeout | conflict | gone | lengthRequired | preconditionFailed | contentTooLarge | uriTooLong | unsupportedMediaType | rangeNotSatisfiable | expectationFailed | misdirectedRequest | unprocessableContent | upgradeRequired | internalServerError | notImplemented | badGateway | serviceUnavailable | gatewayTimeout | httpVersionNotSupported.
          */
         public AssertionResponseTypes getResponse() { 
           return this.response == null ? null : this.response.getValue();
         }
 
         /**
-         * @param value okay | created | noContent | notModified | bad | forbidden | notFound | methodNotAllowed | conflict | gone | preconditionFailed | unprocessable.
+         * @param value continue | switchingProtocols | okay | created | accepted | nonAuthoritativeInformation | noContent | resetContent | partialContent | multipleChoices | movedPermanently | found | seeOther | notModified | useProxy | temporaryRedirect | permanentRedirect | badRequest | unauthorized | paymentRequired | forbidden | notFound | methodNotAllowed | notAcceptable | proxyAuthenticationRequired | requestTimeout | conflict | gone | lengthRequired | preconditionFailed | contentTooLarge | uriTooLong | unsupportedMediaType | rangeNotSatisfiable | expectationFailed | misdirectedRequest | unprocessableContent | upgradeRequired | internalServerError | notImplemented | badGateway | serviceUnavailable | gatewayTimeout | httpVersionNotSupported.
          */
         public SetupActionAssertComponent setResponse(AssertionResponseTypes value) { 
           if (value == null)
@@ -7086,31 +7806,86 @@ public class TestScript extends CanonicalResource {
           return this;
         }
 
+        /**
+         * @return {@link #requirement} (Links or references providing traceability to the testing requirements for this assert.)
+         */
+        public List<SetupActionAssertRequirementComponent> getRequirement() { 
+          if (this.requirement == null)
+            this.requirement = new ArrayList<SetupActionAssertRequirementComponent>();
+          return this.requirement;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public SetupActionAssertComponent setRequirement(List<SetupActionAssertRequirementComponent> theRequirement) { 
+          this.requirement = theRequirement;
+          return this;
+        }
+
+        public boolean hasRequirement() { 
+          if (this.requirement == null)
+            return false;
+          for (SetupActionAssertRequirementComponent item : this.requirement)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public SetupActionAssertRequirementComponent addRequirement() { //3
+          SetupActionAssertRequirementComponent t = new SetupActionAssertRequirementComponent();
+          if (this.requirement == null)
+            this.requirement = new ArrayList<SetupActionAssertRequirementComponent>();
+          this.requirement.add(t);
+          return t;
+        }
+
+        public SetupActionAssertComponent addRequirement(SetupActionAssertRequirementComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.requirement == null)
+            this.requirement = new ArrayList<SetupActionAssertRequirementComponent>();
+          this.requirement.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #requirement}, creating it if it does not already exist {3}
+         */
+        public SetupActionAssertRequirementComponent getRequirementFirstRep() { 
+          if (getRequirement().isEmpty()) {
+            addRequirement();
+          }
+          return getRequirement().get(0);
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("label", "string", "The label would be used for tracking/logging purposes by test engines.", 0, 1, label));
           children.add(new Property("description", "string", "The description would be used by test engines for tracking and reporting purposes.", 0, 1, description));
           children.add(new Property("direction", "code", "The direction to use for the assertion.", 0, 1, direction));
           children.add(new Property("compareToSourceId", "string", "Id of the source fixture used as the contents to be evaluated by either the \"source/expression\" or \"sourceId/path\" definition.", 0, 1, compareToSourceId));
-          children.add(new Property("compareToSourceExpression", "string", "The FHIRPath expression to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.", 0, 1, compareToSourceExpression));
+          children.add(new Property("compareToSourceExpression", "string", "The FHIRPath expression for a specific value to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.", 0, 1, compareToSourceExpression));
           children.add(new Property("compareToSourcePath", "string", "XPath or JSONPath expression to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.", 0, 1, compareToSourcePath));
           children.add(new Property("contentType", "code", "The mime-type contents to compare against the request or response message 'Content-Type' header.", 0, 1, contentType));
+          children.add(new Property("defaultManualCompletion", "code", "The default manual completion outcome applied to this assertion.", 0, 1, defaultManualCompletion));
           children.add(new Property("expression", "string", "The FHIRPath expression to be evaluated against the request or response message contents - HTTP headers and payload.", 0, 1, expression));
           children.add(new Property("headerField", "string", "The HTTP header field name e.g. 'Location'.", 0, 1, headerField));
-          children.add(new Property("minimumId", "string", "The ID of a fixture.  Asserts that the response contains at a minimum the fixture specified by minimumId.", 0, 1, minimumId));
+          children.add(new Property("minimumId", "string", "The ID of a fixture. Asserts that the response contains at a minimum the fixture specified by minimumId.", 0, 1, minimumId));
           children.add(new Property("navigationLinks", "boolean", "Whether or not the test execution performs validation on the bundle navigation links.", 0, 1, navigationLinks));
-          children.add(new Property("operator", "code", "The operator type defines the conditional behavior of the assert. If not defined, the default is equals.", 0, 1, operator));
+          children.add(new Property("operator", "code", "The operator type defines the conditional behavior of the assert.", 0, 1, operator));
           children.add(new Property("path", "string", "The XPath or JSONPath expression to be evaluated against the fixture representing the response received from server.", 0, 1, path));
           children.add(new Property("requestMethod", "code", "The request method or HTTP operation code to compare against that used by the client system under test.", 0, 1, requestMethod));
           children.add(new Property("requestURL", "string", "The value to use in a comparison against the request URL path string.", 0, 1, requestURL));
           children.add(new Property("resource", "uri", "The type of the resource.  See the [resource list](resourcelist.html).", 0, 1, resource));
-          children.add(new Property("response", "code", "okay | created | noContent | notModified | bad | forbidden | notFound | methodNotAllowed | conflict | gone | preconditionFailed | unprocessable.", 0, 1, response));
+          children.add(new Property("response", "code", "continue | switchingProtocols | okay | created | accepted | nonAuthoritativeInformation | noContent | resetContent | partialContent | multipleChoices | movedPermanently | found | seeOther | notModified | useProxy | temporaryRedirect | permanentRedirect | badRequest | unauthorized | paymentRequired | forbidden | notFound | methodNotAllowed | notAcceptable | proxyAuthenticationRequired | requestTimeout | conflict | gone | lengthRequired | preconditionFailed | contentTooLarge | uriTooLong | unsupportedMediaType | rangeNotSatisfiable | expectationFailed | misdirectedRequest | unprocessableContent | upgradeRequired | internalServerError | notImplemented | badGateway | serviceUnavailable | gatewayTimeout | httpVersionNotSupported.", 0, 1, response));
           children.add(new Property("responseCode", "string", "The value of the HTTP response code to be tested.", 0, 1, responseCode));
           children.add(new Property("sourceId", "id", "Fixture to evaluate the XPath/JSONPath expression or the headerField  against.", 0, 1, sourceId));
           children.add(new Property("stopTestOnFail", "boolean", "Whether or not the current test execution will stop on failure for this assert.", 0, 1, stopTestOnFail));
           children.add(new Property("validateProfileId", "id", "The ID of the Profile to validate against.", 0, 1, validateProfileId));
           children.add(new Property("value", "string", "The value to compare to.", 0, 1, value));
           children.add(new Property("warningOnly", "boolean", "Whether or not the test execution will produce a warning only on error for this assert.", 0, 1, warningOnly));
+          children.add(new Property("requirement", "", "Links or references providing traceability to the testing requirements for this assert.", 0, java.lang.Integer.MAX_VALUE, requirement));
         }
 
         @Override
@@ -7120,25 +7895,27 @@ public class TestScript extends CanonicalResource {
           case -1724546052: /*description*/  return new Property("description", "string", "The description would be used by test engines for tracking and reporting purposes.", 0, 1, description);
           case -962590849: /*direction*/  return new Property("direction", "code", "The direction to use for the assertion.", 0, 1, direction);
           case 2081856758: /*compareToSourceId*/  return new Property("compareToSourceId", "string", "Id of the source fixture used as the contents to be evaluated by either the \"source/expression\" or \"sourceId/path\" definition.", 0, 1, compareToSourceId);
-          case -1415702669: /*compareToSourceExpression*/  return new Property("compareToSourceExpression", "string", "The FHIRPath expression to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.", 0, 1, compareToSourceExpression);
+          case -1415702669: /*compareToSourceExpression*/  return new Property("compareToSourceExpression", "string", "The FHIRPath expression for a specific value to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.", 0, 1, compareToSourceExpression);
           case -790206144: /*compareToSourcePath*/  return new Property("compareToSourcePath", "string", "XPath or JSONPath expression to evaluate against the source fixture. When compareToSourceId is defined, either compareToSourceExpression or compareToSourcePath must be defined, but not both.", 0, 1, compareToSourcePath);
           case -389131437: /*contentType*/  return new Property("contentType", "code", "The mime-type contents to compare against the request or response message 'Content-Type' header.", 0, 1, contentType);
+          case 1448452259: /*defaultManualCompletion*/  return new Property("defaultManualCompletion", "code", "The default manual completion outcome applied to this assertion.", 0, 1, defaultManualCompletion);
           case -1795452264: /*expression*/  return new Property("expression", "string", "The FHIRPath expression to be evaluated against the request or response message contents - HTTP headers and payload.", 0, 1, expression);
           case 1160732269: /*headerField*/  return new Property("headerField", "string", "The HTTP header field name e.g. 'Location'.", 0, 1, headerField);
-          case 818925001: /*minimumId*/  return new Property("minimumId", "string", "The ID of a fixture.  Asserts that the response contains at a minimum the fixture specified by minimumId.", 0, 1, minimumId);
+          case 818925001: /*minimumId*/  return new Property("minimumId", "string", "The ID of a fixture. Asserts that the response contains at a minimum the fixture specified by minimumId.", 0, 1, minimumId);
           case 1001488901: /*navigationLinks*/  return new Property("navigationLinks", "boolean", "Whether or not the test execution performs validation on the bundle navigation links.", 0, 1, navigationLinks);
-          case -500553564: /*operator*/  return new Property("operator", "code", "The operator type defines the conditional behavior of the assert. If not defined, the default is equals.", 0, 1, operator);
+          case -500553564: /*operator*/  return new Property("operator", "code", "The operator type defines the conditional behavior of the assert.", 0, 1, operator);
           case 3433509: /*path*/  return new Property("path", "string", "The XPath or JSONPath expression to be evaluated against the fixture representing the response received from server.", 0, 1, path);
           case 1217874000: /*requestMethod*/  return new Property("requestMethod", "code", "The request method or HTTP operation code to compare against that used by the client system under test.", 0, 1, requestMethod);
           case 37099616: /*requestURL*/  return new Property("requestURL", "string", "The value to use in a comparison against the request URL path string.", 0, 1, requestURL);
           case -341064690: /*resource*/  return new Property("resource", "uri", "The type of the resource.  See the [resource list](resourcelist.html).", 0, 1, resource);
-          case -340323263: /*response*/  return new Property("response", "code", "okay | created | noContent | notModified | bad | forbidden | notFound | methodNotAllowed | conflict | gone | preconditionFailed | unprocessable.", 0, 1, response);
+          case -340323263: /*response*/  return new Property("response", "code", "continue | switchingProtocols | okay | created | accepted | nonAuthoritativeInformation | noContent | resetContent | partialContent | multipleChoices | movedPermanently | found | seeOther | notModified | useProxy | temporaryRedirect | permanentRedirect | badRequest | unauthorized | paymentRequired | forbidden | notFound | methodNotAllowed | notAcceptable | proxyAuthenticationRequired | requestTimeout | conflict | gone | lengthRequired | preconditionFailed | contentTooLarge | uriTooLong | unsupportedMediaType | rangeNotSatisfiable | expectationFailed | misdirectedRequest | unprocessableContent | upgradeRequired | internalServerError | notImplemented | badGateway | serviceUnavailable | gatewayTimeout | httpVersionNotSupported.", 0, 1, response);
           case 1438723534: /*responseCode*/  return new Property("responseCode", "string", "The value of the HTTP response code to be tested.", 0, 1, responseCode);
           case 1746327190: /*sourceId*/  return new Property("sourceId", "id", "Fixture to evaluate the XPath/JSONPath expression or the headerField  against.", 0, 1, sourceId);
           case -626616719: /*stopTestOnFail*/  return new Property("stopTestOnFail", "boolean", "Whether or not the current test execution will stop on failure for this assert.", 0, 1, stopTestOnFail);
           case 1555541038: /*validateProfileId*/  return new Property("validateProfileId", "id", "The ID of the Profile to validate against.", 0, 1, validateProfileId);
           case 111972721: /*value*/  return new Property("value", "string", "The value to compare to.", 0, 1, value);
           case -481159832: /*warningOnly*/  return new Property("warningOnly", "boolean", "Whether or not the test execution will produce a warning only on error for this assert.", 0, 1, warningOnly);
+          case 363387971: /*requirement*/  return new Property("requirement", "", "Links or references providing traceability to the testing requirements for this assert.", 0, java.lang.Integer.MAX_VALUE, requirement);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -7154,6 +7931,7 @@ public class TestScript extends CanonicalResource {
         case -1415702669: /*compareToSourceExpression*/ return this.compareToSourceExpression == null ? new Base[0] : new Base[] {this.compareToSourceExpression}; // StringType
         case -790206144: /*compareToSourcePath*/ return this.compareToSourcePath == null ? new Base[0] : new Base[] {this.compareToSourcePath}; // StringType
         case -389131437: /*contentType*/ return this.contentType == null ? new Base[0] : new Base[] {this.contentType}; // CodeType
+        case 1448452259: /*defaultManualCompletion*/ return this.defaultManualCompletion == null ? new Base[0] : new Base[] {this.defaultManualCompletion}; // Enumeration<AssertionManualCompletionType>
         case -1795452264: /*expression*/ return this.expression == null ? new Base[0] : new Base[] {this.expression}; // StringType
         case 1160732269: /*headerField*/ return this.headerField == null ? new Base[0] : new Base[] {this.headerField}; // StringType
         case 818925001: /*minimumId*/ return this.minimumId == null ? new Base[0] : new Base[] {this.minimumId}; // StringType
@@ -7170,6 +7948,7 @@ public class TestScript extends CanonicalResource {
         case 1555541038: /*validateProfileId*/ return this.validateProfileId == null ? new Base[0] : new Base[] {this.validateProfileId}; // IdType
         case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // StringType
         case -481159832: /*warningOnly*/ return this.warningOnly == null ? new Base[0] : new Base[] {this.warningOnly}; // BooleanType
+        case 363387971: /*requirement*/ return this.requirement == null ? new Base[0] : this.requirement.toArray(new Base[this.requirement.size()]); // SetupActionAssertRequirementComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -7199,6 +7978,10 @@ public class TestScript extends CanonicalResource {
           return value;
         case -389131437: // contentType
           this.contentType = TypeConvertor.castToCode(value); // CodeType
+          return value;
+        case 1448452259: // defaultManualCompletion
+          value = new AssertionManualCompletionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.defaultManualCompletion = (Enumeration) value; // Enumeration<AssertionManualCompletionType>
           return value;
         case -1795452264: // expression
           this.expression = TypeConvertor.castToString(value); // StringType
@@ -7251,6 +8034,9 @@ public class TestScript extends CanonicalResource {
         case -481159832: // warningOnly
           this.warningOnly = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
+        case 363387971: // requirement
+          this.getRequirement().add((SetupActionAssertRequirementComponent) value); // SetupActionAssertRequirementComponent
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -7273,6 +8059,9 @@ public class TestScript extends CanonicalResource {
           this.compareToSourcePath = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contentType")) {
           this.contentType = TypeConvertor.castToCode(value); // CodeType
+        } else if (name.equals("defaultManualCompletion")) {
+          value = new AssertionManualCompletionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.defaultManualCompletion = (Enumeration) value; // Enumeration<AssertionManualCompletionType>
         } else if (name.equals("expression")) {
           this.expression = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("headerField")) {
@@ -7308,6 +8097,8 @@ public class TestScript extends CanonicalResource {
           this.value = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("warningOnly")) {
           this.warningOnly = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("requirement")) {
+          this.getRequirement().add((SetupActionAssertRequirementComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -7323,6 +8114,7 @@ public class TestScript extends CanonicalResource {
         case -1415702669:  return getCompareToSourceExpressionElement();
         case -790206144:  return getCompareToSourcePathElement();
         case -389131437:  return getContentTypeElement();
+        case 1448452259:  return getDefaultManualCompletionElement();
         case -1795452264:  return getExpressionElement();
         case 1160732269:  return getHeaderFieldElement();
         case 818925001:  return getMinimumIdElement();
@@ -7339,6 +8131,7 @@ public class TestScript extends CanonicalResource {
         case 1555541038:  return getValidateProfileIdElement();
         case 111972721:  return getValueElement();
         case -481159832:  return getWarningOnlyElement();
+        case 363387971:  return addRequirement(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -7354,6 +8147,7 @@ public class TestScript extends CanonicalResource {
         case -1415702669: /*compareToSourceExpression*/ return new String[] {"string"};
         case -790206144: /*compareToSourcePath*/ return new String[] {"string"};
         case -389131437: /*contentType*/ return new String[] {"code"};
+        case 1448452259: /*defaultManualCompletion*/ return new String[] {"code"};
         case -1795452264: /*expression*/ return new String[] {"string"};
         case 1160732269: /*headerField*/ return new String[] {"string"};
         case 818925001: /*minimumId*/ return new String[] {"string"};
@@ -7370,6 +8164,7 @@ public class TestScript extends CanonicalResource {
         case 1555541038: /*validateProfileId*/ return new String[] {"id"};
         case 111972721: /*value*/ return new String[] {"string"};
         case -481159832: /*warningOnly*/ return new String[] {"boolean"};
+        case 363387971: /*requirement*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -7397,6 +8192,9 @@ public class TestScript extends CanonicalResource {
         }
         else if (name.equals("contentType")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestScript.setup.action.assert.contentType");
+        }
+        else if (name.equals("defaultManualCompletion")) {
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.setup.action.assert.defaultManualCompletion");
         }
         else if (name.equals("expression")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestScript.setup.action.assert.expression");
@@ -7446,6 +8244,9 @@ public class TestScript extends CanonicalResource {
         else if (name.equals("warningOnly")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestScript.setup.action.assert.warningOnly");
         }
+        else if (name.equals("requirement")) {
+          return addRequirement();
+        }
         else
           return super.addChild(name);
       }
@@ -7465,6 +8266,7 @@ public class TestScript extends CanonicalResource {
         dst.compareToSourceExpression = compareToSourceExpression == null ? null : compareToSourceExpression.copy();
         dst.compareToSourcePath = compareToSourcePath == null ? null : compareToSourcePath.copy();
         dst.contentType = contentType == null ? null : contentType.copy();
+        dst.defaultManualCompletion = defaultManualCompletion == null ? null : defaultManualCompletion.copy();
         dst.expression = expression == null ? null : expression.copy();
         dst.headerField = headerField == null ? null : headerField.copy();
         dst.minimumId = minimumId == null ? null : minimumId.copy();
@@ -7481,6 +8283,11 @@ public class TestScript extends CanonicalResource {
         dst.validateProfileId = validateProfileId == null ? null : validateProfileId.copy();
         dst.value = value == null ? null : value.copy();
         dst.warningOnly = warningOnly == null ? null : warningOnly.copy();
+        if (requirement != null) {
+          dst.requirement = new ArrayList<SetupActionAssertRequirementComponent>();
+          for (SetupActionAssertRequirementComponent i : requirement)
+            dst.requirement.add(i.copy());
+        };
       }
 
       @Override
@@ -7493,13 +8300,14 @@ public class TestScript extends CanonicalResource {
         return compareDeep(label, o.label, true) && compareDeep(description, o.description, true) && compareDeep(direction, o.direction, true)
            && compareDeep(compareToSourceId, o.compareToSourceId, true) && compareDeep(compareToSourceExpression, o.compareToSourceExpression, true)
            && compareDeep(compareToSourcePath, o.compareToSourcePath, true) && compareDeep(contentType, o.contentType, true)
-           && compareDeep(expression, o.expression, true) && compareDeep(headerField, o.headerField, true)
-           && compareDeep(minimumId, o.minimumId, true) && compareDeep(navigationLinks, o.navigationLinks, true)
+           && compareDeep(defaultManualCompletion, o.defaultManualCompletion, true) && compareDeep(expression, o.expression, true)
+           && compareDeep(headerField, o.headerField, true) && compareDeep(minimumId, o.minimumId, true) && compareDeep(navigationLinks, o.navigationLinks, true)
            && compareDeep(operator, o.operator, true) && compareDeep(path, o.path, true) && compareDeep(requestMethod, o.requestMethod, true)
            && compareDeep(requestURL, o.requestURL, true) && compareDeep(resource, o.resource, true) && compareDeep(response, o.response, true)
            && compareDeep(responseCode, o.responseCode, true) && compareDeep(sourceId, o.sourceId, true) && compareDeep(stopTestOnFail, o.stopTestOnFail, true)
            && compareDeep(validateProfileId, o.validateProfileId, true) && compareDeep(value, o.value, true)
-           && compareDeep(warningOnly, o.warningOnly, true);
+           && compareDeep(warningOnly, o.warningOnly, true) && compareDeep(requirement, o.requirement, true)
+          ;
       }
 
       @Override
@@ -7512,8 +8320,8 @@ public class TestScript extends CanonicalResource {
         return compareValues(label, o.label, true) && compareValues(description, o.description, true) && compareValues(direction, o.direction, true)
            && compareValues(compareToSourceId, o.compareToSourceId, true) && compareValues(compareToSourceExpression, o.compareToSourceExpression, true)
            && compareValues(compareToSourcePath, o.compareToSourcePath, true) && compareValues(contentType, o.contentType, true)
-           && compareValues(expression, o.expression, true) && compareValues(headerField, o.headerField, true)
-           && compareValues(minimumId, o.minimumId, true) && compareValues(navigationLinks, o.navigationLinks, true)
+           && compareValues(defaultManualCompletion, o.defaultManualCompletion, true) && compareValues(expression, o.expression, true)
+           && compareValues(headerField, o.headerField, true) && compareValues(minimumId, o.minimumId, true) && compareValues(navigationLinks, o.navigationLinks, true)
            && compareValues(operator, o.operator, true) && compareValues(path, o.path, true) && compareValues(requestMethod, o.requestMethod, true)
            && compareValues(requestURL, o.requestURL, true) && compareValues(resource, o.resource, true) && compareValues(response, o.response, true)
            && compareValues(responseCode, o.responseCode, true) && compareValues(sourceId, o.sourceId, true) && compareValues(stopTestOnFail, o.stopTestOnFail, true)
@@ -7523,14 +8331,204 @@ public class TestScript extends CanonicalResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(label, description, direction
-          , compareToSourceId, compareToSourceExpression, compareToSourcePath, contentType, expression
-          , headerField, minimumId, navigationLinks, operator, path, requestMethod, requestURL
-          , resource, response, responseCode, sourceId, stopTestOnFail, validateProfileId
-          , value, warningOnly);
+          , compareToSourceId, compareToSourceExpression, compareToSourcePath, contentType, defaultManualCompletion
+          , expression, headerField, minimumId, navigationLinks, operator, path, requestMethod
+          , requestURL, resource, response, responseCode, sourceId, stopTestOnFail, validateProfileId
+          , value, warningOnly, requirement);
       }
 
   public String fhirType() {
     return "TestScript.setup.action.assert";
+
+  }
+
+  }
+
+    @Block()
+    public static class SetupActionAssertRequirementComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Link or reference providing traceability to the testing requirement for this test.
+         */
+        @Child(name = "link", type = {UriType.class, CanonicalType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Link or reference to the testing requirement", formalDefinition="Link or reference providing traceability to the testing requirement for this test." )
+        protected DataType link;
+
+        private static final long serialVersionUID = -91187948L;
+
+    /**
+     * Constructor
+     */
+      public SetupActionAssertRequirementComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #link} (Link or reference providing traceability to the testing requirement for this test.)
+         */
+        public DataType getLink() { 
+          return this.link;
+        }
+
+        /**
+         * @return {@link #link} (Link or reference providing traceability to the testing requirement for this test.)
+         */
+        public UriType getLinkUriType() throws FHIRException { 
+          if (this.link == null)
+            this.link = new UriType();
+          if (!(this.link instanceof UriType))
+            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.link.getClass().getName()+" was encountered");
+          return (UriType) this.link;
+        }
+
+        public boolean hasLinkUriType() { 
+          return this != null && this.link instanceof UriType;
+        }
+
+        /**
+         * @return {@link #link} (Link or reference providing traceability to the testing requirement for this test.)
+         */
+        public CanonicalType getLinkCanonicalType() throws FHIRException { 
+          if (this.link == null)
+            this.link = new CanonicalType();
+          if (!(this.link instanceof CanonicalType))
+            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.link.getClass().getName()+" was encountered");
+          return (CanonicalType) this.link;
+        }
+
+        public boolean hasLinkCanonicalType() { 
+          return this != null && this.link instanceof CanonicalType;
+        }
+
+        public boolean hasLink() { 
+          return this.link != null && !this.link.isEmpty();
+        }
+
+        /**
+         * @param value {@link #link} (Link or reference providing traceability to the testing requirement for this test.)
+         */
+        public SetupActionAssertRequirementComponent setLink(DataType value) { 
+          if (value != null && !(value instanceof UriType || value instanceof CanonicalType))
+            throw new Error("Not the right type for TestScript.setup.action.assert.requirement.link[x]: "+value.fhirType());
+          this.link = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("link[x]", "uri|canonical(Requirements)", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 177076806: /*link[x]*/  return new Property("link[x]", "uri|canonical(Requirements)", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link);
+          case 3321850: /*link*/  return new Property("link[x]", "uri|canonical(Requirements)", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link);
+          case 177070866: /*linkUri*/  return new Property("link[x]", "uri", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link);
+          case -2064880102: /*linkCanonical*/  return new Property("link[x]", "canonical(Requirements)", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3321850: /*link*/ return this.link == null ? new Base[0] : new Base[] {this.link}; // DataType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3321850: // link
+          this.link = TypeConvertor.castToType(value); // DataType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("link[x]")) {
+          this.link = TypeConvertor.castToType(value); // DataType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 177076806:  return getLink();
+        case 3321850:  return getLink();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3321850: /*link*/ return new String[] {"uri", "canonical"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("linkUri")) {
+          this.link = new UriType();
+          return this.link;
+        }
+        else if (name.equals("linkCanonical")) {
+          this.link = new CanonicalType();
+          return this.link;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public SetupActionAssertRequirementComponent copy() {
+        SetupActionAssertRequirementComponent dst = new SetupActionAssertRequirementComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionAssertRequirementComponent dst) {
+        super.copyValues(dst);
+        dst.link = link == null ? null : link.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof SetupActionAssertRequirementComponent))
+          return false;
+        SetupActionAssertRequirementComponent o = (SetupActionAssertRequirementComponent) other_;
+        return compareDeep(link, o.link, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof SetupActionAssertRequirementComponent))
+          return false;
+        SetupActionAssertRequirementComponent o = (SetupActionAssertRequirementComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(link);
+      }
+
+  public String fhirType() {
+    return "TestScript.setup.action.assert.requirement";
 
   }
 
@@ -9218,7 +10216,7 @@ public class TestScript extends CanonicalResource {
      * @param value A free text natural language description of the test script from a consumer's perspective.
      */
     public TestScript setDescription(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.description = null;
       else {
         if (this.description == null)
@@ -9373,7 +10371,7 @@ public class TestScript extends CanonicalResource {
      * @param value Explanation of why this test script is needed and why it has been designed as it has.
      */
     public TestScript setPurpose(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.purpose = null;
       else {
         if (this.purpose == null)
@@ -9422,7 +10420,7 @@ public class TestScript extends CanonicalResource {
      * @param value A copyright statement relating to the test script and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the test script.
      */
     public TestScript setCopyright(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.copyright = null;
       else {
         if (this.copyright == null)
@@ -10527,10 +11525,10 @@ public class TestScript extends CanonicalResource {
 * [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
 </b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context-quantity", path="(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A quantity- or range-valued use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A quantity- or range-valued use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A quantity- or range-valued use context assigned to the charge item definition\r\n* [Citation](citation.html): A quantity- or range-valued use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A quantity- or range-valued use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A quantity- or range-valued use context assigned to the event definition\r\n* [Evidence](evidence.html): A quantity- or range-valued use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A quantity- or range-valued use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A quantity- or range-valued use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A quantity- or range-valued use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide\r\n* [Library](library.html): A quantity- or range-valued use context assigned to the library\r\n* [Measure](measure.html): A quantity- or range-valued use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A quantity- or range-valued use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A quantity- or range-valued use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A quantity- or range-valued use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A quantity- or range-valued use context assigned to the test script\r\n* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set\r\n", type="quantity" )
+  @SearchParamDefinition(name="context-quantity", path="(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A quantity- or range-valued use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A quantity- or range-valued use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A quantity- or range-valued use context assigned to the charge item definition\r\n* [Citation](citation.html): A quantity- or range-valued use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A quantity- or range-valued use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A quantity- or range-valued use context assigned to the event definition\r\n* [Evidence](evidence.html): A quantity- or range-valued use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A quantity- or range-valued use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A quantity- or range-valued use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A quantity- or range-valued use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide\r\n* [Library](library.html): A quantity- or range-valued use context assigned to the library\r\n* [Measure](measure.html): A quantity- or range-valued use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A quantity- or range-valued use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A quantity- or range-valued use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A quantity- or range-valued use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A quantity- or range-valued use context assigned to the test script\r\n* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set\r\n", type="quantity" )
   public static final String SP_CONTEXT_QUANTITY = "context-quantity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
@@ -10569,7 +11567,7 @@ public class TestScript extends CanonicalResource {
 * [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
 </b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
@@ -10863,10 +11861,10 @@ public class TestScript extends CanonicalResource {
 * [ValueSet](valueset.html): A use context assigned to the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context", path="(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A use context assigned to the charge item definition\r\n* [Citation](citation.html): A use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A use context assigned to the event definition\r\n* [Evidence](evidence.html): A use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [Library](library.html): A use context assigned to the library\r\n* [Measure](measure.html): A use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A use context assigned to the test script\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
+  @SearchParamDefinition(name="context", path="(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A use context assigned to the charge item definition\r\n* [Citation](citation.html): A use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A use context assigned to the event definition\r\n* [Evidence](evidence.html): A use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [Library](library.html): A use context assigned to the library\r\n* [Measure](measure.html): A use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A use context assigned to the test script\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
   public static final String SP_CONTEXT = "context";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>context</b>
@@ -10905,7 +11903,7 @@ public class TestScript extends CanonicalResource {
 * [ValueSet](valueset.html): A use context assigned to the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
@@ -11081,6 +12079,7 @@ public class TestScript extends CanonicalResource {
 
 * [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
 * [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement
 * [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
 * [Citation](citation.html): External identifier for the citation
 * [CodeSystem](codesystem.html): External identifier for the code system
@@ -11091,15 +12090,19 @@ public class TestScript extends CanonicalResource {
 * [EvidenceReport](evidencereport.html): External identifier for the evidence report
 * [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
 * [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [GraphDefinition](graphdefinition.html): External identifier for the graph definition
+* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide
 * [Library](library.html): External identifier for the library
 * [Measure](measure.html): External identifier for the measure
 * [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
 * [NamingSystem](namingsystem.html): External identifier for the naming system
 * [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [OperationDefinition](operationdefinition.html): External identifier for the search parameter
 * [PlanDefinition](plandefinition.html): External identifier for the plan definition
 * [Questionnaire](questionnaire.html): External identifier for the questionnaire
 * [Requirements](requirements.html): External identifier for the requirements
+* [SearchParameter](searchparameter.html): External identifier for the search parameter
 * [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
@@ -11109,10 +12112,10 @@ public class TestScript extends CanonicalResource {
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition\r\n* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition\r\n* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition\r\n* [Citation](citation.html): External identifier for the citation\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition\r\n* [EventDefinition](eventdefinition.html): External identifier for the event definition\r\n* [Evidence](evidence.html): External identifier for the evidence\r\n* [EvidenceReport](evidencereport.html): External identifier for the evidence report\r\n* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable\r\n* [ExampleScenario](examplescenario.html): External identifier for the example scenario\r\n* [Library](library.html): External identifier for the library\r\n* [Measure](measure.html): External identifier for the measure\r\n* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition\r\n* [PlanDefinition](plandefinition.html): External identifier for the plan definition\r\n* [Questionnaire](questionnaire.html): External identifier for the questionnaire\r\n* [Requirements](requirements.html): External identifier for the requirements\r\n* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [TestScript](testscript.html): External identifier for the test script\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition\r\n* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition\r\n* [Citation](citation.html): External identifier for the citation\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition\r\n* [EventDefinition](eventdefinition.html): External identifier for the event definition\r\n* [Evidence](evidence.html): External identifier for the evidence\r\n* [EvidenceReport](evidencereport.html): External identifier for the evidence report\r\n* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable\r\n* [ExampleScenario](examplescenario.html): External identifier for the example scenario\r\n* [GraphDefinition](graphdefinition.html): External identifier for the graph definition\r\n* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide\r\n* [Library](library.html): External identifier for the library\r\n* [Measure](measure.html): External identifier for the measure\r\n* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition\r\n* [OperationDefinition](operationdefinition.html): External identifier for the search parameter\r\n* [PlanDefinition](plandefinition.html): External identifier for the plan definition\r\n* [Questionnaire](questionnaire.html): External identifier for the questionnaire\r\n* [Requirements](requirements.html): External identifier for the requirements\r\n* [SearchParameter](searchparameter.html): External identifier for the search parameter\r\n* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [TestScript](testscript.html): External identifier for the test script\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -11121,6 +12124,7 @@ public class TestScript extends CanonicalResource {
 
 * [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
 * [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement
 * [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
 * [Citation](citation.html): External identifier for the citation
 * [CodeSystem](codesystem.html): External identifier for the code system
@@ -11131,15 +12135,19 @@ public class TestScript extends CanonicalResource {
 * [EvidenceReport](evidencereport.html): External identifier for the evidence report
 * [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
 * [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [GraphDefinition](graphdefinition.html): External identifier for the graph definition
+* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide
 * [Library](library.html): External identifier for the library
 * [Measure](measure.html): External identifier for the measure
 * [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
 * [NamingSystem](namingsystem.html): External identifier for the naming system
 * [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [OperationDefinition](operationdefinition.html): External identifier for the search parameter
 * [PlanDefinition](plandefinition.html): External identifier for the plan definition
 * [Questionnaire](questionnaire.html): External identifier for the questionnaire
 * [Requirements](requirements.html): External identifier for the requirements
+* [SearchParameter](searchparameter.html): External identifier for the search parameter
 * [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
@@ -11149,7 +12157,7 @@ public class TestScript extends CanonicalResource {
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -11742,7 +12750,7 @@ public class TestScript extends CanonicalResource {
    * Path: <b>TestScript.scope.artifact</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="scope-artifact", path="TestScript.scope.artifact", description="The artifact under test", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="scope-artifact", path="TestScript.scope.artifact", description="The artifact under test", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BiologicallyDerivedProductDispense.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceAssociation.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentReference.class, Encounter.class, EncounterHistory.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryItem.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationStatement.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Parameters.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestPlan.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SCOPE_ARTIFACT = "scope-artifact";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>scope-artifact</b>
@@ -11782,3 +12790,4 @@ public class TestScript extends CanonicalResource {
 
 
 }
+

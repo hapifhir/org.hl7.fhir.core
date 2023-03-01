@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1016,7 +1016,7 @@ public class RelatedArtifact extends DataType implements ICompositeType {
      * @param value A bibliographic citation for the related artifact. This text SHOULD be formatted according to an accepted citation format.
      */
     public RelatedArtifact setCitation(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.citation = null;
       else {
         if (this.citation == null)
@@ -1481,3 +1481,4 @@ public class RelatedArtifact extends DataType implements ICompositeType {
 
 
 }
+

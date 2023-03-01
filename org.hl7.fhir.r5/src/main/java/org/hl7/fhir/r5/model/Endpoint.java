@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -197,6 +197,281 @@ public class Endpoint extends DomainResource {
       }
     }
 
+    @Block()
+    public static class EndpointPayloadComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The payload type describes the acceptable content that can be communicated on the endpoint.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)", formalDefinition="The payload type describes the acceptable content that can be communicated on the endpoint." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/endpoint-payload-type")
+        protected List<CodeableConcept> type;
+
+        /**
+         * The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).
+         */
+        @Child(name = "mimeType", type = {CodeType.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="Mimetype to send. If not specified, the content could be anything (including no payload, if the connectionType defined this)", formalDefinition="The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/mimetypes")
+        protected List<CodeType> mimeType;
+
+        private static final long serialVersionUID = -1398955844L;
+
+    /**
+     * Constructor
+     */
+      public EndpointPayloadComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #type} (The payload type describes the acceptable content that can be communicated on the endpoint.)
+         */
+        public List<CodeableConcept> getType() { 
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          return this.type;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EndpointPayloadComponent setType(List<CodeableConcept> theType) { 
+          this.type = theType;
+          return this;
+        }
+
+        public boolean hasType() { 
+          if (this.type == null)
+            return false;
+          for (CodeableConcept item : this.type)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addType() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          this.type.add(t);
+          return t;
+        }
+
+        public EndpointPayloadComponent addType(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          this.type.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getTypeFirstRep() { 
+          if (getType().isEmpty()) {
+            addType();
+          }
+          return getType().get(0);
+        }
+
+        /**
+         * @return {@link #mimeType} (The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).)
+         */
+        public List<CodeType> getMimeType() { 
+          if (this.mimeType == null)
+            this.mimeType = new ArrayList<CodeType>();
+          return this.mimeType;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EndpointPayloadComponent setMimeType(List<CodeType> theMimeType) { 
+          this.mimeType = theMimeType;
+          return this;
+        }
+
+        public boolean hasMimeType() { 
+          if (this.mimeType == null)
+            return false;
+          for (CodeType item : this.mimeType)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #mimeType} (The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).)
+         */
+        public CodeType addMimeTypeElement() {//2 
+          CodeType t = new CodeType();
+          if (this.mimeType == null)
+            this.mimeType = new ArrayList<CodeType>();
+          this.mimeType.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #mimeType} (The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).)
+         */
+        public EndpointPayloadComponent addMimeType(String value) { //1
+          CodeType t = new CodeType();
+          t.setValue(value);
+          if (this.mimeType == null)
+            this.mimeType = new ArrayList<CodeType>();
+          this.mimeType.add(t);
+          return this;
+        }
+
+        /**
+         * @param value {@link #mimeType} (The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).)
+         */
+        public boolean hasMimeType(String value) { 
+          if (this.mimeType == null)
+            return false;
+          for (CodeType v : this.mimeType)
+            if (v.getValue().equals(value)) // code
+              return true;
+          return false;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("type", "CodeableConcept", "The payload type describes the acceptable content that can be communicated on the endpoint.", 0, java.lang.Integer.MAX_VALUE, type));
+          children.add(new Property("mimeType", "code", "The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).", 0, java.lang.Integer.MAX_VALUE, mimeType));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The payload type describes the acceptable content that can be communicated on the endpoint.", 0, java.lang.Integer.MAX_VALUE, type);
+          case -1392120434: /*mimeType*/  return new Property("mimeType", "code", "The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).", 0, java.lang.Integer.MAX_VALUE, mimeType);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
+        case -1392120434: /*mimeType*/ return this.mimeType == null ? new Base[0] : this.mimeType.toArray(new Base[this.mimeType.size()]); // CodeType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3575610: // type
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case -1392120434: // mimeType
+          this.getMimeType().add(TypeConvertor.castToCode(value)); // CodeType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("mimeType")) {
+          this.getMimeType().add(TypeConvertor.castToCode(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610:  return addType(); 
+        case -1392120434:  return addMimeTypeElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case -1392120434: /*mimeType*/ return new String[] {"code"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("type")) {
+          return addType();
+        }
+        else if (name.equals("mimeType")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Endpoint.payload.mimeType");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public EndpointPayloadComponent copy() {
+        EndpointPayloadComponent dst = new EndpointPayloadComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EndpointPayloadComponent dst) {
+        super.copyValues(dst);
+        if (type != null) {
+          dst.type = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : type)
+            dst.type.add(i.copy());
+        };
+        if (mimeType != null) {
+          dst.mimeType = new ArrayList<CodeType>();
+          for (CodeType i : mimeType)
+            dst.mimeType.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof EndpointPayloadComponent))
+          return false;
+        EndpointPayloadComponent o = (EndpointPayloadComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(mimeType, o.mimeType, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof EndpointPayloadComponent))
+          return false;
+        EndpointPayloadComponent o = (EndpointPayloadComponent) other_;
+        return compareValues(mimeType, o.mimeType, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, mimeType);
+      }
+
+  public String fhirType() {
+    return "Endpoint.payload";
+
+  }
+
+  }
+
     /**
      * Identifier for the organization that is used to identify the endpoint across multiple disparate systems.
      */
@@ -228,17 +503,17 @@ public class Endpoint extends DomainResource {
     protected StringType name;
 
     /**
-     * The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).
+     * The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing its usage/purpose).
      */
     @Child(name = "description", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Additional details about the endpoint that could be displayed as further information to identify the description beyond its name", formalDefinition="The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose)." )
+    @Description(shortDefinition="Additional details about the endpoint that could be displayed as further information to identify the description beyond its name", formalDefinition="The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing its usage/purpose)." )
     protected StringType description;
 
     /**
-     * The type of environment(s) exposed at this endpoint (dev, prod, test, etc).
+     * The type of environment(s) exposed at this endpoint (dev, prod, test, etc.).
      */
     @Child(name = "environmentType", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The type of environment(s) exposed at this endpoint", formalDefinition="The type of environment(s) exposed at this endpoint (dev, prod, test, etc)." )
+    @Description(shortDefinition="The type of environment(s) exposed at this endpoint", formalDefinition="The type of environment(s) exposed at this endpoint (dev, prod, test, etc.)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/endpoint-environment")
     protected List<CodeableConcept> environmentType;
 
@@ -264,36 +539,27 @@ public class Endpoint extends DomainResource {
     protected Period period;
 
     /**
-     * The payload type describes the acceptable content that can be communicated on the endpoint.
+     * The set of payloads that are provided/available at this endpoint.
      */
-    @Child(name = "payloadType", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)", formalDefinition="The payload type describes the acceptable content that can be communicated on the endpoint." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/endpoint-payload-type")
-    protected List<CodeableConcept> payloadType;
-
-    /**
-     * The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).
-     */
-    @Child(name = "payloadMimeType", type = {CodeType.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Mimetype to send. If not specified, the content could be anything (including no payload, if the connectionType defined this)", formalDefinition="The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType)." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/mimetypes")
-    protected List<CodeType> payloadMimeType;
+    @Child(name = "payload", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Set of payloads that are provided by this endpoint", formalDefinition="The set of payloads that are provided/available at this endpoint." )
+    protected List<EndpointPayloadComponent> payload;
 
     /**
      * The uri that describes the actual end-point to connect to.
      */
-    @Child(name = "address", type = {UrlType.class}, order=11, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "address", type = {UrlType.class}, order=10, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The technical base address for connecting to this endpoint", formalDefinition="The uri that describes the actual end-point to connect to." )
     protected UrlType address;
 
     /**
      * Additional headers / information to send as part of the notification.
      */
-    @Child(name = "header", type = {StringType.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "header", type = {StringType.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Usage depends on the channel type", formalDefinition="Additional headers / information to send as part of the notification." )
     protected List<StringType> header;
 
-    private static final long serialVersionUID = -775722791L;
+    private static final long serialVersionUID = 1633700267L;
 
   /**
    * Constructor
@@ -513,7 +779,7 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return {@link #description} (The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @return {@link #description} (The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing its usage/purpose).). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public StringType getDescriptionElement() { 
       if (this.description == null)
@@ -533,7 +799,7 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @param value {@link #description} (The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @param value {@link #description} (The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing its usage/purpose).). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public Endpoint setDescriptionElement(StringType value) { 
       this.description = value;
@@ -541,14 +807,14 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).
+     * @return The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing its usage/purpose).
      */
     public String getDescription() { 
       return this.description == null ? null : this.description.getValue();
     }
 
     /**
-     * @param value The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).
+     * @param value The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing its usage/purpose).
      */
     public Endpoint setDescription(String value) { 
       if (Utilities.noString(value))
@@ -562,7 +828,7 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return {@link #environmentType} (The type of environment(s) exposed at this endpoint (dev, prod, test, etc).)
+     * @return {@link #environmentType} (The type of environment(s) exposed at this endpoint (dev, prod, test, etc.).)
      */
     public List<CodeableConcept> getEnvironmentType() { 
       if (this.environmentType == null)
@@ -716,117 +982,56 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return {@link #payloadType} (The payload type describes the acceptable content that can be communicated on the endpoint.)
+     * @return {@link #payload} (The set of payloads that are provided/available at this endpoint.)
      */
-    public List<CodeableConcept> getPayloadType() { 
-      if (this.payloadType == null)
-        this.payloadType = new ArrayList<CodeableConcept>();
-      return this.payloadType;
+    public List<EndpointPayloadComponent> getPayload() { 
+      if (this.payload == null)
+        this.payload = new ArrayList<EndpointPayloadComponent>();
+      return this.payload;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Endpoint setPayloadType(List<CodeableConcept> thePayloadType) { 
-      this.payloadType = thePayloadType;
+    public Endpoint setPayload(List<EndpointPayloadComponent> thePayload) { 
+      this.payload = thePayload;
       return this;
     }
 
-    public boolean hasPayloadType() { 
-      if (this.payloadType == null)
+    public boolean hasPayload() { 
+      if (this.payload == null)
         return false;
-      for (CodeableConcept item : this.payloadType)
+      for (EndpointPayloadComponent item : this.payload)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addPayloadType() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.payloadType == null)
-        this.payloadType = new ArrayList<CodeableConcept>();
-      this.payloadType.add(t);
+    public EndpointPayloadComponent addPayload() { //3
+      EndpointPayloadComponent t = new EndpointPayloadComponent();
+      if (this.payload == null)
+        this.payload = new ArrayList<EndpointPayloadComponent>();
+      this.payload.add(t);
       return t;
     }
 
-    public Endpoint addPayloadType(CodeableConcept t) { //3
+    public Endpoint addPayload(EndpointPayloadComponent t) { //3
       if (t == null)
         return this;
-      if (this.payloadType == null)
-        this.payloadType = new ArrayList<CodeableConcept>();
-      this.payloadType.add(t);
+      if (this.payload == null)
+        this.payload = new ArrayList<EndpointPayloadComponent>();
+      this.payload.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #payloadType}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #payload}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getPayloadTypeFirstRep() { 
-      if (getPayloadType().isEmpty()) {
-        addPayloadType();
+    public EndpointPayloadComponent getPayloadFirstRep() { 
+      if (getPayload().isEmpty()) {
+        addPayload();
       }
-      return getPayloadType().get(0);
-    }
-
-    /**
-     * @return {@link #payloadMimeType} (The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).)
-     */
-    public List<CodeType> getPayloadMimeType() { 
-      if (this.payloadMimeType == null)
-        this.payloadMimeType = new ArrayList<CodeType>();
-      return this.payloadMimeType;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Endpoint setPayloadMimeType(List<CodeType> thePayloadMimeType) { 
-      this.payloadMimeType = thePayloadMimeType;
-      return this;
-    }
-
-    public boolean hasPayloadMimeType() { 
-      if (this.payloadMimeType == null)
-        return false;
-      for (CodeType item : this.payloadMimeType)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #payloadMimeType} (The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).)
-     */
-    public CodeType addPayloadMimeTypeElement() {//2 
-      CodeType t = new CodeType();
-      if (this.payloadMimeType == null)
-        this.payloadMimeType = new ArrayList<CodeType>();
-      this.payloadMimeType.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #payloadMimeType} (The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).)
-     */
-    public Endpoint addPayloadMimeType(String value) { //1
-      CodeType t = new CodeType();
-      t.setValue(value);
-      if (this.payloadMimeType == null)
-        this.payloadMimeType = new ArrayList<CodeType>();
-      this.payloadMimeType.add(t);
-      return this;
-    }
-
-    /**
-     * @param value {@link #payloadMimeType} (The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).)
-     */
-    public boolean hasPayloadMimeType(String value) { 
-      if (this.payloadMimeType == null)
-        return false;
-      for (CodeType v : this.payloadMimeType)
-        if (v.getValue().equals(value)) // code
-          return true;
-      return false;
+      return getPayload().get(0);
     }
 
     /**
@@ -941,13 +1146,12 @@ public class Endpoint extends DomainResource {
         children.add(new Property("status", "code", "The endpoint status represents the general expected availability of an endpoint.", 0, 1, status));
         children.add(new Property("connectionType", "CodeableConcept", "A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).", 0, java.lang.Integer.MAX_VALUE, connectionType));
         children.add(new Property("name", "string", "A friendly name that this endpoint can be referred to with.", 0, 1, name));
-        children.add(new Property("description", "string", "The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).", 0, 1, description));
-        children.add(new Property("environmentType", "CodeableConcept", "The type of environment(s) exposed at this endpoint (dev, prod, test, etc).", 0, java.lang.Integer.MAX_VALUE, environmentType));
+        children.add(new Property("description", "string", "The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing its usage/purpose).", 0, 1, description));
+        children.add(new Property("environmentType", "CodeableConcept", "The type of environment(s) exposed at this endpoint (dev, prod, test, etc.).", 0, java.lang.Integer.MAX_VALUE, environmentType));
         children.add(new Property("managingOrganization", "Reference(Organization)", "The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).", 0, 1, managingOrganization));
         children.add(new Property("contact", "ContactPoint", "Contact details for a human to contact about the endpoint. The primary use of this for system administrator troubleshooting.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("period", "Period", "The interval during which the endpoint is expected to be operational.", 0, 1, period));
-        children.add(new Property("payloadType", "CodeableConcept", "The payload type describes the acceptable content that can be communicated on the endpoint.", 0, java.lang.Integer.MAX_VALUE, payloadType));
-        children.add(new Property("payloadMimeType", "code", "The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).", 0, java.lang.Integer.MAX_VALUE, payloadMimeType));
+        children.add(new Property("payload", "", "The set of payloads that are provided/available at this endpoint.", 0, java.lang.Integer.MAX_VALUE, payload));
         children.add(new Property("address", "url", "The uri that describes the actual end-point to connect to.", 0, 1, address));
         children.add(new Property("header", "string", "Additional headers / information to send as part of the notification.", 0, java.lang.Integer.MAX_VALUE, header));
       }
@@ -959,13 +1163,12 @@ public class Endpoint extends DomainResource {
         case -892481550: /*status*/  return new Property("status", "code", "The endpoint status represents the general expected availability of an endpoint.", 0, 1, status);
         case 1270211384: /*connectionType*/  return new Property("connectionType", "CodeableConcept", "A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).", 0, java.lang.Integer.MAX_VALUE, connectionType);
         case 3373707: /*name*/  return new Property("name", "string", "A friendly name that this endpoint can be referred to with.", 0, 1, name);
-        case -1724546052: /*description*/  return new Property("description", "string", "The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).", 0, 1, description);
-        case 1680602093: /*environmentType*/  return new Property("environmentType", "CodeableConcept", "The type of environment(s) exposed at this endpoint (dev, prod, test, etc).", 0, java.lang.Integer.MAX_VALUE, environmentType);
+        case -1724546052: /*description*/  return new Property("description", "string", "The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing its usage/purpose).", 0, 1, description);
+        case 1680602093: /*environmentType*/  return new Property("environmentType", "CodeableConcept", "The type of environment(s) exposed at this endpoint (dev, prod, test, etc.).", 0, java.lang.Integer.MAX_VALUE, environmentType);
         case -2058947787: /*managingOrganization*/  return new Property("managingOrganization", "Reference(Organization)", "The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).", 0, 1, managingOrganization);
         case 951526432: /*contact*/  return new Property("contact", "ContactPoint", "Contact details for a human to contact about the endpoint. The primary use of this for system administrator troubleshooting.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -991726143: /*period*/  return new Property("period", "Period", "The interval during which the endpoint is expected to be operational.", 0, 1, period);
-        case 909929960: /*payloadType*/  return new Property("payloadType", "CodeableConcept", "The payload type describes the acceptable content that can be communicated on the endpoint.", 0, java.lang.Integer.MAX_VALUE, payloadType);
-        case -1702836932: /*payloadMimeType*/  return new Property("payloadMimeType", "code", "The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).", 0, java.lang.Integer.MAX_VALUE, payloadMimeType);
+        case -786701938: /*payload*/  return new Property("payload", "", "The set of payloads that are provided/available at this endpoint.", 0, java.lang.Integer.MAX_VALUE, payload);
         case -1147692044: /*address*/  return new Property("address", "url", "The uri that describes the actual end-point to connect to.", 0, 1, address);
         case -1221270899: /*header*/  return new Property("header", "string", "Additional headers / information to send as part of the notification.", 0, java.lang.Integer.MAX_VALUE, header);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -985,8 +1188,7 @@ public class Endpoint extends DomainResource {
         case -2058947787: /*managingOrganization*/ return this.managingOrganization == null ? new Base[0] : new Base[] {this.managingOrganization}; // Reference
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactPoint
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
-        case 909929960: /*payloadType*/ return this.payloadType == null ? new Base[0] : this.payloadType.toArray(new Base[this.payloadType.size()]); // CodeableConcept
-        case -1702836932: /*payloadMimeType*/ return this.payloadMimeType == null ? new Base[0] : this.payloadMimeType.toArray(new Base[this.payloadMimeType.size()]); // CodeType
+        case -786701938: /*payload*/ return this.payload == null ? new Base[0] : this.payload.toArray(new Base[this.payload.size()]); // EndpointPayloadComponent
         case -1147692044: /*address*/ return this.address == null ? new Base[0] : new Base[] {this.address}; // UrlType
         case -1221270899: /*header*/ return this.header == null ? new Base[0] : this.header.toArray(new Base[this.header.size()]); // StringType
         default: return super.getProperty(hash, name, checkValid);
@@ -1025,11 +1227,8 @@ public class Endpoint extends DomainResource {
         case -991726143: // period
           this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
-        case 909929960: // payloadType
-          this.getPayloadType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1702836932: // payloadMimeType
-          this.getPayloadMimeType().add(TypeConvertor.castToCode(value)); // CodeType
+        case -786701938: // payload
+          this.getPayload().add((EndpointPayloadComponent) value); // EndpointPayloadComponent
           return value;
         case -1147692044: // address
           this.address = TypeConvertor.castToUrl(value); // UrlType
@@ -1063,10 +1262,8 @@ public class Endpoint extends DomainResource {
           this.getContact().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("period")) {
           this.period = TypeConvertor.castToPeriod(value); // Period
-        } else if (name.equals("payloadType")) {
-          this.getPayloadType().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("payloadMimeType")) {
-          this.getPayloadMimeType().add(TypeConvertor.castToCode(value));
+        } else if (name.equals("payload")) {
+          this.getPayload().add((EndpointPayloadComponent) value);
         } else if (name.equals("address")) {
           this.address = TypeConvertor.castToUrl(value); // UrlType
         } else if (name.equals("header")) {
@@ -1088,8 +1285,7 @@ public class Endpoint extends DomainResource {
         case -2058947787:  return getManagingOrganization();
         case 951526432:  return addContact(); 
         case -991726143:  return getPeriod();
-        case 909929960:  return addPayloadType(); 
-        case -1702836932:  return addPayloadMimeTypeElement();
+        case -786701938:  return addPayload(); 
         case -1147692044:  return getAddressElement();
         case -1221270899:  return addHeaderElement();
         default: return super.makeProperty(hash, name);
@@ -1109,8 +1305,7 @@ public class Endpoint extends DomainResource {
         case -2058947787: /*managingOrganization*/ return new String[] {"Reference"};
         case 951526432: /*contact*/ return new String[] {"ContactPoint"};
         case -991726143: /*period*/ return new String[] {"Period"};
-        case 909929960: /*payloadType*/ return new String[] {"CodeableConcept"};
-        case -1702836932: /*payloadMimeType*/ return new String[] {"code"};
+        case -786701938: /*payload*/ return new String[] {};
         case -1147692044: /*address*/ return new String[] {"url"};
         case -1221270899: /*header*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
@@ -1149,11 +1344,8 @@ public class Endpoint extends DomainResource {
           this.period = new Period();
           return this.period;
         }
-        else if (name.equals("payloadType")) {
-          return addPayloadType();
-        }
-        else if (name.equals("payloadMimeType")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Endpoint.payloadMimeType");
+        else if (name.equals("payload")) {
+          return addPayload();
         }
         else if (name.equals("address")) {
           throw new FHIRException("Cannot call addChild on a primitive type Endpoint.address");
@@ -1203,15 +1395,10 @@ public class Endpoint extends DomainResource {
             dst.contact.add(i.copy());
         };
         dst.period = period == null ? null : period.copy();
-        if (payloadType != null) {
-          dst.payloadType = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : payloadType)
-            dst.payloadType.add(i.copy());
-        };
-        if (payloadMimeType != null) {
-          dst.payloadMimeType = new ArrayList<CodeType>();
-          for (CodeType i : payloadMimeType)
-            dst.payloadMimeType.add(i.copy());
+        if (payload != null) {
+          dst.payload = new ArrayList<EndpointPayloadComponent>();
+          for (EndpointPayloadComponent i : payload)
+            dst.payload.add(i.copy());
         };
         dst.address = address == null ? null : address.copy();
         if (header != null) {
@@ -1235,8 +1422,8 @@ public class Endpoint extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(connectionType, o.connectionType, true)
            && compareDeep(name, o.name, true) && compareDeep(description, o.description, true) && compareDeep(environmentType, o.environmentType, true)
            && compareDeep(managingOrganization, o.managingOrganization, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(period, o.period, true) && compareDeep(payloadType, o.payloadType, true) && compareDeep(payloadMimeType, o.payloadMimeType, true)
-           && compareDeep(address, o.address, true) && compareDeep(header, o.header, true);
+           && compareDeep(period, o.period, true) && compareDeep(payload, o.payload, true) && compareDeep(address, o.address, true)
+           && compareDeep(header, o.header, true);
       }
 
       @Override
@@ -1247,14 +1434,13 @@ public class Endpoint extends DomainResource {
           return false;
         Endpoint o = (Endpoint) other_;
         return compareValues(status, o.status, true) && compareValues(name, o.name, true) && compareValues(description, o.description, true)
-           && compareValues(payloadMimeType, o.payloadMimeType, true) && compareValues(address, o.address, true)
-           && compareValues(header, o.header, true);
+           && compareValues(address, o.address, true) && compareValues(header, o.header, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, connectionType
-          , name, description, environmentType, managingOrganization, contact, period, payloadType
-          , payloadMimeType, address, header);
+          , name, description, environmentType, managingOrganization, contact, period, payload
+          , address, header);
       }
 
   @Override
@@ -1353,17 +1539,17 @@ public class Endpoint extends DomainResource {
    * <p>
    * Description: <b>The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Endpoint.payloadType</b><br>
+   * Path: <b>Endpoint.payload.type</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="payload-type", path="Endpoint.payloadType", description="The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)", type="token" )
+  @SearchParamDefinition(name="payload-type", path="Endpoint.payload.type", description="The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)", type="token" )
   public static final String SP_PAYLOAD_TYPE = "payload-type";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>payload-type</b>
    * <p>
    * Description: <b>The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Endpoint.payloadType</b><br>
+   * Path: <b>Endpoint.payload.type</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PAYLOAD_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PAYLOAD_TYPE);
@@ -1390,3 +1576,4 @@ public class Endpoint extends DomainResource {
 
 
 }
+

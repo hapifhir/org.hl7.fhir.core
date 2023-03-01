@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1492,10 +1492,10 @@ public class PackagedProductDefinition extends DomainResource {
         protected CodeableReference item;
 
         /**
-         * The number of this type of item within this packaging.
+         * The number of this type of item within this packaging or for continuous items such as liquids it is the quantity (for example 25ml). See also PackagedProductDefinition.containedItemQuantity (especially the long definition).
          */
         @Child(name = "amount", type = {Quantity.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The number of this type of item within this packaging", formalDefinition="The number of this type of item within this packaging." )
+        @Description(shortDefinition="The number of this type of item within this packaging or for continuous items such as liquids it is the quantity (for example 25ml). See also PackagedProductDefinition.containedItemQuantity (especially the long definition)", formalDefinition="The number of this type of item within this packaging or for continuous items such as liquids it is the quantity (for example 25ml). See also PackagedProductDefinition.containedItemQuantity (especially the long definition)." )
         protected Quantity amount;
 
         private static final long serialVersionUID = 443863028L;
@@ -1540,7 +1540,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #amount} (The number of this type of item within this packaging.)
+         * @return {@link #amount} (The number of this type of item within this packaging or for continuous items such as liquids it is the quantity (for example 25ml). See also PackagedProductDefinition.containedItemQuantity (especially the long definition).)
          */
         public Quantity getAmount() { 
           if (this.amount == null)
@@ -1556,7 +1556,7 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #amount} (The number of this type of item within this packaging.)
+         * @param value {@link #amount} (The number of this type of item within this packaging or for continuous items such as liquids it is the quantity (for example 25ml). See also PackagedProductDefinition.containedItemQuantity (especially the long definition).)
          */
         public PackagedProductDefinitionPackagingContainedItemComponent setAmount(Quantity value) { 
           this.amount = value;
@@ -1566,14 +1566,14 @@ public class PackagedProductDefinition extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("item", "CodeableReference(ManufacturedItemDefinition|DeviceDefinition|PackagedProductDefinition|BiologicallyDerivedProduct|NutritionProduct)", "The actual item(s) of medication, as manufactured, or a device (typically, but not necessarily, a co-packaged one), or other medically related item (such as food, biologicals, raw materials, medical fluids, gases etc.), as contained in the package. This also allows another whole packaged product to be included, which is solely for the case where a package of other entire packages is wanted - such as a wholesale or distribution pack (for layers within one package, use PackagedProductDefinition.packaging.packaging).", 0, 1, item));
-          children.add(new Property("amount", "Quantity", "The number of this type of item within this packaging.", 0, 1, amount));
+          children.add(new Property("amount", "Quantity", "The number of this type of item within this packaging or for continuous items such as liquids it is the quantity (for example 25ml). See also PackagedProductDefinition.containedItemQuantity (especially the long definition).", 0, 1, amount));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3242771: /*item*/  return new Property("item", "CodeableReference(ManufacturedItemDefinition|DeviceDefinition|PackagedProductDefinition|BiologicallyDerivedProduct|NutritionProduct)", "The actual item(s) of medication, as manufactured, or a device (typically, but not necessarily, a co-packaged one), or other medically related item (such as food, biologicals, raw materials, medical fluids, gases etc.), as contained in the package. This also allows another whole packaged product to be included, which is solely for the case where a package of other entire packages is wanted - such as a wholesale or distribution pack (for layers within one package, use PackagedProductDefinition.packaging.packaging).", 0, 1, item);
-          case -1413853096: /*amount*/  return new Property("amount", "Quantity", "The number of this type of item within this packaging.", 0, 1, amount);
+          case -1413853096: /*amount*/  return new Property("amount", "Quantity", "The number of this type of item within this packaging or for continuous items such as liquids it is the quantity (for example 25ml). See also PackagedProductDefinition.containedItemQuantity (especially the long definition).", 0, 1, amount);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1739,7 +1739,7 @@ public class PackagedProductDefinition extends DomainResource {
      * A total of the complete count of contained items of a particular type/form, independent of sub-packaging or organization. This can be considered as the pack size. This attribute differs from containedItem.amount in that it can give a single aggregated count of all tablet types in a pack, even when these are different manufactured items. For example a pill pack of 21 tablets plus 7 sugar tablets, can be denoted here as '28 tablets'. This attribute is repeatable so that the different item types in one pack type can be counted (e.g. a count of vials and count of syringes). Each repeat must have different units, so that it is clear what the different sets of counted items are, and it is not intended to allow different counts of similar items (e.g. not '2 tubes and 3 tubes'). Repeats are not to be used to represent different pack sizes (e.g. 20 pack vs. 50 pack) - which would be different instances of this resource.
      */
     @Child(name = "containedItemQuantity", type = {Quantity.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="A total of the complete count of contained items of a particular type/form, independent of sub-packaging or organization. This can be considered as the pack size", formalDefinition="A total of the complete count of contained items of a particular type/form, independent of sub-packaging or organization. This can be considered as the pack size. This attribute differs from containedItem.amount in that it can give a single aggregated count of all tablet types in a pack, even when these are different manufactured items. For example a pill pack of 21 tablets plus 7 sugar tablets, can be denoted here as '28 tablets'. This attribute is repeatable so that the different item types in one pack type can be counted (e.g. a count of vials and count of syringes). Each repeat must have different units, so that it is clear what the different sets of counted items are, and it is not intended to allow different counts of similar items (e.g. not '2 tubes and 3 tubes'). Repeats are not to be used to represent different pack sizes (e.g. 20 pack vs. 50 pack) - which would be different instances of this resource." )
+    @Description(shortDefinition="A total of the complete count of contained items of a particular type/form, independent of sub-packaging or organization. This can be considered as the pack size. See also packaging.containedItem.amount (especially the long definition)", formalDefinition="A total of the complete count of contained items of a particular type/form, independent of sub-packaging or organization. This can be considered as the pack size. This attribute differs from containedItem.amount in that it can give a single aggregated count of all tablet types in a pack, even when these are different manufactured items. For example a pill pack of 21 tablets plus 7 sugar tablets, can be denoted here as '28 tablets'. This attribute is repeatable so that the different item types in one pack type can be counted (e.g. a count of vials and count of syringes). Each repeat must have different units, so that it is clear what the different sets of counted items are, and it is not intended to allow different counts of similar items (e.g. not '2 tubes and 3 tubes'). Repeats are not to be used to represent different pack sizes (e.g. 20 pack vs. 50 pack) - which would be different instances of this resource." )
     protected List<Quantity> containedItemQuantity;
 
     /**
@@ -2151,7 +2151,7 @@ public class PackagedProductDefinition extends DomainResource {
      * @param value Textual description. Note that this is not the name of the package or product.
      */
     public PackagedProductDefinition setDescription(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.description = null;
       else {
         if (this.description == null)
@@ -2862,7 +2862,7 @@ public class PackagedProductDefinition extends DomainResource {
    * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="biological", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A biologically derived product within this packaged product", type="reference" )
+  @SearchParamDefinition(name="biological", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A biologically derived product within this packaged product", type="reference", target={BiologicallyDerivedProduct.class, DeviceDefinition.class, ManufacturedItemDefinition.class, NutritionProduct.class, PackagedProductDefinition.class } )
   public static final String SP_BIOLOGICAL = "biological";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>biological</b>
@@ -2888,7 +2888,7 @@ public class PackagedProductDefinition extends DomainResource {
    * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="contained-item", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="Any of the contained items within this packaged product", type="reference" )
+  @SearchParamDefinition(name="contained-item", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="Any of the contained items within this packaged product", type="reference", target={BiologicallyDerivedProduct.class, DeviceDefinition.class, ManufacturedItemDefinition.class, NutritionProduct.class, PackagedProductDefinition.class } )
   public static final String SP_CONTAINED_ITEM = "contained-item";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>contained-item</b>
@@ -2914,7 +2914,7 @@ public class PackagedProductDefinition extends DomainResource {
    * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="device", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A device within this packaged product", type="reference" )
+  @SearchParamDefinition(name="device", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A device within this packaged product", type="reference", target={BiologicallyDerivedProduct.class, DeviceDefinition.class, ManufacturedItemDefinition.class, NutritionProduct.class, PackagedProductDefinition.class } )
   public static final String SP_DEVICE = "device";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>device</b>
@@ -2960,7 +2960,7 @@ public class PackagedProductDefinition extends DomainResource {
    * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="manufactured-item", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A manufactured item of medication within this packaged product", type="reference" )
+  @SearchParamDefinition(name="manufactured-item", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A manufactured item of medication within this packaged product", type="reference", target={BiologicallyDerivedProduct.class, DeviceDefinition.class, ManufacturedItemDefinition.class, NutritionProduct.class, PackagedProductDefinition.class } )
   public static final String SP_MANUFACTURED_ITEM = "manufactured-item";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>manufactured-item</b>
@@ -2986,7 +2986,7 @@ public class PackagedProductDefinition extends DomainResource {
    * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="medication", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A manufactured item of medication within this packaged product", type="reference" )
+  @SearchParamDefinition(name="medication", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A manufactured item of medication within this packaged product", type="reference", target={BiologicallyDerivedProduct.class, DeviceDefinition.class, ManufacturedItemDefinition.class, NutritionProduct.class, PackagedProductDefinition.class } )
   public static final String SP_MEDICATION = "medication";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>medication</b>
@@ -3007,17 +3007,17 @@ public class PackagedProductDefinition extends DomainResource {
  /**
    * Search parameter: <b>name</b>
    * <p>
-   * Description: <b>A name for this package. Typically what it would be listed as in a drug formulary or catalogue, inventory etc</b><br>
+   * Description: <b>A name for this package. Typically what it would be listed as in a drug formulary or catalogue, inventory etc.</b><br>
    * Type: <b>token</b><br>
    * Path: <b>PackagedProductDefinition.name</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="name", path="PackagedProductDefinition.name", description="A name for this package. Typically what it would be listed as in a drug formulary or catalogue, inventory etc", type="token" )
+  @SearchParamDefinition(name="name", path="PackagedProductDefinition.name", description="A name for this package. Typically what it would be listed as in a drug formulary or catalogue, inventory etc.", type="token" )
   public static final String SP_NAME = "name";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>name</b>
    * <p>
-   * Description: <b>A name for this package. Typically what it would be listed as in a drug formulary or catalogue, inventory etc</b><br>
+   * Description: <b>A name for this package. Typically what it would be listed as in a drug formulary or catalogue, inventory etc.</b><br>
    * Type: <b>token</b><br>
    * Path: <b>PackagedProductDefinition.name</b><br>
    * </p>
@@ -3032,7 +3032,7 @@ public class PackagedProductDefinition extends DomainResource {
    * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="nutrition", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A nutrition product within this packaged product", type="reference" )
+  @SearchParamDefinition(name="nutrition", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A nutrition product within this packaged product", type="reference", target={BiologicallyDerivedProduct.class, DeviceDefinition.class, ManufacturedItemDefinition.class, NutritionProduct.class, PackagedProductDefinition.class } )
   public static final String SP_NUTRITION = "nutrition";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>nutrition</b>
@@ -3084,7 +3084,7 @@ public class PackagedProductDefinition extends DomainResource {
    * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="package", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A complete packaged product within this packaged product", type="reference" )
+  @SearchParamDefinition(name="package", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A complete packaged product within this packaged product", type="reference", target={BiologicallyDerivedProduct.class, DeviceDefinition.class, ManufacturedItemDefinition.class, NutritionProduct.class, PackagedProductDefinition.class } )
   public static final String SP_PACKAGE = "package";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>package</b>

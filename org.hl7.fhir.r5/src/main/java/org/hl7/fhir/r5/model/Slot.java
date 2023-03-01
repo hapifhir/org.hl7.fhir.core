@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1200,7 +1200,7 @@ public class Slot extends DomainResource {
    * Path: <b>Slot.serviceType.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="service-type-reference", path="Slot.serviceType.reference", description="The type (by HealthcareService) of appointments that can be booked into the slot", type="reference" )
+  @SearchParamDefinition(name="service-type-reference", path="Slot.serviceType.reference", description="The type (by HealthcareService) of appointments that can be booked into the slot", type="reference", target={HealthcareService.class } )
   public static final String SP_SERVICE_TYPE_REFERENCE = "service-type-reference";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>service-type-reference</b>
@@ -1300,3 +1300,4 @@ public class Slot extends DomainResource {
 
 
 }
+

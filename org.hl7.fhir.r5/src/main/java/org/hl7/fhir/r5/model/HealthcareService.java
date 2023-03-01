@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -141,7 +141,7 @@ public class HealthcareService extends DomainResource {
          * @param value Describes the eligibility conditions for the service.
          */
         public HealthcareServiceEligibilityComponent setComment(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.comment = null;
           else {
             if (this.comment == null)
@@ -347,9 +347,9 @@ public class HealthcareService extends DomainResource {
     /**
      * Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.
      */
-    @Child(name = "comment", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "comment", type = {MarkdownType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Additional description and/or any specific issues not covered elsewhere", formalDefinition="Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName." )
-    protected StringType comment;
+    protected MarkdownType comment;
 
     /**
      * Extra details about the service that can't be placed in the other fields.
@@ -407,6 +407,7 @@ public class HealthcareService extends DomainResource {
      */
     @Child(name = "characteristic", type = {CodeableConcept.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Collection of characteristics (attributes)", formalDefinition="Collection of characteristics (attributes)." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-mode")
     protected List<CodeableConcept> characteristic;
 
     /**
@@ -414,7 +415,7 @@ public class HealthcareService extends DomainResource {
      */
     @Child(name = "communication", type = {CodeableConcept.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The language that this service is offered in", formalDefinition="Some services are specifically made available in multiple languages, this property permits a directory to declare the languages this is offered in. Typically this is only provided where a service operates in communities with mixed languages used." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-languages")
     protected List<CodeableConcept> communication;
 
     /**
@@ -446,7 +447,7 @@ public class HealthcareService extends DomainResource {
     @Description(shortDefinition="Technical endpoints providing access to electronic services operated for the healthcare service", formalDefinition="Technical endpoints providing access to services operated for the specific healthcare services defined at this resource." )
     protected List<Reference> endpoint;
 
-    private static final long serialVersionUID = -1321795105L;
+    private static final long serialVersionUID = -438716159L;
 
   /**
    * Constructor
@@ -894,12 +895,12 @@ public class HealthcareService extends DomainResource {
     /**
      * @return {@link #comment} (Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.). This is the underlying object with id, value and extensions. The accessor "getComment" gives direct access to the value
      */
-    public StringType getCommentElement() { 
+    public MarkdownType getCommentElement() { 
       if (this.comment == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create HealthcareService.comment");
         else if (Configuration.doAutoCreate())
-          this.comment = new StringType(); // bb
+          this.comment = new MarkdownType(); // bb
       return this.comment;
     }
 
@@ -914,7 +915,7 @@ public class HealthcareService extends DomainResource {
     /**
      * @param value {@link #comment} (Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.). This is the underlying object with id, value and extensions. The accessor "getComment" gives direct access to the value
      */
-    public HealthcareService setCommentElement(StringType value) { 
+    public HealthcareService setCommentElement(MarkdownType value) { 
       this.comment = value;
       return this;
     }
@@ -934,7 +935,7 @@ public class HealthcareService extends DomainResource {
         this.comment = null;
       else {
         if (this.comment == null)
-          this.comment = new StringType();
+          this.comment = new MarkdownType();
         this.comment.setValue(value);
       }
       return this;
@@ -979,7 +980,7 @@ public class HealthcareService extends DomainResource {
      * @param value Extra details about the service that can't be placed in the other fields.
      */
     public HealthcareService setExtraDetails(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.extraDetails = null;
       else {
         if (this.extraDetails == null)
@@ -1599,7 +1600,7 @@ public class HealthcareService extends DomainResource {
         children.add(new Property("specialty", "CodeableConcept", "Collection of specialties handled by the Healthcare service. This is more of a medical term.", 0, java.lang.Integer.MAX_VALUE, specialty));
         children.add(new Property("location", "Reference(Location)", "The location(s) where this healthcare service may be provided.", 0, java.lang.Integer.MAX_VALUE, location));
         children.add(new Property("name", "string", "Further description of the service as it would be presented to a consumer while searching.", 0, 1, name));
-        children.add(new Property("comment", "string", "Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.", 0, 1, comment));
+        children.add(new Property("comment", "markdown", "Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.", 0, 1, comment));
         children.add(new Property("extraDetails", "markdown", "Extra details about the service that can't be placed in the other fields.", 0, 1, extraDetails));
         children.add(new Property("photo", "Attachment", "If there is a photo/symbol associated with this HealthcareService, it may be included here to facilitate quick identification of the service in a list.", 0, 1, photo));
         children.add(new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific HealthcareService. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact));
@@ -1627,7 +1628,7 @@ public class HealthcareService extends DomainResource {
         case -1694759682: /*specialty*/  return new Property("specialty", "CodeableConcept", "Collection of specialties handled by the Healthcare service. This is more of a medical term.", 0, java.lang.Integer.MAX_VALUE, specialty);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The location(s) where this healthcare service may be provided.", 0, java.lang.Integer.MAX_VALUE, location);
         case 3373707: /*name*/  return new Property("name", "string", "Further description of the service as it would be presented to a consumer while searching.", 0, 1, name);
-        case 950398559: /*comment*/  return new Property("comment", "string", "Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.", 0, 1, comment);
+        case 950398559: /*comment*/  return new Property("comment", "markdown", "Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.", 0, 1, comment);
         case -1469168622: /*extraDetails*/  return new Property("extraDetails", "markdown", "Extra details about the service that can't be placed in the other fields.", 0, 1, extraDetails);
         case 106642994: /*photo*/  return new Property("photo", "Attachment", "If there is a photo/symbol associated with this HealthcareService, it may be included here to facilitate quick identification of the service in a list.", 0, 1, photo);
         case 951526432: /*contact*/  return new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific HealthcareService. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact);
@@ -1658,7 +1659,7 @@ public class HealthcareService extends DomainResource {
         case -1694759682: /*specialty*/ return this.specialty == null ? new Base[0] : this.specialty.toArray(new Base[this.specialty.size()]); // CodeableConcept
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : this.location.toArray(new Base[this.location.size()]); // Reference
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
-        case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // StringType
+        case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // MarkdownType
         case -1469168622: /*extraDetails*/ return this.extraDetails == null ? new Base[0] : new Base[] {this.extraDetails}; // MarkdownType
         case 106642994: /*photo*/ return this.photo == null ? new Base[0] : new Base[] {this.photo}; // Attachment
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ExtendedContactDetail
@@ -1708,7 +1709,7 @@ public class HealthcareService extends DomainResource {
           this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 950398559: // comment
-          this.comment = TypeConvertor.castToString(value); // StringType
+          this.comment = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -1469168622: // extraDetails
           this.extraDetails = TypeConvertor.castToMarkdown(value); // MarkdownType
@@ -1775,7 +1776,7 @@ public class HealthcareService extends DomainResource {
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("comment")) {
-          this.comment = TypeConvertor.castToString(value); // StringType
+          this.comment = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("extraDetails")) {
           this.extraDetails = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("photo")) {
@@ -1850,7 +1851,7 @@ public class HealthcareService extends DomainResource {
         case -1694759682: /*specialty*/ return new String[] {"CodeableConcept"};
         case 1901043637: /*location*/ return new String[] {"Reference"};
         case 3373707: /*name*/ return new String[] {"string"};
-        case 950398559: /*comment*/ return new String[] {"string"};
+        case 950398559: /*comment*/ return new String[] {"markdown"};
         case -1469168622: /*extraDetails*/ return new String[] {"markdown"};
         case 106642994: /*photo*/ return new String[] {"Attachment"};
         case 951526432: /*contact*/ return new String[] {"ExtendedContactDetail"};
@@ -2135,6 +2136,26 @@ public class HealthcareService extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC);
 
  /**
+   * Search parameter: <b>communication</b>
+   * <p>
+   * Description: <b>Languages that are available at this service</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>HealthcareService.communication</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="communication", path="HealthcareService.communication", description="Languages that are available at this service", type="token" )
+  public static final String SP_COMMUNICATION = "communication";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>communication</b>
+   * <p>
+   * Description: <b>Languages that are available at this service</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>HealthcareService.communication</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam COMMUNICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_COMMUNICATION);
+
+ /**
    * Search parameter: <b>coverage-area</b>
    * <p>
    * Description: <b>Location(s) service is intended for/available to</b><br>
@@ -2159,6 +2180,26 @@ public class HealthcareService extends DomainResource {
    * the path value of "<b>HealthcareService:coverage-area</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_COVERAGE_AREA = new ca.uhn.fhir.model.api.Include("HealthcareService:coverage-area").toLocked();
+
+ /**
+   * Search parameter: <b>eligibility</b>
+   * <p>
+   * Description: <b>One of the HealthcareService's eligibility requirements</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>HealthcareService.eligibility.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="eligibility", path="HealthcareService.eligibility.code", description="One of the HealthcareService's eligibility requirements", type="token" )
+  public static final String SP_ELIGIBILITY = "eligibility";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>eligibility</b>
+   * <p>
+   * Description: <b>One of the HealthcareService's eligibility requirements</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>HealthcareService.eligibility.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ELIGIBILITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ELIGIBILITY);
 
  /**
    * Search parameter: <b>endpoint</b>

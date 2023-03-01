@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -632,25 +632,25 @@ public class SubstanceDefinition extends DomainResource {
         protected CodeableConcept technique;
 
         /**
-         * The specific chemical entity of the substance being characterized, to distinguish for example salt or base.
+         * Describes the nature of the chemical entity and explains, for instance, whether this is a base or a salt form.
          */
         @Child(name = "form", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The specific chemical entity of the substance being characterized, to distinguish for example salt or base", formalDefinition="The specific chemical entity of the substance being characterized, to distinguish for example salt or base." )
+        @Description(shortDefinition="Describes the nature of the chemical entity and explains, for instance, whether this is a base or a salt form", formalDefinition="Describes the nature of the chemical entity and explains, for instance, whether this is a base or a salt form." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-form")
         protected CodeableConcept form;
 
         /**
-         * Narrative text, data, tables about the characterization.
+         * The description or justification in support of the interpretation of the data file.
          */
         @Child(name = "description", type = {MarkdownType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Narrative text, data, tables about the characterization", formalDefinition="Narrative text, data, tables about the characterization." )
+        @Description(shortDefinition="The description or justification in support of the interpretation of the data file", formalDefinition="The description or justification in support of the interpretation of the data file." )
         protected MarkdownType description;
 
         /**
-         * An image or data file that characterizes this substance.
+         * The data produced by the analytical instrument or a pictorial representation of that data. Examples: a JCAMP, JDX, or ADX file, or a chromatogram or spectrum analysis.
          */
         @Child(name = "file", type = {Attachment.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="An image or data file that characterizes this substance", formalDefinition="An image or data file that characterizes this substance." )
+        @Description(shortDefinition="The data produced by the analytical instrument or a pictorial representation of that data. Examples: a JCAMP, JDX, or ADX file, or a chromatogram or spectrum analysis", formalDefinition="The data produced by the analytical instrument or a pictorial representation of that data. Examples: a JCAMP, JDX, or ADX file, or a chromatogram or spectrum analysis." )
         protected List<Attachment> file;
 
         private static final long serialVersionUID = -1561571166L;
@@ -687,7 +687,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #form} (The specific chemical entity of the substance being characterized, to distinguish for example salt or base.)
+         * @return {@link #form} (Describes the nature of the chemical entity and explains, for instance, whether this is a base or a salt form.)
          */
         public CodeableConcept getForm() { 
           if (this.form == null)
@@ -703,7 +703,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #form} (The specific chemical entity of the substance being characterized, to distinguish for example salt or base.)
+         * @param value {@link #form} (Describes the nature of the chemical entity and explains, for instance, whether this is a base or a salt form.)
          */
         public SubstanceDefinitionCharacterizationComponent setForm(CodeableConcept value) { 
           this.form = value;
@@ -711,7 +711,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #description} (Narrative text, data, tables about the characterization.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @return {@link #description} (The description or justification in support of the interpretation of the data file.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
          */
         public MarkdownType getDescriptionElement() { 
           if (this.description == null)
@@ -731,7 +731,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #description} (Narrative text, data, tables about the characterization.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @param value {@link #description} (The description or justification in support of the interpretation of the data file.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
          */
         public SubstanceDefinitionCharacterizationComponent setDescriptionElement(MarkdownType value) { 
           this.description = value;
@@ -739,17 +739,17 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return Narrative text, data, tables about the characterization.
+         * @return The description or justification in support of the interpretation of the data file.
          */
         public String getDescription() { 
           return this.description == null ? null : this.description.getValue();
         }
 
         /**
-         * @param value Narrative text, data, tables about the characterization.
+         * @param value The description or justification in support of the interpretation of the data file.
          */
         public SubstanceDefinitionCharacterizationComponent setDescription(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.description = null;
           else {
             if (this.description == null)
@@ -760,7 +760,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #file} (An image or data file that characterizes this substance.)
+         * @return {@link #file} (The data produced by the analytical instrument or a pictorial representation of that data. Examples: a JCAMP, JDX, or ADX file, or a chromatogram or spectrum analysis.)
          */
         public List<Attachment> getFile() { 
           if (this.file == null)
@@ -815,18 +815,18 @@ public class SubstanceDefinition extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("technique", "CodeableConcept", "The method used to elucidate the characterization of the drug substance. Example: HPLC.", 0, 1, technique));
-          children.add(new Property("form", "CodeableConcept", "The specific chemical entity of the substance being characterized, to distinguish for example salt or base.", 0, 1, form));
-          children.add(new Property("description", "markdown", "Narrative text, data, tables about the characterization.", 0, 1, description));
-          children.add(new Property("file", "Attachment", "An image or data file that characterizes this substance.", 0, java.lang.Integer.MAX_VALUE, file));
+          children.add(new Property("form", "CodeableConcept", "Describes the nature of the chemical entity and explains, for instance, whether this is a base or a salt form.", 0, 1, form));
+          children.add(new Property("description", "markdown", "The description or justification in support of the interpretation of the data file.", 0, 1, description));
+          children.add(new Property("file", "Attachment", "The data produced by the analytical instrument or a pictorial representation of that data. Examples: a JCAMP, JDX, or ADX file, or a chromatogram or spectrum analysis.", 0, java.lang.Integer.MAX_VALUE, file));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 1469675088: /*technique*/  return new Property("technique", "CodeableConcept", "The method used to elucidate the characterization of the drug substance. Example: HPLC.", 0, 1, technique);
-          case 3148996: /*form*/  return new Property("form", "CodeableConcept", "The specific chemical entity of the substance being characterized, to distinguish for example salt or base.", 0, 1, form);
-          case -1724546052: /*description*/  return new Property("description", "markdown", "Narrative text, data, tables about the characterization.", 0, 1, description);
-          case 3143036: /*file*/  return new Property("file", "Attachment", "An image or data file that characterizes this substance.", 0, java.lang.Integer.MAX_VALUE, file);
+          case 3148996: /*form*/  return new Property("form", "CodeableConcept", "Describes the nature of the chemical entity and explains, for instance, whether this is a base or a salt form.", 0, 1, form);
+          case -1724546052: /*description*/  return new Property("description", "markdown", "The description or justification in support of the interpretation of the data file.", 0, 1, description);
+          case 3143036: /*file*/  return new Property("file", "Attachment", "The data produced by the analytical instrument or a pictorial representation of that data. Examples: a JCAMP, JDX, or ADX file, or a chromatogram or spectrum analysis.", 0, java.lang.Integer.MAX_VALUE, file);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -2956,7 +2956,7 @@ public class SubstanceDefinition extends DomainResource {
          */
         @Child(name = "language", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Human language that the name is written in", formalDefinition="Human language that the name is written in." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-languages")
         protected List<CodeableConcept> language;
 
         /**
@@ -5529,7 +5529,7 @@ public class SubstanceDefinition extends DomainResource {
      * @param value Textual description of the substance.
      */
     public SubstanceDefinition setDescription(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.description = null;
       else {
         if (this.description == null)

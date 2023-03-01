@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -148,16 +148,16 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         }
         public String getSystem() {
           switch (this) {
-            case MAXIMUM: return "http://hl7.org/fhir/tools/CodeSystem/additional-binding-purpose";
-            case MINIMUM: return "http://hl7.org/fhir/tools/CodeSystem/additional-binding-purpose";
-            case REQUIRED: return "http://hl7.org/fhir/tools/CodeSystem/additional-binding-purpose";
-            case EXTENSIBLE: return "http://hl7.org/fhir/tools/CodeSystem/additional-binding-purpose";
-            case CANDIDATE: return "http://hl7.org/fhir/tools/CodeSystem/additional-binding-purpose";
-            case CURRENT: return "http://hl7.org/fhir/tools/CodeSystem/additional-binding-purpose";
-            case PREFERRED: return "http://hl7.org/fhir/tools/CodeSystem/additional-binding-purpose";
-            case UI: return "http://hl7.org/fhir/tools/CodeSystem/additional-binding-purpose";
-            case STARTER: return "http://hl7.org/fhir/tools/CodeSystem/additional-binding-purpose";
-            case COMPONENT: return "http://hl7.org/fhir/tools/CodeSystem/additional-binding-purpose";
+            case MAXIMUM: return "http://hl7.org/fhir/CodeSystem/additional-binding-purpose";
+            case MINIMUM: return "http://hl7.org/fhir/CodeSystem/additional-binding-purpose";
+            case REQUIRED: return "http://hl7.org/fhir/CodeSystem/additional-binding-purpose";
+            case EXTENSIBLE: return "http://hl7.org/fhir/CodeSystem/additional-binding-purpose";
+            case CANDIDATE: return "http://hl7.org/fhir/CodeSystem/additional-binding-purpose";
+            case CURRENT: return "http://hl7.org/fhir/CodeSystem/additional-binding-purpose";
+            case PREFERRED: return "http://hl7.org/fhir/CodeSystem/additional-binding-purpose";
+            case UI: return "http://hl7.org/fhir/CodeSystem/additional-binding-purpose";
+            case STARTER: return "http://hl7.org/fhir/CodeSystem/additional-binding-purpose";
+            case COMPONENT: return "http://hl7.org/fhir/CodeSystem/additional-binding-purpose";
             case NULL: return null;
             default: return "?";
           }
@@ -291,7 +291,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
          */
         REFERENCED, 
         /**
-         * The resource the reference points to will be found in the same bundle as the resource that includes the reference.
+         * When the resource is in a Bundle, the resource the reference points to will be found in the same bundle as the resource that includes the reference.
          */
         BUNDLED, 
         /**
@@ -334,7 +334,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           switch (this) {
             case CONTAINED: return "The reference is a local reference to a contained resource.";
             case REFERENCED: return "The reference to a resource that has to be resolved externally to the resource that includes the reference.";
-            case BUNDLED: return "The resource the reference points to will be found in the same bundle as the resource that includes the reference.";
+            case BUNDLED: return "When the resource is in a Bundle, the resource the reference points to will be found in the same bundle as the resource that includes the reference.";
             case NULL: return null;
             default: return "?";
           }
@@ -2601,10 +2601,10 @@ public boolean hasTarget() {
     @Block()
     public static class ElementDefinitionExampleComponent extends Element implements IBaseDatatypeElement {
         /**
-         * Describes the purpose of this example amoung the set of examples.
+         * Describes the purpose of this example among the set of examples.
          */
         @Child(name = "label", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Describes the purpose of this example", formalDefinition="Describes the purpose of this example amoung the set of examples." )
+        @Description(shortDefinition="Describes the purpose of this example", formalDefinition="Describes the purpose of this example among the set of examples." )
         protected StringType label;
 
         /**
@@ -2633,7 +2633,7 @@ public boolean hasTarget() {
       }
 
         /**
-         * @return {@link #label} (Describes the purpose of this example amoung the set of examples.). This is the underlying object with id, value and extensions. The accessor "getLabel" gives direct access to the value
+         * @return {@link #label} (Describes the purpose of this example among the set of examples.). This is the underlying object with id, value and extensions. The accessor "getLabel" gives direct access to the value
          */
         public StringType getLabelElement() { 
           if (this.label == null)
@@ -2653,7 +2653,7 @@ public boolean hasTarget() {
         }
 
         /**
-         * @param value {@link #label} (Describes the purpose of this example amoung the set of examples.). This is the underlying object with id, value and extensions. The accessor "getLabel" gives direct access to the value
+         * @param value {@link #label} (Describes the purpose of this example among the set of examples.). This is the underlying object with id, value and extensions. The accessor "getLabel" gives direct access to the value
          */
         public ElementDefinitionExampleComponent setLabelElement(StringType value) { 
           this.label = value;
@@ -2661,14 +2661,14 @@ public boolean hasTarget() {
         }
 
         /**
-         * @return Describes the purpose of this example amoung the set of examples.
+         * @return Describes the purpose of this example among the set of examples.
          */
         public String getLabel() { 
           return this.label == null ? null : this.label.getValue();
         }
 
         /**
-         * @param value Describes the purpose of this example amoung the set of examples.
+         * @param value Describes the purpose of this example among the set of examples.
          */
         public ElementDefinitionExampleComponent setLabel(String value) { 
             if (this.label == null)
@@ -3510,14 +3510,14 @@ public boolean hasTarget() {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("label", "string", "Describes the purpose of this example amoung the set of examples.", 0, 1, label));
+          children.add(new Property("label", "string", "Describes the purpose of this example among the set of examples.", 0, 1, label));
           children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 102727412: /*label*/  return new Property("label", "string", "Describes the purpose of this example amoung the set of examples.", 0, 1, label);
+          case 102727412: /*label*/  return new Property("label", "string", "Describes the purpose of this example among the set of examples.", 0, 1, label);
           case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
@@ -4058,7 +4058,7 @@ public boolean hasTarget() {
          * @param value Description of why this constraint is necessary or appropriate.
          */
         public ElementDefinitionConstraintComponent setRequirements(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.requirements = null;
           else {
             if (this.requirements == null)
@@ -4497,655 +4497,8 @@ public boolean hasTarget() {
           , suppress, human, expression, source);
       }
 
-      public String fhirType() {
-        return "ElementDefinition.constraint";
-      }
-
-      public boolean hasXpathElement() {
-        return hasExtension(ToolingExtensions.EXT_XPATH_CONSTRAINT);
-     }
-     
-      public boolean hasXpath() {
-        return hasExtension(ToolingExtensions.EXT_XPATH_CONSTRAINT);
-     }
-     
-      public StringType getXpathElement() {
-        return hasXpathElement() ? getExtensionByUrl(ToolingExtensions.EXT_XPATH_CONSTRAINT).getValueStringType() : new StringType();
-      }
-      
-      public void setXpathElement(StringType value) {
-        if (hasXpath()) {
-          getExtensionByUrl(ToolingExtensions.EXT_XPATH_CONSTRAINT).setValue(value);
-        } else {
-          addExtension(ToolingExtensions.EXT_XPATH_CONSTRAINT, value);
-        }
-      }
-    }
-
-    @Block()
-    public static class ElementDefinitionObligationComponent extends Element implements IBaseDatatypeElement {
-        /**
-         * Codes, potentially combination code, that describe the obligations that apply to implementing applications.
-         */
-        @Child(name = "code", type = {Coding.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Combination code describing the nature of the obligation", formalDefinition="Codes, potentially combination code, that describe the obligations that apply to implementing applications." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/obligation")
-        protected Coding code;
-
-        /**
-         * Actor(s) to which the obligation applies.
-         */
-        @Child(name = "actor", type = {CanonicalType.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Actor(s) this obligation applies to (all actors if none)", formalDefinition="Actor(s) to which the obligation applies." )
-        protected List<CanonicalType> actor;
-
-        /**
-         * Human readable documentation of the purpose or application of the obligation.
-         */
-        @Child(name = "documentation", type = {MarkdownType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Documentation of the purpose or application of the obligation", formalDefinition="Human readable documentation of the purpose or application of the obligation." )
-        protected MarkdownType documentation;
-
-        /**
-         * Qualifies the usage of the obligation. Typically obligations are qualified by jurisdiction, but they may also be qualified by gender, workflow status, clinical domain etc. The information to decide whether a usege context applies is usually outside the resource, determined by context, and this might present challenges for validation tooling.
-         */
-        @Child(name = "usage", type = {UsageContext.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Qualifies the usage - jurisdiction, gender, workflow status etc", formalDefinition="Qualifies the usage of the obligation. Typically obligations are qualified by jurisdiction, but they may also be qualified by gender, workflow status, clinical domain etc. The information to decide whether a usege context applies is usually outside the resource, determined by context, and this might present challenges for validation tooling." )
-        protected List<UsageContext> usage;
-
-        /**
-         * A FHIRPath expression that restricts to the obligation to one of a set of repeats.
-         */
-        @Child(name = "filter", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Limits obligation to some repeats by FHIRPath", formalDefinition="A FHIRPath expression that restricts to the obligation to one of a set of repeats." )
-        protected StringType filter;
-
-        /**
-         * Documents the FHIRPath expression for the benefit of users who are not familiar with FHIRPath.
-         */
-        @Child(name = "filterDocumentation", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Ddescribes the intent of the filter (short)", formalDefinition="Documents the FHIRPath expression for the benefit of users who are not familiar with FHIRPath." )
-        protected StringType filterDocumentation;
-
-        /**
-         * A process that the obligation applies to. This might a canonical URL for an OperationDefinition, or some other reference.
-         */
-        @Child(name = "process", type = {UriType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The obligation only applies when perfomring the indicated process", formalDefinition="A process that the obligation applies to. This might a canonical URL for an OperationDefinition, or some other reference." )
-        protected List<UriType> process;
-
-        private static final long serialVersionUID = -1311481885L;
-
-    /**
-     * Constructor
-     */
-      public ElementDefinitionObligationComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public ElementDefinitionObligationComponent(Coding code) {
-        super();
-        this.setCode(code);
-      }
-
-        /**
-         * @return {@link #code} (Codes, potentially combination code, that describe the obligations that apply to implementing applications.)
-         */
-        public Coding getCode() { 
-          if (this.code == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ElementDefinitionObligationComponent.code");
-            else if (Configuration.doAutoCreate())
-              this.code = new Coding(); // cc
-          return this.code;
-        }
-
-        public boolean hasCode() { 
-          return this.code != null && !this.code.isEmpty();
-        }
-
-        /**
-         * @param value {@link #code} (Codes, potentially combination code, that describe the obligations that apply to implementing applications.)
-         */
-        public ElementDefinitionObligationComponent setCode(Coding value) { 
-          this.code = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #actor} (Actor(s) to which the obligation applies.)
-         */
-        public List<CanonicalType> getActor() { 
-          if (this.actor == null)
-            this.actor = new ArrayList<CanonicalType>();
-          return this.actor;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public ElementDefinitionObligationComponent setActor(List<CanonicalType> theActor) { 
-          this.actor = theActor;
-          return this;
-        }
-
-        public boolean hasActor() { 
-          if (this.actor == null)
-            return false;
-          for (CanonicalType item : this.actor)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        /**
-         * @return {@link #actor} (Actor(s) to which the obligation applies.)
-         */
-        public CanonicalType addActorElement() {//2 
-          CanonicalType t = new CanonicalType();
-          if (this.actor == null)
-            this.actor = new ArrayList<CanonicalType>();
-          this.actor.add(t);
-          return t;
-        }
-
-        /**
-         * @param value {@link #actor} (Actor(s) to which the obligation applies.)
-         */
-        public ElementDefinitionObligationComponent addActor(String value) { //1
-          CanonicalType t = new CanonicalType();
-          t.setValue(value);
-          if (this.actor == null)
-            this.actor = new ArrayList<CanonicalType>();
-          this.actor.add(t);
-          return this;
-        }
-
-        /**
-         * @param value {@link #actor} (Actor(s) to which the obligation applies.)
-         */
-        public boolean hasActor(String value) { 
-          if (this.actor == null)
-            return false;
-          for (CanonicalType v : this.actor)
-            if (v.getValue().equals(value)) // canonical
-              return true;
-          return false;
-        }
-
-        /**
-         * @return {@link #documentation} (Human readable documentation of the purpose or application of the obligation.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-         */
-        public MarkdownType getDocumentationElement() { 
-          if (this.documentation == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ElementDefinitionObligationComponent.documentation");
-            else if (Configuration.doAutoCreate())
-              this.documentation = new MarkdownType(); // bb
-          return this.documentation;
-        }
-
-        public boolean hasDocumentationElement() { 
-          return this.documentation != null && !this.documentation.isEmpty();
-        }
-
-        public boolean hasDocumentation() { 
-          return this.documentation != null && !this.documentation.isEmpty();
-        }
-
-        /**
-         * @param value {@link #documentation} (Human readable documentation of the purpose or application of the obligation.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-         */
-        public ElementDefinitionObligationComponent setDocumentationElement(MarkdownType value) { 
-          this.documentation = value;
-          return this;
-        }
-
-        /**
-         * @return Human readable documentation of the purpose or application of the obligation.
-         */
-        public String getDocumentation() { 
-          return this.documentation == null ? null : this.documentation.getValue();
-        }
-
-        /**
-         * @param value Human readable documentation of the purpose or application of the obligation.
-         */
-        public ElementDefinitionObligationComponent setDocumentation(String value) { 
-          if (value == null)
-            this.documentation = null;
-          else {
-            if (this.documentation == null)
-              this.documentation = new MarkdownType();
-            this.documentation.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #usage} (Qualifies the usage of the obligation. Typically obligations are qualified by jurisdiction, but they may also be qualified by gender, workflow status, clinical domain etc. The information to decide whether a usege context applies is usually outside the resource, determined by context, and this might present challenges for validation tooling.)
-         */
-        public List<UsageContext> getUsage() { 
-          if (this.usage == null)
-            this.usage = new ArrayList<UsageContext>();
-          return this.usage;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public ElementDefinitionObligationComponent setUsage(List<UsageContext> theUsage) { 
-          this.usage = theUsage;
-          return this;
-        }
-
-        public boolean hasUsage() { 
-          if (this.usage == null)
-            return false;
-          for (UsageContext item : this.usage)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public UsageContext addUsage() { //3
-          UsageContext t = new UsageContext();
-          if (this.usage == null)
-            this.usage = new ArrayList<UsageContext>();
-          this.usage.add(t);
-          return t;
-        }
-
-        public ElementDefinitionObligationComponent addUsage(UsageContext t) { //3
-          if (t == null)
-            return this;
-          if (this.usage == null)
-            this.usage = new ArrayList<UsageContext>();
-          this.usage.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #usage}, creating it if it does not already exist {3}
-         */
-        public UsageContext getUsageFirstRep() { 
-          if (getUsage().isEmpty()) {
-            addUsage();
-          }
-          return getUsage().get(0);
-        }
-
-        /**
-         * @return {@link #filter} (A FHIRPath expression that restricts to the obligation to one of a set of repeats.). This is the underlying object with id, value and extensions. The accessor "getFilter" gives direct access to the value
-         */
-        public StringType getFilterElement() { 
-          if (this.filter == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ElementDefinitionObligationComponent.filter");
-            else if (Configuration.doAutoCreate())
-              this.filter = new StringType(); // bb
-          return this.filter;
-        }
-
-        public boolean hasFilterElement() { 
-          return this.filter != null && !this.filter.isEmpty();
-        }
-
-        public boolean hasFilter() { 
-          return this.filter != null && !this.filter.isEmpty();
-        }
-
-        /**
-         * @param value {@link #filter} (A FHIRPath expression that restricts to the obligation to one of a set of repeats.). This is the underlying object with id, value and extensions. The accessor "getFilter" gives direct access to the value
-         */
-        public ElementDefinitionObligationComponent setFilterElement(StringType value) { 
-          this.filter = value;
-          return this;
-        }
-
-        /**
-         * @return A FHIRPath expression that restricts to the obligation to one of a set of repeats.
-         */
-        public String getFilter() { 
-          return this.filter == null ? null : this.filter.getValue();
-        }
-
-        /**
-         * @param value A FHIRPath expression that restricts to the obligation to one of a set of repeats.
-         */
-        public ElementDefinitionObligationComponent setFilter(String value) { 
-          if (Utilities.noString(value))
-            this.filter = null;
-          else {
-            if (this.filter == null)
-              this.filter = new StringType();
-            this.filter.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #filterDocumentation} (Documents the FHIRPath expression for the benefit of users who are not familiar with FHIRPath.). This is the underlying object with id, value and extensions. The accessor "getFilterDocumentation" gives direct access to the value
-         */
-        public StringType getFilterDocumentationElement() { 
-          if (this.filterDocumentation == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ElementDefinitionObligationComponent.filterDocumentation");
-            else if (Configuration.doAutoCreate())
-              this.filterDocumentation = new StringType(); // bb
-          return this.filterDocumentation;
-        }
-
-        public boolean hasFilterDocumentationElement() { 
-          return this.filterDocumentation != null && !this.filterDocumentation.isEmpty();
-        }
-
-        public boolean hasFilterDocumentation() { 
-          return this.filterDocumentation != null && !this.filterDocumentation.isEmpty();
-        }
-
-        /**
-         * @param value {@link #filterDocumentation} (Documents the FHIRPath expression for the benefit of users who are not familiar with FHIRPath.). This is the underlying object with id, value and extensions. The accessor "getFilterDocumentation" gives direct access to the value
-         */
-        public ElementDefinitionObligationComponent setFilterDocumentationElement(StringType value) { 
-          this.filterDocumentation = value;
-          return this;
-        }
-
-        /**
-         * @return Documents the FHIRPath expression for the benefit of users who are not familiar with FHIRPath.
-         */
-        public String getFilterDocumentation() { 
-          return this.filterDocumentation == null ? null : this.filterDocumentation.getValue();
-        }
-
-        /**
-         * @param value Documents the FHIRPath expression for the benefit of users who are not familiar with FHIRPath.
-         */
-        public ElementDefinitionObligationComponent setFilterDocumentation(String value) { 
-          if (Utilities.noString(value))
-            this.filterDocumentation = null;
-          else {
-            if (this.filterDocumentation == null)
-              this.filterDocumentation = new StringType();
-            this.filterDocumentation.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #process} (A process that the obligation applies to. This might a canonical URL for an OperationDefinition, or some other reference.)
-         */
-        public List<UriType> getProcess() { 
-          if (this.process == null)
-            this.process = new ArrayList<UriType>();
-          return this.process;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public ElementDefinitionObligationComponent setProcess(List<UriType> theProcess) { 
-          this.process = theProcess;
-          return this;
-        }
-
-        public boolean hasProcess() { 
-          if (this.process == null)
-            return false;
-          for (UriType item : this.process)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        /**
-         * @return {@link #process} (A process that the obligation applies to. This might a canonical URL for an OperationDefinition, or some other reference.)
-         */
-        public UriType addProcessElement() {//2 
-          UriType t = new UriType();
-          if (this.process == null)
-            this.process = new ArrayList<UriType>();
-          this.process.add(t);
-          return t;
-        }
-
-        /**
-         * @param value {@link #process} (A process that the obligation applies to. This might a canonical URL for an OperationDefinition, or some other reference.)
-         */
-        public ElementDefinitionObligationComponent addProcess(String value) { //1
-          UriType t = new UriType();
-          t.setValue(value);
-          if (this.process == null)
-            this.process = new ArrayList<UriType>();
-          this.process.add(t);
-          return this;
-        }
-
-        /**
-         * @param value {@link #process} (A process that the obligation applies to. This might a canonical URL for an OperationDefinition, or some other reference.)
-         */
-        public boolean hasProcess(String value) { 
-          if (this.process == null)
-            return false;
-          for (UriType v : this.process)
-            if (v.getValue().equals(value)) // uri
-              return true;
-          return false;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("code", "Coding", "Codes, potentially combination code, that describe the obligations that apply to implementing applications.", 0, 1, code));
-          children.add(new Property("actor", "canonical(ActorDefinition)", "Actor(s) to which the obligation applies.", 0, java.lang.Integer.MAX_VALUE, actor));
-          children.add(new Property("documentation", "markdown", "Human readable documentation of the purpose or application of the obligation.", 0, 1, documentation));
-          children.add(new Property("usage", "UsageContext", "Qualifies the usage of the obligation. Typically obligations are qualified by jurisdiction, but they may also be qualified by gender, workflow status, clinical domain etc. The information to decide whether a usege context applies is usually outside the resource, determined by context, and this might present challenges for validation tooling.", 0, java.lang.Integer.MAX_VALUE, usage));
-          children.add(new Property("filter", "string", "A FHIRPath expression that restricts to the obligation to one of a set of repeats.", 0, 1, filter));
-          children.add(new Property("filterDocumentation", "string", "Documents the FHIRPath expression for the benefit of users who are not familiar with FHIRPath.", 0, 1, filterDocumentation));
-          children.add(new Property("process", "uri", "A process that the obligation applies to. This might a canonical URL for an OperationDefinition, or some other reference.", 0, java.lang.Integer.MAX_VALUE, process));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 3059181: /*code*/  return new Property("code", "Coding", "Codes, potentially combination code, that describe the obligations that apply to implementing applications.", 0, 1, code);
-          case 92645877: /*actor*/  return new Property("actor", "canonical(ActorDefinition)", "Actor(s) to which the obligation applies.", 0, java.lang.Integer.MAX_VALUE, actor);
-          case 1587405498: /*documentation*/  return new Property("documentation", "markdown", "Human readable documentation of the purpose or application of the obligation.", 0, 1, documentation);
-          case 111574433: /*usage*/  return new Property("usage", "UsageContext", "Qualifies the usage of the obligation. Typically obligations are qualified by jurisdiction, but they may also be qualified by gender, workflow status, clinical domain etc. The information to decide whether a usege context applies is usually outside the resource, determined by context, and this might present challenges for validation tooling.", 0, java.lang.Integer.MAX_VALUE, usage);
-          case -1274492040: /*filter*/  return new Property("filter", "string", "A FHIRPath expression that restricts to the obligation to one of a set of repeats.", 0, 1, filter);
-          case 1712106018: /*filterDocumentation*/  return new Property("filterDocumentation", "string", "Documents the FHIRPath expression for the benefit of users who are not familiar with FHIRPath.", 0, 1, filterDocumentation);
-          case -309518737: /*process*/  return new Property("process", "uri", "A process that the obligation applies to. This might a canonical URL for an OperationDefinition, or some other reference.", 0, java.lang.Integer.MAX_VALUE, process);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Coding
-        case 92645877: /*actor*/ return this.actor == null ? new Base[0] : this.actor.toArray(new Base[this.actor.size()]); // CanonicalType
-        case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // MarkdownType
-        case 111574433: /*usage*/ return this.usage == null ? new Base[0] : this.usage.toArray(new Base[this.usage.size()]); // UsageContext
-        case -1274492040: /*filter*/ return this.filter == null ? new Base[0] : new Base[] {this.filter}; // StringType
-        case 1712106018: /*filterDocumentation*/ return this.filterDocumentation == null ? new Base[0] : new Base[] {this.filterDocumentation}; // StringType
-        case -309518737: /*process*/ return this.process == null ? new Base[0] : this.process.toArray(new Base[this.process.size()]); // UriType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 3059181: // code
-          this.code = TypeConvertor.castToCoding(value); // Coding
-          return value;
-        case 92645877: // actor
-          this.getActor().add(TypeConvertor.castToCanonical(value)); // CanonicalType
-          return value;
-        case 1587405498: // documentation
-          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
-          return value;
-        case 111574433: // usage
-          this.getUsage().add(TypeConvertor.castToUsageContext(value)); // UsageContext
-          return value;
-        case -1274492040: // filter
-          this.filter = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 1712106018: // filterDocumentation
-          this.filterDocumentation = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -309518737: // process
-          this.getProcess().add(TypeConvertor.castToUri(value)); // UriType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("code")) {
-          this.code = TypeConvertor.castToCoding(value); // Coding
-        } else if (name.equals("actor")) {
-          this.getActor().add(TypeConvertor.castToCanonical(value));
-        } else if (name.equals("documentation")) {
-          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
-        } else if (name.equals("usage")) {
-          this.getUsage().add(TypeConvertor.castToUsageContext(value));
-        } else if (name.equals("filter")) {
-          this.filter = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("filterDocumentation")) {
-          this.filterDocumentation = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("process")) {
-          this.getProcess().add(TypeConvertor.castToUri(value));
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3059181:  return getCode();
-        case 92645877:  return addActorElement();
-        case 1587405498:  return getDocumentationElement();
-        case 111574433:  return addUsage(); 
-        case -1274492040:  return getFilterElement();
-        case 1712106018:  return getFilterDocumentationElement();
-        case -309518737:  return addProcessElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3059181: /*code*/ return new String[] {"Coding"};
-        case 92645877: /*actor*/ return new String[] {"canonical"};
-        case 1587405498: /*documentation*/ return new String[] {"markdown"};
-        case 111574433: /*usage*/ return new String[] {"UsageContext"};
-        case -1274492040: /*filter*/ return new String[] {"string"};
-        case 1712106018: /*filterDocumentation*/ return new String[] {"string"};
-        case -309518737: /*process*/ return new String[] {"uri"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("code")) {
-          this.code = new Coding();
-          return this.code;
-        }
-        else if (name.equals("actor")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.obligation.actor");
-        }
-        else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.obligation.documentation");
-        }
-        else if (name.equals("usage")) {
-          return addUsage();
-        }
-        else if (name.equals("filter")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.obligation.filter");
-        }
-        else if (name.equals("filterDocumentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.obligation.filterDocumentation");
-        }
-        else if (name.equals("process")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.obligation.process");
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public ElementDefinitionObligationComponent copy() {
-        ElementDefinitionObligationComponent dst = new ElementDefinitionObligationComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(ElementDefinitionObligationComponent dst) {
-        super.copyValues(dst);
-        dst.code = code == null ? null : code.copy();
-        if (actor != null) {
-          dst.actor = new ArrayList<CanonicalType>();
-          for (CanonicalType i : actor)
-            dst.actor.add(i.copy());
-        };
-        dst.documentation = documentation == null ? null : documentation.copy();
-        if (usage != null) {
-          dst.usage = new ArrayList<UsageContext>();
-          for (UsageContext i : usage)
-            dst.usage.add(i.copy());
-        };
-        dst.filter = filter == null ? null : filter.copy();
-        dst.filterDocumentation = filterDocumentation == null ? null : filterDocumentation.copy();
-        if (process != null) {
-          dst.process = new ArrayList<UriType>();
-          for (UriType i : process)
-            dst.process.add(i.copy());
-        };
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof ElementDefinitionObligationComponent))
-          return false;
-        ElementDefinitionObligationComponent o = (ElementDefinitionObligationComponent) other_;
-        return compareDeep(code, o.code, true) && compareDeep(actor, o.actor, true) && compareDeep(documentation, o.documentation, true)
-           && compareDeep(usage, o.usage, true) && compareDeep(filter, o.filter, true) && compareDeep(filterDocumentation, o.filterDocumentation, true)
-           && compareDeep(process, o.process, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof ElementDefinitionObligationComponent))
-          return false;
-        ElementDefinitionObligationComponent o = (ElementDefinitionObligationComponent) other_;
-        return compareValues(actor, o.actor, true) && compareValues(documentation, o.documentation, true) && compareValues(filter, o.filter, true)
-           && compareValues(filterDocumentation, o.filterDocumentation, true) && compareValues(process, o.process, true)
-          ;
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, actor, documentation
-          , usage, filter, filterDocumentation, process);
-      }
-
   public String fhirType() {
-    return "ElementDefinition.obligation";
+    return "ElementDefinition.constraint";
 
   }
 
@@ -5283,7 +4636,7 @@ public boolean hasTarget() {
          * @param value Describes the intended use of this particular set of codes.
          */
         public ElementDefinitionBindingComponent setDescription(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.description = null;
           else {
             if (this.description == null)
@@ -5593,7 +4946,7 @@ public boolean hasTarget() {
          * Qualifies the usage of the binding. Typically bindings are qualified by jurisdiction, but they may also be qualified by gender, workflow status, clinical domain etc. The information to decide whether a usege context applies is usually outside the resource, determined by context, and this might present challenges for validation tooling.
          */
         @Child(name = "usage", type = {UsageContext.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Qualifies the usage - jurisdiction, gender, workflow status etc", formalDefinition="Qualifies the usage of the binding. Typically bindings are qualified by jurisdiction, but they may also be qualified by gender, workflow status, clinical domain etc. The information to decide whether a usege context applies is usually outside the resource, determined by context, and this might present challenges for validation tooling." )
+        @Description(shortDefinition="Qualifies the usage - jurisdiction, gender, workflow status etc.", formalDefinition="Qualifies the usage of the binding. Typically bindings are qualified by jurisdiction, but they may also be qualified by gender, workflow status, clinical domain etc. The information to decide whether a usege context applies is usually outside the resource, determined by context, and this might present challenges for validation tooling." )
         protected List<UsageContext> usage;
 
         /**
@@ -5750,7 +5103,7 @@ public boolean hasTarget() {
          * @param value Documentation of the purpose of use of the bindingproviding additional information about how it is intended to be used.
          */
         public ElementDefinitionBindingAdditionalComponent setDocumentation(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.documentation = null;
           else {
             if (this.documentation == null)
@@ -6326,7 +5679,7 @@ public boolean hasTarget() {
          * @param value Comments that provide information about the mapping or its use.
          */
         public ElementDefinitionMappingComponent setComment(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.comment = null;
           else {
             if (this.comment == null)
@@ -6594,10 +5947,10 @@ public boolean hasTarget() {
     protected StringType max;
 
     /**
-     * Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - i.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.
+     * Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - e.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.
      */
     @Child(name = "base", type = {}, order=14, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Base definition information for tools", formalDefinition="Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - i.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same." )
+    @Description(shortDefinition="Base definition information for tools", formalDefinition="Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - e.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same." )
     protected ElementDefinitionBaseComponent base;
 
     /**
@@ -6683,10 +6036,10 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     protected DataType maxValue;
 
     /**
-     * Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [Datatype characteristics](extension-structuredefinition-type-characteristics.html)).
+     * Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-structuredefinition-type-characteristics.html)).
      */
     @Child(name = "maxLength", type = {IntegerType.class}, order=25, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Max length for string type data", formalDefinition="Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [Datatype characteristics](extension-structuredefinition-type-characteristics.html))." )
+    @Description(shortDefinition="Max length for string type data", formalDefinition="Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-structuredefinition-type-characteristics.html))." )
     protected IntegerType maxLength;
 
     /**
@@ -6725,48 +6078,41 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     protected BooleanType mustSupport;
 
     /**
-     * Documents obligations that apply to applications implementing this element. The obligations relate to application behaviour, not the content of the element itself in the resource instances that contain this element.
+     * If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system. When used on the root element in an extension definition, this indicates whether or not the extension is a modifier extension.
      */
-    @Child(name = "obligation", type = {}, order=31, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Documents obligations for applications making use of this element", formalDefinition="Documents obligations that apply to applications implementing this element. The obligations relate to application behaviour, not the content of the element itself in the resource instances that contain this element." )
-    protected List<ElementDefinitionObligationComponent> obligation;
-
-    /**
-     * If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system.
-     */
-    @Child(name = "isModifier", type = {BooleanType.class}, order=32, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="If this modifies the meaning of other elements", formalDefinition="If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system." )
+    @Child(name = "isModifier", type = {BooleanType.class}, order=31, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="If this modifies the meaning of other elements", formalDefinition="If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system. When used on the root element in an extension definition, this indicates whether or not the extension is a modifier extension." )
     protected BooleanType isModifier;
 
     /**
      * Explains how that element affects the interpretation of the resource or element that contains it.
      */
-    @Child(name = "isModifierReason", type = {StringType.class}, order=33, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "isModifierReason", type = {StringType.class}, order=32, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Reason that this element is marked as a modifier", formalDefinition="Explains how that element affects the interpretation of the resource or element that contains it." )
     protected StringType isModifierReason;
 
     /**
      * Whether the element should be included if a client requests a search with the parameter _summary=true.
      */
-    @Child(name = "isSummary", type = {BooleanType.class}, order=34, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "isSummary", type = {BooleanType.class}, order=33, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Include when _summary = true?", formalDefinition="Whether the element should be included if a client requests a search with the parameter _summary=true." )
     protected BooleanType isSummary;
 
     /**
      * Binds to a value set if this element is coded (code, Coding, CodeableConcept, Quantity), or the data types (string, uri).
      */
-    @Child(name = "binding", type = {}, order=35, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "binding", type = {}, order=34, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="ValueSet details if this is coded", formalDefinition="Binds to a value set if this element is coded (code, Coding, CodeableConcept, Quantity), or the data types (string, uri)." )
     protected ElementDefinitionBindingComponent binding;
 
     /**
      * Identifies a concept from an external specification that roughly corresponds to this element.
      */
-    @Child(name = "mapping", type = {}, order=36, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "mapping", type = {}, order=35, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Map element to another set of definitions", formalDefinition="Identifies a concept from an external specification that roughly corresponds to this element." )
     protected List<ElementDefinitionMappingComponent> mapping;
 
-    private static final long serialVersionUID = -732756088L;
+    private static final long serialVersionUID = -1474105308L;
 
   /**
    * Constructor
@@ -7197,7 +6543,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
      * @param value Provides a complete explanation of the meaning of the data element for human readability.  For the case of elements derived from existing elements (e.g. constraints), the definition SHALL be consistent with the base definition, but convey the meaning of the element in the particular context of use of the resource. (Note: The text you are reading is specified in ElementDefinition.definition).
      */
     public ElementDefinition setDefinition(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.definition = null;
       else {
         if (this.definition == null)
@@ -7246,7 +6592,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
      * @param value Explanatory notes and implementation guidance about the data element, including notes about how to use the data properly, exceptions to proper use, etc. (Note: The text you are reading is specified in ElementDefinition.comment).
      */
     public ElementDefinition setComment(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.comment = null;
       else {
         if (this.comment == null)
@@ -7295,7 +6641,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
      * @param value This element is for traceability of why the element was created and why the constraints exist as they do. This may be used to point to source materials or specifications that drove the structure of this element.
      */
     public ElementDefinition setRequirements(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.requirements = null;
       else {
         if (this.requirements == null)
@@ -7461,7 +6807,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     }
 
     /**
-     * @return {@link #base} (Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - i.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.)
+     * @return {@link #base} (Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - e.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.)
      */
     public ElementDefinitionBaseComponent getBase() { 
       if (this.base == null)
@@ -7477,7 +6823,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     }
 
     /**
-     * @param value {@link #base} (Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - i.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.)
+     * @param value {@link #base} (Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - e.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.)
      */
     public ElementDefinition setBase(ElementDefinitionBaseComponent value) { 
       this.base = value;
@@ -8456,7 +7802,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
      * @param value The Implicit meaning that is to be understood when this element is missing (e.g. 'when this element is missing, the period is ongoing').
      */
     public ElementDefinition setMeaningWhenMissing(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.meaningWhenMissing = null;
       else {
         if (this.meaningWhenMissing == null)
@@ -11245,7 +10591,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     }
 
     /**
-     * @return {@link #maxLength} (Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [Datatype characteristics](extension-structuredefinition-type-characteristics.html)).). This is the underlying object with id, value and extensions. The accessor "getMaxLength" gives direct access to the value
+     * @return {@link #maxLength} (Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-structuredefinition-type-characteristics.html)).). This is the underlying object with id, value and extensions. The accessor "getMaxLength" gives direct access to the value
      */
     public IntegerType getMaxLengthElement() { 
       if (this.maxLength == null)
@@ -11265,7 +10611,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     }
 
     /**
-     * @param value {@link #maxLength} (Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [Datatype characteristics](extension-structuredefinition-type-characteristics.html)).). This is the underlying object with id, value and extensions. The accessor "getMaxLength" gives direct access to the value
+     * @param value {@link #maxLength} (Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-structuredefinition-type-characteristics.html)).). This is the underlying object with id, value and extensions. The accessor "getMaxLength" gives direct access to the value
      */
     public ElementDefinition setMaxLengthElement(IntegerType value) { 
       this.maxLength = value;
@@ -11273,14 +10619,14 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     }
 
     /**
-     * @return Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [Datatype characteristics](extension-structuredefinition-type-characteristics.html)).
+     * @return Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-structuredefinition-type-characteristics.html)).
      */
     public int getMaxLength() { 
       return this.maxLength == null || this.maxLength.isEmpty() ? 0 : this.maxLength.getValue();
     }
 
     /**
-     * @param value Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [Datatype characteristics](extension-structuredefinition-type-characteristics.html)).
+     * @param value Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-structuredefinition-type-characteristics.html)).
      */
     public ElementDefinition setMaxLength(int value) { 
         if (this.maxLength == null)
@@ -11555,60 +10901,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     }
 
     /**
-     * @return {@link #obligation} (Documents obligations that apply to applications implementing this element. The obligations relate to application behaviour, not the content of the element itself in the resource instances that contain this element.)
-     */
-    public List<ElementDefinitionObligationComponent> getObligation() { 
-      if (this.obligation == null)
-        this.obligation = new ArrayList<ElementDefinitionObligationComponent>();
-      return this.obligation;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ElementDefinition setObligation(List<ElementDefinitionObligationComponent> theObligation) { 
-      this.obligation = theObligation;
-      return this;
-    }
-
-    public boolean hasObligation() { 
-      if (this.obligation == null)
-        return false;
-      for (ElementDefinitionObligationComponent item : this.obligation)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public ElementDefinitionObligationComponent addObligation() { //3
-      ElementDefinitionObligationComponent t = new ElementDefinitionObligationComponent();
-      if (this.obligation == null)
-        this.obligation = new ArrayList<ElementDefinitionObligationComponent>();
-      this.obligation.add(t);
-      return t;
-    }
-
-    public ElementDefinition addObligation(ElementDefinitionObligationComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.obligation == null)
-        this.obligation = new ArrayList<ElementDefinitionObligationComponent>();
-      this.obligation.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #obligation}, creating it if it does not already exist {3}
-     */
-    public ElementDefinitionObligationComponent getObligationFirstRep() { 
-      if (getObligation().isEmpty()) {
-        addObligation();
-      }
-      return getObligation().get(0);
-    }
-
-    /**
-     * @return {@link #isModifier} (If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system.). This is the underlying object with id, value and extensions. The accessor "getIsModifier" gives direct access to the value
+     * @return {@link #isModifier} (If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system. When used on the root element in an extension definition, this indicates whether or not the extension is a modifier extension.). This is the underlying object with id, value and extensions. The accessor "getIsModifier" gives direct access to the value
      */
     public BooleanType getIsModifierElement() { 
       if (this.isModifier == null)
@@ -11628,7 +10921,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     }
 
     /**
-     * @param value {@link #isModifier} (If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system.). This is the underlying object with id, value and extensions. The accessor "getIsModifier" gives direct access to the value
+     * @param value {@link #isModifier} (If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system. When used on the root element in an extension definition, this indicates whether or not the extension is a modifier extension.). This is the underlying object with id, value and extensions. The accessor "getIsModifier" gives direct access to the value
      */
     public ElementDefinition setIsModifierElement(BooleanType value) { 
       this.isModifier = value;
@@ -11636,14 +10929,14 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     }
 
     /**
-     * @return If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system.
+     * @return If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system. When used on the root element in an extension definition, this indicates whether or not the extension is a modifier extension.
      */
     public boolean getIsModifier() { 
       return this.isModifier == null || this.isModifier.isEmpty() ? false : this.isModifier.getValue();
     }
 
     /**
-     * @param value If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system.
+     * @param value If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system. When used on the root element in an extension definition, this indicates whether or not the extension is a modifier extension.
      */
     public ElementDefinition setIsModifier(boolean value) { 
         if (this.isModifier == null)
@@ -11839,7 +11132,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         children.add(new Property("alias", "string", "Identifies additional names by which this element might also be known.", 0, java.lang.Integer.MAX_VALUE, alias));
         children.add(new Property("min", "unsignedInt", "The minimum number of times this element SHALL appear in the instance.", 0, 1, min));
         children.add(new Property("max", "string", "The maximum number of times this element is permitted to appear in the instance.", 0, 1, max));
-        children.add(new Property("base", "", "Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - i.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.", 0, 1, base));
+        children.add(new Property("base", "", "Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - e.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.", 0, 1, base));
         children.add(new Property("contentReference", "uri", "Identifies an element defined elsewhere in the definition whose content rules should be applied to the current element. ContentReferences bring across all the rules that are in the ElementDefinition for the element, including definitions, cardinality constraints, bindings, invariants etc.", 0, 1, contentReference));
         children.add(new Property("type", "", "The data type or resource that the value of this element is permitted to be.", 0, java.lang.Integer.MAX_VALUE, type));
         children.add(new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue));
@@ -11850,14 +11143,13 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         children.add(new Property("example", "", "A sample value for this element demonstrating the type of information that would typically be found in the element.", 0, java.lang.Integer.MAX_VALUE, example));
         children.add(new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|integer64|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue));
         children.add(new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|integer64|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue));
-        children.add(new Property("maxLength", "integer", "Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [Datatype characteristics](extension-structuredefinition-type-characteristics.html)).", 0, 1, maxLength));
+        children.add(new Property("maxLength", "integer", "Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-structuredefinition-type-characteristics.html)).", 0, 1, maxLength));
         children.add(new Property("condition", "id", "A reference to an invariant that may make additional statements about the cardinality or value in the instance.", 0, java.lang.Integer.MAX_VALUE, condition));
         children.add(new Property("constraint", "", "Formal constraints such as co-occurrence and other constraints that can be computationally evaluated within the context of the instance.", 0, java.lang.Integer.MAX_VALUE, constraint));
         children.add(new Property("mustHaveValue", "boolean", "Specifies for a primitive data type that the value of the data type cannot be replaced by an extension.", 0, 1, mustHaveValue));
         children.add(new Property("valueAlternatives", "canonical(StructureDefinition)", "Specifies a list of extensions that can appear in place of a primitive value.", 0, java.lang.Integer.MAX_VALUE, valueAlternatives));
         children.add(new Property("mustSupport", "boolean", "If true, implementations that produce or consume resources SHALL provide \"support\" for the element in some meaningful way. Note that this is being phased out and replaced by obligations (see below).  If false, the element may be ignored and not supported. If false, whether to populate or use the data element in any way is at the discretion of the implementation.", 0, 1, mustSupport));
-        children.add(new Property("obligation", "", "Documents obligations that apply to applications implementing this element. The obligations relate to application behaviour, not the content of the element itself in the resource instances that contain this element.", 0, java.lang.Integer.MAX_VALUE, obligation));
-        children.add(new Property("isModifier", "boolean", "If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system.", 0, 1, isModifier));
+        children.add(new Property("isModifier", "boolean", "If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system. When used on the root element in an extension definition, this indicates whether or not the extension is a modifier extension.", 0, 1, isModifier));
         children.add(new Property("isModifierReason", "string", "Explains how that element affects the interpretation of the resource or element that contains it.", 0, 1, isModifierReason));
         children.add(new Property("isSummary", "boolean", "Whether the element should be included if a client requests a search with the parameter _summary=true.", 0, 1, isSummary));
         children.add(new Property("binding", "", "Binds to a value set if this element is coded (code, Coding, CodeableConcept, Quantity), or the data types (string, uri).", 0, 1, binding));
@@ -11881,7 +11173,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         case 92902992: /*alias*/  return new Property("alias", "string", "Identifies additional names by which this element might also be known.", 0, java.lang.Integer.MAX_VALUE, alias);
         case 108114: /*min*/  return new Property("min", "unsignedInt", "The minimum number of times this element SHALL appear in the instance.", 0, 1, min);
         case 107876: /*max*/  return new Property("max", "string", "The maximum number of times this element is permitted to appear in the instance.", 0, 1, max);
-        case 3016401: /*base*/  return new Property("base", "", "Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - i.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.", 0, 1, base);
+        case 3016401: /*base*/  return new Property("base", "", "Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - e.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.", 0, 1, base);
         case 1193747154: /*contentReference*/  return new Property("contentReference", "uri", "Identifies an element defined elsewhere in the definition whose content rules should be applied to the current element. ContentReferences bring across all the rules that are in the ElementDefinition for the element, including definitions, cardinality constraints, bindings, invariants etc.", 0, 1, contentReference);
         case 3575610: /*type*/  return new Property("type", "", "The data type or resource that the value of this element is permitted to be.", 0, java.lang.Integer.MAX_VALUE, type);
         case 587922128: /*defaultValue[x]*/  return new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
@@ -12079,14 +11371,13 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         case 1605774985: /*maxValuePositiveInt*/  return new Property("maxValue[x]", "positiveInt", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
         case -1412730867: /*maxValueUnsignedInt*/  return new Property("maxValue[x]", "unsignedInt", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
         case -1378367976: /*maxValueQuantity*/  return new Property("maxValue[x]", "Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
-        case -791400086: /*maxLength*/  return new Property("maxLength", "integer", "Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [Datatype characteristics](extension-structuredefinition-type-characteristics.html)).", 0, 1, maxLength);
+        case -791400086: /*maxLength*/  return new Property("maxLength", "integer", "Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element. ```maxLength``` SHOULD only be used on primitive data types that have a string representation (see [http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-structuredefinition-type-characteristics.html)).", 0, 1, maxLength);
         case -861311717: /*condition*/  return new Property("condition", "id", "A reference to an invariant that may make additional statements about the cardinality or value in the instance.", 0, java.lang.Integer.MAX_VALUE, condition);
         case -190376483: /*constraint*/  return new Property("constraint", "", "Formal constraints such as co-occurrence and other constraints that can be computationally evaluated within the context of the instance.", 0, java.lang.Integer.MAX_VALUE, constraint);
         case -923694880: /*mustHaveValue*/  return new Property("mustHaveValue", "boolean", "Specifies for a primitive data type that the value of the data type cannot be replaced by an extension.", 0, 1, mustHaveValue);
         case -2124672393: /*valueAlternatives*/  return new Property("valueAlternatives", "canonical(StructureDefinition)", "Specifies a list of extensions that can appear in place of a primitive value.", 0, java.lang.Integer.MAX_VALUE, valueAlternatives);
         case -1402857082: /*mustSupport*/  return new Property("mustSupport", "boolean", "If true, implementations that produce or consume resources SHALL provide \"support\" for the element in some meaningful way. Note that this is being phased out and replaced by obligations (see below).  If false, the element may be ignored and not supported. If false, whether to populate or use the data element in any way is at the discretion of the implementation.", 0, 1, mustSupport);
-        case -389535362: /*obligation*/  return new Property("obligation", "", "Documents obligations that apply to applications implementing this element. The obligations relate to application behaviour, not the content of the element itself in the resource instances that contain this element.", 0, java.lang.Integer.MAX_VALUE, obligation);
-        case -1408783839: /*isModifier*/  return new Property("isModifier", "boolean", "If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system.", 0, 1, isModifier);
+        case -1408783839: /*isModifier*/  return new Property("isModifier", "boolean", "If true, the value of this element affects the interpretation of the element or resource that contains it, and the value of the element cannot be ignored. Typically, this is used for status, negation and qualification codes. The effect of this is that the element cannot be ignored by systems: they SHALL either recognize the element and process it, and/or a pre-determination has been made that it is not relevant to their particular system. When used on the root element in an extension definition, this indicates whether or not the extension is a modifier extension.", 0, 1, isModifier);
         case -1854387259: /*isModifierReason*/  return new Property("isModifierReason", "string", "Explains how that element affects the interpretation of the resource or element that contains it.", 0, 1, isModifierReason);
         case 1857548060: /*isSummary*/  return new Property("isSummary", "boolean", "Whether the element should be included if a client requests a search with the parameter _summary=true.", 0, 1, isSummary);
         case -108220795: /*binding*/  return new Property("binding", "", "Binds to a value set if this element is coded (code, Coding, CodeableConcept, Quantity), or the data types (string, uri).", 0, 1, binding);
@@ -12130,7 +11421,6 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         case -923694880: /*mustHaveValue*/ return this.mustHaveValue == null ? new Base[0] : new Base[] {this.mustHaveValue}; // BooleanType
         case -2124672393: /*valueAlternatives*/ return this.valueAlternatives == null ? new Base[0] : this.valueAlternatives.toArray(new Base[this.valueAlternatives.size()]); // CanonicalType
         case -1402857082: /*mustSupport*/ return this.mustSupport == null ? new Base[0] : new Base[] {this.mustSupport}; // BooleanType
-        case -389535362: /*obligation*/ return this.obligation == null ? new Base[0] : this.obligation.toArray(new Base[this.obligation.size()]); // ElementDefinitionObligationComponent
         case -1408783839: /*isModifier*/ return this.isModifier == null ? new Base[0] : new Base[] {this.isModifier}; // BooleanType
         case -1854387259: /*isModifierReason*/ return this.isModifierReason == null ? new Base[0] : new Base[] {this.isModifierReason}; // StringType
         case 1857548060: /*isSummary*/ return this.isSummary == null ? new Base[0] : new Base[] {this.isSummary}; // BooleanType
@@ -12238,9 +11528,6 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         case -1402857082: // mustSupport
           this.mustSupport = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
-        case -389535362: // obligation
-          this.getObligation().add((ElementDefinitionObligationComponent) value); // ElementDefinitionObligationComponent
-          return value;
         case -1408783839: // isModifier
           this.isModifier = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
@@ -12326,8 +11613,6 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
           this.getValueAlternatives().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("mustSupport")) {
           this.mustSupport = TypeConvertor.castToBoolean(value); // BooleanType
-        } else if (name.equals("obligation")) {
-          this.getObligation().add((ElementDefinitionObligationComponent) value);
         } else if (name.equals("isModifier")) {
           this.isModifier = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("isModifierReason")) {
@@ -12382,7 +11667,6 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         case -923694880:  return getMustHaveValueElement();
         case -2124672393:  return addValueAlternativesElement();
         case -1402857082:  return getMustSupportElement();
-        case -389535362:  return addObligation(); 
         case -1408783839:  return getIsModifierElement();
         case -1854387259:  return getIsModifierReasonElement();
         case 1857548060:  return getIsSummaryElement();
@@ -12427,7 +11711,6 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         case -923694880: /*mustHaveValue*/ return new String[] {"boolean"};
         case -2124672393: /*valueAlternatives*/ return new String[] {"canonical"};
         case -1402857082: /*mustSupport*/ return new String[] {"boolean"};
-        case -389535362: /*obligation*/ return new String[] {};
         case -1408783839: /*isModifier*/ return new String[] {"boolean"};
         case -1854387259: /*isModifierReason*/ return new String[] {"string"};
         case 1857548060: /*isSummary*/ return new String[] {"boolean"};
@@ -13248,9 +12531,6 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         else if (name.equals("mustSupport")) {
           throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.mustSupport");
         }
-        else if (name.equals("obligation")) {
-          return addObligation();
-        }
         else if (name.equals("isModifier")) {
           throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.isModifier");
         }
@@ -13347,11 +12627,6 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
             dst.valueAlternatives.add(i.copy());
         };
         dst.mustSupport = mustSupport == null ? null : mustSupport.copy();
-        if (obligation != null) {
-          dst.obligation = new ArrayList<ElementDefinitionObligationComponent>();
-          for (ElementDefinitionObligationComponent i : obligation)
-            dst.obligation.add(i.copy());
-        };
         dst.isModifier = isModifier == null ? null : isModifier.copy();
         dst.isModifierReason = isModifierReason == null ? null : isModifierReason.copy();
         dst.isSummary = isSummary == null ? null : isSummary.copy();
@@ -13385,10 +12660,9 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
            && compareDeep(example, o.example, true) && compareDeep(minValue, o.minValue, true) && compareDeep(maxValue, o.maxValue, true)
            && compareDeep(maxLength, o.maxLength, true) && compareDeep(condition, o.condition, true) && compareDeep(constraint, o.constraint, true)
            && compareDeep(mustHaveValue, o.mustHaveValue, true) && compareDeep(valueAlternatives, o.valueAlternatives, true)
-           && compareDeep(mustSupport, o.mustSupport, true) && compareDeep(obligation, o.obligation, true)
-           && compareDeep(isModifier, o.isModifier, true) && compareDeep(isModifierReason, o.isModifierReason, true)
-           && compareDeep(isSummary, o.isSummary, true) && compareDeep(binding, o.binding, true) && compareDeep(mapping, o.mapping, true)
-          ;
+           && compareDeep(mustSupport, o.mustSupport, true) && compareDeep(isModifier, o.isModifier, true)
+           && compareDeep(isModifierReason, o.isModifierReason, true) && compareDeep(isSummary, o.isSummary, true)
+           && compareDeep(binding, o.binding, true) && compareDeep(mapping, o.mapping, true);
       }
 
       @Override
@@ -13415,8 +12689,8 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
           , sliceIsConstraining, label, code, slicing, short_, definition, comment, requirements
           , alias, min, max, base, contentReference, type, defaultValue, meaningWhenMissing
           , orderMeaning, fixed, pattern, example, minValue, maxValue, maxLength, condition
-          , constraint, mustHaveValue, valueAlternatives, mustSupport, obligation, isModifier
-          , isModifierReason, isSummary, binding, mapping);
+          , constraint, mustHaveValue, valueAlternatives, mustSupport, isModifier, isModifierReason
+          , isSummary, binding, mapping);
       }
 
 // Manual code (from Configuration.txt):
@@ -13520,10 +12794,11 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
   public String getName() {
     return hasPath() ? getPath().contains(".") ? getPath().substring(getPath().lastIndexOf(".")+1) : getPath() : null;
   }
-
+  
   public String getNameBase() {
     return getName().replace("[x]", "");
   }
+
   public boolean unbounded() {
     return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
   }
@@ -13557,8 +12832,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     return getMin() == 1; 
   }
 
-
-
 // end addition
 
 }
+
