@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,7 +57,7 @@ public class PaymentNotice extends DomainResource {
      * A unique identifier assigned to this payment notice.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Business Identifier for the payment noctice", formalDefinition="A unique identifier assigned to this payment notice." )
+    @Description(shortDefinition="Business Identifier for the payment notice", formalDefinition="A unique identifier assigned to this payment notice." )
     protected List<Identifier> identifier;
 
     /**
@@ -90,16 +90,16 @@ public class PaymentNotice extends DomainResource {
     protected DateTimeType created;
 
     /**
-     * The practitioner who is responsible for the services rendered to the patient.
+     * The party who reports the payment notice.
      */
-    @Child(name = "provider", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=5, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Responsible practitioner", formalDefinition="The practitioner who is responsible for the services rendered to the patient." )
-    protected Reference provider;
+    @Child(name = "reporter", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=5, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Responsible practitioner", formalDefinition="The party who reports the payment notice." )
+    protected Reference reporter;
 
     /**
      * A reference to the payment which is the subject of this notice.
      */
-    @Child(name = "payment", type = {PaymentReconciliation.class}, order=6, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "payment", type = {PaymentReconciliation.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Payment reference", formalDefinition="A reference to the payment which is the subject of this notice." )
     protected Reference payment;
 
@@ -139,7 +139,7 @@ public class PaymentNotice extends DomainResource {
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/payment-status")
     protected CodeableConcept paymentStatus;
 
-    private static final long serialVersionUID = 1832126720L;
+    private static final long serialVersionUID = 1568561168L;
 
   /**
    * Constructor
@@ -151,11 +151,10 @@ public class PaymentNotice extends DomainResource {
   /**
    * Constructor
    */
-    public PaymentNotice(FinancialResourceStatusCodes status, Date created, Reference payment, Reference recipient, Money amount) {
+    public PaymentNotice(FinancialResourceStatusCodes status, Date created, Reference recipient, Money amount) {
       super();
       this.setStatus(status);
       this.setCreated(created);
-      this.setPayment(payment);
       this.setRecipient(recipient);
       this.setAmount(amount);
     }
@@ -352,26 +351,26 @@ public class PaymentNotice extends DomainResource {
     }
 
     /**
-     * @return {@link #provider} (The practitioner who is responsible for the services rendered to the patient.)
+     * @return {@link #reporter} (The party who reports the payment notice.)
      */
-    public Reference getProvider() { 
-      if (this.provider == null)
+    public Reference getReporter() { 
+      if (this.reporter == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create PaymentNotice.provider");
+          throw new Error("Attempt to auto-create PaymentNotice.reporter");
         else if (Configuration.doAutoCreate())
-          this.provider = new Reference(); // cc
-      return this.provider;
+          this.reporter = new Reference(); // cc
+      return this.reporter;
     }
 
-    public boolean hasProvider() { 
-      return this.provider != null && !this.provider.isEmpty();
+    public boolean hasReporter() { 
+      return this.reporter != null && !this.reporter.isEmpty();
     }
 
     /**
-     * @param value {@link #provider} (The practitioner who is responsible for the services rendered to the patient.)
+     * @param value {@link #reporter} (The party who reports the payment notice.)
      */
-    public PaymentNotice setProvider(Reference value) { 
-      this.provider = value;
+    public PaymentNotice setReporter(Reference value) { 
+      this.reporter = value;
       return this;
     }
 
@@ -551,7 +550,7 @@ public class PaymentNotice extends DomainResource {
         children.add(new Property("request", "Reference(Any)", "Reference of resource for which payment is being made.", 0, 1, request));
         children.add(new Property("response", "Reference(Any)", "Reference of response to resource for which payment is being made.", 0, 1, response));
         children.add(new Property("created", "dateTime", "The date when this resource was created.", 0, 1, created));
-        children.add(new Property("provider", "Reference(Practitioner|PractitionerRole|Organization)", "The practitioner who is responsible for the services rendered to the patient.", 0, 1, provider));
+        children.add(new Property("reporter", "Reference(Practitioner|PractitionerRole|Organization)", "The party who reports the payment notice.", 0, 1, reporter));
         children.add(new Property("payment", "Reference(PaymentReconciliation)", "A reference to the payment which is the subject of this notice.", 0, 1, payment));
         children.add(new Property("paymentDate", "date", "The date when the above payment action occurred.", 0, 1, paymentDate));
         children.add(new Property("payee", "Reference(Practitioner|PractitionerRole|Organization)", "The party who will receive or has received payment that is the subject of this notification.", 0, 1, payee));
@@ -568,7 +567,7 @@ public class PaymentNotice extends DomainResource {
         case 1095692943: /*request*/  return new Property("request", "Reference(Any)", "Reference of resource for which payment is being made.", 0, 1, request);
         case -340323263: /*response*/  return new Property("response", "Reference(Any)", "Reference of response to resource for which payment is being made.", 0, 1, response);
         case 1028554472: /*created*/  return new Property("created", "dateTime", "The date when this resource was created.", 0, 1, created);
-        case -987494927: /*provider*/  return new Property("provider", "Reference(Practitioner|PractitionerRole|Organization)", "The practitioner who is responsible for the services rendered to the patient.", 0, 1, provider);
+        case -427039519: /*reporter*/  return new Property("reporter", "Reference(Practitioner|PractitionerRole|Organization)", "The party who reports the payment notice.", 0, 1, reporter);
         case -786681338: /*payment*/  return new Property("payment", "Reference(PaymentReconciliation)", "A reference to the payment which is the subject of this notice.", 0, 1, payment);
         case -1540873516: /*paymentDate*/  return new Property("paymentDate", "date", "The date when the above payment action occurred.", 0, 1, paymentDate);
         case 106443592: /*payee*/  return new Property("payee", "Reference(Practitioner|PractitionerRole|Organization)", "The party who will receive or has received payment that is the subject of this notification.", 0, 1, payee);
@@ -588,7 +587,7 @@ public class PaymentNotice extends DomainResource {
         case 1095692943: /*request*/ return this.request == null ? new Base[0] : new Base[] {this.request}; // Reference
         case -340323263: /*response*/ return this.response == null ? new Base[0] : new Base[] {this.response}; // Reference
         case 1028554472: /*created*/ return this.created == null ? new Base[0] : new Base[] {this.created}; // DateTimeType
-        case -987494927: /*provider*/ return this.provider == null ? new Base[0] : new Base[] {this.provider}; // Reference
+        case -427039519: /*reporter*/ return this.reporter == null ? new Base[0] : new Base[] {this.reporter}; // Reference
         case -786681338: /*payment*/ return this.payment == null ? new Base[0] : new Base[] {this.payment}; // Reference
         case -1540873516: /*paymentDate*/ return this.paymentDate == null ? new Base[0] : new Base[] {this.paymentDate}; // DateType
         case 106443592: /*payee*/ return this.payee == null ? new Base[0] : new Base[] {this.payee}; // Reference
@@ -619,8 +618,8 @@ public class PaymentNotice extends DomainResource {
         case 1028554472: // created
           this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
-        case -987494927: // provider
-          this.provider = TypeConvertor.castToReference(value); // Reference
+        case -427039519: // reporter
+          this.reporter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -786681338: // payment
           this.payment = TypeConvertor.castToReference(value); // Reference
@@ -658,8 +657,8 @@ public class PaymentNotice extends DomainResource {
           this.response = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("created")) {
           this.created = TypeConvertor.castToDateTime(value); // DateTimeType
-        } else if (name.equals("provider")) {
-          this.provider = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("reporter")) {
+          this.reporter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("payment")) {
           this.payment = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("paymentDate")) {
@@ -685,7 +684,7 @@ public class PaymentNotice extends DomainResource {
         case 1095692943:  return getRequest();
         case -340323263:  return getResponse();
         case 1028554472:  return getCreatedElement();
-        case -987494927:  return getProvider();
+        case -427039519:  return getReporter();
         case -786681338:  return getPayment();
         case -1540873516:  return getPaymentDateElement();
         case 106443592:  return getPayee();
@@ -705,7 +704,7 @@ public class PaymentNotice extends DomainResource {
         case 1095692943: /*request*/ return new String[] {"Reference"};
         case -340323263: /*response*/ return new String[] {"Reference"};
         case 1028554472: /*created*/ return new String[] {"dateTime"};
-        case -987494927: /*provider*/ return new String[] {"Reference"};
+        case -427039519: /*reporter*/ return new String[] {"Reference"};
         case -786681338: /*payment*/ return new String[] {"Reference"};
         case -1540873516: /*paymentDate*/ return new String[] {"date"};
         case 106443592: /*payee*/ return new String[] {"Reference"};
@@ -736,9 +735,9 @@ public class PaymentNotice extends DomainResource {
         else if (name.equals("created")) {
           throw new FHIRException("Cannot call addChild on a primitive type PaymentNotice.created");
         }
-        else if (name.equals("provider")) {
-          this.provider = new Reference();
-          return this.provider;
+        else if (name.equals("reporter")) {
+          this.reporter = new Reference();
+          return this.reporter;
         }
         else if (name.equals("payment")) {
           this.payment = new Reference();
@@ -789,7 +788,7 @@ public class PaymentNotice extends DomainResource {
         dst.request = request == null ? null : request.copy();
         dst.response = response == null ? null : response.copy();
         dst.created = created == null ? null : created.copy();
-        dst.provider = provider == null ? null : provider.copy();
+        dst.reporter = reporter == null ? null : reporter.copy();
         dst.payment = payment == null ? null : payment.copy();
         dst.paymentDate = paymentDate == null ? null : paymentDate.copy();
         dst.payee = payee == null ? null : payee.copy();
@@ -810,7 +809,7 @@ public class PaymentNotice extends DomainResource {
           return false;
         PaymentNotice o = (PaymentNotice) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(request, o.request, true)
-           && compareDeep(response, o.response, true) && compareDeep(created, o.created, true) && compareDeep(provider, o.provider, true)
+           && compareDeep(response, o.response, true) && compareDeep(created, o.created, true) && compareDeep(reporter, o.reporter, true)
            && compareDeep(payment, o.payment, true) && compareDeep(paymentDate, o.paymentDate, true) && compareDeep(payee, o.payee, true)
            && compareDeep(recipient, o.recipient, true) && compareDeep(amount, o.amount, true) && compareDeep(paymentStatus, o.paymentStatus, true)
           ;
@@ -829,7 +828,7 @@ public class PaymentNotice extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, request
-          , response, created, provider, payment, paymentDate, payee, recipient, amount
+          , response, created, reporter, payment, paymentDate, payee, recipient, amount
           , paymentStatus);
       }
 
@@ -899,30 +898,30 @@ public class PaymentNotice extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PAYMENT_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PAYMENT_STATUS);
 
  /**
-   * Search parameter: <b>provider</b>
+   * Search parameter: <b>reporter</b>
    * <p>
-   * Description: <b>The reference to the provider</b><br>
+   * Description: <b>The reference to the reporter</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>PaymentNotice.provider</b><br>
+   * Path: <b>PaymentNotice.reporter</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="provider", path="PaymentNotice.provider", description="The reference to the provider", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Organization.class, Practitioner.class, PractitionerRole.class } )
-  public static final String SP_PROVIDER = "provider";
+  @SearchParamDefinition(name="reporter", path="PaymentNotice.reporter", description="The reference to the reporter", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Organization.class, Practitioner.class, PractitionerRole.class } )
+  public static final String SP_REPORTER = "reporter";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>provider</b>
+   * <b>Fluent Client</b> search parameter constant for <b>reporter</b>
    * <p>
-   * Description: <b>The reference to the provider</b><br>
+   * Description: <b>The reference to the reporter</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>PaymentNotice.provider</b><br>
+   * Path: <b>PaymentNotice.reporter</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PROVIDER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PROVIDER);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REPORTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REPORTER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>PaymentNotice:provider</b>".
+   * the path value of "<b>PaymentNotice:reporter</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PROVIDER = new ca.uhn.fhir.model.api.Include("PaymentNotice:provider").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REPORTER = new ca.uhn.fhir.model.api.Include("PaymentNotice:reporter").toLocked();
 
  /**
    * Search parameter: <b>request</b>
@@ -932,7 +931,7 @@ public class PaymentNotice extends DomainResource {
    * Path: <b>PaymentNotice.request</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="request", path="PaymentNotice.request", description="The Claim", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="request", path="PaymentNotice.request", description="The Claim", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BiologicallyDerivedProductDispense.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceAssociation.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentReference.class, Encounter.class, EncounterHistory.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryItem.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationStatement.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Parameters.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestPlan.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_REQUEST = "request";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>request</b>
@@ -958,7 +957,7 @@ public class PaymentNotice extends DomainResource {
    * Path: <b>PaymentNotice.response</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="response", path="PaymentNotice.response", description="The ClaimResponse", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="response", path="PaymentNotice.response", description="The ClaimResponse", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BiologicallyDerivedProductDispense.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceAssociation.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentReference.class, Encounter.class, EncounterHistory.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryItem.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationStatement.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Parameters.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestPlan.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_RESPONSE = "response";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>response</b>

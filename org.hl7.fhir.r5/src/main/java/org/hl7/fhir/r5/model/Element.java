@@ -29,16 +29,13 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
@@ -50,6 +47,8 @@ import ca.uhn.fhir.model.api.annotation.Block;
 
 import org.hl7.fhir.instance.model.api.IBaseElement;
 import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
+import  org.hl7.fhir.r5.utils.ToolingExtensions;
+import  org.hl7.fhir.utilities.StandardsStatus;
 /**
  * Element Type: Base definition for all elements in a resource.
  */
@@ -64,10 +63,10 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     protected StringType id;
 
     /**
-     * May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.
+     * May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and managable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.
      */
     @Child(name = "extension", type = {Extension.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Additional content defined by implementations", formalDefinition="May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension." )
+    @Description(shortDefinition="Additional content defined by implementations", formalDefinition="May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and managable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension." )
     protected List<Extension> extension;
 
     private static final long serialVersionUID = -1452745816L;
@@ -129,7 +128,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     }
 
     /**
-     * @return {@link #extension} (May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.)
+     * @return {@link #extension} (May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and managable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.)
      */
     public List<Extension> getExtension() { 
       if (this.extension == null)
@@ -184,14 +183,14 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("id", "string", "Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.", 0, 1, id));
-        children.add(new Property("extension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", 0, java.lang.Integer.MAX_VALUE, extension));
+        children.add(new Property("extension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and managable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", 0, java.lang.Integer.MAX_VALUE, extension));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case 3355: /*id*/  return new Property("id", "string", "Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.", 0, 1, id);
-        case -612557761: /*extension*/  return new Property("extension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", 0, java.lang.Integer.MAX_VALUE, extension);
+        case -612557761: /*extension*/  return new Property("extension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and managable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", 0, java.lang.Integer.MAX_VALUE, extension);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -433,6 +432,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     return ext.get(0).getValue().primitiveValue();
   }
 
+
   public StandardsStatus getStandardsStatus() {
     return ToolingExtensions.getStandardsStatus(this);
   }
@@ -440,7 +440,6 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   public void setStandardsStatus(StandardsStatus status) {
     ToolingExtensions.setStandardsStatus(this, status, null);
   }
-
 
 // end addition
 

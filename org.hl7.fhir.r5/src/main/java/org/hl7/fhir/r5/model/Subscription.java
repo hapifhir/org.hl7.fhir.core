@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -113,9 +113,9 @@ public class Subscription extends DomainResource {
         }
         public String getDisplay() {
           switch (this) {
-            case EMPTY: return "empty";
-            case IDONLY: return "id-only";
-            case FULLRESOURCE: return "full-resource";
+            case EMPTY: return "Empty";
+            case IDONLY: return "Id-only";
+            case FULLRESOURCE: return "Full-resource";
             case NULL: return null;
             default: return "?";
           }
@@ -168,36 +168,44 @@ public class Subscription extends DomainResource {
     @Block()
     public static class SubscriptionFilterByComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * If the element is a reference to another resource, this element contains "Reference", and the targetProfile element defines what resources can be referenced. The targetProfile may be a reference to the general definition of a resource (e.g. http://hl7.org/fhir/StructureDefinition/Patient).
+         * A resource listed in the `SubscriptionTopic` this `Subscription` references (`SubscriptionTopic.canFilterBy.resource`). This element can be used to differentiate filters for topics that include more than one resource type.
          */
         @Child(name = "resourceType", type = {UriType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Allowed Data type or Resource (reference to definition) for this Subscription", formalDefinition="If the element is a reference to another resource, this element contains \"Reference\", and the targetProfile element defines what resources can be referenced. The targetProfile may be a reference to the general definition of a resource (e.g. http://hl7.org/fhir/StructureDefinition/Patient)." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fhir-types")
+        @Description(shortDefinition="Allowed Resource (reference to definition) for this Subscription filter", formalDefinition="A resource listed in the `SubscriptionTopic` this `Subscription` references (`SubscriptionTopic.canFilterBy.resource`). This element can be used to differentiate filters for topics that include more than one resource type." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-types")
         protected UriType resourceType;
 
         /**
-         * The filter as defined in the `SubscriptionTopic.canfilterBy.filterParameter` element.
+         * The filter as defined in the `SubscriptionTopic.canFilterBy.filterParameter` element.
          */
         @Child(name = "filterParameter", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Filter label defined in SubscriptionTopic", formalDefinition="The filter as defined in the `SubscriptionTopic.canfilterBy.filterParameter` element." )
+        @Description(shortDefinition="Filter label defined in SubscriptionTopic", formalDefinition="The filter as defined in the `SubscriptionTopic.canFilterBy.filterParameter` element." )
         protected StringType filterParameter;
 
         /**
-         * Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.
+         * Comparator applied to this filter parameter.
          */
-        @Child(name = "modifier", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="= | eq | ne | gt | lt | ge | le | sa | eb | ap | above | below | in | not-in | of-type", formalDefinition="Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-search-modifier")
-        protected Enumeration<SubscriptionSearchModifier> modifier;
+        @Child(name = "comparator", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="eq | ne | gt | lt | ge | le | sa | eb | ap", formalDefinition="Comparator applied to this filter parameter." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/search-comparator")
+        protected Enumeration<SearchComparator> comparator;
 
         /**
-         * The literal value or resource path as is legal in search - for example, "Patient/123" or "le1950".
+         * Modifier applied to this filter parameter.
          */
-        @Child(name = "value", type = {StringType.class}, order=4, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Literal value or resource path", formalDefinition="The literal value or resource path as is legal in search - for example, \"Patient/123\" or \"le1950\"." )
+        @Child(name = "modifier", type = {CodeType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="missing | exact | contains | not | text | in | not-in | below | above | type | identifier | of-type | code-text | text-advanced | iterate", formalDefinition="Modifier applied to this filter parameter." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/search-modifier-code")
+        protected Enumeration<SearchModifierCode> modifier;
+
+        /**
+         * The literal value or resource path as is legal in search - for example, `Patient/123` or `le1950`.
+         */
+        @Child(name = "value", type = {StringType.class}, order=5, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Literal value or resource path", formalDefinition="The literal value or resource path as is legal in search - for example, `Patient/123` or `le1950`." )
         protected StringType value;
 
-        private static final long serialVersionUID = -642146252L;
+        private static final long serialVersionUID = 765605139L;
 
     /**
      * Constructor
@@ -216,7 +224,7 @@ public class Subscription extends DomainResource {
       }
 
         /**
-         * @return {@link #resourceType} (If the element is a reference to another resource, this element contains "Reference", and the targetProfile element defines what resources can be referenced. The targetProfile may be a reference to the general definition of a resource (e.g. http://hl7.org/fhir/StructureDefinition/Patient).). This is the underlying object with id, value and extensions. The accessor "getResourceType" gives direct access to the value
+         * @return {@link #resourceType} (A resource listed in the `SubscriptionTopic` this `Subscription` references (`SubscriptionTopic.canFilterBy.resource`). This element can be used to differentiate filters for topics that include more than one resource type.). This is the underlying object with id, value and extensions. The accessor "getResourceType" gives direct access to the value
          */
         public UriType getResourceTypeElement() { 
           if (this.resourceType == null)
@@ -236,7 +244,7 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @param value {@link #resourceType} (If the element is a reference to another resource, this element contains "Reference", and the targetProfile element defines what resources can be referenced. The targetProfile may be a reference to the general definition of a resource (e.g. http://hl7.org/fhir/StructureDefinition/Patient).). This is the underlying object with id, value and extensions. The accessor "getResourceType" gives direct access to the value
+         * @param value {@link #resourceType} (A resource listed in the `SubscriptionTopic` this `Subscription` references (`SubscriptionTopic.canFilterBy.resource`). This element can be used to differentiate filters for topics that include more than one resource type.). This is the underlying object with id, value and extensions. The accessor "getResourceType" gives direct access to the value
          */
         public SubscriptionFilterByComponent setResourceTypeElement(UriType value) { 
           this.resourceType = value;
@@ -244,14 +252,14 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @return If the element is a reference to another resource, this element contains "Reference", and the targetProfile element defines what resources can be referenced. The targetProfile may be a reference to the general definition of a resource (e.g. http://hl7.org/fhir/StructureDefinition/Patient).
+         * @return A resource listed in the `SubscriptionTopic` this `Subscription` references (`SubscriptionTopic.canFilterBy.resource`). This element can be used to differentiate filters for topics that include more than one resource type.
          */
         public String getResourceType() { 
           return this.resourceType == null ? null : this.resourceType.getValue();
         }
 
         /**
-         * @param value If the element is a reference to another resource, this element contains "Reference", and the targetProfile element defines what resources can be referenced. The targetProfile may be a reference to the general definition of a resource (e.g. http://hl7.org/fhir/StructureDefinition/Patient).
+         * @param value A resource listed in the `SubscriptionTopic` this `Subscription` references (`SubscriptionTopic.canFilterBy.resource`). This element can be used to differentiate filters for topics that include more than one resource type.
          */
         public SubscriptionFilterByComponent setResourceType(String value) { 
           if (Utilities.noString(value))
@@ -265,7 +273,7 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @return {@link #filterParameter} (The filter as defined in the `SubscriptionTopic.canfilterBy.filterParameter` element.). This is the underlying object with id, value and extensions. The accessor "getFilterParameter" gives direct access to the value
+         * @return {@link #filterParameter} (The filter as defined in the `SubscriptionTopic.canFilterBy.filterParameter` element.). This is the underlying object with id, value and extensions. The accessor "getFilterParameter" gives direct access to the value
          */
         public StringType getFilterParameterElement() { 
           if (this.filterParameter == null)
@@ -285,7 +293,7 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @param value {@link #filterParameter} (The filter as defined in the `SubscriptionTopic.canfilterBy.filterParameter` element.). This is the underlying object with id, value and extensions. The accessor "getFilterParameter" gives direct access to the value
+         * @param value {@link #filterParameter} (The filter as defined in the `SubscriptionTopic.canFilterBy.filterParameter` element.). This is the underlying object with id, value and extensions. The accessor "getFilterParameter" gives direct access to the value
          */
         public SubscriptionFilterByComponent setFilterParameterElement(StringType value) { 
           this.filterParameter = value;
@@ -293,14 +301,14 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @return The filter as defined in the `SubscriptionTopic.canfilterBy.filterParameter` element.
+         * @return The filter as defined in the `SubscriptionTopic.canFilterBy.filterParameter` element.
          */
         public String getFilterParameter() { 
           return this.filterParameter == null ? null : this.filterParameter.getValue();
         }
 
         /**
-         * @param value The filter as defined in the `SubscriptionTopic.canfilterBy.filterParameter` element.
+         * @param value The filter as defined in the `SubscriptionTopic.canFilterBy.filterParameter` element.
          */
         public SubscriptionFilterByComponent setFilterParameter(String value) { 
             if (this.filterParameter == null)
@@ -310,14 +318,63 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @return {@link #modifier} (Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.). This is the underlying object with id, value and extensions. The accessor "getModifier" gives direct access to the value
+         * @return {@link #comparator} (Comparator applied to this filter parameter.). This is the underlying object with id, value and extensions. The accessor "getComparator" gives direct access to the value
          */
-        public Enumeration<SubscriptionSearchModifier> getModifierElement() { 
+        public Enumeration<SearchComparator> getComparatorElement() { 
+          if (this.comparator == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubscriptionFilterByComponent.comparator");
+            else if (Configuration.doAutoCreate())
+              this.comparator = new Enumeration<SearchComparator>(new SearchComparatorEnumFactory()); // bb
+          return this.comparator;
+        }
+
+        public boolean hasComparatorElement() { 
+          return this.comparator != null && !this.comparator.isEmpty();
+        }
+
+        public boolean hasComparator() { 
+          return this.comparator != null && !this.comparator.isEmpty();
+        }
+
+        /**
+         * @param value {@link #comparator} (Comparator applied to this filter parameter.). This is the underlying object with id, value and extensions. The accessor "getComparator" gives direct access to the value
+         */
+        public SubscriptionFilterByComponent setComparatorElement(Enumeration<SearchComparator> value) { 
+          this.comparator = value;
+          return this;
+        }
+
+        /**
+         * @return Comparator applied to this filter parameter.
+         */
+        public SearchComparator getComparator() { 
+          return this.comparator == null ? null : this.comparator.getValue();
+        }
+
+        /**
+         * @param value Comparator applied to this filter parameter.
+         */
+        public SubscriptionFilterByComponent setComparator(SearchComparator value) { 
+          if (value == null)
+            this.comparator = null;
+          else {
+            if (this.comparator == null)
+              this.comparator = new Enumeration<SearchComparator>(new SearchComparatorEnumFactory());
+            this.comparator.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #modifier} (Modifier applied to this filter parameter.). This is the underlying object with id, value and extensions. The accessor "getModifier" gives direct access to the value
+         */
+        public Enumeration<SearchModifierCode> getModifierElement() { 
           if (this.modifier == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SubscriptionFilterByComponent.modifier");
             else if (Configuration.doAutoCreate())
-              this.modifier = new Enumeration<SubscriptionSearchModifier>(new SubscriptionSearchModifierEnumFactory()); // bb
+              this.modifier = new Enumeration<SearchModifierCode>(new SearchModifierCodeEnumFactory()); // bb
           return this.modifier;
         }
 
@@ -330,36 +387,36 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @param value {@link #modifier} (Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.). This is the underlying object with id, value and extensions. The accessor "getModifier" gives direct access to the value
+         * @param value {@link #modifier} (Modifier applied to this filter parameter.). This is the underlying object with id, value and extensions. The accessor "getModifier" gives direct access to the value
          */
-        public SubscriptionFilterByComponent setModifierElement(Enumeration<SubscriptionSearchModifier> value) { 
+        public SubscriptionFilterByComponent setModifierElement(Enumeration<SearchModifierCode> value) { 
           this.modifier = value;
           return this;
         }
 
         /**
-         * @return Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.
+         * @return Modifier applied to this filter parameter.
          */
-        public SubscriptionSearchModifier getModifier() { 
+        public SearchModifierCode getModifier() { 
           return this.modifier == null ? null : this.modifier.getValue();
         }
 
         /**
-         * @param value Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.
+         * @param value Modifier applied to this filter parameter.
          */
-        public SubscriptionFilterByComponent setModifier(SubscriptionSearchModifier value) { 
+        public SubscriptionFilterByComponent setModifier(SearchModifierCode value) { 
           if (value == null)
             this.modifier = null;
           else {
             if (this.modifier == null)
-              this.modifier = new Enumeration<SubscriptionSearchModifier>(new SubscriptionSearchModifierEnumFactory());
+              this.modifier = new Enumeration<SearchModifierCode>(new SearchModifierCodeEnumFactory());
             this.modifier.setValue(value);
           }
           return this;
         }
 
         /**
-         * @return {@link #value} (The literal value or resource path as is legal in search - for example, "Patient/123" or "le1950".). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+         * @return {@link #value} (The literal value or resource path as is legal in search - for example, `Patient/123` or `le1950`.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
          */
         public StringType getValueElement() { 
           if (this.value == null)
@@ -379,7 +436,7 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @param value {@link #value} (The literal value or resource path as is legal in search - for example, "Patient/123" or "le1950".). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+         * @param value {@link #value} (The literal value or resource path as is legal in search - for example, `Patient/123` or `le1950`.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
          */
         public SubscriptionFilterByComponent setValueElement(StringType value) { 
           this.value = value;
@@ -387,14 +444,14 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @return The literal value or resource path as is legal in search - for example, "Patient/123" or "le1950".
+         * @return The literal value or resource path as is legal in search - for example, `Patient/123` or `le1950`.
          */
         public String getValue() { 
           return this.value == null ? null : this.value.getValue();
         }
 
         /**
-         * @param value The literal value or resource path as is legal in search - for example, "Patient/123" or "le1950".
+         * @param value The literal value or resource path as is legal in search - for example, `Patient/123` or `le1950`.
          */
         public SubscriptionFilterByComponent setValue(String value) { 
             if (this.value == null)
@@ -405,19 +462,21 @@ public class Subscription extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("resourceType", "uri", "If the element is a reference to another resource, this element contains \"Reference\", and the targetProfile element defines what resources can be referenced. The targetProfile may be a reference to the general definition of a resource (e.g. http://hl7.org/fhir/StructureDefinition/Patient).", 0, 1, resourceType));
-          children.add(new Property("filterParameter", "string", "The filter as defined in the `SubscriptionTopic.canfilterBy.filterParameter` element.", 0, 1, filterParameter));
-          children.add(new Property("modifier", "code", "Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.", 0, 1, modifier));
-          children.add(new Property("value", "string", "The literal value or resource path as is legal in search - for example, \"Patient/123\" or \"le1950\".", 0, 1, value));
+          children.add(new Property("resourceType", "uri", "A resource listed in the `SubscriptionTopic` this `Subscription` references (`SubscriptionTopic.canFilterBy.resource`). This element can be used to differentiate filters for topics that include more than one resource type.", 0, 1, resourceType));
+          children.add(new Property("filterParameter", "string", "The filter as defined in the `SubscriptionTopic.canFilterBy.filterParameter` element.", 0, 1, filterParameter));
+          children.add(new Property("comparator", "code", "Comparator applied to this filter parameter.", 0, 1, comparator));
+          children.add(new Property("modifier", "code", "Modifier applied to this filter parameter.", 0, 1, modifier));
+          children.add(new Property("value", "string", "The literal value or resource path as is legal in search - for example, `Patient/123` or `le1950`.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -384364440: /*resourceType*/  return new Property("resourceType", "uri", "If the element is a reference to another resource, this element contains \"Reference\", and the targetProfile element defines what resources can be referenced. The targetProfile may be a reference to the general definition of a resource (e.g. http://hl7.org/fhir/StructureDefinition/Patient).", 0, 1, resourceType);
-          case 618257: /*filterParameter*/  return new Property("filterParameter", "string", "The filter as defined in the `SubscriptionTopic.canfilterBy.filterParameter` element.", 0, 1, filterParameter);
-          case -615513385: /*modifier*/  return new Property("modifier", "code", "Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.", 0, 1, modifier);
-          case 111972721: /*value*/  return new Property("value", "string", "The literal value or resource path as is legal in search - for example, \"Patient/123\" or \"le1950\".", 0, 1, value);
+          case -384364440: /*resourceType*/  return new Property("resourceType", "uri", "A resource listed in the `SubscriptionTopic` this `Subscription` references (`SubscriptionTopic.canFilterBy.resource`). This element can be used to differentiate filters for topics that include more than one resource type.", 0, 1, resourceType);
+          case 618257: /*filterParameter*/  return new Property("filterParameter", "string", "The filter as defined in the `SubscriptionTopic.canFilterBy.filterParameter` element.", 0, 1, filterParameter);
+          case -844673834: /*comparator*/  return new Property("comparator", "code", "Comparator applied to this filter parameter.", 0, 1, comparator);
+          case -615513385: /*modifier*/  return new Property("modifier", "code", "Modifier applied to this filter parameter.", 0, 1, modifier);
+          case 111972721: /*value*/  return new Property("value", "string", "The literal value or resource path as is legal in search - for example, `Patient/123` or `le1950`.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -428,7 +487,8 @@ public class Subscription extends DomainResource {
         switch (hash) {
         case -384364440: /*resourceType*/ return this.resourceType == null ? new Base[0] : new Base[] {this.resourceType}; // UriType
         case 618257: /*filterParameter*/ return this.filterParameter == null ? new Base[0] : new Base[] {this.filterParameter}; // StringType
-        case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : new Base[] {this.modifier}; // Enumeration<SubscriptionSearchModifier>
+        case -844673834: /*comparator*/ return this.comparator == null ? new Base[0] : new Base[] {this.comparator}; // Enumeration<SearchComparator>
+        case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : new Base[] {this.modifier}; // Enumeration<SearchModifierCode>
         case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -444,9 +504,13 @@ public class Subscription extends DomainResource {
         case 618257: // filterParameter
           this.filterParameter = TypeConvertor.castToString(value); // StringType
           return value;
+        case -844673834: // comparator
+          value = new SearchComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.comparator = (Enumeration) value; // Enumeration<SearchComparator>
+          return value;
         case -615513385: // modifier
-          value = new SubscriptionSearchModifierEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.modifier = (Enumeration) value; // Enumeration<SubscriptionSearchModifier>
+          value = new SearchModifierCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.modifier = (Enumeration) value; // Enumeration<SearchModifierCode>
           return value;
         case 111972721: // value
           this.value = TypeConvertor.castToString(value); // StringType
@@ -462,9 +526,12 @@ public class Subscription extends DomainResource {
           this.resourceType = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("filterParameter")) {
           this.filterParameter = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("comparator")) {
+          value = new SearchComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.comparator = (Enumeration) value; // Enumeration<SearchComparator>
         } else if (name.equals("modifier")) {
-          value = new SubscriptionSearchModifierEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.modifier = (Enumeration) value; // Enumeration<SubscriptionSearchModifier>
+          value = new SearchModifierCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.modifier = (Enumeration) value; // Enumeration<SearchModifierCode>
         } else if (name.equals("value")) {
           this.value = TypeConvertor.castToString(value); // StringType
         } else
@@ -477,6 +544,7 @@ public class Subscription extends DomainResource {
         switch (hash) {
         case -384364440:  return getResourceTypeElement();
         case 618257:  return getFilterParameterElement();
+        case -844673834:  return getComparatorElement();
         case -615513385:  return getModifierElement();
         case 111972721:  return getValueElement();
         default: return super.makeProperty(hash, name);
@@ -489,6 +557,7 @@ public class Subscription extends DomainResource {
         switch (hash) {
         case -384364440: /*resourceType*/ return new String[] {"uri"};
         case 618257: /*filterParameter*/ return new String[] {"string"};
+        case -844673834: /*comparator*/ return new String[] {"code"};
         case -615513385: /*modifier*/ return new String[] {"code"};
         case 111972721: /*value*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
@@ -503,6 +572,9 @@ public class Subscription extends DomainResource {
         }
         else if (name.equals("filterParameter")) {
           throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.filterParameter");
+        }
+        else if (name.equals("comparator")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.comparator");
         }
         else if (name.equals("modifier")) {
           throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.modifier");
@@ -524,6 +596,7 @@ public class Subscription extends DomainResource {
         super.copyValues(dst);
         dst.resourceType = resourceType == null ? null : resourceType.copy();
         dst.filterParameter = filterParameter == null ? null : filterParameter.copy();
+        dst.comparator = comparator == null ? null : comparator.copy();
         dst.modifier = modifier == null ? null : modifier.copy();
         dst.value = value == null ? null : value.copy();
       }
@@ -536,7 +609,8 @@ public class Subscription extends DomainResource {
           return false;
         SubscriptionFilterByComponent o = (SubscriptionFilterByComponent) other_;
         return compareDeep(resourceType, o.resourceType, true) && compareDeep(filterParameter, o.filterParameter, true)
-           && compareDeep(modifier, o.modifier, true) && compareDeep(value, o.value, true);
+           && compareDeep(comparator, o.comparator, true) && compareDeep(modifier, o.modifier, true) && compareDeep(value, o.value, true)
+          ;
       }
 
       @Override
@@ -547,16 +621,267 @@ public class Subscription extends DomainResource {
           return false;
         SubscriptionFilterByComponent o = (SubscriptionFilterByComponent) other_;
         return compareValues(resourceType, o.resourceType, true) && compareValues(filterParameter, o.filterParameter, true)
-           && compareValues(modifier, o.modifier, true) && compareValues(value, o.value, true);
+           && compareValues(comparator, o.comparator, true) && compareValues(modifier, o.modifier, true) && compareValues(value, o.value, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(resourceType, filterParameter
-          , modifier, value);
+          , comparator, modifier, value);
       }
 
   public String fhirType() {
     return "Subscription.filterBy";
+
+  }
+
+  }
+
+    @Block()
+    public static class SubscriptionParameterComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Parameter name for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the name would be Authorization.
+         */
+        @Child(name = "name", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Name (key) of the parameter", formalDefinition="Parameter name for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the name would be Authorization." )
+        protected StringType name;
+
+        /**
+         * Parameter value for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the value would be `Bearer 0193...`.
+         */
+        @Child(name = "value", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value of the parameter to use or pass through", formalDefinition="Parameter value for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the value would be `Bearer 0193...`." )
+        protected StringType value;
+
+        private static final long serialVersionUID = 395259392L;
+
+    /**
+     * Constructor
+     */
+      public SubscriptionParameterComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public SubscriptionParameterComponent(String name, String value) {
+        super();
+        this.setName(name);
+        this.setValue(value);
+      }
+
+        /**
+         * @return {@link #name} (Parameter name for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the name would be Authorization.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public StringType getNameElement() { 
+          if (this.name == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubscriptionParameterComponent.name");
+            else if (Configuration.doAutoCreate())
+              this.name = new StringType(); // bb
+          return this.name;
+        }
+
+        public boolean hasNameElement() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        public boolean hasName() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        /**
+         * @param value {@link #name} (Parameter name for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the name would be Authorization.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public SubscriptionParameterComponent setNameElement(StringType value) { 
+          this.name = value;
+          return this;
+        }
+
+        /**
+         * @return Parameter name for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the name would be Authorization.
+         */
+        public String getName() { 
+          return this.name == null ? null : this.name.getValue();
+        }
+
+        /**
+         * @param value Parameter name for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the name would be Authorization.
+         */
+        public SubscriptionParameterComponent setName(String value) { 
+            if (this.name == null)
+              this.name = new StringType();
+            this.name.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (Parameter value for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the value would be `Bearer 0193...`.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+         */
+        public StringType getValueElement() { 
+          if (this.value == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubscriptionParameterComponent.value");
+            else if (Configuration.doAutoCreate())
+              this.value = new StringType(); // bb
+          return this.value;
+        }
+
+        public boolean hasValueElement() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (Parameter value for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the value would be `Bearer 0193...`.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+         */
+        public SubscriptionParameterComponent setValueElement(StringType value) { 
+          this.value = value;
+          return this;
+        }
+
+        /**
+         * @return Parameter value for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the value would be `Bearer 0193...`.
+         */
+        public String getValue() { 
+          return this.value == null ? null : this.value.getValue();
+        }
+
+        /**
+         * @param value Parameter value for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the value would be `Bearer 0193...`.
+         */
+        public SubscriptionParameterComponent setValue(String value) { 
+            if (this.value == null)
+              this.value = new StringType();
+            this.value.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("name", "string", "Parameter name for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the name would be Authorization.", 0, 1, name));
+          children.add(new Property("value", "string", "Parameter value for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the value would be `Bearer 0193...`.", 0, 1, value));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3373707: /*name*/  return new Property("name", "string", "Parameter name for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the name would be Authorization.", 0, 1, name);
+          case 111972721: /*value*/  return new Property("value", "string", "Parameter value for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the value would be `Bearer 0193...`.", 0, 1, value);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // StringType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3373707: // name
+          this.name = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 111972721: // value
+          this.value = TypeConvertor.castToString(value); // StringType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("value")) {
+          this.value = TypeConvertor.castToString(value); // StringType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3373707:  return getNameElement();
+        case 111972721:  return getValueElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3373707: /*name*/ return new String[] {"string"};
+        case 111972721: /*value*/ return new String[] {"string"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.parameter.name");
+        }
+        else if (name.equals("value")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.parameter.value");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public SubscriptionParameterComponent copy() {
+        SubscriptionParameterComponent dst = new SubscriptionParameterComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubscriptionParameterComponent dst) {
+        super.copyValues(dst);
+        dst.name = name == null ? null : name.copy();
+        dst.value = value == null ? null : value.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof SubscriptionParameterComponent))
+          return false;
+        SubscriptionParameterComponent o = (SubscriptionParameterComponent) other_;
+        return compareDeep(name, o.name, true) && compareDeep(value, o.value, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof SubscriptionParameterComponent))
+          return false;
+        SubscriptionParameterComponent o = (SubscriptionParameterComponent) other_;
+        return compareValues(name, o.name, true) && compareValues(value, o.value, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, value);
+      }
+
+  public String fhirType() {
+    return "Subscription.parameter";
 
   }
 
@@ -620,10 +945,10 @@ public class Subscription extends DomainResource {
     protected StringType reason;
 
     /**
-     * The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions are met; otherwise it returns false.   (i.e., logical AND).
+     * The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions applicable to that resource are met; otherwise it returns false (i.e., logical AND).
      */
     @Child(name = "filterBy", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Criteria for narrowing the subscription topic stream", formalDefinition="The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions are met; otherwise it returns false.   (i.e., logical AND)." )
+    @Description(shortDefinition="Criteria for narrowing the subscription topic stream", formalDefinition="The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions applicable to that resource are met; otherwise it returns false (i.e., logical AND)." )
     protected List<SubscriptionFilterByComponent> filterBy;
 
     /**
@@ -635,24 +960,24 @@ public class Subscription extends DomainResource {
     protected Coding channelType;
 
     /**
-     * The url that describes the actual end-point to send messages to.
+     * The url that describes the actual end-point to send notifications to.
      */
     @Child(name = "endpoint", type = {UrlType.class}, order=10, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Where the channel points to", formalDefinition="The url that describes the actual end-point to send messages to." )
+    @Description(shortDefinition="Where the channel points to", formalDefinition="The url that describes the actual end-point to send notifications to." )
     protected UrlType endpoint;
 
     /**
-     * Additional headers / information to send as part of the notification.
+     * Channel-dependent information to send as part of the notification (e.g., HTTP Headers).
      */
-    @Child(name = "header", type = {StringType.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Usage depends on the channel type", formalDefinition="Additional headers / information to send as part of the notification." )
-    protected List<StringType> header;
+    @Child(name = "parameter", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Channel type", formalDefinition="Channel-dependent information to send as part of the notification (e.g., HTTP Headers)." )
+    protected List<SubscriptionParameterComponent> parameter;
 
     /**
-     * If present,  a 'hearbeat" notification (keepalive) is sent via this channel with an the interval period equal to this elements integer value in seconds.    If not present, a heartbeat notification is not sent.
+     * If present, a 'heartbeat' notification (keep-alive) is sent via this channel with an interval period equal to this elements integer value in seconds.  If not present, a heartbeat notification is not sent.
      */
     @Child(name = "heartbeatPeriod", type = {UnsignedIntType.class}, order=12, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Interval in seconds to send 'heartbeat' notification", formalDefinition="If present,  a 'hearbeat\" notification (keepalive) is sent via this channel with an the interval period equal to this elements integer value in seconds.    If not present, a heartbeat notification is not sent." )
+    @Description(shortDefinition="Interval in seconds to send 'heartbeat' notification", formalDefinition="If present, a 'heartbeat' notification (keep-alive) is sent via this channel with an interval period equal to this elements integer value in seconds.  If not present, a heartbeat notification is not sent." )
     protected UnsignedIntType heartbeatPeriod;
 
     /**
@@ -663,10 +988,14 @@ public class Subscription extends DomainResource {
     protected UnsignedIntType timeout;
 
     /**
-     * The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types "text/plain" and "text/html" may also be used for Email subscriptions.
+     * The MIME type to send the payload in - e.g., `application/fhir+xml` or `application/fhir+json`. Note that:
+
+* clients may request notifications in a specific FHIR version by using the [FHIR Version Parameter](http.html#version-parameter) - e.g., `application/fhir+json; fhirVersion=4.0`.
+
+* additional MIME types can be allowed by channels - e.g., `text/plain` and `text/html` are defined by the Email channel.
      */
     @Child(name = "contentType", type = {CodeType.class}, order=14, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="MIME type to send, or omit for no payload", formalDefinition="The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types \"text/plain\" and \"text/html\" may also be used for Email subscriptions." )
+    @Description(shortDefinition="MIME type to send, or omit for no payload", formalDefinition="The MIME type to send the payload in - e.g., `application/fhir+xml` or `application/fhir+json`. Note that:\n\n* clients may request notifications in a specific FHIR version by using the [FHIR Version Parameter](http.html#version-parameter) - e.g., `application/fhir+json; fhirVersion=4.0`.\n\n* additional MIME types can be allowed by channels - e.g., `text/plain` and `text/html` are defined by the Email channel." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/mimetypes")
     protected CodeType contentType;
 
@@ -679,13 +1008,13 @@ public class Subscription extends DomainResource {
     protected Enumeration<SubscriptionPayloadContent> content;
 
     /**
-     * If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.
+     * If present, the maximum number of events that will be included in a notification bundle. Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.
      */
     @Child(name = "maxCount", type = {PositiveIntType.class}, order=16, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Maximum number of triggering resources included in notification bundles", formalDefinition="If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included." )
+    @Description(shortDefinition="Maximum number of events that can be combined in a single notification", formalDefinition="If present, the maximum number of events that will be included in a notification bundle. Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included." )
     protected PositiveIntType maxCount;
 
-    private static final long serialVersionUID = 715551030L;
+    private static final long serialVersionUID = 1396960420L;
 
   /**
    * Constructor
@@ -1072,7 +1401,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return {@link #filterBy} (The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions are met; otherwise it returns false.   (i.e., logical AND).)
+     * @return {@link #filterBy} (The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions applicable to that resource are met; otherwise it returns false (i.e., logical AND).)
      */
     public List<SubscriptionFilterByComponent> getFilterBy() { 
       if (this.filterBy == null)
@@ -1149,7 +1478,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return {@link #endpoint} (The url that describes the actual end-point to send messages to.). This is the underlying object with id, value and extensions. The accessor "getEndpoint" gives direct access to the value
+     * @return {@link #endpoint} (The url that describes the actual end-point to send notifications to.). This is the underlying object with id, value and extensions. The accessor "getEndpoint" gives direct access to the value
      */
     public UrlType getEndpointElement() { 
       if (this.endpoint == null)
@@ -1169,7 +1498,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @param value {@link #endpoint} (The url that describes the actual end-point to send messages to.). This is the underlying object with id, value and extensions. The accessor "getEndpoint" gives direct access to the value
+     * @param value {@link #endpoint} (The url that describes the actual end-point to send notifications to.). This is the underlying object with id, value and extensions. The accessor "getEndpoint" gives direct access to the value
      */
     public Subscription setEndpointElement(UrlType value) { 
       this.endpoint = value;
@@ -1177,14 +1506,14 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return The url that describes the actual end-point to send messages to.
+     * @return The url that describes the actual end-point to send notifications to.
      */
     public String getEndpoint() { 
       return this.endpoint == null ? null : this.endpoint.getValue();
     }
 
     /**
-     * @param value The url that describes the actual end-point to send messages to.
+     * @param value The url that describes the actual end-point to send notifications to.
      */
     public Subscription setEndpoint(String value) { 
       if (Utilities.noString(value))
@@ -1198,68 +1527,60 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return {@link #header} (Additional headers / information to send as part of the notification.)
+     * @return {@link #parameter} (Channel-dependent information to send as part of the notification (e.g., HTTP Headers).)
      */
-    public List<StringType> getHeader() { 
-      if (this.header == null)
-        this.header = new ArrayList<StringType>();
-      return this.header;
+    public List<SubscriptionParameterComponent> getParameter() { 
+      if (this.parameter == null)
+        this.parameter = new ArrayList<SubscriptionParameterComponent>();
+      return this.parameter;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Subscription setHeader(List<StringType> theHeader) { 
-      this.header = theHeader;
+    public Subscription setParameter(List<SubscriptionParameterComponent> theParameter) { 
+      this.parameter = theParameter;
       return this;
     }
 
-    public boolean hasHeader() { 
-      if (this.header == null)
+    public boolean hasParameter() { 
+      if (this.parameter == null)
         return false;
-      for (StringType item : this.header)
+      for (SubscriptionParameterComponent item : this.parameter)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    /**
-     * @return {@link #header} (Additional headers / information to send as part of the notification.)
-     */
-    public StringType addHeaderElement() {//2 
-      StringType t = new StringType();
-      if (this.header == null)
-        this.header = new ArrayList<StringType>();
-      this.header.add(t);
+    public SubscriptionParameterComponent addParameter() { //3
+      SubscriptionParameterComponent t = new SubscriptionParameterComponent();
+      if (this.parameter == null)
+        this.parameter = new ArrayList<SubscriptionParameterComponent>();
+      this.parameter.add(t);
       return t;
     }
 
-    /**
-     * @param value {@link #header} (Additional headers / information to send as part of the notification.)
-     */
-    public Subscription addHeader(String value) { //1
-      StringType t = new StringType();
-      t.setValue(value);
-      if (this.header == null)
-        this.header = new ArrayList<StringType>();
-      this.header.add(t);
+    public Subscription addParameter(SubscriptionParameterComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.parameter == null)
+        this.parameter = new ArrayList<SubscriptionParameterComponent>();
+      this.parameter.add(t);
       return this;
     }
 
     /**
-     * @param value {@link #header} (Additional headers / information to send as part of the notification.)
+     * @return The first repetition of repeating field {@link #parameter}, creating it if it does not already exist {3}
      */
-    public boolean hasHeader(String value) { 
-      if (this.header == null)
-        return false;
-      for (StringType v : this.header)
-        if (v.getValue().equals(value)) // string
-          return true;
-      return false;
+    public SubscriptionParameterComponent getParameterFirstRep() { 
+      if (getParameter().isEmpty()) {
+        addParameter();
+      }
+      return getParameter().get(0);
     }
 
     /**
-     * @return {@link #heartbeatPeriod} (If present,  a 'hearbeat" notification (keepalive) is sent via this channel with an the interval period equal to this elements integer value in seconds.    If not present, a heartbeat notification is not sent.). This is the underlying object with id, value and extensions. The accessor "getHeartbeatPeriod" gives direct access to the value
+     * @return {@link #heartbeatPeriod} (If present, a 'heartbeat' notification (keep-alive) is sent via this channel with an interval period equal to this elements integer value in seconds.  If not present, a heartbeat notification is not sent.). This is the underlying object with id, value and extensions. The accessor "getHeartbeatPeriod" gives direct access to the value
      */
     public UnsignedIntType getHeartbeatPeriodElement() { 
       if (this.heartbeatPeriod == null)
@@ -1279,7 +1600,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @param value {@link #heartbeatPeriod} (If present,  a 'hearbeat" notification (keepalive) is sent via this channel with an the interval period equal to this elements integer value in seconds.    If not present, a heartbeat notification is not sent.). This is the underlying object with id, value and extensions. The accessor "getHeartbeatPeriod" gives direct access to the value
+     * @param value {@link #heartbeatPeriod} (If present, a 'heartbeat' notification (keep-alive) is sent via this channel with an interval period equal to this elements integer value in seconds.  If not present, a heartbeat notification is not sent.). This is the underlying object with id, value and extensions. The accessor "getHeartbeatPeriod" gives direct access to the value
      */
     public Subscription setHeartbeatPeriodElement(UnsignedIntType value) { 
       this.heartbeatPeriod = value;
@@ -1287,14 +1608,14 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return If present,  a 'hearbeat" notification (keepalive) is sent via this channel with an the interval period equal to this elements integer value in seconds.    If not present, a heartbeat notification is not sent.
+     * @return If present, a 'heartbeat' notification (keep-alive) is sent via this channel with an interval period equal to this elements integer value in seconds.  If not present, a heartbeat notification is not sent.
      */
     public int getHeartbeatPeriod() { 
       return this.heartbeatPeriod == null || this.heartbeatPeriod.isEmpty() ? 0 : this.heartbeatPeriod.getValue();
     }
 
     /**
-     * @param value If present,  a 'hearbeat" notification (keepalive) is sent via this channel with an the interval period equal to this elements integer value in seconds.    If not present, a heartbeat notification is not sent.
+     * @param value If present, a 'heartbeat' notification (keep-alive) is sent via this channel with an interval period equal to this elements integer value in seconds.  If not present, a heartbeat notification is not sent.
      */
     public Subscription setHeartbeatPeriod(int value) { 
         if (this.heartbeatPeriod == null)
@@ -1349,7 +1670,11 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return {@link #contentType} (The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types "text/plain" and "text/html" may also be used for Email subscriptions.). This is the underlying object with id, value and extensions. The accessor "getContentType" gives direct access to the value
+     * @return {@link #contentType} (The MIME type to send the payload in - e.g., `application/fhir+xml` or `application/fhir+json`. Note that:
+
+* clients may request notifications in a specific FHIR version by using the [FHIR Version Parameter](http.html#version-parameter) - e.g., `application/fhir+json; fhirVersion=4.0`.
+
+* additional MIME types can be allowed by channels - e.g., `text/plain` and `text/html` are defined by the Email channel.). This is the underlying object with id, value and extensions. The accessor "getContentType" gives direct access to the value
      */
     public CodeType getContentTypeElement() { 
       if (this.contentType == null)
@@ -1369,7 +1694,11 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @param value {@link #contentType} (The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types "text/plain" and "text/html" may also be used for Email subscriptions.). This is the underlying object with id, value and extensions. The accessor "getContentType" gives direct access to the value
+     * @param value {@link #contentType} (The MIME type to send the payload in - e.g., `application/fhir+xml` or `application/fhir+json`. Note that:
+
+* clients may request notifications in a specific FHIR version by using the [FHIR Version Parameter](http.html#version-parameter) - e.g., `application/fhir+json; fhirVersion=4.0`.
+
+* additional MIME types can be allowed by channels - e.g., `text/plain` and `text/html` are defined by the Email channel.). This is the underlying object with id, value and extensions. The accessor "getContentType" gives direct access to the value
      */
     public Subscription setContentTypeElement(CodeType value) { 
       this.contentType = value;
@@ -1377,14 +1706,22 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types "text/plain" and "text/html" may also be used for Email subscriptions.
+     * @return The MIME type to send the payload in - e.g., `application/fhir+xml` or `application/fhir+json`. Note that:
+
+* clients may request notifications in a specific FHIR version by using the [FHIR Version Parameter](http.html#version-parameter) - e.g., `application/fhir+json; fhirVersion=4.0`.
+
+* additional MIME types can be allowed by channels - e.g., `text/plain` and `text/html` are defined by the Email channel.
      */
     public String getContentType() { 
       return this.contentType == null ? null : this.contentType.getValue();
     }
 
     /**
-     * @param value The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types "text/plain" and "text/html" may also be used for Email subscriptions.
+     * @param value The MIME type to send the payload in - e.g., `application/fhir+xml` or `application/fhir+json`. Note that:
+
+* clients may request notifications in a specific FHIR version by using the [FHIR Version Parameter](http.html#version-parameter) - e.g., `application/fhir+json; fhirVersion=4.0`.
+
+* additional MIME types can be allowed by channels - e.g., `text/plain` and `text/html` are defined by the Email channel.
      */
     public Subscription setContentType(String value) { 
       if (Utilities.noString(value))
@@ -1447,7 +1784,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return {@link #maxCount} (If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.). This is the underlying object with id, value and extensions. The accessor "getMaxCount" gives direct access to the value
+     * @return {@link #maxCount} (If present, the maximum number of events that will be included in a notification bundle. Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.). This is the underlying object with id, value and extensions. The accessor "getMaxCount" gives direct access to the value
      */
     public PositiveIntType getMaxCountElement() { 
       if (this.maxCount == null)
@@ -1467,7 +1804,7 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @param value {@link #maxCount} (If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.). This is the underlying object with id, value and extensions. The accessor "getMaxCount" gives direct access to the value
+     * @param value {@link #maxCount} (If present, the maximum number of events that will be included in a notification bundle. Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.). This is the underlying object with id, value and extensions. The accessor "getMaxCount" gives direct access to the value
      */
     public Subscription setMaxCountElement(PositiveIntType value) { 
       this.maxCount = value;
@@ -1475,14 +1812,14 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.
+     * @return If present, the maximum number of events that will be included in a notification bundle. Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.
      */
     public int getMaxCount() { 
       return this.maxCount == null || this.maxCount.isEmpty() ? 0 : this.maxCount.getValue();
     }
 
     /**
-     * @param value If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.
+     * @param value If present, the maximum number of events that will be included in a notification bundle. Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.
      */
     public Subscription setMaxCount(int value) { 
         if (this.maxCount == null)
@@ -1501,15 +1838,15 @@ public class Subscription extends DomainResource {
         children.add(new Property("end", "instant", "The time for the server to turn the subscription off.", 0, 1, end));
         children.add(new Property("managingEntity", "Reference(CareTeam|HealthcareService|Organization|RelatedPerson|Patient|Practitioner|PractitionerRole)", "Entity with authorization to make subsequent revisions to the Subscription and also determines what data the subscription is authorized to disclose.", 0, 1, managingEntity));
         children.add(new Property("reason", "string", "A description of why this subscription is defined.", 0, 1, reason));
-        children.add(new Property("filterBy", "", "The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions are met; otherwise it returns false.   (i.e., logical AND).", 0, java.lang.Integer.MAX_VALUE, filterBy));
+        children.add(new Property("filterBy", "", "The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions applicable to that resource are met; otherwise it returns false (i.e., logical AND).", 0, java.lang.Integer.MAX_VALUE, filterBy));
         children.add(new Property("channelType", "Coding", "The type of channel to send notifications on.", 0, 1, channelType));
-        children.add(new Property("endpoint", "url", "The url that describes the actual end-point to send messages to.", 0, 1, endpoint));
-        children.add(new Property("header", "string", "Additional headers / information to send as part of the notification.", 0, java.lang.Integer.MAX_VALUE, header));
-        children.add(new Property("heartbeatPeriod", "unsignedInt", "If present,  a 'hearbeat\" notification (keepalive) is sent via this channel with an the interval period equal to this elements integer value in seconds.    If not present, a heartbeat notification is not sent.", 0, 1, heartbeatPeriod));
+        children.add(new Property("endpoint", "url", "The url that describes the actual end-point to send notifications to.", 0, 1, endpoint));
+        children.add(new Property("parameter", "", "Channel-dependent information to send as part of the notification (e.g., HTTP Headers).", 0, java.lang.Integer.MAX_VALUE, parameter));
+        children.add(new Property("heartbeatPeriod", "unsignedInt", "If present, a 'heartbeat' notification (keep-alive) is sent via this channel with an interval period equal to this elements integer value in seconds.  If not present, a heartbeat notification is not sent.", 0, 1, heartbeatPeriod));
         children.add(new Property("timeout", "unsignedInt", "If present, the maximum amount of time a server will allow before failing a notification attempt.", 0, 1, timeout));
-        children.add(new Property("contentType", "code", "The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types \"text/plain\" and \"text/html\" may also be used for Email subscriptions.", 0, 1, contentType));
+        children.add(new Property("contentType", "code", "The MIME type to send the payload in - e.g., `application/fhir+xml` or `application/fhir+json`. Note that:\n\n* clients may request notifications in a specific FHIR version by using the [FHIR Version Parameter](http.html#version-parameter) - e.g., `application/fhir+json; fhirVersion=4.0`.\n\n* additional MIME types can be allowed by channels - e.g., `text/plain` and `text/html` are defined by the Email channel.", 0, 1, contentType));
         children.add(new Property("content", "code", "How much of the resource content to deliver in the notification payload. The choices are an empty payload, only the resource id, or the full resource content.", 0, 1, content));
-        children.add(new Property("maxCount", "positiveInt", "If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.", 0, 1, maxCount));
+        children.add(new Property("maxCount", "positiveInt", "If present, the maximum number of events that will be included in a notification bundle. Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.", 0, 1, maxCount));
       }
 
       @Override
@@ -1523,15 +1860,15 @@ public class Subscription extends DomainResource {
         case 100571: /*end*/  return new Property("end", "instant", "The time for the server to turn the subscription off.", 0, 1, end);
         case -988474523: /*managingEntity*/  return new Property("managingEntity", "Reference(CareTeam|HealthcareService|Organization|RelatedPerson|Patient|Practitioner|PractitionerRole)", "Entity with authorization to make subsequent revisions to the Subscription and also determines what data the subscription is authorized to disclose.", 0, 1, managingEntity);
         case -934964668: /*reason*/  return new Property("reason", "string", "A description of why this subscription is defined.", 0, 1, reason);
-        case -721168913: /*filterBy*/  return new Property("filterBy", "", "The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions are met; otherwise it returns false.   (i.e., logical AND).", 0, java.lang.Integer.MAX_VALUE, filterBy);
+        case -721168913: /*filterBy*/  return new Property("filterBy", "", "The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions applicable to that resource are met; otherwise it returns false (i.e., logical AND).", 0, java.lang.Integer.MAX_VALUE, filterBy);
         case 274155229: /*channelType*/  return new Property("channelType", "Coding", "The type of channel to send notifications on.", 0, 1, channelType);
-        case 1741102485: /*endpoint*/  return new Property("endpoint", "url", "The url that describes the actual end-point to send messages to.", 0, 1, endpoint);
-        case -1221270899: /*header*/  return new Property("header", "string", "Additional headers / information to send as part of the notification.", 0, java.lang.Integer.MAX_VALUE, header);
-        case -938465827: /*heartbeatPeriod*/  return new Property("heartbeatPeriod", "unsignedInt", "If present,  a 'hearbeat\" notification (keepalive) is sent via this channel with an the interval period equal to this elements integer value in seconds.    If not present, a heartbeat notification is not sent.", 0, 1, heartbeatPeriod);
+        case 1741102485: /*endpoint*/  return new Property("endpoint", "url", "The url that describes the actual end-point to send notifications to.", 0, 1, endpoint);
+        case 1954460585: /*parameter*/  return new Property("parameter", "", "Channel-dependent information to send as part of the notification (e.g., HTTP Headers).", 0, java.lang.Integer.MAX_VALUE, parameter);
+        case -938465827: /*heartbeatPeriod*/  return new Property("heartbeatPeriod", "unsignedInt", "If present, a 'heartbeat' notification (keep-alive) is sent via this channel with an interval period equal to this elements integer value in seconds.  If not present, a heartbeat notification is not sent.", 0, 1, heartbeatPeriod);
         case -1313911455: /*timeout*/  return new Property("timeout", "unsignedInt", "If present, the maximum amount of time a server will allow before failing a notification attempt.", 0, 1, timeout);
-        case -389131437: /*contentType*/  return new Property("contentType", "code", "The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types \"text/plain\" and \"text/html\" may also be used for Email subscriptions.", 0, 1, contentType);
+        case -389131437: /*contentType*/  return new Property("contentType", "code", "The MIME type to send the payload in - e.g., `application/fhir+xml` or `application/fhir+json`. Note that:\n\n* clients may request notifications in a specific FHIR version by using the [FHIR Version Parameter](http.html#version-parameter) - e.g., `application/fhir+json; fhirVersion=4.0`.\n\n* additional MIME types can be allowed by channels - e.g., `text/plain` and `text/html` are defined by the Email channel.", 0, 1, contentType);
         case 951530617: /*content*/  return new Property("content", "code", "How much of the resource content to deliver in the notification payload. The choices are an empty payload, only the resource id, or the full resource content.", 0, 1, content);
-        case 382106123: /*maxCount*/  return new Property("maxCount", "positiveInt", "If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.", 0, 1, maxCount);
+        case 382106123: /*maxCount*/  return new Property("maxCount", "positiveInt", "If present, the maximum number of events that will be included in a notification bundle. Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.", 0, 1, maxCount);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -1551,7 +1888,7 @@ public class Subscription extends DomainResource {
         case -721168913: /*filterBy*/ return this.filterBy == null ? new Base[0] : this.filterBy.toArray(new Base[this.filterBy.size()]); // SubscriptionFilterByComponent
         case 274155229: /*channelType*/ return this.channelType == null ? new Base[0] : new Base[] {this.channelType}; // Coding
         case 1741102485: /*endpoint*/ return this.endpoint == null ? new Base[0] : new Base[] {this.endpoint}; // UrlType
-        case -1221270899: /*header*/ return this.header == null ? new Base[0] : this.header.toArray(new Base[this.header.size()]); // StringType
+        case 1954460585: /*parameter*/ return this.parameter == null ? new Base[0] : this.parameter.toArray(new Base[this.parameter.size()]); // SubscriptionParameterComponent
         case -938465827: /*heartbeatPeriod*/ return this.heartbeatPeriod == null ? new Base[0] : new Base[] {this.heartbeatPeriod}; // UnsignedIntType
         case -1313911455: /*timeout*/ return this.timeout == null ? new Base[0] : new Base[] {this.timeout}; // UnsignedIntType
         case -389131437: /*contentType*/ return this.contentType == null ? new Base[0] : new Base[] {this.contentType}; // CodeType
@@ -1599,8 +1936,8 @@ public class Subscription extends DomainResource {
         case 1741102485: // endpoint
           this.endpoint = TypeConvertor.castToUrl(value); // UrlType
           return value;
-        case -1221270899: // header
-          this.getHeader().add(TypeConvertor.castToString(value)); // StringType
+        case 1954460585: // parameter
+          this.getParameter().add((SubscriptionParameterComponent) value); // SubscriptionParameterComponent
           return value;
         case -938465827: // heartbeatPeriod
           this.heartbeatPeriod = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
@@ -1648,8 +1985,8 @@ public class Subscription extends DomainResource {
           this.channelType = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("endpoint")) {
           this.endpoint = TypeConvertor.castToUrl(value); // UrlType
-        } else if (name.equals("header")) {
-          this.getHeader().add(TypeConvertor.castToString(value));
+        } else if (name.equals("parameter")) {
+          this.getParameter().add((SubscriptionParameterComponent) value);
         } else if (name.equals("heartbeatPeriod")) {
           this.heartbeatPeriod = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("timeout")) {
@@ -1680,7 +2017,7 @@ public class Subscription extends DomainResource {
         case -721168913:  return addFilterBy(); 
         case 274155229:  return getChannelType();
         case 1741102485:  return getEndpointElement();
-        case -1221270899:  return addHeaderElement();
+        case 1954460585:  return addParameter(); 
         case -938465827:  return getHeartbeatPeriodElement();
         case -1313911455:  return getTimeoutElement();
         case -389131437:  return getContentTypeElement();
@@ -1705,7 +2042,7 @@ public class Subscription extends DomainResource {
         case -721168913: /*filterBy*/ return new String[] {};
         case 274155229: /*channelType*/ return new String[] {"Coding"};
         case 1741102485: /*endpoint*/ return new String[] {"url"};
-        case -1221270899: /*header*/ return new String[] {"string"};
+        case 1954460585: /*parameter*/ return new String[] {};
         case -938465827: /*heartbeatPeriod*/ return new String[] {"unsignedInt"};
         case -1313911455: /*timeout*/ return new String[] {"unsignedInt"};
         case -389131437: /*contentType*/ return new String[] {"code"};
@@ -1753,8 +2090,8 @@ public class Subscription extends DomainResource {
         else if (name.equals("endpoint")) {
           throw new FHIRException("Cannot call addChild on a primitive type Subscription.endpoint");
         }
-        else if (name.equals("header")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.header");
+        else if (name.equals("parameter")) {
+          return addParameter();
         }
         else if (name.equals("heartbeatPeriod")) {
           throw new FHIRException("Cannot call addChild on a primitive type Subscription.heartbeatPeriod");
@@ -1811,10 +2148,10 @@ public class Subscription extends DomainResource {
         };
         dst.channelType = channelType == null ? null : channelType.copy();
         dst.endpoint = endpoint == null ? null : endpoint.copy();
-        if (header != null) {
-          dst.header = new ArrayList<StringType>();
-          for (StringType i : header)
-            dst.header.add(i.copy());
+        if (parameter != null) {
+          dst.parameter = new ArrayList<SubscriptionParameterComponent>();
+          for (SubscriptionParameterComponent i : parameter)
+            dst.parameter.add(i.copy());
         };
         dst.heartbeatPeriod = heartbeatPeriod == null ? null : heartbeatPeriod.copy();
         dst.timeout = timeout == null ? null : timeout.copy();
@@ -1837,7 +2174,7 @@ public class Subscription extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(name, o.name, true) && compareDeep(status, o.status, true)
            && compareDeep(topic, o.topic, true) && compareDeep(contact, o.contact, true) && compareDeep(end, o.end, true)
            && compareDeep(managingEntity, o.managingEntity, true) && compareDeep(reason, o.reason, true) && compareDeep(filterBy, o.filterBy, true)
-           && compareDeep(channelType, o.channelType, true) && compareDeep(endpoint, o.endpoint, true) && compareDeep(header, o.header, true)
+           && compareDeep(channelType, o.channelType, true) && compareDeep(endpoint, o.endpoint, true) && compareDeep(parameter, o.parameter, true)
            && compareDeep(heartbeatPeriod, o.heartbeatPeriod, true) && compareDeep(timeout, o.timeout, true)
            && compareDeep(contentType, o.contentType, true) && compareDeep(content, o.content, true) && compareDeep(maxCount, o.maxCount, true)
           ;
@@ -1852,15 +2189,15 @@ public class Subscription extends DomainResource {
         Subscription o = (Subscription) other_;
         return compareValues(name, o.name, true) && compareValues(status, o.status, true) && compareValues(topic, o.topic, true)
            && compareValues(end, o.end, true) && compareValues(reason, o.reason, true) && compareValues(endpoint, o.endpoint, true)
-           && compareValues(header, o.header, true) && compareValues(heartbeatPeriod, o.heartbeatPeriod, true)
-           && compareValues(timeout, o.timeout, true) && compareValues(contentType, o.contentType, true) && compareValues(content, o.content, true)
-           && compareValues(maxCount, o.maxCount, true);
+           && compareValues(heartbeatPeriod, o.heartbeatPeriod, true) && compareValues(timeout, o.timeout, true)
+           && compareValues(contentType, o.contentType, true) && compareValues(content, o.content, true) && compareValues(maxCount, o.maxCount, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, name, status
           , topic, contact, end, managingEntity, reason, filterBy, channelType, endpoint
-          , header, heartbeatPeriod, timeout, contentType, content, maxCount);
+          , parameter, heartbeatPeriod, timeout, contentType, content, maxCount);
       }
 
   @Override
@@ -1889,6 +2226,46 @@ public class Subscription extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTACT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTACT);
 
  /**
+   * Search parameter: <b>content-level</b>
+   * <p>
+   * Description: <b>Content level included in notifications</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Subscription.content</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="content-level", path="Subscription.content", description="Content level included in notifications", type="token" )
+  public static final String SP_CONTENT_LEVEL = "content-level";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>content-level</b>
+   * <p>
+   * Description: <b>Content level included in notifications</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Subscription.content</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTENT_LEVEL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTENT_LEVEL);
+
+ /**
+   * Search parameter: <b>filter-value</b>
+   * <p>
+   * Description: <b>Filter value used to narrow notifications</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Subscription.filterBy.value</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="filter-value", path="Subscription.filterBy.value", description="Filter value used to narrow notifications", type="string" )
+  public static final String SP_FILTER_VALUE = "filter-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>filter-value</b>
+   * <p>
+   * Description: <b>Filter value used to narrow notifications</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Subscription.filterBy.value</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam FILTER_VALUE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_FILTER_VALUE);
+
+ /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>A subscription identifier</b><br>
@@ -1909,21 +2286,67 @@ public class Subscription extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>payload</b>
+   * Search parameter: <b>name</b>
    * <p>
-   * Description: <b>The mime-type of the notification payload</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
+   * Description: <b>A human-readable name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Subscription.name</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="payload", path="", description="The mime-type of the notification payload", type="token" )
+  @SearchParamDefinition(name="name", path="Subscription.name", description="A human-readable name", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>A human-readable name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Subscription.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>owner</b>
+   * <p>
+   * Description: <b>The managing entity</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Subscription.managingEntity</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="owner", path="Subscription.managingEntity", description="The managing entity", type="reference", target={CareTeam.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_OWNER = "owner";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>owner</b>
+   * <p>
+   * Description: <b>The managing entity</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Subscription.managingEntity</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam OWNER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_OWNER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Subscription:owner</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_OWNER = new ca.uhn.fhir.model.api.Include("Subscription:owner").toLocked();
+
+ /**
+   * Search parameter: <b>payload</b>
+   * <p>
+   * Description: <b>The mime-type of notifications</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Subscription.contentType</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="payload", path="Subscription.contentType", description="The mime-type of notifications", type="token" )
   public static final String SP_PAYLOAD = "payload";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>payload</b>
    * <p>
-   * Description: <b>The mime-type of the notification payload</b><br>
+   * Description: <b>The mime-type of notifications</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
+   * Path: <b>Subscription.contentType</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PAYLOAD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PAYLOAD);
@@ -1949,21 +2372,41 @@ public class Subscription extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
  /**
+   * Search parameter: <b>topic</b>
+   * <p>
+   * Description: <b>The canonical topic url that triggers notifications</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>Subscription.topic</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="topic", path="Subscription.topic", description="The canonical topic url that triggers notifications", type="uri" )
+  public static final String SP_TOPIC = "topic";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>topic</b>
+   * <p>
+   * Description: <b>The canonical topic url that triggers notifications</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>Subscription.topic</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam TOPIC = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_TOPIC);
+
+ /**
    * Search parameter: <b>type</b>
    * <p>
    * Description: <b>The type of channel for the sent notifications</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
+   * Path: <b>Subscription.channelType</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="type", path="", description="The type of channel for the sent notifications", type="token" )
+  @SearchParamDefinition(name="type", path="Subscription.channelType", description="The type of channel for the sent notifications", type="token" )
   public static final String SP_TYPE = "type";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>type</b>
    * <p>
    * Description: <b>The type of channel for the sent notifications</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
+   * Path: <b>Subscription.channelType</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
@@ -1973,20 +2416,21 @@ public class Subscription extends DomainResource {
    * <p>
    * Description: <b>The uri that will receive the notifications</b><br>
    * Type: <b>uri</b><br>
-   * Path: <b>null</b><br>
+   * Path: <b>Subscription.endpoint</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="url", path="", description="The uri that will receive the notifications", type="uri" )
+  @SearchParamDefinition(name="url", path="Subscription.endpoint", description="The uri that will receive the notifications", type="uri" )
   public static final String SP_URL = "url";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>url</b>
    * <p>
    * Description: <b>The uri that will receive the notifications</b><br>
    * Type: <b>uri</b><br>
-   * Path: <b>null</b><br>
+   * Path: <b>Subscription.endpoint</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
 
 }
+

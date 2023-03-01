@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -115,11 +115,11 @@ public class Schedule extends DomainResource {
     /**
      * Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated.
      */
-    @Child(name = "comment", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "comment", type = {MarkdownType.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Comments on availability", formalDefinition="Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated." )
-    protected StringType comment;
+    protected MarkdownType comment;
 
-    private static final long serialVersionUID = 1315529085L;
+    private static final long serialVersionUID = -370559713L;
 
   /**
    * Constructor
@@ -522,12 +522,12 @@ public class Schedule extends DomainResource {
     /**
      * @return {@link #comment} (Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated.). This is the underlying object with id, value and extensions. The accessor "getComment" gives direct access to the value
      */
-    public StringType getCommentElement() { 
+    public MarkdownType getCommentElement() { 
       if (this.comment == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Schedule.comment");
         else if (Configuration.doAutoCreate())
-          this.comment = new StringType(); // bb
+          this.comment = new MarkdownType(); // bb
       return this.comment;
     }
 
@@ -542,7 +542,7 @@ public class Schedule extends DomainResource {
     /**
      * @param value {@link #comment} (Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated.). This is the underlying object with id, value and extensions. The accessor "getComment" gives direct access to the value
      */
-    public Schedule setCommentElement(StringType value) { 
+    public Schedule setCommentElement(MarkdownType value) { 
       this.comment = value;
       return this;
     }
@@ -562,7 +562,7 @@ public class Schedule extends DomainResource {
         this.comment = null;
       else {
         if (this.comment == null)
-          this.comment = new StringType();
+          this.comment = new MarkdownType();
         this.comment.setValue(value);
       }
       return this;
@@ -578,7 +578,7 @@ public class Schedule extends DomainResource {
         children.add(new Property("name", "string", "Further description of the schedule as it would be presented to a consumer while searching.", 0, 1, name));
         children.add(new Property("actor", "Reference(Patient|Practitioner|PractitionerRole|CareTeam|RelatedPerson|Device|HealthcareService|Location)", "Slots that reference this schedule resource provide the availability details to these referenced resource(s).", 0, java.lang.Integer.MAX_VALUE, actor));
         children.add(new Property("planningHorizon", "Period", "The period of time that the slots that reference this Schedule resource cover (even if none exist). These  cover the amount of time that an organization's planning horizon; the interval for which they are currently accepting appointments. This does not define a \"template\" for planning outside these dates.", 0, 1, planningHorizon));
-        children.add(new Property("comment", "string", "Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated.", 0, 1, comment));
+        children.add(new Property("comment", "markdown", "Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated.", 0, 1, comment));
       }
 
       @Override
@@ -592,7 +592,7 @@ public class Schedule extends DomainResource {
         case 3373707: /*name*/  return new Property("name", "string", "Further description of the schedule as it would be presented to a consumer while searching.", 0, 1, name);
         case 92645877: /*actor*/  return new Property("actor", "Reference(Patient|Practitioner|PractitionerRole|CareTeam|RelatedPerson|Device|HealthcareService|Location)", "Slots that reference this schedule resource provide the availability details to these referenced resource(s).", 0, java.lang.Integer.MAX_VALUE, actor);
         case -1718507650: /*planningHorizon*/  return new Property("planningHorizon", "Period", "The period of time that the slots that reference this Schedule resource cover (even if none exist). These  cover the amount of time that an organization's planning horizon; the interval for which they are currently accepting appointments. This does not define a \"template\" for planning outside these dates.", 0, 1, planningHorizon);
-        case 950398559: /*comment*/  return new Property("comment", "string", "Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated.", 0, 1, comment);
+        case 950398559: /*comment*/  return new Property("comment", "markdown", "Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated.", 0, 1, comment);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -609,7 +609,7 @@ public class Schedule extends DomainResource {
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 92645877: /*actor*/ return this.actor == null ? new Base[0] : this.actor.toArray(new Base[this.actor.size()]); // Reference
         case -1718507650: /*planningHorizon*/ return this.planningHorizon == null ? new Base[0] : new Base[] {this.planningHorizon}; // Period
-        case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // StringType
+        case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // MarkdownType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -643,7 +643,7 @@ public class Schedule extends DomainResource {
           this.planningHorizon = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 950398559: // comment
-          this.comment = TypeConvertor.castToString(value); // StringType
+          this.comment = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -669,7 +669,7 @@ public class Schedule extends DomainResource {
         } else if (name.equals("planningHorizon")) {
           this.planningHorizon = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("comment")) {
-          this.comment = TypeConvertor.castToString(value); // StringType
+          this.comment = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -703,7 +703,7 @@ public class Schedule extends DomainResource {
         case 3373707: /*name*/ return new String[] {"string"};
         case 92645877: /*actor*/ return new String[] {"Reference"};
         case -1718507650: /*planningHorizon*/ return new String[] {"Period"};
-        case 950398559: /*comment*/ return new String[] {"string"};
+        case 950398559: /*comment*/ return new String[] {"markdown"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -959,7 +959,7 @@ public class Schedule extends DomainResource {
    * Path: <b>Schedule.serviceType.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="service-type-reference", path="Schedule.serviceType.reference", description="The type (by HealthcareService) of appointments that can be booked into associated slot(s)", type="reference" )
+  @SearchParamDefinition(name="service-type-reference", path="Schedule.serviceType.reference", description="The type (by HealthcareService) of appointments that can be booked into associated slot(s)", type="reference", target={HealthcareService.class } )
   public static final String SP_SERVICE_TYPE_REFERENCE = "service-type-reference";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>service-type-reference</b>

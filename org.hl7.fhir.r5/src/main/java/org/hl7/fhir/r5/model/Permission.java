@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -639,7 +639,7 @@ public class Permission extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/security-label-event-examples")
         protected List<CodeableConcept> limit;
 
-        private static final long serialVersionUID = 547014420L;
+        private static final long serialVersionUID = 1376717588L;
 
     /**
      * Constructor
@@ -1056,7 +1056,7 @@ public class Permission extends DomainResource {
         @Description(shortDefinition="Expression identifying the data", formalDefinition="Used when other data selection elements are insufficient." )
         protected Expression expression;
 
-        private static final long serialVersionUID = -239988835L;
+        private static final long serialVersionUID = -774403139L;
 
     /**
      * Constructor
@@ -2585,3 +2585,4 @@ public class Permission extends DomainResource {
 
 
 }
+

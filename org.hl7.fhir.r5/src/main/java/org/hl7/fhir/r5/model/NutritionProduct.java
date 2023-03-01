@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1554,10 +1554,10 @@ public class NutritionProduct extends DomainResource {
     protected List<CodeableConcept> category;
 
     /**
-     * The organisation (manufacturer, representative or legal authorisation holder) that is responsible for the device.
+     * The organisation (manufacturer, representative or legal authorization holder) that is responsible for the device.
      */
     @Child(name = "manufacturer", type = {Organization.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Manufacturer, representative or officially responsible for the product", formalDefinition="The organisation (manufacturer, representative or legal authorisation holder) that is responsible for the device." )
+    @Description(shortDefinition="Manufacturer, representative or officially responsible for the product", formalDefinition="The organisation (manufacturer, representative or legal authorization holder) that is responsible for the device." )
     protected List<Reference> manufacturer;
 
     /**
@@ -1743,7 +1743,7 @@ public class NutritionProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #manufacturer} (The organisation (manufacturer, representative or legal authorisation holder) that is responsible for the device.)
+     * @return {@link #manufacturer} (The organisation (manufacturer, representative or legal authorization holder) that is responsible for the device.)
      */
     public List<Reference> getManufacturer() { 
       if (this.manufacturer == null)
@@ -2118,7 +2118,7 @@ public class NutritionProduct extends DomainResource {
         children.add(new Property("code", "CodeableConcept", "The code assigned to the product, for example a USDA NDB number, a USDA FDC ID number, or a Langual code.", 0, 1, code));
         children.add(new Property("status", "code", "The current state of the product.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "Nutrition products can have different classifications - according to its nutritional properties, preparation methods, etc.", 0, java.lang.Integer.MAX_VALUE, category));
-        children.add(new Property("manufacturer", "Reference(Organization)", "The organisation (manufacturer, representative or legal authorisation holder) that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
+        children.add(new Property("manufacturer", "Reference(Organization)", "The organisation (manufacturer, representative or legal authorization holder) that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
         children.add(new Property("nutrient", "", "The product's nutritional information expressed by the nutrients.", 0, java.lang.Integer.MAX_VALUE, nutrient));
         children.add(new Property("ingredient", "", "Ingredients contained in this product.", 0, java.lang.Integer.MAX_VALUE, ingredient));
         children.add(new Property("knownAllergen", "CodeableReference(Substance)", "Allergens that are known or suspected to be a part of this nutrition product.", 0, java.lang.Integer.MAX_VALUE, knownAllergen));
@@ -2133,7 +2133,7 @@ public class NutritionProduct extends DomainResource {
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The code assigned to the product, for example a USDA NDB number, a USDA FDC ID number, or a Langual code.", 0, 1, code);
         case -892481550: /*status*/  return new Property("status", "code", "The current state of the product.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Nutrition products can have different classifications - according to its nutritional properties, preparation methods, etc.", 0, java.lang.Integer.MAX_VALUE, category);
-        case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "The organisation (manufacturer, representative or legal authorisation holder) that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
+        case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "The organisation (manufacturer, representative or legal authorization holder) that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
         case -1671151641: /*nutrient*/  return new Property("nutrient", "", "The product's nutritional information expressed by the nutrients.", 0, java.lang.Integer.MAX_VALUE, nutrient);
         case -206409263: /*ingredient*/  return new Property("ingredient", "", "Ingredients contained in this product.", 0, java.lang.Integer.MAX_VALUE, ingredient);
         case 1093336805: /*knownAllergen*/  return new Property("knownAllergen", "CodeableReference(Substance)", "Allergens that are known or suspected to be a part of this nutrition product.", 0, java.lang.Integer.MAX_VALUE, knownAllergen);
@@ -2438,6 +2438,46 @@ public class NutritionProduct extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
+   * Search parameter: <b>lot-number</b>
+   * <p>
+   * Description: <b>The lot number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionProduct.instance.lotNumber</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="lot-number", path="NutritionProduct.instance.lotNumber", description="The lot number", type="token" )
+  public static final String SP_LOT_NUMBER = "lot-number";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>lot-number</b>
+   * <p>
+   * Description: <b>The lot number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionProduct.instance.lotNumber</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam LOT_NUMBER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_LOT_NUMBER);
+
+ /**
+   * Search parameter: <b>serial-number</b>
+   * <p>
+   * Description: <b>The serial number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionProduct.instance.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="serial-number", path="NutritionProduct.instance.identifier", description="The serial number", type="token" )
+  public static final String SP_SERIAL_NUMBER = "serial-number";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>serial-number</b>
+   * <p>
+   * Description: <b>The serial number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionProduct.instance.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERIAL_NUMBER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERIAL_NUMBER);
+
+ /**
    * Search parameter: <b>status</b>
    * <p>
    * Description: <b>The broad product group or category of the nutrition product</b><br>
@@ -2459,3 +2499,4 @@ public class NutritionProduct extends DomainResource {
 
 
 }
+

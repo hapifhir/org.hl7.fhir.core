@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +52,150 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="ConceptMap", profile="http://hl7.org/fhir/StructureDefinition/ConceptMap")
 public class ConceptMap extends MetadataResource {
+
+    public enum ConceptMapAttributeType {
+        /**
+         * The attribute value is a code defined in the code system in context.
+         */
+        CODE, 
+        /**
+         * The attribute value is a code defined in a code system.
+         */
+        CODING, 
+        /**
+         * The attribute value is a string.
+         */
+        STRING, 
+        /**
+         * The attribute value is a boolean true | false.
+         */
+        BOOLEAN, 
+        /**
+         * The attribute is a Quantity (may represent an integer or a decimal with no units).
+         */
+        QUANTITY, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static ConceptMapAttributeType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("code".equals(codeString))
+          return CODE;
+        if ("Coding".equals(codeString))
+          return CODING;
+        if ("string".equals(codeString))
+          return STRING;
+        if ("boolean".equals(codeString))
+          return BOOLEAN;
+        if ("Quantity".equals(codeString))
+          return QUANTITY;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown ConceptMapAttributeType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CODE: return "code";
+            case CODING: return "Coding";
+            case STRING: return "string";
+            case BOOLEAN: return "boolean";
+            case QUANTITY: return "Quantity";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case CODE: return "http://hl7.org/fhir/conceptmap-attribute-type";
+            case CODING: return "http://hl7.org/fhir/conceptmap-attribute-type";
+            case STRING: return "http://hl7.org/fhir/conceptmap-attribute-type";
+            case BOOLEAN: return "http://hl7.org/fhir/conceptmap-attribute-type";
+            case QUANTITY: return "http://hl7.org/fhir/conceptmap-attribute-type";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CODE: return "The attribute value is a code defined in the code system in context.";
+            case CODING: return "The attribute value is a code defined in a code system.";
+            case STRING: return "The attribute value is a string.";
+            case BOOLEAN: return "The attribute value is a boolean true | false.";
+            case QUANTITY: return "The attribute is a Quantity (may represent an integer or a decimal with no units).";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CODE: return "code";
+            case CODING: return "Coding";
+            case STRING: return "string";
+            case BOOLEAN: return "boolean";
+            case QUANTITY: return "Quantity";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class ConceptMapAttributeTypeEnumFactory implements EnumFactory<ConceptMapAttributeType> {
+    public ConceptMapAttributeType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("code".equals(codeString))
+          return ConceptMapAttributeType.CODE;
+        if ("Coding".equals(codeString))
+          return ConceptMapAttributeType.CODING;
+        if ("string".equals(codeString))
+          return ConceptMapAttributeType.STRING;
+        if ("boolean".equals(codeString))
+          return ConceptMapAttributeType.BOOLEAN;
+        if ("Quantity".equals(codeString))
+          return ConceptMapAttributeType.QUANTITY;
+        throw new IllegalArgumentException("Unknown ConceptMapAttributeType code '"+codeString+"'");
+        }
+        public Enumeration<ConceptMapAttributeType> fromType(PrimitiveType<?> code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<ConceptMapAttributeType>(this, ConceptMapAttributeType.NULL, code);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return new Enumeration<ConceptMapAttributeType>(this, ConceptMapAttributeType.NULL, code);
+        if ("code".equals(codeString))
+          return new Enumeration<ConceptMapAttributeType>(this, ConceptMapAttributeType.CODE, code);
+        if ("Coding".equals(codeString))
+          return new Enumeration<ConceptMapAttributeType>(this, ConceptMapAttributeType.CODING, code);
+        if ("string".equals(codeString))
+          return new Enumeration<ConceptMapAttributeType>(this, ConceptMapAttributeType.STRING, code);
+        if ("boolean".equals(codeString))
+          return new Enumeration<ConceptMapAttributeType>(this, ConceptMapAttributeType.BOOLEAN, code);
+        if ("Quantity".equals(codeString))
+          return new Enumeration<ConceptMapAttributeType>(this, ConceptMapAttributeType.QUANTITY, code);
+        throw new FHIRException("Unknown ConceptMapAttributeType code '"+codeString+"'");
+        }
+    public String toCode(ConceptMapAttributeType code) {
+      if (code == ConceptMapAttributeType.CODE)
+        return "code";
+      if (code == ConceptMapAttributeType.CODING)
+        return "Coding";
+      if (code == ConceptMapAttributeType.STRING)
+        return "string";
+      if (code == ConceptMapAttributeType.BOOLEAN)
+        return "boolean";
+      if (code == ConceptMapAttributeType.QUANTITY)
+        return "Quantity";
+      return "?";
+      }
+    public String toSystem(ConceptMapAttributeType code) {
+      return code.getSystem();
+      }
+    }
 
     public enum ConceptMapGroupUnmappedMode {
         /**
@@ -164,6 +308,1044 @@ public class ConceptMap extends MetadataResource {
       return code.getSystem();
       }
     }
+
+    public enum ConceptMapPropertyType {
+        /**
+         * The property  value is a code defined in an external code system. This may be used for translations, but is not the intent.
+         */
+        CODING, 
+        /**
+         * The property value is a string.
+         */
+        STRING, 
+        /**
+         * The property value is an integer (often used to assign ranking values to concepts for supporting score assessments).
+         */
+        INTEGER, 
+        /**
+         * The property value is a boolean true | false.
+         */
+        BOOLEAN, 
+        /**
+         * The property is a date or a date + time.
+         */
+        DATETIME, 
+        /**
+         * The property value is a decimal number.
+         */
+        DECIMAL, 
+        /**
+         * The property value is a code as defined in the CodeSystem in ConceptMap.property.system.
+         */
+        CODE, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static ConceptMapPropertyType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("Coding".equals(codeString))
+          return CODING;
+        if ("string".equals(codeString))
+          return STRING;
+        if ("integer".equals(codeString))
+          return INTEGER;
+        if ("boolean".equals(codeString))
+          return BOOLEAN;
+        if ("dateTime".equals(codeString))
+          return DATETIME;
+        if ("decimal".equals(codeString))
+          return DECIMAL;
+        if ("code".equals(codeString))
+          return CODE;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown ConceptMapPropertyType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CODING: return "Coding";
+            case STRING: return "string";
+            case INTEGER: return "integer";
+            case BOOLEAN: return "boolean";
+            case DATETIME: return "dateTime";
+            case DECIMAL: return "decimal";
+            case CODE: return "code";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case CODING: return "http://hl7.org/fhir/conceptmap-property-type";
+            case STRING: return "http://hl7.org/fhir/conceptmap-property-type";
+            case INTEGER: return "http://hl7.org/fhir/conceptmap-property-type";
+            case BOOLEAN: return "http://hl7.org/fhir/conceptmap-property-type";
+            case DATETIME: return "http://hl7.org/fhir/conceptmap-property-type";
+            case DECIMAL: return "http://hl7.org/fhir/conceptmap-property-type";
+            case CODE: return "http://hl7.org/fhir/conceptmap-property-type";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CODING: return "The property  value is a code defined in an external code system. This may be used for translations, but is not the intent.";
+            case STRING: return "The property value is a string.";
+            case INTEGER: return "The property value is an integer (often used to assign ranking values to concepts for supporting score assessments).";
+            case BOOLEAN: return "The property value is a boolean true | false.";
+            case DATETIME: return "The property is a date or a date + time.";
+            case DECIMAL: return "The property value is a decimal number.";
+            case CODE: return "The property value is a code as defined in the CodeSystem in ConceptMap.property.system.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CODING: return "Coding (external reference)";
+            case STRING: return "string";
+            case INTEGER: return "integer";
+            case BOOLEAN: return "boolean";
+            case DATETIME: return "dateTime";
+            case DECIMAL: return "decimal";
+            case CODE: return "code";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class ConceptMapPropertyTypeEnumFactory implements EnumFactory<ConceptMapPropertyType> {
+    public ConceptMapPropertyType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("Coding".equals(codeString))
+          return ConceptMapPropertyType.CODING;
+        if ("string".equals(codeString))
+          return ConceptMapPropertyType.STRING;
+        if ("integer".equals(codeString))
+          return ConceptMapPropertyType.INTEGER;
+        if ("boolean".equals(codeString))
+          return ConceptMapPropertyType.BOOLEAN;
+        if ("dateTime".equals(codeString))
+          return ConceptMapPropertyType.DATETIME;
+        if ("decimal".equals(codeString))
+          return ConceptMapPropertyType.DECIMAL;
+        if ("code".equals(codeString))
+          return ConceptMapPropertyType.CODE;
+        throw new IllegalArgumentException("Unknown ConceptMapPropertyType code '"+codeString+"'");
+        }
+        public Enumeration<ConceptMapPropertyType> fromType(PrimitiveType<?> code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<ConceptMapPropertyType>(this, ConceptMapPropertyType.NULL, code);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return new Enumeration<ConceptMapPropertyType>(this, ConceptMapPropertyType.NULL, code);
+        if ("Coding".equals(codeString))
+          return new Enumeration<ConceptMapPropertyType>(this, ConceptMapPropertyType.CODING, code);
+        if ("string".equals(codeString))
+          return new Enumeration<ConceptMapPropertyType>(this, ConceptMapPropertyType.STRING, code);
+        if ("integer".equals(codeString))
+          return new Enumeration<ConceptMapPropertyType>(this, ConceptMapPropertyType.INTEGER, code);
+        if ("boolean".equals(codeString))
+          return new Enumeration<ConceptMapPropertyType>(this, ConceptMapPropertyType.BOOLEAN, code);
+        if ("dateTime".equals(codeString))
+          return new Enumeration<ConceptMapPropertyType>(this, ConceptMapPropertyType.DATETIME, code);
+        if ("decimal".equals(codeString))
+          return new Enumeration<ConceptMapPropertyType>(this, ConceptMapPropertyType.DECIMAL, code);
+        if ("code".equals(codeString))
+          return new Enumeration<ConceptMapPropertyType>(this, ConceptMapPropertyType.CODE, code);
+        throw new FHIRException("Unknown ConceptMapPropertyType code '"+codeString+"'");
+        }
+    public String toCode(ConceptMapPropertyType code) {
+      if (code == ConceptMapPropertyType.CODING)
+        return "Coding";
+      if (code == ConceptMapPropertyType.STRING)
+        return "string";
+      if (code == ConceptMapPropertyType.INTEGER)
+        return "integer";
+      if (code == ConceptMapPropertyType.BOOLEAN)
+        return "boolean";
+      if (code == ConceptMapPropertyType.DATETIME)
+        return "dateTime";
+      if (code == ConceptMapPropertyType.DECIMAL)
+        return "decimal";
+      if (code == ConceptMapPropertyType.CODE)
+        return "code";
+      return "?";
+      }
+    public String toSystem(ConceptMapPropertyType code) {
+      return code.getSystem();
+      }
+    }
+
+    @Block()
+    public static class PropertyComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A code that is used to identify the property. The code is used internally (in ConceptMap.group.element.target.property.code) and also in the $translate operation.
+         */
+        @Child(name = "code", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Identifies the property on the mappings, and when referred to in the $translate operation", formalDefinition="A code that is used to identify the property. The code is used internally (in ConceptMap.group.element.target.property.code) and also in the $translate operation." )
+        protected CodeType code;
+
+        /**
+         * Reference to the formal meaning of the property.
+         */
+        @Child(name = "uri", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Formal identifier for the property", formalDefinition="Reference to the formal meaning of the property." )
+        protected UriType uri;
+
+        /**
+         * A description of the property - why it is defined, and how its value might be used.
+         */
+        @Child(name = "description", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Why the property is defined, and/or what it conveys", formalDefinition="A description of the property - why it is defined, and how its value might be used." )
+        protected StringType description;
+
+        /**
+         * The type of the property value.
+         */
+        @Child(name = "type", type = {CodeType.class}, order=4, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Coding | string | integer | boolean | dateTime | decimal | code", formalDefinition="The type of the property value." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/conceptmap-property-type")
+        protected Enumeration<ConceptMapPropertyType> type;
+
+        /**
+         * The CodeSystem that defines the codes from which values of type ```code``` in property values.
+         */
+        @Child(name = "system", type = {CanonicalType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The CodeSystem from which code values come", formalDefinition="The CodeSystem that defines the codes from which values of type ```code``` in property values." )
+        protected CanonicalType system;
+
+        private static final long serialVersionUID = 1693472150L;
+
+    /**
+     * Constructor
+     */
+      public PropertyComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public PropertyComponent(String code, ConceptMapPropertyType type) {
+        super();
+        this.setCode(code);
+        this.setType(type);
+      }
+
+        /**
+         * @return {@link #code} (A code that is used to identify the property. The code is used internally (in ConceptMap.group.element.target.property.code) and also in the $translate operation.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public CodeType getCodeElement() { 
+          if (this.code == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PropertyComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new CodeType(); // bb
+          return this.code;
+        }
+
+        public boolean hasCodeElement() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        /**
+         * @param value {@link #code} (A code that is used to identify the property. The code is used internally (in ConceptMap.group.element.target.property.code) and also in the $translate operation.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public PropertyComponent setCodeElement(CodeType value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return A code that is used to identify the property. The code is used internally (in ConceptMap.group.element.target.property.code) and also in the $translate operation.
+         */
+        public String getCode() { 
+          return this.code == null ? null : this.code.getValue();
+        }
+
+        /**
+         * @param value A code that is used to identify the property. The code is used internally (in ConceptMap.group.element.target.property.code) and also in the $translate operation.
+         */
+        public PropertyComponent setCode(String value) { 
+            if (this.code == null)
+              this.code = new CodeType();
+            this.code.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #uri} (Reference to the formal meaning of the property.). This is the underlying object with id, value and extensions. The accessor "getUri" gives direct access to the value
+         */
+        public UriType getUriElement() { 
+          if (this.uri == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PropertyComponent.uri");
+            else if (Configuration.doAutoCreate())
+              this.uri = new UriType(); // bb
+          return this.uri;
+        }
+
+        public boolean hasUriElement() { 
+          return this.uri != null && !this.uri.isEmpty();
+        }
+
+        public boolean hasUri() { 
+          return this.uri != null && !this.uri.isEmpty();
+        }
+
+        /**
+         * @param value {@link #uri} (Reference to the formal meaning of the property.). This is the underlying object with id, value and extensions. The accessor "getUri" gives direct access to the value
+         */
+        public PropertyComponent setUriElement(UriType value) { 
+          this.uri = value;
+          return this;
+        }
+
+        /**
+         * @return Reference to the formal meaning of the property.
+         */
+        public String getUri() { 
+          return this.uri == null ? null : this.uri.getValue();
+        }
+
+        /**
+         * @param value Reference to the formal meaning of the property.
+         */
+        public PropertyComponent setUri(String value) { 
+          if (Utilities.noString(value))
+            this.uri = null;
+          else {
+            if (this.uri == null)
+              this.uri = new UriType();
+            this.uri.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #description} (A description of the property - why it is defined, and how its value might be used.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public StringType getDescriptionElement() { 
+          if (this.description == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PropertyComponent.description");
+            else if (Configuration.doAutoCreate())
+              this.description = new StringType(); // bb
+          return this.description;
+        }
+
+        public boolean hasDescriptionElement() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        public boolean hasDescription() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        /**
+         * @param value {@link #description} (A description of the property - why it is defined, and how its value might be used.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public PropertyComponent setDescriptionElement(StringType value) { 
+          this.description = value;
+          return this;
+        }
+
+        /**
+         * @return A description of the property - why it is defined, and how its value might be used.
+         */
+        public String getDescription() { 
+          return this.description == null ? null : this.description.getValue();
+        }
+
+        /**
+         * @param value A description of the property - why it is defined, and how its value might be used.
+         */
+        public PropertyComponent setDescription(String value) { 
+          if (Utilities.noString(value))
+            this.description = null;
+          else {
+            if (this.description == null)
+              this.description = new StringType();
+            this.description.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #type} (The type of the property value.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         */
+        public Enumeration<ConceptMapPropertyType> getTypeElement() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PropertyComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new Enumeration<ConceptMapPropertyType>(new ConceptMapPropertyTypeEnumFactory()); // bb
+          return this.type;
+        }
+
+        public boolean hasTypeElement() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (The type of the property value.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         */
+        public PropertyComponent setTypeElement(Enumeration<ConceptMapPropertyType> value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return The type of the property value.
+         */
+        public ConceptMapPropertyType getType() { 
+          return this.type == null ? null : this.type.getValue();
+        }
+
+        /**
+         * @param value The type of the property value.
+         */
+        public PropertyComponent setType(ConceptMapPropertyType value) { 
+            if (this.type == null)
+              this.type = new Enumeration<ConceptMapPropertyType>(new ConceptMapPropertyTypeEnumFactory());
+            this.type.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #system} (The CodeSystem that defines the codes from which values of type ```code``` in property values.). This is the underlying object with id, value and extensions. The accessor "getSystem" gives direct access to the value
+         */
+        public CanonicalType getSystemElement() { 
+          if (this.system == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PropertyComponent.system");
+            else if (Configuration.doAutoCreate())
+              this.system = new CanonicalType(); // bb
+          return this.system;
+        }
+
+        public boolean hasSystemElement() { 
+          return this.system != null && !this.system.isEmpty();
+        }
+
+        public boolean hasSystem() { 
+          return this.system != null && !this.system.isEmpty();
+        }
+
+        /**
+         * @param value {@link #system} (The CodeSystem that defines the codes from which values of type ```code``` in property values.). This is the underlying object with id, value and extensions. The accessor "getSystem" gives direct access to the value
+         */
+        public PropertyComponent setSystemElement(CanonicalType value) { 
+          this.system = value;
+          return this;
+        }
+
+        /**
+         * @return The CodeSystem that defines the codes from which values of type ```code``` in property values.
+         */
+        public String getSystem() { 
+          return this.system == null ? null : this.system.getValue();
+        }
+
+        /**
+         * @param value The CodeSystem that defines the codes from which values of type ```code``` in property values.
+         */
+        public PropertyComponent setSystem(String value) { 
+          if (Utilities.noString(value))
+            this.system = null;
+          else {
+            if (this.system == null)
+              this.system = new CanonicalType();
+            this.system.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("code", "code", "A code that is used to identify the property. The code is used internally (in ConceptMap.group.element.target.property.code) and also in the $translate operation.", 0, 1, code));
+          children.add(new Property("uri", "uri", "Reference to the formal meaning of the property.", 0, 1, uri));
+          children.add(new Property("description", "string", "A description of the property - why it is defined, and how its value might be used.", 0, 1, description));
+          children.add(new Property("type", "code", "The type of the property value.", 0, 1, type));
+          children.add(new Property("system", "canonical(CodeSystem)", "The CodeSystem that defines the codes from which values of type ```code``` in property values.", 0, 1, system));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3059181: /*code*/  return new Property("code", "code", "A code that is used to identify the property. The code is used internally (in ConceptMap.group.element.target.property.code) and also in the $translate operation.", 0, 1, code);
+          case 116076: /*uri*/  return new Property("uri", "uri", "Reference to the formal meaning of the property.", 0, 1, uri);
+          case -1724546052: /*description*/  return new Property("description", "string", "A description of the property - why it is defined, and how its value might be used.", 0, 1, description);
+          case 3575610: /*type*/  return new Property("type", "code", "The type of the property value.", 0, 1, type);
+          case -887328209: /*system*/  return new Property("system", "canonical(CodeSystem)", "The CodeSystem that defines the codes from which values of type ```code``` in property values.", 0, 1, system);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeType
+        case 116076: /*uri*/ return this.uri == null ? new Base[0] : new Base[] {this.uri}; // UriType
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ConceptMapPropertyType>
+        case -887328209: /*system*/ return this.system == null ? new Base[0] : new Base[] {this.system}; // CanonicalType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3059181: // code
+          this.code = TypeConvertor.castToCode(value); // CodeType
+          return value;
+        case 116076: // uri
+          this.uri = TypeConvertor.castToUri(value); // UriType
+          return value;
+        case -1724546052: // description
+          this.description = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 3575610: // type
+          value = new ConceptMapPropertyTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ConceptMapPropertyType>
+          return value;
+        case -887328209: // system
+          this.system = TypeConvertor.castToCanonical(value); // CanonicalType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = TypeConvertor.castToCode(value); // CodeType
+        } else if (name.equals("uri")) {
+          this.uri = TypeConvertor.castToUri(value); // UriType
+        } else if (name.equals("description")) {
+          this.description = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("type")) {
+          value = new ConceptMapPropertyTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ConceptMapPropertyType>
+        } else if (name.equals("system")) {
+          this.system = TypeConvertor.castToCanonical(value); // CanonicalType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181:  return getCodeElement();
+        case 116076:  return getUriElement();
+        case -1724546052:  return getDescriptionElement();
+        case 3575610:  return getTypeElement();
+        case -887328209:  return getSystemElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return new String[] {"code"};
+        case 116076: /*uri*/ return new String[] {"uri"};
+        case -1724546052: /*description*/ return new String[] {"string"};
+        case 3575610: /*type*/ return new String[] {"code"};
+        case -887328209: /*system*/ return new String[] {"canonical"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("code")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.property.code");
+        }
+        else if (name.equals("uri")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.property.uri");
+        }
+        else if (name.equals("description")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.property.description");
+        }
+        else if (name.equals("type")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.property.type");
+        }
+        else if (name.equals("system")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.property.system");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public PropertyComponent copy() {
+        PropertyComponent dst = new PropertyComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PropertyComponent dst) {
+        super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
+        dst.uri = uri == null ? null : uri.copy();
+        dst.description = description == null ? null : description.copy();
+        dst.type = type == null ? null : type.copy();
+        dst.system = system == null ? null : system.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof PropertyComponent))
+          return false;
+        PropertyComponent o = (PropertyComponent) other_;
+        return compareDeep(code, o.code, true) && compareDeep(uri, o.uri, true) && compareDeep(description, o.description, true)
+           && compareDeep(type, o.type, true) && compareDeep(system, o.system, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof PropertyComponent))
+          return false;
+        PropertyComponent o = (PropertyComponent) other_;
+        return compareValues(code, o.code, true) && compareValues(uri, o.uri, true) && compareValues(description, o.description, true)
+           && compareValues(type, o.type, true) && compareValues(system, o.system, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, uri, description, type
+          , system);
+      }
+
+  public String fhirType() {
+    return "ConceptMap.property";
+
+  }
+
+  }
+
+    @Block()
+    public static class AdditionalAttributeComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A code that is used to identify this additional data attribute. The code is used internally in ConceptMap.group.element.target.dependsOn.attribute and ConceptMap.group.element.target.product.attribute.
+         */
+        @Child(name = "code", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Identifies this additional attribute through this resource", formalDefinition="A code that is used to identify this additional data attribute. The code is used internally in ConceptMap.group.element.target.dependsOn.attribute and ConceptMap.group.element.target.product.attribute." )
+        protected CodeType code;
+
+        /**
+         * Reference to the formal definition of the source/target data element. For elements defined by the FHIR specification, or using a FHIR logical model, the correct format is {canonical-url}#{element-id}.
+         */
+        @Child(name = "uri", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Formal identifier for the data element referred to in this attribte", formalDefinition="Reference to the formal definition of the source/target data element. For elements defined by the FHIR specification, or using a FHIR logical model, the correct format is {canonical-url}#{element-id}." )
+        protected UriType uri;
+
+        /**
+         * A description of the additional attribute and/or the data element it refers to - why it is defined, and how the value might be used in mappings, and a discussion of issues associated with the use of the data element.
+         */
+        @Child(name = "description", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Why the additional attribute is defined, and/or what the data element it refers to is", formalDefinition="A description of the additional attribute and/or the data element it refers to - why it is defined, and how the value might be used in mappings, and a discussion of issues associated with the use of the data element." )
+        protected StringType description;
+
+        /**
+         * The type of the source data contained in this concept map for this data element.
+         */
+        @Child(name = "type", type = {CodeType.class}, order=4, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="code | Coding | string | boolean | Quantity", formalDefinition="The type of the source data contained in this concept map for this data element." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/conceptmap-attribute-type")
+        protected Enumeration<ConceptMapAttributeType> type;
+
+        private static final long serialVersionUID = -1930701116L;
+
+    /**
+     * Constructor
+     */
+      public AdditionalAttributeComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public AdditionalAttributeComponent(String code, ConceptMapAttributeType type) {
+        super();
+        this.setCode(code);
+        this.setType(type);
+      }
+
+        /**
+         * @return {@link #code} (A code that is used to identify this additional data attribute. The code is used internally in ConceptMap.group.element.target.dependsOn.attribute and ConceptMap.group.element.target.product.attribute.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public CodeType getCodeElement() { 
+          if (this.code == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AdditionalAttributeComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new CodeType(); // bb
+          return this.code;
+        }
+
+        public boolean hasCodeElement() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        /**
+         * @param value {@link #code} (A code that is used to identify this additional data attribute. The code is used internally in ConceptMap.group.element.target.dependsOn.attribute and ConceptMap.group.element.target.product.attribute.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public AdditionalAttributeComponent setCodeElement(CodeType value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return A code that is used to identify this additional data attribute. The code is used internally in ConceptMap.group.element.target.dependsOn.attribute and ConceptMap.group.element.target.product.attribute.
+         */
+        public String getCode() { 
+          return this.code == null ? null : this.code.getValue();
+        }
+
+        /**
+         * @param value A code that is used to identify this additional data attribute. The code is used internally in ConceptMap.group.element.target.dependsOn.attribute and ConceptMap.group.element.target.product.attribute.
+         */
+        public AdditionalAttributeComponent setCode(String value) { 
+            if (this.code == null)
+              this.code = new CodeType();
+            this.code.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #uri} (Reference to the formal definition of the source/target data element. For elements defined by the FHIR specification, or using a FHIR logical model, the correct format is {canonical-url}#{element-id}.). This is the underlying object with id, value and extensions. The accessor "getUri" gives direct access to the value
+         */
+        public UriType getUriElement() { 
+          if (this.uri == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AdditionalAttributeComponent.uri");
+            else if (Configuration.doAutoCreate())
+              this.uri = new UriType(); // bb
+          return this.uri;
+        }
+
+        public boolean hasUriElement() { 
+          return this.uri != null && !this.uri.isEmpty();
+        }
+
+        public boolean hasUri() { 
+          return this.uri != null && !this.uri.isEmpty();
+        }
+
+        /**
+         * @param value {@link #uri} (Reference to the formal definition of the source/target data element. For elements defined by the FHIR specification, or using a FHIR logical model, the correct format is {canonical-url}#{element-id}.). This is the underlying object with id, value and extensions. The accessor "getUri" gives direct access to the value
+         */
+        public AdditionalAttributeComponent setUriElement(UriType value) { 
+          this.uri = value;
+          return this;
+        }
+
+        /**
+         * @return Reference to the formal definition of the source/target data element. For elements defined by the FHIR specification, or using a FHIR logical model, the correct format is {canonical-url}#{element-id}.
+         */
+        public String getUri() { 
+          return this.uri == null ? null : this.uri.getValue();
+        }
+
+        /**
+         * @param value Reference to the formal definition of the source/target data element. For elements defined by the FHIR specification, or using a FHIR logical model, the correct format is {canonical-url}#{element-id}.
+         */
+        public AdditionalAttributeComponent setUri(String value) { 
+          if (Utilities.noString(value))
+            this.uri = null;
+          else {
+            if (this.uri == null)
+              this.uri = new UriType();
+            this.uri.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #description} (A description of the additional attribute and/or the data element it refers to - why it is defined, and how the value might be used in mappings, and a discussion of issues associated with the use of the data element.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public StringType getDescriptionElement() { 
+          if (this.description == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AdditionalAttributeComponent.description");
+            else if (Configuration.doAutoCreate())
+              this.description = new StringType(); // bb
+          return this.description;
+        }
+
+        public boolean hasDescriptionElement() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        public boolean hasDescription() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        /**
+         * @param value {@link #description} (A description of the additional attribute and/or the data element it refers to - why it is defined, and how the value might be used in mappings, and a discussion of issues associated with the use of the data element.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public AdditionalAttributeComponent setDescriptionElement(StringType value) { 
+          this.description = value;
+          return this;
+        }
+
+        /**
+         * @return A description of the additional attribute and/or the data element it refers to - why it is defined, and how the value might be used in mappings, and a discussion of issues associated with the use of the data element.
+         */
+        public String getDescription() { 
+          return this.description == null ? null : this.description.getValue();
+        }
+
+        /**
+         * @param value A description of the additional attribute and/or the data element it refers to - why it is defined, and how the value might be used in mappings, and a discussion of issues associated with the use of the data element.
+         */
+        public AdditionalAttributeComponent setDescription(String value) { 
+          if (Utilities.noString(value))
+            this.description = null;
+          else {
+            if (this.description == null)
+              this.description = new StringType();
+            this.description.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #type} (The type of the source data contained in this concept map for this data element.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         */
+        public Enumeration<ConceptMapAttributeType> getTypeElement() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AdditionalAttributeComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new Enumeration<ConceptMapAttributeType>(new ConceptMapAttributeTypeEnumFactory()); // bb
+          return this.type;
+        }
+
+        public boolean hasTypeElement() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (The type of the source data contained in this concept map for this data element.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         */
+        public AdditionalAttributeComponent setTypeElement(Enumeration<ConceptMapAttributeType> value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return The type of the source data contained in this concept map for this data element.
+         */
+        public ConceptMapAttributeType getType() { 
+          return this.type == null ? null : this.type.getValue();
+        }
+
+        /**
+         * @param value The type of the source data contained in this concept map for this data element.
+         */
+        public AdditionalAttributeComponent setType(ConceptMapAttributeType value) { 
+            if (this.type == null)
+              this.type = new Enumeration<ConceptMapAttributeType>(new ConceptMapAttributeTypeEnumFactory());
+            this.type.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("code", "code", "A code that is used to identify this additional data attribute. The code is used internally in ConceptMap.group.element.target.dependsOn.attribute and ConceptMap.group.element.target.product.attribute.", 0, 1, code));
+          children.add(new Property("uri", "uri", "Reference to the formal definition of the source/target data element. For elements defined by the FHIR specification, or using a FHIR logical model, the correct format is {canonical-url}#{element-id}.", 0, 1, uri));
+          children.add(new Property("description", "string", "A description of the additional attribute and/or the data element it refers to - why it is defined, and how the value might be used in mappings, and a discussion of issues associated with the use of the data element.", 0, 1, description));
+          children.add(new Property("type", "code", "The type of the source data contained in this concept map for this data element.", 0, 1, type));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3059181: /*code*/  return new Property("code", "code", "A code that is used to identify this additional data attribute. The code is used internally in ConceptMap.group.element.target.dependsOn.attribute and ConceptMap.group.element.target.product.attribute.", 0, 1, code);
+          case 116076: /*uri*/  return new Property("uri", "uri", "Reference to the formal definition of the source/target data element. For elements defined by the FHIR specification, or using a FHIR logical model, the correct format is {canonical-url}#{element-id}.", 0, 1, uri);
+          case -1724546052: /*description*/  return new Property("description", "string", "A description of the additional attribute and/or the data element it refers to - why it is defined, and how the value might be used in mappings, and a discussion of issues associated with the use of the data element.", 0, 1, description);
+          case 3575610: /*type*/  return new Property("type", "code", "The type of the source data contained in this concept map for this data element.", 0, 1, type);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeType
+        case 116076: /*uri*/ return this.uri == null ? new Base[0] : new Base[] {this.uri}; // UriType
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ConceptMapAttributeType>
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3059181: // code
+          this.code = TypeConvertor.castToCode(value); // CodeType
+          return value;
+        case 116076: // uri
+          this.uri = TypeConvertor.castToUri(value); // UriType
+          return value;
+        case -1724546052: // description
+          this.description = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 3575610: // type
+          value = new ConceptMapAttributeTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ConceptMapAttributeType>
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = TypeConvertor.castToCode(value); // CodeType
+        } else if (name.equals("uri")) {
+          this.uri = TypeConvertor.castToUri(value); // UriType
+        } else if (name.equals("description")) {
+          this.description = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("type")) {
+          value = new ConceptMapAttributeTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ConceptMapAttributeType>
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181:  return getCodeElement();
+        case 116076:  return getUriElement();
+        case -1724546052:  return getDescriptionElement();
+        case 3575610:  return getTypeElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return new String[] {"code"};
+        case 116076: /*uri*/ return new String[] {"uri"};
+        case -1724546052: /*description*/ return new String[] {"string"};
+        case 3575610: /*type*/ return new String[] {"code"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("code")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.additionalAttribute.code");
+        }
+        else if (name.equals("uri")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.additionalAttribute.uri");
+        }
+        else if (name.equals("description")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.additionalAttribute.description");
+        }
+        else if (name.equals("type")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.additionalAttribute.type");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public AdditionalAttributeComponent copy() {
+        AdditionalAttributeComponent dst = new AdditionalAttributeComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AdditionalAttributeComponent dst) {
+        super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
+        dst.uri = uri == null ? null : uri.copy();
+        dst.description = description == null ? null : description.copy();
+        dst.type = type == null ? null : type.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof AdditionalAttributeComponent))
+          return false;
+        AdditionalAttributeComponent o = (AdditionalAttributeComponent) other_;
+        return compareDeep(code, o.code, true) && compareDeep(uri, o.uri, true) && compareDeep(description, o.description, true)
+           && compareDeep(type, o.type, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof AdditionalAttributeComponent))
+          return false;
+        AdditionalAttributeComponent o = (AdditionalAttributeComponent) other_;
+        return compareValues(code, o.code, true) && compareValues(uri, o.uri, true) && compareValues(description, o.description, true)
+           && compareValues(type, o.type, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, uri, description, type
+          );
+      }
+
+  public String fhirType() {
+    return "ConceptMap.additionalAttribute";
+
+  }
+
+  }
 
     @Block()
     public static class ConceptMapGroupComponent extends BackboneElement implements IBaseBackboneElement {
@@ -1053,20 +2235,27 @@ public class ConceptMap extends MetadataResource {
         protected StringType comment;
 
         /**
-         * A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified property can be resolved, and it has the specified value.
+         * A property value for this source -> target mapping.
          */
-        @Child(name = "dependsOn", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Other properties required for this mapping", formalDefinition="A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified property can be resolved, and it has the specified value." )
+        @Child(name = "property", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Property value for the source -> target mapping", formalDefinition="A property value for this source -> target mapping." )
+        protected List<MappingPropertyComponent> property;
+
+        /**
+         * A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified data attribute can be resolved, and it has the specified value.
+         */
+        @Child(name = "dependsOn", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Other properties required for this mapping", formalDefinition="A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified data attribute can be resolved, and it has the specified value." )
         protected List<OtherElementComponent> dependsOn;
 
         /**
-         * Product is the output of a ConceptMap that provides additional values relevant to the interpretation of the mapping target.
+         * Product is the output of a ConceptMap that provides additional values that go in other attributes / data elemnts of the target data.
          */
-        @Child(name = "product", type = {OtherElementComponent.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Other properties that this mapping also produces", formalDefinition="Product is the output of a ConceptMap that provides additional values relevant to the interpretation of the mapping target." )
+        @Child(name = "product", type = {OtherElementComponent.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Other data elements that this mapping also produces", formalDefinition="Product is the output of a ConceptMap that provides additional values that go in other attributes / data elemnts of the target data." )
         protected List<OtherElementComponent> product;
 
-        private static final long serialVersionUID = 1705844456L;
+        private static final long serialVersionUID = 792559555L;
 
     /**
      * Constructor
@@ -1325,7 +2514,60 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #dependsOn} (A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified property can be resolved, and it has the specified value.)
+         * @return {@link #property} (A property value for this source -> target mapping.)
+         */
+        public List<MappingPropertyComponent> getProperty() { 
+          if (this.property == null)
+            this.property = new ArrayList<MappingPropertyComponent>();
+          return this.property;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public TargetElementComponent setProperty(List<MappingPropertyComponent> theProperty) { 
+          this.property = theProperty;
+          return this;
+        }
+
+        public boolean hasProperty() { 
+          if (this.property == null)
+            return false;
+          for (MappingPropertyComponent item : this.property)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public MappingPropertyComponent addProperty() { //3
+          MappingPropertyComponent t = new MappingPropertyComponent();
+          if (this.property == null)
+            this.property = new ArrayList<MappingPropertyComponent>();
+          this.property.add(t);
+          return t;
+        }
+
+        public TargetElementComponent addProperty(MappingPropertyComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.property == null)
+            this.property = new ArrayList<MappingPropertyComponent>();
+          this.property.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #property}, creating it if it does not already exist {3}
+         */
+        public MappingPropertyComponent getPropertyFirstRep() { 
+          if (getProperty().isEmpty()) {
+            addProperty();
+          }
+          return getProperty().get(0);
+        }
+
+        /**
+         * @return {@link #dependsOn} (A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified data attribute can be resolved, and it has the specified value.)
          */
         public List<OtherElementComponent> getDependsOn() { 
           if (this.dependsOn == null)
@@ -1378,7 +2620,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #product} (Product is the output of a ConceptMap that provides additional values relevant to the interpretation of the mapping target.)
+         * @return {@link #product} (Product is the output of a ConceptMap that provides additional values that go in other attributes / data elemnts of the target data.)
          */
         public List<OtherElementComponent> getProduct() { 
           if (this.product == null)
@@ -1437,8 +2679,9 @@ public class ConceptMap extends MetadataResource {
           children.add(new Property("valueSet", "canonical(ValueSet)", "The set of codes that the map refers to.", 0, 1, valueSet));
           children.add(new Property("relationship", "code", "The relationship between the source and target concepts. The relationship is read from source to target (e.g. source-is-narrower-than-target).", 0, 1, relationship));
           children.add(new Property("comment", "string", "A description of status/issues in mapping that conveys additional information not represented in  the structured data.", 0, 1, comment));
-          children.add(new Property("dependsOn", "", "A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified property can be resolved, and it has the specified value.", 0, java.lang.Integer.MAX_VALUE, dependsOn));
-          children.add(new Property("product", "@ConceptMap.group.element.target.dependsOn", "Product is the output of a ConceptMap that provides additional values relevant to the interpretation of the mapping target.", 0, java.lang.Integer.MAX_VALUE, product));
+          children.add(new Property("property", "", "A property value for this source -> target mapping.", 0, java.lang.Integer.MAX_VALUE, property));
+          children.add(new Property("dependsOn", "", "A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified data attribute can be resolved, and it has the specified value.", 0, java.lang.Integer.MAX_VALUE, dependsOn));
+          children.add(new Property("product", "@ConceptMap.group.element.target.dependsOn", "Product is the output of a ConceptMap that provides additional values that go in other attributes / data elemnts of the target data.", 0, java.lang.Integer.MAX_VALUE, product));
         }
 
         @Override
@@ -1449,8 +2692,9 @@ public class ConceptMap extends MetadataResource {
           case -1410174671: /*valueSet*/  return new Property("valueSet", "canonical(ValueSet)", "The set of codes that the map refers to.", 0, 1, valueSet);
           case -261851592: /*relationship*/  return new Property("relationship", "code", "The relationship between the source and target concepts. The relationship is read from source to target (e.g. source-is-narrower-than-target).", 0, 1, relationship);
           case 950398559: /*comment*/  return new Property("comment", "string", "A description of status/issues in mapping that conveys additional information not represented in  the structured data.", 0, 1, comment);
-          case -1109214266: /*dependsOn*/  return new Property("dependsOn", "", "A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified property can be resolved, and it has the specified value.", 0, java.lang.Integer.MAX_VALUE, dependsOn);
-          case -309474065: /*product*/  return new Property("product", "@ConceptMap.group.element.target.dependsOn", "Product is the output of a ConceptMap that provides additional values relevant to the interpretation of the mapping target.", 0, java.lang.Integer.MAX_VALUE, product);
+          case -993141291: /*property*/  return new Property("property", "", "A property value for this source -> target mapping.", 0, java.lang.Integer.MAX_VALUE, property);
+          case -1109214266: /*dependsOn*/  return new Property("dependsOn", "", "A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified data attribute can be resolved, and it has the specified value.", 0, java.lang.Integer.MAX_VALUE, dependsOn);
+          case -309474065: /*product*/  return new Property("product", "@ConceptMap.group.element.target.dependsOn", "Product is the output of a ConceptMap that provides additional values that go in other attributes / data elemnts of the target data.", 0, java.lang.Integer.MAX_VALUE, product);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1464,6 +2708,7 @@ public class ConceptMap extends MetadataResource {
         case -1410174671: /*valueSet*/ return this.valueSet == null ? new Base[0] : new Base[] {this.valueSet}; // CanonicalType
         case -261851592: /*relationship*/ return this.relationship == null ? new Base[0] : new Base[] {this.relationship}; // Enumeration<ConceptMapRelationship>
         case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // StringType
+        case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // MappingPropertyComponent
         case -1109214266: /*dependsOn*/ return this.dependsOn == null ? new Base[0] : this.dependsOn.toArray(new Base[this.dependsOn.size()]); // OtherElementComponent
         case -309474065: /*product*/ return this.product == null ? new Base[0] : this.product.toArray(new Base[this.product.size()]); // OtherElementComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -1490,6 +2735,9 @@ public class ConceptMap extends MetadataResource {
         case 950398559: // comment
           this.comment = TypeConvertor.castToString(value); // StringType
           return value;
+        case -993141291: // property
+          this.getProperty().add((MappingPropertyComponent) value); // MappingPropertyComponent
+          return value;
         case -1109214266: // dependsOn
           this.getDependsOn().add((OtherElementComponent) value); // OtherElementComponent
           return value;
@@ -1514,6 +2762,8 @@ public class ConceptMap extends MetadataResource {
           this.relationship = (Enumeration) value; // Enumeration<ConceptMapRelationship>
         } else if (name.equals("comment")) {
           this.comment = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("property")) {
+          this.getProperty().add((MappingPropertyComponent) value);
         } else if (name.equals("dependsOn")) {
           this.getDependsOn().add((OtherElementComponent) value);
         } else if (name.equals("product")) {
@@ -1531,6 +2781,7 @@ public class ConceptMap extends MetadataResource {
         case -1410174671:  return getValueSetElement();
         case -261851592:  return getRelationshipElement();
         case 950398559:  return getCommentElement();
+        case -993141291:  return addProperty(); 
         case -1109214266:  return addDependsOn(); 
         case -309474065:  return addProduct(); 
         default: return super.makeProperty(hash, name);
@@ -1546,6 +2797,7 @@ public class ConceptMap extends MetadataResource {
         case -1410174671: /*valueSet*/ return new String[] {"canonical"};
         case -261851592: /*relationship*/ return new String[] {"code"};
         case 950398559: /*comment*/ return new String[] {"string"};
+        case -993141291: /*property*/ return new String[] {};
         case -1109214266: /*dependsOn*/ return new String[] {};
         case -309474065: /*product*/ return new String[] {"@ConceptMap.group.element.target.dependsOn"};
         default: return super.getTypesForProperty(hash, name);
@@ -1570,6 +2822,9 @@ public class ConceptMap extends MetadataResource {
         else if (name.equals("comment")) {
           throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.group.element.target.comment");
         }
+        else if (name.equals("property")) {
+          return addProperty();
+        }
         else if (name.equals("dependsOn")) {
           return addDependsOn();
         }
@@ -1593,6 +2848,11 @@ public class ConceptMap extends MetadataResource {
         dst.valueSet = valueSet == null ? null : valueSet.copy();
         dst.relationship = relationship == null ? null : relationship.copy();
         dst.comment = comment == null ? null : comment.copy();
+        if (property != null) {
+          dst.property = new ArrayList<MappingPropertyComponent>();
+          for (MappingPropertyComponent i : property)
+            dst.property.add(i.copy());
+        };
         if (dependsOn != null) {
           dst.dependsOn = new ArrayList<OtherElementComponent>();
           for (OtherElementComponent i : dependsOn)
@@ -1613,8 +2873,8 @@ public class ConceptMap extends MetadataResource {
           return false;
         TargetElementComponent o = (TargetElementComponent) other_;
         return compareDeep(code, o.code, true) && compareDeep(display, o.display, true) && compareDeep(valueSet, o.valueSet, true)
-           && compareDeep(relationship, o.relationship, true) && compareDeep(comment, o.comment, true) && compareDeep(dependsOn, o.dependsOn, true)
-           && compareDeep(product, o.product, true);
+           && compareDeep(relationship, o.relationship, true) && compareDeep(comment, o.comment, true) && compareDeep(property, o.property, true)
+           && compareDeep(dependsOn, o.dependsOn, true) && compareDeep(product, o.product, true);
       }
 
       @Override
@@ -1630,7 +2890,7 @@ public class ConceptMap extends MetadataResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, display, valueSet
-          , relationship, comment, dependsOn, product);
+          , relationship, comment, property, dependsOn, product);
       }
 
   public String fhirType() {
@@ -1641,114 +2901,93 @@ public class ConceptMap extends MetadataResource {
   }
 
     @Block()
-    public static class OtherElementComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class MappingPropertyComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * A reference to a property that holds a value the map depends on. This value can be supplied to the $translate operation to select the appropriate targets.
+         * A reference to a mapping property defined in ConceptMap.property.
          */
-        @Child(name = "property", type = {UriType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="A reference to a property that may be required to refine the mapping", formalDefinition="A reference to a property that holds a value the map depends on. This value can be supplied to the $translate operation to select the appropriate targets." )
-        protected UriType property;
+        @Child(name = "code", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Reference to ConceptMap.property.code", formalDefinition="A reference to a mapping property defined in ConceptMap.property." )
+        protected CodeType code;
 
         /**
-         * Property value that the map depends on.
+         * The value of this property.
          */
-        @Child(name = "value", type = {CodeType.class, Coding.class, StringType.class, IntegerType.class, BooleanType.class, DateTimeType.class, DecimalType.class, UriType.class, IdType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Value of the referenced property", formalDefinition="Property value that the map depends on." )
+        @Child(name = "value", type = {Coding.class, StringType.class, IntegerType.class, BooleanType.class, DateTimeType.class, DecimalType.class, CodeType.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value of the property for this concept", formalDefinition="The value of this property." )
         protected DataType value;
 
-        /**
-         * This mapping applies if the property value is a code from this value set.
-         */
-        @Child(name = "valueSet", type = {CanonicalType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The mapping depends on a property with a value from this value set", formalDefinition="This mapping applies if the property value is a code from this value set." )
-        protected CanonicalType valueSet;
-
-        private static final long serialVersionUID = -2108798167L;
+        private static final long serialVersionUID = -422546419L;
 
     /**
      * Constructor
      */
-      public OtherElementComponent() {
+      public MappingPropertyComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public OtherElementComponent(String property) {
+      public MappingPropertyComponent(String code, DataType value) {
         super();
-        this.setProperty(property);
+        this.setCode(code);
+        this.setValue(value);
       }
 
         /**
-         * @return {@link #property} (A reference to a property that holds a value the map depends on. This value can be supplied to the $translate operation to select the appropriate targets.). This is the underlying object with id, value and extensions. The accessor "getProperty" gives direct access to the value
+         * @return {@link #code} (A reference to a mapping property defined in ConceptMap.property.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
          */
-        public UriType getPropertyElement() { 
-          if (this.property == null)
+        public CodeType getCodeElement() { 
+          if (this.code == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create OtherElementComponent.property");
+              throw new Error("Attempt to auto-create MappingPropertyComponent.code");
             else if (Configuration.doAutoCreate())
-              this.property = new UriType(); // bb
-          return this.property;
+              this.code = new CodeType(); // bb
+          return this.code;
         }
 
-        public boolean hasPropertyElement() { 
-          return this.property != null && !this.property.isEmpty();
+        public boolean hasCodeElement() { 
+          return this.code != null && !this.code.isEmpty();
         }
 
-        public boolean hasProperty() { 
-          return this.property != null && !this.property.isEmpty();
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
         }
 
         /**
-         * @param value {@link #property} (A reference to a property that holds a value the map depends on. This value can be supplied to the $translate operation to select the appropriate targets.). This is the underlying object with id, value and extensions. The accessor "getProperty" gives direct access to the value
+         * @param value {@link #code} (A reference to a mapping property defined in ConceptMap.property.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
          */
-        public OtherElementComponent setPropertyElement(UriType value) { 
-          this.property = value;
+        public MappingPropertyComponent setCodeElement(CodeType value) { 
+          this.code = value;
           return this;
         }
 
         /**
-         * @return A reference to a property that holds a value the map depends on. This value can be supplied to the $translate operation to select the appropriate targets.
+         * @return A reference to a mapping property defined in ConceptMap.property.
          */
-        public String getProperty() { 
-          return this.property == null ? null : this.property.getValue();
+        public String getCode() { 
+          return this.code == null ? null : this.code.getValue();
         }
 
         /**
-         * @param value A reference to a property that holds a value the map depends on. This value can be supplied to the $translate operation to select the appropriate targets.
+         * @param value A reference to a mapping property defined in ConceptMap.property.
          */
-        public OtherElementComponent setProperty(String value) { 
-            if (this.property == null)
-              this.property = new UriType();
-            this.property.setValue(value);
+        public MappingPropertyComponent setCode(String value) { 
+            if (this.code == null)
+              this.code = new CodeType();
+            this.code.setValue(value);
           return this;
         }
 
         /**
-         * @return {@link #value} (Property value that the map depends on.)
+         * @return {@link #value} (The value of this property.)
          */
         public DataType getValue() { 
           return this.value;
         }
 
         /**
-         * @return {@link #value} (Property value that the map depends on.)
-         */
-        public CodeType getValueCodeType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new CodeType();
-          if (!(this.value instanceof CodeType))
-            throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (CodeType) this.value;
-        }
-
-        public boolean hasValueCodeType() { 
-          return this != null && this.value instanceof CodeType;
-        }
-
-        /**
-         * @return {@link #value} (Property value that the map depends on.)
+         * @return {@link #value} (The value of this property.)
          */
         public Coding getValueCoding() throws FHIRException { 
           if (this.value == null)
@@ -1763,7 +3002,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #value} (Property value that the map depends on.)
+         * @return {@link #value} (The value of this property.)
          */
         public StringType getValueStringType() throws FHIRException { 
           if (this.value == null)
@@ -1778,7 +3017,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #value} (Property value that the map depends on.)
+         * @return {@link #value} (The value of this property.)
          */
         public IntegerType getValueIntegerType() throws FHIRException { 
           if (this.value == null)
@@ -1793,7 +3032,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #value} (Property value that the map depends on.)
+         * @return {@link #value} (The value of this property.)
          */
         public BooleanType getValueBooleanType() throws FHIRException { 
           if (this.value == null)
@@ -1808,7 +3047,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #value} (Property value that the map depends on.)
+         * @return {@link #value} (The value of this property.)
          */
         public DateTimeType getValueDateTimeType() throws FHIRException { 
           if (this.value == null)
@@ -1823,7 +3062,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #value} (Property value that the map depends on.)
+         * @return {@link #value} (The value of this property.)
          */
         public DecimalType getValueDecimalType() throws FHIRException { 
           if (this.value == null)
@@ -1838,33 +3077,18 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @return {@link #value} (Property value that the map depends on.)
+         * @return {@link #value} (The value of this property.)
          */
-        public UriType getValueUriType() throws FHIRException { 
+        public CodeType getValueCodeType() throws FHIRException { 
           if (this.value == null)
-            this.value = new UriType();
-          if (!(this.value instanceof UriType))
-            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (UriType) this.value;
+            this.value = new CodeType();
+          if (!(this.value instanceof CodeType))
+            throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeType) this.value;
         }
 
-        public boolean hasValueUriType() { 
-          return this != null && this.value instanceof UriType;
-        }
-
-        /**
-         * @return {@link #value} (Property value that the map depends on.)
-         */
-        public IdType getValueIdType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new IdType();
-          if (!(this.value instanceof IdType))
-            throw new FHIRException("Type mismatch: the type IdType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (IdType) this.value;
-        }
-
-        public boolean hasValueIdType() { 
-          return this != null && this.value instanceof IdType;
+        public boolean hasValueCodeType() { 
+          return this != null && this.value instanceof CodeType;
         }
 
         public boolean hasValue() { 
@@ -1872,87 +3096,34 @@ public class ConceptMap extends MetadataResource {
         }
 
         /**
-         * @param value {@link #value} (Property value that the map depends on.)
+         * @param value {@link #value} (The value of this property.)
          */
-        public OtherElementComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof CodeType || value instanceof Coding || value instanceof StringType || value instanceof IntegerType || value instanceof BooleanType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof UriType || value instanceof IdType))
-            throw new Error("Not the right type for ConceptMap.group.element.target.dependsOn.value[x]: "+value.fhirType());
+        public MappingPropertyComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof Coding || value instanceof StringType || value instanceof IntegerType || value instanceof BooleanType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof CodeType))
+            throw new Error("Not the right type for ConceptMap.group.element.target.property.value[x]: "+value.fhirType());
           this.value = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #valueSet} (This mapping applies if the property value is a code from this value set.). This is the underlying object with id, value and extensions. The accessor "getValueSet" gives direct access to the value
-         */
-        public CanonicalType getValueSetElement() { 
-          if (this.valueSet == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create OtherElementComponent.valueSet");
-            else if (Configuration.doAutoCreate())
-              this.valueSet = new CanonicalType(); // bb
-          return this.valueSet;
-        }
-
-        public boolean hasValueSetElement() { 
-          return this.valueSet != null && !this.valueSet.isEmpty();
-        }
-
-        public boolean hasValueSet() { 
-          return this.valueSet != null && !this.valueSet.isEmpty();
-        }
-
-        /**
-         * @param value {@link #valueSet} (This mapping applies if the property value is a code from this value set.). This is the underlying object with id, value and extensions. The accessor "getValueSet" gives direct access to the value
-         */
-        public OtherElementComponent setValueSetElement(CanonicalType value) { 
-          this.valueSet = value;
-          return this;
-        }
-
-        /**
-         * @return This mapping applies if the property value is a code from this value set.
-         */
-        public String getValueSet() { 
-          return this.valueSet == null ? null : this.valueSet.getValue();
-        }
-
-        /**
-         * @param value This mapping applies if the property value is a code from this value set.
-         */
-        public OtherElementComponent setValueSet(String value) { 
-          if (Utilities.noString(value))
-            this.valueSet = null;
-          else {
-            if (this.valueSet == null)
-              this.valueSet = new CanonicalType();
-            this.valueSet.setValue(value);
-          }
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("property", "uri", "A reference to a property that holds a value the map depends on. This value can be supplied to the $translate operation to select the appropriate targets.", 0, 1, property));
-          children.add(new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal|uri|id", "Property value that the map depends on.", 0, 1, value));
-          children.add(new Property("valueSet", "canonical(ValueSet)", "This mapping applies if the property value is a code from this value set.", 0, 1, valueSet));
+          children.add(new Property("code", "code", "A reference to a mapping property defined in ConceptMap.property.", 0, 1, code));
+          children.add(new Property("value[x]", "Coding|string|integer|boolean|dateTime|decimal|code", "The value of this property.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -993141291: /*property*/  return new Property("property", "uri", "A reference to a property that holds a value the map depends on. This value can be supplied to the $translate operation to select the appropriate targets.", 0, 1, property);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal|uri|id", "Property value that the map depends on.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal|uri|id", "Property value that the map depends on.", 0, 1, value);
-          case -766209282: /*valueCode*/  return new Property("value[x]", "code", "Property value that the map depends on.", 0, 1, value);
-          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "Property value that the map depends on.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Property value that the map depends on.", 0, 1, value);
-          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "Property value that the map depends on.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Property value that the map depends on.", 0, 1, value);
-          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "Property value that the map depends on.", 0, 1, value);
-          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "Property value that the map depends on.", 0, 1, value);
-          case -1410172357: /*valueUri*/  return new Property("value[x]", "uri", "Property value that the map depends on.", 0, 1, value);
-          case 231604844: /*valueId*/  return new Property("value[x]", "id", "Property value that the map depends on.", 0, 1, value);
-          case -1410174671: /*valueSet*/  return new Property("valueSet", "canonical(ValueSet)", "This mapping applies if the property value is a code from this value set.", 0, 1, valueSet);
+          case 3059181: /*code*/  return new Property("code", "code", "A reference to a mapping property defined in ConceptMap.property.", 0, 1, code);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "Coding|string|integer|boolean|dateTime|decimal|code", "The value of this property.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "Coding|string|integer|boolean|dateTime|decimal|code", "The value of this property.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "The value of this property.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The value of this property.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The value of this property.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of this property.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "The value of this property.", 0, 1, value);
+          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "The value of this property.", 0, 1, value);
+          case -766209282: /*valueCode*/  return new Property("value[x]", "code", "The value of this property.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1961,9 +3132,8 @@ public class ConceptMap extends MetadataResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -993141291: /*property*/ return this.property == null ? new Base[0] : new Base[] {this.property}; // UriType
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeType
         case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
-        case -1410174671: /*valueSet*/ return this.valueSet == null ? new Base[0] : new Base[] {this.valueSet}; // CanonicalType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1972,14 +3142,11 @@ public class ConceptMap extends MetadataResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -993141291: // property
-          this.property = TypeConvertor.castToUri(value); // UriType
+        case 3059181: // code
+          this.code = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 111972721: // value
           this.value = TypeConvertor.castToType(value); // DataType
-          return value;
-        case -1410174671: // valueSet
-          this.valueSet = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1988,12 +3155,10 @@ public class ConceptMap extends MetadataResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("property")) {
-          this.property = TypeConvertor.castToUri(value); // UriType
+        if (name.equals("code")) {
+          this.code = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("value[x]")) {
           this.value = TypeConvertor.castToType(value); // DataType
-        } else if (name.equals("valueSet")) {
-          this.valueSet = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2002,10 +3167,9 @@ public class ConceptMap extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -993141291:  return getPropertyElement();
+        case 3059181:  return getCodeElement();
         case -1410166417:  return getValue();
         case 111972721:  return getValue();
-        case -1410174671:  return getValueSetElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2014,9 +3178,8 @@ public class ConceptMap extends MetadataResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -993141291: /*property*/ return new String[] {"uri"};
-        case 111972721: /*value*/ return new String[] {"code", "Coding", "string", "integer", "boolean", "dateTime", "decimal", "uri", "id"};
-        case -1410174671: /*valueSet*/ return new String[] {"canonical"};
+        case 3059181: /*code*/ return new String[] {"code"};
+        case 111972721: /*value*/ return new String[] {"Coding", "string", "integer", "boolean", "dateTime", "decimal", "code"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2024,12 +3187,8 @@ public class ConceptMap extends MetadataResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("property")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.group.element.target.dependsOn.property");
-        }
-        else if (name.equals("valueCode")) {
-          this.value = new CodeType();
-          return this.value;
+        if (name.equals("code")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.group.element.target.property.code");
         }
         else if (name.equals("valueCoding")) {
           this.value = new Coding();
@@ -2055,12 +3214,398 @@ public class ConceptMap extends MetadataResource {
           this.value = new DecimalType();
           return this.value;
         }
-        else if (name.equals("valueUri")) {
-          this.value = new UriType();
+        else if (name.equals("valueCode")) {
+          this.value = new CodeType();
           return this.value;
         }
-        else if (name.equals("valueId")) {
-          this.value = new IdType();
+        else
+          return super.addChild(name);
+      }
+
+      public MappingPropertyComponent copy() {
+        MappingPropertyComponent dst = new MappingPropertyComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MappingPropertyComponent dst) {
+        super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
+        dst.value = value == null ? null : value.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof MappingPropertyComponent))
+          return false;
+        MappingPropertyComponent o = (MappingPropertyComponent) other_;
+        return compareDeep(code, o.code, true) && compareDeep(value, o.value, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof MappingPropertyComponent))
+          return false;
+        MappingPropertyComponent o = (MappingPropertyComponent) other_;
+        return compareValues(code, o.code, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, value);
+      }
+
+  public String fhirType() {
+    return "ConceptMap.group.element.target.property";
+
+  }
+
+  }
+
+    @Block()
+    public static class OtherElementComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A reference to the additional attribute that holds a value the map depends on.
+         */
+        @Child(name = "attribute", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="A reference to a mapping attribute defined in ConceptMap.additionalAttribute", formalDefinition="A reference to the additional attribute that holds a value the map depends on." )
+        protected CodeType attribute;
+
+        /**
+         * Data element value that the map depends on / produces.
+         */
+        @Child(name = "value", type = {CodeType.class, Coding.class, StringType.class, BooleanType.class, Quantity.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value of the referenced data element", formalDefinition="Data element value that the map depends on / produces." )
+        protected DataType value;
+
+        /**
+         * This mapping applies if the data element value is a code from this value set.
+         */
+        @Child(name = "valueSet", type = {CanonicalType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The mapping depends on a data element with a value from this value set", formalDefinition="This mapping applies if the data element value is a code from this value set." )
+        protected CanonicalType valueSet;
+
+        private static final long serialVersionUID = 2103818133L;
+
+    /**
+     * Constructor
+     */
+      public OtherElementComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public OtherElementComponent(String attribute) {
+        super();
+        this.setAttribute(attribute);
+      }
+
+        /**
+         * @return {@link #attribute} (A reference to the additional attribute that holds a value the map depends on.). This is the underlying object with id, value and extensions. The accessor "getAttribute" gives direct access to the value
+         */
+        public CodeType getAttributeElement() { 
+          if (this.attribute == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create OtherElementComponent.attribute");
+            else if (Configuration.doAutoCreate())
+              this.attribute = new CodeType(); // bb
+          return this.attribute;
+        }
+
+        public boolean hasAttributeElement() { 
+          return this.attribute != null && !this.attribute.isEmpty();
+        }
+
+        public boolean hasAttribute() { 
+          return this.attribute != null && !this.attribute.isEmpty();
+        }
+
+        /**
+         * @param value {@link #attribute} (A reference to the additional attribute that holds a value the map depends on.). This is the underlying object with id, value and extensions. The accessor "getAttribute" gives direct access to the value
+         */
+        public OtherElementComponent setAttributeElement(CodeType value) { 
+          this.attribute = value;
+          return this;
+        }
+
+        /**
+         * @return A reference to the additional attribute that holds a value the map depends on.
+         */
+        public String getAttribute() { 
+          return this.attribute == null ? null : this.attribute.getValue();
+        }
+
+        /**
+         * @param value A reference to the additional attribute that holds a value the map depends on.
+         */
+        public OtherElementComponent setAttribute(String value) { 
+            if (this.attribute == null)
+              this.attribute = new CodeType();
+            this.attribute.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (Data element value that the map depends on / produces.)
+         */
+        public DataType getValue() { 
+          return this.value;
+        }
+
+        /**
+         * @return {@link #value} (Data element value that the map depends on / produces.)
+         */
+        public CodeType getValueCodeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeType();
+          if (!(this.value instanceof CodeType))
+            throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeType) this.value;
+        }
+
+        public boolean hasValueCodeType() { 
+          return this != null && this.value instanceof CodeType;
+        }
+
+        /**
+         * @return {@link #value} (Data element value that the map depends on / produces.)
+         */
+        public Coding getValueCoding() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Coding();
+          if (!(this.value instanceof Coding))
+            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Coding) this.value;
+        }
+
+        public boolean hasValueCoding() { 
+          return this != null && this.value instanceof Coding;
+        }
+
+        /**
+         * @return {@link #value} (Data element value that the map depends on / produces.)
+         */
+        public StringType getValueStringType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
+        }
+
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
+        }
+
+        /**
+         * @return {@link #value} (Data element value that the map depends on / produces.)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (Data element value that the map depends on / produces.)
+         */
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
+        }
+
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (Data element value that the map depends on / produces.)
+         */
+        public OtherElementComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof CodeType || value instanceof Coding || value instanceof StringType || value instanceof BooleanType || value instanceof Quantity))
+            throw new Error("Not the right type for ConceptMap.group.element.target.dependsOn.value[x]: "+value.fhirType());
+          this.value = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #valueSet} (This mapping applies if the data element value is a code from this value set.). This is the underlying object with id, value and extensions. The accessor "getValueSet" gives direct access to the value
+         */
+        public CanonicalType getValueSetElement() { 
+          if (this.valueSet == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create OtherElementComponent.valueSet");
+            else if (Configuration.doAutoCreate())
+              this.valueSet = new CanonicalType(); // bb
+          return this.valueSet;
+        }
+
+        public boolean hasValueSetElement() { 
+          return this.valueSet != null && !this.valueSet.isEmpty();
+        }
+
+        public boolean hasValueSet() { 
+          return this.valueSet != null && !this.valueSet.isEmpty();
+        }
+
+        /**
+         * @param value {@link #valueSet} (This mapping applies if the data element value is a code from this value set.). This is the underlying object with id, value and extensions. The accessor "getValueSet" gives direct access to the value
+         */
+        public OtherElementComponent setValueSetElement(CanonicalType value) { 
+          this.valueSet = value;
+          return this;
+        }
+
+        /**
+         * @return This mapping applies if the data element value is a code from this value set.
+         */
+        public String getValueSet() { 
+          return this.valueSet == null ? null : this.valueSet.getValue();
+        }
+
+        /**
+         * @param value This mapping applies if the data element value is a code from this value set.
+         */
+        public OtherElementComponent setValueSet(String value) { 
+          if (Utilities.noString(value))
+            this.valueSet = null;
+          else {
+            if (this.valueSet == null)
+              this.valueSet = new CanonicalType();
+            this.valueSet.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("attribute", "code", "A reference to the additional attribute that holds a value the map depends on.", 0, 1, attribute));
+          children.add(new Property("value[x]", "code|Coding|string|boolean|Quantity", "Data element value that the map depends on / produces.", 0, 1, value));
+          children.add(new Property("valueSet", "canonical(ValueSet)", "This mapping applies if the data element value is a code from this value set.", 0, 1, valueSet));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 13085340: /*attribute*/  return new Property("attribute", "code", "A reference to the additional attribute that holds a value the map depends on.", 0, 1, attribute);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "code|Coding|string|boolean|Quantity", "Data element value that the map depends on / produces.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "code|Coding|string|boolean|Quantity", "Data element value that the map depends on / produces.", 0, 1, value);
+          case -766209282: /*valueCode*/  return new Property("value[x]", "code", "Data element value that the map depends on / produces.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "Data element value that the map depends on / produces.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Data element value that the map depends on / produces.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Data element value that the map depends on / produces.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Data element value that the map depends on / produces.", 0, 1, value);
+          case -1410174671: /*valueSet*/  return new Property("valueSet", "canonical(ValueSet)", "This mapping applies if the data element value is a code from this value set.", 0, 1, valueSet);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 13085340: /*attribute*/ return this.attribute == null ? new Base[0] : new Base[] {this.attribute}; // CodeType
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
+        case -1410174671: /*valueSet*/ return this.valueSet == null ? new Base[0] : new Base[] {this.valueSet}; // CanonicalType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 13085340: // attribute
+          this.attribute = TypeConvertor.castToCode(value); // CodeType
+          return value;
+        case 111972721: // value
+          this.value = TypeConvertor.castToType(value); // DataType
+          return value;
+        case -1410174671: // valueSet
+          this.valueSet = TypeConvertor.castToCanonical(value); // CanonicalType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("attribute")) {
+          this.attribute = TypeConvertor.castToCode(value); // CodeType
+        } else if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("valueSet")) {
+          this.valueSet = TypeConvertor.castToCanonical(value); // CanonicalType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 13085340:  return getAttributeElement();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        case -1410174671:  return getValueSetElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 13085340: /*attribute*/ return new String[] {"code"};
+        case 111972721: /*value*/ return new String[] {"code", "Coding", "string", "boolean", "Quantity"};
+        case -1410174671: /*valueSet*/ return new String[] {"canonical"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("attribute")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.group.element.target.dependsOn.attribute");
+        }
+        else if (name.equals("valueCode")) {
+          this.value = new CodeType();
+          return this.value;
+        }
+        else if (name.equals("valueCoding")) {
+          this.value = new Coding();
+          return this.value;
+        }
+        else if (name.equals("valueString")) {
+          this.value = new StringType();
+          return this.value;
+        }
+        else if (name.equals("valueBoolean")) {
+          this.value = new BooleanType();
+          return this.value;
+        }
+        else if (name.equals("valueQuantity")) {
+          this.value = new Quantity();
           return this.value;
         }
         else if (name.equals("valueSet")) {
@@ -2078,7 +3623,7 @@ public class ConceptMap extends MetadataResource {
 
       public void copyValues(OtherElementComponent dst) {
         super.copyValues(dst);
-        dst.property = property == null ? null : property.copy();
+        dst.attribute = attribute == null ? null : attribute.copy();
         dst.value = value == null ? null : value.copy();
         dst.valueSet = valueSet == null ? null : valueSet.copy();
       }
@@ -2090,7 +3635,7 @@ public class ConceptMap extends MetadataResource {
         if (!(other_ instanceof OtherElementComponent))
           return false;
         OtherElementComponent o = (OtherElementComponent) other_;
-        return compareDeep(property, o.property, true) && compareDeep(value, o.value, true) && compareDeep(valueSet, o.valueSet, true)
+        return compareDeep(attribute, o.attribute, true) && compareDeep(value, o.value, true) && compareDeep(valueSet, o.valueSet, true)
           ;
       }
 
@@ -2101,11 +3646,11 @@ public class ConceptMap extends MetadataResource {
         if (!(other_ instanceof OtherElementComponent))
           return false;
         OtherElementComponent o = (OtherElementComponent) other_;
-        return compareValues(property, o.property, true) && compareValues(valueSet, o.valueSet, true);
+        return compareValues(attribute, o.attribute, true) && compareValues(valueSet, o.valueSet, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(property, value, valueSet
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(attribute, value, valueSet
           );
       }
 
@@ -2682,23 +4227,31 @@ public class ConceptMap extends MetadataResource {
     protected StringType version;
 
     /**
+     * Indicates the mechanism used to compare versions to determine which ConceptMap is more current.
+     */
+    @Child(name = "versionAlgorithm", type = {StringType.class, Coding.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="How to compare versions", formalDefinition="Indicates the mechanism used to compare versions to determine which ConceptMap is more current." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/version-algorithm")
+    protected DataType versionAlgorithm;
+
+    /**
      * A natural language name identifying the concept map. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
-    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this concept map (computer friendly)", formalDefinition="A natural language name identifying the concept map. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
     protected StringType name;
 
     /**
      * A short, descriptive, user-friendly title for the concept map.
      */
-    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "title", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this concept map (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the concept map." )
     protected StringType title;
 
     /**
      * The status of this concept map. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this concept map. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -2706,49 +4259,49 @@ public class ConceptMap extends MetadataResource {
     /**
      * A Boolean value to indicate that this concept map is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this concept map is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
      * The date  (and optionally time) when the concept map was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the concept map changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the concept map was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the concept map changes." )
     protected DateTimeType date;
 
     /**
      * The name of the organization or individual responsible for the release and ongoing maintenance of the concept map.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "publisher", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the concept map." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the concept map from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Natural language description of the concept map", formalDefinition="A free text natural language description of the concept map from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate concept map instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate concept map instances." )
     protected List<UsageContext> useContext;
 
     /**
      * A legal or geographic region in which the concept map is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for concept map (if applicable)", formalDefinition="A legal or geographic region in which the concept map is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
@@ -2756,103 +4309,124 @@ public class ConceptMap extends MetadataResource {
     /**
      * Explanation of why this concept map is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this concept map is defined", formalDefinition="Explanation of why this concept map is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * A copyright statement relating to the concept map and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the concept map.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the concept map and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the concept map." )
     protected MarkdownType copyright;
 
     /**
+     * A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    @Child(name = "copyrightLabel", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Copyright holder and year(s)", formalDefinition="A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved')." )
+    protected StringType copyrightLabel;
+
+    /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the ConceptMap was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="When the ConceptMap was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="When the ConceptMap was last reviewed by the publisher", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The period during which the ConceptMap content was or is planned to be in active use.
      */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effectivePeriod", type = {Period.class}, order=19, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the ConceptMap is expected to be used", formalDefinition="The period during which the ConceptMap content was or is planned to be in active use." )
     protected Period effectivePeriod;
 
     /**
      * Descriptions related to the content of the ConceptMap. Topics provide a high-level categorization as well as keywords for the ConceptMap that can be useful for filtering and searching.
      */
-    @Child(name = "topic", type = {CodeableConcept.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="E.g. Education, Treatment, Assessment, etc.", formalDefinition="Descriptions related to the content of the ConceptMap. Topics provide a high-level categorization as well as keywords for the ConceptMap that can be useful for filtering and searching." )
+    @Child(name = "topic", type = {CodeableConcept.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="E.g. Education, Treatment, Assessment, etc", formalDefinition="Descriptions related to the content of the ConceptMap. Topics provide a high-level categorization as well as keywords for the ConceptMap that can be useful for filtering and searching." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/definition-topic")
     protected List<CodeableConcept> topic;
 
     /**
      * An individiual or organization primarily involved in the creation and maintenance of the ConceptMap.
      */
-    @Child(name = "author", type = {ContactDetail.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "author", type = {ContactDetail.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who authored the ConceptMap", formalDefinition="An individiual or organization primarily involved in the creation and maintenance of the ConceptMap." )
     protected List<ContactDetail> author;
 
     /**
      * An individual or organization primarily responsible for internal coherence of the ConceptMap.
      */
-    @Child(name = "editor", type = {ContactDetail.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "editor", type = {ContactDetail.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who edited the ConceptMap", formalDefinition="An individual or organization primarily responsible for internal coherence of the ConceptMap." )
     protected List<ContactDetail> editor;
 
     /**
-     * An individual or organization primarily responsible for review of some aspect of the ConceptMap.
+     * An individual or organization asserted by the publisher to be primarily responsible for review of some aspect of the ConceptMap.
      */
-    @Child(name = "reviewer", type = {ContactDetail.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Who reviewed the ConceptMap", formalDefinition="An individual or organization primarily responsible for review of some aspect of the ConceptMap." )
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who reviewed the ConceptMap", formalDefinition="An individual or organization asserted by the publisher to be primarily responsible for review of some aspect of the ConceptMap." )
     protected List<ContactDetail> reviewer;
 
     /**
-     * An individual or organization responsible for officially endorsing the ConceptMap for use in some setting.
+     * An individual or organization asserted by the publisher to be responsible for officially endorsing the ConceptMap for use in some setting.
      */
-    @Child(name = "endorser", type = {ContactDetail.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Who endorsed the ConceptMap", formalDefinition="An individual or organization responsible for officially endorsing the ConceptMap for use in some setting." )
+    @Child(name = "endorser", type = {ContactDetail.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who endorsed the ConceptMap", formalDefinition="An individual or organization asserted by the publisher to be responsible for officially endorsing the ConceptMap for use in some setting." )
     protected List<ContactDetail> endorser;
 
     /**
      * Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.
      */
-    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Additional documentation, citations, etc.", formalDefinition="Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts." )
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Additional documentation, citations, etc", formalDefinition="Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts." )
     protected List<RelatedArtifact> relatedArtifact;
+
+    /**
+     * A property defines a slot through which additional information can be provided about a map from source -> target.
+     */
+    @Child(name = "property", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Additional properties of the mapping", formalDefinition="A property defines a slot through which additional information can be provided about a map from source -> target." )
+    protected List<PropertyComponent> property;
+
+    /**
+     * An additionalAttribute defines an additional data element found in the source or target data model where the data will come from or be mapped to. Some mappings are based on data in addition to the source data element, where codes in multiple fields are combined to a single field (or vice versa).
+     */
+    @Child(name = "additionalAttribute", type = {}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Definition of an additional attribute to act as a data source or target", formalDefinition="An additionalAttribute defines an additional data element found in the source or target data model where the data will come from or be mapped to. Some mappings are based on data in addition to the source data element, where codes in multiple fields are combined to a single field (or vice versa)." )
+    protected List<AdditionalAttributeComponent> additionalAttribute;
 
     /**
      * Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.  Limits the scope of the map to source codes (ConceptMap.group.element code or valueSet) that are members of this value set.
      */
-    @Child(name = "sourceScope", type = {UriType.class, CanonicalType.class}, order=24, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "sourceScope", type = {UriType.class, CanonicalType.class}, order=28, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The source value set that contains the concepts that are being mapped", formalDefinition="Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.  Limits the scope of the map to source codes (ConceptMap.group.element code or valueSet) that are members of this value set." )
     protected DataType sourceScope;
 
     /**
      * Identifier for the target value set that provides important context about how the mapping choices are made.  Limits the scope of the map to target codes (ConceptMap.group.element.target code or valueSet) that are members of this value set.
      */
-    @Child(name = "targetScope", type = {UriType.class, CanonicalType.class}, order=25, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "targetScope", type = {UriType.class, CanonicalType.class}, order=29, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The target value set which provides context for the mappings", formalDefinition="Identifier for the target value set that provides important context about how the mapping choices are made.  Limits the scope of the map to target codes (ConceptMap.group.element.target code or valueSet) that are members of this value set." )
     protected DataType targetScope;
 
     /**
      * A group of mappings that all have the same source and target system.
      */
-    @Child(name = "group", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "group", type = {}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Same source and target systems", formalDefinition="A group of mappings that all have the same source and target system." )
     protected List<ConceptMapGroupComponent> group;
 
-    private static final long serialVersionUID = 682923821L;
+    private static final long serialVersionUID = 1990005194L;
 
   /**
    * Constructor
@@ -3017,6 +4591,57 @@ public class ConceptMap extends MetadataResource {
           this.version = new StringType();
         this.version.setValue(value);
       }
+      return this;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which ConceptMap is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      return this.versionAlgorithm;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which ConceptMap is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new StringType();
+      if (!(this.versionAlgorithm instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (StringType) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmStringType() { 
+      return this != null && this.versionAlgorithm instanceof StringType;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which ConceptMap is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new Coding();
+      if (!(this.versionAlgorithm instanceof Coding))
+        throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (Coding) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmCoding() { 
+      return this != null && this.versionAlgorithm instanceof Coding;
+    }
+
+    public boolean hasVersionAlgorithm() { 
+      return this.versionAlgorithm != null && !this.versionAlgorithm.isEmpty();
+    }
+
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which ConceptMap is more current.)
+     */
+    public ConceptMap setVersionAlgorithm(DataType value) { 
+      if (value != null && !(value instanceof StringType || value instanceof Coding))
+        throw new Error("Not the right type for ConceptMap.versionAlgorithm[x]: "+value.fhirType());
+      this.versionAlgorithm = value;
       return this;
     }
 
@@ -3398,7 +5023,7 @@ public class ConceptMap extends MetadataResource {
      * @param value A free text natural language description of the concept map from a consumer's perspective.
      */
     public ConceptMap setDescription(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.description = null;
       else {
         if (this.description == null)
@@ -3553,7 +5178,7 @@ public class ConceptMap extends MetadataResource {
      * @param value Explanation of why this concept map is needed and why it has been designed as it has.
      */
     public ConceptMap setPurpose(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.purpose = null;
       else {
         if (this.purpose == null)
@@ -3602,12 +5227,61 @@ public class ConceptMap extends MetadataResource {
      * @param value A copyright statement relating to the concept map and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the concept map.
      */
     public ConceptMap setCopyright(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.copyright = null;
       else {
         if (this.copyright == null)
           this.copyright = new MarkdownType();
         this.copyright.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      if (this.copyrightLabel == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ConceptMap.copyrightLabel");
+        else if (Configuration.doAutoCreate())
+          this.copyrightLabel = new StringType(); // bb
+      return this.copyrightLabel;
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    public boolean hasCopyrightLabel() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public ConceptMap setCopyrightLabelElement(StringType value) { 
+      this.copyrightLabel = value;
+      return this;
+    }
+
+    /**
+     * @return A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public String getCopyrightLabel() { 
+      return this.copyrightLabel == null ? null : this.copyrightLabel.getValue();
+    }
+
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public ConceptMap setCopyrightLabel(String value) { 
+      if (Utilities.noString(value))
+        this.copyrightLabel = null;
+      else {
+        if (this.copyrightLabel == null)
+          this.copyrightLabel = new StringType();
+        this.copyrightLabel.setValue(value);
       }
       return this;
     }
@@ -3894,7 +5568,7 @@ public class ConceptMap extends MetadataResource {
     }
 
     /**
-     * @return {@link #reviewer} (An individual or organization primarily responsible for review of some aspect of the ConceptMap.)
+     * @return {@link #reviewer} (An individual or organization asserted by the publisher to be primarily responsible for review of some aspect of the ConceptMap.)
      */
     public List<ContactDetail> getReviewer() { 
       if (this.reviewer == null)
@@ -3947,7 +5621,7 @@ public class ConceptMap extends MetadataResource {
     }
 
     /**
-     * @return {@link #endorser} (An individual or organization responsible for officially endorsing the ConceptMap for use in some setting.)
+     * @return {@link #endorser} (An individual or organization asserted by the publisher to be responsible for officially endorsing the ConceptMap for use in some setting.)
      */
     public List<ContactDetail> getEndorser() { 
       if (this.endorser == null)
@@ -4050,6 +5724,112 @@ public class ConceptMap extends MetadataResource {
         addRelatedArtifact();
       }
       return getRelatedArtifact().get(0);
+    }
+
+    /**
+     * @return {@link #property} (A property defines a slot through which additional information can be provided about a map from source -> target.)
+     */
+    public List<PropertyComponent> getProperty() { 
+      if (this.property == null)
+        this.property = new ArrayList<PropertyComponent>();
+      return this.property;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ConceptMap setProperty(List<PropertyComponent> theProperty) { 
+      this.property = theProperty;
+      return this;
+    }
+
+    public boolean hasProperty() { 
+      if (this.property == null)
+        return false;
+      for (PropertyComponent item : this.property)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public PropertyComponent addProperty() { //3
+      PropertyComponent t = new PropertyComponent();
+      if (this.property == null)
+        this.property = new ArrayList<PropertyComponent>();
+      this.property.add(t);
+      return t;
+    }
+
+    public ConceptMap addProperty(PropertyComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.property == null)
+        this.property = new ArrayList<PropertyComponent>();
+      this.property.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #property}, creating it if it does not already exist {3}
+     */
+    public PropertyComponent getPropertyFirstRep() { 
+      if (getProperty().isEmpty()) {
+        addProperty();
+      }
+      return getProperty().get(0);
+    }
+
+    /**
+     * @return {@link #additionalAttribute} (An additionalAttribute defines an additional data element found in the source or target data model where the data will come from or be mapped to. Some mappings are based on data in addition to the source data element, where codes in multiple fields are combined to a single field (or vice versa).)
+     */
+    public List<AdditionalAttributeComponent> getAdditionalAttribute() { 
+      if (this.additionalAttribute == null)
+        this.additionalAttribute = new ArrayList<AdditionalAttributeComponent>();
+      return this.additionalAttribute;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ConceptMap setAdditionalAttribute(List<AdditionalAttributeComponent> theAdditionalAttribute) { 
+      this.additionalAttribute = theAdditionalAttribute;
+      return this;
+    }
+
+    public boolean hasAdditionalAttribute() { 
+      if (this.additionalAttribute == null)
+        return false;
+      for (AdditionalAttributeComponent item : this.additionalAttribute)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public AdditionalAttributeComponent addAdditionalAttribute() { //3
+      AdditionalAttributeComponent t = new AdditionalAttributeComponent();
+      if (this.additionalAttribute == null)
+        this.additionalAttribute = new ArrayList<AdditionalAttributeComponent>();
+      this.additionalAttribute.add(t);
+      return t;
+    }
+
+    public ConceptMap addAdditionalAttribute(AdditionalAttributeComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.additionalAttribute == null)
+        this.additionalAttribute = new ArrayList<AdditionalAttributeComponent>();
+      this.additionalAttribute.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #additionalAttribute}, creating it if it does not already exist {3}
+     */
+    public AdditionalAttributeComponent getAdditionalAttributeFirstRep() { 
+      if (getAdditionalAttribute().isEmpty()) {
+        addAdditionalAttribute();
+      }
+      return getAdditionalAttribute().get(0);
     }
 
     /**
@@ -4207,88 +5987,12 @@ public class ConceptMap extends MetadataResource {
       return getGroup().get(0);
     }
 
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getVersionAlgorithmMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public DataType getVersionAlgorithm() { 
-      throw new Error("The resource type \"ConceptMap\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-    /**
-     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public StringType getVersionAlgorithmStringType() { 
-      throw new Error("The resource type \"ConceptMap\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-    public boolean hasVersionAlgorithmStringType() { 
-      return false;////K 
-    }
-    /**
-     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public Coding getVersionAlgorithmCoding() { 
-      throw new Error("The resource type \"ConceptMap\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-    public boolean hasVersionAlgorithmCoding() { 
-      return false;////K 
-    }
-    public boolean hasVersionAlgorithm() { 
-      return false;
-    }
-    /**
-     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public ConceptMap setVersionAlgorithm(DataType value) { 
-      throw new Error("The resource type \"ConceptMap\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getCopyrightLabelMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
-     */
-    public StringType getCopyrightLabelElement() { 
-      throw new Error("The resource type \"ConceptMap\" does not implement the property \"copyrightLabel\"");
-    }
-
-    public boolean hasCopyrightLabelElement() { 
-      return false;
-    }
-    public boolean hasCopyrightLabel() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
-     */
-    public ConceptMap setCopyrightLabelElement(StringType value) { 
-      throw new Error("The resource type \"ConceptMap\" does not implement the property \"copyrightLabel\""); 
-    }
-    public String getCopyrightLabel() { 
-      throw new Error("The resource type \"ConceptMap\" does not implement the property \"copyrightLabel\""); 
-    }
-    /**
-     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
-     */
-    public ConceptMap setCopyrightLabel(String value) { 
-      throw new Error("The resource type \"ConceptMap\" does not implement the property \"copyrightLabel\""); 
-    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this concept map when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this concept map is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the concept map is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this concept map when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the concept map when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the concept map author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
+        children.add(new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which ConceptMap is more current.", 0, 1, versionAlgorithm));
         children.add(new Property("name", "string", "A natural language name identifying the concept map. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the concept map.", 0, 1, title));
         children.add(new Property("status", "code", "The status of this concept map. Enables tracking the life-cycle of the content.", 0, 1, status));
@@ -4301,15 +6005,18 @@ public class ConceptMap extends MetadataResource {
         children.add(new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the concept map is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
         children.add(new Property("purpose", "markdown", "Explanation of why this concept map is needed and why it has been designed as it has.", 0, 1, purpose));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the concept map and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the concept map.", 0, 1, copyright));
+        children.add(new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel));
         children.add(new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
         children.add(new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate));
         children.add(new Property("effectivePeriod", "Period", "The period during which the ConceptMap content was or is planned to be in active use.", 0, 1, effectivePeriod));
         children.add(new Property("topic", "CodeableConcept", "Descriptions related to the content of the ConceptMap. Topics provide a high-level categorization as well as keywords for the ConceptMap that can be useful for filtering and searching.", 0, java.lang.Integer.MAX_VALUE, topic));
         children.add(new Property("author", "ContactDetail", "An individiual or organization primarily involved in the creation and maintenance of the ConceptMap.", 0, java.lang.Integer.MAX_VALUE, author));
         children.add(new Property("editor", "ContactDetail", "An individual or organization primarily responsible for internal coherence of the ConceptMap.", 0, java.lang.Integer.MAX_VALUE, editor));
-        children.add(new Property("reviewer", "ContactDetail", "An individual or organization primarily responsible for review of some aspect of the ConceptMap.", 0, java.lang.Integer.MAX_VALUE, reviewer));
-        children.add(new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the ConceptMap for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser));
+        children.add(new Property("reviewer", "ContactDetail", "An individual or organization asserted by the publisher to be primarily responsible for review of some aspect of the ConceptMap.", 0, java.lang.Integer.MAX_VALUE, reviewer));
+        children.add(new Property("endorser", "ContactDetail", "An individual or organization asserted by the publisher to be responsible for officially endorsing the ConceptMap for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser));
         children.add(new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
+        children.add(new Property("property", "", "A property defines a slot through which additional information can be provided about a map from source -> target.", 0, java.lang.Integer.MAX_VALUE, property));
+        children.add(new Property("additionalAttribute", "", "An additionalAttribute defines an additional data element found in the source or target data model where the data will come from or be mapped to. Some mappings are based on data in addition to the source data element, where codes in multiple fields are combined to a single field (or vice versa).", 0, java.lang.Integer.MAX_VALUE, additionalAttribute));
         children.add(new Property("sourceScope[x]", "uri|canonical(ValueSet)", "Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.  Limits the scope of the map to source codes (ConceptMap.group.element code or valueSet) that are members of this value set.", 0, 1, sourceScope));
         children.add(new Property("targetScope[x]", "uri|canonical(ValueSet)", "Identifier for the target value set that provides important context about how the mapping choices are made.  Limits the scope of the map to target codes (ConceptMap.group.element.target code or valueSet) that are members of this value set.", 0, 1, targetScope));
         children.add(new Property("group", "", "A group of mappings that all have the same source and target system.", 0, java.lang.Integer.MAX_VALUE, group));
@@ -4321,6 +6028,10 @@ public class ConceptMap extends MetadataResource {
         case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this concept map when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this concept map is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the concept map is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this concept map when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the concept map when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the concept map author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
+        case -115699031: /*versionAlgorithm[x]*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which ConceptMap is more current.", 0, 1, versionAlgorithm);
+        case 1508158071: /*versionAlgorithm*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which ConceptMap is more current.", 0, 1, versionAlgorithm);
+        case 1836908904: /*versionAlgorithmString*/  return new Property("versionAlgorithm[x]", "string", "Indicates the mechanism used to compare versions to determine which ConceptMap is more current.", 0, 1, versionAlgorithm);
+        case 1373807809: /*versionAlgorithmCoding*/  return new Property("versionAlgorithm[x]", "Coding", "Indicates the mechanism used to compare versions to determine which ConceptMap is more current.", 0, 1, versionAlgorithm);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the concept map. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the concept map.", 0, 1, title);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this concept map. Enables tracking the life-cycle of the content.", 0, 1, status);
@@ -4333,15 +6044,18 @@ public class ConceptMap extends MetadataResource {
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the concept map is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explanation of why this concept map is needed and why it has been designed as it has.", 0, 1, purpose);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the concept map and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the concept map.", 0, 1, copyright);
+        case 765157229: /*copyrightLabel*/  return new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel);
         case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
         case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate);
         case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the ConceptMap content was or is planned to be in active use.", 0, 1, effectivePeriod);
         case 110546223: /*topic*/  return new Property("topic", "CodeableConcept", "Descriptions related to the content of the ConceptMap. Topics provide a high-level categorization as well as keywords for the ConceptMap that can be useful for filtering and searching.", 0, java.lang.Integer.MAX_VALUE, topic);
         case -1406328437: /*author*/  return new Property("author", "ContactDetail", "An individiual or organization primarily involved in the creation and maintenance of the ConceptMap.", 0, java.lang.Integer.MAX_VALUE, author);
         case -1307827859: /*editor*/  return new Property("editor", "ContactDetail", "An individual or organization primarily responsible for internal coherence of the ConceptMap.", 0, java.lang.Integer.MAX_VALUE, editor);
-        case -261190139: /*reviewer*/  return new Property("reviewer", "ContactDetail", "An individual or organization primarily responsible for review of some aspect of the ConceptMap.", 0, java.lang.Integer.MAX_VALUE, reviewer);
-        case 1740277666: /*endorser*/  return new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the ConceptMap for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser);
+        case -261190139: /*reviewer*/  return new Property("reviewer", "ContactDetail", "An individual or organization asserted by the publisher to be primarily responsible for review of some aspect of the ConceptMap.", 0, java.lang.Integer.MAX_VALUE, reviewer);
+        case 1740277666: /*endorser*/  return new Property("endorser", "ContactDetail", "An individual or organization asserted by the publisher to be responsible for officially endorsing the ConceptMap for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser);
         case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
+        case -993141291: /*property*/  return new Property("property", "", "A property defines a slot through which additional information can be provided about a map from source -> target.", 0, java.lang.Integer.MAX_VALUE, property);
+        case -1004532171: /*additionalAttribute*/  return new Property("additionalAttribute", "", "An additionalAttribute defines an additional data element found in the source or target data model where the data will come from or be mapped to. Some mappings are based on data in addition to the source data element, where codes in multiple fields are combined to a single field (or vice versa).", 0, java.lang.Integer.MAX_VALUE, additionalAttribute);
         case -1850861849: /*sourceScope[x]*/  return new Property("sourceScope[x]", "uri|canonical(ValueSet)", "Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.  Limits the scope of the map to source codes (ConceptMap.group.element code or valueSet) that are members of this value set.", 0, 1, sourceScope);
         case -96223495: /*sourceScope*/  return new Property("sourceScope[x]", "uri|canonical(ValueSet)", "Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.  Limits the scope of the map to source codes (ConceptMap.group.element code or valueSet) that are members of this value set.", 0, 1, sourceScope);
         case -1850867789: /*sourceScopeUri*/  return new Property("sourceScope[x]", "uri", "Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.  Limits the scope of the map to source codes (ConceptMap.group.element code or valueSet) that are members of this value set.", 0, 1, sourceScope);
@@ -4362,6 +6076,7 @@ public class ConceptMap extends MetadataResource {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case 1508158071: /*versionAlgorithm*/ return this.versionAlgorithm == null ? new Base[0] : new Base[] {this.versionAlgorithm}; // DataType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
@@ -4374,6 +6089,7 @@ public class ConceptMap extends MetadataResource {
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // MarkdownType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
+        case 765157229: /*copyrightLabel*/ return this.copyrightLabel == null ? new Base[0] : new Base[] {this.copyrightLabel}; // StringType
         case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
         case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateType
         case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
@@ -4383,6 +6099,8 @@ public class ConceptMap extends MetadataResource {
         case -261190139: /*reviewer*/ return this.reviewer == null ? new Base[0] : this.reviewer.toArray(new Base[this.reviewer.size()]); // ContactDetail
         case 1740277666: /*endorser*/ return this.endorser == null ? new Base[0] : this.endorser.toArray(new Base[this.endorser.size()]); // ContactDetail
         case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
+        case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // PropertyComponent
+        case -1004532171: /*additionalAttribute*/ return this.additionalAttribute == null ? new Base[0] : this.additionalAttribute.toArray(new Base[this.additionalAttribute.size()]); // AdditionalAttributeComponent
         case -96223495: /*sourceScope*/ return this.sourceScope == null ? new Base[0] : new Base[] {this.sourceScope}; // DataType
         case -2096156861: /*targetScope*/ return this.targetScope == null ? new Base[0] : new Base[] {this.targetScope}; // DataType
         case 98629247: /*group*/ return this.group == null ? new Base[0] : this.group.toArray(new Base[this.group.size()]); // ConceptMapGroupComponent
@@ -4402,6 +6120,9 @@ public class ConceptMap extends MetadataResource {
           return value;
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 1508158071: // versionAlgorithm
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
@@ -4440,6 +6161,9 @@ public class ConceptMap extends MetadataResource {
         case 1522889671: // copyright
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
+        case 765157229: // copyrightLabel
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
+          return value;
         case 223539345: // approvalDate
           this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
@@ -4467,6 +6191,12 @@ public class ConceptMap extends MetadataResource {
         case 666807069: // relatedArtifact
           this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
+        case -993141291: // property
+          this.getProperty().add((PropertyComponent) value); // PropertyComponent
+          return value;
+        case -1004532171: // additionalAttribute
+          this.getAdditionalAttribute().add((AdditionalAttributeComponent) value); // AdditionalAttributeComponent
+          return value;
         case -96223495: // sourceScope
           this.sourceScope = TypeConvertor.castToType(value); // DataType
           return value;
@@ -4489,6 +6219,8 @@ public class ConceptMap extends MetadataResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
@@ -4514,6 +6246,8 @@ public class ConceptMap extends MetadataResource {
           this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("approvalDate")) {
           this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
@@ -4532,6 +6266,10 @@ public class ConceptMap extends MetadataResource {
           this.getEndorser().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("relatedArtifact")) {
           this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
+        } else if (name.equals("property")) {
+          this.getProperty().add((PropertyComponent) value);
+        } else if (name.equals("additionalAttribute")) {
+          this.getAdditionalAttribute().add((AdditionalAttributeComponent) value);
         } else if (name.equals("sourceScope[x]")) {
           this.sourceScope = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("targetScope[x]")) {
@@ -4549,6 +6287,8 @@ public class ConceptMap extends MetadataResource {
         case 116079:  return getUrlElement();
         case -1618432855:  return addIdentifier(); 
         case 351608024:  return getVersionElement();
+        case -115699031:  return getVersionAlgorithm();
+        case 1508158071:  return getVersionAlgorithm();
         case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
         case -892481550:  return getStatusElement();
@@ -4561,6 +6301,7 @@ public class ConceptMap extends MetadataResource {
         case -507075711:  return addJurisdiction(); 
         case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
+        case 765157229:  return getCopyrightLabelElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
         case -403934648:  return getEffectivePeriod();
@@ -4570,6 +6311,8 @@ public class ConceptMap extends MetadataResource {
         case -261190139:  return addReviewer(); 
         case 1740277666:  return addEndorser(); 
         case 666807069:  return addRelatedArtifact(); 
+        case -993141291:  return addProperty(); 
+        case -1004532171:  return addAdditionalAttribute(); 
         case -1850861849:  return getSourceScope();
         case -96223495:  return getSourceScope();
         case -2079438243:  return getTargetScope();
@@ -4586,6 +6329,7 @@ public class ConceptMap extends MetadataResource {
         case 116079: /*url*/ return new String[] {"uri"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case 1508158071: /*versionAlgorithm*/ return new String[] {"string", "Coding"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"code"};
@@ -4598,6 +6342,7 @@ public class ConceptMap extends MetadataResource {
         case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
         case -220463842: /*purpose*/ return new String[] {"markdown"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
+        case 765157229: /*copyrightLabel*/ return new String[] {"string"};
         case 223539345: /*approvalDate*/ return new String[] {"date"};
         case -1687512484: /*lastReviewDate*/ return new String[] {"date"};
         case -403934648: /*effectivePeriod*/ return new String[] {"Period"};
@@ -4607,6 +6352,8 @@ public class ConceptMap extends MetadataResource {
         case -261190139: /*reviewer*/ return new String[] {"ContactDetail"};
         case 1740277666: /*endorser*/ return new String[] {"ContactDetail"};
         case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
+        case -993141291: /*property*/ return new String[] {};
+        case -1004532171: /*additionalAttribute*/ return new String[] {};
         case -96223495: /*sourceScope*/ return new String[] {"uri", "canonical"};
         case -2096156861: /*targetScope*/ return new String[] {"uri", "canonical"};
         case 98629247: /*group*/ return new String[] {};
@@ -4625,6 +6372,14 @@ public class ConceptMap extends MetadataResource {
         }
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.version");
+        }
+        else if (name.equals("versionAlgorithmString")) {
+          this.versionAlgorithm = new StringType();
+          return this.versionAlgorithm;
+        }
+        else if (name.equals("versionAlgorithmCoding")) {
+          this.versionAlgorithm = new Coding();
+          return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.name");
@@ -4662,6 +6417,9 @@ public class ConceptMap extends MetadataResource {
         else if (name.equals("copyright")) {
           throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.copyright");
         }
+        else if (name.equals("copyrightLabel")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.copyrightLabel");
+        }
         else if (name.equals("approvalDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.approvalDate");
         }
@@ -4689,6 +6447,12 @@ public class ConceptMap extends MetadataResource {
         }
         else if (name.equals("relatedArtifact")) {
           return addRelatedArtifact();
+        }
+        else if (name.equals("property")) {
+          return addProperty();
+        }
+        else if (name.equals("additionalAttribute")) {
+          return addAdditionalAttribute();
         }
         else if (name.equals("sourceScopeUri")) {
           this.sourceScope = new UriType();
@@ -4733,6 +6497,7 @@ public class ConceptMap extends MetadataResource {
             dst.identifier.add(i.copy());
         };
         dst.version = version == null ? null : version.copy();
+        dst.versionAlgorithm = versionAlgorithm == null ? null : versionAlgorithm.copy();
         dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
         dst.status = status == null ? null : status.copy();
@@ -4757,6 +6522,7 @@ public class ConceptMap extends MetadataResource {
         };
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
+        dst.copyrightLabel = copyrightLabel == null ? null : copyrightLabel.copy();
         dst.approvalDate = approvalDate == null ? null : approvalDate.copy();
         dst.lastReviewDate = lastReviewDate == null ? null : lastReviewDate.copy();
         dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
@@ -4790,6 +6556,16 @@ public class ConceptMap extends MetadataResource {
           for (RelatedArtifact i : relatedArtifact)
             dst.relatedArtifact.add(i.copy());
         };
+        if (property != null) {
+          dst.property = new ArrayList<PropertyComponent>();
+          for (PropertyComponent i : property)
+            dst.property.add(i.copy());
+        };
+        if (additionalAttribute != null) {
+          dst.additionalAttribute = new ArrayList<AdditionalAttributeComponent>();
+          for (AdditionalAttributeComponent i : additionalAttribute)
+            dst.additionalAttribute.add(i.copy());
+        };
         dst.sourceScope = sourceScope == null ? null : sourceScope.copy();
         dst.targetScope = targetScope == null ? null : targetScope.copy();
         if (group != null) {
@@ -4811,14 +6587,16 @@ public class ConceptMap extends MetadataResource {
           return false;
         ConceptMap o = (ConceptMap) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
-           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(status, o.status, true)
-           && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
-           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
-           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
+           && compareDeep(versionAlgorithm, o.versionAlgorithm, true) && compareDeep(name, o.name, true) && compareDeep(title, o.title, true)
+           && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true)
+           && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true)
+           && compareDeep(useContext, o.useContext, true) && compareDeep(jurisdiction, o.jurisdiction, true)
+           && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true) && compareDeep(copyrightLabel, o.copyrightLabel, true)
            && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
            && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true)
            && compareDeep(editor, o.editor, true) && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true)
-           && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(sourceScope, o.sourceScope, true)
+           && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(property, o.property, true)
+           && compareDeep(additionalAttribute, o.additionalAttribute, true) && compareDeep(sourceScope, o.sourceScope, true)
            && compareDeep(targetScope, o.targetScope, true) && compareDeep(group, o.group, true);
       }
 
@@ -4832,16 +6610,17 @@ public class ConceptMap extends MetadataResource {
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
            && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
            && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
-           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
-           && compareValues(lastReviewDate, o.lastReviewDate, true);
+           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(copyrightLabel, o.copyrightLabel, true)
+           && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , name, title, status, experimental, date, publisher, contact, description, useContext
-          , jurisdiction, purpose, copyright, approvalDate, lastReviewDate, effectivePeriod
-          , topic, author, editor, reviewer, endorser, relatedArtifact, sourceScope, targetScope
-          , group);
+          , versionAlgorithm, name, title, status, experimental, date, publisher, contact
+          , description, useContext, jurisdiction, purpose, copyright, copyrightLabel, approvalDate
+          , lastReviewDate, effectivePeriod, topic, author, editor, reviewer, endorser, relatedArtifact
+          , property, additionalAttribute, sourceScope, targetScope, group);
       }
 
   @Override
@@ -4886,10 +6665,10 @@ public class ConceptMap extends MetadataResource {
 * [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
 </b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context-quantity", path="(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A quantity- or range-valued use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A quantity- or range-valued use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A quantity- or range-valued use context assigned to the charge item definition\r\n* [Citation](citation.html): A quantity- or range-valued use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A quantity- or range-valued use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A quantity- or range-valued use context assigned to the event definition\r\n* [Evidence](evidence.html): A quantity- or range-valued use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A quantity- or range-valued use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A quantity- or range-valued use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A quantity- or range-valued use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide\r\n* [Library](library.html): A quantity- or range-valued use context assigned to the library\r\n* [Measure](measure.html): A quantity- or range-valued use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A quantity- or range-valued use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A quantity- or range-valued use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A quantity- or range-valued use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A quantity- or range-valued use context assigned to the test script\r\n* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set\r\n", type="quantity" )
+  @SearchParamDefinition(name="context-quantity", path="(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A quantity- or range-valued use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A quantity- or range-valued use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A quantity- or range-valued use context assigned to the charge item definition\r\n* [Citation](citation.html): A quantity- or range-valued use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A quantity- or range-valued use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A quantity- or range-valued use context assigned to the event definition\r\n* [Evidence](evidence.html): A quantity- or range-valued use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A quantity- or range-valued use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A quantity- or range-valued use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A quantity- or range-valued use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide\r\n* [Library](library.html): A quantity- or range-valued use context assigned to the library\r\n* [Measure](measure.html): A quantity- or range-valued use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A quantity- or range-valued use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A quantity- or range-valued use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A quantity- or range-valued use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A quantity- or range-valued use context assigned to the test script\r\n* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set\r\n", type="quantity" )
   public static final String SP_CONTEXT_QUANTITY = "context-quantity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
@@ -4928,7 +6707,7 @@ public class ConceptMap extends MetadataResource {
 * [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
 </b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
@@ -5222,10 +7001,10 @@ public class ConceptMap extends MetadataResource {
 * [ValueSet](valueset.html): A use context assigned to the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context", path="(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A use context assigned to the charge item definition\r\n* [Citation](citation.html): A use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A use context assigned to the event definition\r\n* [Evidence](evidence.html): A use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [Library](library.html): A use context assigned to the library\r\n* [Measure](measure.html): A use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A use context assigned to the test script\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
+  @SearchParamDefinition(name="context", path="(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A use context assigned to the charge item definition\r\n* [Citation](citation.html): A use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A use context assigned to the event definition\r\n* [Evidence](evidence.html): A use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [Library](library.html): A use context assigned to the library\r\n* [Measure](measure.html): A use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A use context assigned to the test script\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
   public static final String SP_CONTEXT = "context";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>context</b>
@@ -5264,7 +7043,7 @@ public class ConceptMap extends MetadataResource {
 * [ValueSet](valueset.html): A use context assigned to the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
@@ -5440,6 +7219,7 @@ public class ConceptMap extends MetadataResource {
 
 * [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
 * [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement
 * [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
 * [Citation](citation.html): External identifier for the citation
 * [CodeSystem](codesystem.html): External identifier for the code system
@@ -5450,15 +7230,19 @@ public class ConceptMap extends MetadataResource {
 * [EvidenceReport](evidencereport.html): External identifier for the evidence report
 * [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
 * [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [GraphDefinition](graphdefinition.html): External identifier for the graph definition
+* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide
 * [Library](library.html): External identifier for the library
 * [Measure](measure.html): External identifier for the measure
 * [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
 * [NamingSystem](namingsystem.html): External identifier for the naming system
 * [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [OperationDefinition](operationdefinition.html): External identifier for the search parameter
 * [PlanDefinition](plandefinition.html): External identifier for the plan definition
 * [Questionnaire](questionnaire.html): External identifier for the questionnaire
 * [Requirements](requirements.html): External identifier for the requirements
+* [SearchParameter](searchparameter.html): External identifier for the search parameter
 * [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
@@ -5468,10 +7252,10 @@ public class ConceptMap extends MetadataResource {
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition\r\n* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition\r\n* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition\r\n* [Citation](citation.html): External identifier for the citation\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition\r\n* [EventDefinition](eventdefinition.html): External identifier for the event definition\r\n* [Evidence](evidence.html): External identifier for the evidence\r\n* [EvidenceReport](evidencereport.html): External identifier for the evidence report\r\n* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable\r\n* [ExampleScenario](examplescenario.html): External identifier for the example scenario\r\n* [Library](library.html): External identifier for the library\r\n* [Measure](measure.html): External identifier for the measure\r\n* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition\r\n* [PlanDefinition](plandefinition.html): External identifier for the plan definition\r\n* [Questionnaire](questionnaire.html): External identifier for the questionnaire\r\n* [Requirements](requirements.html): External identifier for the requirements\r\n* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [TestScript](testscript.html): External identifier for the test script\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition\r\n* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition\r\n* [Citation](citation.html): External identifier for the citation\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition\r\n* [EventDefinition](eventdefinition.html): External identifier for the event definition\r\n* [Evidence](evidence.html): External identifier for the evidence\r\n* [EvidenceReport](evidencereport.html): External identifier for the evidence report\r\n* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable\r\n* [ExampleScenario](examplescenario.html): External identifier for the example scenario\r\n* [GraphDefinition](graphdefinition.html): External identifier for the graph definition\r\n* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide\r\n* [Library](library.html): External identifier for the library\r\n* [Measure](measure.html): External identifier for the measure\r\n* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition\r\n* [OperationDefinition](operationdefinition.html): External identifier for the search parameter\r\n* [PlanDefinition](plandefinition.html): External identifier for the plan definition\r\n* [Questionnaire](questionnaire.html): External identifier for the questionnaire\r\n* [Requirements](requirements.html): External identifier for the requirements\r\n* [SearchParameter](searchparameter.html): External identifier for the search parameter\r\n* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [TestScript](testscript.html): External identifier for the test script\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -5480,6 +7264,7 @@ public class ConceptMap extends MetadataResource {
 
 * [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
 * [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement
 * [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
 * [Citation](citation.html): External identifier for the citation
 * [CodeSystem](codesystem.html): External identifier for the code system
@@ -5490,15 +7275,19 @@ public class ConceptMap extends MetadataResource {
 * [EvidenceReport](evidencereport.html): External identifier for the evidence report
 * [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
 * [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [GraphDefinition](graphdefinition.html): External identifier for the graph definition
+* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide
 * [Library](library.html): External identifier for the library
 * [Measure](measure.html): External identifier for the measure
 * [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
 * [NamingSystem](namingsystem.html): External identifier for the naming system
 * [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [OperationDefinition](operationdefinition.html): External identifier for the search parameter
 * [PlanDefinition](plandefinition.html): External identifier for the plan definition
 * [Questionnaire](questionnaire.html): External identifier for the questionnaire
 * [Requirements](requirements.html): External identifier for the requirements
+* [SearchParameter](searchparameter.html): External identifier for the search parameter
 * [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
@@ -5508,7 +7297,7 @@ public class ConceptMap extends MetadataResource {
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -6094,24 +7883,24 @@ public class ConceptMap extends MetadataResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
  /**
-   * Search parameter: <b>dependson</b>
+   * Search parameter: <b>mapping-property</b>
    * <p>
    * Description: <b>Other properties required for this mapping</b><br>
    * Type: <b>uri</b><br>
-   * Path: <b>ConceptMap.group.element.target.dependsOn.property</b><br>
+   * Path: <b>ConceptMap.property.uri</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="dependson", path="ConceptMap.group.element.target.dependsOn.property", description="Other properties required for this mapping", type="uri" )
-  public static final String SP_DEPENDSON = "dependson";
+  @SearchParamDefinition(name="mapping-property", path="ConceptMap.property.uri", description="Other properties required for this mapping", type="uri" )
+  public static final String SP_MAPPING_PROPERTY = "mapping-property";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>dependson</b>
+   * <b>Fluent Client</b> search parameter constant for <b>mapping-property</b>
    * <p>
    * Description: <b>Other properties required for this mapping</b><br>
    * Type: <b>uri</b><br>
-   * Path: <b>ConceptMap.group.element.target.dependsOn.property</b><br>
+   * Path: <b>ConceptMap.property.uri</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam DEPENDSON = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_DEPENDSON);
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam MAPPING_PROPERTY = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_MAPPING_PROPERTY);
 
  /**
    * Search parameter: <b>other-map</b>
@@ -6138,26 +7927,6 @@ public class ConceptMap extends MetadataResource {
    * the path value of "<b>ConceptMap:other-map</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_OTHER_MAP = new ca.uhn.fhir.model.api.Include("ConceptMap:other-map").toLocked();
-
- /**
-   * Search parameter: <b>product</b>
-   * <p>
-   * Description: <b>Other properties that this mapping also produces</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ConceptMap.group.element.target.product.property</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="product", path="ConceptMap.group.element.target.product.property", description="Other properties that this mapping also produces", type="uri" )
-  public static final String SP_PRODUCT = "product";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>product</b>
-   * <p>
-   * Description: <b>Other properties that this mapping also produces</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ConceptMap.group.element.target.product.property</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam PRODUCT = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_PRODUCT);
 
  /**
    * Search parameter: <b>source-code</b>
@@ -6363,7 +8132,7 @@ public class ConceptMap extends MetadataResource {
    * Path: <b>ActivityDefinition.relatedArtifact.where(type='derived-from').resource | CodeSystem.relatedArtifact.where(type='derived-from').resource | ConceptMap.relatedArtifact.where(type='derived-from').resource | EventDefinition.relatedArtifact.where(type='derived-from').resource | EvidenceVariable.relatedArtifact.where(type='derived-from').resource | Library.relatedArtifact.where(type='derived-from').resource | Measure.relatedArtifact.where(type='derived-from').resource | NamingSystem.relatedArtifact.where(type='derived-from').resource | PlanDefinition.relatedArtifact.where(type='derived-from').resource | ValueSet.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="derived-from", path="ActivityDefinition.relatedArtifact.where(type='derived-from').resource | CodeSystem.relatedArtifact.where(type='derived-from').resource | ConceptMap.relatedArtifact.where(type='derived-from').resource | EventDefinition.relatedArtifact.where(type='derived-from').resource | EvidenceVariable.relatedArtifact.where(type='derived-from').resource | Library.relatedArtifact.where(type='derived-from').resource | Measure.relatedArtifact.where(type='derived-from').resource | NamingSystem.relatedArtifact.where(type='derived-from').resource | PlanDefinition.relatedArtifact.where(type='derived-from').resource | ValueSet.relatedArtifact.where(type='derived-from').resource", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): What resource is being referenced\r\n* [CodeSystem](codesystem.html): A resource that the CodeSystem is derived from\r\n* [ConceptMap](conceptmap.html): A resource that the ConceptMap is derived from\r\n* [EventDefinition](eventdefinition.html): What resource is being referenced\r\n* [EvidenceVariable](evidencevariable.html): What resource is being referenced\r\n* [Library](library.html): What resource is being referenced\r\n* [Measure](measure.html): What resource is being referenced\r\n* [NamingSystem](namingsystem.html): A resource that the NamingSystem is derived from\r\n* [PlanDefinition](plandefinition.html): What resource is being referenced\r\n* [ValueSet](valueset.html): A resource that the ValueSet is derived from\r\n", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="derived-from", path="ActivityDefinition.relatedArtifact.where(type='derived-from').resource | CodeSystem.relatedArtifact.where(type='derived-from').resource | ConceptMap.relatedArtifact.where(type='derived-from').resource | EventDefinition.relatedArtifact.where(type='derived-from').resource | EvidenceVariable.relatedArtifact.where(type='derived-from').resource | Library.relatedArtifact.where(type='derived-from').resource | Measure.relatedArtifact.where(type='derived-from').resource | NamingSystem.relatedArtifact.where(type='derived-from').resource | PlanDefinition.relatedArtifact.where(type='derived-from').resource | ValueSet.relatedArtifact.where(type='derived-from').resource", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): What resource is being referenced\r\n* [CodeSystem](codesystem.html): A resource that the CodeSystem is derived from\r\n* [ConceptMap](conceptmap.html): A resource that the ConceptMap is derived from\r\n* [EventDefinition](eventdefinition.html): What resource is being referenced\r\n* [EvidenceVariable](evidencevariable.html): What resource is being referenced\r\n* [Library](library.html): What resource is being referenced\r\n* [Measure](measure.html): What resource is being referenced\r\n* [NamingSystem](namingsystem.html): A resource that the NamingSystem is derived from\r\n* [PlanDefinition](plandefinition.html): What resource is being referenced\r\n* [ValueSet](valueset.html): A resource that the ValueSet is derived from\r\n", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BiologicallyDerivedProductDispense.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceAssociation.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentReference.class, Encounter.class, EncounterHistory.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryItem.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationStatement.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Parameters.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestPlan.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DERIVED_FROM = "derived-from";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
@@ -6461,7 +8230,7 @@ public class ConceptMap extends MetadataResource {
    * Path: <b>ActivityDefinition.relatedArtifact.where(type='predecessor').resource | CodeSystem.relatedArtifact.where(type='predecessor').resource | ConceptMap.relatedArtifact.where(type='predecessor').resource | EventDefinition.relatedArtifact.where(type='predecessor').resource | EvidenceVariable.relatedArtifact.where(type='predecessor').resource | Library.relatedArtifact.where(type='predecessor').resource | Measure.relatedArtifact.where(type='predecessor').resource | NamingSystem.relatedArtifact.where(type='predecessor').resource | PlanDefinition.relatedArtifact.where(type='predecessor').resource | ValueSet.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="predecessor", path="ActivityDefinition.relatedArtifact.where(type='predecessor').resource | CodeSystem.relatedArtifact.where(type='predecessor').resource | ConceptMap.relatedArtifact.where(type='predecessor').resource | EventDefinition.relatedArtifact.where(type='predecessor').resource | EvidenceVariable.relatedArtifact.where(type='predecessor').resource | Library.relatedArtifact.where(type='predecessor').resource | Measure.relatedArtifact.where(type='predecessor').resource | NamingSystem.relatedArtifact.where(type='predecessor').resource | PlanDefinition.relatedArtifact.where(type='predecessor').resource | ValueSet.relatedArtifact.where(type='predecessor').resource", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): What resource is being referenced\r\n* [CodeSystem](codesystem.html): The predecessor of the CodeSystem\r\n* [ConceptMap](conceptmap.html): The predecessor of the ConceptMap\r\n* [EventDefinition](eventdefinition.html): What resource is being referenced\r\n* [EvidenceVariable](evidencevariable.html): What resource is being referenced\r\n* [Library](library.html): What resource is being referenced\r\n* [Measure](measure.html): What resource is being referenced\r\n* [NamingSystem](namingsystem.html): The predecessor of the NamingSystem\r\n* [PlanDefinition](plandefinition.html): What resource is being referenced\r\n* [ValueSet](valueset.html): The predecessor of the ValueSet\r\n", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="predecessor", path="ActivityDefinition.relatedArtifact.where(type='predecessor').resource | CodeSystem.relatedArtifact.where(type='predecessor').resource | ConceptMap.relatedArtifact.where(type='predecessor').resource | EventDefinition.relatedArtifact.where(type='predecessor').resource | EvidenceVariable.relatedArtifact.where(type='predecessor').resource | Library.relatedArtifact.where(type='predecessor').resource | Measure.relatedArtifact.where(type='predecessor').resource | NamingSystem.relatedArtifact.where(type='predecessor').resource | PlanDefinition.relatedArtifact.where(type='predecessor').resource | ValueSet.relatedArtifact.where(type='predecessor').resource", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): What resource is being referenced\r\n* [CodeSystem](codesystem.html): The predecessor of the CodeSystem\r\n* [ConceptMap](conceptmap.html): The predecessor of the ConceptMap\r\n* [EventDefinition](eventdefinition.html): What resource is being referenced\r\n* [EvidenceVariable](evidencevariable.html): What resource is being referenced\r\n* [Library](library.html): What resource is being referenced\r\n* [Measure](measure.html): What resource is being referenced\r\n* [NamingSystem](namingsystem.html): The predecessor of the NamingSystem\r\n* [PlanDefinition](plandefinition.html): What resource is being referenced\r\n* [ValueSet](valueset.html): The predecessor of the ValueSet\r\n", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BiologicallyDerivedProductDispense.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceAssociation.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentReference.class, Encounter.class, EncounterHistory.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryItem.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationStatement.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Parameters.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestPlan.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PREDECESSOR = "predecessor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
@@ -6535,5 +8304,63 @@ public class ConceptMap extends MetadataResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TOPIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TOPIC);
 
+  public String getAttributeUri(String code) {
+    if (code == null) {
+      return null;
+    }
+    for (AdditionalAttributeComponent aa : getAdditionalAttribute()) {
+      if (code.equals(aa.getCode())) {
+        return aa.hasUri() ? aa.getUri() : code;
+      }
+    }
+    return code;
+  }
+
+  public String registerAttribute(String uri) {
+    if (uri == null) {
+      return null;
+    }
+    // determine a default code
+    String t = tail(uri).replace("-", "");
+    if (Utilities.noString(t))
+      t = "code";      
+    String code = t;
+    int i = 0;
+    while (alreadyExistsAsCode(code)) {
+      i++;
+      code = t + i;
+    }
+    
+    for (AdditionalAttributeComponent aa : getAdditionalAttribute()) {
+      if (uri.equals(aa.getUri())) {
+        if (!aa.hasCode()) {
+          aa.setCode(code);
+        }
+        return aa.getCode();
+      }
+    }
+    addAdditionalAttribute().setUri(uri).setCode(code);
+    return code;
+  }
+
+  private boolean alreadyExistsAsCode(String code) {
+    for (PropertyComponent prop : getProperty()) {
+      if (code.equals(prop.getCode())) {
+        return true;
+      }          
+    }
+    for (AdditionalAttributeComponent prop : getAdditionalAttribute()) {
+      if (code.equals(prop.getCode())) {
+        return true;
+      }          
+    }
+    return false;
+  }
+
+  private String tail(String uri) {
+    return uri.contains("/") ? uri.substring(uri.lastIndexOf("/")+1) : uri;
+  }
+
 
 }
+

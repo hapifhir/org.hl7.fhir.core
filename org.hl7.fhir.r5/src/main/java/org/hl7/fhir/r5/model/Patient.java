@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,7 +67,7 @@ public class Patient extends DomainResource {
          */
         REFER, 
         /**
-         * The patient resource containing this link is in use and valid, but points to another patient resource that is known to contain data about the same person. Data in this resource might overlap or contradict information found in the other patient resource. This link does not indicate any relative importance of the resources concerned, and both should be regarded as equally valid.
+         * The patient resource containing this link is in use and valid, but points to another Patient or RelatedPerson resource that is known to contain data about the same person. Data in this resource might overlap or contradict information found in the other Patient/RelatedPerson resource. This link does not indicate any relative importance of the resources concerned, and both should be regarded as equally valid.
          */
         SEEALSO, 
         /**
@@ -115,7 +115,7 @@ public class Patient extends DomainResource {
             case REPLACEDBY: return "The patient resource containing this link must no longer be used. The link points forward to another patient resource that must be used in lieu of the patient resource that contains this link.";
             case REPLACES: return "The patient resource containing this link is the current active patient record. The link points back to an inactive patient resource that has been merged into this resource, and should be consulted to retrieve additional referenced information.";
             case REFER: return "The patient resource containing this link is in use and valid but not considered the main source of information about a patient. The link points forward to another patient resource that should be consulted to retrieve additional patient information.";
-            case SEEALSO: return "The patient resource containing this link is in use and valid, but points to another patient resource that is known to contain data about the same person. Data in this resource might overlap or contradict information found in the other patient resource. This link does not indicate any relative importance of the resources concerned, and both should be regarded as equally valid.";
+            case SEEALSO: return "The patient resource containing this link is in use and valid, but points to another Patient or RelatedPerson resource that is known to contain data about the same person. Data in this resource might overlap or contradict information found in the other Patient/RelatedPerson resource. This link does not indicate any relative importance of the resources concerned, and both should be regarded as equally valid.";
             case NULL: return null;
             default: return "?";
           }
@@ -714,7 +714,7 @@ public class Patient extends DomainResource {
          */
         @Child(name = "language", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The language which can be used to communicate with the patient about his or her health", formalDefinition="The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-AU\" for Australian English." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-languages")
         protected CodeableConcept language;
 
         /**
@@ -2510,17 +2510,17 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
    * <p>
    * Description: <b>The date of death has been provided and satisfies this search value</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>(Patient.deceased as dateTime)</b><br>
+   * Path: <b>(Patient.deceased.ofType(dateTime))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="death-date", path="(Patient.deceased as dateTime)", description="The date of death has been provided and satisfies this search value", type="date" )
+  @SearchParamDefinition(name="death-date", path="(Patient.deceased.ofType(dateTime))", description="The date of death has been provided and satisfies this search value", type="date" )
   public static final String SP_DEATH_DATE = "death-date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>death-date</b>
    * <p>
    * Description: <b>The date of death has been provided and satisfies this search value</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>(Patient.deceased as dateTime)</b><br>
+   * Path: <b>(Patient.deceased.ofType(dateTime))</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DEATH_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DEATH_DATE);
@@ -3153,65 +3153,6 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);
 
- /**
-   * Search parameter: <b>age</b>
-   * <p>
-   * Description: <b>Searches for patients based on age as calculated based on current date and date of birth.  Deceased patients are excluded from the search.</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>Patient.birthDate</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="age", path="Patient.birthDate", description="Searches for patients based on age as calculated based on current date and date of birth.  Deceased patients are excluded from the search.", type="number" )
-  public static final String SP_AGE = "age";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>age</b>
-   * <p>
-   * Description: <b>Searches for patients based on age as calculated based on current date and date of birth.  Deceased patients are excluded from the search.</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>Patient.birthDate</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.NumberClientParam AGE = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_AGE);
-
- /**
-   * Search parameter: <b>birthOrderBoolean</b>
-   * <p>
-   * Description: <b>Search based on whether a patient was part of a multiple birth or not.</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.multipleBirthBoolean | Patient.multipleBirthInteger</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="birthOrderBoolean", path="Patient.multipleBirthBoolean | Patient.multipleBirthInteger", description="Search based on whether a patient was part of a multiple birth or not.", type="token" )
-  public static final String SP_BIRTHORDERBOOLEAN = "birthOrderBoolean";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>birthOrderBoolean</b>
-   * <p>
-   * Description: <b>Search based on whether a patient was part of a multiple birth or not.</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.multipleBirthBoolean | Patient.multipleBirthInteger</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIRTHORDERBOOLEAN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIRTHORDERBOOLEAN);
-
- /**
-   * Search parameter: <b>mothersMaidenName</b>
-   * <p>
-   * Description: <b>Search based on patient's mother's maiden name</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName').value</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="mothersMaidenName", path="Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName').value", description="Search based on patient's mother's maiden name", type="string" )
-  public static final String SP_MOTHERSMAIDENNAME = "mothersMaidenName";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>mothersMaidenName</b>
-   * <p>
-   * Description: <b>Search based on patient's mother's maiden name</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName').value</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam MOTHERSMAIDENNAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_MOTHERSMAIDENNAME);
-
 
 }
+

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,19 +53,163 @@ import ca.uhn.fhir.model.api.annotation.Block;
 @ResourceDef(name="GenomicStudy", profile="http://hl7.org/fhir/StructureDefinition/GenomicStudy")
 public class GenomicStudy extends DomainResource {
 
+    public enum GenomicStudyStatus {
+        /**
+         * The existence of the genomic study is registered, but there is nothing yet available.
+         */
+        REGISTERED, 
+        /**
+         * At least one instance has been associated with this genomic study.
+         */
+        AVAILABLE, 
+        /**
+         * The genomic study is unavailable because the genomic study was not started or not completed (also sometimes called \"aborted\").
+         */
+        CANCELLED, 
+        /**
+         * The genomic study has been withdrawn following a previous final release.  This electronic record should never have existed, though it is possible that real-world decisions were based on it. (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).
+         */
+        ENTEREDINERROR, 
+        /**
+         * The system does not know which of the status values currently applies for this request. Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.
+         */
+        UNKNOWN, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static GenomicStudyStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("registered".equals(codeString))
+          return REGISTERED;
+        if ("available".equals(codeString))
+          return AVAILABLE;
+        if ("cancelled".equals(codeString))
+          return CANCELLED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown GenomicStudyStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case REGISTERED: return "registered";
+            case AVAILABLE: return "available";
+            case CANCELLED: return "cancelled";
+            case ENTEREDINERROR: return "entered-in-error";
+            case UNKNOWN: return "unknown";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case REGISTERED: return "http://hl7.org/fhir/genomicstudy-status";
+            case AVAILABLE: return "http://hl7.org/fhir/genomicstudy-status";
+            case CANCELLED: return "http://hl7.org/fhir/genomicstudy-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/genomicstudy-status";
+            case UNKNOWN: return "http://hl7.org/fhir/genomicstudy-status";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case REGISTERED: return "The existence of the genomic study is registered, but there is nothing yet available.";
+            case AVAILABLE: return "At least one instance has been associated with this genomic study.";
+            case CANCELLED: return "The genomic study is unavailable because the genomic study was not started or not completed (also sometimes called \"aborted\").";
+            case ENTEREDINERROR: return "The genomic study has been withdrawn following a previous final release.  This electronic record should never have existed, though it is possible that real-world decisions were based on it. (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
+            case UNKNOWN: return "The system does not know which of the status values currently applies for this request. Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case REGISTERED: return "Registered";
+            case AVAILABLE: return "Available";
+            case CANCELLED: return "Cancelled";
+            case ENTEREDINERROR: return "Entered in Error";
+            case UNKNOWN: return "Unknown";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class GenomicStudyStatusEnumFactory implements EnumFactory<GenomicStudyStatus> {
+    public GenomicStudyStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("registered".equals(codeString))
+          return GenomicStudyStatus.REGISTERED;
+        if ("available".equals(codeString))
+          return GenomicStudyStatus.AVAILABLE;
+        if ("cancelled".equals(codeString))
+          return GenomicStudyStatus.CANCELLED;
+        if ("entered-in-error".equals(codeString))
+          return GenomicStudyStatus.ENTEREDINERROR;
+        if ("unknown".equals(codeString))
+          return GenomicStudyStatus.UNKNOWN;
+        throw new IllegalArgumentException("Unknown GenomicStudyStatus code '"+codeString+"'");
+        }
+        public Enumeration<GenomicStudyStatus> fromType(PrimitiveType<?> code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<GenomicStudyStatus>(this, GenomicStudyStatus.NULL, code);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return new Enumeration<GenomicStudyStatus>(this, GenomicStudyStatus.NULL, code);
+        if ("registered".equals(codeString))
+          return new Enumeration<GenomicStudyStatus>(this, GenomicStudyStatus.REGISTERED, code);
+        if ("available".equals(codeString))
+          return new Enumeration<GenomicStudyStatus>(this, GenomicStudyStatus.AVAILABLE, code);
+        if ("cancelled".equals(codeString))
+          return new Enumeration<GenomicStudyStatus>(this, GenomicStudyStatus.CANCELLED, code);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<GenomicStudyStatus>(this, GenomicStudyStatus.ENTEREDINERROR, code);
+        if ("unknown".equals(codeString))
+          return new Enumeration<GenomicStudyStatus>(this, GenomicStudyStatus.UNKNOWN, code);
+        throw new FHIRException("Unknown GenomicStudyStatus code '"+codeString+"'");
+        }
+    public String toCode(GenomicStudyStatus code) {
+      if (code == GenomicStudyStatus.REGISTERED)
+        return "registered";
+      if (code == GenomicStudyStatus.AVAILABLE)
+        return "available";
+      if (code == GenomicStudyStatus.CANCELLED)
+        return "cancelled";
+      if (code == GenomicStudyStatus.ENTEREDINERROR)
+        return "entered-in-error";
+      if (code == GenomicStudyStatus.UNKNOWN)
+        return "unknown";
+      return "?";
+      }
+    public String toSystem(GenomicStudyStatus code) {
+      return code.getSystem();
+      }
+    }
+
     @Block()
     public static class GenomicStudyAnalysisComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Identifiers for the analysis event.
          */
-        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Identifiers for the analysis event", formalDefinition="Identifiers for the analysis event." )
         protected List<Identifier> identifier;
 
         /**
          * Type of the methods used in the analysis, e.g., Fluorescence in situ hybridization (FISH), Karyotyping, or Microsatellite instability testing (MSI).
          */
-        @Child(name = "methodType", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "methodType", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Type of the methods used in the analysis (e.g., FISH, Karyotyping, MSI)", formalDefinition="Type of the methods used in the analysis, e.g., Fluorescence in situ hybridization (FISH), Karyotyping, or Microsatellite instability testing (MSI)." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/genomicstudy-methodtype")
         protected List<CodeableConcept> methodType;
@@ -103,21 +247,21 @@ public class GenomicStudy extends DomainResource {
         /**
          * Name of the analysis event (human friendly).
          */
-        @Child(name = "title", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "title", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Name of the analysis event (human friendly)", formalDefinition="Name of the analysis event (human friendly)." )
         protected StringType title;
 
         /**
-         * The subject of the analysis event.
+         * The focus of a genomic analysis when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, child, or sibling. For example, in trio testing, the GenomicStudy.subject would be the child (proband) and the GenomicStudy.analysis.focus of a specific analysis would be the parent.
          */
-        @Child(name = "subject", type = {Patient.class, Group.class, Device.class, Location.class, Organization.class, Procedure.class, Practitioner.class, Medication.class, Substance.class, BiologicallyDerivedProduct.class, NutritionProduct.class}, order=8, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The subject of the analysis event", formalDefinition="The subject of the analysis event." )
-        protected Reference subject;
+        @Child(name = "focus", type = {Reference.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="What the genomic analysis is about, when it is not about the subject of record", formalDefinition="The focus of a genomic analysis when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, child, or sibling. For example, in trio testing, the GenomicStudy.subject would be the child (proband) and the GenomicStudy.analysis.focus of a specific analysis would be the parent." )
+        protected List<Reference> focus;
 
         /**
          * The specimen used in the analysis event.
          */
-        @Child(name = "specimen", type = {Specimen.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "specimen", type = {Specimen.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="The specimen used in the analysis event", formalDefinition="The specimen used in the analysis event." )
         protected List<Reference> specimen;
 
@@ -184,7 +328,7 @@ public class GenomicStudy extends DomainResource {
         @Description(shortDefinition="Devices used for the analysis (e.g., instruments, software), with settings and parameters", formalDefinition="Devices used for the analysis (e.g., instruments, software), with settings and parameters." )
         protected List<GenomicStudyAnalysisDeviceComponent> device;
 
-        private static final long serialVersionUID = 400268376L;
+        private static final long serialVersionUID = 467270310L;
 
     /**
      * Constructor
@@ -524,27 +668,56 @@ public class GenomicStudy extends DomainResource {
         }
 
         /**
-         * @return {@link #subject} (The subject of the analysis event.)
+         * @return {@link #focus} (The focus of a genomic analysis when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, child, or sibling. For example, in trio testing, the GenomicStudy.subject would be the child (proband) and the GenomicStudy.analysis.focus of a specific analysis would be the parent.)
          */
-        public Reference getSubject() { 
-          if (this.subject == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create GenomicStudyAnalysisComponent.subject");
-            else if (Configuration.doAutoCreate())
-              this.subject = new Reference(); // cc
-          return this.subject;
-        }
-
-        public boolean hasSubject() { 
-          return this.subject != null && !this.subject.isEmpty();
+        public List<Reference> getFocus() { 
+          if (this.focus == null)
+            this.focus = new ArrayList<Reference>();
+          return this.focus;
         }
 
         /**
-         * @param value {@link #subject} (The subject of the analysis event.)
+         * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public GenomicStudyAnalysisComponent setSubject(Reference value) { 
-          this.subject = value;
+        public GenomicStudyAnalysisComponent setFocus(List<Reference> theFocus) { 
+          this.focus = theFocus;
           return this;
+        }
+
+        public boolean hasFocus() { 
+          if (this.focus == null)
+            return false;
+          for (Reference item : this.focus)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Reference addFocus() { //3
+          Reference t = new Reference();
+          if (this.focus == null)
+            this.focus = new ArrayList<Reference>();
+          this.focus.add(t);
+          return t;
+        }
+
+        public GenomicStudyAnalysisComponent addFocus(Reference t) { //3
+          if (t == null)
+            return this;
+          if (this.focus == null)
+            this.focus = new ArrayList<Reference>();
+          this.focus.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #focus}, creating it if it does not already exist {3}
+         */
+        public Reference getFocusFirstRep() { 
+          if (getFocus().isEmpty()) {
+            addFocus();
+          }
+          return getFocus().get(0);
         }
 
         /**
@@ -1053,7 +1226,7 @@ public class GenomicStudy extends DomainResource {
           children.add(new Property("instantiatesCanonical", "canonical(PlanDefinition|ActivityDefinition)", "The defined protocol that describes the analysis.", 0, 1, instantiatesCanonical));
           children.add(new Property("instantiatesUri", "uri", "The URL pointing to an externally maintained protocol that describes the analysis.", 0, 1, instantiatesUri));
           children.add(new Property("title", "string", "Name of the analysis event (human friendly).", 0, 1, title));
-          children.add(new Property("subject", "Reference(Patient|Group|Device|Location|Organization|Procedure|Practitioner|Medication|Substance|BiologicallyDerivedProduct|NutritionProduct)", "The subject of the analysis event.", 0, 1, subject));
+          children.add(new Property("focus", "Reference(Any)", "The focus of a genomic analysis when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, child, or sibling. For example, in trio testing, the GenomicStudy.subject would be the child (proband) and the GenomicStudy.analysis.focus of a specific analysis would be the parent.", 0, java.lang.Integer.MAX_VALUE, focus));
           children.add(new Property("specimen", "Reference(Specimen)", "The specimen used in the analysis event.", 0, java.lang.Integer.MAX_VALUE, specimen));
           children.add(new Property("date", "dateTime", "The date of the analysis event.", 0, 1, date));
           children.add(new Property("note", "Annotation", "Any notes capture with the analysis event.", 0, java.lang.Integer.MAX_VALUE, note));
@@ -1076,7 +1249,7 @@ public class GenomicStudy extends DomainResource {
           case 8911915: /*instantiatesCanonical*/  return new Property("instantiatesCanonical", "canonical(PlanDefinition|ActivityDefinition)", "The defined protocol that describes the analysis.", 0, 1, instantiatesCanonical);
           case -1926393373: /*instantiatesUri*/  return new Property("instantiatesUri", "uri", "The URL pointing to an externally maintained protocol that describes the analysis.", 0, 1, instantiatesUri);
           case 110371416: /*title*/  return new Property("title", "string", "Name of the analysis event (human friendly).", 0, 1, title);
-          case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Device|Location|Organization|Procedure|Practitioner|Medication|Substance|BiologicallyDerivedProduct|NutritionProduct)", "The subject of the analysis event.", 0, 1, subject);
+          case 97604824: /*focus*/  return new Property("focus", "Reference(Any)", "The focus of a genomic analysis when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, child, or sibling. For example, in trio testing, the GenomicStudy.subject would be the child (proband) and the GenomicStudy.analysis.focus of a specific analysis would be the parent.", 0, java.lang.Integer.MAX_VALUE, focus);
           case -2132868344: /*specimen*/  return new Property("specimen", "Reference(Specimen)", "The specimen used in the analysis event.", 0, java.lang.Integer.MAX_VALUE, specimen);
           case 3076014: /*date*/  return new Property("date", "dateTime", "The date of the analysis event.", 0, 1, date);
           case 3387378: /*note*/  return new Property("note", "Annotation", "Any notes capture with the analysis event.", 0, java.lang.Integer.MAX_VALUE, note);
@@ -1102,7 +1275,7 @@ public class GenomicStudy extends DomainResource {
         case 8911915: /*instantiatesCanonical*/ return this.instantiatesCanonical == null ? new Base[0] : new Base[] {this.instantiatesCanonical}; // CanonicalType
         case -1926393373: /*instantiatesUri*/ return this.instantiatesUri == null ? new Base[0] : new Base[] {this.instantiatesUri}; // UriType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
-        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
+        case 97604824: /*focus*/ return this.focus == null ? new Base[0] : this.focus.toArray(new Base[this.focus.size()]); // Reference
         case -2132868344: /*specimen*/ return this.specimen == null ? new Base[0] : this.specimen.toArray(new Base[this.specimen.size()]); // Reference
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
@@ -1142,8 +1315,8 @@ public class GenomicStudy extends DomainResource {
         case 110371416: // title
           this.title = TypeConvertor.castToString(value); // StringType
           return value;
-        case -1867885268: // subject
-          this.subject = TypeConvertor.castToReference(value); // Reference
+        case 97604824: // focus
+          this.getFocus().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -2132868344: // specimen
           this.getSpecimen().add(TypeConvertor.castToReference(value)); // Reference
@@ -1196,8 +1369,8 @@ public class GenomicStudy extends DomainResource {
           this.instantiatesUri = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("title")) {
           this.title = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("subject")) {
-          this.subject = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("focus")) {
+          this.getFocus().add(TypeConvertor.castToReference(value));
         } else if (name.equals("specimen")) {
           this.getSpecimen().add(TypeConvertor.castToReference(value));
         } else if (name.equals("date")) {
@@ -1233,7 +1406,7 @@ public class GenomicStudy extends DomainResource {
         case 8911915:  return getInstantiatesCanonicalElement();
         case -1926393373:  return getInstantiatesUriElement();
         case 110371416:  return getTitleElement();
-        case -1867885268:  return getSubject();
+        case 97604824:  return addFocus(); 
         case -2132868344:  return addSpecimen(); 
         case 3076014:  return getDateElement();
         case 3387378:  return addNote(); 
@@ -1259,7 +1432,7 @@ public class GenomicStudy extends DomainResource {
         case 8911915: /*instantiatesCanonical*/ return new String[] {"canonical"};
         case -1926393373: /*instantiatesUri*/ return new String[] {"uri"};
         case 110371416: /*title*/ return new String[] {"string"};
-        case -1867885268: /*subject*/ return new String[] {"Reference"};
+        case 97604824: /*focus*/ return new String[] {"Reference"};
         case -2132868344: /*specimen*/ return new String[] {"Reference"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
@@ -1299,9 +1472,8 @@ public class GenomicStudy extends DomainResource {
         else if (name.equals("title")) {
           throw new FHIRException("Cannot call addChild on a primitive type GenomicStudy.analysis.title");
         }
-        else if (name.equals("subject")) {
-          this.subject = new Reference();
-          return this.subject;
+        else if (name.equals("focus")) {
+          return addFocus();
         }
         else if (name.equals("specimen")) {
           return addSpecimen();
@@ -1365,7 +1537,11 @@ public class GenomicStudy extends DomainResource {
         dst.instantiatesCanonical = instantiatesCanonical == null ? null : instantiatesCanonical.copy();
         dst.instantiatesUri = instantiatesUri == null ? null : instantiatesUri.copy();
         dst.title = title == null ? null : title.copy();
-        dst.subject = subject == null ? null : subject.copy();
+        if (focus != null) {
+          dst.focus = new ArrayList<Reference>();
+          for (Reference i : focus)
+            dst.focus.add(i.copy());
+        };
         if (specimen != null) {
           dst.specimen = new ArrayList<Reference>();
           for (Reference i : specimen)
@@ -1420,7 +1596,7 @@ public class GenomicStudy extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(methodType, o.methodType, true)
            && compareDeep(changeType, o.changeType, true) && compareDeep(genomeBuild, o.genomeBuild, true)
            && compareDeep(instantiatesCanonical, o.instantiatesCanonical, true) && compareDeep(instantiatesUri, o.instantiatesUri, true)
-           && compareDeep(title, o.title, true) && compareDeep(subject, o.subject, true) && compareDeep(specimen, o.specimen, true)
+           && compareDeep(title, o.title, true) && compareDeep(focus, o.focus, true) && compareDeep(specimen, o.specimen, true)
            && compareDeep(date, o.date, true) && compareDeep(note, o.note, true) && compareDeep(protocolPerformed, o.protocolPerformed, true)
            && compareDeep(regionsStudied, o.regionsStudied, true) && compareDeep(regionsCalled, o.regionsCalled, true)
            && compareDeep(input, o.input, true) && compareDeep(output, o.output, true) && compareDeep(performer, o.performer, true)
@@ -1440,9 +1616,9 @@ public class GenomicStudy extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, methodType, changeType
-          , genomeBuild, instantiatesCanonical, instantiatesUri, title, subject, specimen
-          , date, note, protocolPerformed, regionsStudied, regionsCalled, input, output
-          , performer, device);
+          , genomeBuild, instantiatesCanonical, instantiatesUri, title, focus, specimen, date
+          , note, protocolPerformed, regionsStudied, regionsCalled, input, output, performer
+          , device);
       }
 
   public String fhirType() {
@@ -1457,7 +1633,7 @@ public class GenomicStudy extends DomainResource {
         /**
          * File containing input data.
          */
-        @Child(name = "file", type = {DocumentReference.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "file", type = {DocumentReference.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="File containing input data", formalDefinition="File containing input data." )
         protected Reference file;
 
@@ -1742,14 +1918,14 @@ public class GenomicStudy extends DomainResource {
         /**
          * File containing output data.
          */
-        @Child(name = "file", type = {DocumentReference.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "file", type = {DocumentReference.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="File containing output data", formalDefinition="File containing output data." )
         protected Reference file;
 
         /**
          * Type of output data, e.g., VCF, MAF, or BAM.
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Type of output data (e.g., VCF, MAF, or BAM)", formalDefinition="Type of output data, e.g., VCF, MAF, or BAM." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/genomicstudy-dataformat")
         protected CodeableConcept type;
@@ -2344,22 +2520,22 @@ public class GenomicStudy extends DomainResource {
     /**
      * Identifiers for this genomic study.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Identifiers for this genomic study", formalDefinition="Identifiers for this genomic study." )
     protected List<Identifier> identifier;
 
     /**
      * The status of the genomic study.
      */
-    @Child(name = "status", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="The status of the genomic study", formalDefinition="The status of the genomic study." )
+    @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="registered | available | cancelled | entered-in-error | unknown", formalDefinition="The status of the genomic study." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/genomicstudy-status")
-    protected CodeableConcept status;
+    protected Enumeration<GenomicStudyStatus> status;
 
     /**
      * The type of the study, e.g., Familial variant segregation, Functional variation detection, or Gene expression profiling.
      */
-    @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The type of the study (e.g., Familial variant segregation, Functional variation detection, or Gene expression profiling)", formalDefinition="The type of the study, e.g., Familial variant segregation, Functional variation detection, or Gene expression profiling." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/genomicstudy-type")
     protected List<CodeableConcept> type;
@@ -2367,14 +2543,14 @@ public class GenomicStudy extends DomainResource {
     /**
      * The primary subject of the genomic study.
      */
-    @Child(name = "subject", type = {Patient.class, Group.class, Device.class, Location.class, Organization.class, Procedure.class, Practitioner.class, Medication.class, Substance.class, BiologicallyDerivedProduct.class, NutritionProduct.class}, order=3, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {Patient.class, Group.class, Substance.class, BiologicallyDerivedProduct.class, NutritionProduct.class}, order=3, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The primary subject of the genomic study", formalDefinition="The primary subject of the genomic study." )
     protected Reference subject;
 
     /**
      * The healthcare event with which this genomics study is associated.
      */
-    @Child(name = "encounter", type = {Encounter.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "encounter", type = {Encounter.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The healthcare event with which this genomics study is associated", formalDefinition="The healthcare event with which this genomics study is associated." )
     protected Reference encounter;
 
@@ -2437,9 +2613,9 @@ public class GenomicStudy extends DomainResource {
     /**
      * Description of the genomic study.
      */
-    @Child(name = "description", type = {StringType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Description of the genomic study", formalDefinition="Description of the genomic study." )
-    protected StringType description;
+    protected MarkdownType description;
 
     /**
      * The details about a specific analysis that was performed in this GenomicStudy.
@@ -2448,7 +2624,7 @@ public class GenomicStudy extends DomainResource {
     @Description(shortDefinition="Genomic Analysis Event", formalDefinition="The details about a specific analysis that was performed in this GenomicStudy." )
     protected List<GenomicStudyAnalysisComponent> analysis;
 
-    private static final long serialVersionUID = -345111606L;
+    private static final long serialVersionUID = 644053021L;
 
   /**
    * Constructor
@@ -2460,7 +2636,7 @@ public class GenomicStudy extends DomainResource {
   /**
    * Constructor
    */
-    public GenomicStudy(CodeableConcept status, Reference subject) {
+    public GenomicStudy(GenomicStudyStatus status, Reference subject) {
       super();
       this.setStatus(status);
       this.setSubject(subject);
@@ -2520,15 +2696,19 @@ public class GenomicStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (The status of the genomic study.)
+     * @return {@link #status} (The status of the genomic study.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public CodeableConcept getStatus() { 
+    public Enumeration<GenomicStudyStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create GenomicStudy.status");
         else if (Configuration.doAutoCreate())
-          this.status = new CodeableConcept(); // cc
+          this.status = new Enumeration<GenomicStudyStatus>(new GenomicStudyStatusEnumFactory()); // bb
       return this.status;
+    }
+
+    public boolean hasStatusElement() { 
+      return this.status != null && !this.status.isEmpty();
     }
 
     public boolean hasStatus() { 
@@ -2536,10 +2716,27 @@ public class GenomicStudy extends DomainResource {
     }
 
     /**
-     * @param value {@link #status} (The status of the genomic study.)
+     * @param value {@link #status} (The status of the genomic study.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public GenomicStudy setStatus(CodeableConcept value) { 
+    public GenomicStudy setStatusElement(Enumeration<GenomicStudyStatus> value) { 
       this.status = value;
+      return this;
+    }
+
+    /**
+     * @return The status of the genomic study.
+     */
+    public GenomicStudyStatus getStatus() { 
+      return this.status == null ? null : this.status.getValue();
+    }
+
+    /**
+     * @param value The status of the genomic study.
+     */
+    public GenomicStudy setStatus(GenomicStudyStatus value) { 
+        if (this.status == null)
+          this.status = new Enumeration<GenomicStudyStatus>(new GenomicStudyStatusEnumFactory());
+        this.status.setValue(value);
       return this;
     }
 
@@ -3030,12 +3227,12 @@ public class GenomicStudy extends DomainResource {
     /**
      * @return {@link #description} (Description of the genomic study.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public StringType getDescriptionElement() { 
+    public MarkdownType getDescriptionElement() { 
       if (this.description == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create GenomicStudy.description");
         else if (Configuration.doAutoCreate())
-          this.description = new StringType(); // bb
+          this.description = new MarkdownType(); // bb
       return this.description;
     }
 
@@ -3050,7 +3247,7 @@ public class GenomicStudy extends DomainResource {
     /**
      * @param value {@link #description} (Description of the genomic study.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public GenomicStudy setDescriptionElement(StringType value) { 
+    public GenomicStudy setDescriptionElement(MarkdownType value) { 
       this.description = value;
       return this;
     }
@@ -3070,7 +3267,7 @@ public class GenomicStudy extends DomainResource {
         this.description = null;
       else {
         if (this.description == null)
-          this.description = new StringType();
+          this.description = new MarkdownType();
         this.description.setValue(value);
       }
       return this;
@@ -3132,9 +3329,9 @@ public class GenomicStudy extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifiers for this genomic study.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("status", "CodeableConcept", "The status of the genomic study.", 0, 1, status));
+        children.add(new Property("status", "code", "The status of the genomic study.", 0, 1, status));
         children.add(new Property("type", "CodeableConcept", "The type of the study, e.g., Familial variant segregation, Functional variation detection, or Gene expression profiling.", 0, java.lang.Integer.MAX_VALUE, type));
-        children.add(new Property("subject", "Reference(Patient|Group|Device|Location|Organization|Procedure|Practitioner|Medication|Substance|BiologicallyDerivedProduct|NutritionProduct)", "The primary subject of the genomic study.", 0, 1, subject));
+        children.add(new Property("subject", "Reference(Patient|Group|Substance|BiologicallyDerivedProduct|NutritionProduct)", "The primary subject of the genomic study.", 0, 1, subject));
         children.add(new Property("encounter", "Reference(Encounter)", "The healthcare event with which this genomics study is associated.", 0, 1, encounter));
         children.add(new Property("startDate", "dateTime", "When the genomic study was started.", 0, 1, startDate));
         children.add(new Property("basedOn", "Reference(ServiceRequest|Task)", "Event resources that the genomic study is based on.", 0, java.lang.Integer.MAX_VALUE, basedOn));
@@ -3144,7 +3341,7 @@ public class GenomicStudy extends DomainResource {
         children.add(new Property("instantiatesCanonical", "canonical(PlanDefinition)", "The defined protocol that describes the study.", 0, 1, instantiatesCanonical));
         children.add(new Property("instantiatesUri", "uri", "The URL pointing to an externally maintained protocol that describes the study.", 0, 1, instantiatesUri));
         children.add(new Property("note", "Annotation", "Comments related to the genomic study.", 0, java.lang.Integer.MAX_VALUE, note));
-        children.add(new Property("description", "string", "Description of the genomic study.", 0, 1, description));
+        children.add(new Property("description", "markdown", "Description of the genomic study.", 0, 1, description));
         children.add(new Property("analysis", "", "The details about a specific analysis that was performed in this GenomicStudy.", 0, java.lang.Integer.MAX_VALUE, analysis));
       }
 
@@ -3152,9 +3349,9 @@ public class GenomicStudy extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifiers for this genomic study.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -892481550: /*status*/  return new Property("status", "CodeableConcept", "The status of the genomic study.", 0, 1, status);
+        case -892481550: /*status*/  return new Property("status", "code", "The status of the genomic study.", 0, 1, status);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of the study, e.g., Familial variant segregation, Functional variation detection, or Gene expression profiling.", 0, java.lang.Integer.MAX_VALUE, type);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Device|Location|Organization|Procedure|Practitioner|Medication|Substance|BiologicallyDerivedProduct|NutritionProduct)", "The primary subject of the genomic study.", 0, 1, subject);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Substance|BiologicallyDerivedProduct|NutritionProduct)", "The primary subject of the genomic study.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The healthcare event with which this genomics study is associated.", 0, 1, encounter);
         case -2129778896: /*startDate*/  return new Property("startDate", "dateTime", "When the genomic study was started.", 0, 1, startDate);
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(ServiceRequest|Task)", "Event resources that the genomic study is based on.", 0, java.lang.Integer.MAX_VALUE, basedOn);
@@ -3164,7 +3361,7 @@ public class GenomicStudy extends DomainResource {
         case 8911915: /*instantiatesCanonical*/  return new Property("instantiatesCanonical", "canonical(PlanDefinition)", "The defined protocol that describes the study.", 0, 1, instantiatesCanonical);
         case -1926393373: /*instantiatesUri*/  return new Property("instantiatesUri", "uri", "The URL pointing to an externally maintained protocol that describes the study.", 0, 1, instantiatesUri);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Comments related to the genomic study.", 0, java.lang.Integer.MAX_VALUE, note);
-        case -1724546052: /*description*/  return new Property("description", "string", "Description of the genomic study.", 0, 1, description);
+        case -1724546052: /*description*/  return new Property("description", "markdown", "Description of the genomic study.", 0, 1, description);
         case -1024445732: /*analysis*/  return new Property("analysis", "", "The details about a specific analysis that was performed in this GenomicStudy.", 0, java.lang.Integer.MAX_VALUE, analysis);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -3175,7 +3372,7 @@ public class GenomicStudy extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<GenomicStudyStatus>
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
@@ -3187,7 +3384,7 @@ public class GenomicStudy extends DomainResource {
         case 8911915: /*instantiatesCanonical*/ return this.instantiatesCanonical == null ? new Base[0] : new Base[] {this.instantiatesCanonical}; // CanonicalType
         case -1926393373: /*instantiatesUri*/ return this.instantiatesUri == null ? new Base[0] : new Base[] {this.instantiatesUri}; // UriType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case -1024445732: /*analysis*/ return this.analysis == null ? new Base[0] : this.analysis.toArray(new Base[this.analysis.size()]); // GenomicStudyAnalysisComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -3201,7 +3398,8 @@ public class GenomicStudy extends DomainResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          value = new GenomicStudyStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<GenomicStudyStatus>
           return value;
         case 3575610: // type
           this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -3237,7 +3435,7 @@ public class GenomicStudy extends DomainResource {
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -1024445732: // analysis
           this.getAnalysis().add((GenomicStudyAnalysisComponent) value); // GenomicStudyAnalysisComponent
@@ -3252,7 +3450,8 @@ public class GenomicStudy extends DomainResource {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          value = new GenomicStudyStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<GenomicStudyStatus>
         } else if (name.equals("type")) {
           this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("subject")) {
@@ -3276,7 +3475,7 @@ public class GenomicStudy extends DomainResource {
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("analysis")) {
           this.getAnalysis().add((GenomicStudyAnalysisComponent) value);
         } else
@@ -3288,7 +3487,7 @@ public class GenomicStudy extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case -892481550:  return getStatus();
+        case -892481550:  return getStatusElement();
         case 3575610:  return addType(); 
         case -1867885268:  return getSubject();
         case 1524132147:  return getEncounter();
@@ -3311,7 +3510,7 @@ public class GenomicStudy extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
-        case -892481550: /*status*/ return new String[] {"CodeableConcept"};
+        case -892481550: /*status*/ return new String[] {"code"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case 1524132147: /*encounter*/ return new String[] {"Reference"};
@@ -3323,7 +3522,7 @@ public class GenomicStudy extends DomainResource {
         case 8911915: /*instantiatesCanonical*/ return new String[] {"canonical"};
         case -1926393373: /*instantiatesUri*/ return new String[] {"uri"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
-        case -1724546052: /*description*/ return new String[] {"string"};
+        case -1724546052: /*description*/ return new String[] {"markdown"};
         case -1024445732: /*analysis*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -3336,8 +3535,7 @@ public class GenomicStudy extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          this.status = new CodeableConcept();
-          return this.status;
+          throw new FHIRException("Cannot call addChild on a primitive type GenomicStudy.status");
         }
         else if (name.equals("type")) {
           return addType();
@@ -3469,7 +3667,7 @@ public class GenomicStudy extends DomainResource {
         if (!(other_ instanceof GenomicStudy))
           return false;
         GenomicStudy o = (GenomicStudy) other_;
-        return compareValues(startDate, o.startDate, true) && compareValues(instantiatesCanonical, o.instantiatesCanonical, true)
+        return compareValues(status, o.status, true) && compareValues(startDate, o.startDate, true) && compareValues(instantiatesCanonical, o.instantiatesCanonical, true)
            && compareValues(instantiatesUri, o.instantiatesUri, true) && compareValues(description, o.description, true)
           ;
       }
@@ -3486,56 +3684,30 @@ public class GenomicStudy extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>analysis-patient</b>
+   * Search parameter: <b>focus</b>
    * <p>
-   * Description: <b>Who the analysis is about</b><br>
+   * Description: <b>What the genomic study analysis is about, when it is not about the subject of record</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>GenomicStudy.analysis.subject.where(resolve() is Patient)</b><br>
+   * Path: <b>GenomicStudy.analysis.focus</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="analysis-patient", path="GenomicStudy.analysis.subject.where(resolve() is Patient)", description="Who the analysis is about", type="reference", target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
-  public static final String SP_ANALYSIS_PATIENT = "analysis-patient";
+  @SearchParamDefinition(name="focus", path="GenomicStudy.analysis.focus", description="What the genomic study analysis is about, when it is not about the subject of record", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BiologicallyDerivedProductDispense.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceAssociation.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentReference.class, Encounter.class, EncounterHistory.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryItem.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationStatement.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Parameters.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestPlan.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_FOCUS = "focus";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>analysis-patient</b>
+   * <b>Fluent Client</b> search parameter constant for <b>focus</b>
    * <p>
-   * Description: <b>Who the analysis is about</b><br>
+   * Description: <b>What the genomic study analysis is about, when it is not about the subject of record</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>GenomicStudy.analysis.subject.where(resolve() is Patient)</b><br>
+   * Path: <b>GenomicStudy.analysis.focus</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ANALYSIS_PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ANALYSIS_PATIENT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FOCUS = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FOCUS);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>GenomicStudy:analysis-patient</b>".
+   * the path value of "<b>GenomicStudy:focus</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ANALYSIS_PATIENT = new ca.uhn.fhir.model.api.Include("GenomicStudy:analysis-patient").toLocked();
-
- /**
-   * Search parameter: <b>analysis-subject</b>
-   * <p>
-   * Description: <b>Who the analysis is about</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>GenomicStudy.analysis.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="analysis-subject", path="GenomicStudy.analysis.subject", description="Who the analysis is about", type="reference", target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
-  public static final String SP_ANALYSIS_SUBJECT = "analysis-subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>analysis-subject</b>
-   * <p>
-   * Description: <b>Who the analysis is about</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>GenomicStudy.analysis.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ANALYSIS_SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ANALYSIS_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>GenomicStudy:analysis-subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ANALYSIS_SUBJECT = new ca.uhn.fhir.model.api.Include("GenomicStudy:analysis-subject").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_FOCUS = new ca.uhn.fhir.model.api.Include("GenomicStudy:focus").toLocked();
 
  /**
    * Search parameter: <b>identifier</b>
@@ -3565,7 +3737,7 @@ public class GenomicStudy extends DomainResource {
    * Path: <b>GenomicStudy.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="GenomicStudy.subject.where(resolve() is Patient)", description="Who the study is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
+  @SearchParamDefinition(name="patient", path="GenomicStudy.subject.where(resolve() is Patient)", description="Who the study is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -3611,7 +3783,7 @@ public class GenomicStudy extends DomainResource {
    * Path: <b>GenomicStudy.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="GenomicStudy.subject", description="Who the study is about", type="reference", target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
+  @SearchParamDefinition(name="subject", path="GenomicStudy.subject", description="Who the study is about", type="reference", target={BiologicallyDerivedProduct.class, Group.class, NutritionProduct.class, Patient.class, Substance.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -905,7 +905,7 @@ public class MedicinalProductDefinition extends DomainResource {
          */
         @Child(name = "language", type = {CodeableConcept.class}, order=3, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Language code for this name", formalDefinition="Language code for this name." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-languages")
         protected CodeableConcept language;
 
         private static final long serialVersionUID = 1627157564L;
@@ -1694,7 +1694,7 @@ public class MedicinalProductDefinition extends DomainResource {
         /**
          * A value for the characteristic.text.
          */
-        @Child(name = "value", type = {CodeableConcept.class, StringType.class, Quantity.class, IntegerType.class, DateType.class, BooleanType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "value", type = {CodeableConcept.class, MarkdownType.class, Quantity.class, IntegerType.class, DateType.class, BooleanType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A value for the characteristic", formalDefinition="A value for the characteristic.text." )
         protected DataType value;
 
@@ -1764,16 +1764,16 @@ public class MedicinalProductDefinition extends DomainResource {
         /**
          * @return {@link #value} (A value for the characteristic.text.)
          */
-        public StringType getValueStringType() throws FHIRException { 
+        public MarkdownType getValueMarkdownType() throws FHIRException { 
           if (this.value == null)
-            this.value = new StringType();
-          if (!(this.value instanceof StringType))
-            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (StringType) this.value;
+            this.value = new MarkdownType();
+          if (!(this.value instanceof MarkdownType))
+            throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (MarkdownType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueMarkdownType() { 
+          return this != null && this.value instanceof MarkdownType;
         }
 
         /**
@@ -1859,7 +1859,7 @@ public class MedicinalProductDefinition extends DomainResource {
          * @param value {@link #value} (A value for the characteristic.text.)
          */
         public MedicinalProductDefinitionCharacteristicComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof CodeableConcept || value instanceof StringType || value instanceof Quantity || value instanceof IntegerType || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
+          if (value != null && !(value instanceof CodeableConcept || value instanceof MarkdownType || value instanceof Quantity || value instanceof IntegerType || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
             throw new Error("Not the right type for MedicinalProductDefinition.characteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -1868,17 +1868,17 @@ public class MedicinalProductDefinition extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type));
-          children.add(new Property("value[x]", "CodeableConcept|string|Quantity|integer|date|boolean|Attachment", "A value for the characteristic.text.", 0, 1, value));
+          children.add(new Property("value[x]", "CodeableConcept|markdown|Quantity|integer|date|boolean|Attachment", "A value for the characteristic.text.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|string|Quantity|integer|date|boolean|Attachment", "A value for the characteristic.text.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|string|Quantity|integer|date|boolean|Attachment", "A value for the characteristic.text.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|markdown|Quantity|integer|date|boolean|Attachment", "A value for the characteristic.text.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|markdown|Quantity|integer|date|boolean|Attachment", "A value for the characteristic.text.", 0, 1, value);
           case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "A value for the characteristic.text.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "A value for the characteristic.text.", 0, 1, value);
+          case -497880704: /*valueMarkdown*/  return new Property("value[x]", "markdown", "A value for the characteristic.text.", 0, 1, value);
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "A value for the characteristic.text.", 0, 1, value);
           case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "A value for the characteristic.text.", 0, 1, value);
           case -766192449: /*valueDate*/  return new Property("value[x]", "date", "A value for the characteristic.text.", 0, 1, value);
@@ -1939,7 +1939,7 @@ public class MedicinalProductDefinition extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"CodeableConcept", "string", "Quantity", "integer", "date", "boolean", "Attachment"};
+        case 111972721: /*value*/ return new String[] {"CodeableConcept", "markdown", "Quantity", "integer", "date", "boolean", "Attachment"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1955,8 +1955,8 @@ public class MedicinalProductDefinition extends DomainResource {
           this.value = new CodeableConcept();
           return this.value;
         }
-        else if (name.equals("valueString")) {
-          this.value = new StringType();
+        else if (name.equals("valueMarkdown")) {
+          this.value = new MarkdownType();
           return this.value;
         }
         else if (name.equals("valueQuantity")) {
@@ -2118,10 +2118,10 @@ public class MedicinalProductDefinition extends DomainResource {
     protected CodeableConcept additionalMonitoringIndicator;
 
     /**
-     * Whether the Medicinal Product is subject to special measures for regulatory reasons, such as a requirement to conduct post-authorisation studies.
+     * Whether the Medicinal Product is subject to special measures for regulatory reasons, such as a requirement to conduct post-authorization studies.
      */
     @Child(name = "specialMeasures", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Whether the Medicinal Product is subject to special measures for regulatory reasons", formalDefinition="Whether the Medicinal Product is subject to special measures for regulatory reasons, such as a requirement to conduct post-authorisation studies." )
+    @Description(shortDefinition="Whether the Medicinal Product is subject to special measures for regulatory reasons", formalDefinition="Whether the Medicinal Product is subject to special measures for regulatory reasons, such as a requirement to conduct post-authorization studies." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medicinal-product-special-measures")
     protected List<CodeableConcept> specialMeasures;
 
@@ -2522,7 +2522,7 @@ public class MedicinalProductDefinition extends DomainResource {
      * @param value General description of this product.
      */
     public MedicinalProductDefinition setDescription(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.description = null;
       else {
         if (this.description == null)
@@ -2648,7 +2648,7 @@ public class MedicinalProductDefinition extends DomainResource {
      * @param value Description of indication(s) for this product, used when structured indications are not required. In cases where structured indications are required, they are captured using the ClinicalUseDefinition resource. An indication is a medical situation for which using the product is appropriate.
      */
     public MedicinalProductDefinition setIndication(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.indication = null;
       else {
         if (this.indication == null)
@@ -2707,7 +2707,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #specialMeasures} (Whether the Medicinal Product is subject to special measures for regulatory reasons, such as a requirement to conduct post-authorisation studies.)
+     * @return {@link #specialMeasures} (Whether the Medicinal Product is subject to special measures for regulatory reasons, such as a requirement to conduct post-authorization studies.)
      */
     public List<CodeableConcept> getSpecialMeasures() { 
       if (this.specialMeasures == null)
@@ -3592,7 +3592,7 @@ public class MedicinalProductDefinition extends DomainResource {
         children.add(new Property("indication", "markdown", "Description of indication(s) for this product, used when structured indications are not required. In cases where structured indications are required, they are captured using the ClinicalUseDefinition resource. An indication is a medical situation for which using the product is appropriate.", 0, 1, indication));
         children.add(new Property("legalStatusOfSupply", "CodeableConcept", "The legal status of supply of the medicinal product as classified by the regulator.", 0, 1, legalStatusOfSupply));
         children.add(new Property("additionalMonitoringIndicator", "CodeableConcept", "Whether the Medicinal Product is subject to additional monitoring for regulatory reasons, such as heightened reporting requirements.", 0, 1, additionalMonitoringIndicator));
-        children.add(new Property("specialMeasures", "CodeableConcept", "Whether the Medicinal Product is subject to special measures for regulatory reasons, such as a requirement to conduct post-authorisation studies.", 0, java.lang.Integer.MAX_VALUE, specialMeasures));
+        children.add(new Property("specialMeasures", "CodeableConcept", "Whether the Medicinal Product is subject to special measures for regulatory reasons, such as a requirement to conduct post-authorization studies.", 0, java.lang.Integer.MAX_VALUE, specialMeasures));
         children.add(new Property("pediatricUseIndicator", "CodeableConcept", "If authorised for use in children, or infants, neonates etc.", 0, 1, pediatricUseIndicator));
         children.add(new Property("classification", "CodeableConcept", "Allows the product to be classified by various systems, commonly WHO ATC.", 0, java.lang.Integer.MAX_VALUE, classification));
         children.add(new Property("marketingStatus", "MarketingStatus", "Marketing status of the medicinal product, in contrast to marketing authorization. This refers to the product being actually 'on the market' as opposed to being allowed to be on the market (which is an authorization).", 0, java.lang.Integer.MAX_VALUE, marketingStatus));
@@ -3626,7 +3626,7 @@ public class MedicinalProductDefinition extends DomainResource {
         case -597168804: /*indication*/  return new Property("indication", "markdown", "Description of indication(s) for this product, used when structured indications are not required. In cases where structured indications are required, they are captured using the ClinicalUseDefinition resource. An indication is a medical situation for which using the product is appropriate.", 0, 1, indication);
         case -844874031: /*legalStatusOfSupply*/  return new Property("legalStatusOfSupply", "CodeableConcept", "The legal status of supply of the medicinal product as classified by the regulator.", 0, 1, legalStatusOfSupply);
         case 1935999744: /*additionalMonitoringIndicator*/  return new Property("additionalMonitoringIndicator", "CodeableConcept", "Whether the Medicinal Product is subject to additional monitoring for regulatory reasons, such as heightened reporting requirements.", 0, 1, additionalMonitoringIndicator);
-        case 975102638: /*specialMeasures*/  return new Property("specialMeasures", "CodeableConcept", "Whether the Medicinal Product is subject to special measures for regulatory reasons, such as a requirement to conduct post-authorisation studies.", 0, java.lang.Integer.MAX_VALUE, specialMeasures);
+        case 975102638: /*specialMeasures*/  return new Property("specialMeasures", "CodeableConcept", "Whether the Medicinal Product is subject to special measures for regulatory reasons, such as a requirement to conduct post-authorization studies.", 0, java.lang.Integer.MAX_VALUE, specialMeasures);
         case -1515533081: /*pediatricUseIndicator*/  return new Property("pediatricUseIndicator", "CodeableConcept", "If authorised for use in children, or infants, neonates etc.", 0, 1, pediatricUseIndicator);
         case 382350310: /*classification*/  return new Property("classification", "CodeableConcept", "Allows the product to be classified by various systems, commonly WHO ATC.", 0, java.lang.Integer.MAX_VALUE, classification);
         case 70767032: /*marketingStatus*/  return new Property("marketingStatus", "MarketingStatus", "Marketing status of the medicinal product, in contrast to marketing authorization. This refers to the product being actually 'on the market' as opposed to being allowed to be on the market (which is an authorization).", 0, java.lang.Integer.MAX_VALUE, marketingStatus);
@@ -4211,17 +4211,17 @@ public class MedicinalProductDefinition extends DomainResource {
    * <p>
    * Description: <b>Allows the key product features to be recorded, such as "sugar free", "modified release", "parallel import"</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicinalProductDefinition.characteristic.value.as(Quantity) | MedicinalProductDefinition.characteristic.value.as(CodeableConcept)</b><br>
+   * Path: <b>MedicinalProductDefinition.characteristic.value.ofType(Quantity) | MedicinalProductDefinition.characteristic.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="characteristic", path="MedicinalProductDefinition.characteristic.value.as(Quantity) | MedicinalProductDefinition.characteristic.value.as(CodeableConcept)", description="Allows the key product features to be recorded, such as \"sugar free\", \"modified release\", \"parallel import\"", type="token" )
+  @SearchParamDefinition(name="characteristic", path="MedicinalProductDefinition.characteristic.value.ofType(Quantity) | MedicinalProductDefinition.characteristic.value.ofType(CodeableConcept)", description="Allows the key product features to be recorded, such as \"sugar free\", \"modified release\", \"parallel import\"", type="token" )
   public static final String SP_CHARACTERISTIC = "characteristic";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>characteristic</b>
    * <p>
    * Description: <b>Allows the key product features to be recorded, such as "sugar free", "modified release", "parallel import"</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicinalProductDefinition.characteristic.value.as(Quantity) | MedicinalProductDefinition.characteristic.value.as(CodeableConcept)</b><br>
+   * Path: <b>MedicinalProductDefinition.characteristic.value.ofType(Quantity) | MedicinalProductDefinition.characteristic.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC);

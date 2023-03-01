@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +52,118 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="PaymentReconciliation", profile="http://hl7.org/fhir/StructureDefinition/PaymentReconciliation")
 public class PaymentReconciliation extends DomainResource {
+
+    public enum NoteType {
+        /**
+         * Display the note.
+         */
+        DISPLAY, 
+        /**
+         * Print the note on the form.
+         */
+        PRINT, 
+        /**
+         * Print the note for the operator.
+         */
+        PRINTOPER, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static NoteType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("display".equals(codeString))
+          return DISPLAY;
+        if ("print".equals(codeString))
+          return PRINT;
+        if ("printoper".equals(codeString))
+          return PRINTOPER;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown NoteType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DISPLAY: return "display";
+            case PRINT: return "print";
+            case PRINTOPER: return "printoper";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case DISPLAY: return "http://hl7.org/fhir/note-type";
+            case PRINT: return "http://hl7.org/fhir/note-type";
+            case PRINTOPER: return "http://hl7.org/fhir/note-type";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DISPLAY: return "Display the note.";
+            case PRINT: return "Print the note on the form.";
+            case PRINTOPER: return "Print the note for the operator.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DISPLAY: return "Display";
+            case PRINT: return "Print (Form)";
+            case PRINTOPER: return "Print (Operator)";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class NoteTypeEnumFactory implements EnumFactory<NoteType> {
+    public NoteType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("display".equals(codeString))
+          return NoteType.DISPLAY;
+        if ("print".equals(codeString))
+          return NoteType.PRINT;
+        if ("printoper".equals(codeString))
+          return NoteType.PRINTOPER;
+        throw new IllegalArgumentException("Unknown NoteType code '"+codeString+"'");
+        }
+        public Enumeration<NoteType> fromType(PrimitiveType<?> code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<NoteType>(this, NoteType.NULL, code);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return new Enumeration<NoteType>(this, NoteType.NULL, code);
+        if ("display".equals(codeString))
+          return new Enumeration<NoteType>(this, NoteType.DISPLAY, code);
+        if ("print".equals(codeString))
+          return new Enumeration<NoteType>(this, NoteType.PRINT, code);
+        if ("printoper".equals(codeString))
+          return new Enumeration<NoteType>(this, NoteType.PRINTOPER, code);
+        throw new FHIRException("Unknown NoteType code '"+codeString+"'");
+        }
+    public String toCode(NoteType code) {
+      if (code == NoteType.DISPLAY)
+        return "display";
+      if (code == NoteType.PRINT)
+        return "print";
+      if (code == NoteType.PRINTOPER)
+        return "printoper";
+      return "?";
+      }
+    public String toSystem(NoteType code) {
+      return code.getSystem();
+      }
+    }
 
     public enum PaymentOutcome {
         /**
@@ -3296,3 +3408,4 @@ public class PaymentReconciliation extends DomainResource {
 
 
 }
+

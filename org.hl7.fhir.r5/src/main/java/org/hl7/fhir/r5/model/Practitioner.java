@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -389,6 +389,236 @@ public class Practitioner extends DomainResource {
 
   }
 
+    @Block()
+    public static class PractitionerCommunicationComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-AU" for Australian English.
+         */
+        @Child(name = "language", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The language code used to communicate with the practitioner", formalDefinition="The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-AU\" for Australian English." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-languages")
+        protected CodeableConcept language;
+
+        /**
+         * Indicates whether or not the person prefers this language (over other languages he masters up a certain level).
+         */
+        @Child(name = "preferred", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Language preference indicator", formalDefinition="Indicates whether or not the person prefers this language (over other languages he masters up a certain level)." )
+        protected BooleanType preferred;
+
+        private static final long serialVersionUID = 633792918L;
+
+    /**
+     * Constructor
+     */
+      public PractitionerCommunicationComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public PractitionerCommunicationComponent(CodeableConcept language) {
+        super();
+        this.setLanguage(language);
+      }
+
+        /**
+         * @return {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-AU" for Australian English.)
+         */
+        public CodeableConcept getLanguage() { 
+          if (this.language == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PractitionerCommunicationComponent.language");
+            else if (Configuration.doAutoCreate())
+              this.language = new CodeableConcept(); // cc
+          return this.language;
+        }
+
+        public boolean hasLanguage() { 
+          return this.language != null && !this.language.isEmpty();
+        }
+
+        /**
+         * @param value {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-AU" for Australian English.)
+         */
+        public PractitionerCommunicationComponent setLanguage(CodeableConcept value) { 
+          this.language = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #preferred} (Indicates whether or not the person prefers this language (over other languages he masters up a certain level).). This is the underlying object with id, value and extensions. The accessor "getPreferred" gives direct access to the value
+         */
+        public BooleanType getPreferredElement() { 
+          if (this.preferred == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PractitionerCommunicationComponent.preferred");
+            else if (Configuration.doAutoCreate())
+              this.preferred = new BooleanType(); // bb
+          return this.preferred;
+        }
+
+        public boolean hasPreferredElement() { 
+          return this.preferred != null && !this.preferred.isEmpty();
+        }
+
+        public boolean hasPreferred() { 
+          return this.preferred != null && !this.preferred.isEmpty();
+        }
+
+        /**
+         * @param value {@link #preferred} (Indicates whether or not the person prefers this language (over other languages he masters up a certain level).). This is the underlying object with id, value and extensions. The accessor "getPreferred" gives direct access to the value
+         */
+        public PractitionerCommunicationComponent setPreferredElement(BooleanType value) { 
+          this.preferred = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates whether or not the person prefers this language (over other languages he masters up a certain level).
+         */
+        public boolean getPreferred() { 
+          return this.preferred == null || this.preferred.isEmpty() ? false : this.preferred.getValue();
+        }
+
+        /**
+         * @param value Indicates whether or not the person prefers this language (over other languages he masters up a certain level).
+         */
+        public PractitionerCommunicationComponent setPreferred(boolean value) { 
+            if (this.preferred == null)
+              this.preferred = new BooleanType();
+            this.preferred.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-AU\" for Australian English.", 0, 1, language));
+          children.add(new Property("preferred", "boolean", "Indicates whether or not the person prefers this language (over other languages he masters up a certain level).", 0, 1, preferred));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-AU\" for Australian English.", 0, 1, language);
+          case -1294005119: /*preferred*/  return new Property("preferred", "boolean", "Indicates whether or not the person prefers this language (over other languages he masters up a certain level).", 0, 1, preferred);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // CodeableConcept
+        case -1294005119: /*preferred*/ return this.preferred == null ? new Base[0] : new Base[] {this.preferred}; // BooleanType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -1613589672: // language
+          this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1294005119: // preferred
+          this.preferred = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("language")) {
+          this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("preferred")) {
+          this.preferred = TypeConvertor.castToBoolean(value); // BooleanType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1613589672:  return getLanguage();
+        case -1294005119:  return getPreferredElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1613589672: /*language*/ return new String[] {"CodeableConcept"};
+        case -1294005119: /*preferred*/ return new String[] {"boolean"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("language")) {
+          this.language = new CodeableConcept();
+          return this.language;
+        }
+        else if (name.equals("preferred")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.communication.preferred");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public PractitionerCommunicationComponent copy() {
+        PractitionerCommunicationComponent dst = new PractitionerCommunicationComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PractitionerCommunicationComponent dst) {
+        super.copyValues(dst);
+        dst.language = language == null ? null : language.copy();
+        dst.preferred = preferred == null ? null : preferred.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof PractitionerCommunicationComponent))
+          return false;
+        PractitionerCommunicationComponent o = (PractitionerCommunicationComponent) other_;
+        return compareDeep(language, o.language, true) && compareDeep(preferred, o.preferred, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof PractitionerCommunicationComponent))
+          return false;
+        PractitionerCommunicationComponent o = (PractitionerCommunicationComponent) other_;
+        return compareValues(preferred, o.preferred, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(language, preferred);
+      }
+
+  public String fhirType() {
+    return "Practitioner.communication";
+
+  }
+
+  }
+
     /**
      * An identifier that applies to this person in this role.
      */
@@ -457,18 +687,17 @@ public class Practitioner extends DomainResource {
      * The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.For example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.
      */
     @Child(name = "qualification", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Qualifications, certifications, accreditations, licenses, training, etc pertaining to the provision of care", formalDefinition="The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.\r\rFor example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality." )
+    @Description(shortDefinition="Qualifications, certifications, accreditations, licenses, training, etc. pertaining to the provision of care", formalDefinition="The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.\r\rFor example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality." )
     protected List<PractitionerQualificationComponent> qualification;
 
     /**
-     * A language the practitioner can use in patient communication.
+     * A language which may be used to communicate with the practitioner, often for correspondence/administrative purposes.The `PractitionerRole.communication` property should be used for publishing the languages that a practitioner is able to communicate with patients (on a per Organization/Role basis).
      */
-    @Child(name = "communication", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="A language the practitioner can use in patient communication", formalDefinition="A language the practitioner can use in patient communication." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
-    protected List<CodeableConcept> communication;
+    @Child(name = "communication", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="A language which may be used to communicate with the practitioner", formalDefinition="A language which may be used to communicate with the practitioner, often for correspondence/administrative purposes.\r\rThe `PractitionerRole.communication` property should be used for publishing the languages that a practitioner is able to communicate with patients (on a per Organization/Role basis)." )
+    protected List<PractitionerCommunicationComponent> communication;
 
-    private static final long serialVersionUID = 20718373L;
+    private static final long serialVersionUID = -54730811L;
 
   /**
    * Constructor
@@ -990,18 +1219,18 @@ public class Practitioner extends DomainResource {
     }
 
     /**
-     * @return {@link #communication} (A language the practitioner can use in patient communication.)
+     * @return {@link #communication} (A language which may be used to communicate with the practitioner, often for correspondence/administrative purposes.The `PractitionerRole.communication` property should be used for publishing the languages that a practitioner is able to communicate with patients (on a per Organization/Role basis).)
      */
-    public List<CodeableConcept> getCommunication() { 
+    public List<PractitionerCommunicationComponent> getCommunication() { 
       if (this.communication == null)
-        this.communication = new ArrayList<CodeableConcept>();
+        this.communication = new ArrayList<PractitionerCommunicationComponent>();
       return this.communication;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Practitioner setCommunication(List<CodeableConcept> theCommunication) { 
+    public Practitioner setCommunication(List<PractitionerCommunicationComponent> theCommunication) { 
       this.communication = theCommunication;
       return this;
     }
@@ -1009,25 +1238,25 @@ public class Practitioner extends DomainResource {
     public boolean hasCommunication() { 
       if (this.communication == null)
         return false;
-      for (CodeableConcept item : this.communication)
+      for (PractitionerCommunicationComponent item : this.communication)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addCommunication() { //3
-      CodeableConcept t = new CodeableConcept();
+    public PractitionerCommunicationComponent addCommunication() { //3
+      PractitionerCommunicationComponent t = new PractitionerCommunicationComponent();
       if (this.communication == null)
-        this.communication = new ArrayList<CodeableConcept>();
+        this.communication = new ArrayList<PractitionerCommunicationComponent>();
       this.communication.add(t);
       return t;
     }
 
-    public Practitioner addCommunication(CodeableConcept t) { //3
+    public Practitioner addCommunication(PractitionerCommunicationComponent t) { //3
       if (t == null)
         return this;
       if (this.communication == null)
-        this.communication = new ArrayList<CodeableConcept>();
+        this.communication = new ArrayList<PractitionerCommunicationComponent>();
       this.communication.add(t);
       return this;
     }
@@ -1035,7 +1264,7 @@ public class Practitioner extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #communication}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getCommunicationFirstRep() { 
+    public PractitionerCommunicationComponent getCommunicationFirstRep() { 
       if (getCommunication().isEmpty()) {
         addCommunication();
       }
@@ -1054,7 +1283,7 @@ public class Practitioner extends DomainResource {
         children.add(new Property("address", "Address", "Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent.", 0, java.lang.Integer.MAX_VALUE, address));
         children.add(new Property("photo", "Attachment", "Image of the person.", 0, java.lang.Integer.MAX_VALUE, photo));
         children.add(new Property("qualification", "", "The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.\r\rFor example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.", 0, java.lang.Integer.MAX_VALUE, qualification));
-        children.add(new Property("communication", "CodeableConcept", "A language the practitioner can use in patient communication.", 0, java.lang.Integer.MAX_VALUE, communication));
+        children.add(new Property("communication", "", "A language which may be used to communicate with the practitioner, often for correspondence/administrative purposes.\r\rThe `PractitionerRole.communication` property should be used for publishing the languages that a practitioner is able to communicate with patients (on a per Organization/Role basis).", 0, java.lang.Integer.MAX_VALUE, communication));
       }
 
       @Override
@@ -1073,7 +1302,7 @@ public class Practitioner extends DomainResource {
         case -1147692044: /*address*/  return new Property("address", "Address", "Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent.", 0, java.lang.Integer.MAX_VALUE, address);
         case 106642994: /*photo*/  return new Property("photo", "Attachment", "Image of the person.", 0, java.lang.Integer.MAX_VALUE, photo);
         case -631333393: /*qualification*/  return new Property("qualification", "", "The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.\r\rFor example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.", 0, java.lang.Integer.MAX_VALUE, qualification);
-        case -1035284522: /*communication*/  return new Property("communication", "CodeableConcept", "A language the practitioner can use in patient communication.", 0, java.lang.Integer.MAX_VALUE, communication);
+        case -1035284522: /*communication*/  return new Property("communication", "", "A language which may be used to communicate with the practitioner, often for correspondence/administrative purposes.\r\rThe `PractitionerRole.communication` property should be used for publishing the languages that a practitioner is able to communicate with patients (on a per Organization/Role basis).", 0, java.lang.Integer.MAX_VALUE, communication);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -1092,7 +1321,7 @@ public class Practitioner extends DomainResource {
         case -1147692044: /*address*/ return this.address == null ? new Base[0] : this.address.toArray(new Base[this.address.size()]); // Address
         case 106642994: /*photo*/ return this.photo == null ? new Base[0] : this.photo.toArray(new Base[this.photo.size()]); // Attachment
         case -631333393: /*qualification*/ return this.qualification == null ? new Base[0] : this.qualification.toArray(new Base[this.qualification.size()]); // PractitionerQualificationComponent
-        case -1035284522: /*communication*/ return this.communication == null ? new Base[0] : this.communication.toArray(new Base[this.communication.size()]); // CodeableConcept
+        case -1035284522: /*communication*/ return this.communication == null ? new Base[0] : this.communication.toArray(new Base[this.communication.size()]); // PractitionerCommunicationComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1133,7 +1362,7 @@ public class Practitioner extends DomainResource {
           this.getQualification().add((PractitionerQualificationComponent) value); // PractitionerQualificationComponent
           return value;
         case -1035284522: // communication
-          this.getCommunication().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          this.getCommunication().add((PractitionerCommunicationComponent) value); // PractitionerCommunicationComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1164,7 +1393,7 @@ public class Practitioner extends DomainResource {
         } else if (name.equals("qualification")) {
           this.getQualification().add((PractitionerQualificationComponent) value);
         } else if (name.equals("communication")) {
-          this.getCommunication().add(TypeConvertor.castToCodeableConcept(value));
+          this.getCommunication().add((PractitionerCommunicationComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -1203,7 +1432,7 @@ public class Practitioner extends DomainResource {
         case -1147692044: /*address*/ return new String[] {"Address"};
         case 106642994: /*photo*/ return new String[] {"Attachment"};
         case -631333393: /*qualification*/ return new String[] {};
-        case -1035284522: /*communication*/ return new String[] {"CodeableConcept"};
+        case -1035284522: /*communication*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1301,8 +1530,8 @@ public class Practitioner extends DomainResource {
             dst.qualification.add(i.copy());
         };
         if (communication != null) {
-          dst.communication = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : communication)
+          dst.communication = new ArrayList<PractitionerCommunicationComponent>();
+          for (PractitionerCommunicationComponent i : communication)
             dst.communication.add(i.copy());
         };
       }
@@ -1370,19 +1599,19 @@ public class Practitioner extends DomainResource {
  /**
    * Search parameter: <b>communication</b>
    * <p>
-   * Description: <b>One of the languages that the practitioner can communicate with</b><br>
+   * Description: <b>A language to communicate with the practitioner</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Practitioner.communication</b><br>
+   * Path: <b>Practitioner.communication.language</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="communication", path="Practitioner.communication", description="One of the languages that the practitioner can communicate with", type="token" )
+  @SearchParamDefinition(name="communication", path="Practitioner.communication.language", description="A language to communicate with the practitioner", type="token" )
   public static final String SP_COMMUNICATION = "communication";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>communication</b>
    * <p>
-   * Description: <b>One of the languages that the practitioner can communicate with</b><br>
+   * Description: <b>A language to communicate with the practitioner</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Practitioner.communication</b><br>
+   * Path: <b>Practitioner.communication.language</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam COMMUNICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_COMMUNICATION);
@@ -1392,17 +1621,17 @@ public class Practitioner extends DomainResource {
    * <p>
    * Description: <b>The date of death has been provided and satisfies this search value</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>(Practitioner.deceased as dateTime)</b><br>
+   * Path: <b>(Practitioner.deceased.ofType(dateTime))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="death-date", path="(Practitioner.deceased as dateTime)", description="The date of death has been provided and satisfies this search value", type="date" )
+  @SearchParamDefinition(name="death-date", path="(Practitioner.deceased.ofType(dateTime))", description="The date of death has been provided and satisfies this search value", type="date" )
   public static final String SP_DEATH_DATE = "death-date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>death-date</b>
    * <p>
    * Description: <b>The date of death has been provided and satisfies this search value</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>(Practitioner.deceased as dateTime)</b><br>
+   * Path: <b>(Practitioner.deceased.ofType(dateTime))</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DEATH_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DEATH_DATE);

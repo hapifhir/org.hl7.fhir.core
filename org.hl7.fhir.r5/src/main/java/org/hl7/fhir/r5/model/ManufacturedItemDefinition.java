@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,7 +66,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         /**
          * A value for the characteristic.
          */
-        @Child(name = "value", type = {CodeableConcept.class, Quantity.class, DateType.class, BooleanType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "value", type = {CodeableConcept.class, Quantity.class, DateType.class, BooleanType.class, MarkdownType.class, Attachment.class, Binary.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A value for the characteristic", formalDefinition="A value for the characteristic." )
         protected DataType value;
 
@@ -181,6 +181,21 @@ public class ManufacturedItemDefinition extends DomainResource {
         /**
          * @return {@link #value} (A value for the characteristic.)
          */
+        public MarkdownType getValueMarkdownType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new MarkdownType();
+          if (!(this.value instanceof MarkdownType))
+            throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (MarkdownType) this.value;
+        }
+
+        public boolean hasValueMarkdownType() { 
+          return this != null && this.value instanceof MarkdownType;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
         public Attachment getValueAttachment() throws FHIRException { 
           if (this.value == null)
             this.value = new Attachment();
@@ -193,6 +208,21 @@ public class ManufacturedItemDefinition extends DomainResource {
           return this != null && this.value instanceof Attachment;
         }
 
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public Reference getValueReference() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Reference();
+          if (!(this.value instanceof Reference))
+            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Reference) this.value;
+        }
+
+        public boolean hasValueReference() { 
+          return this != null && this.value instanceof Reference;
+        }
+
         public boolean hasValue() { 
           return this.value != null && !this.value.isEmpty();
         }
@@ -201,7 +231,7 @@ public class ManufacturedItemDefinition extends DomainResource {
          * @param value {@link #value} (A value for the characteristic.)
          */
         public ManufacturedItemDefinitionPropertyComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
+          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof DateType || value instanceof BooleanType || value instanceof MarkdownType || value instanceof Attachment || value instanceof Reference))
             throw new Error("Not the right type for ManufacturedItemDefinition.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -210,20 +240,22 @@ public class ManufacturedItemDefinition extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type));
-          children.add(new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value));
+          children.add(new Property("value[x]", "CodeableConcept|Quantity|date|boolean|markdown|Attachment|Reference(Binary)", "A value for the characteristic.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|markdown|Attachment|Reference(Binary)", "A value for the characteristic.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|markdown|Attachment|Reference(Binary)", "A value for the characteristic.", 0, 1, value);
           case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "A value for the characteristic.", 0, 1, value);
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "A value for the characteristic.", 0, 1, value);
           case -766192449: /*valueDate*/  return new Property("value[x]", "date", "A value for the characteristic.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "A value for the characteristic.", 0, 1, value);
+          case -497880704: /*valueMarkdown*/  return new Property("value[x]", "markdown", "A value for the characteristic.", 0, 1, value);
           case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "A value for the characteristic.", 0, 1, value);
+          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference(Binary)", "A value for the characteristic.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -279,7 +311,7 @@ public class ManufacturedItemDefinition extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"CodeableConcept", "Quantity", "date", "boolean", "Attachment"};
+        case 111972721: /*value*/ return new String[] {"CodeableConcept", "Quantity", "date", "boolean", "markdown", "Attachment", "Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -307,8 +339,16 @@ public class ManufacturedItemDefinition extends DomainResource {
           this.value = new BooleanType();
           return this.value;
         }
+        else if (name.equals("valueMarkdown")) {
+          this.value = new MarkdownType();
+          return this.value;
+        }
         else if (name.equals("valueAttachment")) {
           this.value = new Attachment();
+          return this.value;
+        }
+        else if (name.equals("valueReference")) {
+          this.value = new Reference();
           return this.value;
         }
         else
@@ -382,10 +422,10 @@ public class ManufacturedItemDefinition extends DomainResource {
         protected List<Quantity> amount;
 
         /**
-         * A reference to an constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient).
+         * A reference to a constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient).
          */
         @Child(name = "constituent", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="A reference to an constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient)", formalDefinition="A reference to an constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient)." )
+        @Description(shortDefinition="A reference to a constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient)", formalDefinition="A reference to a constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient)." )
         protected List<ManufacturedItemDefinitionComponentConstituentComponent> constituent;
 
         /**
@@ -550,7 +590,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #constituent} (A reference to an constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient).)
+         * @return {@link #constituent} (A reference to a constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient).)
          */
         public List<ManufacturedItemDefinitionComponentConstituentComponent> getConstituent() { 
           if (this.constituent == null)
@@ -713,7 +753,7 @@ public class ManufacturedItemDefinition extends DomainResource {
           children.add(new Property("type", "CodeableConcept", "Defining type of the component e.g. shell, layer, ink.", 0, 1, type));
           children.add(new Property("function", "CodeableConcept", "The function of this component within the item e.g. delivers active ingredient, masks taste.", 0, java.lang.Integer.MAX_VALUE, function));
           children.add(new Property("amount", "Quantity", "The measurable amount of total quantity of all substances in the component, expressable in different ways (e.g. by mass or volume).", 0, java.lang.Integer.MAX_VALUE, amount));
-          children.add(new Property("constituent", "", "A reference to an constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient).", 0, java.lang.Integer.MAX_VALUE, constituent));
+          children.add(new Property("constituent", "", "A reference to a constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient).", 0, java.lang.Integer.MAX_VALUE, constituent));
           children.add(new Property("property", "@ManufacturedItemDefinition.property", "General characteristics of this component.", 0, java.lang.Integer.MAX_VALUE, property));
           children.add(new Property("component", "@ManufacturedItemDefinition.component", "A component that this component contains or is made from.", 0, java.lang.Integer.MAX_VALUE, component));
         }
@@ -724,7 +764,7 @@ public class ManufacturedItemDefinition extends DomainResource {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Defining type of the component e.g. shell, layer, ink.", 0, 1, type);
           case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "The function of this component within the item e.g. delivers active ingredient, masks taste.", 0, java.lang.Integer.MAX_VALUE, function);
           case -1413853096: /*amount*/  return new Property("amount", "Quantity", "The measurable amount of total quantity of all substances in the component, expressable in different ways (e.g. by mass or volume).", 0, java.lang.Integer.MAX_VALUE, amount);
-          case -1846470364: /*constituent*/  return new Property("constituent", "", "A reference to an constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient).", 0, java.lang.Integer.MAX_VALUE, constituent);
+          case -1846470364: /*constituent*/  return new Property("constituent", "", "A reference to a constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient).", 0, java.lang.Integer.MAX_VALUE, constituent);
           case -993141291: /*property*/  return new Property("property", "@ManufacturedItemDefinition.property", "General characteristics of this component.", 0, java.lang.Integer.MAX_VALUE, property);
           case -1399907075: /*component*/  return new Property("component", "@ManufacturedItemDefinition.component", "A component that this component contains or is made from.", 0, java.lang.Integer.MAX_VALUE, component);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1368,10 +1408,10 @@ public class ManufacturedItemDefinition extends DomainResource {
     protected CodeableConcept manufacturedDoseForm;
 
     /**
-     * The “real world” units in which the quantity of the manufactured item is described.
+     * The “real-world” units in which the quantity of the manufactured item is described.
      */
     @Child(name = "unitOfPresentation", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The “real world” units in which the quantity of the item is described", formalDefinition="The “real world” units in which the quantity of the manufactured item is described." )
+    @Description(shortDefinition="The “real-world” units in which the quantity of the item is described", formalDefinition="The “real-world” units in which the quantity of the manufactured item is described." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/unit-of-presentation")
     protected CodeableConcept unitOfPresentation;
 
@@ -1601,7 +1641,7 @@ public class ManufacturedItemDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #unitOfPresentation} (The “real world” units in which the quantity of the manufactured item is described.)
+     * @return {@link #unitOfPresentation} (The “real-world” units in which the quantity of the manufactured item is described.)
      */
     public CodeableConcept getUnitOfPresentation() { 
       if (this.unitOfPresentation == null)
@@ -1617,7 +1657,7 @@ public class ManufacturedItemDefinition extends DomainResource {
     }
 
     /**
-     * @param value {@link #unitOfPresentation} (The “real world” units in which the quantity of the manufactured item is described.)
+     * @param value {@link #unitOfPresentation} (The “real-world” units in which the quantity of the manufactured item is described.)
      */
     public ManufacturedItemDefinition setUnitOfPresentation(CodeableConcept value) { 
       this.unitOfPresentation = value;
@@ -1895,7 +1935,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         children.add(new Property("status", "code", "The status of this item. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("name", "string", "A descriptive name applied to this item.", 0, 1, name));
         children.add(new Property("manufacturedDoseForm", "CodeableConcept", "Dose form as manufactured and before any transformation into the pharmaceutical product.", 0, 1, manufacturedDoseForm));
-        children.add(new Property("unitOfPresentation", "CodeableConcept", "The “real world” units in which the quantity of the manufactured item is described.", 0, 1, unitOfPresentation));
+        children.add(new Property("unitOfPresentation", "CodeableConcept", "The “real-world” units in which the quantity of the manufactured item is described.", 0, 1, unitOfPresentation));
         children.add(new Property("manufacturer", "Reference(Organization)", "Manufacturer of the item, one of several possible.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
         children.add(new Property("marketingStatus", "MarketingStatus", "Allows specifying that an item is on the market for sale, or that it is not available, and the dates and locations associated.", 0, java.lang.Integer.MAX_VALUE, marketingStatus));
         children.add(new Property("ingredient", "CodeableConcept", "The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource.", 0, java.lang.Integer.MAX_VALUE, ingredient));
@@ -1910,7 +1950,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -892481550: /*status*/  return new Property("status", "code", "The status of this item. Enables tracking the life-cycle of the content.", 0, 1, status);
         case 3373707: /*name*/  return new Property("name", "string", "A descriptive name applied to this item.", 0, 1, name);
         case -1451400348: /*manufacturedDoseForm*/  return new Property("manufacturedDoseForm", "CodeableConcept", "Dose form as manufactured and before any transformation into the pharmaceutical product.", 0, 1, manufacturedDoseForm);
-        case -1427765963: /*unitOfPresentation*/  return new Property("unitOfPresentation", "CodeableConcept", "The “real world” units in which the quantity of the manufactured item is described.", 0, 1, unitOfPresentation);
+        case -1427765963: /*unitOfPresentation*/  return new Property("unitOfPresentation", "CodeableConcept", "The “real-world” units in which the quantity of the manufactured item is described.", 0, 1, unitOfPresentation);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "Manufacturer of the item, one of several possible.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
         case 70767032: /*marketingStatus*/  return new Property("marketingStatus", "MarketingStatus", "Allows specifying that an item is on the market for sale, or that it is not available, and the dates and locations associated.", 0, java.lang.Integer.MAX_VALUE, marketingStatus);
         case -206409263: /*ingredient*/  return new Property("ingredient", "CodeableConcept", "The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource.", 0, java.lang.Integer.MAX_VALUE, ingredient);

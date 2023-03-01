@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,14 +56,14 @@ public class PractitionerRole extends DomainResource {
      * Business Identifiers that are specific to a role/location.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Business Identifiers that are specific to a role/location", formalDefinition="Business Identifiers that are specific to a role/location." )
+    @Description(shortDefinition="Identifiers for a role/location", formalDefinition="Business Identifiers that are specific to a role/location." )
     protected List<Identifier> identifier;
 
     /**
-     * Whether this practitioner role record is in active use.
+     *  Whether this practitioner role record is in active use. Some systems may use this property to mark non-active practitioners, such as those that are not currently employed.
      */
     @Child(name = "active", type = {BooleanType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Whether this practitioner role record is in active use", formalDefinition="Whether this practitioner role record is in active use." )
+    @Description(shortDefinition="Whether this practitioner role record is in active use", formalDefinition=" Whether this practitioner role record is in active use. Some systems may use this property to mark non-active practitioners, such as those that are not currently employed." )
     protected BooleanType active;
 
     /**
@@ -77,7 +77,7 @@ public class PractitionerRole extends DomainResource {
      * Practitioner that is able to provide the defined services for the organization.
      */
     @Child(name = "practitioner", type = {Practitioner.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Practitioner that is able to provide the defined services for the organization", formalDefinition="Practitioner that is able to provide the defined services for the organization." )
+    @Description(shortDefinition="Practitioner that provides services for the organization", formalDefinition="Practitioner that is able to provide the defined services for the organization." )
     protected Reference practitioner;
 
     /**
@@ -107,14 +107,14 @@ public class PractitionerRole extends DomainResource {
      * The location(s) at which this practitioner provides care.
      */
     @Child(name = "location", type = {Location.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The location(s) at which this practitioner provides care", formalDefinition="The location(s) at which this practitioner provides care." )
+    @Description(shortDefinition="Location(s) where the practitioner provides care", formalDefinition="The location(s) at which this practitioner provides care." )
     protected List<Reference> location;
 
     /**
      * The list of healthcare services that this worker provides for this role's Organization/Location(s).
      */
     @Child(name = "healthcareService", type = {HealthcareService.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="The list of healthcare services that this worker provides for this role's Organization/Location(s)", formalDefinition="The list of healthcare services that this worker provides for this role's Organization/Location(s)." )
+    @Description(shortDefinition="Healthcare services provided for this role's Organization/Location(s)", formalDefinition="The list of healthcare services that this worker provides for this role's Organization/Location(s)." )
     protected List<Reference> healthcareService;
 
     /**
@@ -125,20 +125,36 @@ public class PractitionerRole extends DomainResource {
     protected List<ExtendedContactDetail> contact;
 
     /**
+     * Collection of characteristics (attributes).
+     */
+    @Child(name = "characteristic", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Collection of characteristics (attributes)", formalDefinition="Collection of characteristics (attributes)." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-mode")
+    protected List<CodeableConcept> characteristic;
+
+    /**
+     * A language the practitioner can use in patient communication. The practitioner may know several languages (listed in practitioner.communication), however these are the languages that could be advertised in a directory for a patient to search.
+     */
+    @Child(name = "communication", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="A language the practitioner (in this role) can use in patient communication", formalDefinition="A language the practitioner can use in patient communication. The practitioner may know several languages (listed in practitioner.communication), however these are the languages that could be advertised in a directory for a patient to search." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-languages")
+    protected List<CodeableConcept> communication;
+
+    /**
      * A collection of times the practitioner is available or performing this role at the location and/or healthcareservice.
      */
-    @Child(name = "availability", type = {Availability.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "availability", type = {Availability.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Times the Practitioner is available at this location and/or healthcare service (including exceptions)", formalDefinition="A collection of times the practitioner is available or performing this role at the location and/or healthcareservice." )
     protected List<Availability> availability;
 
     /**
-     * Technical endpoints providing access to services operated for the practitioner with this role.
+     *  Technical endpoints providing access to services operated for the practitioner with this role. Commonly used for locating scheduling services, or identifying where to send referrals electronically.
      */
-    @Child(name = "endpoint", type = {Endpoint.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Technical endpoints providing access to services operated for the practitioner with this role", formalDefinition="Technical endpoints providing access to services operated for the practitioner with this role." )
+    @Child(name = "endpoint", type = {Endpoint.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Endpoints for interacting with the practitioner in this role", formalDefinition=" Technical endpoints providing access to services operated for the practitioner with this role. Commonly used for locating scheduling services, or identifying where to send referrals electronically." )
     protected List<Reference> endpoint;
 
-    private static final long serialVersionUID = -309346881L;
+    private static final long serialVersionUID = 1286634270L;
 
   /**
    * Constructor
@@ -201,7 +217,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return {@link #active} (Whether this practitioner role record is in active use.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
+     * @return {@link #active} ( Whether this practitioner role record is in active use. Some systems may use this property to mark non-active practitioners, such as those that are not currently employed.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
      */
     public BooleanType getActiveElement() { 
       if (this.active == null)
@@ -221,7 +237,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @param value {@link #active} (Whether this practitioner role record is in active use.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
+     * @param value {@link #active} ( Whether this practitioner role record is in active use. Some systems may use this property to mark non-active practitioners, such as those that are not currently employed.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
      */
     public PractitionerRole setActiveElement(BooleanType value) { 
       this.active = value;
@@ -229,14 +245,14 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return Whether this practitioner role record is in active use.
+     * @return  Whether this practitioner role record is in active use. Some systems may use this property to mark non-active practitioners, such as those that are not currently employed.
      */
     public boolean getActive() { 
       return this.active == null || this.active.isEmpty() ? false : this.active.getValue();
     }
 
     /**
-     * @param value Whether this practitioner role record is in active use.
+     * @param value  Whether this practitioner role record is in active use. Some systems may use this property to mark non-active practitioners, such as those that are not currently employed.
      */
     public PractitionerRole setActive(boolean value) { 
         if (this.active == null)
@@ -583,6 +599,112 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
+     * @return {@link #characteristic} (Collection of characteristics (attributes).)
+     */
+    public List<CodeableConcept> getCharacteristic() { 
+      if (this.characteristic == null)
+        this.characteristic = new ArrayList<CodeableConcept>();
+      return this.characteristic;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public PractitionerRole setCharacteristic(List<CodeableConcept> theCharacteristic) { 
+      this.characteristic = theCharacteristic;
+      return this;
+    }
+
+    public boolean hasCharacteristic() { 
+      if (this.characteristic == null)
+        return false;
+      for (CodeableConcept item : this.characteristic)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addCharacteristic() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.characteristic == null)
+        this.characteristic = new ArrayList<CodeableConcept>();
+      this.characteristic.add(t);
+      return t;
+    }
+
+    public PractitionerRole addCharacteristic(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.characteristic == null)
+        this.characteristic = new ArrayList<CodeableConcept>();
+      this.characteristic.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getCharacteristicFirstRep() { 
+      if (getCharacteristic().isEmpty()) {
+        addCharacteristic();
+      }
+      return getCharacteristic().get(0);
+    }
+
+    /**
+     * @return {@link #communication} (A language the practitioner can use in patient communication. The practitioner may know several languages (listed in practitioner.communication), however these are the languages that could be advertised in a directory for a patient to search.)
+     */
+    public List<CodeableConcept> getCommunication() { 
+      if (this.communication == null)
+        this.communication = new ArrayList<CodeableConcept>();
+      return this.communication;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public PractitionerRole setCommunication(List<CodeableConcept> theCommunication) { 
+      this.communication = theCommunication;
+      return this;
+    }
+
+    public boolean hasCommunication() { 
+      if (this.communication == null)
+        return false;
+      for (CodeableConcept item : this.communication)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addCommunication() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.communication == null)
+        this.communication = new ArrayList<CodeableConcept>();
+      this.communication.add(t);
+      return t;
+    }
+
+    public PractitionerRole addCommunication(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.communication == null)
+        this.communication = new ArrayList<CodeableConcept>();
+      this.communication.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #communication}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getCommunicationFirstRep() { 
+      if (getCommunication().isEmpty()) {
+        addCommunication();
+      }
+      return getCommunication().get(0);
+    }
+
+    /**
      * @return {@link #availability} (A collection of times the practitioner is available or performing this role at the location and/or healthcareservice.)
      */
     public List<Availability> getAvailability() { 
@@ -636,7 +758,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return {@link #endpoint} (Technical endpoints providing access to services operated for the practitioner with this role.)
+     * @return {@link #endpoint} ( Technical endpoints providing access to services operated for the practitioner with this role. Commonly used for locating scheduling services, or identifying where to send referrals electronically.)
      */
     public List<Reference> getEndpoint() { 
       if (this.endpoint == null)
@@ -691,7 +813,7 @@ public class PractitionerRole extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business Identifiers that are specific to a role/location.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("active", "boolean", "Whether this practitioner role record is in active use.", 0, 1, active));
+        children.add(new Property("active", "boolean", " Whether this practitioner role record is in active use. Some systems may use this property to mark non-active practitioners, such as those that are not currently employed.", 0, 1, active));
         children.add(new Property("period", "Period", "The period during which the person is authorized to act as a practitioner in these role(s) for the organization.", 0, 1, period));
         children.add(new Property("practitioner", "Reference(Practitioner)", "Practitioner that is able to provide the defined services for the organization.", 0, 1, practitioner));
         children.add(new Property("organization", "Reference(Organization)", "The organization where the Practitioner performs the roles associated.", 0, 1, organization));
@@ -700,15 +822,17 @@ public class PractitionerRole extends DomainResource {
         children.add(new Property("location", "Reference(Location)", "The location(s) at which this practitioner provides care.", 0, java.lang.Integer.MAX_VALUE, location));
         children.add(new Property("healthcareService", "Reference(HealthcareService)", "The list of healthcare services that this worker provides for this role's Organization/Location(s).", 0, java.lang.Integer.MAX_VALUE, healthcareService));
         children.add(new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific PractitionerRole. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact));
+        children.add(new Property("characteristic", "CodeableConcept", "Collection of characteristics (attributes).", 0, java.lang.Integer.MAX_VALUE, characteristic));
+        children.add(new Property("communication", "CodeableConcept", "A language the practitioner can use in patient communication. The practitioner may know several languages (listed in practitioner.communication), however these are the languages that could be advertised in a directory for a patient to search.", 0, java.lang.Integer.MAX_VALUE, communication));
         children.add(new Property("availability", "Availability", "A collection of times the practitioner is available or performing this role at the location and/or healthcareservice.", 0, java.lang.Integer.MAX_VALUE, availability));
-        children.add(new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the practitioner with this role.", 0, java.lang.Integer.MAX_VALUE, endpoint));
+        children.add(new Property("endpoint", "Reference(Endpoint)", " Technical endpoints providing access to services operated for the practitioner with this role. Commonly used for locating scheduling services, or identifying where to send referrals electronically.", 0, java.lang.Integer.MAX_VALUE, endpoint));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business Identifiers that are specific to a role/location.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -1422950650: /*active*/  return new Property("active", "boolean", "Whether this practitioner role record is in active use.", 0, 1, active);
+        case -1422950650: /*active*/  return new Property("active", "boolean", " Whether this practitioner role record is in active use. Some systems may use this property to mark non-active practitioners, such as those that are not currently employed.", 0, 1, active);
         case -991726143: /*period*/  return new Property("period", "Period", "The period during which the person is authorized to act as a practitioner in these role(s) for the organization.", 0, 1, period);
         case 574573338: /*practitioner*/  return new Property("practitioner", "Reference(Practitioner)", "Practitioner that is able to provide the defined services for the organization.", 0, 1, practitioner);
         case 1178922291: /*organization*/  return new Property("organization", "Reference(Organization)", "The organization where the Practitioner performs the roles associated.", 0, 1, organization);
@@ -717,8 +841,10 @@ public class PractitionerRole extends DomainResource {
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The location(s) at which this practitioner provides care.", 0, java.lang.Integer.MAX_VALUE, location);
         case 1289661064: /*healthcareService*/  return new Property("healthcareService", "Reference(HealthcareService)", "The list of healthcare services that this worker provides for this role's Organization/Location(s).", 0, java.lang.Integer.MAX_VALUE, healthcareService);
         case 951526432: /*contact*/  return new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific PractitionerRole. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact);
+        case 366313883: /*characteristic*/  return new Property("characteristic", "CodeableConcept", "Collection of characteristics (attributes).", 0, java.lang.Integer.MAX_VALUE, characteristic);
+        case -1035284522: /*communication*/  return new Property("communication", "CodeableConcept", "A language the practitioner can use in patient communication. The practitioner may know several languages (listed in practitioner.communication), however these are the languages that could be advertised in a directory for a patient to search.", 0, java.lang.Integer.MAX_VALUE, communication);
         case 1997542747: /*availability*/  return new Property("availability", "Availability", "A collection of times the practitioner is available or performing this role at the location and/or healthcareservice.", 0, java.lang.Integer.MAX_VALUE, availability);
-        case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the practitioner with this role.", 0, java.lang.Integer.MAX_VALUE, endpoint);
+        case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", " Technical endpoints providing access to services operated for the practitioner with this role. Commonly used for locating scheduling services, or identifying where to send referrals electronically.", 0, java.lang.Integer.MAX_VALUE, endpoint);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -737,6 +863,8 @@ public class PractitionerRole extends DomainResource {
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : this.location.toArray(new Base[this.location.size()]); // Reference
         case 1289661064: /*healthcareService*/ return this.healthcareService == null ? new Base[0] : this.healthcareService.toArray(new Base[this.healthcareService.size()]); // Reference
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ExtendedContactDetail
+        case 366313883: /*characteristic*/ return this.characteristic == null ? new Base[0] : this.characteristic.toArray(new Base[this.characteristic.size()]); // CodeableConcept
+        case -1035284522: /*communication*/ return this.communication == null ? new Base[0] : this.communication.toArray(new Base[this.communication.size()]); // CodeableConcept
         case 1997542747: /*availability*/ return this.availability == null ? new Base[0] : this.availability.toArray(new Base[this.availability.size()]); // Availability
         case 1741102485: /*endpoint*/ return this.endpoint == null ? new Base[0] : this.endpoint.toArray(new Base[this.endpoint.size()]); // Reference
         default: return super.getProperty(hash, name, checkValid);
@@ -777,6 +905,12 @@ public class PractitionerRole extends DomainResource {
         case 951526432: // contact
           this.getContact().add(TypeConvertor.castToExtendedContactDetail(value)); // ExtendedContactDetail
           return value;
+        case 366313883: // characteristic
+          this.getCharacteristic().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case -1035284522: // communication
+          this.getCommunication().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
         case 1997542747: // availability
           this.getAvailability().add(TypeConvertor.castToAvailability(value)); // Availability
           return value;
@@ -810,6 +944,10 @@ public class PractitionerRole extends DomainResource {
           this.getHealthcareService().add(TypeConvertor.castToReference(value));
         } else if (name.equals("contact")) {
           this.getContact().add(TypeConvertor.castToExtendedContactDetail(value));
+        } else if (name.equals("characteristic")) {
+          this.getCharacteristic().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("communication")) {
+          this.getCommunication().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("availability")) {
           this.getAvailability().add(TypeConvertor.castToAvailability(value));
         } else if (name.equals("endpoint")) {
@@ -832,6 +970,8 @@ public class PractitionerRole extends DomainResource {
         case 1901043637:  return addLocation(); 
         case 1289661064:  return addHealthcareService(); 
         case 951526432:  return addContact(); 
+        case 366313883:  return addCharacteristic(); 
+        case -1035284522:  return addCommunication(); 
         case 1997542747:  return addAvailability(); 
         case 1741102485:  return addEndpoint(); 
         default: return super.makeProperty(hash, name);
@@ -852,6 +992,8 @@ public class PractitionerRole extends DomainResource {
         case 1901043637: /*location*/ return new String[] {"Reference"};
         case 1289661064: /*healthcareService*/ return new String[] {"Reference"};
         case 951526432: /*contact*/ return new String[] {"ExtendedContactDetail"};
+        case 366313883: /*characteristic*/ return new String[] {"CodeableConcept"};
+        case -1035284522: /*communication*/ return new String[] {"CodeableConcept"};
         case 1997542747: /*availability*/ return new String[] {"Availability"};
         case 1741102485: /*endpoint*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
@@ -893,6 +1035,12 @@ public class PractitionerRole extends DomainResource {
         }
         else if (name.equals("contact")) {
           return addContact();
+        }
+        else if (name.equals("characteristic")) {
+          return addCharacteristic();
+        }
+        else if (name.equals("communication")) {
+          return addCommunication();
         }
         else if (name.equals("availability")) {
           return addAvailability();
@@ -951,6 +1099,16 @@ public class PractitionerRole extends DomainResource {
           for (ExtendedContactDetail i : contact)
             dst.contact.add(i.copy());
         };
+        if (characteristic != null) {
+          dst.characteristic = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : characteristic)
+            dst.characteristic.add(i.copy());
+        };
+        if (communication != null) {
+          dst.communication = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : communication)
+            dst.communication.add(i.copy());
+        };
         if (availability != null) {
           dst.availability = new ArrayList<Availability>();
           for (Availability i : availability)
@@ -978,6 +1136,7 @@ public class PractitionerRole extends DomainResource {
            && compareDeep(practitioner, o.practitioner, true) && compareDeep(organization, o.organization, true)
            && compareDeep(code, o.code, true) && compareDeep(specialty, o.specialty, true) && compareDeep(location, o.location, true)
            && compareDeep(healthcareService, o.healthcareService, true) && compareDeep(contact, o.contact, true)
+           && compareDeep(characteristic, o.characteristic, true) && compareDeep(communication, o.communication, true)
            && compareDeep(availability, o.availability, true) && compareDeep(endpoint, o.endpoint, true);
       }
 
@@ -994,7 +1153,7 @@ public class PractitionerRole extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, active, period
           , practitioner, organization, code, specialty, location, healthcareService, contact
-          , availability, endpoint);
+          , characteristic, communication, availability, endpoint);
       }
 
   @Override
@@ -1021,6 +1180,46 @@ public class PractitionerRole extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
+
+ /**
+   * Search parameter: <b>characteristic</b>
+   * <p>
+   * Description: <b>One of the PractitionerRole's characteristics</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PractitionerRole.characteristic</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="characteristic", path="PractitionerRole.characteristic", description="One of the PractitionerRole's characteristics", type="token" )
+  public static final String SP_CHARACTERISTIC = "characteristic";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>characteristic</b>
+   * <p>
+   * Description: <b>One of the PractitionerRole's characteristics</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PractitionerRole.characteristic</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC);
+
+ /**
+   * Search parameter: <b>communication</b>
+   * <p>
+   * Description: <b>One of the languages that the practitioner can communicate with</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PractitionerRole.communication</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="communication", path="PractitionerRole.communication", description="One of the languages that the practitioner can communicate with", type="token" )
+  public static final String SP_COMMUNICATION = "communication";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>communication</b>
+   * <p>
+   * Description: <b>One of the languages that the practitioner can communicate with</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PractitionerRole.communication</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam COMMUNICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_COMMUNICATION);
 
  /**
    * Search parameter: <b>date</b>
