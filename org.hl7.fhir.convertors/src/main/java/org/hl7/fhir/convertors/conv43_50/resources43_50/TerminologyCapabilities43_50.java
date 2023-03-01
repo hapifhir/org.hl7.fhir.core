@@ -15,8 +15,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Url43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.CommonLanguages;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.CommonLanguagesEnumFactory;
+import org.hl7.fhir.r5.model.Enumerations.CommonLanguages;
+import org.hl7.fhir.r5.model.Enumerations.CommonLanguagesEnumFactory;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

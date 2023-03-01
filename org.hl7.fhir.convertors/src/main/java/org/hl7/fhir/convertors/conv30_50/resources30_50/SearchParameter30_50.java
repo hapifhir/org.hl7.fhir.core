@@ -15,50 +15,53 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Stri
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAllEnumFactory;
 
 public class SearchParameter30_50 {
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchComparator> convertSearchComparator(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchComparator> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchComparator> convertSearchComparator(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchComparator> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchComparator> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SearchParameter.SearchComparatorEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchComparator> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.SearchComparatorEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case EQ:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchComparator.EQ);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchComparator.EQ);
         break;
       case NE:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchComparator.NE);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchComparator.NE);
         break;
       case GT:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchComparator.GT);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchComparator.GT);
         break;
       case LT:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchComparator.LT);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchComparator.LT);
         break;
       case GE:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchComparator.GE);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchComparator.GE);
         break;
       case LE:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchComparator.LE);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchComparator.LE);
         break;
       case SA:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchComparator.SA);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchComparator.SA);
         break;
       case EB:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchComparator.EB);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchComparator.EB);
         break;
       case AP:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchComparator.AP);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchComparator.AP);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchComparator.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchComparator.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchComparator> convertSearchComparator(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchComparator> src) throws FHIRException {
+  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchComparator> convertSearchComparator(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchComparator> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchComparator> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.SearchParameter.SearchComparatorEnumFactory());
@@ -98,50 +101,50 @@ public class SearchParameter30_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode> convertSearchModifierCode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchModifierCode> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchModifierCode> convertSearchModifierCode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchModifierCode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SearchParameter.SearchModifierCodeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchModifierCode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.SearchModifierCodeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case MISSING:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.MISSING);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.MISSING);
         break;
       case EXACT:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.EXACT);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.EXACT);
         break;
       case CONTAINS:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.CONTAINS);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.CONTAINS);
         break;
       case NOT:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.NOT);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.NOT);
         break;
       case TEXT:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.TEXT);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.TEXT);
         break;
       case IN:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.IN);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.IN);
         break;
       case NOTIN:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.NOTIN);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.NOTIN);
         break;
       case BELOW:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.BELOW);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.BELOW);
         break;
       case ABOVE:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.ABOVE);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.ABOVE);
         break;
       case TYPE:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.TYPE);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.TYPE);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchModifierCode> convertSearchModifierCode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode> src) throws FHIRException {
+  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchModifierCode> convertSearchModifierCode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchModifierCode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.SearchModifierCode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.SearchParameter.SearchModifierCodeEnumFactory());
@@ -213,7 +216,7 @@ public class SearchParameter30_50 {
       tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
-    for (org.hl7.fhir.dstu3.model.CodeType t : src.getBase()) tgt.getBase().add(Code30_50.convertCode(t));
+    for (org.hl7.fhir.dstu3.model.CodeType t : src.getBase()) tgt.getBase().add(new Enumeration<VersionIndependentResourceTypesAll>(new VersionIndependentResourceTypesAllEnumFactory(), Code30_50.convertCode(t)));
     if (src.hasType())
       tgt.setTypeElement(Enumerations30_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasDerivedFrom())
@@ -226,7 +229,7 @@ public class SearchParameter30_50 {
 //      tgt.setXpathElement(String30_50.convertString(src.getXpathElement()));
     if (src.hasXpathUsage())
       tgt.setProcessingModeElement(convertXPathUsageType(src.getXpathUsageElement()));
-    for (org.hl7.fhir.dstu3.model.CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
+    for (org.hl7.fhir.dstu3.model.CodeType t : src.getTarget()) tgt.getTarget().add(new Enumeration<VersionIndependentResourceTypesAll>(new VersionIndependentResourceTypesAllEnumFactory(), t.getValue()));
     tgt.setComparator(src.getComparator().stream()
       .map(SearchParameter30_50::convertSearchComparator)
       .collect(Collectors.toList()));
@@ -268,7 +271,7 @@ public class SearchParameter30_50 {
       tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
-    for (CodeType t : src.getBase()) tgt.getBase().add(Code30_50.convertCode(t));
+    for (Enumeration<VersionIndependentResourceTypesAll> t : src.getBase()) tgt.getBase().add(Code30_50.convertCode(t.getCodeType()));
     if (src.hasType())
       tgt.setTypeElement(Enumerations30_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasDerivedFrom())
@@ -281,7 +284,7 @@ public class SearchParameter30_50 {
 //      tgt.setXpathElement(String30_50.convertString(src.getXpathElement()));
     if (src.hasProcessingMode())
       tgt.setXpathUsageElement(convertXPathUsageType(src.getProcessingModeElement()));
-    for (org.hl7.fhir.r5.model.CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
+    for (Enumeration<VersionIndependentResourceTypesAll> t : src.getTarget()) tgt.getTarget().add(Code30_50.convertCode(t.getCodeType()));
     tgt.setComparator(src.getComparator().stream()
       .map(SearchParameter30_50::convertSearchComparator)
       .collect(Collectors.toList()));

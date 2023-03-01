@@ -232,7 +232,7 @@ public class Observation40_50 {
     if (src.hasAge())
       tgt.setAge(Range40_50.convertRange(src.getAge()));
     if (src.hasText())
-      tgt.setTextElement(String40_50.convertString(src.getTextElement()));
+      tgt.setTextElement(String40_50.convertStringToMarkdown(src.getTextElement()));
     return tgt;
   }
 

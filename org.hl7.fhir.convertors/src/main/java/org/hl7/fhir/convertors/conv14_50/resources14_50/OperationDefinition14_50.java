@@ -11,10 +11,14 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Date
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Integer14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Uri14_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAllEnumFactory;
 
 public class OperationDefinition14_50 {
 
@@ -61,7 +65,7 @@ public class OperationDefinition14_50 {
     if (src.hasSystemElement())
       tgt.setSystemElement(Boolean14_50.convertBoolean(src.getSystemElement()));
     if (src.getType())
-      for (CodeType t : src.getResource()) tgt.addType(t.getValue());
+      for (Enumeration<VersionIndependentResourceTypesAll> t : src.getResource()) tgt.addType(t.getCode());
     if (src.hasInstanceElement())
       tgt.setInstanceElement(Boolean14_50.convertBoolean(src.getInstanceElement()));
     for (org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getParameter())
@@ -111,7 +115,7 @@ public class OperationDefinition14_50 {
       tgt.setBaseElement(Reference14_50.convertReferenceToCanonical(src.getBase()));
     if (src.hasSystemElement())
       tgt.setSystemElement(Boolean14_50.convertBoolean(src.getSystemElement()));
-    for (org.hl7.fhir.dstu2016may.model.CodeType t : src.getType()) tgt.addResource(t.getValue());
+    for (org.hl7.fhir.dstu2016may.model.CodeType t : src.getType()) tgt.getResource().add(new Enumeration<VersionIndependentResourceTypesAll>(new VersionIndependentResourceTypesAllEnumFactory(), Code14_50.convertCode(t)));
     tgt.setType(tgt.hasResource());
     if (src.hasInstanceElement())
       tgt.setInstanceElement(Boolean14_50.convertBoolean(src.getInstanceElement()));

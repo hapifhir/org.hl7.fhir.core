@@ -212,8 +212,8 @@ public class Resource10_50 {
       return Location10_50.convertLocation((org.hl7.fhir.r5.model.Location) src);
     if (src instanceof org.hl7.fhir.r5.model.MedicationDispense)
       return MedicationDispense10_50.convertMedicationDispense((org.hl7.fhir.r5.model.MedicationDispense) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicationUsage)
-      return MedicationStatement10_50.convertMedicationStatement((org.hl7.fhir.r5.model.MedicationUsage) src);
+    if (src instanceof org.hl7.fhir.r5.model.MedicationStatement)
+      return MedicationStatement10_50.convertMedicationStatement((org.hl7.fhir.r5.model.MedicationStatement) src);
     if (src instanceof org.hl7.fhir.r5.model.MessageHeader)
       return MessageHeader10_50.convertMessageHeader((org.hl7.fhir.r5.model.MessageHeader) src);
     if (src instanceof org.hl7.fhir.r5.model.NamingSystem)

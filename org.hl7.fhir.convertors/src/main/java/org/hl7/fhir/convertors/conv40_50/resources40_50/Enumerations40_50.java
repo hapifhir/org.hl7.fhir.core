@@ -231,10 +231,10 @@ public class Enumerations40_50 {
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_3_0);
         break;
       case _4_3_0_CIBUILD:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_3_0_CIBUILD);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_3_0CIBUILD);
         break;
       case _4_3_0_SNAPSHOT1:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_3_0_SNAPSHOT1);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_3_0SNAPSHOT1);
         break;
       case _5_0_0:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._5_0_0);
@@ -339,10 +339,10 @@ public class Enumerations40_50 {
       case _4_3_0:
         tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_3_0);
         break;
-      case _4_3_0_CIBUILD:
+      case _4_3_0CIBUILD:
         tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_3_0_CIBUILD);
         break;
-      case _4_3_0_SNAPSHOT1:
+      case _4_3_0SNAPSHOT1:
         tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_3_0_SNAPSHOT1);
         break;
       case _5_0_0:
@@ -448,29 +448,29 @@ public class Enumerations40_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.NoteType> convertNoteType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.NoteType> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.PaymentReconciliation.NoteType> convertNoteType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.NoteType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.NoteType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.NoteTypeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.PaymentReconciliation.NoteType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.PaymentReconciliation.NoteTypeEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case DISPLAY:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.NoteType.DISPLAY);
+        tgt.setValue(org.hl7.fhir.r5.model.PaymentReconciliation.NoteType.DISPLAY);
         break;
       case PRINT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.NoteType.PRINT);
+        tgt.setValue(org.hl7.fhir.r5.model.PaymentReconciliation.NoteType.PRINT);
         break;
       case PRINTOPER:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.NoteType.PRINTOPER);
+        tgt.setValue(org.hl7.fhir.r5.model.PaymentReconciliation.NoteType.PRINTOPER);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.NoteType.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.PaymentReconciliation.NoteType.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.NoteType> convertNoteType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.NoteType> src) throws FHIRException {
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.NoteType> convertNoteType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.PaymentReconciliation.NoteType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.NoteType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.NoteTypeEnumFactory());
@@ -563,29 +563,29 @@ public class Enumerations40_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus> convertDocumentReferenceStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus> convertDocumentReferenceStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatusEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatusEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case CURRENT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.CURRENT);
+        tgt.setValue(org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus.CURRENT);
         break;
       case SUPERSEDED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.SUPERSEDED);
+        tgt.setValue(org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus.SUPERSEDED);
         break;
       case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.ENTEREDINERROR);
+        tgt.setValue(org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus.ENTEREDINERROR);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> convertDocumentReferenceStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus> src) throws FHIRException {
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> convertDocumentReferenceStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatusEnumFactory());

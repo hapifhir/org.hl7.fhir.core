@@ -7,8 +7,11 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.ContactPoint30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Code30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Endpoint.EndpointPayloadComponent;
 
 public class Endpoint30_50 {
 
@@ -31,9 +34,12 @@ public class Endpoint30_50 {
       tgt.addContact(ContactPoint30_50.convertContactPoint(t));
     if (src.hasPeriod())
       tgt.setPeriod(Period30_50.convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPayloadType())
-      tgt.addPayloadType(CodeableConcept30_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.CodeType t : src.getPayloadMimeType()) tgt.addPayloadMimeType(t.getValue());
+    for (EndpointPayloadComponent t : src.getPayload())
+      if (t.hasType())
+        tgt.addPayloadType(CodeableConcept30_50.convertCodeableConcept(t.getTypeFirstRep()));
+    for (EndpointPayloadComponent t : src.getPayload())
+      if (t.hasMimeType())
+        tgt.getPayloadMimeType().add(Code30_50.convertCode(t.getMimeType().get(0)));
     if (src.hasAddress())
       tgt.setAddress(src.getAddress());
     for (org.hl7.fhir.r5.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());
@@ -60,8 +66,8 @@ public class Endpoint30_50 {
     if (src.hasPeriod())
       tgt.setPeriod(Period30_50.convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getPayloadType())
-      tgt.addPayloadType(CodeableConcept30_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.dstu3.model.CodeType t : src.getPayloadMimeType()) tgt.addPayloadMimeType(t.getValue());
+      tgt.addPayload().addType(CodeableConcept30_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.dstu3.model.CodeType t : src.getPayloadMimeType()) tgt.addPayload().addMimeType(t.getValue());
     if (src.hasAddress())
       tgt.setAddress(src.getAddress());
     for (org.hl7.fhir.dstu3.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());

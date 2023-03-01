@@ -190,7 +190,7 @@
         {
           "assert": {
             "description": "Confirm that the returned HTTP status is 400(Bad Request).",
-            "response": "bad",
+            "response": "badRequest",
             "warningOnly": false
           }
         }

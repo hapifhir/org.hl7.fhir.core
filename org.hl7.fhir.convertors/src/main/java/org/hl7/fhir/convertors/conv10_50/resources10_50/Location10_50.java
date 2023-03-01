@@ -59,7 +59,7 @@ public class Location10_50 {
     if (src.hasNameElement())
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
     if (src.hasDescriptionElement())
-      tgt.setDescriptionElement(String10_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String10_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasMode())
       tgt.setModeElement(convertLocationMode(src.getModeElement()));
     if (src.hasType())

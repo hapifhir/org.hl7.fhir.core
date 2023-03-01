@@ -62,7 +62,7 @@ public class Account40_50 {
     if (src.hasOwner())
       tgt.setOwner(Reference40_50.convertReference(src.getOwner()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.r4.model.Account.GuarantorComponent t : src.getGuarantor())
       tgt.addGuarantor(convertGuarantorComponent(t));
 //    if (src.hasPartOf())

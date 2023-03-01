@@ -73,9 +73,9 @@ public class ImagingStudy30_50 {
       if (src.hasReferrer())
         tgt.setReferrer(Reference30_50.convertReference(src.getReferrer()));
     }
-    for (org.hl7.fhir.r5.model.Reference t : src.getInterpreter()) {
-      tgt.addInterpreter(Reference30_50.convertReference(t));
-    }
+//    for (org.hl7.fhir.r5.model.Reference t : src.getInterpreter()) {
+//      tgt.addInterpreter(Reference30_50.convertReference(t));
+//    }
     for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) {
       tgt.addEndpoint(Reference30_50.convertReference(t));
     }
@@ -165,9 +165,9 @@ public class ImagingStudy30_50 {
       if (src.hasReferrer())
         tgt.setReferrer(Reference30_50.convertReference(src.getReferrer()));
     }
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getInterpreter()) {
-      tgt.addInterpreter(Reference30_50.convertReference(t));
-    }
+//    for (org.hl7.fhir.dstu3.model.Reference t : src.getInterpreter()) {
+//      tgt.addInterpreter(Reference30_50.convertReference(t));
+//    }
     for (org.hl7.fhir.dstu3.model.Reference t : src.getEndpoint()) {
       tgt.addEndpoint(Reference30_50.convertReference(t));
     }

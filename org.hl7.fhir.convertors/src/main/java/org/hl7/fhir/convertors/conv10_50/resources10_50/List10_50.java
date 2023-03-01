@@ -24,7 +24,7 @@ public class List10_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     if (src.hasSubject())
-      tgt.setSubject(Reference10_50.convertReference(src.getSubject()));
+      tgt.setSubject(Reference10_50.convertReference(src.getSubjectFirstRep()));
     if (src.hasSource())
       tgt.setSource(Reference10_50.convertReference(src.getSource()));
     if (src.hasEncounter())
@@ -55,7 +55,7 @@ public class List10_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     if (src.hasSubject())
-      tgt.setSubject(Reference10_50.convertReference(src.getSubject()));
+      tgt.addSubject(Reference10_50.convertReference(src.getSubject()));
     if (src.hasSource())
       tgt.setSource(Reference10_50.convertReference(src.getSource()));
     if (src.hasEncounter())

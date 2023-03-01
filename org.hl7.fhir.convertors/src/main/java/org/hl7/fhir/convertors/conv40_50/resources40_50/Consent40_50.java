@@ -72,7 +72,7 @@ public class Consent40_50 {
     for (org.hl7.fhir.r4.model.Consent.ConsentVerificationComponent t : src.getVerification())
       tgt.addVerification(convertConsentVerificationComponent(t));
     if (src.hasProvision())
-      tgt.setProvision(convertprovisionComponent(src.getProvision()));
+      tgt.addProvision(convertprovisionComponent(src.getProvision()));
     return tgt;
   }
 
@@ -108,7 +108,7 @@ public class Consent40_50 {
     for (org.hl7.fhir.r5.model.Consent.ConsentVerificationComponent t : src.getVerification())
       tgt.addVerification(convertConsentVerificationComponent(t));
     if (src.hasProvision())
-      tgt.setProvision(convertprovisionComponent(src.getProvision()));
+      tgt.setProvision(convertprovisionComponent(src.getProvisionFirstRep()));
     return tgt;
   }
 
@@ -225,8 +225,8 @@ public class Consent40_50 {
       return null;
     org.hl7.fhir.r5.model.Consent.ProvisionComponent tgt = new org.hl7.fhir.r5.model.Consent.ProvisionComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-    if (src.hasType())
-      tgt.setTypeElement(convertConsentProvisionType(src.getTypeElement()));
+//    if (src.hasType())
+//      tgt.setTypeElement(convertConsentProvisionType(src.getTypeElement()));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.r4.model.Consent.provisionActorComponent t : src.getActor())
@@ -252,8 +252,8 @@ public class Consent40_50 {
       return null;
     org.hl7.fhir.r4.model.Consent.provisionComponent tgt = new org.hl7.fhir.r4.model.Consent.provisionComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-    if (src.hasType())
-      tgt.setTypeElement(convertConsentProvisionType(src.getTypeElement()));
+//    if (src.hasType())
+//      tgt.setTypeElement(convertConsentProvisionType(src.getTypeElement()));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.r5.model.Consent.ProvisionActorComponent t : src.getActor())

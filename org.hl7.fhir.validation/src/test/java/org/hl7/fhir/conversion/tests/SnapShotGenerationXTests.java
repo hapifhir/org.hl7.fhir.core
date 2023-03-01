@@ -19,6 +19,7 @@ import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.AllowUnknownProfile;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
@@ -481,6 +482,7 @@ public class SnapShotGenerationXTests {
       ProfileUtilities pu = new ProfileUtilities(UtilitiesXTests.context(version), messages, null);
       pu.setNewSlicingProcessing(true);
       pu.setIds(test.included, false);
+      pu.setAllowUnknownProfile(AllowUnknownProfile.ALL_TYPES);
       StructureDefinition base = UtilitiesXTests.context(version).fetchResource(StructureDefinition.class, test.included.getBaseDefinition());
       if (base != null) {
         pu.generateSnapshot(base, test.included, test.included.getUrl(), "http://test.org/profile", test.included.getName());
@@ -507,6 +509,7 @@ public class SnapShotGenerationXTests {
     pu.setThrowException(false);
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
+    pu.setAllowUnknownProfile(AllowUnknownProfile.ALL_TYPES);
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
       int lastCount = output.getDifferential().getElement().size();

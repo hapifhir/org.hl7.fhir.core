@@ -380,8 +380,8 @@ public class Resource30_50 {
       return MedicationDispense30_50.convertMedicationDispense((org.hl7.fhir.r5.model.MedicationDispense) src);
     if (src instanceof org.hl7.fhir.r5.model.MedicationRequest)
       return MedicationRequest30_50.convertMedicationRequest((org.hl7.fhir.r5.model.MedicationRequest) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicationUsage)
-      return MedicationStatement30_50.convertMedicationStatement((org.hl7.fhir.r5.model.MedicationUsage) src);
+    if (src instanceof org.hl7.fhir.r5.model.MedicationStatement)
+      return MedicationStatement30_50.convertMedicationStatement((org.hl7.fhir.r5.model.MedicationStatement) src);
     if (src instanceof org.hl7.fhir.r5.model.MessageDefinition)
       return MessageDefinition30_50.convertMessageDefinition((org.hl7.fhir.r5.model.MessageDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.MessageHeader)
