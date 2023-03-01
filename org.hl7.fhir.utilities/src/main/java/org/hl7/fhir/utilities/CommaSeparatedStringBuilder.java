@@ -72,6 +72,7 @@ public class CommaSeparatedStringBuilder {
         }
       }
       b.append(pending);
+      pending = null;
       first = false;  
     }
   }
