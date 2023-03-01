@@ -49,5 +49,9 @@ public class PackageServer {
     servers.add(secondaryServer());
     return servers;
   }
+  @Override
+  public String toString() {
+    return url;
+  }
  
 }
