@@ -244,7 +244,7 @@ public class CapabilityStatement43_50 {
     org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementImplementationComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementImplementationComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String43_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasUrl())
       tgt.setUrlElement(Url43_50.convertUrl(src.getUrlElement()));
     if (src.hasCustodian())

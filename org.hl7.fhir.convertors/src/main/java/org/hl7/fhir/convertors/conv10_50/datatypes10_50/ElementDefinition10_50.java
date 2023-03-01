@@ -381,7 +381,9 @@ public class ElementDefinition10_50 {
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHumanElement()) tgt.setHumanElement(String10_50.convertString(src.getHumanElement()));
     tgt.setExpression(ToolingExtensions.readStringExtension(src, ToolingExtensions.EXT_EXPRESSION));
-    if (src.hasXpathElement()) tgt.setXpathElement(String10_50.convertString(src.getXpathElement()));
+    if (src.hasXpath()) {
+      tgt.addExtension(new org.hl7.fhir.r5.model.Extension(org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT, new org.hl7.fhir.r5.model.StringType(src.getXpath())));
+    }
     return tgt;
   }
 
@@ -396,7 +398,9 @@ public class ElementDefinition10_50 {
     if (src.hasHumanElement()) tgt.setHumanElement(String10_50.convertString(src.getHumanElement()));
     if (src.hasExpression())
       ToolingExtensions.addStringExtension(tgt, ToolingExtensions.EXT_EXPRESSION, src.getExpression());
-    if (src.hasXpathElement()) tgt.setXpathElement(String10_50.convertString(src.getXpathElement()));
+    if (org.hl7.fhir.r5.utils.ToolingExtensions.hasExtension(src, org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT)) {
+      tgt.setXpath(org.hl7.fhir.r5.utils.ToolingExtensions.readStringExtension(src, org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT));
+    }
     return tgt;
   }
 

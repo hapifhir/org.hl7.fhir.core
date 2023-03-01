@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.ContactPoint40_50;
@@ -10,7 +11,9 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Endpoint.EndpointPayloadComponent;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -63,9 +66,9 @@ public class Endpoint40_50 {
     if (src.hasPeriod())
       tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPayloadType())
-      tgt.addPayloadType(CodeableConcept40_50.convertCodeableConcept(t));
+      tgt.addPayload().addType(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.CodeType t : src.getPayloadMimeType())
-      tgt.getPayloadMimeType().add(Code40_50.convertCode(t));
+      tgt.addPayload().getMimeType().add(Code40_50.convertCode(t));
     if (src.hasAddress())
       tgt.setAddressElement(Url40_50.convertUrl(src.getAddressElement()));
     for (org.hl7.fhir.r4.model.StringType t : src.getHeader()) tgt.getHeader().add(String40_50.convertString(t));
@@ -91,10 +94,12 @@ public class Endpoint40_50 {
       tgt.addContact(ContactPoint40_50.convertContactPoint(t));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPayloadType())
-      tgt.addPayloadType(CodeableConcept40_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.CodeType t : src.getPayloadMimeType())
-      tgt.getPayloadMimeType().add(Code40_50.convertCode(t));
+    for (EndpointPayloadComponent t : src.getPayload())
+      if (t.hasType())
+        tgt.addPayloadType(CodeableConcept40_50.convertCodeableConcept(t.getTypeFirstRep()));
+    for (EndpointPayloadComponent t : src.getPayload())
+      if (t.hasMimeType())
+        tgt.getPayloadMimeType().add(Code40_50.convertCode(t.getMimeType().get(0)));
     if (src.hasAddress())
       tgt.setAddressElement(Url40_50.convertUrl(src.getAddressElement()));
     for (org.hl7.fhir.r5.model.StringType t : src.getHeader()) tgt.getHeader().add(String40_50.convertString(t));

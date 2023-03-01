@@ -85,8 +85,8 @@ public class VersionConvertorResourceNameMapper {
         return org.hl7.fhir.r5.model.DeviceUsage.class.getSimpleName();
       case "DiagnosticReport":
         return org.hl7.fhir.r5.model.DiagnosticReport.class.getSimpleName();
-      case "DocumentManifest":
-        return org.hl7.fhir.r5.model.DocumentManifest.class.getSimpleName();
+//      case "DocumentManifest":
+//        return org.hl7.fhir.r5.model.DocumentManifest.class.getSimpleName();
       case "DocumentReference":
         return org.hl7.fhir.r5.model.DocumentReference.class.getSimpleName();
       case "Encounter":
@@ -150,7 +150,7 @@ public class VersionConvertorResourceNameMapper {
       case "MedicationRequest":
         return org.hl7.fhir.r5.model.MedicationRequest.class.getSimpleName();
       case "MedicationStatement":
-        return org.hl7.fhir.r5.model.MedicationUsage.class.getSimpleName();
+        return org.hl7.fhir.r5.model.MedicationStatement.class.getSimpleName();
       case "MessageDefinition":
         return org.hl7.fhir.r5.model.MessageDefinition.class.getSimpleName();
       case "MessageHeader":
@@ -403,8 +403,6 @@ public class VersionConvertorResourceNameMapper {
         return null;
       case "MedicationRequest":
         return org.hl7.fhir.dstu3.model.MedicationRequest.class.getSimpleName();
-      case "MedicationUsage":
-        return org.hl7.fhir.dstu3.model.MedicationStatement.class.getSimpleName();
       case "MedicationStatement":
         return org.hl7.fhir.dstu3.model.MedicationStatement.class.getSimpleName();
       case "MessageDefinition":

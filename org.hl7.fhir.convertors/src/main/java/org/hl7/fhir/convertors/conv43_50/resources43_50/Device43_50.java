@@ -72,7 +72,7 @@ public class Device43_50 {
     if (src.hasSerialNumber())
       tgt.setSerialNumberElement(String43_50.convertString(src.getSerialNumberElement()));
     for (org.hl7.fhir.r4b.model.Device.DeviceDeviceNameComponent t : src.getDeviceName())
-      tgt.addDeviceName(convertDeviceDeviceNameComponent(t));
+      tgt.addName(convertDeviceDeviceNameComponent(t));
     if (src.hasModelNumber())
       tgt.setModelNumberElement(String43_50.convertString(src.getModelNumberElement()));
     if (src.hasPartNumber())
@@ -85,8 +85,8 @@ public class Device43_50 {
       tgt.addVersion(convertDeviceVersionComponent(t));
     for (org.hl7.fhir.r4b.model.Device.DevicePropertyComponent t : src.getProperty())
       tgt.addProperty(convertDevicePropertyComponent(t));
-    if (src.hasPatient())
-      tgt.getAssociationFirstRep().setHumanSubject(Reference43_50.convertReference(src.getPatient()));
+//    if (src.hasPatient())
+//      tgt.getAssociationFirstRep().setHumanSubject(Reference43_50.convertReference(src.getPatient()));
     if (src.hasOwner())
       tgt.setOwner(Reference43_50.convertReference(src.getOwner()));
     for (org.hl7.fhir.r4b.model.ContactPoint t : src.getContact())
@@ -130,7 +130,7 @@ public class Device43_50 {
       tgt.setLotNumberElement(String43_50.convertString(src.getLotNumberElement()));
     if (src.hasSerialNumber())
       tgt.setSerialNumberElement(String43_50.convertString(src.getSerialNumberElement()));
-    for (org.hl7.fhir.r5.model.Device.DeviceDeviceNameComponent t : src.getDeviceName())
+    for (org.hl7.fhir.r5.model.Device.DeviceNameComponent t : src.getName())
       tgt.addDeviceName(convertDeviceDeviceNameComponent(t));
     if (src.hasModelNumber())
       tgt.setModelNumberElement(String43_50.convertString(src.getModelNumberElement()));
@@ -144,8 +144,8 @@ public class Device43_50 {
       tgt.addVersion(convertDeviceVersionComponent(t));
     for (org.hl7.fhir.r5.model.Device.DevicePropertyComponent t : src.getProperty())
       tgt.addProperty(convertDevicePropertyComponent(t));
-    if (src.getAssociationFirstRep().hasHumanSubject())
-      tgt.setPatient(Reference43_50.convertReference(src.getAssociationFirstRep().getHumanSubject()));
+//    if (src.getAssociationFirstRep().hasHumanSubject())
+//      tgt.setPatient(Reference43_50.convertReference(src.getAssociationFirstRep().getHumanSubject()));
     if (src.hasOwner())
       tgt.setOwner(Reference43_50.convertReference(src.getOwner()));
     for (org.hl7.fhir.r5.model.ContactPoint t : src.getContact())
@@ -311,25 +311,25 @@ public class Device43_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Device.DeviceDeviceNameComponent convertDeviceDeviceNameComponent(org.hl7.fhir.r4b.model.Device.DeviceDeviceNameComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Device.DeviceNameComponent convertDeviceDeviceNameComponent(org.hl7.fhir.r4b.model.Device.DeviceDeviceNameComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Device.DeviceDeviceNameComponent tgt = new org.hl7.fhir.r5.model.Device.DeviceDeviceNameComponent();
+    org.hl7.fhir.r5.model.Device.DeviceNameComponent tgt = new org.hl7.fhir.r5.model.Device.DeviceNameComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasName())
-      tgt.setNameElement(String43_50.convertString(src.getNameElement()));
+      tgt.setValueElement(String43_50.convertString(src.getNameElement()));
     if (src.hasType())
       tgt.setTypeElement(convertDeviceNameType(src.getTypeElement()));
     return tgt;
   }
 
-  public static org.hl7.fhir.r4b.model.Device.DeviceDeviceNameComponent convertDeviceDeviceNameComponent(org.hl7.fhir.r5.model.Device.DeviceDeviceNameComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4b.model.Device.DeviceDeviceNameComponent convertDeviceDeviceNameComponent(org.hl7.fhir.r5.model.Device.DeviceNameComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4b.model.Device.DeviceDeviceNameComponent tgt = new org.hl7.fhir.r4b.model.Device.DeviceDeviceNameComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasName())
-      tgt.setNameElement(String43_50.convertString(src.getNameElement()));
+    if (src.hasValue())
+      tgt.setNameElement(String43_50.convertString(src.getValueElement()));
     if (src.hasType())
       tgt.setTypeElement(convertDeviceNameType(src.getTypeElement()));
     return tgt;

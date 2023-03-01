@@ -353,7 +353,7 @@ public class ClaimResponse40_50 {
     if (src.hasAmount())
       tgt.setAmount(Money40_50.convertMoney(src.getAmount()));
     if (src.hasValue())
-      tgt.setValueElement(Decimal40_50.convertDecimal(src.getValueElement()));
+      tgt.setQuantity(Decimal40_50.convertDecimalToQuantity(src.getValueElement()));
     return tgt;
   }
 
@@ -368,8 +368,8 @@ public class ClaimResponse40_50 {
       tgt.setReason(CodeableConcept40_50.convertCodeableConcept(src.getReason()));
     if (src.hasAmount())
       tgt.setAmount(Money40_50.convertMoney(src.getAmount()));
-    if (src.hasValue())
-      tgt.setValueElement(Decimal40_50.convertDecimal(src.getValueElement()));
+    if (src.hasQuantity())
+      tgt.setValueElement(Decimal40_50.convertDecimal(src.getQuantity().getValueElement()));
     return tgt;
   }
 
@@ -691,7 +691,7 @@ public class ClaimResponse40_50 {
     if (src.hasNumber())
       tgt.setNumberElement(PositiveInt40_50.convertPositiveInt(src.getNumberElement()));
     if (src.hasType())
-      tgt.setTypeElement(Enumerations40_50.convertNoteType(src.getTypeElement()));
+      tgt.getType().addCoding().setSystem("http://hl7.org/fhir/note-type").setCode(src.getType().toCode());
     if (src.hasText())
       tgt.setTextElement(String40_50.convertString(src.getTextElement()));
     if (src.hasLanguage())
@@ -706,8 +706,8 @@ public class ClaimResponse40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasNumber())
       tgt.setNumberElement(PositiveInt40_50.convertPositiveInt(src.getNumberElement()));
-    if (src.hasType())
-      tgt.setTypeElement(Enumerations40_50.convertNoteType(src.getTypeElement()));
+    if (src.hasType() && src.getType().hasCoding("http://hl7.org/fhir/note-type"))
+      tgt.setType(org.hl7.fhir.r4.model.Enumerations.NoteType.fromCode(src.getType().getCode("http://hl7.org/fhir/note-type")));
     if (src.hasText())
       tgt.setTextElement(String40_50.convertString(src.getTextElement()));
     if (src.hasLanguage())

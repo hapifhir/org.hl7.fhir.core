@@ -8,6 +8,8 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -82,9 +84,9 @@ public class DeviceRequest40_50 {
     if (src.hasRequester())
       tgt.setRequester(Reference40_50.convertReference(src.getRequester()));
     if (src.hasPerformerType())
-      tgt.setPerformerType(CodeableConcept40_50.convertCodeableConcept(src.getPerformerType()));
+      tgt.getPerformer().setConcept(CodeableConcept40_50.convertCodeableConcept(src.getPerformerType()));
     if (src.hasPerformer())
-      tgt.setPerformer(Reference40_50.convertReference(src.getPerformer()));
+      tgt.getPerformer().setReference(Reference40_50.convertReference(src.getPerformer()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
       tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
@@ -136,10 +138,10 @@ public class DeviceRequest40_50 {
       tgt.setAuthoredOnElement(DateTime40_50.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())
       tgt.setRequester(Reference40_50.convertReference(src.getRequester()));
-    if (src.hasPerformerType())
-      tgt.setPerformerType(CodeableConcept40_50.convertCodeableConcept(src.getPerformerType()));
-    if (src.hasPerformer())
-      tgt.setPerformer(Reference40_50.convertReference(src.getPerformer()));
+    if (src.getPerformer().hasConcept())
+      tgt.setPerformerType(CodeableConcept40_50.convertCodeableConcept(src.getPerformer().getConcept()));
+    if (src.getPerformer().hasReference())
+      tgt.setPerformer(Reference40_50.convertReference(src.getPerformer().getReference()));
     for (CodeableReference t : src.getReason())
       if (t.hasConcept())
         tgt.addReasonCode(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));

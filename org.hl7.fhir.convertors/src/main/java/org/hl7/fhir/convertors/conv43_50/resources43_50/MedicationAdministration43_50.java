@@ -76,7 +76,7 @@ public class MedicationAdministration43_50 {
       tgt.addReason(Reference43_50.convertReferenceToCodeableReference(t));
     if (src.hasRequest())
       tgt.setRequest(Reference43_50.convertReference(src.getRequest()));
-    for (org.hl7.fhir.r4b.model.Reference t : src.getDevice()) tgt.addDevice(Reference43_50.convertReference(t));
+    for (org.hl7.fhir.r4b.model.Reference t : src.getDevice()) tgt.addDevice(Reference43_50.convertReferenceToCodeableReference(t));
     for (org.hl7.fhir.r4b.model.Annotation t : src.getNote()) tgt.addNote(Annotation43_50.convertAnnotation(t));
     if (src.hasDosage())
       tgt.setDosage(convertMedicationAdministrationDosageComponent(src.getDosage()));
@@ -122,7 +122,9 @@ public class MedicationAdministration43_50 {
         tgt.addReasonReference(Reference43_50.convertReference(t.getReference()));
     if (src.hasRequest())
       tgt.setRequest(Reference43_50.convertReference(src.getRequest()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getDevice()) tgt.addDevice(Reference43_50.convertReference(t));
+    for (CodeableReference t : src.getDevice())
+      if (t.hasReference())
+        tgt.addDevice(Reference43_50.convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation43_50.convertAnnotation(t));
     if (src.hasDosage())
       tgt.setDosage(convertMedicationAdministrationDosageComponent(src.getDosage()));
@@ -209,7 +211,7 @@ public class MedicationAdministration43_50 {
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept43_50.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
-      tgt.setActor(Reference43_50.convertReference(src.getActor()));
+      tgt.setActor(Reference43_50.convertReferenceToCodeableReference(src.getActor()));
     return tgt;
   }
 
@@ -220,8 +222,8 @@ public class MedicationAdministration43_50 {
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept43_50.convertCodeableConcept(src.getFunction()));
-    if (src.hasActor())
-      tgt.setActor(Reference43_50.convertReference(src.getActor()));
+    if (src.hasActor() && src.getActor().hasReference())
+      tgt.setActor(Reference43_50.convertReference(src.getActor().getReference()));
     return tgt;
   }
 

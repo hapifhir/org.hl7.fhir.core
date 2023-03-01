@@ -197,11 +197,11 @@ public class EpisodeOfCare40_50 {
     org.hl7.fhir.r5.model.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.r5.model.EpisodeOfCare.DiagnosisComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCondition())
-      tgt.setCondition(Reference40_50.convertReferenceToCodeableReference(src.getCondition()));
+      tgt.addCondition(Reference40_50.convertReferenceToCodeableReference(src.getCondition()));
     if (src.hasRole())
-      tgt.setRole(CodeableConcept40_50.convertCodeableConcept(src.getRole()));
-    if (src.hasRank())
-      tgt.setRankElement(PositiveInt40_50.convertPositiveInt(src.getRankElement()));
+      tgt.setUse(CodeableConcept40_50.convertCodeableConcept(src.getRole()));
+//    if (src.hasRank())
+//      tgt.setRankElement(PositiveInt40_50.convertPositiveInt(src.getRankElement()));
     return tgt;
   }
 
@@ -211,11 +211,11 @@ public class EpisodeOfCare40_50 {
     org.hl7.fhir.r4.model.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.r4.model.EpisodeOfCare.DiagnosisComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCondition())
-      tgt.setCondition(Reference40_50.convertCodeableReferenceToReference(src.getCondition()));
-    if (src.hasRole())
-      tgt.setRole(CodeableConcept40_50.convertCodeableConcept(src.getRole()));
-    if (src.hasRank())
-      tgt.setRankElement(PositiveInt40_50.convertPositiveInt(src.getRankElement()));
+      tgt.setCondition(Reference40_50.convertCodeableReferenceToReference(src.getConditionFirstRep()));
+    if (src.hasUse())
+      tgt.setRole(CodeableConcept40_50.convertCodeableConcept(src.getUse()));
+//    if (src.hasRank())
+//      tgt.setRankElement(PositiveInt40_50.convertPositiveInt(src.getRankElement()));
     return tgt;
   }
 }

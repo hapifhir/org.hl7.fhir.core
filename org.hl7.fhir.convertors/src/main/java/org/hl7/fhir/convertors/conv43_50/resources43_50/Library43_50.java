@@ -89,7 +89,7 @@ public class Library43_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown43_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasUsage())
-      tgt.setUsageElement(String43_50.convertString(src.getUsageElement()));
+      tgt.setUsageElement(String43_50.convertStringToMarkdown(src.getUsageElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown43_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasApprovalDate())

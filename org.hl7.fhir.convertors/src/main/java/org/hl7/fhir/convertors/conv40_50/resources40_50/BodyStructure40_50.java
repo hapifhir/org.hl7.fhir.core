@@ -56,7 +56,7 @@ public class BodyStructure40_50 {
 //    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getLocationQualifier())
 //      tgt.addLocationQualifier(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.r4.model.Attachment t : src.getImage()) tgt.addImage(Attachment40_50.convertAttachment(t));
     if (src.hasPatient())
       tgt.setPatient(Reference40_50.convertReference(src.getPatient()));

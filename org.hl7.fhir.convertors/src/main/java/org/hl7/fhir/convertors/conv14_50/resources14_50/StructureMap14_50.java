@@ -330,7 +330,7 @@ public class StructureMap14_50 {
     org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetComponent();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyBackboneElement(src,tgt);
     if (src.hasContext())
-      tgt.setContextElement(Id14_50.convertId(src.getContextElement()));
+      tgt.setContextElement(Id14_50.convertIdToString(src.getContextElement()));
     if (src.hasContextType() && src.getContextType() == org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType.VARIABLE)
       throw new Error("This conversion is not supported. Consult code maintainers"); // this should never happens - no one knows what the intent was here.
     if (src.hasElement())

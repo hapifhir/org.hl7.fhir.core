@@ -62,7 +62,7 @@ public class DetectedIssue30_50 {
     for (org.hl7.fhir.dstu3.model.Reference t : src.getImplicated())
       tgt.addImplicated(Reference30_50.convertReference(t));
     if (src.hasDetail())
-      tgt.setDetailElement(String30_50.convertString(src.getDetailElement()));
+      tgt.setDetailElement(String30_50.convertStringToMarkdown(src.getDetailElement()));
     if (src.hasReference())
       tgt.setReferenceElement(Uri30_50.convertUri(src.getReferenceElement()));
     for (org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation())

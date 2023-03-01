@@ -95,7 +95,7 @@ public class PlanDefinition43_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown43_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasUsage())
-      tgt.setUsageElement(String43_50.convertString(src.getUsageElement()));
+      tgt.setUsageElement(String43_50.convertStringToMarkdown(src.getUsageElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown43_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasApprovalDate())
@@ -277,9 +277,9 @@ public class PlanDefinition43_50 {
     if (src.hasTitle())
       tgt.setTitleElement(String43_50.convertString(src.getTitleElement()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String43_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasTextEquivalent())
-      tgt.setTextEquivalentElement(String43_50.convertString(src.getTextEquivalentElement()));
+      tgt.setTextEquivalentElement(String43_50.convertStringToMarkdown(src.getTextEquivalentElement()));
     if (src.hasPriority())
       tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getCode())

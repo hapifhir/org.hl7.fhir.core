@@ -161,7 +161,7 @@ public class TestScript10_50 {
         tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes.NOTMODIFIED);
         break;
       case BAD:
-        tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes.BAD);
+        tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes.BADREQUEST);
         break;
       case FORBIDDEN:
         tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes.FORBIDDEN);
@@ -182,7 +182,7 @@ public class TestScript10_50 {
         tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes.PRECONDITIONFAILED);
         break;
       case UNPROCESSABLE:
-        tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes.UNPROCESSABLE);
+        tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes.UNPROCESSABLECONTENT);
         break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes.NULL);
@@ -209,7 +209,7 @@ public class TestScript10_50 {
       case NOTMODIFIED:
         tgt.setValue(org.hl7.fhir.dstu2.model.TestScript.AssertionResponseTypes.NOTMODIFIED);
         break;
-      case BAD:
+      case BADREQUEST:
         tgt.setValue(org.hl7.fhir.dstu2.model.TestScript.AssertionResponseTypes.BAD);
         break;
       case FORBIDDEN:
@@ -230,7 +230,7 @@ public class TestScript10_50 {
       case PRECONDITIONFAILED:
         tgt.setValue(org.hl7.fhir.dstu2.model.TestScript.AssertionResponseTypes.PRECONDITIONFAILED);
         break;
-      case UNPROCESSABLE:
+      case UNPROCESSABLECONTENT:
         tgt.setValue(org.hl7.fhir.dstu2.model.TestScript.AssertionResponseTypes.UNPROCESSABLE);
         break;
       default:

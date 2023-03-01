@@ -10,12 +10,16 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Date
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Integer10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.dstu2.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAllEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
 
 public class OperationDefinition10_50 {
@@ -57,7 +61,7 @@ public class OperationDefinition10_50 {
     if (src.hasSystemElement())
       tgt.setSystemElement(Boolean10_50.convertBoolean(src.getSystemElement()));
     if (src.getType())
-      for (CodeType t : src.getResource()) tgt.addType(t.getValue());
+      for (Enumeration<VersionIndependentResourceTypesAll> t : src.getResource()) tgt.addType(t.getCode());
     if (src.hasInstanceElement())
       tgt.setInstanceElement(Boolean10_50.convertBoolean(src.getInstanceElement()));
     for (org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getParameter())
@@ -102,7 +106,7 @@ public class OperationDefinition10_50 {
       tgt.setBaseElement(Reference10_50.convertReferenceToCanonical(src.getBase()));
     if (src.hasSystemElement())
       tgt.setSystemElement(Boolean10_50.convertBoolean(src.getSystemElement()));
-    for (org.hl7.fhir.dstu2.model.CodeType t : src.getType()) tgt.addResource(t.getValue());
+    for (org.hl7.fhir.dstu2.model.CodeType t : src.getType()) tgt.getResource().add(new Enumeration<VersionIndependentResourceTypesAll>(new VersionIndependentResourceTypesAllEnumFactory(), Code10_50.convertCode(t)));
     tgt.setType(tgt.hasResource());
     if (src.hasInstanceElement())
       tgt.setInstanceElement(Boolean10_50.convertBoolean(src.getInstanceElement()));

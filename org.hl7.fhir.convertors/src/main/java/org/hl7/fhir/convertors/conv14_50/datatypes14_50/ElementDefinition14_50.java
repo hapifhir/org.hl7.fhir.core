@@ -496,7 +496,9 @@ public class ElementDefinition14_50 {
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHumanElement()) tgt.setHumanElement(String14_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpression(convertToR4Expression(src.getExpression()));
-    if (src.hasXpathElement()) tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
+    if (src.hasXpath()) {
+      tgt.addExtension(new org.hl7.fhir.r5.model.Extension(org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT, new org.hl7.fhir.r5.model.StringType(src.getXpath())));
+    }
     return tgt;
   }
 
@@ -509,7 +511,9 @@ public class ElementDefinition14_50 {
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHumanElement()) tgt.setHumanElement(String14_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpression(convertTo2016MayExpression(src.getExpression()));
-    if (src.hasXpathElement()) tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
+    if (org.hl7.fhir.r5.utils.ToolingExtensions.hasExtension(src, org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT)) {
+      tgt.setXpath(org.hl7.fhir.r5.utils.ToolingExtensions.readStringExtension(src, org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT));
+    }
     return tgt;
   }
 

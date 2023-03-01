@@ -50,18 +50,18 @@ public class DeviceMetric40_50 {
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasUnit())
       tgt.setUnit(CodeableConcept40_50.convertCodeableConcept(src.getUnit()));
-    if (src.hasSource())
-      tgt.setSource(Reference40_50.convertReference(src.getSource()));
     if (src.hasParent())
-      tgt.setParent(Reference40_50.convertReference(src.getParent()));
+      tgt.setDevice(Reference40_50.convertReference(src.getParent()));
+    if (src.hasSource())
+      tgt.setDevice(Reference40_50.convertReference(src.getSource()));
     if (src.hasOperationalStatus())
       tgt.setOperationalStatusElement(convertDeviceMetricOperationalStatus(src.getOperationalStatusElement()));
     if (src.hasColor())
       tgt.setColorElement(convertDeviceMetricColor(src.getColorElement()));
     if (src.hasCategory())
       tgt.setCategoryElement(convertDeviceMetricCategory(src.getCategoryElement()));
-    if (src.hasMeasurementPeriod())
-      tgt.setMeasurementPeriod(Timing40_50.convertTiming(src.getMeasurementPeriod()));
+//    if (src.hasMeasurementPeriod())
+//      tgt.setMeasurementPeriod(Timing40_50.convertTiming(src.getMeasurementPeriod()));
     for (org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration())
       tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
     return tgt;
@@ -78,18 +78,18 @@ public class DeviceMetric40_50 {
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasUnit())
       tgt.setUnit(CodeableConcept40_50.convertCodeableConcept(src.getUnit()));
-    if (src.hasSource())
-      tgt.setSource(Reference40_50.convertReference(src.getSource()));
-    if (src.hasParent())
-      tgt.setParent(Reference40_50.convertReference(src.getParent()));
+    if (src.hasDevice())
+      tgt.setSource(Reference40_50.convertReference(src.getDevice()));
+//    if (src.hasParent())
+//      tgt.setParent(Reference40_50.convertReference(src.getParent()));
     if (src.hasOperationalStatus())
       tgt.setOperationalStatusElement(convertDeviceMetricOperationalStatus(src.getOperationalStatusElement()));
     if (src.hasColor())
       tgt.setColorElement(convertDeviceMetricColor(src.getColorElement()));
     if (src.hasCategory())
       tgt.setCategoryElement(convertDeviceMetricCategory(src.getCategoryElement()));
-    if (src.hasMeasurementPeriod())
-      tgt.setMeasurementPeriod(Timing40_50.convertTiming(src.getMeasurementPeriod()));
+//    if (src.hasMeasurementPeriod())
+//      tgt.setMeasurementPeriod(Timing40_50.convertTiming(src.getMeasurementPeriod()));
     for (org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration())
       tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
     return tgt;

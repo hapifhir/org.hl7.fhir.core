@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50;
 
 import java.util.stream.Collectors;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.BackboneElement43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Coding43_50;
@@ -519,7 +520,9 @@ public class ElementDefinition43_50 {
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHuman()) tgt.setHumanElement(String43_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpressionElement(String43_50.convertString(src.getExpressionElement()));
-    if (src.hasXpath()) tgt.setXpathElement(String43_50.convertString(src.getXpathElement()));
+    if (src.hasXpath()) {
+      tgt.addExtension(new org.hl7.fhir.r5.model.Extension(org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT, new org.hl7.fhir.r5.model.StringType(src.getXpath())));
+    }
     if (src.hasSource()) tgt.setSourceElement(Canonical43_50.convertCanonical(src.getSourceElement()));
     return tgt;
   }
@@ -533,7 +536,10 @@ public class ElementDefinition43_50 {
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHuman()) tgt.setHumanElement(String43_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpressionElement(String43_50.convertString(src.getExpressionElement()));
-    if (src.hasXpath()) tgt.setXpathElement(String43_50.convertString(src.getXpathElement()));
+    if (org.hl7.fhir.r5.utils.ToolingExtensions.hasExtension(src, org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT)) {
+      tgt.setXpath(org.hl7.fhir.r5.utils.ToolingExtensions.readStringExtension(src, org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT));
+    }
+    
     if (src.hasSource()) tgt.setSourceElement(Canonical43_50.convertCanonical(src.getSourceElement()));
     return tgt;
   }
