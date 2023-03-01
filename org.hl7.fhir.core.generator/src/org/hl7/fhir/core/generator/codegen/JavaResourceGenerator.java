@@ -49,7 +49,9 @@ import org.hl7.fhir.r5.model.CompartmentDefinition;
 import org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -77,7 +79,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
   private long hashSum;
 
 	
-	public JavaResourceGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+	public JavaResourceGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
 		super(out, definitions, configuration, version, genDate, jid);
 	}
 
@@ -543,8 +545,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     }
 
     Set<String> targets = new TreeSet<>();
-    for (CodeType c : sp.getTarget()) {
-      targets.add(c.asStringValue());
+    for (Enumeration<VersionIndependentResourceTypesAll> c : sp.getTarget()) {
+      targets.add(c.getCode());
     }
     if (targets != null && !targets.isEmpty() && !targets.contains("Any")) {
       write(", target={");
@@ -1347,19 +1349,19 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     }   
     write("        throw new IllegalArgumentException(\"Unknown "+tns+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
-    write("        public Enumeration<"+tns+"> fromType(Base code) throws FHIRException {\r\n");
+    write("        public Enumeration<"+tns+"> fromType(PrimitiveType<?> code) throws FHIRException {\r\n");
     write("          if (code == null)\r\n");
     write("            return null;\r\n");
     write("          if (code.isEmpty())\r\n");
-    write("            return new Enumeration<"+tns+">(this);\r\n");
+    write("            return new Enumeration<"+tns+">(this, "+tns+".NULL, code);\r\n");
     write("          String codeString = ((PrimitiveType) code).asStringValue();\r\n");
     write("          if (codeString == null || \"\".equals(codeString))\r\n");
-    write("            return null;\r\n");
+    write("            return new Enumeration<"+tns+">(this, "+tns+".NULL, code);\r\n");
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
       write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
-      write("          return new Enumeration<"+tns+">(this, "+tns+"."+cc+");\r\n");
+      write("          return new Enumeration<"+tns+">(this, "+tns+"."+cc+", code);\r\n");
     }   
     write("        throw new FHIRException(\"Unknown "+tns+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
@@ -2310,7 +2312,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   }
 
   private boolean isString(String tn) {
-    return tn.equals("StringType") || tn.equals("CodeType") || tn.equals("IdType") || tn.equals("UriType") || tn.equals("OidType") || tn.equals("CanonicalType") || tn.equals("UrlType") || tn.equals("UuidType");
+    return tn.equals("StringType") || tn.equals("CodeType") || tn.equals("IdType") || tn.equals("UriType") || tn.equals("OidType") || tn.equals("CanonicalType") || tn.equals("UrlType") || tn.equals("UuidType") || tn.equals("MarkdownType");
   }
 
   public long getHashSum() {

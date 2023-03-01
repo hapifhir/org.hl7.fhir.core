@@ -124,3 +124,12 @@
       throw new FHIRException("Extension could not be converted to a string");
     return ext.get(0).getValue().primitiveValue();
   }
+
+
+  public StandardsStatus getStandardsStatus() {
+    return ToolingExtensions.getStandardsStatus(this);
+  }
+  
+  public void setStandardsStatus(StandardsStatus status) {
+    ToolingExtensions.setStandardsStatus(this, status, null);
+  }

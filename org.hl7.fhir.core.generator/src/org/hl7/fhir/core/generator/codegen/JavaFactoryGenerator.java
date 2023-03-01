@@ -42,7 +42,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 public class JavaFactoryGenerator extends JavaBaseGenerator {
 
   
-  public JavaFactoryGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+  public JavaFactoryGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, jid);
   }
 

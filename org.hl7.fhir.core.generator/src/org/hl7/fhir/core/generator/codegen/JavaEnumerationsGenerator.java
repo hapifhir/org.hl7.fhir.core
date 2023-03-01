@@ -53,7 +53,7 @@ changes for James
 */
 public class JavaEnumerationsGenerator extends JavaBaseGenerator {
   
-  public JavaEnumerationsGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+  public JavaEnumerationsGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, jid);
   }
   
@@ -216,19 +216,20 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 			}
     write("        throw new IllegalArgumentException(\"Unknown "+name+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
-    write("        public Enumeration<"+name+"> fromType(Base code) throws FHIRException {\r\n");
+    write("\r\n");
+    write("        public Enumeration<"+name+"> fromType(PrimitiveType<?> code) throws FHIRException {\r\n");
     write("          if (code == null)\r\n");
     write("            return null;\r\n");
     write("          if (code.isEmpty())\r\n");
-    write("            return new Enumeration<"+name+">(this);\r\n");
+    write("            return new Enumeration<"+name+">(this, "+name+".NULL, code);\r\n");
     write("          String codeString = ((PrimitiveType) code).asStringValue();\r\n");
     write("          if (codeString == null || \"\".equals(codeString))\r\n");
-    write("            return null;\r\n");
+    write("            return new Enumeration<"+name+">(this, "+name+".NULL, code);\r\n");
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
       write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
-      write("          return new Enumeration<"+name+">(this, "+name+"."+cc+");\r\n");
+      write("          return new Enumeration<"+name+">(this, "+name+"."+cc+", code);\r\n");
     }   
     write("        throw new FHIRException(\"Unknown "+name+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
