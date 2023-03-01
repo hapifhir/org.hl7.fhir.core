@@ -53,14 +53,14 @@ public class JavaCoreGenerator {
 
   private void generate(String version, String src, String dest) throws Exception {
     long start = System.currentTimeMillis();
-    Date date = new Date();
     
     String ap = Utilities.path(src);
     System.out.println("Load Configuration from "+ap);
     Configuration config = new Configuration(ap);
     String pid = VersionUtilities.isR4BVer(version) ? "r4b" : "r5";
     String jid = VersionUtilities.isR4BVer(version) ? "r4b" : "r5";
-    
+    Date ddate = new Date();
+    String date = config.DATE_FORMAT().format(ddate);
     
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     System.out.println("Cache: "+pcm.getFolder());
@@ -147,7 +147,7 @@ public class JavaCoreGenerator {
     
   }
 
-  public void genClass(String version, String dest, Date date, Configuration config, String jid, NpmPackage npm, Definitions master,
+  public void genClass(String version, String dest, String date, Configuration config, String jid, NpmPackage npm, Definitions master,
       JavaParserJsonGenerator jgen, JavaParserXmlGenerator xgen, JavaParserRdfGenerator rgen, StructureDefinition sd)
       throws Exception, IOException, UnsupportedEncodingException, FileNotFoundException {
     String name = javaName(sd.getName());

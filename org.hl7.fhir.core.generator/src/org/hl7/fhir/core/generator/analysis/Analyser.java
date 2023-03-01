@@ -10,7 +10,9 @@ import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
@@ -307,8 +309,8 @@ public class Analyser {
     if (!Utilities.existsInList(name, "Resource")) {
       for (SearchParameter sp : definitions.getSearchParams().getList()) {
         boolean relevant = false;
-        for (CodeType c : sp.getBase()) {
-          if (c.getValue().equals(name)) {
+        for (Enumeration<VersionIndependentResourceTypesAll> c : sp.getBase()) {
+          if (c.getCode().equals(name)) {
             relevant = true;
             break;
           }
