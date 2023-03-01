@@ -46,6 +46,7 @@ import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.ProductShelfLife;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Range;
@@ -357,6 +358,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       return;
 
     Base e = ew.getBase();
+    if (e == null) {
+      return;
+    }
     if (context.isShowComments()) {
       x = renderCommentsSpan(x, e);
     }
@@ -486,7 +490,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.tx(((PrimitiveType) e).primitiveValue());
     } else if (e instanceof ElementDefinition) {
       x.tx("todo-bundle");
-    } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta)) {
+    } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta) && !(e instanceof ProductShelfLife)  && !(e instanceof RelatedArtifact)) {
       throw new NotImplementedException("type "+e.getClass().getName()+" not handled - should not be here");
     }
   }
@@ -918,6 +922,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       return false;
     }
     if (x.getName().equals("p")) {
+      return false;
+    }
+    
+    if (grandChildren.size() == 0) {
       return false;
     }
 

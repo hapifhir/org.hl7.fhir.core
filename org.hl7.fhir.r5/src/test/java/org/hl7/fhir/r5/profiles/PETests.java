@@ -237,7 +237,7 @@ public class PETests {
     Assertions.assertNotNull(pe.definition());
     Assertions.assertNotNull(pe.baseDefinition());
     Assertions.assertEquals("Additional content defined by implementations", pe.shortDocumentation());
-    Assertions.assertEquals("May be used to represent additional information that is not part of the basic definition of the resource. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", pe.documentation());
+    Assertions.assertEquals("May be used to represent additional information that is not part of the basic definition of the resource. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", pe.documentation());
 
     iChildren = pe.children("http://hl7.org/fhir/StructureDefinition/Extension");
     Assertions.assertEquals(4, iChildren.size());
@@ -250,7 +250,7 @@ public class PETests {
     Assertions.assertNotNull(pe.definition());
     Assertions.assertNotNull(pe.baseDefinition());
     Assertions.assertEquals("Additional content defined by implementations", pe.shortDocumentation());
-    Assertions.assertEquals("May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", pe.documentation());
+    Assertions.assertEquals("May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", pe.documentation());
 
 
     iChildren = pe.children("http://hl7.org/fhir/StructureDefinition/Extension");
@@ -264,7 +264,7 @@ public class PETests {
     Assertions.assertNotNull(pe.definition());
     Assertions.assertNotNull(pe.baseDefinition());
     Assertions.assertEquals("Additional content defined by implementations", pe.shortDocumentation());
-    Assertions.assertEquals("May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", pe.documentation());
+    Assertions.assertEquals("May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", pe.documentation());
 
   }
 

@@ -118,10 +118,15 @@ public class TestingUtilities extends BaseTestingUtilities {
       fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
       fcontext.setExpansionProfile(new Parameters());
       if (!fcontext.hasPackage("hl7.terminology.r5", null)) {
-        NpmPackage utg = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.terminology.r5");
+        NpmPackage utg = pcm.loadPackage("hl7.terminology.r5");
         System.out.println("Loading THO: "+utg.name()+"#"+utg.version());
         fcontext.loadFromPackage(utg, new TestPackageLoader(new String[]{"CodeSystem", "ValueSet"}));
-      }      
+      } 
+      if (!fcontext.hasPackage("hl7.fhir.uv.extensions", null)) {
+        NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions");
+        System.out.println("Loading Extensions: "+ext.name()+"#"+ext.version());
+        fcontext.loadFromPackage(ext, new TestPackageLoader(new String[]{"CodeSystem", "ValueSet", "StructureDefinition"}));
+      } 
       R5Hacker.fixR5BrokenResources(fcontext);
       return fcontext;
     } catch (Exception e) {

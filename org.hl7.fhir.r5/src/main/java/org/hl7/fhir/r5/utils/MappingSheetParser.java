@@ -194,13 +194,13 @@ public class MappingSheetParser {
       else {
         element.getTargetFirstRep().setRelationship(ConceptMapRelationship.RELATEDTO);
         if (row.getCondition() != null)
-          element.getTargetFirstRep().addDependsOn().setProperty("http://hl7.org/fhirpath").setValue(new StringType(processCondition(row.getCondition())));
+          element.getTargetFirstRep().addDependsOn().setAttribute("http://hl7.org/fhirpath").setValue(new StringType(processCondition(row.getCondition())));
         element.getTargetFirstRep().setCode(row.getAttribute());
         element.getTargetFirstRep().setDisplay(row.getType()+" : ["+row.getMinMax()+"]");
         element.getTargetFirstRep().addExtension(ToolingExtensions.EXT_MAPPING_TGTTYPE, new StringType(row.getType()));
         element.getTargetFirstRep().addExtension(ToolingExtensions.EXT_MAPPING_TGTCARD, new StringType(row.getMinMax()));
         if (row.getDerived() != null) 
-          element.getTargetFirstRep().getProductFirstRep().setProperty(row.getDerived()).setValue(new StringType(row.getDerivedMapping()));
+          element.getTargetFirstRep().getProductFirstRep().setAttribute(row.getDerived()).setValue(new StringType(row.getDerivedMapping()));
         if (row.getComments() != null)
           element.getTargetFirstRep().setComment(row.getComments());
         if (row.getDtMapping() != null)
@@ -391,7 +391,7 @@ public class MappingSheetParser {
             row.dtMapping = t.getExtensionString("http://hl7.org/fhir/StructureDefinition/ConceptMap-type-mapping");
             row.vocabMapping = t.getExtensionString("http://hl7.org/fhir/StructureDefinition/ConceptMap-vocab-mapping");
             if (t.getProduct().size() > 0) {
-              row.derived = t.getProductFirstRep().getProperty();
+              row.derived = t.getProductFirstRep().getAttribute();
               row.derivedMapping = t.getProductFirstRep().getValue().primitiveValue();
             }
           }
@@ -405,7 +405,7 @@ public class MappingSheetParser {
 
   private OtherElementComponent getDependency(TargetElementComponent t, String prop) {
     for (OtherElementComponent dep : t.getDependsOn()) {
-      if (prop.equals(dep.getProperty()))
+      if (prop.equals(dep.getAttribute()))
         return dep;
     }
     return null;
