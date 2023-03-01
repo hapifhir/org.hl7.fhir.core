@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.DiffUtils;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.AllowUnknownProfile;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -109,6 +110,7 @@ public class SnapShotGenerationTests {
     private List<StructureDefinition> included = new ArrayList<>();
     private StructureDefinition expected;
     private StructureDefinition output;
+    public AllowUnknownProfile allow;
 
     public TestDetails(Element test) {
       super();
@@ -126,6 +128,16 @@ public class SnapShotGenerationTests {
       while (rule != null && rule.getNodeName().equals("rule")) {
         rules.add(new Rule(rule));
         rule = XMLUtil.getNextSibling(rule);
+      }
+      String aa = test.getAttribute("allow");
+      if (Utilities.noString(aa)) {
+        allow = AllowUnknownProfile.ALL_TYPES;
+      } else if ("no-extensions".equals(aa)) {
+        allow = AllowUnknownProfile.NON_EXTNEIONS;
+      } else if ("none".equals(aa)) {
+        allow = AllowUnknownProfile.NONE;
+      } else {
+        allow = AllowUnknownProfile.ALL_TYPES;
       }
     }
 
@@ -478,8 +490,8 @@ public class SnapShotGenerationTests {
     pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors, false);
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
-    IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")));
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), test.getOutput());
+//    IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")));
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")), test.getOutput());
     Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
 
@@ -488,6 +500,7 @@ public class SnapShotGenerationTests {
       List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), messages, null);
       pu.setNewSlicingProcessing(true);
+      pu.setAllowUnknownProfile(test.allow);
       for (StructureDefinition sd : test.included) {
         pu.setIds(sd, false);
       }
@@ -520,6 +533,7 @@ public class SnapShotGenerationTests {
     pu.setThrowException(false);
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
+    pu.setAllowUnknownProfile(test.allow);
     if (!TestingUtilities.getSharedWorkerContext().hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
       NpmPackage npm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
       TestingUtilities.getSharedWorkerContext().loadFromPackage(npm, new TestPackageLoader(new String[]{"StructureDefinition"}), new String[]{"StructureDefinition"});
@@ -560,8 +574,8 @@ public class SnapShotGenerationTests {
       File dst = new File(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml"));
       if (dst.exists())
         dst.delete();
-      IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(dst));
-      String actualFilePath = TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml");
+//      IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(dst));
+      String actualFilePath = TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml");
       new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(actualFilePath), output);
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);

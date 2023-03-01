@@ -244,8 +244,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
     public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws IOException, FHIRException {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
-      context.setAllowLoadingDuplicates(allowLoadingDuplicates);
-      context.version = pi.getNpm().asString("version");
+      context.setAllowLoadingDuplicates(allowLoadingDuplicates);      context.version = pi.getNpm().asString("version");
       context.loadFromPackage(pi, loader);
       context.finishLoading();
       return build(context);
@@ -508,6 +507,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	  }
 	  if (version == null) {
 	    version = pi.version();
+	    if (version.equals("current")) {
+	      version = "5.0.0";
+	    }
 	  }
 	  return t;
 	}

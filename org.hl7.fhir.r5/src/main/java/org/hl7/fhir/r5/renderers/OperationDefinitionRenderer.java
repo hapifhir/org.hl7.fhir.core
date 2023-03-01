@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
@@ -46,11 +47,11 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
 
     if (opd.getSystem())
       x.para().tx("URL: [base]/$"+opd.getCode());
-    for (CodeType c : opd.getResource()) {
+    for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) {
       if (opd.getType())
-        x.para().tx("URL: [base]/"+c.getValue()+"/$"+opd.getCode());
+        x.para().tx("URL: [base]/"+c.getCode()+"/$"+opd.getCode());
       if (opd.getInstance())
-        x.para().tx("URL: [base]/"+c.getValue()+"/[id]/$"+opd.getCode());
+        x.para().tx("URL: [base]/"+c.getCode()+"/[id]/$"+opd.getCode());
     }
 
     if (opd.hasInputProfile()) {
