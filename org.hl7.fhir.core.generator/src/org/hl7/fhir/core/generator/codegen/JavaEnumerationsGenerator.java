@@ -144,6 +144,16 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 		write("        throw new FHIRException(\"Unknown "+name+" code '\"+codeString+\"'\");\r\n");
 		write("        }\r\n");	
 
+    write("        public static boolean isValidCode(String codeString) {\r\n");
+    write("            if (codeString == null || \"\".equals(codeString))\r\n");
+    write("                return false;\r\n");
+    write("          return Utilities.existsInList(codeString");
+    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+        write(", \""+c.getCode()+"\"");
+    }
+    write(");\r\n");
+    write("        }\r\n"); 
+
 		write("        public String toCode() {\r\n");
 		write("          switch (this) {\r\n");
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
