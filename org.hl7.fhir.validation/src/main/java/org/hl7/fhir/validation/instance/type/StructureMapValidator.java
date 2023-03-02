@@ -701,7 +701,7 @@ public class StructureMapValidator extends BaseValidator {
     
     if (ruleInfo.getDefVariable() != null && "create".equals(transform) && params.isEmpty()) {
       VariableDefn v = variables.getVariable(ruleInfo.getDefVariable(), SOURCE);
-      if (v != null && (v.getEd().getType().size() == 1 || v.getType() != null)) {
+      if (v != null && v.getEd() != null  && (v.getEd().getType().size() == 1 || v.getType() != null)) {
         List<Element> dependents = rule.getChildrenByName("dependent");
         if (dependents.size() == 1 && StructureMapUtilities.DEF_GROUP_NAME.equals(dependents.get(0).getChildValue("name"))) {
           String type = v.getType() != null ? v.getType() : v.getEd().getTypeFirstRep().getWorkingCode();
