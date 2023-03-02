@@ -59,7 +59,7 @@ public class Location40_50 {
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     for (org.hl7.fhir.r4.model.StringType t : src.getAlias()) tgt.getAlias().add(String40_50.convertString(t));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasMode())
       tgt.setModeElement(convertLocationMode(src.getModeElement()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())

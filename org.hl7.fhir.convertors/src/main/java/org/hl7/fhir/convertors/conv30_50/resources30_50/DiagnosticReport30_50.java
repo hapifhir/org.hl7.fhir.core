@@ -38,7 +38,7 @@ public class DiagnosticReport30_50 {
     for (org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent t : src.getImage())
       tgt.addMedia(convertDiagnosticReportImageComponent(t));
     if (src.hasConclusion())
-      tgt.setConclusionElement(String30_50.convertString(src.getConclusionElement()));
+      tgt.setConclusionElement(String30_50.convertStringToMarkdown(src.getConclusionElement()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCodedDiagnosis())
       tgt.addConclusionCode(CodeableConcept30_50.convertCodeableConcept(t));
     for (org.hl7.fhir.dstu3.model.Attachment t : src.getPresentedForm())

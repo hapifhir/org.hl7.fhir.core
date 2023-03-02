@@ -52,7 +52,7 @@ public class DetectedIssue10_50 {
     for (org.hl7.fhir.dstu2.model.Reference t : src.getImplicated())
       tgt.addImplicated(Reference10_50.convertReference(t));
     if (src.hasDetailElement())
-      tgt.setDetailElement(String10_50.convertString(src.getDetailElement()));
+      tgt.setDetailElement(String10_50.convertStringToMarkdown(src.getDetailElement()));
     if (src.hasDate())
       tgt.setIdentified(DateTime10_50.convertDateTime(src.getDateElement()));
     if (src.hasAuthor())

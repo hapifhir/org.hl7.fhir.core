@@ -1,3 +1,3 @@
   public boolean supportsCopyright() {
-    return false;
+    return true;
   }

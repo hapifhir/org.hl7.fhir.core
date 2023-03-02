@@ -87,7 +87,7 @@ public class Measure43_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown43_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasUsage())
-      tgt.setUsageElement(String43_50.convertString(src.getUsageElement()));
+      tgt.setUsageElement(String43_50.convertStringToMarkdown(src.getUsageElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown43_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasApprovalDate())
@@ -119,9 +119,9 @@ public class Measure43_50 {
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasRiskAdjustment())
-      tgt.setRiskAdjustmentElement(String43_50.convertString(src.getRiskAdjustmentElement()));
+      tgt.setRiskAdjustmentElement(String43_50.convertStringToMarkdown(src.getRiskAdjustmentElement()));
     if (src.hasRateAggregation())
-      tgt.setRateAggregationElement(String43_50.convertString(src.getRateAggregationElement()));
+      tgt.setRateAggregationElement(String43_50.convertStringToMarkdown(src.getRateAggregationElement()));
     if (src.hasRationale())
       tgt.setRationaleElement(MarkDown43_50.convertMarkdown(src.getRationaleElement()));
     if (src.hasClinicalRecommendationStatement())
@@ -237,7 +237,7 @@ public class Measure43_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String43_50.convertStringToMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.r4b.model.Measure.MeasureGroupPopulationComponent t : src.getPopulation())
       tgt.addPopulation(convertMeasureGroupPopulationComponent(t));
     for (org.hl7.fhir.r4b.model.Measure.MeasureGroupStratifierComponent t : src.getStratifier())
@@ -269,7 +269,7 @@ public class Measure43_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String43_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasCriteria())
       tgt.setCriteria(Expression43_50.convertExpression(src.getCriteria()));
     return tgt;
@@ -297,7 +297,7 @@ public class Measure43_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String43_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasCriteria())
       tgt.setCriteria(Expression43_50.convertExpression(src.getCriteria()));
     for (org.hl7.fhir.r4b.model.Measure.MeasureGroupStratifierComponentComponent t : src.getComponent())
@@ -329,7 +329,7 @@ public class Measure43_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String43_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasCriteria())
       tgt.setCriteria(Expression43_50.convertExpression(src.getCriteria()));
     return tgt;
@@ -359,7 +359,7 @@ public class Measure43_50 {
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getUsage())
       tgt.addUsage(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String43_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasCriteria())
       tgt.setCriteria(Expression43_50.convertExpression(src.getCriteria()));
     return tgt;

@@ -92,7 +92,7 @@ public class ActivityDefinition43_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown43_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasUsage())
-      tgt.setUsageElement(String43_50.convertString(src.getUsageElement()));
+      tgt.setUsageElement(String43_50.convertStringToMarkdown(src.getUsageElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown43_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasApprovalDate())
@@ -273,9 +273,6 @@ public class ActivityDefinition43_50 {
       case COMMUNICATIONREQUEST:
         tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.COMMUNICATIONREQUEST);
         break;
-      case CONTRACT:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.CONTRACT);
-        break;
       case DEVICEREQUEST:
         tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.DEVICEREQUEST);
         break;
@@ -334,9 +331,6 @@ public class ActivityDefinition43_50 {
         break;
       case COMMUNICATIONREQUEST:
         tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.COMMUNICATIONREQUEST);
-        break;
-      case CONTRACT:
-        tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.CONTRACT);
         break;
       case DEVICEREQUEST:
         tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.DEVICEREQUEST);

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -200,31 +200,31 @@ public class SubscriptionStatus extends DomainResource {
     @Block()
     public static class SubscriptionStatusNotificationEventComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The sequential number of this event in this subscription context.
+         * Either the sequential number of this event in this subscription context or a relative event number for this notification.
          */
         @Child(name = "eventNumber", type = {Integer64Type.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Event number", formalDefinition="The sequential number of this event in this subscription context." )
+        @Description(shortDefinition="Sequencing index of this event", formalDefinition="Either the sequential number of this event in this subscription context or a relative event number for this notification." )
         protected Integer64Type eventNumber;
 
         /**
-         * The actual time this event occured on the server.
+         * The actual time this event occurred on the server.
          */
         @Child(name = "timestamp", type = {InstantType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The instant this event occurred", formalDefinition="The actual time this event occured on the server." )
+        @Description(shortDefinition="The instant this event occurred", formalDefinition="The actual time this event occurred on the server." )
         protected InstantType timestamp;
 
         /**
          * The focus of this event. While this will usually be a reference to the focus resource of the event, it MAY contain a reference to a non-FHIR object.
          */
         @Child(name = "focus", type = {Reference.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The focus of this event", formalDefinition="The focus of this event. While this will usually be a reference to the focus resource of the event, it MAY contain a reference to a non-FHIR object." )
+        @Description(shortDefinition="Reference to the primary resource or information of this event", formalDefinition="The focus of this event. While this will usually be a reference to the focus resource of the event, it MAY contain a reference to a non-FHIR object." )
         protected Reference focus;
 
         /**
          * Additional context information for this event. Generally, this will contain references to additional resources included with the event (e.g., the Patient relevant to an Encounter), however it MAY refer to non-FHIR objects.
          */
         @Child(name = "additionalContext", type = {Reference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Additional context for this event", formalDefinition="Additional context information for this event. Generally, this will contain references to additional resources included with the event (e.g., the Patient relevant to an Encounter), however it MAY refer to non-FHIR objects." )
+        @Description(shortDefinition="References related to the focus resource and/or context of this event", formalDefinition="Additional context information for this event. Generally, this will contain references to additional resources included with the event (e.g., the Patient relevant to an Encounter), however it MAY refer to non-FHIR objects." )
         protected List<Reference> additionalContext;
 
         private static final long serialVersionUID = 855121922L;
@@ -245,7 +245,7 @@ public class SubscriptionStatus extends DomainResource {
       }
 
         /**
-         * @return {@link #eventNumber} (The sequential number of this event in this subscription context.). This is the underlying object with id, value and extensions. The accessor "getEventNumber" gives direct access to the value
+         * @return {@link #eventNumber} (Either the sequential number of this event in this subscription context or a relative event number for this notification.). This is the underlying object with id, value and extensions. The accessor "getEventNumber" gives direct access to the value
          */
         public Integer64Type getEventNumberElement() { 
           if (this.eventNumber == null)
@@ -265,7 +265,7 @@ public class SubscriptionStatus extends DomainResource {
         }
 
         /**
-         * @param value {@link #eventNumber} (The sequential number of this event in this subscription context.). This is the underlying object with id, value and extensions. The accessor "getEventNumber" gives direct access to the value
+         * @param value {@link #eventNumber} (Either the sequential number of this event in this subscription context or a relative event number for this notification.). This is the underlying object with id, value and extensions. The accessor "getEventNumber" gives direct access to the value
          */
         public SubscriptionStatusNotificationEventComponent setEventNumberElement(Integer64Type value) { 
           this.eventNumber = value;
@@ -273,14 +273,14 @@ public class SubscriptionStatus extends DomainResource {
         }
 
         /**
-         * @return The sequential number of this event in this subscription context.
+         * @return Either the sequential number of this event in this subscription context or a relative event number for this notification.
          */
         public long getEventNumber() { 
           return this.eventNumber == null || this.eventNumber.isEmpty() ? 0 : this.eventNumber.getValue();
         }
 
         /**
-         * @param value The sequential number of this event in this subscription context.
+         * @param value Either the sequential number of this event in this subscription context or a relative event number for this notification.
          */
         public SubscriptionStatusNotificationEventComponent setEventNumber(long value) { 
               this.eventNumber = new Integer64Type();
@@ -289,7 +289,7 @@ public class SubscriptionStatus extends DomainResource {
         }
 
         /**
-         * @return {@link #timestamp} (The actual time this event occured on the server.). This is the underlying object with id, value and extensions. The accessor "getTimestamp" gives direct access to the value
+         * @return {@link #timestamp} (The actual time this event occurred on the server.). This is the underlying object with id, value and extensions. The accessor "getTimestamp" gives direct access to the value
          */
         public InstantType getTimestampElement() { 
           if (this.timestamp == null)
@@ -309,7 +309,7 @@ public class SubscriptionStatus extends DomainResource {
         }
 
         /**
-         * @param value {@link #timestamp} (The actual time this event occured on the server.). This is the underlying object with id, value and extensions. The accessor "getTimestamp" gives direct access to the value
+         * @param value {@link #timestamp} (The actual time this event occurred on the server.). This is the underlying object with id, value and extensions. The accessor "getTimestamp" gives direct access to the value
          */
         public SubscriptionStatusNotificationEventComponent setTimestampElement(InstantType value) { 
           this.timestamp = value;
@@ -317,14 +317,14 @@ public class SubscriptionStatus extends DomainResource {
         }
 
         /**
-         * @return The actual time this event occured on the server.
+         * @return The actual time this event occurred on the server.
          */
         public Date getTimestamp() { 
           return this.timestamp == null ? null : this.timestamp.getValue();
         }
 
         /**
-         * @param value The actual time this event occured on the server.
+         * @param value The actual time this event occurred on the server.
          */
         public SubscriptionStatusNotificationEventComponent setTimestamp(Date value) { 
           if (value == null)
@@ -416,8 +416,8 @@ public class SubscriptionStatus extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("eventNumber", "integer64", "The sequential number of this event in this subscription context.", 0, 1, eventNumber));
-          children.add(new Property("timestamp", "instant", "The actual time this event occured on the server.", 0, 1, timestamp));
+          children.add(new Property("eventNumber", "integer64", "Either the sequential number of this event in this subscription context or a relative event number for this notification.", 0, 1, eventNumber));
+          children.add(new Property("timestamp", "instant", "The actual time this event occurred on the server.", 0, 1, timestamp));
           children.add(new Property("focus", "Reference(Any)", "The focus of this event. While this will usually be a reference to the focus resource of the event, it MAY contain a reference to a non-FHIR object.", 0, 1, focus));
           children.add(new Property("additionalContext", "Reference(Any)", "Additional context information for this event. Generally, this will contain references to additional resources included with the event (e.g., the Patient relevant to an Encounter), however it MAY refer to non-FHIR objects.", 0, java.lang.Integer.MAX_VALUE, additionalContext));
         }
@@ -425,8 +425,8 @@ public class SubscriptionStatus extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -35234173: /*eventNumber*/  return new Property("eventNumber", "integer64", "The sequential number of this event in this subscription context.", 0, 1, eventNumber);
-          case 55126294: /*timestamp*/  return new Property("timestamp", "instant", "The actual time this event occured on the server.", 0, 1, timestamp);
+          case -35234173: /*eventNumber*/  return new Property("eventNumber", "integer64", "Either the sequential number of this event in this subscription context or a relative event number for this notification.", 0, 1, eventNumber);
+          case 55126294: /*timestamp*/  return new Property("timestamp", "instant", "The actual time this event occurred on the server.", 0, 1, timestamp);
           case 97604824: /*focus*/  return new Property("focus", "Reference(Any)", "The focus of this event. While this will usually be a reference to the focus resource of the event, it MAY contain a reference to a non-FHIR object.", 0, 1, focus);
           case -908743800: /*additionalContext*/  return new Property("additionalContext", "Reference(Any)", "Additional context information for this event. Generally, this will contain references to additional resources included with the event (e.g., the Patient relevant to an Encounter), however it MAY refer to non-FHIR objects.", 0, java.lang.Integer.MAX_VALUE, additionalContext);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -586,10 +586,10 @@ public class SubscriptionStatus extends DomainResource {
     protected Enumeration<SubscriptionStatusCodes> status;
 
     /**
-     * The type of event being conveyed with this notificaiton.
+     * The type of event being conveyed with this notification.
      */
     @Child(name = "type", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="handshake | heartbeat | event-notification | query-status | query-event", formalDefinition="The type of event being conveyed with this notificaiton." )
+    @Description(shortDefinition="handshake | heartbeat | event-notification | query-status | query-event", formalDefinition="The type of event being conveyed with this notification." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-notification-type")
     protected Enumeration<SubscriptionNotificationType> type;
 
@@ -697,7 +697,7 @@ public class SubscriptionStatus extends DomainResource {
     }
 
     /**
-     * @return {@link #type} (The type of event being conveyed with this notificaiton.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+     * @return {@link #type} (The type of event being conveyed with this notification.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
     public Enumeration<SubscriptionNotificationType> getTypeElement() { 
       if (this.type == null)
@@ -717,7 +717,7 @@ public class SubscriptionStatus extends DomainResource {
     }
 
     /**
-     * @param value {@link #type} (The type of event being conveyed with this notificaiton.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+     * @param value {@link #type} (The type of event being conveyed with this notification.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
     public SubscriptionStatus setTypeElement(Enumeration<SubscriptionNotificationType> value) { 
       this.type = value;
@@ -725,14 +725,14 @@ public class SubscriptionStatus extends DomainResource {
     }
 
     /**
-     * @return The type of event being conveyed with this notificaiton.
+     * @return The type of event being conveyed with this notification.
      */
     public SubscriptionNotificationType getType() { 
       return this.type == null ? null : this.type.getValue();
     }
 
     /**
-     * @param value The type of event being conveyed with this notificaiton.
+     * @param value The type of event being conveyed with this notification.
      */
     public SubscriptionStatus setType(SubscriptionNotificationType value) { 
         if (this.type == null)
@@ -967,7 +967,7 @@ public class SubscriptionStatus extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("status", "code", "The status of the subscription, which marks the server state for managing the subscription.", 0, 1, status));
-        children.add(new Property("type", "code", "The type of event being conveyed with this notificaiton.", 0, 1, type));
+        children.add(new Property("type", "code", "The type of event being conveyed with this notification.", 0, 1, type));
         children.add(new Property("eventsSinceSubscriptionStart", "integer64", "The total number of actual events which have been generated since the Subscription was created (inclusive of this notification) - regardless of how many have been successfully communicated.  This number is NOT incremented for handshake and heartbeat notifications.", 0, 1, eventsSinceSubscriptionStart));
         children.add(new Property("notificationEvent", "", "Detailed information about events relevant to this subscription notification.", 0, java.lang.Integer.MAX_VALUE, notificationEvent));
         children.add(new Property("subscription", "Reference(Subscription)", "The reference to the Subscription which generated this notification.", 0, 1, subscription));
@@ -979,7 +979,7 @@ public class SubscriptionStatus extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -892481550: /*status*/  return new Property("status", "code", "The status of the subscription, which marks the server state for managing the subscription.", 0, 1, status);
-        case 3575610: /*type*/  return new Property("type", "code", "The type of event being conveyed with this notificaiton.", 0, 1, type);
+        case 3575610: /*type*/  return new Property("type", "code", "The type of event being conveyed with this notification.", 0, 1, type);
         case 304566692: /*eventsSinceSubscriptionStart*/  return new Property("eventsSinceSubscriptionStart", "integer64", "The total number of actual events which have been generated since the Subscription was created (inclusive of this notification) - regardless of how many have been successfully communicated.  This number is NOT incremented for handshake and heartbeat notifications.", 0, 1, eventsSinceSubscriptionStart);
         case -1595878289: /*notificationEvent*/  return new Property("notificationEvent", "", "Detailed information about events relevant to this subscription notification.", 0, java.lang.Integer.MAX_VALUE, notificationEvent);
         case 341203229: /*subscription*/  return new Property("subscription", "Reference(Subscription)", "The reference to the Subscription which generated this notification.", 0, 1, subscription);
@@ -1186,3 +1186,4 @@ public class SubscriptionStatus extends DomainResource {
 
 
 }
+

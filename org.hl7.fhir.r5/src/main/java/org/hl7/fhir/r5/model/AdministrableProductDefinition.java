@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,7 +66,7 @@ public class AdministrableProductDefinition extends DomainResource {
         /**
          * A value for the characteristic.
          */
-        @Child(name = "value", type = {CodeableConcept.class, Quantity.class, DateType.class, BooleanType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "value", type = {CodeableConcept.class, Quantity.class, DateType.class, BooleanType.class, MarkdownType.class, Attachment.class, Binary.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A value for the characteristic", formalDefinition="A value for the characteristic." )
         protected DataType value;
 
@@ -189,6 +189,21 @@ public class AdministrableProductDefinition extends DomainResource {
         /**
          * @return {@link #value} (A value for the characteristic.)
          */
+        public MarkdownType getValueMarkdownType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new MarkdownType();
+          if (!(this.value instanceof MarkdownType))
+            throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (MarkdownType) this.value;
+        }
+
+        public boolean hasValueMarkdownType() { 
+          return this != null && this.value instanceof MarkdownType;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
         public Attachment getValueAttachment() throws FHIRException { 
           if (this.value == null)
             this.value = new Attachment();
@@ -201,6 +216,21 @@ public class AdministrableProductDefinition extends DomainResource {
           return this != null && this.value instanceof Attachment;
         }
 
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public Reference getValueReference() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Reference();
+          if (!(this.value instanceof Reference))
+            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Reference) this.value;
+        }
+
+        public boolean hasValueReference() { 
+          return this != null && this.value instanceof Reference;
+        }
+
         public boolean hasValue() { 
           return this.value != null && !this.value.isEmpty();
         }
@@ -209,7 +239,7 @@ public class AdministrableProductDefinition extends DomainResource {
          * @param value {@link #value} (A value for the characteristic.)
          */
         public AdministrableProductDefinitionPropertyComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
+          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof DateType || value instanceof BooleanType || value instanceof MarkdownType || value instanceof Attachment || value instanceof Reference))
             throw new Error("Not the right type for AdministrableProductDefinition.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -242,7 +272,7 @@ public class AdministrableProductDefinition extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type));
-          children.add(new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value));
+          children.add(new Property("value[x]", "CodeableConcept|Quantity|date|boolean|markdown|Attachment|Reference(Binary)", "A value for the characteristic.", 0, 1, value));
           children.add(new Property("status", "CodeableConcept", "The status of characteristic e.g. assigned or pending.", 0, 1, status));
         }
 
@@ -250,13 +280,15 @@ public class AdministrableProductDefinition extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|markdown|Attachment|Reference(Binary)", "A value for the characteristic.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|markdown|Attachment|Reference(Binary)", "A value for the characteristic.", 0, 1, value);
           case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "A value for the characteristic.", 0, 1, value);
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "A value for the characteristic.", 0, 1, value);
           case -766192449: /*valueDate*/  return new Property("value[x]", "date", "A value for the characteristic.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "A value for the characteristic.", 0, 1, value);
+          case -497880704: /*valueMarkdown*/  return new Property("value[x]", "markdown", "A value for the characteristic.", 0, 1, value);
           case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "A value for the characteristic.", 0, 1, value);
+          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference(Binary)", "A value for the characteristic.", 0, 1, value);
           case -892481550: /*status*/  return new Property("status", "CodeableConcept", "The status of characteristic e.g. assigned or pending.", 0, 1, status);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -320,7 +352,7 @@ public class AdministrableProductDefinition extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"CodeableConcept", "Quantity", "date", "boolean", "Attachment"};
+        case 111972721: /*value*/ return new String[] {"CodeableConcept", "Quantity", "date", "boolean", "markdown", "Attachment", "Reference"};
         case -892481550: /*status*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -349,8 +381,16 @@ public class AdministrableProductDefinition extends DomainResource {
           this.value = new BooleanType();
           return this.value;
         }
+        else if (name.equals("valueMarkdown")) {
+          this.value = new MarkdownType();
+          return this.value;
+        }
         else if (name.equals("valueAttachment")) {
           this.value = new Attachment();
+          return this.value;
+        }
+        else if (name.equals("valueReference")) {
+          this.value = new Reference();
           return this.value;
         }
         else if (name.equals("status")) {
@@ -1469,20 +1509,27 @@ public class AdministrableProductDefinition extends DomainResource {
     protected Reference device;
 
     /**
+     * A general description of the product, when in its final form, suitable for administration e.g. effervescent blue liquid, to be swallowed. Intended to be used when the other structured properties of this resource are insufficient or cannot be supported. It is not intended to duplicate information already carried elswehere.
+     */
+    @Child(name = "description", type = {MarkdownType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="A general description of the product, when in its final form, suitable for administration e.g. effervescent blue liquid, to be swallowed", formalDefinition="A general description of the product, when in its final form, suitable for administration e.g. effervescent blue liquid, to be swallowed. Intended to be used when the other structured properties of this resource are insufficient or cannot be supported. It is not intended to duplicate information already carried elswehere." )
+    protected MarkdownType description;
+
+    /**
      * Characteristics e.g. a product's onset of action.
      */
-    @Child(name = "property", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "property", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Characteristics e.g. a product's onset of action", formalDefinition="Characteristics e.g. a product's onset of action." )
     protected List<AdministrableProductDefinitionPropertyComponent> property;
 
     /**
      * The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route. RouteOfAdministration cannot be used when the 'formOf' product already uses MedicinalProductDefinition.route (and vice versa).
      */
-    @Child(name = "routeOfAdministration", type = {}, order=9, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "routeOfAdministration", type = {}, order=10, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The path by which the product is taken into or makes contact with the body", formalDefinition="The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route. RouteOfAdministration cannot be used when the 'formOf' product already uses MedicinalProductDefinition.route (and vice versa)." )
     protected List<AdministrableProductDefinitionRouteOfAdministrationComponent> routeOfAdministration;
 
-    private static final long serialVersionUID = 1447528370L;
+    private static final long serialVersionUID = -487805677L;
 
   /**
    * Constructor
@@ -1830,6 +1877,55 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
+     * @return {@link #description} (A general description of the product, when in its final form, suitable for administration e.g. effervescent blue liquid, to be swallowed. Intended to be used when the other structured properties of this resource are insufficient or cannot be supported. It is not intended to duplicate information already carried elswehere.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     */
+    public MarkdownType getDescriptionElement() { 
+      if (this.description == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create AdministrableProductDefinition.description");
+        else if (Configuration.doAutoCreate())
+          this.description = new MarkdownType(); // bb
+      return this.description;
+    }
+
+    public boolean hasDescriptionElement() { 
+      return this.description != null && !this.description.isEmpty();
+    }
+
+    public boolean hasDescription() { 
+      return this.description != null && !this.description.isEmpty();
+    }
+
+    /**
+     * @param value {@link #description} (A general description of the product, when in its final form, suitable for administration e.g. effervescent blue liquid, to be swallowed. Intended to be used when the other structured properties of this resource are insufficient or cannot be supported. It is not intended to duplicate information already carried elswehere.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     */
+    public AdministrableProductDefinition setDescriptionElement(MarkdownType value) { 
+      this.description = value;
+      return this;
+    }
+
+    /**
+     * @return A general description of the product, when in its final form, suitable for administration e.g. effervescent blue liquid, to be swallowed. Intended to be used when the other structured properties of this resource are insufficient or cannot be supported. It is not intended to duplicate information already carried elswehere.
+     */
+    public String getDescription() { 
+      return this.description == null ? null : this.description.getValue();
+    }
+
+    /**
+     * @param value A general description of the product, when in its final form, suitable for administration e.g. effervescent blue liquid, to be swallowed. Intended to be used when the other structured properties of this resource are insufficient or cannot be supported. It is not intended to duplicate information already carried elswehere.
+     */
+    public AdministrableProductDefinition setDescription(String value) { 
+      if (Utilities.noString(value))
+        this.description = null;
+      else {
+        if (this.description == null)
+          this.description = new MarkdownType();
+        this.description.setValue(value);
+      }
+      return this;
+    }
+
+    /**
      * @return {@link #property} (Characteristics e.g. a product's onset of action.)
      */
     public List<AdministrableProductDefinitionPropertyComponent> getProperty() { 
@@ -1945,6 +2041,7 @@ public class AdministrableProductDefinition extends DomainResource {
         children.add(new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "Indicates the specific manufactured items that are part of the 'formOf' product that are used in the preparation of this specific administrable form.  In some cases, an administrable form might use all of the items from the overall product (or there might only be one item), while in other cases, an administrable form might use only a subset of the items available in the overall product.  For example, an administrable form might involve combining a liquid and a powder available as part of an overall product, but not involve applying the also supplied cream.", 0, java.lang.Integer.MAX_VALUE, producedFrom));
         children.add(new Property("ingredient", "CodeableConcept", "The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used.", 0, java.lang.Integer.MAX_VALUE, ingredient));
         children.add(new Property("device", "Reference(DeviceDefinition)", "A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged.", 0, 1, device));
+        children.add(new Property("description", "markdown", "A general description of the product, when in its final form, suitable for administration e.g. effervescent blue liquid, to be swallowed. Intended to be used when the other structured properties of this resource are insufficient or cannot be supported. It is not intended to duplicate information already carried elswehere.", 0, 1, description));
         children.add(new Property("property", "", "Characteristics e.g. a product's onset of action.", 0, java.lang.Integer.MAX_VALUE, property));
         children.add(new Property("routeOfAdministration", "", "The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route. RouteOfAdministration cannot be used when the 'formOf' product already uses MedicinalProductDefinition.route (and vice versa).", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration));
       }
@@ -1960,6 +2057,7 @@ public class AdministrableProductDefinition extends DomainResource {
         case 588380494: /*producedFrom*/  return new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "Indicates the specific manufactured items that are part of the 'formOf' product that are used in the preparation of this specific administrable form.  In some cases, an administrable form might use all of the items from the overall product (or there might only be one item), while in other cases, an administrable form might use only a subset of the items available in the overall product.  For example, an administrable form might involve combining a liquid and a powder available as part of an overall product, but not involve applying the also supplied cream.", 0, java.lang.Integer.MAX_VALUE, producedFrom);
         case -206409263: /*ingredient*/  return new Property("ingredient", "CodeableConcept", "The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used.", 0, java.lang.Integer.MAX_VALUE, ingredient);
         case -1335157162: /*device*/  return new Property("device", "Reference(DeviceDefinition)", "A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged.", 0, 1, device);
+        case -1724546052: /*description*/  return new Property("description", "markdown", "A general description of the product, when in its final form, suitable for administration e.g. effervescent blue liquid, to be swallowed. Intended to be used when the other structured properties of this resource are insufficient or cannot be supported. It is not intended to duplicate information already carried elswehere.", 0, 1, description);
         case -993141291: /*property*/  return new Property("property", "", "Characteristics e.g. a product's onset of action.", 0, java.lang.Integer.MAX_VALUE, property);
         case 1742084734: /*routeOfAdministration*/  return new Property("routeOfAdministration", "", "The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route. RouteOfAdministration cannot be used when the 'formOf' product already uses MedicinalProductDefinition.route (and vice versa).", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1978,6 +2076,7 @@ public class AdministrableProductDefinition extends DomainResource {
         case 588380494: /*producedFrom*/ return this.producedFrom == null ? new Base[0] : this.producedFrom.toArray(new Base[this.producedFrom.size()]); // Reference
         case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // CodeableConcept
         case -1335157162: /*device*/ return this.device == null ? new Base[0] : new Base[] {this.device}; // Reference
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // AdministrableProductDefinitionPropertyComponent
         case 1742084734: /*routeOfAdministration*/ return this.routeOfAdministration == null ? new Base[0] : this.routeOfAdministration.toArray(new Base[this.routeOfAdministration.size()]); // AdministrableProductDefinitionRouteOfAdministrationComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -2013,6 +2112,9 @@ public class AdministrableProductDefinition extends DomainResource {
         case -1335157162: // device
           this.device = TypeConvertor.castToReference(value); // Reference
           return value;
+        case -1724546052: // description
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
         case -993141291: // property
           this.getProperty().add((AdministrableProductDefinitionPropertyComponent) value); // AdministrableProductDefinitionPropertyComponent
           return value;
@@ -2043,6 +2145,8 @@ public class AdministrableProductDefinition extends DomainResource {
           this.getIngredient().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("device")) {
           this.device = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("description")) {
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("property")) {
           this.getProperty().add((AdministrableProductDefinitionPropertyComponent) value);
         } else if (name.equals("routeOfAdministration")) {
@@ -2063,6 +2167,7 @@ public class AdministrableProductDefinition extends DomainResource {
         case 588380494:  return addProducedFrom(); 
         case -206409263:  return addIngredient(); 
         case -1335157162:  return getDevice();
+        case -1724546052:  return getDescriptionElement();
         case -993141291:  return addProperty(); 
         case 1742084734:  return addRouteOfAdministration(); 
         default: return super.makeProperty(hash, name);
@@ -2081,6 +2186,7 @@ public class AdministrableProductDefinition extends DomainResource {
         case 588380494: /*producedFrom*/ return new String[] {"Reference"};
         case -206409263: /*ingredient*/ return new String[] {"CodeableConcept"};
         case -1335157162: /*device*/ return new String[] {"Reference"};
+        case -1724546052: /*description*/ return new String[] {"markdown"};
         case -993141291: /*property*/ return new String[] {};
         case 1742084734: /*routeOfAdministration*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -2116,6 +2222,9 @@ public class AdministrableProductDefinition extends DomainResource {
         else if (name.equals("device")) {
           this.device = new Reference();
           return this.device;
+        }
+        else if (name.equals("description")) {
+          throw new FHIRException("Cannot call addChild on a primitive type AdministrableProductDefinition.description");
         }
         else if (name.equals("property")) {
           return addProperty();
@@ -2164,6 +2273,7 @@ public class AdministrableProductDefinition extends DomainResource {
             dst.ingredient.add(i.copy());
         };
         dst.device = device == null ? null : device.copy();
+        dst.description = description == null ? null : description.copy();
         if (property != null) {
           dst.property = new ArrayList<AdministrableProductDefinitionPropertyComponent>();
           for (AdministrableProductDefinitionPropertyComponent i : property)
@@ -2190,8 +2300,8 @@ public class AdministrableProductDefinition extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(formOf, o.formOf, true)
            && compareDeep(administrableDoseForm, o.administrableDoseForm, true) && compareDeep(unitOfPresentation, o.unitOfPresentation, true)
            && compareDeep(producedFrom, o.producedFrom, true) && compareDeep(ingredient, o.ingredient, true)
-           && compareDeep(device, o.device, true) && compareDeep(property, o.property, true) && compareDeep(routeOfAdministration, o.routeOfAdministration, true)
-          ;
+           && compareDeep(device, o.device, true) && compareDeep(description, o.description, true) && compareDeep(property, o.property, true)
+           && compareDeep(routeOfAdministration, o.routeOfAdministration, true);
       }
 
       @Override
@@ -2201,13 +2311,13 @@ public class AdministrableProductDefinition extends DomainResource {
         if (!(other_ instanceof AdministrableProductDefinition))
           return false;
         AdministrableProductDefinition o = (AdministrableProductDefinition) other_;
-        return compareValues(status, o.status, true);
+        return compareValues(status, o.status, true) && compareValues(description, o.description, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, formOf
-          , administrableDoseForm, unitOfPresentation, producedFrom, ingredient, device, property
-          , routeOfAdministration);
+          , administrableDoseForm, unitOfPresentation, producedFrom, ingredient, device, description
+          , property, routeOfAdministration);
       }
 
   @Override

@@ -546,7 +546,7 @@ public class StructureMap43_50 {
     org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasContext())
-      tgt.setContextElement(Id43_50.convertId(src.getContextElement()));
+      tgt.setContextElement(Id43_50.convertIdToString(src.getContextElement()));
     if (src.hasContextType() && src.getContextType() != org.hl7.fhir.r4b.model.StructureMap.StructureMapContextType.VARIABLE)
       throw new Error("This conversion is not supported. Consult code maintainers"); // this should never happens - no one knows what the intent was here.
     if (src.hasElement())
@@ -605,7 +605,7 @@ public class StructureMap43_50 {
         tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode.LAST);
         break;
       case COLLATE:
-        tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode.COLLATE);
+        tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode.SINGLE);
         break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode.NULL);
@@ -629,7 +629,7 @@ public class StructureMap43_50 {
       case LAST:
         tgt.setValue(org.hl7.fhir.r4b.model.StructureMap.StructureMapTargetListMode.LAST);
         break;
-      case COLLATE:
+      case SINGLE:
         tgt.setValue(org.hl7.fhir.r4b.model.StructureMap.StructureMapTargetListMode.COLLATE);
         break;
       default:

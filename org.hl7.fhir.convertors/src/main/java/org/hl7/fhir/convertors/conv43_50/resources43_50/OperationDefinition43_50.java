@@ -14,6 +14,9 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAllEnumFactory;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -87,7 +90,7 @@ public class OperationDefinition43_50 {
       tgt.setCommentElement(MarkDown43_50.convertMarkdown(src.getCommentElement()));
     if (src.hasBase())
       tgt.setBaseElement(Canonical43_50.convertCanonical(src.getBaseElement()));
-    for (org.hl7.fhir.r4b.model.CodeType t : src.getResource()) tgt.getResource().add(Code43_50.convertCode(t));
+    for (org.hl7.fhir.r4b.model.CodeType t : src.getResource()) tgt.getResource().add(new Enumeration<VersionIndependentResourceTypesAll>(new VersionIndependentResourceTypesAllEnumFactory(), Code43_50.convertCode(t)));
     if (src.hasSystem())
       tgt.setSystemElement(Boolean43_50.convertBoolean(src.getSystemElement()));
     if (src.hasType())
@@ -146,7 +149,7 @@ public class OperationDefinition43_50 {
       tgt.setCommentElement(MarkDown43_50.convertMarkdown(src.getCommentElement()));
     if (src.hasBase())
       tgt.setBaseElement(Canonical43_50.convertCanonical(src.getBaseElement()));
-    for (CodeType t : src.getResource()) tgt.getResource().add(Code43_50.convertCode(t));
+    for (Enumeration<VersionIndependentResourceTypesAll> t : src.getResource()) tgt.getResource().add(Code43_50.convertCode(t.getCodeType()));
     if (src.hasSystem())
       tgt.setSystemElement(Boolean43_50.convertBoolean(src.getSystemElement()));
     if (src.hasType())

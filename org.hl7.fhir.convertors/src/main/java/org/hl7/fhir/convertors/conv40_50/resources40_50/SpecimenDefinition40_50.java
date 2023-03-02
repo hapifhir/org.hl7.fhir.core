@@ -95,7 +95,7 @@ public class SpecimenDefinition40_50 {
     if (src.hasContainer())
       tgt.setContainer(convertSpecimenDefinitionTypeTestedContainerComponent(src.getContainer()));
     if (src.hasRequirement())
-      tgt.setRequirementElement(String40_50.convertString(src.getRequirementElement()));
+      tgt.setRequirementElement(String40_50.convertStringToMarkdown(src.getRequirementElement()));
     if (src.hasRetentionTime())
       tgt.setRetentionTime(Duration40_50.convertDuration(src.getRetentionTime()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRejectionCriterion())
@@ -179,7 +179,7 @@ public class SpecimenDefinition40_50 {
     if (src.hasCap())
       tgt.setCap(CodeableConcept40_50.convertCodeableConcept(src.getCap()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasCapacity())
       tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
     if (src.hasMinimumVolume())
@@ -187,7 +187,7 @@ public class SpecimenDefinition40_50 {
     for (org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent t : src.getAdditive())
       tgt.addAdditive(convertSpecimenDefinitionTypeTestedContainerAdditiveComponent(t));
     if (src.hasPreparation())
-      tgt.setPreparationElement(String40_50.convertString(src.getPreparationElement()));
+      tgt.setPreparationElement(String40_50.convertStringToMarkdown(src.getPreparationElement()));
     return tgt;
   }
 
@@ -247,7 +247,7 @@ public class SpecimenDefinition40_50 {
     if (src.hasMaxDuration())
       tgt.setMaxDuration(Duration40_50.convertDuration(src.getMaxDuration()));
     if (src.hasInstruction())
-      tgt.setInstructionElement(String40_50.convertString(src.getInstructionElement()));
+      tgt.setInstructionElement(String40_50.convertStringToMarkdown(src.getInstructionElement()));
     return tgt;
   }
 

@@ -64,7 +64,7 @@ public class HealthcareService40_50 {
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasComment())
-      tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
+      tgt.setCommentElement(String40_50.convertStringToMarkdown(src.getCommentElement()));
     if (src.hasExtraDetails())
       tgt.setExtraDetailsElement(MarkDown40_50.convertMarkdown(src.getExtraDetailsElement()));
     if (src.hasPhoto())

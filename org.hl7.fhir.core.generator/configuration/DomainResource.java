@@ -80,3 +80,12 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
       }
       return Collections.unmodifiableList(retVal);
     }
+
+
+    public StandardsStatus getStandardsStatus() {
+      return ToolingExtensions.getStandardsStatus(this);
+    }
+    
+    public void setStandardsStatus(StandardsStatus status) {
+      ToolingExtensions.setStandardsStatus(this, status, null);
+    }

@@ -118,8 +118,8 @@ public class Resource40_50 {
       return DeviceUseStatement40_50.convertDeviceUseStatement((org.hl7.fhir.r4.model.DeviceUseStatement) src);
     if (src instanceof org.hl7.fhir.r4.model.DiagnosticReport)
       return DiagnosticReport40_50.convertDiagnosticReport((org.hl7.fhir.r4.model.DiagnosticReport) src);
-    if (src instanceof org.hl7.fhir.r4.model.DocumentManifest)
-      return DocumentManifest40_50.convertDocumentManifest((org.hl7.fhir.r4.model.DocumentManifest) src);
+//    if (src instanceof org.hl7.fhir.r4.model.DocumentManifest)
+//      return DocumentManifest40_50.convertDocumentManifest((org.hl7.fhir.r4.model.DocumentManifest) src);
     if (src instanceof org.hl7.fhir.r4.model.DocumentReference)
       return DocumentReference40_50.convertDocumentReference((org.hl7.fhir.r4.model.DocumentReference) src);
     if (src instanceof org.hl7.fhir.r4.model.Encounter)
@@ -359,8 +359,8 @@ public class Resource40_50 {
       return DeviceUseStatement40_50.convertDeviceUseStatement((org.hl7.fhir.r5.model.DeviceUsage) src);
     if (src instanceof org.hl7.fhir.r5.model.DiagnosticReport)
       return DiagnosticReport40_50.convertDiagnosticReport((org.hl7.fhir.r5.model.DiagnosticReport) src);
-    if (src instanceof org.hl7.fhir.r5.model.DocumentManifest)
-      return DocumentManifest40_50.convertDocumentManifest((org.hl7.fhir.r5.model.DocumentManifest) src);
+//    if (src instanceof org.hl7.fhir.r5.model.DocumentManifest)
+//      return DocumentManifest40_50.convertDocumentManifest((org.hl7.fhir.r5.model.DocumentManifest) src);
     if (src instanceof org.hl7.fhir.r5.model.DocumentReference)
       return DocumentReference40_50.convertDocumentReference((org.hl7.fhir.r5.model.DocumentReference) src);
     if (src instanceof org.hl7.fhir.r5.model.Encounter)
@@ -426,8 +426,8 @@ public class Resource40_50 {
       return MedicationKnowledge40_50.convertMedicationKnowledge((org.hl7.fhir.r5.model.MedicationKnowledge) src);
     if (src instanceof org.hl7.fhir.r5.model.MedicationRequest)
       return MedicationRequest40_50.convertMedicationRequest((org.hl7.fhir.r5.model.MedicationRequest) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicationUsage)
-      return MedicationStatement40_50.convertMedicationStatement((org.hl7.fhir.r5.model.MedicationUsage) src);
+    if (src instanceof org.hl7.fhir.r5.model.MedicationStatement)
+      return MedicationStatement40_50.convertMedicationStatement((org.hl7.fhir.r5.model.MedicationStatement) src);
     if (src instanceof org.hl7.fhir.r5.model.MessageDefinition)
       return MessageDefinition40_50.convertMessageDefinition((org.hl7.fhir.r5.model.MessageDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.MessageHeader)

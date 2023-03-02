@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -201,7 +201,7 @@ public abstract class MetadataResource extends CanonicalResource {
       return Integer.MAX_VALUE;
     }
     /**
-     * @return {@link #reviewer} (An individual or organization primarily responsible for review of some aspect of the metadata resource.)
+     * @return {@link #reviewer} (An individual or organization asserted by the publisher to be primarily responsible for review of some aspect of the metadata resource.)
      */
     public abstract List<ContactDetail> getReviewer(); 
     /**
@@ -223,7 +223,7 @@ public abstract class MetadataResource extends CanonicalResource {
       return Integer.MAX_VALUE;
     }
     /**
-     * @return {@link #endorser} (An individual or organization responsible for officially endorsing the metadata resource for use in some setting.)
+     * @return {@link #endorser} (An individual or organization asserted by the publisher to be responsible for officially endorsing the metadata resource for use in some setting.)
      */
     public abstract List<ContactDetail> getEndorser(); 
     /**

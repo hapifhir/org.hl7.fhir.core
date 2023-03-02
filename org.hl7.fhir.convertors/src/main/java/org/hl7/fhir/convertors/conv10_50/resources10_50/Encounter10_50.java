@@ -8,6 +8,7 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identi
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Period10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.Encounter.ReasonComponent;
 
 public class Encounter10_50 {
 
@@ -40,11 +41,12 @@ public class Encounter10_50 {
       tgt.setPeriod(Period10_50.convertPeriod(src.getActualPeriod()));
     if (src.hasLength())
       tgt.setLength(Duration10_50.convertDuration(src.getLength()));
-    for (CodeableReference t : src.getReason())
-      if (t.hasConcept())
-        tgt.addReason(CodeableConcept10_50.convertCodeableConcept(t.getConcept()));
-    if (src.hasAdmission())
-      tgt.setHospitalization(convertEncounterHospitalizationComponent(src.getAdmission()));
+    for (ReasonComponent t1 : src.getReason())
+      for (CodeableReference t : t1.getValue())
+        if (t.hasConcept())
+          tgt.addReason(CodeableConcept10_50.convertCodeableConcept(t.getConcept()));
+    if (src.hasAdmission() || src.hasDietPreference() || src.hasSpecialArrangement() || src.hasSpecialCourtesy())
+      tgt.setHospitalization(convertEncounterHospitalizationComponent(src.getAdmission(), src));
     for (org.hl7.fhir.r5.model.Encounter.EncounterLocationComponent t : src.getLocation())
       tgt.addLocation(convertEncounterLocationComponent(t));
     if (src.hasServiceProvider())
@@ -84,9 +86,9 @@ public class Encounter10_50 {
     if (src.hasLength())
       tgt.setLength(Duration10_50.convertDuration(src.getLength()));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason())
-      tgt.addReason(CodeableConcept10_50.convertCodeableConceptToCodableReference(t));
+      tgt.addReason().addValue(CodeableConcept10_50.convertCodeableConceptToCodableReference(t));
     if (src.hasHospitalization())
-      tgt.setAdmission(convertEncounterHospitalizationComponent(src.getHospitalization()));
+      tgt.setAdmission(convertEncounterHospitalizationComponent(src.getHospitalization(), tgt));
     for (org.hl7.fhir.dstu2.model.Encounter.EncounterLocationComponent t : src.getLocation())
       tgt.addLocation(convertEncounterLocationComponent(t));
     if (src.hasServiceProvider())
@@ -143,7 +145,7 @@ public class Encounter10_50 {
     }
   }
 
-  public static org.hl7.fhir.r5.model.Encounter.EncounterAdmissionComponent convertEncounterHospitalizationComponent(org.hl7.fhir.dstu2.model.Encounter.EncounterHospitalizationComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Encounter.EncounterAdmissionComponent convertEncounterHospitalizationComponent(org.hl7.fhir.dstu2.model.Encounter.EncounterHospitalizationComponent src, org.hl7.fhir.r5.model.Encounter tgte) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Encounter.EncounterAdmissionComponent tgt = new org.hl7.fhir.r5.model.Encounter.EncounterAdmissionComponent();
@@ -157,11 +159,11 @@ public class Encounter10_50 {
     if (src.hasReAdmission())
       tgt.setReAdmission(CodeableConcept10_50.convertCodeableConcept(src.getReAdmission()));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getDietPreference())
-      tgt.addDietPreference(CodeableConcept10_50.convertCodeableConcept(t));
+      tgte.addDietPreference(CodeableConcept10_50.convertCodeableConcept(t));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getSpecialCourtesy())
-      tgt.addSpecialCourtesy(CodeableConcept10_50.convertCodeableConcept(t));
+      tgte.addSpecialCourtesy(CodeableConcept10_50.convertCodeableConcept(t));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getSpecialArrangement())
-      tgt.addSpecialArrangement(CodeableConcept10_50.convertCodeableConcept(t));
+      tgte.addSpecialArrangement(CodeableConcept10_50.convertCodeableConcept(t));
     if (src.hasDestination())
       tgt.setDestination(Reference10_50.convertReference(src.getDestination()));
     if (src.hasDischargeDisposition())
@@ -169,7 +171,7 @@ public class Encounter10_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.dstu2.model.Encounter.EncounterHospitalizationComponent convertEncounterHospitalizationComponent(org.hl7.fhir.r5.model.Encounter.EncounterAdmissionComponent src) throws FHIRException {
+  public static org.hl7.fhir.dstu2.model.Encounter.EncounterHospitalizationComponent convertEncounterHospitalizationComponent(org.hl7.fhir.r5.model.Encounter.EncounterAdmissionComponent src, org.hl7.fhir.r5.model.Encounter srce) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Encounter.EncounterHospitalizationComponent tgt = new org.hl7.fhir.dstu2.model.Encounter.EncounterHospitalizationComponent();
@@ -182,11 +184,11 @@ public class Encounter10_50 {
       tgt.setAdmitSource(CodeableConcept10_50.convertCodeableConcept(src.getAdmitSource()));
     if (src.hasReAdmission())
       tgt.setReAdmission(CodeableConcept10_50.convertCodeableConcept(src.getReAdmission()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getDietPreference())
+    for (org.hl7.fhir.r5.model.CodeableConcept t : srce.getDietPreference())
       tgt.addDietPreference(CodeableConcept10_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialCourtesy())
+    for (org.hl7.fhir.r5.model.CodeableConcept t : srce.getSpecialCourtesy())
       tgt.addSpecialCourtesy(CodeableConcept10_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialArrangement())
+    for (org.hl7.fhir.r5.model.CodeableConcept t : srce.getSpecialArrangement())
       tgt.addSpecialArrangement(CodeableConcept10_50.convertCodeableConcept(t));
     if (src.hasDestination())
       tgt.setDestination(Reference10_50.convertReference(src.getDestination()));
@@ -301,7 +303,7 @@ public class Encounter10_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Encounter.EncounterState> convertEncounterState(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterStatus> src) throws FHIRException {
+  static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Encounter.EncounterState> convertEncounterState(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EncounterStatus> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Encounter.EncounterState> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Encounter.EncounterStateEnumFactory());
@@ -326,32 +328,32 @@ public class Encounter10_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterStatus> convertEncounterState(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Encounter.EncounterState> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EncounterStatus> convertEncounterState(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Encounter.EncounterState> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Encounter.EncounterStatusEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EncounterStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.EncounterStatusEnumFactory());
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case PLANNED:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.PLANNED);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.PLANNED);
         break;
       case ARRIVED:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.INPROGRESS);
         break;
       case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.INPROGRESS);
         break;
       case ONLEAVE:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.INPROGRESS);
         break;
       case FINISHED:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.COMPLETED);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.COMPLETED);
         break;
       case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.CANCELLED);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.CANCELLED);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.NULL);
         break;
     }
     return tgt;

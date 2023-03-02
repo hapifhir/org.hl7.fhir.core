@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,7 +65,7 @@ public class Attachment extends DataType implements ICompositeType {
      */
     @Child(name = "language", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Human language of the content (BCP-47)", formalDefinition="The human language of the content. The value can be any valid value according to BCP 47." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-languages")
     protected CodeType language;
 
     /**

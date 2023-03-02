@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -161,982 +161,6 @@ public class TerminologyCapabilities extends CanonicalResource {
       return "?";
       }
     public String toSystem(CodeSearchSupport code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum CommonLanguages {
-        /**
-         * 
-         */
-        AR, 
-        /**
-         * 
-         */
-        BN, 
-        /**
-         * 
-         */
-        CS, 
-        /**
-         * 
-         */
-        DA, 
-        /**
-         * 
-         */
-        DE, 
-        /**
-         * 
-         */
-        DEAT, 
-        /**
-         * 
-         */
-        DECH, 
-        /**
-         * 
-         */
-        DEDE, 
-        /**
-         * 
-         */
-        EL, 
-        /**
-         * 
-         */
-        EN, 
-        /**
-         * 
-         */
-        ENAU, 
-        /**
-         * 
-         */
-        ENCA, 
-        /**
-         * 
-         */
-        ENGB, 
-        /**
-         * 
-         */
-        ENIN, 
-        /**
-         * 
-         */
-        ENNZ, 
-        /**
-         * 
-         */
-        ENSG, 
-        /**
-         * 
-         */
-        ENUS, 
-        /**
-         * 
-         */
-        ES, 
-        /**
-         * 
-         */
-        ESAR, 
-        /**
-         * 
-         */
-        ESES, 
-        /**
-         * 
-         */
-        ESUY, 
-        /**
-         * 
-         */
-        FI, 
-        /**
-         * 
-         */
-        FR, 
-        /**
-         * 
-         */
-        FRBE, 
-        /**
-         * 
-         */
-        FRCH, 
-        /**
-         * 
-         */
-        FRFR, 
-        /**
-         * 
-         */
-        FRCA, 
-        /**
-         * 
-         */
-        FY, 
-        /**
-         * 
-         */
-        FYNL, 
-        /**
-         * 
-         */
-        HI, 
-        /**
-         * 
-         */
-        HR, 
-        /**
-         * 
-         */
-        IT, 
-        /**
-         * 
-         */
-        ITCH, 
-        /**
-         * 
-         */
-        ITIT, 
-        /**
-         * 
-         */
-        JA, 
-        /**
-         * 
-         */
-        KO, 
-        /**
-         * 
-         */
-        NL, 
-        /**
-         * 
-         */
-        NLBE, 
-        /**
-         * 
-         */
-        NLNL, 
-        /**
-         * 
-         */
-        NO, 
-        /**
-         * 
-         */
-        NONO, 
-        /**
-         * 
-         */
-        PA, 
-        /**
-         * 
-         */
-        PL, 
-        /**
-         * 
-         */
-        PT, 
-        /**
-         * 
-         */
-        PTBR, 
-        /**
-         * 
-         */
-        RU, 
-        /**
-         * 
-         */
-        RURU, 
-        /**
-         * 
-         */
-        SR, 
-        /**
-         * 
-         */
-        SRRS, 
-        /**
-         * 
-         */
-        SV, 
-        /**
-         * 
-         */
-        SVSE, 
-        /**
-         * 
-         */
-        TE, 
-        /**
-         * 
-         */
-        ZH, 
-        /**
-         * 
-         */
-        ZHCN, 
-        /**
-         * 
-         */
-        ZHHK, 
-        /**
-         * 
-         */
-        ZHSG, 
-        /**
-         * 
-         */
-        ZHTW, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static CommonLanguages fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("ar".equals(codeString))
-          return AR;
-        if ("bn".equals(codeString))
-          return BN;
-        if ("cs".equals(codeString))
-          return CS;
-        if ("da".equals(codeString))
-          return DA;
-        if ("de".equals(codeString))
-          return DE;
-        if ("de-AT".equals(codeString))
-          return DEAT;
-        if ("de-CH".equals(codeString))
-          return DECH;
-        if ("de-DE".equals(codeString))
-          return DEDE;
-        if ("el".equals(codeString))
-          return EL;
-        if ("en".equals(codeString))
-          return EN;
-        if ("en-AU".equals(codeString))
-          return ENAU;
-        if ("en-CA".equals(codeString))
-          return ENCA;
-        if ("en-GB".equals(codeString))
-          return ENGB;
-        if ("en-IN".equals(codeString))
-          return ENIN;
-        if ("en-NZ".equals(codeString))
-          return ENNZ;
-        if ("en-SG".equals(codeString))
-          return ENSG;
-        if ("en-US".equals(codeString))
-          return ENUS;
-        if ("es".equals(codeString))
-          return ES;
-        if ("es-AR".equals(codeString))
-          return ESAR;
-        if ("es-ES".equals(codeString))
-          return ESES;
-        if ("es-UY".equals(codeString))
-          return ESUY;
-        if ("fi".equals(codeString))
-          return FI;
-        if ("fr".equals(codeString))
-          return FR;
-        if ("fr-BE".equals(codeString))
-          return FRBE;
-        if ("fr-CH".equals(codeString))
-          return FRCH;
-        if ("fr-FR".equals(codeString))
-          return FRFR;
-        if ("fr-CA".equals(codeString))
-          return FRCA;
-        if ("fy".equals(codeString))
-          return FY;
-        if ("fy-NL".equals(codeString))
-          return FYNL;
-        if ("hi".equals(codeString))
-          return HI;
-        if ("hr".equals(codeString))
-          return HR;
-        if ("it".equals(codeString))
-          return IT;
-        if ("it-CH".equals(codeString))
-          return ITCH;
-        if ("it-IT".equals(codeString))
-          return ITIT;
-        if ("ja".equals(codeString))
-          return JA;
-        if ("ko".equals(codeString))
-          return KO;
-        if ("nl".equals(codeString))
-          return NL;
-        if ("nl-BE".equals(codeString))
-          return NLBE;
-        if ("nl-NL".equals(codeString))
-          return NLNL;
-        if ("no".equals(codeString))
-          return NO;
-        if ("no-NO".equals(codeString))
-          return NONO;
-        if ("pa".equals(codeString))
-          return PA;
-        if ("pl".equals(codeString))
-          return PL;
-        if ("pt".equals(codeString))
-          return PT;
-        if ("pt-BR".equals(codeString))
-          return PTBR;
-        if ("ru".equals(codeString))
-          return RU;
-        if ("ru-RU".equals(codeString))
-          return RURU;
-        if ("sr".equals(codeString))
-          return SR;
-        if ("sr-RS".equals(codeString))
-          return SRRS;
-        if ("sv".equals(codeString))
-          return SV;
-        if ("sv-SE".equals(codeString))
-          return SVSE;
-        if ("te".equals(codeString))
-          return TE;
-        if ("zh".equals(codeString))
-          return ZH;
-        if ("zh-CN".equals(codeString))
-          return ZHCN;
-        if ("zh-HK".equals(codeString))
-          return ZHHK;
-        if ("zh-SG".equals(codeString))
-          return ZHSG;
-        if ("zh-TW".equals(codeString))
-          return ZHTW;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown CommonLanguages code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case AR: return "ar";
-            case BN: return "bn";
-            case CS: return "cs";
-            case DA: return "da";
-            case DE: return "de";
-            case DEAT: return "de-AT";
-            case DECH: return "de-CH";
-            case DEDE: return "de-DE";
-            case EL: return "el";
-            case EN: return "en";
-            case ENAU: return "en-AU";
-            case ENCA: return "en-CA";
-            case ENGB: return "en-GB";
-            case ENIN: return "en-IN";
-            case ENNZ: return "en-NZ";
-            case ENSG: return "en-SG";
-            case ENUS: return "en-US";
-            case ES: return "es";
-            case ESAR: return "es-AR";
-            case ESES: return "es-ES";
-            case ESUY: return "es-UY";
-            case FI: return "fi";
-            case FR: return "fr";
-            case FRBE: return "fr-BE";
-            case FRCH: return "fr-CH";
-            case FRFR: return "fr-FR";
-            case FRCA: return "fr-CA";
-            case FY: return "fy";
-            case FYNL: return "fy-NL";
-            case HI: return "hi";
-            case HR: return "hr";
-            case IT: return "it";
-            case ITCH: return "it-CH";
-            case ITIT: return "it-IT";
-            case JA: return "ja";
-            case KO: return "ko";
-            case NL: return "nl";
-            case NLBE: return "nl-BE";
-            case NLNL: return "nl-NL";
-            case NO: return "no";
-            case NONO: return "no-NO";
-            case PA: return "pa";
-            case PL: return "pl";
-            case PT: return "pt";
-            case PTBR: return "pt-BR";
-            case RU: return "ru";
-            case RURU: return "ru-RU";
-            case SR: return "sr";
-            case SRRS: return "sr-RS";
-            case SV: return "sv";
-            case SVSE: return "sv-SE";
-            case TE: return "te";
-            case ZH: return "zh";
-            case ZHCN: return "zh-CN";
-            case ZHHK: return "zh-HK";
-            case ZHSG: return "zh-SG";
-            case ZHTW: return "zh-TW";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case AR: return "urn:ietf:bcp:47";
-            case BN: return "urn:ietf:bcp:47";
-            case CS: return "urn:ietf:bcp:47";
-            case DA: return "urn:ietf:bcp:47";
-            case DE: return "urn:ietf:bcp:47";
-            case DEAT: return "urn:ietf:bcp:47";
-            case DECH: return "urn:ietf:bcp:47";
-            case DEDE: return "urn:ietf:bcp:47";
-            case EL: return "urn:ietf:bcp:47";
-            case EN: return "urn:ietf:bcp:47";
-            case ENAU: return "urn:ietf:bcp:47";
-            case ENCA: return "urn:ietf:bcp:47";
-            case ENGB: return "urn:ietf:bcp:47";
-            case ENIN: return "urn:ietf:bcp:47";
-            case ENNZ: return "urn:ietf:bcp:47";
-            case ENSG: return "urn:ietf:bcp:47";
-            case ENUS: return "urn:ietf:bcp:47";
-            case ES: return "urn:ietf:bcp:47";
-            case ESAR: return "urn:ietf:bcp:47";
-            case ESES: return "urn:ietf:bcp:47";
-            case ESUY: return "urn:ietf:bcp:47";
-            case FI: return "urn:ietf:bcp:47";
-            case FR: return "urn:ietf:bcp:47";
-            case FRBE: return "urn:ietf:bcp:47";
-            case FRCH: return "urn:ietf:bcp:47";
-            case FRFR: return "urn:ietf:bcp:47";
-            case FRCA: return "urn:ietf:bcp:47";
-            case FY: return "urn:ietf:bcp:47";
-            case FYNL: return "urn:ietf:bcp:47";
-            case HI: return "urn:ietf:bcp:47";
-            case HR: return "urn:ietf:bcp:47";
-            case IT: return "urn:ietf:bcp:47";
-            case ITCH: return "urn:ietf:bcp:47";
-            case ITIT: return "urn:ietf:bcp:47";
-            case JA: return "urn:ietf:bcp:47";
-            case KO: return "urn:ietf:bcp:47";
-            case NL: return "urn:ietf:bcp:47";
-            case NLBE: return "urn:ietf:bcp:47";
-            case NLNL: return "urn:ietf:bcp:47";
-            case NO: return "urn:ietf:bcp:47";
-            case NONO: return "urn:ietf:bcp:47";
-            case PA: return "urn:ietf:bcp:47";
-            case PL: return "urn:ietf:bcp:47";
-            case PT: return "urn:ietf:bcp:47";
-            case PTBR: return "urn:ietf:bcp:47";
-            case RU: return "urn:ietf:bcp:47";
-            case RURU: return "urn:ietf:bcp:47";
-            case SR: return "urn:ietf:bcp:47";
-            case SRRS: return "urn:ietf:bcp:47";
-            case SV: return "urn:ietf:bcp:47";
-            case SVSE: return "urn:ietf:bcp:47";
-            case TE: return "urn:ietf:bcp:47";
-            case ZH: return "urn:ietf:bcp:47";
-            case ZHCN: return "urn:ietf:bcp:47";
-            case ZHHK: return "urn:ietf:bcp:47";
-            case ZHSG: return "urn:ietf:bcp:47";
-            case ZHTW: return "urn:ietf:bcp:47";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case AR: return "";
-            case BN: return "";
-            case CS: return "";
-            case DA: return "";
-            case DE: return "";
-            case DEAT: return "";
-            case DECH: return "";
-            case DEDE: return "";
-            case EL: return "";
-            case EN: return "";
-            case ENAU: return "";
-            case ENCA: return "";
-            case ENGB: return "";
-            case ENIN: return "";
-            case ENNZ: return "";
-            case ENSG: return "";
-            case ENUS: return "";
-            case ES: return "";
-            case ESAR: return "";
-            case ESES: return "";
-            case ESUY: return "";
-            case FI: return "";
-            case FR: return "";
-            case FRBE: return "";
-            case FRCH: return "";
-            case FRFR: return "";
-            case FRCA: return "";
-            case FY: return "";
-            case FYNL: return "";
-            case HI: return "";
-            case HR: return "";
-            case IT: return "";
-            case ITCH: return "";
-            case ITIT: return "";
-            case JA: return "";
-            case KO: return "";
-            case NL: return "";
-            case NLBE: return "";
-            case NLNL: return "";
-            case NO: return "";
-            case NONO: return "";
-            case PA: return "";
-            case PL: return "";
-            case PT: return "";
-            case PTBR: return "";
-            case RU: return "";
-            case RURU: return "";
-            case SR: return "";
-            case SRRS: return "";
-            case SV: return "";
-            case SVSE: return "";
-            case TE: return "";
-            case ZH: return "";
-            case ZHCN: return "";
-            case ZHHK: return "";
-            case ZHSG: return "";
-            case ZHTW: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case AR: return "Arabisk";
-            case BN: return "Bengali";
-            case CS: return "Czech";
-            case DA: return "Danish";
-            case DE: return "German";
-            case DEAT: return "German (Austria)";
-            case DECH: return "German (Switzerland)";
-            case DEDE: return "German (Germany)";
-            case EL: return "Greek";
-            case EN: return "English";
-            case ENAU: return "English (Australia)";
-            case ENCA: return "English (Canada)";
-            case ENGB: return "English (Great Britain)";
-            case ENIN: return "English (India)";
-            case ENNZ: return "English (New Zealand)";
-            case ENSG: return "English (Singapore)";
-            case ENUS: return "English (United States)";
-            case ES: return "Spanish";
-            case ESAR: return "Spanish (Argentina)";
-            case ESES: return "Spanish (Spain)";
-            case ESUY: return "Spanish (Uruguay)";
-            case FI: return "Finnish";
-            case FR: return "French";
-            case FRBE: return "French (Belgium)";
-            case FRCH: return "French (Switzerland)";
-            case FRFR: return "French (France)";
-            case FRCA: return "French (Canada)";
-            case FY: return "Frysian";
-            case FYNL: return "Frysian (Netherlands)";
-            case HI: return "Hindi";
-            case HR: return "Croatian";
-            case IT: return "Italian";
-            case ITCH: return "Italian (Switzerland)";
-            case ITIT: return "Italian (Italy)";
-            case JA: return "Japanese";
-            case KO: return "Korean";
-            case NL: return "Dutch";
-            case NLBE: return "Dutch (Belgium)";
-            case NLNL: return "Dutch (Netherlands)";
-            case NO: return "Norwegian";
-            case NONO: return "Norwegian (Norway)";
-            case PA: return "Punjabi";
-            case PL: return "Polskie";
-            case PT: return "Portuguese";
-            case PTBR: return "Portuguese (Brazil)";
-            case RU: return "Russian";
-            case RURU: return "Russian (Russia)";
-            case SR: return "Serbian";
-            case SRRS: return "Serbian (Serbia)";
-            case SV: return "Swedish";
-            case SVSE: return "Swedish (Sweden)";
-            case TE: return "Telegu";
-            case ZH: return "Chinese";
-            case ZHCN: return "Chinese (China)";
-            case ZHHK: return "Chinese (Hong Kong)";
-            case ZHSG: return "Chinese (Singapore)";
-            case ZHTW: return "Chinese (Taiwan)";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-    }
-
-  public static class CommonLanguagesEnumFactory implements EnumFactory<CommonLanguages> {
-    public CommonLanguages fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("ar".equals(codeString))
-          return CommonLanguages.AR;
-        if ("bn".equals(codeString))
-          return CommonLanguages.BN;
-        if ("cs".equals(codeString))
-          return CommonLanguages.CS;
-        if ("da".equals(codeString))
-          return CommonLanguages.DA;
-        if ("de".equals(codeString))
-          return CommonLanguages.DE;
-        if ("de-AT".equals(codeString))
-          return CommonLanguages.DEAT;
-        if ("de-CH".equals(codeString))
-          return CommonLanguages.DECH;
-        if ("de-DE".equals(codeString))
-          return CommonLanguages.DEDE;
-        if ("el".equals(codeString))
-          return CommonLanguages.EL;
-        if ("en".equals(codeString))
-          return CommonLanguages.EN;
-        if ("en-AU".equals(codeString))
-          return CommonLanguages.ENAU;
-        if ("en-CA".equals(codeString))
-          return CommonLanguages.ENCA;
-        if ("en-GB".equals(codeString))
-          return CommonLanguages.ENGB;
-        if ("en-IN".equals(codeString))
-          return CommonLanguages.ENIN;
-        if ("en-NZ".equals(codeString))
-          return CommonLanguages.ENNZ;
-        if ("en-SG".equals(codeString))
-          return CommonLanguages.ENSG;
-        if ("en-US".equals(codeString))
-          return CommonLanguages.ENUS;
-        if ("es".equals(codeString))
-          return CommonLanguages.ES;
-        if ("es-AR".equals(codeString))
-          return CommonLanguages.ESAR;
-        if ("es-ES".equals(codeString))
-          return CommonLanguages.ESES;
-        if ("es-UY".equals(codeString))
-          return CommonLanguages.ESUY;
-        if ("fi".equals(codeString))
-          return CommonLanguages.FI;
-        if ("fr".equals(codeString))
-          return CommonLanguages.FR;
-        if ("fr-BE".equals(codeString))
-          return CommonLanguages.FRBE;
-        if ("fr-CH".equals(codeString))
-          return CommonLanguages.FRCH;
-        if ("fr-FR".equals(codeString))
-          return CommonLanguages.FRFR;
-        if ("fr-CA".equals(codeString))
-          return CommonLanguages.FRCA;
-        if ("fy".equals(codeString))
-          return CommonLanguages.FY;
-        if ("fy-NL".equals(codeString))
-          return CommonLanguages.FYNL;
-        if ("hi".equals(codeString))
-          return CommonLanguages.HI;
-        if ("hr".equals(codeString))
-          return CommonLanguages.HR;
-        if ("it".equals(codeString))
-          return CommonLanguages.IT;
-        if ("it-CH".equals(codeString))
-          return CommonLanguages.ITCH;
-        if ("it-IT".equals(codeString))
-          return CommonLanguages.ITIT;
-        if ("ja".equals(codeString))
-          return CommonLanguages.JA;
-        if ("ko".equals(codeString))
-          return CommonLanguages.KO;
-        if ("nl".equals(codeString))
-          return CommonLanguages.NL;
-        if ("nl-BE".equals(codeString))
-          return CommonLanguages.NLBE;
-        if ("nl-NL".equals(codeString))
-          return CommonLanguages.NLNL;
-        if ("no".equals(codeString))
-          return CommonLanguages.NO;
-        if ("no-NO".equals(codeString))
-          return CommonLanguages.NONO;
-        if ("pa".equals(codeString))
-          return CommonLanguages.PA;
-        if ("pl".equals(codeString))
-          return CommonLanguages.PL;
-        if ("pt".equals(codeString))
-          return CommonLanguages.PT;
-        if ("pt-BR".equals(codeString))
-          return CommonLanguages.PTBR;
-        if ("ru".equals(codeString))
-          return CommonLanguages.RU;
-        if ("ru-RU".equals(codeString))
-          return CommonLanguages.RURU;
-        if ("sr".equals(codeString))
-          return CommonLanguages.SR;
-        if ("sr-RS".equals(codeString))
-          return CommonLanguages.SRRS;
-        if ("sv".equals(codeString))
-          return CommonLanguages.SV;
-        if ("sv-SE".equals(codeString))
-          return CommonLanguages.SVSE;
-        if ("te".equals(codeString))
-          return CommonLanguages.TE;
-        if ("zh".equals(codeString))
-          return CommonLanguages.ZH;
-        if ("zh-CN".equals(codeString))
-          return CommonLanguages.ZHCN;
-        if ("zh-HK".equals(codeString))
-          return CommonLanguages.ZHHK;
-        if ("zh-SG".equals(codeString))
-          return CommonLanguages.ZHSG;
-        if ("zh-TW".equals(codeString))
-          return CommonLanguages.ZHTW;
-        throw new IllegalArgumentException("Unknown CommonLanguages code '"+codeString+"'");
-        }
-        public Enumeration<CommonLanguages> fromType(PrimitiveType<?> code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<CommonLanguages>(this, CommonLanguages.NULL, code);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return new Enumeration<CommonLanguages>(this, CommonLanguages.NULL, code);
-        if ("ar".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.AR, code);
-        if ("bn".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.BN, code);
-        if ("cs".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.CS, code);
-        if ("da".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.DA, code);
-        if ("de".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.DE, code);
-        if ("de-AT".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.DEAT, code);
-        if ("de-CH".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.DECH, code);
-        if ("de-DE".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.DEDE, code);
-        if ("el".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.EL, code);
-        if ("en".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.EN, code);
-        if ("en-AU".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENAU, code);
-        if ("en-CA".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENCA, code);
-        if ("en-GB".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENGB, code);
-        if ("en-IN".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENIN, code);
-        if ("en-NZ".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENNZ, code);
-        if ("en-SG".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENSG, code);
-        if ("en-US".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENUS, code);
-        if ("es".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ES, code);
-        if ("es-AR".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESAR, code);
-        if ("es-ES".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESES, code);
-        if ("es-UY".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESUY, code);
-        if ("fi".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FI, code);
-        if ("fr".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FR, code);
-        if ("fr-BE".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRBE, code);
-        if ("fr-CH".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRCH, code);
-        if ("fr-FR".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRFR, code);
-        if ("fr-CA".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRCA, code);
-        if ("fy".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FY, code);
-        if ("fy-NL".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FYNL, code);
-        if ("hi".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.HI, code);
-        if ("hr".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.HR, code);
-        if ("it".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.IT, code);
-        if ("it-CH".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ITCH, code);
-        if ("it-IT".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ITIT, code);
-        if ("ja".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.JA, code);
-        if ("ko".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.KO, code);
-        if ("nl".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.NL, code);
-        if ("nl-BE".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.NLBE, code);
-        if ("nl-NL".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.NLNL, code);
-        if ("no".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.NO, code);
-        if ("no-NO".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.NONO, code);
-        if ("pa".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.PA, code);
-        if ("pl".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.PL, code);
-        if ("pt".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.PT, code);
-        if ("pt-BR".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.PTBR, code);
-        if ("ru".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.RU, code);
-        if ("ru-RU".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.RURU, code);
-        if ("sr".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.SR, code);
-        if ("sr-RS".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.SRRS, code);
-        if ("sv".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.SV, code);
-        if ("sv-SE".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.SVSE, code);
-        if ("te".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.TE, code);
-        if ("zh".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZH, code);
-        if ("zh-CN".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHCN, code);
-        if ("zh-HK".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHHK, code);
-        if ("zh-SG".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHSG, code);
-        if ("zh-TW".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHTW, code);
-        throw new FHIRException("Unknown CommonLanguages code '"+codeString+"'");
-        }
-    public String toCode(CommonLanguages code) {
-      if (code == CommonLanguages.AR)
-        return "ar";
-      if (code == CommonLanguages.BN)
-        return "bn";
-      if (code == CommonLanguages.CS)
-        return "cs";
-      if (code == CommonLanguages.DA)
-        return "da";
-      if (code == CommonLanguages.DE)
-        return "de";
-      if (code == CommonLanguages.DEAT)
-        return "de-AT";
-      if (code == CommonLanguages.DECH)
-        return "de-CH";
-      if (code == CommonLanguages.DEDE)
-        return "de-DE";
-      if (code == CommonLanguages.EL)
-        return "el";
-      if (code == CommonLanguages.EN)
-        return "en";
-      if (code == CommonLanguages.ENAU)
-        return "en-AU";
-      if (code == CommonLanguages.ENCA)
-        return "en-CA";
-      if (code == CommonLanguages.ENGB)
-        return "en-GB";
-      if (code == CommonLanguages.ENIN)
-        return "en-IN";
-      if (code == CommonLanguages.ENNZ)
-        return "en-NZ";
-      if (code == CommonLanguages.ENSG)
-        return "en-SG";
-      if (code == CommonLanguages.ENUS)
-        return "en-US";
-      if (code == CommonLanguages.ES)
-        return "es";
-      if (code == CommonLanguages.ESAR)
-        return "es-AR";
-      if (code == CommonLanguages.ESES)
-        return "es-ES";
-      if (code == CommonLanguages.ESUY)
-        return "es-UY";
-      if (code == CommonLanguages.FI)
-        return "fi";
-      if (code == CommonLanguages.FR)
-        return "fr";
-      if (code == CommonLanguages.FRBE)
-        return "fr-BE";
-      if (code == CommonLanguages.FRCH)
-        return "fr-CH";
-      if (code == CommonLanguages.FRFR)
-        return "fr-FR";
-      if (code == CommonLanguages.FRCA)
-        return "fr-CA";
-      if (code == CommonLanguages.FY)
-        return "fy";
-      if (code == CommonLanguages.FYNL)
-        return "fy-NL";
-      if (code == CommonLanguages.HI)
-        return "hi";
-      if (code == CommonLanguages.HR)
-        return "hr";
-      if (code == CommonLanguages.IT)
-        return "it";
-      if (code == CommonLanguages.ITCH)
-        return "it-CH";
-      if (code == CommonLanguages.ITIT)
-        return "it-IT";
-      if (code == CommonLanguages.JA)
-        return "ja";
-      if (code == CommonLanguages.KO)
-        return "ko";
-      if (code == CommonLanguages.NL)
-        return "nl";
-      if (code == CommonLanguages.NLBE)
-        return "nl-BE";
-      if (code == CommonLanguages.NLNL)
-        return "nl-NL";
-      if (code == CommonLanguages.NO)
-        return "no";
-      if (code == CommonLanguages.NONO)
-        return "no-NO";
-      if (code == CommonLanguages.PA)
-        return "pa";
-      if (code == CommonLanguages.PL)
-        return "pl";
-      if (code == CommonLanguages.PT)
-        return "pt";
-      if (code == CommonLanguages.PTBR)
-        return "pt-BR";
-      if (code == CommonLanguages.RU)
-        return "ru";
-      if (code == CommonLanguages.RURU)
-        return "ru-RU";
-      if (code == CommonLanguages.SR)
-        return "sr";
-      if (code == CommonLanguages.SRRS)
-        return "sr-RS";
-      if (code == CommonLanguages.SV)
-        return "sv";
-      if (code == CommonLanguages.SVSE)
-        return "sv-SE";
-      if (code == CommonLanguages.TE)
-        return "te";
-      if (code == CommonLanguages.ZH)
-        return "zh";
-      if (code == CommonLanguages.ZHCN)
-        return "zh-CN";
-      if (code == CommonLanguages.ZHHK)
-        return "zh-HK";
-      if (code == CommonLanguages.ZHSG)
-        return "zh-SG";
-      if (code == CommonLanguages.ZHTW)
-        return "zh-TW";
-      return "?";
-      }
-    public String toSystem(CommonLanguages code) {
       return code.getSystem();
       }
     }
@@ -3159,7 +2183,7 @@ public class TerminologyCapabilities extends CanonicalResource {
          * @param value Documentation about text searching works.
          */
         public TerminologyCapabilitiesExpansionComponent setTextFilter(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.textFilter = null;
           else {
             if (this.textFilter == null)
@@ -4160,23 +3184,31 @@ public class TerminologyCapabilities extends CanonicalResource {
     protected StringType version;
 
     /**
+     * Indicates the mechanism used to compare versions to determine which is more current.
+     */
+    @Child(name = "versionAlgorithm", type = {StringType.class, Coding.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="How to compare versions", formalDefinition="Indicates the mechanism used to compare versions to determine which is more current." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/version-algorithm")
+    protected DataType versionAlgorithm;
+
+    /**
      * A natural language name identifying the terminology capabilities. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
-    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this terminology capabilities (computer friendly)", formalDefinition="A natural language name identifying the terminology capabilities. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
     protected StringType name;
 
     /**
      * A short, descriptive, user-friendly title for the terminology capabilities.
      */
-    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "title", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this terminology capabilities (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the terminology capabilities." )
     protected StringType title;
 
     /**
      * The status of this terminology capabilities. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this terminology capabilities. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -4184,49 +3216,49 @@ public class TerminologyCapabilities extends CanonicalResource {
     /**
      * A Boolean value to indicate that this terminology capabilities is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this terminology capabilities is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
      * The date  (and optionally time) when the terminology capabilities was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the terminology capabilities changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=7, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=8, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the terminology capabilities was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the terminology capabilities changes." )
     protected DateTimeType date;
 
     /**
      * The name of the organization or individual responsible for the release and ongoing maintenance of the terminology capabilities.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "publisher", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the terminology capabilities." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the terminology capabilities from a consumer's perspective. Typically, this is used when the capability statement describes a desired rather than an actual solution, for example as a formal expression of requirements as part of an RFP.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Natural language description of the terminology capabilities", formalDefinition="A free text natural language description of the terminology capabilities from a consumer's perspective. Typically, this is used when the capability statement describes a desired rather than an actual solution, for example as a formal expression of requirements as part of an RFP." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate terminology capabilities instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate terminology capabilities instances." )
     protected List<UsageContext> useContext;
 
     /**
      * A legal or geographic region in which the terminology capabilities is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for terminology capabilities (if applicable)", formalDefinition="A legal or geographic region in which the terminology capabilities is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
@@ -4234,21 +3266,28 @@ public class TerminologyCapabilities extends CanonicalResource {
     /**
      * Explanation of why this terminology capabilities is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this terminology capabilities is defined", formalDefinition="Explanation of why this terminology capabilities is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * A copyright statement relating to the terminology capabilities and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the terminology capabilities.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the terminology capabilities and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the terminology capabilities." )
     protected MarkdownType copyright;
 
     /**
+     * A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    @Child(name = "copyrightLabel", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Copyright holder and year(s)", formalDefinition="A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved')." )
+    protected StringType copyrightLabel;
+
+    /**
      * The way that this statement is intended to be used, to describe an actual running instance of software, a particular product (kind, not instance of software) or a class of implementation (e.g. a desired purchase).
      */
-    @Child(name = "kind", type = {CodeType.class}, order=15, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "kind", type = {CodeType.class}, order=17, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="instance | capability | requirements", formalDefinition="The way that this statement is intended to be used, to describe an actual running instance of software, a particular product (kind, not instance of software) or a class of implementation (e.g. a desired purchase)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/capability-statement-kind")
     protected Enumeration<CapabilityStatementKind> kind;
@@ -4256,42 +3295,42 @@ public class TerminologyCapabilities extends CanonicalResource {
     /**
      * Software that is covered by this terminology capability statement.  It is used when the statement describes the capabilities of a particular software version, independent of an installation.
      */
-    @Child(name = "software", type = {}, order=16, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "software", type = {}, order=18, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Software that is covered by this terminology capability statement", formalDefinition="Software that is covered by this terminology capability statement.  It is used when the statement describes the capabilities of a particular software version, independent of an installation." )
     protected TerminologyCapabilitiesSoftwareComponent software;
 
     /**
      * Identifies a specific implementation instance that is described by the terminology capability statement - i.e. a particular installation, rather than the capabilities of a software program.
      */
-    @Child(name = "implementation", type = {}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "implementation", type = {}, order=19, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="If this describes a specific instance", formalDefinition="Identifies a specific implementation instance that is described by the terminology capability statement - i.e. a particular installation, rather than the capabilities of a software program." )
     protected TerminologyCapabilitiesImplementationComponent implementation;
 
     /**
      * Whether the server supports lockedDate.
      */
-    @Child(name = "lockedDate", type = {BooleanType.class}, order=18, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "lockedDate", type = {BooleanType.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Whether lockedDate is supported", formalDefinition="Whether the server supports lockedDate." )
     protected BooleanType lockedDate;
 
     /**
      * Identifies a code system that is supported by the server. If there is a no code system URL, then this declares the general assumptions a client can make about support for any CodeSystem resource.
      */
-    @Child(name = "codeSystem", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "codeSystem", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A code system supported by the server", formalDefinition="Identifies a code system that is supported by the server. If there is a no code system URL, then this declares the general assumptions a client can make about support for any CodeSystem resource." )
     protected List<TerminologyCapabilitiesCodeSystemComponent> codeSystem;
 
     /**
      * Information about the [ValueSet/$expand](valueset-operation-expand.html) operation.
      */
-    @Child(name = "expansion", type = {}, order=20, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "expansion", type = {}, order=22, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information about the [ValueSet/$expand](valueset-operation-expand.html) operation", formalDefinition="Information about the [ValueSet/$expand](valueset-operation-expand.html) operation." )
     protected TerminologyCapabilitiesExpansionComponent expansion;
 
     /**
      * The degree to which the server supports the code search parameter on ValueSet, if it is supported.
      */
-    @Child(name = "codeSearch", type = {CodeType.class}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "codeSearch", type = {CodeType.class}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="in-compose | in-expansion | in-compose-or-expansion", formalDefinition="The degree to which the server supports the code search parameter on ValueSet, if it is supported." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/code-search-support")
     protected Enumeration<CodeSearchSupport> codeSearch;
@@ -4299,25 +3338,25 @@ public class TerminologyCapabilities extends CanonicalResource {
     /**
      * Information about the [ValueSet/$validate-code](valueset-operation-validate-code.html) operation.
      */
-    @Child(name = "validateCode", type = {}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "validateCode", type = {}, order=24, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information about the [ValueSet/$validate-code](valueset-operation-validate-code.html) operation", formalDefinition="Information about the [ValueSet/$validate-code](valueset-operation-validate-code.html) operation." )
     protected TerminologyCapabilitiesValidateCodeComponent validateCode;
 
     /**
      * Information about the [ConceptMap/$translate](conceptmap-operation-translate.html) operation.
      */
-    @Child(name = "translation", type = {}, order=23, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "translation", type = {}, order=25, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information about the [ConceptMap/$translate](conceptmap-operation-translate.html) operation", formalDefinition="Information about the [ConceptMap/$translate](conceptmap-operation-translate.html) operation." )
     protected TerminologyCapabilitiesTranslationComponent translation;
 
     /**
      * Whether the $closure operation is supported.
      */
-    @Child(name = "closure", type = {}, order=24, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "closure", type = {}, order=26, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information about the [ConceptMap/$closure](conceptmap-operation-closure.html) operation", formalDefinition="Whether the $closure operation is supported." )
     protected TerminologyCapabilitiesClosureComponent closure;
 
-    private static final long serialVersionUID = 1685724657L;
+    private static final long serialVersionUID = 179684544L;
 
   /**
    * Constructor
@@ -4484,6 +3523,57 @@ public class TerminologyCapabilities extends CanonicalResource {
           this.version = new StringType();
         this.version.setValue(value);
       }
+      return this;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      return this.versionAlgorithm;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new StringType();
+      if (!(this.versionAlgorithm instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (StringType) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmStringType() { 
+      return this != null && this.versionAlgorithm instanceof StringType;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new Coding();
+      if (!(this.versionAlgorithm instanceof Coding))
+        throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (Coding) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmCoding() { 
+      return this != null && this.versionAlgorithm instanceof Coding;
+    }
+
+    public boolean hasVersionAlgorithm() { 
+      return this.versionAlgorithm != null && !this.versionAlgorithm.isEmpty();
+    }
+
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public TerminologyCapabilities setVersionAlgorithm(DataType value) { 
+      if (value != null && !(value instanceof StringType || value instanceof Coding))
+        throw new Error("Not the right type for TerminologyCapabilities.versionAlgorithm[x]: "+value.fhirType());
+      this.versionAlgorithm = value;
       return this;
     }
 
@@ -4861,7 +3951,7 @@ public class TerminologyCapabilities extends CanonicalResource {
      * @param value A free text natural language description of the terminology capabilities from a consumer's perspective. Typically, this is used when the capability statement describes a desired rather than an actual solution, for example as a formal expression of requirements as part of an RFP.
      */
     public TerminologyCapabilities setDescription(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.description = null;
       else {
         if (this.description == null)
@@ -5016,7 +4106,7 @@ public class TerminologyCapabilities extends CanonicalResource {
      * @param value Explanation of why this terminology capabilities is needed and why it has been designed as it has.
      */
     public TerminologyCapabilities setPurpose(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.purpose = null;
       else {
         if (this.purpose == null)
@@ -5065,12 +4155,61 @@ public class TerminologyCapabilities extends CanonicalResource {
      * @param value A copyright statement relating to the terminology capabilities and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the terminology capabilities.
      */
     public TerminologyCapabilities setCopyright(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.copyright = null;
       else {
         if (this.copyright == null)
           this.copyright = new MarkdownType();
         this.copyright.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      if (this.copyrightLabel == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create TerminologyCapabilities.copyrightLabel");
+        else if (Configuration.doAutoCreate())
+          this.copyrightLabel = new StringType(); // bb
+      return this.copyrightLabel;
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    public boolean hasCopyrightLabel() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public TerminologyCapabilities setCopyrightLabelElement(StringType value) { 
+      this.copyrightLabel = value;
+      return this;
+    }
+
+    /**
+     * @return A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public String getCopyrightLabel() { 
+      return this.copyrightLabel == null ? null : this.copyrightLabel.getValue();
+    }
+
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public TerminologyCapabilities setCopyrightLabel(String value) { 
+      if (Utilities.noString(value))
+        this.copyrightLabel = null;
+      else {
+        if (this.copyrightLabel == null)
+          this.copyrightLabel = new StringType();
+        this.copyrightLabel.setValue(value);
       }
       return this;
     }
@@ -5411,88 +4550,12 @@ public class TerminologyCapabilities extends CanonicalResource {
       return this;
     }
 
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getVersionAlgorithmMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public DataType getVersionAlgorithm() { 
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-    /**
-     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public StringType getVersionAlgorithmStringType() { 
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-    public boolean hasVersionAlgorithmStringType() { 
-      return false;////K 
-    }
-    /**
-     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public Coding getVersionAlgorithmCoding() { 
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-    public boolean hasVersionAlgorithmCoding() { 
-      return false;////K 
-    }
-    public boolean hasVersionAlgorithm() { 
-      return false;
-    }
-    /**
-     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public TerminologyCapabilities setVersionAlgorithm(DataType value) { 
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getCopyrightLabelMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
-     */
-    public StringType getCopyrightLabelElement() { 
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"copyrightLabel\"");
-    }
-
-    public boolean hasCopyrightLabelElement() { 
-      return false;
-    }
-    public boolean hasCopyrightLabel() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
-     */
-    public TerminologyCapabilities setCopyrightLabelElement(StringType value) { 
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"copyrightLabel\""); 
-    }
-    public String getCopyrightLabel() { 
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"copyrightLabel\""); 
-    }
-    /**
-     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
-     */
-    public TerminologyCapabilities setCopyrightLabel(String value) { 
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"copyrightLabel\""); 
-    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this terminology capabilities when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the terminology capabilities when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the terminology capabilities author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
+        children.add(new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm));
         children.add(new Property("name", "string", "A natural language name identifying the terminology capabilities. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the terminology capabilities.", 0, 1, title));
         children.add(new Property("status", "code", "The status of this terminology capabilities. Enables tracking the life-cycle of the content.", 0, 1, status));
@@ -5505,6 +4568,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         children.add(new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the terminology capabilities is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
         children.add(new Property("purpose", "markdown", "Explanation of why this terminology capabilities is needed and why it has been designed as it has.", 0, 1, purpose));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the terminology capabilities and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the terminology capabilities.", 0, 1, copyright));
+        children.add(new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel));
         children.add(new Property("kind", "code", "The way that this statement is intended to be used, to describe an actual running instance of software, a particular product (kind, not instance of software) or a class of implementation (e.g. a desired purchase).", 0, 1, kind));
         children.add(new Property("software", "", "Software that is covered by this terminology capability statement.  It is used when the statement describes the capabilities of a particular software version, independent of an installation.", 0, 1, software));
         children.add(new Property("implementation", "", "Identifies a specific implementation instance that is described by the terminology capability statement - i.e. a particular installation, rather than the capabilities of a software program.", 0, 1, implementation));
@@ -5523,6 +4587,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this terminology capabilities when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the terminology capabilities when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the terminology capabilities author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
+        case -115699031: /*versionAlgorithm[x]*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1508158071: /*versionAlgorithm*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1836908904: /*versionAlgorithmString*/  return new Property("versionAlgorithm[x]", "string", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1373807809: /*versionAlgorithmCoding*/  return new Property("versionAlgorithm[x]", "Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the terminology capabilities. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the terminology capabilities.", 0, 1, title);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this terminology capabilities. Enables tracking the life-cycle of the content.", 0, 1, status);
@@ -5535,6 +4603,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the terminology capabilities is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explanation of why this terminology capabilities is needed and why it has been designed as it has.", 0, 1, purpose);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the terminology capabilities and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the terminology capabilities.", 0, 1, copyright);
+        case 765157229: /*copyrightLabel*/  return new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel);
         case 3292052: /*kind*/  return new Property("kind", "code", "The way that this statement is intended to be used, to describe an actual running instance of software, a particular product (kind, not instance of software) or a class of implementation (e.g. a desired purchase).", 0, 1, kind);
         case 1319330215: /*software*/  return new Property("software", "", "Software that is covered by this terminology capability statement.  It is used when the statement describes the capabilities of a particular software version, independent of an installation.", 0, 1, software);
         case 1683336114: /*implementation*/  return new Property("implementation", "", "Identifies a specific implementation instance that is described by the terminology capability statement - i.e. a particular installation, rather than the capabilities of a software program.", 0, 1, implementation);
@@ -5556,6 +4625,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case 1508158071: /*versionAlgorithm*/ return this.versionAlgorithm == null ? new Base[0] : new Base[] {this.versionAlgorithm}; // DataType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
@@ -5568,6 +4638,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // MarkdownType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
+        case 765157229: /*copyrightLabel*/ return this.copyrightLabel == null ? new Base[0] : new Base[] {this.copyrightLabel}; // StringType
         case 3292052: /*kind*/ return this.kind == null ? new Base[0] : new Base[] {this.kind}; // Enumeration<CapabilityStatementKind>
         case 1319330215: /*software*/ return this.software == null ? new Base[0] : new Base[] {this.software}; // TerminologyCapabilitiesSoftwareComponent
         case 1683336114: /*implementation*/ return this.implementation == null ? new Base[0] : new Base[] {this.implementation}; // TerminologyCapabilitiesImplementationComponent
@@ -5594,6 +4665,9 @@ public class TerminologyCapabilities extends CanonicalResource {
           return value;
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 1508158071: // versionAlgorithm
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
@@ -5631,6 +4705,9 @@ public class TerminologyCapabilities extends CanonicalResource {
           return value;
         case 1522889671: // copyright
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case 765157229: // copyrightLabel
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
           return value;
         case 3292052: // kind
           value = new CapabilityStatementKindEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -5677,6 +4754,8 @@ public class TerminologyCapabilities extends CanonicalResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
@@ -5702,6 +4781,8 @@ public class TerminologyCapabilities extends CanonicalResource {
           this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("kind")) {
           value = new CapabilityStatementKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<CapabilityStatementKind>
@@ -5735,6 +4816,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         case 116079:  return getUrlElement();
         case -1618432855:  return addIdentifier(); 
         case 351608024:  return getVersionElement();
+        case -115699031:  return getVersionAlgorithm();
+        case 1508158071:  return getVersionAlgorithm();
         case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
         case -892481550:  return getStatusElement();
@@ -5747,6 +4830,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         case -507075711:  return addJurisdiction(); 
         case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
+        case 765157229:  return getCopyrightLabelElement();
         case 3292052:  return getKindElement();
         case 1319330215:  return getSoftware();
         case 1683336114:  return getImplementation();
@@ -5768,6 +4852,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         case 116079: /*url*/ return new String[] {"uri"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case 1508158071: /*versionAlgorithm*/ return new String[] {"string", "Coding"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"code"};
@@ -5780,6 +4865,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
         case -220463842: /*purpose*/ return new String[] {"markdown"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
+        case 765157229: /*copyrightLabel*/ return new String[] {"string"};
         case 3292052: /*kind*/ return new String[] {"code"};
         case 1319330215: /*software*/ return new String[] {};
         case 1683336114: /*implementation*/ return new String[] {};
@@ -5805,6 +4891,14 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.version");
+        }
+        else if (name.equals("versionAlgorithmString")) {
+          this.versionAlgorithm = new StringType();
+          return this.versionAlgorithm;
+        }
+        else if (name.equals("versionAlgorithmCoding")) {
+          this.versionAlgorithm = new Coding();
+          return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.name");
@@ -5841,6 +4935,9 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
         else if (name.equals("copyright")) {
           throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.copyright");
+        }
+        else if (name.equals("copyrightLabel")) {
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.copyrightLabel");
         }
         else if (name.equals("kind")) {
           throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.kind");
@@ -5902,6 +4999,7 @@ public class TerminologyCapabilities extends CanonicalResource {
             dst.identifier.add(i.copy());
         };
         dst.version = version == null ? null : version.copy();
+        dst.versionAlgorithm = versionAlgorithm == null ? null : versionAlgorithm.copy();
         dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
         dst.status = status == null ? null : status.copy();
@@ -5926,6 +5024,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         };
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
+        dst.copyrightLabel = copyrightLabel == null ? null : copyrightLabel.copy();
         dst.kind = kind == null ? null : kind.copy();
         dst.software = software == null ? null : software.copy();
         dst.implementation = implementation == null ? null : implementation.copy();
@@ -5954,10 +5053,11 @@ public class TerminologyCapabilities extends CanonicalResource {
           return false;
         TerminologyCapabilities o = (TerminologyCapabilities) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
-           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(status, o.status, true)
-           && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
-           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
-           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
+           && compareDeep(versionAlgorithm, o.versionAlgorithm, true) && compareDeep(name, o.name, true) && compareDeep(title, o.title, true)
+           && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true)
+           && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true)
+           && compareDeep(useContext, o.useContext, true) && compareDeep(jurisdiction, o.jurisdiction, true)
+           && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true) && compareDeep(copyrightLabel, o.copyrightLabel, true)
            && compareDeep(kind, o.kind, true) && compareDeep(software, o.software, true) && compareDeep(implementation, o.implementation, true)
            && compareDeep(lockedDate, o.lockedDate, true) && compareDeep(codeSystem, o.codeSystem, true) && compareDeep(expansion, o.expansion, true)
            && compareDeep(codeSearch, o.codeSearch, true) && compareDeep(validateCode, o.validateCode, true)
@@ -5974,15 +5074,17 @@ public class TerminologyCapabilities extends CanonicalResource {
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
            && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
            && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
-           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(kind, o.kind, true)
-           && compareValues(lockedDate, o.lockedDate, true) && compareValues(codeSearch, o.codeSearch, true);
+           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(copyrightLabel, o.copyrightLabel, true)
+           && compareValues(kind, o.kind, true) && compareValues(lockedDate, o.lockedDate, true) && compareValues(codeSearch, o.codeSearch, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , name, title, status, experimental, date, publisher, contact, description, useContext
-          , jurisdiction, purpose, copyright, kind, software, implementation, lockedDate
-          , codeSystem, expansion, codeSearch, validateCode, translation, closure);
+          , versionAlgorithm, name, title, status, experimental, date, publisher, contact
+          , description, useContext, jurisdiction, purpose, copyright, copyrightLabel, kind
+          , software, implementation, lockedDate, codeSystem, expansion, codeSearch, validateCode
+          , translation, closure);
       }
 
   @Override
@@ -6027,10 +5129,10 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
 </b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context-quantity", path="(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A quantity- or range-valued use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A quantity- or range-valued use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A quantity- or range-valued use context assigned to the charge item definition\r\n* [Citation](citation.html): A quantity- or range-valued use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A quantity- or range-valued use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A quantity- or range-valued use context assigned to the event definition\r\n* [Evidence](evidence.html): A quantity- or range-valued use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A quantity- or range-valued use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A quantity- or range-valued use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A quantity- or range-valued use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide\r\n* [Library](library.html): A quantity- or range-valued use context assigned to the library\r\n* [Measure](measure.html): A quantity- or range-valued use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A quantity- or range-valued use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A quantity- or range-valued use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A quantity- or range-valued use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A quantity- or range-valued use context assigned to the test script\r\n* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set\r\n", type="quantity" )
+  @SearchParamDefinition(name="context-quantity", path="(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A quantity- or range-valued use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A quantity- or range-valued use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A quantity- or range-valued use context assigned to the charge item definition\r\n* [Citation](citation.html): A quantity- or range-valued use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A quantity- or range-valued use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A quantity- or range-valued use context assigned to the event definition\r\n* [Evidence](evidence.html): A quantity- or range-valued use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A quantity- or range-valued use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A quantity- or range-valued use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A quantity- or range-valued use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide\r\n* [Library](library.html): A quantity- or range-valued use context assigned to the library\r\n* [Measure](measure.html): A quantity- or range-valued use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A quantity- or range-valued use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A quantity- or range-valued use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A quantity- or range-valued use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A quantity- or range-valued use context assigned to the test script\r\n* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set\r\n", type="quantity" )
   public static final String SP_CONTEXT_QUANTITY = "context-quantity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
@@ -6069,7 +5171,7 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
 </b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
@@ -6363,10 +5465,10 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [ValueSet](valueset.html): A use context assigned to the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context", path="(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A use context assigned to the charge item definition\r\n* [Citation](citation.html): A use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A use context assigned to the event definition\r\n* [Evidence](evidence.html): A use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [Library](library.html): A use context assigned to the library\r\n* [Measure](measure.html): A use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A use context assigned to the test script\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
+  @SearchParamDefinition(name="context", path="(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A use context assigned to the charge item definition\r\n* [Citation](citation.html): A use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A use context assigned to the event definition\r\n* [Evidence](evidence.html): A use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [Library](library.html): A use context assigned to the library\r\n* [Measure](measure.html): A use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A use context assigned to the test script\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
   public static final String SP_CONTEXT = "context";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>context</b>
@@ -6405,7 +5507,7 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [ValueSet](valueset.html): A use context assigned to the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
@@ -6581,6 +5683,7 @@ public class TerminologyCapabilities extends CanonicalResource {
 
 * [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
 * [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement
 * [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
 * [Citation](citation.html): External identifier for the citation
 * [CodeSystem](codesystem.html): External identifier for the code system
@@ -6591,15 +5694,19 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [EvidenceReport](evidencereport.html): External identifier for the evidence report
 * [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
 * [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [GraphDefinition](graphdefinition.html): External identifier for the graph definition
+* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide
 * [Library](library.html): External identifier for the library
 * [Measure](measure.html): External identifier for the measure
 * [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
 * [NamingSystem](namingsystem.html): External identifier for the naming system
 * [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [OperationDefinition](operationdefinition.html): External identifier for the search parameter
 * [PlanDefinition](plandefinition.html): External identifier for the plan definition
 * [Questionnaire](questionnaire.html): External identifier for the questionnaire
 * [Requirements](requirements.html): External identifier for the requirements
+* [SearchParameter](searchparameter.html): External identifier for the search parameter
 * [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
@@ -6609,10 +5716,10 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition\r\n* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition\r\n* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition\r\n* [Citation](citation.html): External identifier for the citation\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition\r\n* [EventDefinition](eventdefinition.html): External identifier for the event definition\r\n* [Evidence](evidence.html): External identifier for the evidence\r\n* [EvidenceReport](evidencereport.html): External identifier for the evidence report\r\n* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable\r\n* [ExampleScenario](examplescenario.html): External identifier for the example scenario\r\n* [Library](library.html): External identifier for the library\r\n* [Measure](measure.html): External identifier for the measure\r\n* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition\r\n* [PlanDefinition](plandefinition.html): External identifier for the plan definition\r\n* [Questionnaire](questionnaire.html): External identifier for the questionnaire\r\n* [Requirements](requirements.html): External identifier for the requirements\r\n* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [TestScript](testscript.html): External identifier for the test script\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition\r\n* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition\r\n* [Citation](citation.html): External identifier for the citation\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition\r\n* [EventDefinition](eventdefinition.html): External identifier for the event definition\r\n* [Evidence](evidence.html): External identifier for the evidence\r\n* [EvidenceReport](evidencereport.html): External identifier for the evidence report\r\n* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable\r\n* [ExampleScenario](examplescenario.html): External identifier for the example scenario\r\n* [GraphDefinition](graphdefinition.html): External identifier for the graph definition\r\n* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide\r\n* [Library](library.html): External identifier for the library\r\n* [Measure](measure.html): External identifier for the measure\r\n* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition\r\n* [OperationDefinition](operationdefinition.html): External identifier for the search parameter\r\n* [PlanDefinition](plandefinition.html): External identifier for the plan definition\r\n* [Questionnaire](questionnaire.html): External identifier for the questionnaire\r\n* [Requirements](requirements.html): External identifier for the requirements\r\n* [SearchParameter](searchparameter.html): External identifier for the search parameter\r\n* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [TestScript](testscript.html): External identifier for the test script\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -6621,6 +5728,7 @@ public class TerminologyCapabilities extends CanonicalResource {
 
 * [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
 * [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement
 * [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
 * [Citation](citation.html): External identifier for the citation
 * [CodeSystem](codesystem.html): External identifier for the code system
@@ -6631,15 +5739,19 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [EvidenceReport](evidencereport.html): External identifier for the evidence report
 * [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
 * [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [GraphDefinition](graphdefinition.html): External identifier for the graph definition
+* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide
 * [Library](library.html): External identifier for the library
 * [Measure](measure.html): External identifier for the measure
 * [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
 * [NamingSystem](namingsystem.html): External identifier for the naming system
 * [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [OperationDefinition](operationdefinition.html): External identifier for the search parameter
 * [PlanDefinition](plandefinition.html): External identifier for the plan definition
 * [Questionnaire](questionnaire.html): External identifier for the questionnaire
 * [Requirements](requirements.html): External identifier for the requirements
+* [SearchParameter](searchparameter.html): External identifier for the search parameter
 * [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
@@ -6649,7 +5761,7 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -7236,3 +6348,4 @@ public class TerminologyCapabilities extends CanonicalResource {
 
 
 }
+

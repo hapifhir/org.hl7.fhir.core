@@ -30,7 +30,7 @@ public class Location30_50 {
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     for (org.hl7.fhir.dstu3.model.StringType t : src.getAlias()) tgt.addAlias(t.getValue());
     if (src.hasDescription())
-      tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String30_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasMode())
       tgt.setModeElement(convertLocationMode(src.getModeElement()));
     if (src.hasType())

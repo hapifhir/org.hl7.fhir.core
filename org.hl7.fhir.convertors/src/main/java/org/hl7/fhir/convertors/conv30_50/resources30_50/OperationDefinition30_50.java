@@ -13,9 +13,13 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Inte
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.MarkDown30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAllEnumFactory;
 
 public class OperationDefinition30_50 {
 
@@ -58,7 +62,7 @@ public class OperationDefinition30_50 {
       tgt.setComment(src.getComment());
     if (src.hasBase())
       tgt.setBaseElement(Reference30_50.convertReferenceToCanonical(src.getBase()));
-    for (org.hl7.fhir.dstu3.model.CodeType t : src.getResource()) tgt.addResource(t.getValue());
+    for (org.hl7.fhir.dstu3.model.CodeType t : src.getResource()) tgt.getResource().add(new Enumeration<VersionIndependentResourceTypesAll>(new VersionIndependentResourceTypesAllEnumFactory(), Code30_50.convertCode(t)));
     if (src.hasSystem())
       tgt.setSystemElement(Boolean30_50.convertBoolean(src.getSystemElement()));
     if (src.hasType())
@@ -111,7 +115,7 @@ public class OperationDefinition30_50 {
       tgt.setComment(src.getComment());
     if (src.hasBase())
       tgt.setBase(Reference30_50.convertCanonicalToReference(src.getBaseElement()));
-    for (org.hl7.fhir.r5.model.CodeType t : src.getResource()) tgt.addResource(t.getValue());
+    for (Enumeration<VersionIndependentResourceTypesAll> t : src.getResource()) tgt.getResource().add(Code30_50.convertCode(t.getCodeType()));
     if (src.hasSystem())
       tgt.setSystemElement(Boolean30_50.convertBoolean(src.getSystemElement()));
     if (src.hasType())

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -273,6 +273,134 @@ public class Appointment extends DomainResource {
       return "?";
       }
     public String toSystem(AppointmentStatus code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum ParticipationStatus {
+        /**
+         * The participant has accepted the appointment.
+         */
+        ACCEPTED, 
+        /**
+         * The participant has declined the appointment and will not participate in the appointment.
+         */
+        DECLINED, 
+        /**
+         * The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.
+         */
+        TENTATIVE, 
+        /**
+         * The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.
+         */
+        NEEDSACTION, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static ParticipationStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("accepted".equals(codeString))
+          return ACCEPTED;
+        if ("declined".equals(codeString))
+          return DECLINED;
+        if ("tentative".equals(codeString))
+          return TENTATIVE;
+        if ("needs-action".equals(codeString))
+          return NEEDSACTION;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown ParticipationStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ACCEPTED: return "accepted";
+            case DECLINED: return "declined";
+            case TENTATIVE: return "tentative";
+            case NEEDSACTION: return "needs-action";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case ACCEPTED: return "http://hl7.org/fhir/participationstatus";
+            case DECLINED: return "http://hl7.org/fhir/participationstatus";
+            case TENTATIVE: return "http://hl7.org/fhir/participationstatus";
+            case NEEDSACTION: return "http://hl7.org/fhir/participationstatus";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ACCEPTED: return "The participant has accepted the appointment.";
+            case DECLINED: return "The participant has declined the appointment and will not participate in the appointment.";
+            case TENTATIVE: return "The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.";
+            case NEEDSACTION: return "The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ACCEPTED: return "Accepted";
+            case DECLINED: return "Declined";
+            case TENTATIVE: return "Tentative";
+            case NEEDSACTION: return "Needs Action";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class ParticipationStatusEnumFactory implements EnumFactory<ParticipationStatus> {
+    public ParticipationStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("accepted".equals(codeString))
+          return ParticipationStatus.ACCEPTED;
+        if ("declined".equals(codeString))
+          return ParticipationStatus.DECLINED;
+        if ("tentative".equals(codeString))
+          return ParticipationStatus.TENTATIVE;
+        if ("needs-action".equals(codeString))
+          return ParticipationStatus.NEEDSACTION;
+        throw new IllegalArgumentException("Unknown ParticipationStatus code '"+codeString+"'");
+        }
+        public Enumeration<ParticipationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<ParticipationStatus>(this, ParticipationStatus.NULL, code);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return new Enumeration<ParticipationStatus>(this, ParticipationStatus.NULL, code);
+        if ("accepted".equals(codeString))
+          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.ACCEPTED, code);
+        if ("declined".equals(codeString))
+          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.DECLINED, code);
+        if ("tentative".equals(codeString))
+          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.TENTATIVE, code);
+        if ("needs-action".equals(codeString))
+          return new Enumeration<ParticipationStatus>(this, ParticipationStatus.NEEDSACTION, code);
+        throw new FHIRException("Unknown ParticipationStatus code '"+codeString+"'");
+        }
+    public String toCode(ParticipationStatus code) {
+      if (code == ParticipationStatus.ACCEPTED)
+        return "accepted";
+      if (code == ParticipationStatus.DECLINED)
+        return "declined";
+      if (code == ParticipationStatus.TENTATIVE)
+        return "tentative";
+      if (code == ParticipationStatus.NEEDSACTION)
+        return "needs-action";
+      return "?";
+      }
+    public String toSystem(ParticipationStatus code) {
       return code.getSystem();
       }
     }
@@ -1506,9 +1634,7 @@ public class Appointment extends DomainResource {
         protected BooleanType sunday;
 
         /**
-         * The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
-
-e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         * The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
          */
         @Child(name = "weekInterval", type = {PositiveIntType.class}, order=8, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Recurs every nth week", formalDefinition="The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.\r\re.g. For recurring every second week this interval would be 2, or every third week the interval would be 3." )
@@ -1839,9 +1965,7 @@ e.g. For recurring every second week this interval would be 2, or every third we
         }
 
         /**
-         * @return {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
-
-e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
+         * @return {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
          */
         public PositiveIntType getWeekIntervalElement() { 
           if (this.weekInterval == null)
@@ -1861,9 +1985,7 @@ e.g. For recurring every second week this interval would be 2, or every third we
         }
 
         /**
-         * @param value {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
-
-e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
+         * @param value {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
          */
         public AppointmentRecurrenceTemplateWeeklyTemplateComponent setWeekIntervalElement(PositiveIntType value) { 
           this.weekInterval = value;
@@ -1871,18 +1993,14 @@ e.g. For recurring every second week this interval would be 2, or every third we
         }
 
         /**
-         * @return The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
-
-e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         * @return The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
          */
         public int getWeekInterval() { 
           return this.weekInterval == null || this.weekInterval.isEmpty() ? 0 : this.weekInterval.getValue();
         }
 
         /**
-         * @param value The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
-
-e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         * @param value The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
          */
         public AppointmentRecurrenceTemplateWeeklyTemplateComponent setWeekInterval(int value) { 
             if (this.weekInterval == null)
@@ -2716,10 +2834,10 @@ e.g. For recurring every second week this interval would be 2, or every third we
     protected CodeableConcept priority;
 
     /**
-     * The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.
+     * The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the note field.
      */
     @Child(name = "description", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Shown on a subject line in a meeting request, or appointment list", formalDefinition="The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field." )
+    @Description(shortDefinition="Shown on a subject line in a meeting request, or appointment list", formalDefinition="The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the note field." )
     protected StringType description;
 
     /**
@@ -2779,92 +2897,99 @@ e.g. For recurring every second week this interval would be 2, or every third we
     protected PositiveIntType minutesDuration;
 
     /**
+     * A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.
+
+The duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system.
+     */
+    @Child(name = "requestedPeriod", type = {Period.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Potential date/time interval(s) requested to allocate the appointment within", formalDefinition="A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.\n\nThe duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system." )
+    protected List<Period> requestedPeriod;
+
+    /**
      * The slots from the participants' schedules that will be filled by the appointment.
      */
-    @Child(name = "slot", type = {Slot.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "slot", type = {Slot.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The slots that this appointment is filling", formalDefinition="The slots from the participants' schedules that will be filled by the appointment." )
     protected List<Reference> slot;
 
     /**
      * The set of accounts that is expected to be used for billing the activities that result from this Appointment.
      */
-    @Child(name = "account", type = {Account.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "account", type = {Account.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The set of accounts that may be used for billing for this Appointment", formalDefinition="The set of accounts that is expected to be used for billing the activities that result from this Appointment." )
     protected List<Reference> account;
 
     /**
      * The date that this appointment was initially created. This could be different to the meta.lastModified value on the initial entry, as this could have been before the resource was created on the FHIR server, and should remain unchanged over the lifespan of the appointment.
      */
-    @Child(name = "created", type = {DateTimeType.class}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "created", type = {DateTimeType.class}, order=22, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The date that this appointment was initially created", formalDefinition="The date that this appointment was initially created. This could be different to the meta.lastModified value on the initial entry, as this could have been before the resource was created on the FHIR server, and should remain unchanged over the lifespan of the appointment." )
     protected DateTimeType created;
 
     /**
+     * The date/time describing when the appointment was cancelled.
+     */
+    @Child(name = "cancellationDate", type = {DateTimeType.class}, order=23, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="When the appointment was cancelled", formalDefinition="The date/time describing when the appointment was cancelled." )
+    protected DateTimeType cancellationDate;
+
+    /**
      * Additional notes/comments about the appointment.
      */
-    @Child(name = "note", type = {Annotation.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional comments", formalDefinition="Additional notes/comments about the appointment." )
     protected List<Annotation> note;
 
     /**
      * While Appointment.note contains information for internal use, Appointment.patientInstructions is used to capture patient facing information about the Appointment (e.g. please bring your referral or fast from 8pm night before).
      */
-    @Child(name = "patientInstruction", type = {CodeableReference.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "patientInstruction", type = {CodeableReference.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Detailed information and instructions for the patient", formalDefinition="While Appointment.note contains information for internal use, Appointment.patientInstructions is used to capture patient facing information about the Appointment (e.g. please bring your referral or fast from 8pm night before)." )
     protected List<CodeableReference> patientInstruction;
 
     /**
      * The request this appointment is allocated to assess (e.g. incoming referral or procedure request).
      */
-    @Child(name = "basedOn", type = {CarePlan.class, DeviceRequest.class, MedicationRequest.class, ServiceRequest.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "basedOn", type = {CarePlan.class, DeviceRequest.class, MedicationRequest.class, ServiceRequest.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The request this appointment is allocated to assess", formalDefinition="The request this appointment is allocated to assess (e.g. incoming referral or procedure request)." )
     protected List<Reference> basedOn;
 
     /**
      * The patient or group associated with the appointment, if they are to be present (usually) then they should also be included in the participant backbone element.
      */
-    @Child(name = "subject", type = {Patient.class, Group.class}, order=25, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {Patient.class, Group.class}, order=27, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The patient or group associated with the appointment", formalDefinition="The patient or group associated with the appointment, if they are to be present (usually) then they should also be included in the participant backbone element." )
     protected Reference subject;
 
     /**
      * List of participants involved in the appointment.
      */
-    @Child(name = "participant", type = {}, order=26, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "participant", type = {}, order=28, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Participants involved in appointment", formalDefinition="List of participants involved in the appointment." )
     protected List<AppointmentParticipantComponent> participant;
 
     /**
-     * A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.
-
-The duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system.
-     */
-    @Child(name = "requestedPeriod", type = {Period.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Potential date/time interval(s) requested to allocate the appointment within", formalDefinition="A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.\n\nThe duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system." )
-    protected List<Period> requestedPeriod;
-
-    /**
      * The sequence number that identifies a specific appointment in a recurring pattern.
      */
-    @Child(name = "recurrenceId", type = {PositiveIntType.class}, order=28, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "recurrenceId", type = {PositiveIntType.class}, order=29, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The sequence number in the recurrence", formalDefinition="The sequence number that identifies a specific appointment in a recurring pattern." )
     protected PositiveIntType recurrenceId;
 
     /**
      * This appointment varies from the recurring pattern.
      */
-    @Child(name = "occurrenceChanged", type = {BooleanType.class}, order=29, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "occurrenceChanged", type = {BooleanType.class}, order=30, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Indicates that this appointment varies from a recurrence pattern", formalDefinition="This appointment varies from the recurring pattern." )
     protected BooleanType occurrenceChanged;
 
     /**
      * The details of the recurrence pattern or template that is used to generate recurring appointments.
      */
-    @Child(name = "recurrenceTemplate", type = {}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "recurrenceTemplate", type = {}, order=31, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Details of the recurrence pattern/template used to generate occurrences", formalDefinition="The details of the recurrence pattern or template that is used to generate recurring appointments." )
     protected List<AppointmentRecurrenceTemplateComponent> recurrenceTemplate;
 
-    private static final long serialVersionUID = 621636241L;
+    private static final long serialVersionUID = 883088259L;
 
   /**
    * Constructor
@@ -3318,7 +3443,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return {@link #description} (The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @return {@link #description} (The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the note field.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public StringType getDescriptionElement() { 
       if (this.description == null)
@@ -3338,7 +3463,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @param value {@link #description} (The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @param value {@link #description} (The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the note field.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public Appointment setDescriptionElement(StringType value) { 
       this.description = value;
@@ -3346,14 +3471,14 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.
+     * @return The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the note field.
      */
     public String getDescription() { 
       return this.description == null ? null : this.description.getValue();
     }
 
     /**
-     * @param value The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.
+     * @param value The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the note field.
      */
     public Appointment setDescription(String value) { 
       if (Utilities.noString(value))
@@ -3717,6 +3842,61 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
+     * @return {@link #requestedPeriod} (A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.
+
+The duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system.)
+     */
+    public List<Period> getRequestedPeriod() { 
+      if (this.requestedPeriod == null)
+        this.requestedPeriod = new ArrayList<Period>();
+      return this.requestedPeriod;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Appointment setRequestedPeriod(List<Period> theRequestedPeriod) { 
+      this.requestedPeriod = theRequestedPeriod;
+      return this;
+    }
+
+    public boolean hasRequestedPeriod() { 
+      if (this.requestedPeriod == null)
+        return false;
+      for (Period item : this.requestedPeriod)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Period addRequestedPeriod() { //3
+      Period t = new Period();
+      if (this.requestedPeriod == null)
+        this.requestedPeriod = new ArrayList<Period>();
+      this.requestedPeriod.add(t);
+      return t;
+    }
+
+    public Appointment addRequestedPeriod(Period t) { //3
+      if (t == null)
+        return this;
+      if (this.requestedPeriod == null)
+        this.requestedPeriod = new ArrayList<Period>();
+      this.requestedPeriod.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #requestedPeriod}, creating it if it does not already exist {3}
+     */
+    public Period getRequestedPeriodFirstRep() { 
+      if (getRequestedPeriod().isEmpty()) {
+        addRequestedPeriod();
+      }
+      return getRequestedPeriod().get(0);
+    }
+
+    /**
      * @return {@link #slot} (The slots from the participants' schedules that will be filled by the appointment.)
      */
     public List<Reference> getSlot() { 
@@ -3867,6 +4047,55 @@ The duration (usually in minutes) could also be provided to indicate the length 
         if (this.created == null)
           this.created = new DateTimeType();
         this.created.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #cancellationDate} (The date/time describing when the appointment was cancelled.). This is the underlying object with id, value and extensions. The accessor "getCancellationDate" gives direct access to the value
+     */
+    public DateTimeType getCancellationDateElement() { 
+      if (this.cancellationDate == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Appointment.cancellationDate");
+        else if (Configuration.doAutoCreate())
+          this.cancellationDate = new DateTimeType(); // bb
+      return this.cancellationDate;
+    }
+
+    public boolean hasCancellationDateElement() { 
+      return this.cancellationDate != null && !this.cancellationDate.isEmpty();
+    }
+
+    public boolean hasCancellationDate() { 
+      return this.cancellationDate != null && !this.cancellationDate.isEmpty();
+    }
+
+    /**
+     * @param value {@link #cancellationDate} (The date/time describing when the appointment was cancelled.). This is the underlying object with id, value and extensions. The accessor "getCancellationDate" gives direct access to the value
+     */
+    public Appointment setCancellationDateElement(DateTimeType value) { 
+      this.cancellationDate = value;
+      return this;
+    }
+
+    /**
+     * @return The date/time describing when the appointment was cancelled.
+     */
+    public Date getCancellationDate() { 
+      return this.cancellationDate == null ? null : this.cancellationDate.getValue();
+    }
+
+    /**
+     * @param value The date/time describing when the appointment was cancelled.
+     */
+    public Appointment setCancellationDate(Date value) { 
+      if (value == null)
+        this.cancellationDate = null;
+      else {
+        if (this.cancellationDate == null)
+          this.cancellationDate = new DateTimeType();
+        this.cancellationDate.setValue(value);
       }
       return this;
     }
@@ -4108,61 +4337,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return {@link #requestedPeriod} (A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.
-
-The duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system.)
-     */
-    public List<Period> getRequestedPeriod() { 
-      if (this.requestedPeriod == null)
-        this.requestedPeriod = new ArrayList<Period>();
-      return this.requestedPeriod;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Appointment setRequestedPeriod(List<Period> theRequestedPeriod) { 
-      this.requestedPeriod = theRequestedPeriod;
-      return this;
-    }
-
-    public boolean hasRequestedPeriod() { 
-      if (this.requestedPeriod == null)
-        return false;
-      for (Period item : this.requestedPeriod)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Period addRequestedPeriod() { //3
-      Period t = new Period();
-      if (this.requestedPeriod == null)
-        this.requestedPeriod = new ArrayList<Period>();
-      this.requestedPeriod.add(t);
-      return t;
-    }
-
-    public Appointment addRequestedPeriod(Period t) { //3
-      if (t == null)
-        return this;
-      if (this.requestedPeriod == null)
-        this.requestedPeriod = new ArrayList<Period>();
-      this.requestedPeriod.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #requestedPeriod}, creating it if it does not already exist {3}
-     */
-    public Period getRequestedPeriodFirstRep() { 
-      if (getRequestedPeriod().isEmpty()) {
-        addRequestedPeriod();
-      }
-      return getRequestedPeriod().get(0);
-    }
-
-    /**
      * @return {@link #recurrenceId} (The sequence number that identifies a specific appointment in a recurring pattern.). This is the underlying object with id, value and extensions. The accessor "getRecurrenceId" gives direct access to the value
      */
     public PositiveIntType getRecurrenceIdElement() { 
@@ -4317,7 +4491,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         children.add(new Property("appointmentType", "CodeableConcept", "The style of appointment or patient that has been booked in the slot (not service type).", 0, 1, appointmentType));
         children.add(new Property("reason", "CodeableReference(Condition|Procedure|Observation|ImmunizationRecommendation)", "The reason that this appointment is being scheduled. This is more clinical than administrative. This can be coded, or as specified using information from another resource. When the patient arrives and the encounter begins it may be used as the admission diagnosis. The indication will typically be a Condition (with other resources referenced in the evidence.detail), or a Procedure.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("priority", "CodeableConcept", "The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).", 0, 1, priority));
-        children.add(new Property("description", "string", "The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.", 0, 1, description));
+        children.add(new Property("description", "string", "The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the note field.", 0, 1, description));
         children.add(new Property("replaces", "Reference(Appointment)", "Appointment replaced by this Appointment in cases where there is a cancellation, the details of the cancellation can be found in the cancellationReason property (on the referenced resource).", 0, java.lang.Integer.MAX_VALUE, replaces));
         children.add(new Property("virtualService", "VirtualServiceDetail", "Connection details of a virtual service (e.g. conference call).", 0, java.lang.Integer.MAX_VALUE, virtualService));
         children.add(new Property("supportingInformation", "Reference(Any)", "Additional information to support the appointment provided when making the appointment.", 0, java.lang.Integer.MAX_VALUE, supportingInformation));
@@ -4326,15 +4500,16 @@ The duration (usually in minutes) could also be provided to indicate the length 
         children.add(new Property("start", "instant", "Date/Time that the appointment is to take place.", 0, 1, start));
         children.add(new Property("end", "instant", "Date/Time that the appointment is to conclude.", 0, 1, end));
         children.add(new Property("minutesDuration", "positiveInt", "Number of minutes that the appointment is to take. This can be less than the duration between the start and end times.  For example, where the actual time of appointment is only an estimate or if a 30 minute appointment is being requested, but any time would work.  Also, if there is, for example, a planned 15 minute break in the middle of a long appointment, the duration may be 15 minutes less than the difference between the start and end.", 0, 1, minutesDuration));
+        children.add(new Property("requestedPeriod", "Period", "A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.\n\nThe duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system.", 0, java.lang.Integer.MAX_VALUE, requestedPeriod));
         children.add(new Property("slot", "Reference(Slot)", "The slots from the participants' schedules that will be filled by the appointment.", 0, java.lang.Integer.MAX_VALUE, slot));
         children.add(new Property("account", "Reference(Account)", "The set of accounts that is expected to be used for billing the activities that result from this Appointment.", 0, java.lang.Integer.MAX_VALUE, account));
         children.add(new Property("created", "dateTime", "The date that this appointment was initially created. This could be different to the meta.lastModified value on the initial entry, as this could have been before the resource was created on the FHIR server, and should remain unchanged over the lifespan of the appointment.", 0, 1, created));
+        children.add(new Property("cancellationDate", "dateTime", "The date/time describing when the appointment was cancelled.", 0, 1, cancellationDate));
         children.add(new Property("note", "Annotation", "Additional notes/comments about the appointment.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("patientInstruction", "CodeableReference(DocumentReference|Binary|Communication)", "While Appointment.note contains information for internal use, Appointment.patientInstructions is used to capture patient facing information about the Appointment (e.g. please bring your referral or fast from 8pm night before).", 0, java.lang.Integer.MAX_VALUE, patientInstruction));
         children.add(new Property("basedOn", "Reference(CarePlan|DeviceRequest|MedicationRequest|ServiceRequest)", "The request this appointment is allocated to assess (e.g. incoming referral or procedure request).", 0, java.lang.Integer.MAX_VALUE, basedOn));
         children.add(new Property("subject", "Reference(Patient|Group)", "The patient or group associated with the appointment, if they are to be present (usually) then they should also be included in the participant backbone element.", 0, 1, subject));
         children.add(new Property("participant", "", "List of participants involved in the appointment.", 0, java.lang.Integer.MAX_VALUE, participant));
-        children.add(new Property("requestedPeriod", "Period", "A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.\n\nThe duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system.", 0, java.lang.Integer.MAX_VALUE, requestedPeriod));
         children.add(new Property("recurrenceId", "positiveInt", "The sequence number that identifies a specific appointment in a recurring pattern.", 0, 1, recurrenceId));
         children.add(new Property("occurrenceChanged", "boolean", "This appointment varies from the recurring pattern.", 0, 1, occurrenceChanged));
         children.add(new Property("recurrenceTemplate", "", "The details of the recurrence pattern or template that is used to generate recurring appointments.", 0, java.lang.Integer.MAX_VALUE, recurrenceTemplate));
@@ -4353,7 +4528,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1596426375: /*appointmentType*/  return new Property("appointmentType", "CodeableConcept", "The style of appointment or patient that has been booked in the slot (not service type).", 0, 1, appointmentType);
         case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Procedure|Observation|ImmunizationRecommendation)", "The reason that this appointment is being scheduled. This is more clinical than administrative. This can be coded, or as specified using information from another resource. When the patient arrives and the encounter begins it may be used as the admission diagnosis. The indication will typically be a Condition (with other resources referenced in the evidence.detail), or a Procedure.", 0, java.lang.Integer.MAX_VALUE, reason);
         case -1165461084: /*priority*/  return new Property("priority", "CodeableConcept", "The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).", 0, 1, priority);
-        case -1724546052: /*description*/  return new Property("description", "string", "The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.", 0, 1, description);
+        case -1724546052: /*description*/  return new Property("description", "string", "The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the note field.", 0, 1, description);
         case -430332865: /*replaces*/  return new Property("replaces", "Reference(Appointment)", "Appointment replaced by this Appointment in cases where there is a cancellation, the details of the cancellation can be found in the cancellationReason property (on the referenced resource).", 0, java.lang.Integer.MAX_VALUE, replaces);
         case 1420774698: /*virtualService*/  return new Property("virtualService", "VirtualServiceDetail", "Connection details of a virtual service (e.g. conference call).", 0, java.lang.Integer.MAX_VALUE, virtualService);
         case -1248768647: /*supportingInformation*/  return new Property("supportingInformation", "Reference(Any)", "Additional information to support the appointment provided when making the appointment.", 0, java.lang.Integer.MAX_VALUE, supportingInformation);
@@ -4362,15 +4537,16 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case 109757538: /*start*/  return new Property("start", "instant", "Date/Time that the appointment is to take place.", 0, 1, start);
         case 100571: /*end*/  return new Property("end", "instant", "Date/Time that the appointment is to conclude.", 0, 1, end);
         case -413630573: /*minutesDuration*/  return new Property("minutesDuration", "positiveInt", "Number of minutes that the appointment is to take. This can be less than the duration between the start and end times.  For example, where the actual time of appointment is only an estimate or if a 30 minute appointment is being requested, but any time would work.  Also, if there is, for example, a planned 15 minute break in the middle of a long appointment, the duration may be 15 minutes less than the difference between the start and end.", 0, 1, minutesDuration);
+        case -897241393: /*requestedPeriod*/  return new Property("requestedPeriod", "Period", "A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.\n\nThe duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system.", 0, java.lang.Integer.MAX_VALUE, requestedPeriod);
         case 3533310: /*slot*/  return new Property("slot", "Reference(Slot)", "The slots from the participants' schedules that will be filled by the appointment.", 0, java.lang.Integer.MAX_VALUE, slot);
         case -1177318867: /*account*/  return new Property("account", "Reference(Account)", "The set of accounts that is expected to be used for billing the activities that result from this Appointment.", 0, java.lang.Integer.MAX_VALUE, account);
         case 1028554472: /*created*/  return new Property("created", "dateTime", "The date that this appointment was initially created. This could be different to the meta.lastModified value on the initial entry, as this could have been before the resource was created on the FHIR server, and should remain unchanged over the lifespan of the appointment.", 0, 1, created);
+        case 806269777: /*cancellationDate*/  return new Property("cancellationDate", "dateTime", "The date/time describing when the appointment was cancelled.", 0, 1, cancellationDate);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Additional notes/comments about the appointment.", 0, java.lang.Integer.MAX_VALUE, note);
         case 737543241: /*patientInstruction*/  return new Property("patientInstruction", "CodeableReference(DocumentReference|Binary|Communication)", "While Appointment.note contains information for internal use, Appointment.patientInstructions is used to capture patient facing information about the Appointment (e.g. please bring your referral or fast from 8pm night before).", 0, java.lang.Integer.MAX_VALUE, patientInstruction);
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(CarePlan|DeviceRequest|MedicationRequest|ServiceRequest)", "The request this appointment is allocated to assess (e.g. incoming referral or procedure request).", 0, java.lang.Integer.MAX_VALUE, basedOn);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group)", "The patient or group associated with the appointment, if they are to be present (usually) then they should also be included in the participant backbone element.", 0, 1, subject);
         case 767422259: /*participant*/  return new Property("participant", "", "List of participants involved in the appointment.", 0, java.lang.Integer.MAX_VALUE, participant);
-        case -897241393: /*requestedPeriod*/  return new Property("requestedPeriod", "Period", "A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.\n\nThe duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system.", 0, java.lang.Integer.MAX_VALUE, requestedPeriod);
         case -362407829: /*recurrenceId*/  return new Property("recurrenceId", "positiveInt", "The sequence number that identifies a specific appointment in a recurring pattern.", 0, 1, recurrenceId);
         case 1779864483: /*occurrenceChanged*/  return new Property("occurrenceChanged", "boolean", "This appointment varies from the recurring pattern.", 0, 1, occurrenceChanged);
         case 597629898: /*recurrenceTemplate*/  return new Property("recurrenceTemplate", "", "The details of the recurrence pattern or template that is used to generate recurring appointments.", 0, java.lang.Integer.MAX_VALUE, recurrenceTemplate);
@@ -4401,15 +4577,16 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case 109757538: /*start*/ return this.start == null ? new Base[0] : new Base[] {this.start}; // InstantType
         case 100571: /*end*/ return this.end == null ? new Base[0] : new Base[] {this.end}; // InstantType
         case -413630573: /*minutesDuration*/ return this.minutesDuration == null ? new Base[0] : new Base[] {this.minutesDuration}; // PositiveIntType
+        case -897241393: /*requestedPeriod*/ return this.requestedPeriod == null ? new Base[0] : this.requestedPeriod.toArray(new Base[this.requestedPeriod.size()]); // Period
         case 3533310: /*slot*/ return this.slot == null ? new Base[0] : this.slot.toArray(new Base[this.slot.size()]); // Reference
         case -1177318867: /*account*/ return this.account == null ? new Base[0] : this.account.toArray(new Base[this.account.size()]); // Reference
         case 1028554472: /*created*/ return this.created == null ? new Base[0] : new Base[] {this.created}; // DateTimeType
+        case 806269777: /*cancellationDate*/ return this.cancellationDate == null ? new Base[0] : new Base[] {this.cancellationDate}; // DateTimeType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case 737543241: /*patientInstruction*/ return this.patientInstruction == null ? new Base[0] : this.patientInstruction.toArray(new Base[this.patientInstruction.size()]); // CodeableReference
         case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // AppointmentParticipantComponent
-        case -897241393: /*requestedPeriod*/ return this.requestedPeriod == null ? new Base[0] : this.requestedPeriod.toArray(new Base[this.requestedPeriod.size()]); // Period
         case -362407829: /*recurrenceId*/ return this.recurrenceId == null ? new Base[0] : new Base[] {this.recurrenceId}; // PositiveIntType
         case 1779864483: /*occurrenceChanged*/ return this.occurrenceChanged == null ? new Base[0] : new Base[] {this.occurrenceChanged}; // BooleanType
         case 597629898: /*recurrenceTemplate*/ return this.recurrenceTemplate == null ? new Base[0] : this.recurrenceTemplate.toArray(new Base[this.recurrenceTemplate.size()]); // AppointmentRecurrenceTemplateComponent
@@ -4479,6 +4656,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -413630573: // minutesDuration
           this.minutesDuration = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
+        case -897241393: // requestedPeriod
+          this.getRequestedPeriod().add(TypeConvertor.castToPeriod(value)); // Period
+          return value;
         case 3533310: // slot
           this.getSlot().add(TypeConvertor.castToReference(value)); // Reference
           return value;
@@ -4487,6 +4667,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
           return value;
         case 1028554472: // created
           this.created = TypeConvertor.castToDateTime(value); // DateTimeType
+          return value;
+        case 806269777: // cancellationDate
+          this.cancellationDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
@@ -4502,9 +4685,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
           return value;
         case 767422259: // participant
           this.getParticipant().add((AppointmentParticipantComponent) value); // AppointmentParticipantComponent
-          return value;
-        case -897241393: // requestedPeriod
-          this.getRequestedPeriod().add(TypeConvertor.castToPeriod(value)); // Period
           return value;
         case -362407829: // recurrenceId
           this.recurrenceId = TypeConvertor.castToPositiveInt(value); // PositiveIntType
@@ -4561,12 +4741,16 @@ The duration (usually in minutes) could also be provided to indicate the length 
           this.end = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("minutesDuration")) {
           this.minutesDuration = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("requestedPeriod")) {
+          this.getRequestedPeriod().add(TypeConvertor.castToPeriod(value));
         } else if (name.equals("slot")) {
           this.getSlot().add(TypeConvertor.castToReference(value));
         } else if (name.equals("account")) {
           this.getAccount().add(TypeConvertor.castToReference(value));
         } else if (name.equals("created")) {
           this.created = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("cancellationDate")) {
+          this.cancellationDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("patientInstruction")) {
@@ -4577,8 +4761,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
           this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("participant")) {
           this.getParticipant().add((AppointmentParticipantComponent) value);
-        } else if (name.equals("requestedPeriod")) {
-          this.getRequestedPeriod().add(TypeConvertor.castToPeriod(value));
         } else if (name.equals("recurrenceId")) {
           this.recurrenceId = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("occurrenceChanged")) {
@@ -4612,15 +4794,16 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case 109757538:  return getStartElement();
         case 100571:  return getEndElement();
         case -413630573:  return getMinutesDurationElement();
+        case -897241393:  return addRequestedPeriod(); 
         case 3533310:  return addSlot(); 
         case -1177318867:  return addAccount(); 
         case 1028554472:  return getCreatedElement();
+        case 806269777:  return getCancellationDateElement();
         case 3387378:  return addNote(); 
         case 737543241:  return addPatientInstruction(); 
         case -332612366:  return addBasedOn(); 
         case -1867885268:  return getSubject();
         case 767422259:  return addParticipant(); 
-        case -897241393:  return addRequestedPeriod(); 
         case -362407829:  return getRecurrenceIdElement();
         case 1779864483:  return getOccurrenceChangedElement();
         case 597629898:  return addRecurrenceTemplate(); 
@@ -4651,15 +4834,16 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case 109757538: /*start*/ return new String[] {"instant"};
         case 100571: /*end*/ return new String[] {"instant"};
         case -413630573: /*minutesDuration*/ return new String[] {"positiveInt"};
+        case -897241393: /*requestedPeriod*/ return new String[] {"Period"};
         case 3533310: /*slot*/ return new String[] {"Reference"};
         case -1177318867: /*account*/ return new String[] {"Reference"};
         case 1028554472: /*created*/ return new String[] {"dateTime"};
+        case 806269777: /*cancellationDate*/ return new String[] {"dateTime"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case 737543241: /*patientInstruction*/ return new String[] {"CodeableReference"};
         case -332612366: /*basedOn*/ return new String[] {"Reference"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case 767422259: /*participant*/ return new String[] {};
-        case -897241393: /*requestedPeriod*/ return new String[] {"Period"};
         case -362407829: /*recurrenceId*/ return new String[] {"positiveInt"};
         case 1779864483: /*occurrenceChanged*/ return new String[] {"boolean"};
         case 597629898: /*recurrenceTemplate*/ return new String[] {};
@@ -4732,6 +4916,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
         else if (name.equals("minutesDuration")) {
           throw new FHIRException("Cannot call addChild on a primitive type Appointment.minutesDuration");
         }
+        else if (name.equals("requestedPeriod")) {
+          return addRequestedPeriod();
+        }
         else if (name.equals("slot")) {
           return addSlot();
         }
@@ -4740,6 +4927,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
         }
         else if (name.equals("created")) {
           throw new FHIRException("Cannot call addChild on a primitive type Appointment.created");
+        }
+        else if (name.equals("cancellationDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.cancellationDate");
         }
         else if (name.equals("note")) {
           return addNote();
@@ -4756,9 +4946,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
         }
         else if (name.equals("participant")) {
           return addParticipant();
-        }
-        else if (name.equals("requestedPeriod")) {
-          return addRequestedPeriod();
         }
         else if (name.equals("recurrenceId")) {
           throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceId");
@@ -4841,6 +5028,11 @@ The duration (usually in minutes) could also be provided to indicate the length 
         dst.start = start == null ? null : start.copy();
         dst.end = end == null ? null : end.copy();
         dst.minutesDuration = minutesDuration == null ? null : minutesDuration.copy();
+        if (requestedPeriod != null) {
+          dst.requestedPeriod = new ArrayList<Period>();
+          for (Period i : requestedPeriod)
+            dst.requestedPeriod.add(i.copy());
+        };
         if (slot != null) {
           dst.slot = new ArrayList<Reference>();
           for (Reference i : slot)
@@ -4852,6 +5044,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
             dst.account.add(i.copy());
         };
         dst.created = created == null ? null : created.copy();
+        dst.cancellationDate = cancellationDate == null ? null : cancellationDate.copy();
         if (note != null) {
           dst.note = new ArrayList<Annotation>();
           for (Annotation i : note)
@@ -4872,11 +5065,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
           dst.participant = new ArrayList<AppointmentParticipantComponent>();
           for (AppointmentParticipantComponent i : participant)
             dst.participant.add(i.copy());
-        };
-        if (requestedPeriod != null) {
-          dst.requestedPeriod = new ArrayList<Period>();
-          for (Period i : requestedPeriod)
-            dst.requestedPeriod.add(i.copy());
         };
         dst.recurrenceId = recurrenceId == null ? null : recurrenceId.copy();
         dst.occurrenceChanged = occurrenceChanged == null ? null : occurrenceChanged.copy();
@@ -4905,10 +5093,10 @@ The duration (usually in minutes) could also be provided to indicate the length 
            && compareDeep(replaces, o.replaces, true) && compareDeep(virtualService, o.virtualService, true)
            && compareDeep(supportingInformation, o.supportingInformation, true) && compareDeep(previousAppointment, o.previousAppointment, true)
            && compareDeep(originatingAppointment, o.originatingAppointment, true) && compareDeep(start, o.start, true)
-           && compareDeep(end, o.end, true) && compareDeep(minutesDuration, o.minutesDuration, true) && compareDeep(slot, o.slot, true)
-           && compareDeep(account, o.account, true) && compareDeep(created, o.created, true) && compareDeep(note, o.note, true)
-           && compareDeep(patientInstruction, o.patientInstruction, true) && compareDeep(basedOn, o.basedOn, true)
-           && compareDeep(subject, o.subject, true) && compareDeep(participant, o.participant, true) && compareDeep(requestedPeriod, o.requestedPeriod, true)
+           && compareDeep(end, o.end, true) && compareDeep(minutesDuration, o.minutesDuration, true) && compareDeep(requestedPeriod, o.requestedPeriod, true)
+           && compareDeep(slot, o.slot, true) && compareDeep(account, o.account, true) && compareDeep(created, o.created, true)
+           && compareDeep(cancellationDate, o.cancellationDate, true) && compareDeep(note, o.note, true) && compareDeep(patientInstruction, o.patientInstruction, true)
+           && compareDeep(basedOn, o.basedOn, true) && compareDeep(subject, o.subject, true) && compareDeep(participant, o.participant, true)
            && compareDeep(recurrenceId, o.recurrenceId, true) && compareDeep(occurrenceChanged, o.occurrenceChanged, true)
            && compareDeep(recurrenceTemplate, o.recurrenceTemplate, true);
       }
@@ -4922,17 +5110,17 @@ The duration (usually in minutes) could also be provided to indicate the length 
         Appointment o = (Appointment) other_;
         return compareValues(status, o.status, true) && compareValues(description, o.description, true) && compareValues(start, o.start, true)
            && compareValues(end, o.end, true) && compareValues(minutesDuration, o.minutesDuration, true) && compareValues(created, o.created, true)
-           && compareValues(recurrenceId, o.recurrenceId, true) && compareValues(occurrenceChanged, o.occurrenceChanged, true)
-          ;
+           && compareValues(cancellationDate, o.cancellationDate, true) && compareValues(recurrenceId, o.recurrenceId, true)
+           && compareValues(occurrenceChanged, o.occurrenceChanged, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, cancellationReason
           , class_, serviceCategory, serviceType, specialty, appointmentType, reason, priority
           , description, replaces, virtualService, supportingInformation, previousAppointment
-          , originatingAppointment, start, end, minutesDuration, slot, account, created
-          , note, patientInstruction, basedOn, subject, participant, requestedPeriod, recurrenceId
-          , occurrenceChanged, recurrenceTemplate);
+          , originatingAppointment, start, end, minutesDuration, requestedPeriod, slot, account
+          , created, cancellationDate, note, patientInstruction, basedOn, subject, participant
+          , recurrenceId, occurrenceChanged, recurrenceTemplate);
       }
 
   @Override
@@ -5013,26 +5201,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
   public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("Appointment:based-on").toLocked();
 
  /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>Appointment date/time.</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>(start | requestedPeriod.start).first()</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="(start | requestedPeriod.start).first()", description="Appointment date/time.", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>Appointment date/time.</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>(start | requestedPeriod.start).first()</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
    * Search parameter: <b>group</b>
    * <p>
    * Description: <b>One of the individuals of the appointment is this patient</b><br>
@@ -5057,26 +5225,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
    * the path value of "<b>Appointment:group</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_GROUP = new ca.uhn.fhir.model.api.Include("Appointment:group").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>An Identifier of the Appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Appointment.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Appointment.identifier", description="An Identifier of the Appointment", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>An Identifier of the Appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Appointment.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>location</b>
@@ -5123,32 +5271,6 @@ The duration (usually in minutes) could also be provided to indicate the length 
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PART_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PART_STATUS);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>One of the individuals of the appointment is this patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient)", description="One of the individuals of the appointment is this patient", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>One of the individuals of the appointment is this patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Appointment:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Appointment:patient").toLocked();
 
  /**
    * Search parameter: <b>practitioner</b>
@@ -5204,7 +5326,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
    * Path: <b>Appointment.reason.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="reason-reference", path="Appointment.reason.reference", description="Reference to a resource (by instance)", type="reference" )
+  @SearchParamDefinition(name="reason-reference", path="Appointment.reason.reference", description="Reference to a resource (by instance)", type="reference", target={Condition.class, ImmunizationRecommendation.class, Observation.class, Procedure.class } )
   public static final String SP_REASON_REFERENCE = "reason-reference";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>reason-reference</b>
@@ -5270,7 +5392,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
    * Path: <b>Appointment.serviceType.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="service-type-reference", path="Appointment.serviceType.reference", description="The specific service (by HealthcareService) that is to be performed during this appointment", type="reference" )
+  @SearchParamDefinition(name="service-type-reference", path="Appointment.serviceType.reference", description="The specific service (by HealthcareService) that is to be performed during this appointment", type="reference", target={HealthcareService.class } )
   public static final String SP_SERVICE_TYPE_REFERENCE = "service-type-reference";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>service-type-reference</b>
@@ -5408,7 +5530,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
    * Path: <b>Appointment.supportingInformation</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="supporting-info", path="Appointment.supportingInformation", description="Additional information to support the appointment", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="supporting-info", path="Appointment.supportingInformation", description="Additional information to support the appointment", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BiologicallyDerivedProductDispense.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceAssociation.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentReference.class, Encounter.class, EncounterHistory.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryItem.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationStatement.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Parameters.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestPlan.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUPPORTING_INFO = "supporting-info";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>supporting-info</b>
@@ -5426,5 +5548,400 @@ The duration (usually in minutes) could also be provided to indicate the length 
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SUPPORTING_INFO = new ca.uhn.fhir.model.api.Include("Appointment:supporting-info").toLocked();
 
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AdverseEvent](adverseevent.html): When the event occurred
+* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded
+* [Appointment](appointment.html): Appointment date/time.
+* [AuditEvent](auditevent.html): Time when the event was recorded
+* [CarePlan](careplan.html): Time period plan covers
+* [CareTeam](careteam.html): A date within the coverage time period.
+* [ClinicalImpression](clinicalimpression.html): When the assessment was documented
+* [Composition](composition.html): Composition editing time
+* [Consent](consent.html): When consent was agreed to
+* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report
+* [DocumentReference](documentreference.html): When this document reference was created
+* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted
+* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period
+* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated
+* [Flag](flag.html): Time period when flag is active
+* [Immunization](immunization.html): Vaccination  (non)-Administration Date
+* [ImmunizationEvaluation](immunizationevaluation.html): Date the evaluation was generated
+* [ImmunizationRecommendation](immunizationrecommendation.html): Date recommendation(s) created
+* [Invoice](invoice.html): Invoice date / posting date
+* [List](list.html): When the list was prepared
+* [MeasureReport](measurereport.html): The date of the measure report
+* [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication
+* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Procedure](procedure.html): When the procedure occurred or is occurring
+* [ResearchSubject](researchsubject.html): Start and end of participation
+* [RiskAssessment](riskassessment.html): When was assessment made?
+* [SupplyRequest](supplyrequest.html): When the request was made
+</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AdverseEvent](adverseevent.html): When the event occurred\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [Appointment](appointment.html): Appointment date/time.\r\n* [AuditEvent](auditevent.html): Time when the event was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [DocumentReference](documentreference.html): When this document reference was created\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [ImmunizationEvaluation](immunizationevaluation.html): Date the evaluation was generated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Date recommendation(s) created\r\n* [Invoice](invoice.html): Invoice date / posting date\r\n* [List](list.html): When the list was prepared\r\n* [MeasureReport](measurereport.html): The date of the measure report\r\n* [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [ResearchSubject](researchsubject.html): Start and end of participation\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AdverseEvent](adverseevent.html): When the event occurred
+* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded
+* [Appointment](appointment.html): Appointment date/time.
+* [AuditEvent](auditevent.html): Time when the event was recorded
+* [CarePlan](careplan.html): Time period plan covers
+* [CareTeam](careteam.html): A date within the coverage time period.
+* [ClinicalImpression](clinicalimpression.html): When the assessment was documented
+* [Composition](composition.html): Composition editing time
+* [Consent](consent.html): When consent was agreed to
+* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report
+* [DocumentReference](documentreference.html): When this document reference was created
+* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted
+* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period
+* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated
+* [Flag](flag.html): Time period when flag is active
+* [Immunization](immunization.html): Vaccination  (non)-Administration Date
+* [ImmunizationEvaluation](immunizationevaluation.html): Date the evaluation was generated
+* [ImmunizationRecommendation](immunizationrecommendation.html): Date recommendation(s) created
+* [Invoice](invoice.html): Invoice date / posting date
+* [List](list.html): When the list was prepared
+* [MeasureReport](measurereport.html): The date of the measure report
+* [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication
+* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Procedure](procedure.html): When the procedure occurred or is occurring
+* [ResearchSubject](researchsubject.html): Start and end of participation
+* [RiskAssessment](riskassessment.html): When was assessment made?
+* [SupplyRequest](supplyrequest.html): When the request was made
+</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): Account number
+* [AdverseEvent](adverseevent.html): Business identifier for the event
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [Appointment](appointment.html): An Identifier of the Appointment
+* [AppointmentResponse](appointmentresponse.html): An Identifier in this appointment response
+* [Basic](basic.html): Business identifier
+* [BodyStructure](bodystructure.html): Bodystructure identifier
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [ChargeItem](chargeitem.html): Business Identifier for item
+* [Claim](claim.html): The primary identifier of the financial resource
+* [ClaimResponse](claimresponse.html): The identity of the ClaimResponse
+* [ClinicalImpression](clinicalimpression.html): Business identifier
+* [Communication](communication.html): Unique identifier
+* [CommunicationRequest](communicationrequest.html): Unique identifier
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [Contract](contract.html): The identity of the contract
+* [Coverage](coverage.html): The primary identifier of the insured and the coverage
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The business identifier of the Eligibility
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The business identifier
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DeviceUsage](deviceusage.html): Search by identifier
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentReference](documentreference.html): Identifier of the attachment binary
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EnrollmentRequest](enrollmentrequest.html): The business identifier of the Enrollment
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [ExplanationOfBenefit](explanationofbenefit.html): The business identifier of the Explanation of Benefit
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Flag](flag.html): Business identifier
+* [Goal](goal.html): External Ids for this goal
+* [GuidanceResponse](guidanceresponse.html): The identifier of the guidance response
+* [ImagingSelection](imagingselection.html): Identifiers for the imaging selection
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
+* [Immunization](immunization.html): Business identifier
+* [ImmunizationEvaluation](immunizationevaluation.html): ID of the evaluation
+* [ImmunizationRecommendation](immunizationrecommendation.html): Business identifier
+* [Invoice](invoice.html): Business Identifier for item
+* [List](list.html): Business identifier
+* [MeasureReport](measurereport.html): External identifier of the measure report to be returned
+* [Medication](medication.html): Returns medications with this external identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationStatement](medicationstatement.html): Return statements with this external identifier
+* [MolecularSequence](molecularsequence.html): The unique identity for a particular sequence
+* [NutritionIntake](nutritionintake.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Person](person.html): A person Identifier
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [QuestionnaireResponse](questionnaireresponse.html): The unique identifier for the questionnaire response
+* [RelatedPerson](relatedperson.html): An Identifier of the RelatedPerson
+* [RequestOrchestration](requestorchestration.html): External identifiers for the request orchestration
+* [ResearchSubject](researchsubject.html): Business Identifier for research subject in a study
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [Specimen](specimen.html): The unique identifier associated with the specimen
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [Task](task.html): Search for a task instance by its business identifier
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.identifier | AdverseEvent.identifier | AllergyIntolerance.identifier | Appointment.identifier | AppointmentResponse.identifier | Basic.identifier | BodyStructure.identifier | CarePlan.identifier | CareTeam.identifier | ChargeItem.identifier | Claim.identifier | ClaimResponse.identifier | ClinicalImpression.identifier | Communication.identifier | CommunicationRequest.identifier | Composition.identifier | Condition.identifier | Consent.identifier | Contract.identifier | Coverage.identifier | CoverageEligibilityRequest.identifier | CoverageEligibilityResponse.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DeviceUsage.identifier | DiagnosticReport.identifier | DocumentReference.identifier | Encounter.identifier | EnrollmentRequest.identifier | EpisodeOfCare.identifier | ExplanationOfBenefit.identifier | FamilyMemberHistory.identifier | Flag.identifier | Goal.identifier | GuidanceResponse.identifier | ImagingSelection.identifier | ImagingStudy.identifier | Immunization.identifier | ImmunizationEvaluation.identifier | ImmunizationRecommendation.identifier | Invoice.identifier | List.identifier | MeasureReport.identifier | Medication.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationStatement.identifier | MolecularSequence.identifier | NutritionIntake.identifier | NutritionOrder.identifier | Observation.identifier | Person.identifier | Procedure.identifier | QuestionnaireResponse.identifier | RelatedPerson.identifier | RequestOrchestration.identifier | ResearchSubject.identifier | RiskAssessment.identifier | ServiceRequest.identifier | Specimen.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | Task.identifier | VisionPrescription.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Account.identifier | AdverseEvent.identifier | AllergyIntolerance.identifier | Appointment.identifier | AppointmentResponse.identifier | Basic.identifier | BodyStructure.identifier | CarePlan.identifier | CareTeam.identifier | ChargeItem.identifier | Claim.identifier | ClaimResponse.identifier | ClinicalImpression.identifier | Communication.identifier | CommunicationRequest.identifier | Composition.identifier | Condition.identifier | Consent.identifier | Contract.identifier | Coverage.identifier | CoverageEligibilityRequest.identifier | CoverageEligibilityResponse.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DeviceUsage.identifier | DiagnosticReport.identifier | DocumentReference.identifier | Encounter.identifier | EnrollmentRequest.identifier | EpisodeOfCare.identifier | ExplanationOfBenefit.identifier | FamilyMemberHistory.identifier | Flag.identifier | Goal.identifier | GuidanceResponse.identifier | ImagingSelection.identifier | ImagingStudy.identifier | Immunization.identifier | ImmunizationEvaluation.identifier | ImmunizationRecommendation.identifier | Invoice.identifier | List.identifier | MeasureReport.identifier | Medication.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationStatement.identifier | MolecularSequence.identifier | NutritionIntake.identifier | NutritionOrder.identifier | Observation.identifier | Person.identifier | Procedure.identifier | QuestionnaireResponse.identifier | RelatedPerson.identifier | RequestOrchestration.identifier | ResearchSubject.identifier | RiskAssessment.identifier | ServiceRequest.identifier | Specimen.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | Task.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [Account](account.html): Account number\r\n* [AdverseEvent](adverseevent.html): Business identifier for the event\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [Appointment](appointment.html): An Identifier of the Appointment\r\n* [AppointmentResponse](appointmentresponse.html): An Identifier in this appointment response\r\n* [Basic](basic.html): Business identifier\r\n* [BodyStructure](bodystructure.html): Bodystructure identifier\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [ChargeItem](chargeitem.html): Business Identifier for item\r\n* [Claim](claim.html): The primary identifier of the financial resource\r\n* [ClaimResponse](claimresponse.html): The identity of the ClaimResponse\r\n* [ClinicalImpression](clinicalimpression.html): Business identifier\r\n* [Communication](communication.html): Unique identifier\r\n* [CommunicationRequest](communicationrequest.html): Unique identifier\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [Contract](contract.html): The identity of the contract\r\n* [Coverage](coverage.html): The primary identifier of the insured and the coverage\r\n* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The business identifier of the Eligibility\r\n* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The business identifier\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DeviceUsage](deviceusage.html): Search by identifier\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EnrollmentRequest](enrollmentrequest.html): The business identifier of the Enrollment\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [ExplanationOfBenefit](explanationofbenefit.html): The business identifier of the Explanation of Benefit\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Flag](flag.html): Business identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [GuidanceResponse](guidanceresponse.html): The identifier of the guidance response\r\n* [ImagingSelection](imagingselection.html): Identifiers for the imaging selection\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [ImmunizationEvaluation](immunizationevaluation.html): ID of the evaluation\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Business identifier\r\n* [Invoice](invoice.html): Business Identifier for item\r\n* [List](list.html): Business identifier\r\n* [MeasureReport](measurereport.html): External identifier of the measure report to be returned\r\n* [Medication](medication.html): Returns medications with this external identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationStatement](medicationstatement.html): Return statements with this external identifier\r\n* [MolecularSequence](molecularsequence.html): The unique identity for a particular sequence\r\n* [NutritionIntake](nutritionintake.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Person](person.html): A person Identifier\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [QuestionnaireResponse](questionnaireresponse.html): The unique identifier for the questionnaire response\r\n* [RelatedPerson](relatedperson.html): An Identifier of the RelatedPerson\r\n* [RequestOrchestration](requestorchestration.html): External identifiers for the request orchestration\r\n* [ResearchSubject](researchsubject.html): Business Identifier for research subject in a study\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [Specimen](specimen.html): The unique identifier associated with the specimen\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [Task](task.html): Search for a task instance by its business identifier\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): Account number
+* [AdverseEvent](adverseevent.html): Business identifier for the event
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [Appointment](appointment.html): An Identifier of the Appointment
+* [AppointmentResponse](appointmentresponse.html): An Identifier in this appointment response
+* [Basic](basic.html): Business identifier
+* [BodyStructure](bodystructure.html): Bodystructure identifier
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [ChargeItem](chargeitem.html): Business Identifier for item
+* [Claim](claim.html): The primary identifier of the financial resource
+* [ClaimResponse](claimresponse.html): The identity of the ClaimResponse
+* [ClinicalImpression](clinicalimpression.html): Business identifier
+* [Communication](communication.html): Unique identifier
+* [CommunicationRequest](communicationrequest.html): Unique identifier
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [Contract](contract.html): The identity of the contract
+* [Coverage](coverage.html): The primary identifier of the insured and the coverage
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The business identifier of the Eligibility
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The business identifier
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DeviceUsage](deviceusage.html): Search by identifier
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentReference](documentreference.html): Identifier of the attachment binary
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EnrollmentRequest](enrollmentrequest.html): The business identifier of the Enrollment
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [ExplanationOfBenefit](explanationofbenefit.html): The business identifier of the Explanation of Benefit
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Flag](flag.html): Business identifier
+* [Goal](goal.html): External Ids for this goal
+* [GuidanceResponse](guidanceresponse.html): The identifier of the guidance response
+* [ImagingSelection](imagingselection.html): Identifiers for the imaging selection
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
+* [Immunization](immunization.html): Business identifier
+* [ImmunizationEvaluation](immunizationevaluation.html): ID of the evaluation
+* [ImmunizationRecommendation](immunizationrecommendation.html): Business identifier
+* [Invoice](invoice.html): Business Identifier for item
+* [List](list.html): Business identifier
+* [MeasureReport](measurereport.html): External identifier of the measure report to be returned
+* [Medication](medication.html): Returns medications with this external identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationStatement](medicationstatement.html): Return statements with this external identifier
+* [MolecularSequence](molecularsequence.html): The unique identity for a particular sequence
+* [NutritionIntake](nutritionintake.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Person](person.html): A person Identifier
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [QuestionnaireResponse](questionnaireresponse.html): The unique identifier for the questionnaire response
+* [RelatedPerson](relatedperson.html): An Identifier of the RelatedPerson
+* [RequestOrchestration](requestorchestration.html): External identifiers for the request orchestration
+* [ResearchSubject](researchsubject.html): Business Identifier for research subject in a study
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [Specimen](specimen.html): The unique identifier associated with the specimen
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [Task](task.html): Search for a task instance by its business identifier
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.identifier | AdverseEvent.identifier | AllergyIntolerance.identifier | Appointment.identifier | AppointmentResponse.identifier | Basic.identifier | BodyStructure.identifier | CarePlan.identifier | CareTeam.identifier | ChargeItem.identifier | Claim.identifier | ClaimResponse.identifier | ClinicalImpression.identifier | Communication.identifier | CommunicationRequest.identifier | Composition.identifier | Condition.identifier | Consent.identifier | Contract.identifier | Coverage.identifier | CoverageEligibilityRequest.identifier | CoverageEligibilityResponse.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DeviceUsage.identifier | DiagnosticReport.identifier | DocumentReference.identifier | Encounter.identifier | EnrollmentRequest.identifier | EpisodeOfCare.identifier | ExplanationOfBenefit.identifier | FamilyMemberHistory.identifier | Flag.identifier | Goal.identifier | GuidanceResponse.identifier | ImagingSelection.identifier | ImagingStudy.identifier | Immunization.identifier | ImmunizationEvaluation.identifier | ImmunizationRecommendation.identifier | Invoice.identifier | List.identifier | MeasureReport.identifier | Medication.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationStatement.identifier | MolecularSequence.identifier | NutritionIntake.identifier | NutritionOrder.identifier | Observation.identifier | Person.identifier | Procedure.identifier | QuestionnaireResponse.identifier | RelatedPerson.identifier | RequestOrchestration.identifier | ResearchSubject.identifier | RiskAssessment.identifier | ServiceRequest.identifier | Specimen.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | Task.identifier | VisionPrescription.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): The entity that caused the expenses
+* [AdverseEvent](adverseevent.html): Subject impacted by event
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [Appointment](appointment.html): One of the individuals of the appointment is this patient
+* [AppointmentResponse](appointmentresponse.html): This Response is for this Patient
+* [AuditEvent](auditevent.html): Where the activity involved patient data
+* [Basic](basic.html): Identifies the focus of this resource
+* [BodyStructure](bodystructure.html): Who this is about
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ChargeItem](chargeitem.html): Individual service was done for/to
+* [Claim](claim.html): Patient receiving the products or services
+* [ClaimResponse](claimresponse.html): The subject of care
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
+* [Communication](communication.html): Focus of message
+* [CommunicationRequest](communicationrequest.html): Focus of message
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [Contract](contract.html): The identity of the subject of the contract (if a patient)
+* [Coverage](coverage.html): Retrieve coverages for a patient
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The reference to the patient
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The reference to the patient
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient present at the encounter
+* [EnrollmentRequest](enrollmentrequest.html): The party to be enrolled
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [ExplanationOfBenefit](explanationofbenefit.html): The reference to the patient
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [GuidanceResponse](guidanceresponse.html): The identity of a patient to search for guidance response results
+* [ImagingSelection](imagingselection.html): Who the study is about
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [ImmunizationEvaluation](immunizationevaluation.html): The patient being evaluated
+* [ImmunizationRecommendation](immunizationrecommendation.html): Who this profile is for
+* [Invoice](invoice.html): Recipient(s) of goods and services
+* [List](list.html): If all resources have the same subject
+* [MeasureReport](measurereport.html): The identity of a patient to search for individual measure report results for
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationStatement](medicationstatement.html): Returns statements for a specific patient.
+* [MolecularSequence](molecularsequence.html): The subject that the sequence is about
+* [NutritionIntake](nutritionintake.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Person](person.html): The Person links to this Patient
+* [Procedure](procedure.html): Search by subject - a patient
+* [Provenance](provenance.html): Where the activity involved patient data
+* [QuestionnaireResponse](questionnaireresponse.html): The patient that is the subject of the questionnaire response
+* [RelatedPerson](relatedperson.html): The patient this related person is related to
+* [RequestOrchestration](requestorchestration.html): The identity of a patient to search for request orchestrations
+* [ResearchSubject](researchsubject.html): Who or what is part of study
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [Specimen](specimen.html): The patient the specimen comes from
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
+* [Task](task.html): Search by patient
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject.where(resolve() is Patient) | AdverseEvent.subject.where(resolve() is Patient) | AllergyIntolerance.patient | Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient) | AppointmentResponse.actor.where(resolve() is Patient) | AuditEvent.patient | Basic.subject.where(resolve() is Patient) | BodyStructure.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ChargeItem.subject.where(resolve() is Patient) | Claim.patient | ClaimResponse.patient | ClinicalImpression.subject.where(resolve() is Patient) | Communication.subject.where(resolve() is Patient) | CommunicationRequest.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | Contract.subject.where(resolve() is Patient) | Coverage.beneficiary | CoverageEligibilityRequest.patient | CoverageEligibilityResponse.patient | DetectedIssue.subject.where(resolve() is Patient) | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EnrollmentRequest.candidate | EpisodeOfCare.patient | ExplanationOfBenefit.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | GuidanceResponse.subject.where(resolve() is Patient) | ImagingSelection.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | ImmunizationEvaluation.patient | ImmunizationRecommendation.patient | Invoice.subject.where(resolve() is Patient) | List.subject.where(resolve() is Patient) | MeasureReport.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationStatement.subject.where(resolve() is Patient) | MolecularSequence.subject.where(resolve() is Patient) | NutritionIntake.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Person.link.target.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | Provenance.patient | QuestionnaireResponse.subject.where(resolve() is Patient) | RelatedPerson.patient | RequestOrchestration.subject.where(resolve() is Patient) | ResearchSubject.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | Specimen.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | Task.for.where(resolve() is Patient) | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="Account.subject.where(resolve() is Patient) | AdverseEvent.subject.where(resolve() is Patient) | AllergyIntolerance.patient | Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient) | AppointmentResponse.actor.where(resolve() is Patient) | AuditEvent.patient | Basic.subject.where(resolve() is Patient) | BodyStructure.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ChargeItem.subject.where(resolve() is Patient) | Claim.patient | ClaimResponse.patient | ClinicalImpression.subject.where(resolve() is Patient) | Communication.subject.where(resolve() is Patient) | CommunicationRequest.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | Contract.subject.where(resolve() is Patient) | Coverage.beneficiary | CoverageEligibilityRequest.patient | CoverageEligibilityResponse.patient | DetectedIssue.subject.where(resolve() is Patient) | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EnrollmentRequest.candidate | EpisodeOfCare.patient | ExplanationOfBenefit.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | GuidanceResponse.subject.where(resolve() is Patient) | ImagingSelection.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | ImmunizationEvaluation.patient | ImmunizationRecommendation.patient | Invoice.subject.where(resolve() is Patient) | List.subject.where(resolve() is Patient) | MeasureReport.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationStatement.subject.where(resolve() is Patient) | MolecularSequence.subject.where(resolve() is Patient) | NutritionIntake.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Person.link.target.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | Provenance.patient | QuestionnaireResponse.subject.where(resolve() is Patient) | RelatedPerson.patient | RequestOrchestration.subject.where(resolve() is Patient) | ResearchSubject.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | Specimen.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | Task.for.where(resolve() is Patient) | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [Account](account.html): The entity that caused the expenses\r\n* [AdverseEvent](adverseevent.html): Subject impacted by event\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [Appointment](appointment.html): One of the individuals of the appointment is this patient\r\n* [AppointmentResponse](appointmentresponse.html): This Response is for this Patient\r\n* [AuditEvent](auditevent.html): Where the activity involved patient data\r\n* [Basic](basic.html): Identifies the focus of this resource\r\n* [BodyStructure](bodystructure.html): Who this is about\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ChargeItem](chargeitem.html): Individual service was done for/to\r\n* [Claim](claim.html): Patient receiving the products or services\r\n* [ClaimResponse](claimresponse.html): The subject of care\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Communication](communication.html): Focus of message\r\n* [CommunicationRequest](communicationrequest.html): Focus of message\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [Contract](contract.html): The identity of the subject of the contract (if a patient)\r\n* [Coverage](coverage.html): Retrieve coverages for a patient\r\n* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The reference to the patient\r\n* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The reference to the patient\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EnrollmentRequest](enrollmentrequest.html): The party to be enrolled\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [ExplanationOfBenefit](explanationofbenefit.html): The reference to the patient\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [GuidanceResponse](guidanceresponse.html): The identity of a patient to search for guidance response results\r\n* [ImagingSelection](imagingselection.html): Who the study is about\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [ImmunizationEvaluation](immunizationevaluation.html): The patient being evaluated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Who this profile is for\r\n* [Invoice](invoice.html): Recipient(s) of goods and services\r\n* [List](list.html): If all resources have the same subject\r\n* [MeasureReport](measurereport.html): The identity of a patient to search for individual measure report results for\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationStatement](medicationstatement.html): Returns statements for a specific patient.\r\n* [MolecularSequence](molecularsequence.html): The subject that the sequence is about\r\n* [NutritionIntake](nutritionintake.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Person](person.html): The Person links to this Patient\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [Provenance](provenance.html): Where the activity involved patient data\r\n* [QuestionnaireResponse](questionnaireresponse.html): The patient that is the subject of the questionnaire response\r\n* [RelatedPerson](relatedperson.html): The patient this related person is related to\r\n* [RequestOrchestration](requestorchestration.html): The identity of a patient to search for request orchestrations\r\n* [ResearchSubject](researchsubject.html): Who or what is part of study\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [Specimen](specimen.html): The patient the specimen comes from\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined\r\n* [Task](task.html): Search by patient\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): The entity that caused the expenses
+* [AdverseEvent](adverseevent.html): Subject impacted by event
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [Appointment](appointment.html): One of the individuals of the appointment is this patient
+* [AppointmentResponse](appointmentresponse.html): This Response is for this Patient
+* [AuditEvent](auditevent.html): Where the activity involved patient data
+* [Basic](basic.html): Identifies the focus of this resource
+* [BodyStructure](bodystructure.html): Who this is about
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ChargeItem](chargeitem.html): Individual service was done for/to
+* [Claim](claim.html): Patient receiving the products or services
+* [ClaimResponse](claimresponse.html): The subject of care
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
+* [Communication](communication.html): Focus of message
+* [CommunicationRequest](communicationrequest.html): Focus of message
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [Contract](contract.html): The identity of the subject of the contract (if a patient)
+* [Coverage](coverage.html): Retrieve coverages for a patient
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The reference to the patient
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The reference to the patient
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient present at the encounter
+* [EnrollmentRequest](enrollmentrequest.html): The party to be enrolled
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [ExplanationOfBenefit](explanationofbenefit.html): The reference to the patient
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [GuidanceResponse](guidanceresponse.html): The identity of a patient to search for guidance response results
+* [ImagingSelection](imagingselection.html): Who the study is about
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [ImmunizationEvaluation](immunizationevaluation.html): The patient being evaluated
+* [ImmunizationRecommendation](immunizationrecommendation.html): Who this profile is for
+* [Invoice](invoice.html): Recipient(s) of goods and services
+* [List](list.html): If all resources have the same subject
+* [MeasureReport](measurereport.html): The identity of a patient to search for individual measure report results for
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationStatement](medicationstatement.html): Returns statements for a specific patient.
+* [MolecularSequence](molecularsequence.html): The subject that the sequence is about
+* [NutritionIntake](nutritionintake.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Person](person.html): The Person links to this Patient
+* [Procedure](procedure.html): Search by subject - a patient
+* [Provenance](provenance.html): Where the activity involved patient data
+* [QuestionnaireResponse](questionnaireresponse.html): The patient that is the subject of the questionnaire response
+* [RelatedPerson](relatedperson.html): The patient this related person is related to
+* [RequestOrchestration](requestorchestration.html): The identity of a patient to search for request orchestrations
+* [ResearchSubject](researchsubject.html): Who or what is part of study
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [Specimen](specimen.html): The patient the specimen comes from
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
+* [Task](task.html): Search by patient
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject.where(resolve() is Patient) | AdverseEvent.subject.where(resolve() is Patient) | AllergyIntolerance.patient | Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient) | AppointmentResponse.actor.where(resolve() is Patient) | AuditEvent.patient | Basic.subject.where(resolve() is Patient) | BodyStructure.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ChargeItem.subject.where(resolve() is Patient) | Claim.patient | ClaimResponse.patient | ClinicalImpression.subject.where(resolve() is Patient) | Communication.subject.where(resolve() is Patient) | CommunicationRequest.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | Contract.subject.where(resolve() is Patient) | Coverage.beneficiary | CoverageEligibilityRequest.patient | CoverageEligibilityResponse.patient | DetectedIssue.subject.where(resolve() is Patient) | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EnrollmentRequest.candidate | EpisodeOfCare.patient | ExplanationOfBenefit.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | GuidanceResponse.subject.where(resolve() is Patient) | ImagingSelection.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | ImmunizationEvaluation.patient | ImmunizationRecommendation.patient | Invoice.subject.where(resolve() is Patient) | List.subject.where(resolve() is Patient) | MeasureReport.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationStatement.subject.where(resolve() is Patient) | MolecularSequence.subject.where(resolve() is Patient) | NutritionIntake.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Person.link.target.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | Provenance.patient | QuestionnaireResponse.subject.where(resolve() is Patient) | RelatedPerson.patient | RequestOrchestration.subject.where(resolve() is Patient) | ResearchSubject.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | Specimen.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | Task.for.where(resolve() is Patient) | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Appointment:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Appointment:patient").toLocked();
+
 
 }
+

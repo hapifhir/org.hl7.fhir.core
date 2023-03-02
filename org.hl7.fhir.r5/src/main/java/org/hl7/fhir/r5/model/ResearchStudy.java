@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -308,7 +308,7 @@ public class ResearchStudy extends DomainResource {
          */
         @Child(name = "classifier", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="nih | fda | government | nonprofit | academic | industry", formalDefinition="A categorization other than role for the associated party." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-party-org-type")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-party-organization-type")
         protected List<CodeableConcept> classifier;
 
         /**
@@ -1337,9 +1337,9 @@ public class ResearchStudy extends DomainResource {
         /**
          * Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.
          */
-        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "linkId", type = {IdType.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily", formalDefinition="Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily." )
-        protected List<Identifier> identifier;
+        protected IdType linkId;
 
         /**
          * Unique, human-readable label for this comparisonGroup of the study.
@@ -1377,7 +1377,7 @@ public class ResearchStudy extends DomainResource {
         @Description(shortDefinition="Group of participants who were enrolled in study comparisonGroup", formalDefinition="Group of participants who were enrolled in study comparisonGroup." )
         protected Reference observedGroup;
 
-        private static final long serialVersionUID = -1154017097L;
+        private static final long serialVersionUID = 1107310853L;
 
     /**
      * Constructor
@@ -1395,56 +1395,52 @@ public class ResearchStudy extends DomainResource {
       }
 
         /**
-         * @return {@link #identifier} (Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.)
+         * @return {@link #linkId} (Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
          */
-        public List<Identifier> getIdentifier() { 
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          return this.identifier;
+        public IdType getLinkIdElement() { 
+          if (this.linkId == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ResearchStudyComparisonGroupComponent.linkId");
+            else if (Configuration.doAutoCreate())
+              this.linkId = new IdType(); // bb
+          return this.linkId;
+        }
+
+        public boolean hasLinkIdElement() { 
+          return this.linkId != null && !this.linkId.isEmpty();
+        }
+
+        public boolean hasLinkId() { 
+          return this.linkId != null && !this.linkId.isEmpty();
         }
 
         /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
+         * @param value {@link #linkId} (Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
          */
-        public ResearchStudyComparisonGroupComponent setIdentifier(List<Identifier> theIdentifier) { 
-          this.identifier = theIdentifier;
-          return this;
-        }
-
-        public boolean hasIdentifier() { 
-          if (this.identifier == null)
-            return false;
-          for (Identifier item : this.identifier)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public Identifier addIdentifier() { //3
-          Identifier t = new Identifier();
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          this.identifier.add(t);
-          return t;
-        }
-
-        public ResearchStudyComparisonGroupComponent addIdentifier(Identifier t) { //3
-          if (t == null)
-            return this;
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          this.identifier.add(t);
+        public ResearchStudyComparisonGroupComponent setLinkIdElement(IdType value) { 
+          this.linkId = value;
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
+         * @return Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.
          */
-        public Identifier getIdentifierFirstRep() { 
-          if (getIdentifier().isEmpty()) {
-            addIdentifier();
+        public String getLinkId() { 
+          return this.linkId == null ? null : this.linkId.getValue();
+        }
+
+        /**
+         * @param value Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.
+         */
+        public ResearchStudyComparisonGroupComponent setLinkId(String value) { 
+          if (Utilities.noString(value))
+            this.linkId = null;
+          else {
+            if (this.linkId == null)
+              this.linkId = new IdType();
+            this.linkId.setValue(value);
           }
-          return getIdentifier().get(0);
+          return this;
         }
 
         /**
@@ -1555,7 +1551,7 @@ public class ResearchStudy extends DomainResource {
          * @param value A succinct description of the path through the study that would be followed by a subject adhering to this comparisonGroup.
          */
         public ResearchStudyComparisonGroupComponent setDescription(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.description = null;
           else {
             if (this.description == null)
@@ -1644,7 +1640,7 @@ public class ResearchStudy extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("identifier", "Identifier", "Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.", 0, java.lang.Integer.MAX_VALUE, identifier));
+          children.add(new Property("linkId", "id", "Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.", 0, 1, linkId));
           children.add(new Property("name", "string", "Unique, human-readable label for this comparisonGroup of the study.", 0, 1, name));
           children.add(new Property("type", "CodeableConcept", "Categorization of study comparisonGroup, e.g. experimental, active comparator, placebo comparater.", 0, 1, type));
           children.add(new Property("description", "markdown", "A succinct description of the path through the study that would be followed by a subject adhering to this comparisonGroup.", 0, 1, description));
@@ -1655,7 +1651,7 @@ public class ResearchStudy extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.", 0, java.lang.Integer.MAX_VALUE, identifier);
+          case -1102667083: /*linkId*/  return new Property("linkId", "id", "Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.", 0, 1, linkId);
           case 3373707: /*name*/  return new Property("name", "string", "Unique, human-readable label for this comparisonGroup of the study.", 0, 1, name);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Categorization of study comparisonGroup, e.g. experimental, active comparator, placebo comparater.", 0, 1, type);
           case -1724546052: /*description*/  return new Property("description", "markdown", "A succinct description of the path through the study that would be followed by a subject adhering to this comparisonGroup.", 0, 1, description);
@@ -1669,7 +1665,7 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case -1102667083: /*linkId*/ return this.linkId == null ? new Base[0] : new Base[] {this.linkId}; // IdType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
@@ -1683,8 +1679,8 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1618432855: // identifier
-          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
+        case -1102667083: // linkId
+          this.linkId = TypeConvertor.castToId(value); // IdType
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
@@ -1708,8 +1704,8 @@ public class ResearchStudy extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("identifier")) {
-          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
+        if (name.equals("linkId")) {
+          this.linkId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
@@ -1728,7 +1724,7 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return addIdentifier(); 
+        case -1102667083:  return getLinkIdElement();
         case 3373707:  return getNameElement();
         case 3575610:  return getType();
         case -1724546052:  return getDescriptionElement();
@@ -1742,7 +1738,7 @@ public class ResearchStudy extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case -1102667083: /*linkId*/ return new String[] {"id"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"markdown"};
@@ -1755,8 +1751,8 @@ public class ResearchStudy extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("identifier")) {
-          return addIdentifier();
+        if (name.equals("linkId")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.comparisonGroup.linkId");
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.comparisonGroup.name");
@@ -1787,11 +1783,7 @@ public class ResearchStudy extends DomainResource {
 
       public void copyValues(ResearchStudyComparisonGroupComponent dst) {
         super.copyValues(dst);
-        if (identifier != null) {
-          dst.identifier = new ArrayList<Identifier>();
-          for (Identifier i : identifier)
-            dst.identifier.add(i.copy());
-        };
+        dst.linkId = linkId == null ? null : linkId.copy();
         dst.name = name == null ? null : name.copy();
         dst.type = type == null ? null : type.copy();
         dst.description = description == null ? null : description.copy();
@@ -1810,7 +1802,7 @@ public class ResearchStudy extends DomainResource {
         if (!(other_ instanceof ResearchStudyComparisonGroupComponent))
           return false;
         ResearchStudyComparisonGroupComponent o = (ResearchStudyComparisonGroupComponent) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(name, o.name, true) && compareDeep(type, o.type, true)
+        return compareDeep(linkId, o.linkId, true) && compareDeep(name, o.name, true) && compareDeep(type, o.type, true)
            && compareDeep(description, o.description, true) && compareDeep(intendedExposure, o.intendedExposure, true)
            && compareDeep(observedGroup, o.observedGroup, true);
       }
@@ -1822,11 +1814,12 @@ public class ResearchStudy extends DomainResource {
         if (!(other_ instanceof ResearchStudyComparisonGroupComponent))
           return false;
         ResearchStudyComparisonGroupComponent o = (ResearchStudyComparisonGroupComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(description, o.description, true);
+        return compareValues(linkId, o.linkId, true) && compareValues(name, o.name, true) && compareValues(description, o.description, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, name, type, description
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(linkId, name, type, description
           , intendedExposure, observedGroup);
       }
 
@@ -1982,7 +1975,7 @@ public class ResearchStudy extends DomainResource {
          * @param value Free text description of the objective of the study.  This is what the study is trying to achieve rather than how it is going to achieve it (see ResearchStudy.description).
          */
         public ResearchStudyObjectiveComponent setDescription(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.description = null;
           else {
             if (this.description == null)
@@ -2316,7 +2309,7 @@ public class ResearchStudy extends DomainResource {
          * @param value Description of the outcome.
          */
         public ResearchStudyOutcomeMeasureComponent setDescription(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.description = null;
           else {
             if (this.description == null)
@@ -3668,7 +3661,7 @@ public class ResearchStudy extends DomainResource {
      * @param value A brief text for explaining the study.
      */
     public ResearchStudy setDescriptionSummary(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.descriptionSummary = null;
       else {
         if (this.descriptionSummary == null)
@@ -3717,7 +3710,7 @@ public class ResearchStudy extends DomainResource {
      * @param value A detailed and human-readable narrative of the study. E.g., study abstract.
      */
     public ResearchStudy setDescription(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.description = null;
       else {
         if (this.description == null)
@@ -4932,6 +4925,26 @@ public class ResearchStudy extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>classifier</b>
+   * <p>
+   * Description: <b>Classification for the study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.classifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="classifier", path="ResearchStudy.classifier", description="Classification for the study", type="token" )
+  public static final String SP_CLASSIFIER = "classifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>classifier</b>
+   * <p>
+   * Description: <b>Classification for the study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.classifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CLASSIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CLASSIFIER);
+
+ /**
    * Search parameter: <b>condition</b>
    * <p>
    * Description: <b>Condition being studied</b><br>
@@ -4972,24 +4985,96 @@ public class ResearchStudy extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
 
  /**
-   * Search parameter: <b>focus</b>
+   * Search parameter: <b>description</b>
    * <p>
-   * Description: <b>Drugs, devices, etc. under study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.focus</b><br>
+   * Description: <b>Detailed narrative of the study</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ResearchStudy.description</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="focus", path="ResearchStudy.focus", description="Drugs, devices, etc. under study", type="token" )
-  public static final String SP_FOCUS = "focus";
+  @SearchParamDefinition(name="description", path="ResearchStudy.description", description="Detailed narrative of the study", type="string" )
+  public static final String SP_DESCRIPTION = "description";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>focus</b>
+   * <b>Fluent Client</b> search parameter constant for <b>description</b>
    * <p>
-   * Description: <b>Drugs, devices, etc. under study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.focus</b><br>
+   * Description: <b>Detailed narrative of the study</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ResearchStudy.description</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FOCUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FOCUS);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
+
+ /**
+   * Search parameter: <b>eligibility</b>
+   * <p>
+   * Description: <b>Inclusion and exclusion criteria</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.recruitment.eligibility</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="eligibility", path="ResearchStudy.recruitment.eligibility", description="Inclusion and exclusion criteria", type="reference", target={EvidenceVariable.class, Group.class } )
+  public static final String SP_ELIGIBILITY = "eligibility";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>eligibility</b>
+   * <p>
+   * Description: <b>Inclusion and exclusion criteria</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.recruitment.eligibility</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ELIGIBILITY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ELIGIBILITY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ResearchStudy:eligibility</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ELIGIBILITY = new ca.uhn.fhir.model.api.Include("ResearchStudy:eligibility").toLocked();
+
+ /**
+   * Search parameter: <b>focus-code</b>
+   * <p>
+   * Description: <b>Drugs, devices, etc. under study, as a code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.focus.concept</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="focus-code", path="ResearchStudy.focus.concept", description="Drugs, devices, etc. under study, as a code", type="token" )
+  public static final String SP_FOCUS_CODE = "focus-code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>focus-code</b>
+   * <p>
+   * Description: <b>Drugs, devices, etc. under study, as a code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.focus.concept</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FOCUS_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FOCUS_CODE);
+
+ /**
+   * Search parameter: <b>focus-reference</b>
+   * <p>
+   * Description: <b>Drugs, devices, etc. under study, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.focus.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="focus-reference", path="ResearchStudy.focus.reference", description="Drugs, devices, etc. under study, as a reference", type="reference", target={EvidenceVariable.class, Medication.class, MedicinalProductDefinition.class, SubstanceDefinition.class } )
+  public static final String SP_FOCUS_REFERENCE = "focus-reference";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>focus-reference</b>
+   * <p>
+   * Description: <b>Drugs, devices, etc. under study, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.focus.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FOCUS_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FOCUS_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ResearchStudy:focus-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_FOCUS_REFERENCE = new ca.uhn.fhir.model.api.Include("ResearchStudy:focus-reference").toLocked();
 
  /**
    * Search parameter: <b>identifier</b>
@@ -5032,30 +5117,110 @@ public class ResearchStudy extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam KEYWORD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_KEYWORD);
 
  /**
-   * Search parameter: <b>partof</b>
+   * Search parameter: <b>name</b>
    * <p>
-   * Description: <b>Part of larger study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.partOf</b><br>
+   * Description: <b>Name for this study</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ResearchStudy.name</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="partof", path="ResearchStudy.partOf", description="Part of larger study", type="reference", target={ResearchStudy.class } )
-  public static final String SP_PARTOF = "partof";
+  @SearchParamDefinition(name="name", path="ResearchStudy.name", description="Name for this study", type="string" )
+  public static final String SP_NAME = "name";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>partof</b>
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>Name for this study</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ResearchStudy.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>objective-description</b>
+   * <p>
+   * Description: <b>Free text description of the objective of the study</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ResearchStudy.objective.description</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="objective-description", path="ResearchStudy.objective.description", description="Free text description of the objective of the study", type="string" )
+  public static final String SP_OBJECTIVE_DESCRIPTION = "objective-description";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>objective-description</b>
+   * <p>
+   * Description: <b>Free text description of the objective of the study</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ResearchStudy.objective.description</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam OBJECTIVE_DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_OBJECTIVE_DESCRIPTION);
+
+ /**
+   * Search parameter: <b>objective-type</b>
+   * <p>
+   * Description: <b>The kind of study objective</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.objective.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="objective-type", path="ResearchStudy.objective.type", description="The kind of study objective", type="token" )
+  public static final String SP_OBJECTIVE_TYPE = "objective-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>objective-type</b>
+   * <p>
+   * Description: <b>The kind of study objective</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.objective.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam OBJECTIVE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_OBJECTIVE_TYPE);
+
+ /**
+   * Search parameter: <b>part-of</b>
    * <p>
    * Description: <b>Part of larger study</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>ResearchStudy.partOf</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTOF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTOF);
+  @SearchParamDefinition(name="part-of", path="ResearchStudy.partOf", description="Part of larger study", type="reference", target={ResearchStudy.class } )
+  public static final String SP_PART_OF = "part-of";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>part-of</b>
+   * <p>
+   * Description: <b>Part of larger study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.partOf</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PART_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PART_OF);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ResearchStudy:partof</b>".
+   * the path value of "<b>ResearchStudy:part-of</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTOF = new ca.uhn.fhir.model.api.Include("ResearchStudy:partof").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PART_OF = new ca.uhn.fhir.model.api.Include("ResearchStudy:part-of").toLocked();
+
+ /**
+   * Search parameter: <b>phase</b>
+   * <p>
+   * Description: <b>The stage in the progression of a study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.phase</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="phase", path="ResearchStudy.phase", description="The stage in the progression of a study", type="token" )
+  public static final String SP_PHASE = "phase";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>phase</b>
+   * <p>
+   * Description: <b>The stage in the progression of a study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.phase</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PHASE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PHASE);
 
  /**
    * Search parameter: <b>protocol</b>
@@ -5084,44 +5249,44 @@ public class ResearchStudy extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PROTOCOL = new ca.uhn.fhir.model.api.Include("ResearchStudy:protocol").toLocked();
 
  /**
-   * Search parameter: <b>recruitment_actual</b>
+   * Search parameter: <b>recruitment-actual</b>
    * <p>
    * Description: <b>Actual number of participants enrolled in study across all groups</b><br>
    * Type: <b>number</b><br>
    * Path: <b>ResearchStudy.recruitment.actualNumber</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="recruitment_actual", path="ResearchStudy.recruitment.actualNumber", description="Actual number of participants enrolled in study across all groups", type="number" )
-  public static final String SP_RECRUITMENTACTUAL = "recruitment_actual";
+  @SearchParamDefinition(name="recruitment-actual", path="ResearchStudy.recruitment.actualNumber", description="Actual number of participants enrolled in study across all groups", type="number" )
+  public static final String SP_RECRUITMENT_ACTUAL = "recruitment-actual";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>recruitment_actual</b>
+   * <b>Fluent Client</b> search parameter constant for <b>recruitment-actual</b>
    * <p>
    * Description: <b>Actual number of participants enrolled in study across all groups</b><br>
    * Type: <b>number</b><br>
    * Path: <b>ResearchStudy.recruitment.actualNumber</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.NumberClientParam RECRUITMENTACTUAL = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_RECRUITMENTACTUAL);
+  public static final ca.uhn.fhir.rest.gclient.NumberClientParam RECRUITMENT_ACTUAL = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_RECRUITMENT_ACTUAL);
 
  /**
-   * Search parameter: <b>recruitment_target</b>
+   * Search parameter: <b>recruitment-target</b>
    * <p>
    * Description: <b>Target number of participants enrolled in study across all groups</b><br>
    * Type: <b>number</b><br>
    * Path: <b>ResearchStudy.recruitment.targetNumber</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="recruitment_target", path="ResearchStudy.recruitment.targetNumber", description="Target number of participants enrolled in study across all groups", type="number" )
-  public static final String SP_RECRUITMENTTARGET = "recruitment_target";
+  @SearchParamDefinition(name="recruitment-target", path="ResearchStudy.recruitment.targetNumber", description="Target number of participants enrolled in study across all groups", type="number" )
+  public static final String SP_RECRUITMENT_TARGET = "recruitment-target";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>recruitment_target</b>
+   * <b>Fluent Client</b> search parameter constant for <b>recruitment-target</b>
    * <p>
    * Description: <b>Target number of participants enrolled in study across all groups</b><br>
    * Type: <b>number</b><br>
    * Path: <b>ResearchStudy.recruitment.targetNumber</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.NumberClientParam RECRUITMENTTARGET = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_RECRUITMENTTARGET);
+  public static final ca.uhn.fhir.rest.gclient.NumberClientParam RECRUITMENT_TARGET = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_RECRUITMENT_TARGET);
 
  /**
    * Search parameter: <b>region</b>
@@ -5190,19 +5355,39 @@ public class ResearchStudy extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
  /**
+   * Search parameter: <b>study-design</b>
+   * <p>
+   * Description: <b>Classifications of the study design characteristics</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.studyDesign</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="study-design", path="ResearchStudy.studyDesign", description="Classifications of the study design characteristics", type="token" )
+  public static final String SP_STUDY_DESIGN = "study-design";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>study-design</b>
+   * <p>
+   * Description: <b>Classifications of the study design characteristics</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.studyDesign</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STUDY_DESIGN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STUDY_DESIGN);
+
+ /**
    * Search parameter: <b>title</b>
    * <p>
-   * Description: <b>Name for this study</b><br>
+   * Description: <b>The human readable name of the research study</b><br>
    * Type: <b>string</b><br>
    * Path: <b>ResearchStudy.title</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="title", path="ResearchStudy.title", description="Name for this study", type="string" )
+  @SearchParamDefinition(name="title", path="ResearchStudy.title", description="The human readable name of the research study", type="string" )
   public static final String SP_TITLE = "title";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>title</b>
    * <p>
-   * Description: <b>Name for this study</b><br>
+   * Description: <b>The human readable name of the research study</b><br>
    * Type: <b>string</b><br>
    * Path: <b>ResearchStudy.title</b><br>
    * </p>

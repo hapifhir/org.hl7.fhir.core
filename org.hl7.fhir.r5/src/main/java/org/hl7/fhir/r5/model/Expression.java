@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,9 +61,9 @@ public class Expression extends DataType implements ICompositeType {
     /**
      * A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.
      */
-    @Child(name = "name", type = {IdType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Short name assigned to expression for reuse", formalDefinition="A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined." )
-    protected IdType name;
+    protected CodeType name;
 
     /**
      * The media type of the language for the expression.
@@ -87,7 +87,7 @@ public class Expression extends DataType implements ICompositeType {
     @Description(shortDefinition="Where the expression is found", formalDefinition="A URI that defines where the expression is found." )
     protected UriType reference;
 
-    private static final long serialVersionUID = -465056222L;
+    private static final long serialVersionUID = -1266682572L;
 
   /**
    * Constructor
@@ -148,12 +148,12 @@ public class Expression extends DataType implements ICompositeType {
     /**
      * @return {@link #name} (A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
-    public IdType getNameElement() { 
+    public CodeType getNameElement() { 
       if (this.name == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Expression.name");
         else if (Configuration.doAutoCreate())
-          this.name = new IdType(); // bb
+          this.name = new CodeType(); // bb
       return this.name;
     }
 
@@ -168,7 +168,7 @@ public class Expression extends DataType implements ICompositeType {
     /**
      * @param value {@link #name} (A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
-    public Expression setNameElement(IdType value) { 
+    public Expression setNameElement(CodeType value) { 
       this.name = value;
       return this;
     }
@@ -188,7 +188,7 @@ public class Expression extends DataType implements ICompositeType {
         this.name = null;
       else {
         if (this.name == null)
-          this.name = new IdType();
+          this.name = new CodeType();
         this.name.setValue(value);
       }
       return this;
@@ -344,7 +344,7 @@ public class Expression extends DataType implements ICompositeType {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("description", "string", "A brief, natural language description of the condition that effectively communicates the intended semantics.", 0, 1, description));
-        children.add(new Property("name", "id", "A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.", 0, 1, name));
+        children.add(new Property("name", "code", "A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.", 0, 1, name));
         children.add(new Property("language", "code", "The media type of the language for the expression.", 0, 1, language));
         children.add(new Property("expression", "string", "An expression in the specified language that returns a value.", 0, 1, expression));
         children.add(new Property("reference", "uri", "A URI that defines where the expression is found.", 0, 1, reference));
@@ -354,7 +354,7 @@ public class Expression extends DataType implements ICompositeType {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1724546052: /*description*/  return new Property("description", "string", "A brief, natural language description of the condition that effectively communicates the intended semantics.", 0, 1, description);
-        case 3373707: /*name*/  return new Property("name", "id", "A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.", 0, 1, name);
+        case 3373707: /*name*/  return new Property("name", "code", "A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.", 0, 1, name);
         case -1613589672: /*language*/  return new Property("language", "code", "The media type of the language for the expression.", 0, 1, language);
         case -1795452264: /*expression*/  return new Property("expression", "string", "An expression in the specified language that returns a value.", 0, 1, expression);
         case -925155509: /*reference*/  return new Property("reference", "uri", "A URI that defines where the expression is found.", 0, 1, reference);
@@ -367,7 +367,7 @@ public class Expression extends DataType implements ICompositeType {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // IdType
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // CodeType
         case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // CodeType
         case -1795452264: /*expression*/ return this.expression == null ? new Base[0] : new Base[] {this.expression}; // StringType
         case -925155509: /*reference*/ return this.reference == null ? new Base[0] : new Base[] {this.reference}; // UriType
@@ -383,7 +383,7 @@ public class Expression extends DataType implements ICompositeType {
           this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case 3373707: // name
-          this.name = TypeConvertor.castToId(value); // IdType
+          this.name = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1613589672: // language
           this.language = TypeConvertor.castToCode(value); // CodeType
@@ -404,7 +404,7 @@ public class Expression extends DataType implements ICompositeType {
         if (name.equals("description")) {
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
-          this.name = TypeConvertor.castToId(value); // IdType
+          this.name = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("language")) {
           this.language = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("expression")) {
@@ -433,7 +433,7 @@ public class Expression extends DataType implements ICompositeType {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1724546052: /*description*/ return new String[] {"string"};
-        case 3373707: /*name*/ return new String[] {"id"};
+        case 3373707: /*name*/ return new String[] {"code"};
         case -1613589672: /*language*/ return new String[] {"code"};
         case -1795452264: /*expression*/ return new String[] {"string"};
         case -925155509: /*reference*/ return new String[] {"uri"};

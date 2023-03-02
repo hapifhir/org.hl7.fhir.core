@@ -126,7 +126,21 @@ public class ListRenderer extends ResourceRenderer {
     }    
     tr = t.tr();
     if (list.hasSubject()) {
-      shortForRef(tr.td().txN("Subject: "), list.getSubject());
+      if (list.getSubject().size() == 1) {
+        shortForRef(tr.td().txN("Subject: "), list.getSubjectFirstRep());
+      } else {
+        XhtmlNode td = tr.td();
+        td.txN("Subject: ");
+        int i = 0;
+        for (Reference subj : list.getSubject()) {
+          if (i == list.getSubject().size() - 1) {
+            td.tx(" and ");
+          } else if (i > 0) {
+            td.tx(", ");
+          }
+          shortForRef(td, subj);          
+        }
+      }
     }
     if (list.hasEncounter()) {
       shortForRef(tr.td().txN("Encounter: "), list.getEncounter());

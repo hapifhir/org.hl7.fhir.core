@@ -66,8 +66,8 @@ public class ImagingStudy43_50 {
     for (org.hl7.fhir.r4b.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference43_50.convertReference(t));
     if (src.hasReferrer())
       tgt.setReferrer(Reference43_50.convertReference(src.getReferrer()));
-    for (org.hl7.fhir.r4b.model.Reference t : src.getInterpreter())
-      tgt.addInterpreter(Reference43_50.convertReference(t));
+//    for (org.hl7.fhir.r4b.model.Reference t : src.getInterpreter())
+//      tgt.addInterpreter(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference43_50.convertReference(t));
     if (src.hasNumberOfSeries())
       tgt.setNumberOfSeriesElement(UnsignedInt43_50.convertUnsignedInt(src.getNumberOfSeriesElement()));
@@ -112,8 +112,8 @@ public class ImagingStudy43_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference43_50.convertReference(t));
     if (src.hasReferrer())
       tgt.setReferrer(Reference43_50.convertReference(src.getReferrer()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getInterpreter())
-      tgt.addInterpreter(Reference43_50.convertReference(t));
+//    for (org.hl7.fhir.r5.model.Reference t : src.getInterpreter())
+//      tgt.addInterpreter(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference43_50.convertReference(t));
     if (src.hasNumberOfSeries())
       tgt.setNumberOfSeriesElement(UnsignedInt43_50.convertUnsignedInt(src.getNumberOfSeriesElement()));

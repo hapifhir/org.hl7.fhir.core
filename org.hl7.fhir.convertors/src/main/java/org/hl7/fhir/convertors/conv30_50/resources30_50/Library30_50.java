@@ -139,7 +139,7 @@ public class Library30_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasUsage())
-      tgt.setUsageElement(String30_50.convertString(src.getUsageElement()));
+      tgt.setUsageElement(String30_50.convertStringToMarkdown(src.getUsageElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasApprovalDate())

@@ -15,4 +15,15 @@ public class Decimal40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     return tgt;
   }
+
+  public static org.hl7.fhir.r5.model.Quantity convertDecimalToQuantity(org.hl7.fhir.r4.model.DecimalType src) {
+    org.hl7.fhir.r5.model.Quantity tgt = new org.hl7.fhir.r5.model.Quantity();
+    if (src.hasValue()) {
+      tgt.setValue(src.getValue());
+      tgt.setSystem("http://unitsofmeasure.org");
+      tgt.setCode("1");
+    }
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    return tgt;
+  }
 }

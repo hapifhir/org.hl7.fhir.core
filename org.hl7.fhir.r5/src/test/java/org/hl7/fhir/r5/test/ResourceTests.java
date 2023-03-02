@@ -41,11 +41,11 @@ class ResourceTests {
     assertTrue(new MessageDefinition().supportsCopyright()); 
     assertTrue(new StructureMap().supportsCopyright()); 
     assertTrue(new ExampleScenario().supportsCopyright()); 
-    assertFalse(new SearchParameter().supportsCopyright());
-    assertFalse(new NamingSystem().supportsCopyright()); 
-    assertFalse(new OperationDefinition().supportsCopyright()); 
+    assertTrue(new SearchParameter().supportsCopyright());
+    assertTrue(new NamingSystem().supportsCopyright()); 
+    assertTrue(new OperationDefinition().supportsCopyright()); 
     assertFalse(new CompartmentDefinition().supportsCopyright()); 
-    assertFalse(new GraphDefinition().supportsCopyright()); 
+    assertTrue(new GraphDefinition().supportsCopyright()); 
   }
 
   private String SRC = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n"+

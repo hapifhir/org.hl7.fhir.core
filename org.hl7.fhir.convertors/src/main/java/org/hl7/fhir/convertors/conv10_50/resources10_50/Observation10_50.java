@@ -158,7 +158,7 @@ public class Observation10_50 {
     if (src.hasAge())
       tgt.setAge(Range10_50.convertRange(src.getAge()));
     if (src.hasTextElement())
-      tgt.setTextElement(String10_50.convertString(src.getTextElement()));
+      tgt.setTextElement(String10_50.convertStringToMarkdown(src.getTextElement()));
     return tgt;
   }
 

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -427,9 +427,9 @@ public class Organization extends DomainResource {
     /**
      * Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.
      */
-    @Child(name = "description", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Additional details about the Organization that could be displayed as further information to identify the Organization beyond its name", formalDefinition="Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected." )
-    protected StringType description;
+    protected MarkdownType description;
 
     /**
      * The contact details of communication devices available relevant to the specific Organization. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.
@@ -456,10 +456,10 @@ public class Organization extends DomainResource {
      * The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.For example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization.
      */
     @Child(name = "qualification", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Qualifications, certifications, accreditations, licenses, training, etc pertaining to the provision of care", formalDefinition="The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.\r\rFor example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization." )
+    @Description(shortDefinition="Qualifications, certifications, accreditations, licenses, training, etc. pertaining to the provision of care", formalDefinition="The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.\r\rFor example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization." )
     protected List<OrganizationQualificationComponent> qualification;
 
-    private static final long serialVersionUID = 918340050L;
+    private static final long serialVersionUID = 1270045104L;
 
   /**
    * Constructor
@@ -732,12 +732,12 @@ public class Organization extends DomainResource {
     /**
      * @return {@link #description} (Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public StringType getDescriptionElement() { 
+    public MarkdownType getDescriptionElement() { 
       if (this.description == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Organization.description");
         else if (Configuration.doAutoCreate())
-          this.description = new StringType(); // bb
+          this.description = new MarkdownType(); // bb
       return this.description;
     }
 
@@ -752,7 +752,7 @@ public class Organization extends DomainResource {
     /**
      * @param value {@link #description} (Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public Organization setDescriptionElement(StringType value) { 
+    public Organization setDescriptionElement(MarkdownType value) { 
       this.description = value;
       return this;
     }
@@ -772,7 +772,7 @@ public class Organization extends DomainResource {
         this.description = null;
       else {
         if (this.description == null)
-          this.description = new StringType();
+          this.description = new MarkdownType();
         this.description.setValue(value);
       }
       return this;
@@ -968,7 +968,7 @@ public class Organization extends DomainResource {
         children.add(new Property("type", "CodeableConcept", "The kind(s) of organization that this is.", 0, java.lang.Integer.MAX_VALUE, type));
         children.add(new Property("name", "string", "A name associated with the organization.", 0, 1, name));
         children.add(new Property("alias", "string", "A list of alternate names that the organization is known as, or was known as in the past.", 0, java.lang.Integer.MAX_VALUE, alias));
-        children.add(new Property("description", "string", "Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.", 0, 1, description));
+        children.add(new Property("description", "markdown", "Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.", 0, 1, description));
         children.add(new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific Organization. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("partOf", "Reference(Organization)", "The organization of which this organization forms a part.", 0, 1, partOf));
         children.add(new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the organization.", 0, java.lang.Integer.MAX_VALUE, endpoint));
@@ -983,7 +983,7 @@ public class Organization extends DomainResource {
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The kind(s) of organization that this is.", 0, java.lang.Integer.MAX_VALUE, type);
         case 3373707: /*name*/  return new Property("name", "string", "A name associated with the organization.", 0, 1, name);
         case 92902992: /*alias*/  return new Property("alias", "string", "A list of alternate names that the organization is known as, or was known as in the past.", 0, java.lang.Integer.MAX_VALUE, alias);
-        case -1724546052: /*description*/  return new Property("description", "string", "Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.", 0, 1, description);
+        case -1724546052: /*description*/  return new Property("description", "markdown", "Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.", 0, 1, description);
         case 951526432: /*contact*/  return new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific Organization. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(Organization)", "The organization of which this organization forms a part.", 0, 1, partOf);
         case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the organization.", 0, java.lang.Integer.MAX_VALUE, endpoint);
@@ -1001,7 +1001,7 @@ public class Organization extends DomainResource {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 92902992: /*alias*/ return this.alias == null ? new Base[0] : this.alias.toArray(new Base[this.alias.size()]); // StringType
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ExtendedContactDetail
         case -995410646: /*partOf*/ return this.partOf == null ? new Base[0] : new Base[] {this.partOf}; // Reference
         case 1741102485: /*endpoint*/ return this.endpoint == null ? new Base[0] : this.endpoint.toArray(new Base[this.endpoint.size()]); // Reference
@@ -1030,7 +1030,7 @@ public class Organization extends DomainResource {
           this.getAlias().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 951526432: // contact
           this.getContact().add(TypeConvertor.castToExtendedContactDetail(value)); // ExtendedContactDetail
@@ -1062,7 +1062,7 @@ public class Organization extends DomainResource {
         } else if (name.equals("alias")) {
           this.getAlias().add(TypeConvertor.castToString(value));
         } else if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("contact")) {
           this.getContact().add(TypeConvertor.castToExtendedContactDetail(value));
         } else if (name.equals("partOf")) {
@@ -1102,7 +1102,7 @@ public class Organization extends DomainResource {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 92902992: /*alias*/ return new String[] {"string"};
-        case -1724546052: /*description*/ return new String[] {"string"};
+        case -1724546052: /*description*/ return new String[] {"markdown"};
         case 951526432: /*contact*/ return new String[] {"ExtendedContactDetail"};
         case -995410646: /*partOf*/ return new String[] {"Reference"};
         case 1741102485: /*endpoint*/ return new String[] {"Reference"};

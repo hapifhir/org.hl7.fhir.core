@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -709,6 +709,1071 @@ A coverage may only be responsible for specific types of charges, and the sequen
   }
 
     @Block()
+    public static class AccountDiagnosisComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Ranking of the diagnosis (for each type).
+         */
+        @Child(name = "sequence", type = {PositiveIntType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Ranking of the diagnosis (for each type)", formalDefinition="Ranking of the diagnosis (for each type)." )
+        protected PositiveIntType sequence;
+
+        /**
+         * The diagnosis relevant to the account.
+         */
+        @Child(name = "condition", type = {CodeableReference.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The diagnosis relevant to the account", formalDefinition="The diagnosis relevant to the account." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/condition-code")
+        protected CodeableReference condition;
+
+        /**
+         * Ranking of the diagnosis (for each type).
+         */
+        @Child(name = "dateOfDiagnosis", type = {DateTimeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Date of the diagnosis (when coded diagnosis)", formalDefinition="Ranking of the diagnosis (for each type)." )
+        protected DateTimeType dateOfDiagnosis;
+
+        /**
+         * Type that this diagnosis has relevant to the account (e.g. admission, billing, discharge …).
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Type that this diagnosis has relevant to the account (e.g. admission, billing, discharge …)", formalDefinition="Type that this diagnosis has relevant to the account (e.g. admission, billing, discharge …)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-diagnosis-use")
+        protected List<CodeableConcept> type;
+
+        /**
+         * Was the Diagnosis present on Admission in the related Encounter.
+         */
+        @Child(name = "onAdmission", type = {BooleanType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Diagnosis present on Admission", formalDefinition="Was the Diagnosis present on Admission in the related Encounter." )
+        protected BooleanType onAdmission;
+
+        /**
+         * The package code can be used to group diagnoses that may be priced or delivered as a single product. Such as DRGs.
+         */
+        @Child(name = "packageCode", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Package Code specific for billing", formalDefinition="The package code can be used to group diagnoses that may be priced or delivered as a single product. Such as DRGs." )
+        protected List<CodeableConcept> packageCode;
+
+        private static final long serialVersionUID = 57125500L;
+
+    /**
+     * Constructor
+     */
+      public AccountDiagnosisComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public AccountDiagnosisComponent(CodeableReference condition) {
+        super();
+        this.setCondition(condition);
+      }
+
+        /**
+         * @return {@link #sequence} (Ranking of the diagnosis (for each type).). This is the underlying object with id, value and extensions. The accessor "getSequence" gives direct access to the value
+         */
+        public PositiveIntType getSequenceElement() { 
+          if (this.sequence == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountDiagnosisComponent.sequence");
+            else if (Configuration.doAutoCreate())
+              this.sequence = new PositiveIntType(); // bb
+          return this.sequence;
+        }
+
+        public boolean hasSequenceElement() { 
+          return this.sequence != null && !this.sequence.isEmpty();
+        }
+
+        public boolean hasSequence() { 
+          return this.sequence != null && !this.sequence.isEmpty();
+        }
+
+        /**
+         * @param value {@link #sequence} (Ranking of the diagnosis (for each type).). This is the underlying object with id, value and extensions. The accessor "getSequence" gives direct access to the value
+         */
+        public AccountDiagnosisComponent setSequenceElement(PositiveIntType value) { 
+          this.sequence = value;
+          return this;
+        }
+
+        /**
+         * @return Ranking of the diagnosis (for each type).
+         */
+        public int getSequence() { 
+          return this.sequence == null || this.sequence.isEmpty() ? 0 : this.sequence.getValue();
+        }
+
+        /**
+         * @param value Ranking of the diagnosis (for each type).
+         */
+        public AccountDiagnosisComponent setSequence(int value) { 
+            if (this.sequence == null)
+              this.sequence = new PositiveIntType();
+            this.sequence.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #condition} (The diagnosis relevant to the account.)
+         */
+        public CodeableReference getCondition() { 
+          if (this.condition == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountDiagnosisComponent.condition");
+            else if (Configuration.doAutoCreate())
+              this.condition = new CodeableReference(); // cc
+          return this.condition;
+        }
+
+        public boolean hasCondition() { 
+          return this.condition != null && !this.condition.isEmpty();
+        }
+
+        /**
+         * @param value {@link #condition} (The diagnosis relevant to the account.)
+         */
+        public AccountDiagnosisComponent setCondition(CodeableReference value) { 
+          this.condition = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #dateOfDiagnosis} (Ranking of the diagnosis (for each type).). This is the underlying object with id, value and extensions. The accessor "getDateOfDiagnosis" gives direct access to the value
+         */
+        public DateTimeType getDateOfDiagnosisElement() { 
+          if (this.dateOfDiagnosis == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountDiagnosisComponent.dateOfDiagnosis");
+            else if (Configuration.doAutoCreate())
+              this.dateOfDiagnosis = new DateTimeType(); // bb
+          return this.dateOfDiagnosis;
+        }
+
+        public boolean hasDateOfDiagnosisElement() { 
+          return this.dateOfDiagnosis != null && !this.dateOfDiagnosis.isEmpty();
+        }
+
+        public boolean hasDateOfDiagnosis() { 
+          return this.dateOfDiagnosis != null && !this.dateOfDiagnosis.isEmpty();
+        }
+
+        /**
+         * @param value {@link #dateOfDiagnosis} (Ranking of the diagnosis (for each type).). This is the underlying object with id, value and extensions. The accessor "getDateOfDiagnosis" gives direct access to the value
+         */
+        public AccountDiagnosisComponent setDateOfDiagnosisElement(DateTimeType value) { 
+          this.dateOfDiagnosis = value;
+          return this;
+        }
+
+        /**
+         * @return Ranking of the diagnosis (for each type).
+         */
+        public Date getDateOfDiagnosis() { 
+          return this.dateOfDiagnosis == null ? null : this.dateOfDiagnosis.getValue();
+        }
+
+        /**
+         * @param value Ranking of the diagnosis (for each type).
+         */
+        public AccountDiagnosisComponent setDateOfDiagnosis(Date value) { 
+          if (value == null)
+            this.dateOfDiagnosis = null;
+          else {
+            if (this.dateOfDiagnosis == null)
+              this.dateOfDiagnosis = new DateTimeType();
+            this.dateOfDiagnosis.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #type} (Type that this diagnosis has relevant to the account (e.g. admission, billing, discharge …).)
+         */
+        public List<CodeableConcept> getType() { 
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          return this.type;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public AccountDiagnosisComponent setType(List<CodeableConcept> theType) { 
+          this.type = theType;
+          return this;
+        }
+
+        public boolean hasType() { 
+          if (this.type == null)
+            return false;
+          for (CodeableConcept item : this.type)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addType() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          this.type.add(t);
+          return t;
+        }
+
+        public AccountDiagnosisComponent addType(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          this.type.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getTypeFirstRep() { 
+          if (getType().isEmpty()) {
+            addType();
+          }
+          return getType().get(0);
+        }
+
+        /**
+         * @return {@link #onAdmission} (Was the Diagnosis present on Admission in the related Encounter.). This is the underlying object with id, value and extensions. The accessor "getOnAdmission" gives direct access to the value
+         */
+        public BooleanType getOnAdmissionElement() { 
+          if (this.onAdmission == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountDiagnosisComponent.onAdmission");
+            else if (Configuration.doAutoCreate())
+              this.onAdmission = new BooleanType(); // bb
+          return this.onAdmission;
+        }
+
+        public boolean hasOnAdmissionElement() { 
+          return this.onAdmission != null && !this.onAdmission.isEmpty();
+        }
+
+        public boolean hasOnAdmission() { 
+          return this.onAdmission != null && !this.onAdmission.isEmpty();
+        }
+
+        /**
+         * @param value {@link #onAdmission} (Was the Diagnosis present on Admission in the related Encounter.). This is the underlying object with id, value and extensions. The accessor "getOnAdmission" gives direct access to the value
+         */
+        public AccountDiagnosisComponent setOnAdmissionElement(BooleanType value) { 
+          this.onAdmission = value;
+          return this;
+        }
+
+        /**
+         * @return Was the Diagnosis present on Admission in the related Encounter.
+         */
+        public boolean getOnAdmission() { 
+          return this.onAdmission == null || this.onAdmission.isEmpty() ? false : this.onAdmission.getValue();
+        }
+
+        /**
+         * @param value Was the Diagnosis present on Admission in the related Encounter.
+         */
+        public AccountDiagnosisComponent setOnAdmission(boolean value) { 
+            if (this.onAdmission == null)
+              this.onAdmission = new BooleanType();
+            this.onAdmission.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #packageCode} (The package code can be used to group diagnoses that may be priced or delivered as a single product. Such as DRGs.)
+         */
+        public List<CodeableConcept> getPackageCode() { 
+          if (this.packageCode == null)
+            this.packageCode = new ArrayList<CodeableConcept>();
+          return this.packageCode;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public AccountDiagnosisComponent setPackageCode(List<CodeableConcept> thePackageCode) { 
+          this.packageCode = thePackageCode;
+          return this;
+        }
+
+        public boolean hasPackageCode() { 
+          if (this.packageCode == null)
+            return false;
+          for (CodeableConcept item : this.packageCode)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addPackageCode() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.packageCode == null)
+            this.packageCode = new ArrayList<CodeableConcept>();
+          this.packageCode.add(t);
+          return t;
+        }
+
+        public AccountDiagnosisComponent addPackageCode(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.packageCode == null)
+            this.packageCode = new ArrayList<CodeableConcept>();
+          this.packageCode.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #packageCode}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getPackageCodeFirstRep() { 
+          if (getPackageCode().isEmpty()) {
+            addPackageCode();
+          }
+          return getPackageCode().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("sequence", "positiveInt", "Ranking of the diagnosis (for each type).", 0, 1, sequence));
+          children.add(new Property("condition", "CodeableReference(Condition)", "The diagnosis relevant to the account.", 0, 1, condition));
+          children.add(new Property("dateOfDiagnosis", "dateTime", "Ranking of the diagnosis (for each type).", 0, 1, dateOfDiagnosis));
+          children.add(new Property("type", "CodeableConcept", "Type that this diagnosis has relevant to the account (e.g. admission, billing, discharge …).", 0, java.lang.Integer.MAX_VALUE, type));
+          children.add(new Property("onAdmission", "boolean", "Was the Diagnosis present on Admission in the related Encounter.", 0, 1, onAdmission));
+          children.add(new Property("packageCode", "CodeableConcept", "The package code can be used to group diagnoses that may be priced or delivered as a single product. Such as DRGs.", 0, java.lang.Integer.MAX_VALUE, packageCode));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 1349547969: /*sequence*/  return new Property("sequence", "positiveInt", "Ranking of the diagnosis (for each type).", 0, 1, sequence);
+          case -861311717: /*condition*/  return new Property("condition", "CodeableReference(Condition)", "The diagnosis relevant to the account.", 0, 1, condition);
+          case -774562228: /*dateOfDiagnosis*/  return new Property("dateOfDiagnosis", "dateTime", "Ranking of the diagnosis (for each type).", 0, 1, dateOfDiagnosis);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Type that this diagnosis has relevant to the account (e.g. admission, billing, discharge …).", 0, java.lang.Integer.MAX_VALUE, type);
+          case -3386134: /*onAdmission*/  return new Property("onAdmission", "boolean", "Was the Diagnosis present on Admission in the related Encounter.", 0, 1, onAdmission);
+          case 908444499: /*packageCode*/  return new Property("packageCode", "CodeableConcept", "The package code can be used to group diagnoses that may be priced or delivered as a single product. Such as DRGs.", 0, java.lang.Integer.MAX_VALUE, packageCode);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 1349547969: /*sequence*/ return this.sequence == null ? new Base[0] : new Base[] {this.sequence}; // PositiveIntType
+        case -861311717: /*condition*/ return this.condition == null ? new Base[0] : new Base[] {this.condition}; // CodeableReference
+        case -774562228: /*dateOfDiagnosis*/ return this.dateOfDiagnosis == null ? new Base[0] : new Base[] {this.dateOfDiagnosis}; // DateTimeType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
+        case -3386134: /*onAdmission*/ return this.onAdmission == null ? new Base[0] : new Base[] {this.onAdmission}; // BooleanType
+        case 908444499: /*packageCode*/ return this.packageCode == null ? new Base[0] : this.packageCode.toArray(new Base[this.packageCode.size()]); // CodeableConcept
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 1349547969: // sequence
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
+        case -861311717: // condition
+          this.condition = TypeConvertor.castToCodeableReference(value); // CodeableReference
+          return value;
+        case -774562228: // dateOfDiagnosis
+          this.dateOfDiagnosis = TypeConvertor.castToDateTime(value); // DateTimeType
+          return value;
+        case 3575610: // type
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case -3386134: // onAdmission
+          this.onAdmission = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case 908444499: // packageCode
+          this.getPackageCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("sequence")) {
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("condition")) {
+          this.condition = TypeConvertor.castToCodeableReference(value); // CodeableReference
+        } else if (name.equals("dateOfDiagnosis")) {
+          this.dateOfDiagnosis = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("type")) {
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("onAdmission")) {
+          this.onAdmission = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("packageCode")) {
+          this.getPackageCode().add(TypeConvertor.castToCodeableConcept(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1349547969:  return getSequenceElement();
+        case -861311717:  return getCondition();
+        case -774562228:  return getDateOfDiagnosisElement();
+        case 3575610:  return addType(); 
+        case -3386134:  return getOnAdmissionElement();
+        case 908444499:  return addPackageCode(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1349547969: /*sequence*/ return new String[] {"positiveInt"};
+        case -861311717: /*condition*/ return new String[] {"CodeableReference"};
+        case -774562228: /*dateOfDiagnosis*/ return new String[] {"dateTime"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case -3386134: /*onAdmission*/ return new String[] {"boolean"};
+        case 908444499: /*packageCode*/ return new String[] {"CodeableConcept"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("sequence")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Account.diagnosis.sequence");
+        }
+        else if (name.equals("condition")) {
+          this.condition = new CodeableReference();
+          return this.condition;
+        }
+        else if (name.equals("dateOfDiagnosis")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Account.diagnosis.dateOfDiagnosis");
+        }
+        else if (name.equals("type")) {
+          return addType();
+        }
+        else if (name.equals("onAdmission")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Account.diagnosis.onAdmission");
+        }
+        else if (name.equals("packageCode")) {
+          return addPackageCode();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public AccountDiagnosisComponent copy() {
+        AccountDiagnosisComponent dst = new AccountDiagnosisComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AccountDiagnosisComponent dst) {
+        super.copyValues(dst);
+        dst.sequence = sequence == null ? null : sequence.copy();
+        dst.condition = condition == null ? null : condition.copy();
+        dst.dateOfDiagnosis = dateOfDiagnosis == null ? null : dateOfDiagnosis.copy();
+        if (type != null) {
+          dst.type = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : type)
+            dst.type.add(i.copy());
+        };
+        dst.onAdmission = onAdmission == null ? null : onAdmission.copy();
+        if (packageCode != null) {
+          dst.packageCode = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : packageCode)
+            dst.packageCode.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof AccountDiagnosisComponent))
+          return false;
+        AccountDiagnosisComponent o = (AccountDiagnosisComponent) other_;
+        return compareDeep(sequence, o.sequence, true) && compareDeep(condition, o.condition, true) && compareDeep(dateOfDiagnosis, o.dateOfDiagnosis, true)
+           && compareDeep(type, o.type, true) && compareDeep(onAdmission, o.onAdmission, true) && compareDeep(packageCode, o.packageCode, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof AccountDiagnosisComponent))
+          return false;
+        AccountDiagnosisComponent o = (AccountDiagnosisComponent) other_;
+        return compareValues(sequence, o.sequence, true) && compareValues(dateOfDiagnosis, o.dateOfDiagnosis, true)
+           && compareValues(onAdmission, o.onAdmission, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, condition, dateOfDiagnosis
+          , type, onAdmission, packageCode);
+      }
+
+  public String fhirType() {
+    return "Account.diagnosis";
+
+  }
+
+  }
+
+    @Block()
+    public static class AccountProcedureComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Ranking of the procedure (for each type).
+         */
+        @Child(name = "sequence", type = {PositiveIntType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Ranking of the procedure (for each type)", formalDefinition="Ranking of the procedure (for each type)." )
+        protected PositiveIntType sequence;
+
+        /**
+         * The procedure relevant to the account.
+         */
+        @Child(name = "code", type = {CodeableReference.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The procedure relevant to the account", formalDefinition="The procedure relevant to the account." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-code")
+        protected CodeableReference code;
+
+        /**
+         * Date of the procedure when using a coded procedure. If using a reference to a procedure, then the date on the procedure should be used.
+         */
+        @Child(name = "dateOfService", type = {DateTimeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Date of the procedure (when coded procedure)", formalDefinition="Date of the procedure when using a coded procedure. If using a reference to a procedure, then the date on the procedure should be used." )
+        protected DateTimeType dateOfService;
+
+        /**
+         * How this procedure value should be used in charging the account.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="How this procedure value should be used in charging the account", formalDefinition="How this procedure value should be used in charging the account." )
+        protected List<CodeableConcept> type;
+
+        /**
+         * The package code can be used to group procedures that may be priced or delivered as a single product. Such as DRGs.
+         */
+        @Child(name = "packageCode", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Package Code specific for billing", formalDefinition="The package code can be used to group procedures that may be priced or delivered as a single product. Such as DRGs." )
+        protected List<CodeableConcept> packageCode;
+
+        /**
+         * Any devices that were associated with the procedure relevant to the account.
+         */
+        @Child(name = "device", type = {Device.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="Any devices that were associated with the procedure", formalDefinition="Any devices that were associated with the procedure relevant to the account." )
+        protected List<Reference> device;
+
+        private static final long serialVersionUID = -797201673L;
+
+    /**
+     * Constructor
+     */
+      public AccountProcedureComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public AccountProcedureComponent(CodeableReference code) {
+        super();
+        this.setCode(code);
+      }
+
+        /**
+         * @return {@link #sequence} (Ranking of the procedure (for each type).). This is the underlying object with id, value and extensions. The accessor "getSequence" gives direct access to the value
+         */
+        public PositiveIntType getSequenceElement() { 
+          if (this.sequence == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountProcedureComponent.sequence");
+            else if (Configuration.doAutoCreate())
+              this.sequence = new PositiveIntType(); // bb
+          return this.sequence;
+        }
+
+        public boolean hasSequenceElement() { 
+          return this.sequence != null && !this.sequence.isEmpty();
+        }
+
+        public boolean hasSequence() { 
+          return this.sequence != null && !this.sequence.isEmpty();
+        }
+
+        /**
+         * @param value {@link #sequence} (Ranking of the procedure (for each type).). This is the underlying object with id, value and extensions. The accessor "getSequence" gives direct access to the value
+         */
+        public AccountProcedureComponent setSequenceElement(PositiveIntType value) { 
+          this.sequence = value;
+          return this;
+        }
+
+        /**
+         * @return Ranking of the procedure (for each type).
+         */
+        public int getSequence() { 
+          return this.sequence == null || this.sequence.isEmpty() ? 0 : this.sequence.getValue();
+        }
+
+        /**
+         * @param value Ranking of the procedure (for each type).
+         */
+        public AccountProcedureComponent setSequence(int value) { 
+            if (this.sequence == null)
+              this.sequence = new PositiveIntType();
+            this.sequence.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #code} (The procedure relevant to the account.)
+         */
+        public CodeableReference getCode() { 
+          if (this.code == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountProcedureComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new CodeableReference(); // cc
+          return this.code;
+        }
+
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        /**
+         * @param value {@link #code} (The procedure relevant to the account.)
+         */
+        public AccountProcedureComponent setCode(CodeableReference value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #dateOfService} (Date of the procedure when using a coded procedure. If using a reference to a procedure, then the date on the procedure should be used.). This is the underlying object with id, value and extensions. The accessor "getDateOfService" gives direct access to the value
+         */
+        public DateTimeType getDateOfServiceElement() { 
+          if (this.dateOfService == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountProcedureComponent.dateOfService");
+            else if (Configuration.doAutoCreate())
+              this.dateOfService = new DateTimeType(); // bb
+          return this.dateOfService;
+        }
+
+        public boolean hasDateOfServiceElement() { 
+          return this.dateOfService != null && !this.dateOfService.isEmpty();
+        }
+
+        public boolean hasDateOfService() { 
+          return this.dateOfService != null && !this.dateOfService.isEmpty();
+        }
+
+        /**
+         * @param value {@link #dateOfService} (Date of the procedure when using a coded procedure. If using a reference to a procedure, then the date on the procedure should be used.). This is the underlying object with id, value and extensions. The accessor "getDateOfService" gives direct access to the value
+         */
+        public AccountProcedureComponent setDateOfServiceElement(DateTimeType value) { 
+          this.dateOfService = value;
+          return this;
+        }
+
+        /**
+         * @return Date of the procedure when using a coded procedure. If using a reference to a procedure, then the date on the procedure should be used.
+         */
+        public Date getDateOfService() { 
+          return this.dateOfService == null ? null : this.dateOfService.getValue();
+        }
+
+        /**
+         * @param value Date of the procedure when using a coded procedure. If using a reference to a procedure, then the date on the procedure should be used.
+         */
+        public AccountProcedureComponent setDateOfService(Date value) { 
+          if (value == null)
+            this.dateOfService = null;
+          else {
+            if (this.dateOfService == null)
+              this.dateOfService = new DateTimeType();
+            this.dateOfService.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #type} (How this procedure value should be used in charging the account.)
+         */
+        public List<CodeableConcept> getType() { 
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          return this.type;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public AccountProcedureComponent setType(List<CodeableConcept> theType) { 
+          this.type = theType;
+          return this;
+        }
+
+        public boolean hasType() { 
+          if (this.type == null)
+            return false;
+          for (CodeableConcept item : this.type)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addType() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          this.type.add(t);
+          return t;
+        }
+
+        public AccountProcedureComponent addType(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          this.type.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getTypeFirstRep() { 
+          if (getType().isEmpty()) {
+            addType();
+          }
+          return getType().get(0);
+        }
+
+        /**
+         * @return {@link #packageCode} (The package code can be used to group procedures that may be priced or delivered as a single product. Such as DRGs.)
+         */
+        public List<CodeableConcept> getPackageCode() { 
+          if (this.packageCode == null)
+            this.packageCode = new ArrayList<CodeableConcept>();
+          return this.packageCode;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public AccountProcedureComponent setPackageCode(List<CodeableConcept> thePackageCode) { 
+          this.packageCode = thePackageCode;
+          return this;
+        }
+
+        public boolean hasPackageCode() { 
+          if (this.packageCode == null)
+            return false;
+          for (CodeableConcept item : this.packageCode)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addPackageCode() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.packageCode == null)
+            this.packageCode = new ArrayList<CodeableConcept>();
+          this.packageCode.add(t);
+          return t;
+        }
+
+        public AccountProcedureComponent addPackageCode(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.packageCode == null)
+            this.packageCode = new ArrayList<CodeableConcept>();
+          this.packageCode.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #packageCode}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getPackageCodeFirstRep() { 
+          if (getPackageCode().isEmpty()) {
+            addPackageCode();
+          }
+          return getPackageCode().get(0);
+        }
+
+        /**
+         * @return {@link #device} (Any devices that were associated with the procedure relevant to the account.)
+         */
+        public List<Reference> getDevice() { 
+          if (this.device == null)
+            this.device = new ArrayList<Reference>();
+          return this.device;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public AccountProcedureComponent setDevice(List<Reference> theDevice) { 
+          this.device = theDevice;
+          return this;
+        }
+
+        public boolean hasDevice() { 
+          if (this.device == null)
+            return false;
+          for (Reference item : this.device)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Reference addDevice() { //3
+          Reference t = new Reference();
+          if (this.device == null)
+            this.device = new ArrayList<Reference>();
+          this.device.add(t);
+          return t;
+        }
+
+        public AccountProcedureComponent addDevice(Reference t) { //3
+          if (t == null)
+            return this;
+          if (this.device == null)
+            this.device = new ArrayList<Reference>();
+          this.device.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #device}, creating it if it does not already exist {3}
+         */
+        public Reference getDeviceFirstRep() { 
+          if (getDevice().isEmpty()) {
+            addDevice();
+          }
+          return getDevice().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("sequence", "positiveInt", "Ranking of the procedure (for each type).", 0, 1, sequence));
+          children.add(new Property("code", "CodeableReference(Procedure)", "The procedure relevant to the account.", 0, 1, code));
+          children.add(new Property("dateOfService", "dateTime", "Date of the procedure when using a coded procedure. If using a reference to a procedure, then the date on the procedure should be used.", 0, 1, dateOfService));
+          children.add(new Property("type", "CodeableConcept", "How this procedure value should be used in charging the account.", 0, java.lang.Integer.MAX_VALUE, type));
+          children.add(new Property("packageCode", "CodeableConcept", "The package code can be used to group procedures that may be priced or delivered as a single product. Such as DRGs.", 0, java.lang.Integer.MAX_VALUE, packageCode));
+          children.add(new Property("device", "Reference(Device)", "Any devices that were associated with the procedure relevant to the account.", 0, java.lang.Integer.MAX_VALUE, device));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 1349547969: /*sequence*/  return new Property("sequence", "positiveInt", "Ranking of the procedure (for each type).", 0, 1, sequence);
+          case 3059181: /*code*/  return new Property("code", "CodeableReference(Procedure)", "The procedure relevant to the account.", 0, 1, code);
+          case -328510256: /*dateOfService*/  return new Property("dateOfService", "dateTime", "Date of the procedure when using a coded procedure. If using a reference to a procedure, then the date on the procedure should be used.", 0, 1, dateOfService);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "How this procedure value should be used in charging the account.", 0, java.lang.Integer.MAX_VALUE, type);
+          case 908444499: /*packageCode*/  return new Property("packageCode", "CodeableConcept", "The package code can be used to group procedures that may be priced or delivered as a single product. Such as DRGs.", 0, java.lang.Integer.MAX_VALUE, packageCode);
+          case -1335157162: /*device*/  return new Property("device", "Reference(Device)", "Any devices that were associated with the procedure relevant to the account.", 0, java.lang.Integer.MAX_VALUE, device);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 1349547969: /*sequence*/ return this.sequence == null ? new Base[0] : new Base[] {this.sequence}; // PositiveIntType
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableReference
+        case -328510256: /*dateOfService*/ return this.dateOfService == null ? new Base[0] : new Base[] {this.dateOfService}; // DateTimeType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
+        case 908444499: /*packageCode*/ return this.packageCode == null ? new Base[0] : this.packageCode.toArray(new Base[this.packageCode.size()]); // CodeableConcept
+        case -1335157162: /*device*/ return this.device == null ? new Base[0] : this.device.toArray(new Base[this.device.size()]); // Reference
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 1349547969: // sequence
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
+        case 3059181: // code
+          this.code = TypeConvertor.castToCodeableReference(value); // CodeableReference
+          return value;
+        case -328510256: // dateOfService
+          this.dateOfService = TypeConvertor.castToDateTime(value); // DateTimeType
+          return value;
+        case 3575610: // type
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case 908444499: // packageCode
+          this.getPackageCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case -1335157162: // device
+          this.getDevice().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("sequence")) {
+          this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("code")) {
+          this.code = TypeConvertor.castToCodeableReference(value); // CodeableReference
+        } else if (name.equals("dateOfService")) {
+          this.dateOfService = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("type")) {
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("packageCode")) {
+          this.getPackageCode().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("device")) {
+          this.getDevice().add(TypeConvertor.castToReference(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1349547969:  return getSequenceElement();
+        case 3059181:  return getCode();
+        case -328510256:  return getDateOfServiceElement();
+        case 3575610:  return addType(); 
+        case 908444499:  return addPackageCode(); 
+        case -1335157162:  return addDevice(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1349547969: /*sequence*/ return new String[] {"positiveInt"};
+        case 3059181: /*code*/ return new String[] {"CodeableReference"};
+        case -328510256: /*dateOfService*/ return new String[] {"dateTime"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 908444499: /*packageCode*/ return new String[] {"CodeableConcept"};
+        case -1335157162: /*device*/ return new String[] {"Reference"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("sequence")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Account.procedure.sequence");
+        }
+        else if (name.equals("code")) {
+          this.code = new CodeableReference();
+          return this.code;
+        }
+        else if (name.equals("dateOfService")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Account.procedure.dateOfService");
+        }
+        else if (name.equals("type")) {
+          return addType();
+        }
+        else if (name.equals("packageCode")) {
+          return addPackageCode();
+        }
+        else if (name.equals("device")) {
+          return addDevice();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public AccountProcedureComponent copy() {
+        AccountProcedureComponent dst = new AccountProcedureComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AccountProcedureComponent dst) {
+        super.copyValues(dst);
+        dst.sequence = sequence == null ? null : sequence.copy();
+        dst.code = code == null ? null : code.copy();
+        dst.dateOfService = dateOfService == null ? null : dateOfService.copy();
+        if (type != null) {
+          dst.type = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : type)
+            dst.type.add(i.copy());
+        };
+        if (packageCode != null) {
+          dst.packageCode = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : packageCode)
+            dst.packageCode.add(i.copy());
+        };
+        if (device != null) {
+          dst.device = new ArrayList<Reference>();
+          for (Reference i : device)
+            dst.device.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof AccountProcedureComponent))
+          return false;
+        AccountProcedureComponent o = (AccountProcedureComponent) other_;
+        return compareDeep(sequence, o.sequence, true) && compareDeep(code, o.code, true) && compareDeep(dateOfService, o.dateOfService, true)
+           && compareDeep(type, o.type, true) && compareDeep(packageCode, o.packageCode, true) && compareDeep(device, o.device, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof AccountProcedureComponent))
+          return false;
+        AccountProcedureComponent o = (AccountProcedureComponent) other_;
+        return compareValues(sequence, o.sequence, true) && compareValues(dateOfService, o.dateOfService, true)
+          ;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, code, dateOfService
+          , type, packageCode, device);
+      }
+
+  public String fhirType() {
+    return "Account.procedure";
+
+  }
+
+  }
+
+    @Block()
     public static class AccountRelatedAccountComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Relationship of the associated Account.
@@ -1313,9 +2378,9 @@ A coverage may only be responsible for specific types of charges, and the sequen
     /**
      * Provides additional information about what the account tracks and how it is used.
      */
-    @Child(name = "description", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Explanation of purpose/use", formalDefinition="Provides additional information about what the account tracks and how it is used." )
-    protected StringType description;
+    protected MarkdownType description;
 
     /**
      * The parties responsible for balancing the account if other payment options fall short.
@@ -1325,37 +2390,49 @@ A coverage may only be responsible for specific types of charges, and the sequen
     protected List<GuarantorComponent> guarantor;
 
     /**
+     * When using an account for billing a specific Encounter the set of diagnoses that are relevant for billing are stored here on the account where they are able to be sequenced appropriately prior to processing to produce claim(s).
+     */
+    @Child(name = "diagnosis", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The list of diagnoses relevant to this account", formalDefinition="When using an account for billing a specific Encounter the set of diagnoses that are relevant for billing are stored here on the account where they are able to be sequenced appropriately prior to processing to produce claim(s)." )
+    protected List<AccountDiagnosisComponent> diagnosis;
+
+    /**
+     * When using an account for billing a specific Encounter the set of procedures that are relevant for billing are stored here on the account where they are able to be sequenced appropriately prior to processing to produce claim(s).
+     */
+    @Child(name = "procedure", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The list of procedures relevant to this account", formalDefinition="When using an account for billing a specific Encounter the set of procedures that are relevant for billing are stored here on the account where they are able to be sequenced appropriately prior to processing to produce claim(s)." )
+    protected List<AccountProcedureComponent> procedure;
+
+    /**
      * Other associated accounts related to this account.
      */
-    @Child(name = "relatedAccount", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedAccount", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Other associated accounts related to this account", formalDefinition="Other associated accounts related to this account." )
     protected List<AccountRelatedAccountComponent> relatedAccount;
 
     /**
      * The default currency for the account.
      */
-    @Child(name = "currency", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "currency", type = {CodeableConcept.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The base or default currency", formalDefinition="The default currency for the account." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/currencies")
     protected CodeableConcept currency;
 
     /**
-     * The calculated account balances - these are calculated and processed by the finance system.
-
-The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.
+     * The calculated account balances - these are calculated and processed by the finance system.The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.
      */
-    @Child(name = "balance", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "balance", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Calculated account balance(s)", formalDefinition="The calculated account balances - these are calculated and processed by the finance system.\r\rThe balances with a `term` that is not current are usually generated/updated by an invoicing or similar process." )
     protected List<AccountBalanceComponent> balance;
 
     /**
      * Time the balance amount was calculated.
      */
-    @Child(name = "calculatedAt", type = {InstantType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "calculatedAt", type = {InstantType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Time the balance amount was calculated", formalDefinition="Time the balance amount was calculated." )
     protected InstantType calculatedAt;
 
-    private static final long serialVersionUID = -589833144L;
+    private static final long serialVersionUID = -924752626L;
 
   /**
    * Constructor
@@ -1724,12 +2801,12 @@ The balances with a `term` that is not current are usually generated/updated by 
     /**
      * @return {@link #description} (Provides additional information about what the account tracks and how it is used.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public StringType getDescriptionElement() { 
+    public MarkdownType getDescriptionElement() { 
       if (this.description == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Account.description");
         else if (Configuration.doAutoCreate())
-          this.description = new StringType(); // bb
+          this.description = new MarkdownType(); // bb
       return this.description;
     }
 
@@ -1744,7 +2821,7 @@ The balances with a `term` that is not current are usually generated/updated by 
     /**
      * @param value {@link #description} (Provides additional information about what the account tracks and how it is used.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public Account setDescriptionElement(StringType value) { 
+    public Account setDescriptionElement(MarkdownType value) { 
       this.description = value;
       return this;
     }
@@ -1764,7 +2841,7 @@ The balances with a `term` that is not current are usually generated/updated by 
         this.description = null;
       else {
         if (this.description == null)
-          this.description = new StringType();
+          this.description = new MarkdownType();
         this.description.setValue(value);
       }
       return this;
@@ -1821,6 +2898,112 @@ The balances with a `term` that is not current are usually generated/updated by 
         addGuarantor();
       }
       return getGuarantor().get(0);
+    }
+
+    /**
+     * @return {@link #diagnosis} (When using an account for billing a specific Encounter the set of diagnoses that are relevant for billing are stored here on the account where they are able to be sequenced appropriately prior to processing to produce claim(s).)
+     */
+    public List<AccountDiagnosisComponent> getDiagnosis() { 
+      if (this.diagnosis == null)
+        this.diagnosis = new ArrayList<AccountDiagnosisComponent>();
+      return this.diagnosis;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Account setDiagnosis(List<AccountDiagnosisComponent> theDiagnosis) { 
+      this.diagnosis = theDiagnosis;
+      return this;
+    }
+
+    public boolean hasDiagnosis() { 
+      if (this.diagnosis == null)
+        return false;
+      for (AccountDiagnosisComponent item : this.diagnosis)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public AccountDiagnosisComponent addDiagnosis() { //3
+      AccountDiagnosisComponent t = new AccountDiagnosisComponent();
+      if (this.diagnosis == null)
+        this.diagnosis = new ArrayList<AccountDiagnosisComponent>();
+      this.diagnosis.add(t);
+      return t;
+    }
+
+    public Account addDiagnosis(AccountDiagnosisComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.diagnosis == null)
+        this.diagnosis = new ArrayList<AccountDiagnosisComponent>();
+      this.diagnosis.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #diagnosis}, creating it if it does not already exist {3}
+     */
+    public AccountDiagnosisComponent getDiagnosisFirstRep() { 
+      if (getDiagnosis().isEmpty()) {
+        addDiagnosis();
+      }
+      return getDiagnosis().get(0);
+    }
+
+    /**
+     * @return {@link #procedure} (When using an account for billing a specific Encounter the set of procedures that are relevant for billing are stored here on the account where they are able to be sequenced appropriately prior to processing to produce claim(s).)
+     */
+    public List<AccountProcedureComponent> getProcedure() { 
+      if (this.procedure == null)
+        this.procedure = new ArrayList<AccountProcedureComponent>();
+      return this.procedure;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Account setProcedure(List<AccountProcedureComponent> theProcedure) { 
+      this.procedure = theProcedure;
+      return this;
+    }
+
+    public boolean hasProcedure() { 
+      if (this.procedure == null)
+        return false;
+      for (AccountProcedureComponent item : this.procedure)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public AccountProcedureComponent addProcedure() { //3
+      AccountProcedureComponent t = new AccountProcedureComponent();
+      if (this.procedure == null)
+        this.procedure = new ArrayList<AccountProcedureComponent>();
+      this.procedure.add(t);
+      return t;
+    }
+
+    public Account addProcedure(AccountProcedureComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.procedure == null)
+        this.procedure = new ArrayList<AccountProcedureComponent>();
+      this.procedure.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #procedure}, creating it if it does not already exist {3}
+     */
+    public AccountProcedureComponent getProcedureFirstRep() { 
+      if (getProcedure().isEmpty()) {
+        addProcedure();
+      }
+      return getProcedure().get(0);
     }
 
     /**
@@ -1901,9 +3084,7 @@ The balances with a `term` that is not current are usually generated/updated by 
     }
 
     /**
-     * @return {@link #balance} (The calculated account balances - these are calculated and processed by the finance system.
-
-The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.)
+     * @return {@link #balance} (The calculated account balances - these are calculated and processed by the finance system.The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.)
      */
     public List<AccountBalanceComponent> getBalance() { 
       if (this.balance == null)
@@ -2015,8 +3196,10 @@ The balances with a `term` that is not current are usually generated/updated by 
         children.add(new Property("servicePeriod", "Period", "The date range of services associated with this account.", 0, 1, servicePeriod));
         children.add(new Property("coverage", "", "The party(s) that are responsible for covering the payment of this account, and what order should they be applied to the account.", 0, java.lang.Integer.MAX_VALUE, coverage));
         children.add(new Property("owner", "Reference(Organization)", "Indicates the service area, hospital, department, etc. with responsibility for managing the Account.", 0, 1, owner));
-        children.add(new Property("description", "string", "Provides additional information about what the account tracks and how it is used.", 0, 1, description));
+        children.add(new Property("description", "markdown", "Provides additional information about what the account tracks and how it is used.", 0, 1, description));
         children.add(new Property("guarantor", "", "The parties responsible for balancing the account if other payment options fall short.", 0, java.lang.Integer.MAX_VALUE, guarantor));
+        children.add(new Property("diagnosis", "", "When using an account for billing a specific Encounter the set of diagnoses that are relevant for billing are stored here on the account where they are able to be sequenced appropriately prior to processing to produce claim(s).", 0, java.lang.Integer.MAX_VALUE, diagnosis));
+        children.add(new Property("procedure", "", "When using an account for billing a specific Encounter the set of procedures that are relevant for billing are stored here on the account where they are able to be sequenced appropriately prior to processing to produce claim(s).", 0, java.lang.Integer.MAX_VALUE, procedure));
         children.add(new Property("relatedAccount", "", "Other associated accounts related to this account.", 0, java.lang.Integer.MAX_VALUE, relatedAccount));
         children.add(new Property("currency", "CodeableConcept", "The default currency for the account.", 0, 1, currency));
         children.add(new Property("balance", "", "The calculated account balances - these are calculated and processed by the finance system.\r\rThe balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.", 0, java.lang.Integer.MAX_VALUE, balance));
@@ -2035,8 +3218,10 @@ The balances with a `term` that is not current are usually generated/updated by 
         case 2129104086: /*servicePeriod*/  return new Property("servicePeriod", "Period", "The date range of services associated with this account.", 0, 1, servicePeriod);
         case -351767064: /*coverage*/  return new Property("coverage", "", "The party(s) that are responsible for covering the payment of this account, and what order should they be applied to the account.", 0, java.lang.Integer.MAX_VALUE, coverage);
         case 106164915: /*owner*/  return new Property("owner", "Reference(Organization)", "Indicates the service area, hospital, department, etc. with responsibility for managing the Account.", 0, 1, owner);
-        case -1724546052: /*description*/  return new Property("description", "string", "Provides additional information about what the account tracks and how it is used.", 0, 1, description);
+        case -1724546052: /*description*/  return new Property("description", "markdown", "Provides additional information about what the account tracks and how it is used.", 0, 1, description);
         case -188629045: /*guarantor*/  return new Property("guarantor", "", "The parties responsible for balancing the account if other payment options fall short.", 0, java.lang.Integer.MAX_VALUE, guarantor);
+        case 1196993265: /*diagnosis*/  return new Property("diagnosis", "", "When using an account for billing a specific Encounter the set of diagnoses that are relevant for billing are stored here on the account where they are able to be sequenced appropriately prior to processing to produce claim(s).", 0, java.lang.Integer.MAX_VALUE, diagnosis);
+        case -1095204141: /*procedure*/  return new Property("procedure", "", "When using an account for billing a specific Encounter the set of procedures that are relevant for billing are stored here on the account where they are able to be sequenced appropriately prior to processing to produce claim(s).", 0, java.lang.Integer.MAX_VALUE, procedure);
         case 962039682: /*relatedAccount*/  return new Property("relatedAccount", "", "Other associated accounts related to this account.", 0, java.lang.Integer.MAX_VALUE, relatedAccount);
         case 575402001: /*currency*/  return new Property("currency", "CodeableConcept", "The default currency for the account.", 0, 1, currency);
         case -339185956: /*balance*/  return new Property("balance", "", "The calculated account balances - these are calculated and processed by the finance system.\r\rThe balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.", 0, java.lang.Integer.MAX_VALUE, balance);
@@ -2058,8 +3243,10 @@ The balances with a `term` that is not current are usually generated/updated by 
         case 2129104086: /*servicePeriod*/ return this.servicePeriod == null ? new Base[0] : new Base[] {this.servicePeriod}; // Period
         case -351767064: /*coverage*/ return this.coverage == null ? new Base[0] : this.coverage.toArray(new Base[this.coverage.size()]); // CoverageComponent
         case 106164915: /*owner*/ return this.owner == null ? new Base[0] : new Base[] {this.owner}; // Reference
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case -188629045: /*guarantor*/ return this.guarantor == null ? new Base[0] : this.guarantor.toArray(new Base[this.guarantor.size()]); // GuarantorComponent
+        case 1196993265: /*diagnosis*/ return this.diagnosis == null ? new Base[0] : this.diagnosis.toArray(new Base[this.diagnosis.size()]); // AccountDiagnosisComponent
+        case -1095204141: /*procedure*/ return this.procedure == null ? new Base[0] : this.procedure.toArray(new Base[this.procedure.size()]); // AccountProcedureComponent
         case 962039682: /*relatedAccount*/ return this.relatedAccount == null ? new Base[0] : this.relatedAccount.toArray(new Base[this.relatedAccount.size()]); // AccountRelatedAccountComponent
         case 575402001: /*currency*/ return this.currency == null ? new Base[0] : new Base[] {this.currency}; // CodeableConcept
         case -339185956: /*balance*/ return this.balance == null ? new Base[0] : this.balance.toArray(new Base[this.balance.size()]); // AccountBalanceComponent
@@ -2101,10 +3288,16 @@ The balances with a `term` that is not current are usually generated/updated by 
           this.owner = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -188629045: // guarantor
           this.getGuarantor().add((GuarantorComponent) value); // GuarantorComponent
+          return value;
+        case 1196993265: // diagnosis
+          this.getDiagnosis().add((AccountDiagnosisComponent) value); // AccountDiagnosisComponent
+          return value;
+        case -1095204141: // procedure
+          this.getProcedure().add((AccountProcedureComponent) value); // AccountProcedureComponent
           return value;
         case 962039682: // relatedAccount
           this.getRelatedAccount().add((AccountRelatedAccountComponent) value); // AccountRelatedAccountComponent
@@ -2145,9 +3338,13 @@ The balances with a `term` that is not current are usually generated/updated by 
         } else if (name.equals("owner")) {
           this.owner = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("guarantor")) {
           this.getGuarantor().add((GuarantorComponent) value);
+        } else if (name.equals("diagnosis")) {
+          this.getDiagnosis().add((AccountDiagnosisComponent) value);
+        } else if (name.equals("procedure")) {
+          this.getProcedure().add((AccountProcedureComponent) value);
         } else if (name.equals("relatedAccount")) {
           this.getRelatedAccount().add((AccountRelatedAccountComponent) value);
         } else if (name.equals("currency")) {
@@ -2175,6 +3372,8 @@ The balances with a `term` that is not current are usually generated/updated by 
         case 106164915:  return getOwner();
         case -1724546052:  return getDescriptionElement();
         case -188629045:  return addGuarantor(); 
+        case 1196993265:  return addDiagnosis(); 
+        case -1095204141:  return addProcedure(); 
         case 962039682:  return addRelatedAccount(); 
         case 575402001:  return getCurrency();
         case -339185956:  return addBalance(); 
@@ -2196,8 +3395,10 @@ The balances with a `term` that is not current are usually generated/updated by 
         case 2129104086: /*servicePeriod*/ return new String[] {"Period"};
         case -351767064: /*coverage*/ return new String[] {};
         case 106164915: /*owner*/ return new String[] {"Reference"};
-        case -1724546052: /*description*/ return new String[] {"string"};
+        case -1724546052: /*description*/ return new String[] {"markdown"};
         case -188629045: /*guarantor*/ return new String[] {};
+        case 1196993265: /*diagnosis*/ return new String[] {};
+        case -1095204141: /*procedure*/ return new String[] {};
         case 962039682: /*relatedAccount*/ return new String[] {};
         case 575402001: /*currency*/ return new String[] {"CodeableConcept"};
         case -339185956: /*balance*/ return new String[] {};
@@ -2245,6 +3446,12 @@ The balances with a `term` that is not current are usually generated/updated by 
         }
         else if (name.equals("guarantor")) {
           return addGuarantor();
+        }
+        else if (name.equals("diagnosis")) {
+          return addDiagnosis();
+        }
+        else if (name.equals("procedure")) {
+          return addProcedure();
         }
         else if (name.equals("relatedAccount")) {
           return addRelatedAccount();
@@ -2303,6 +3510,16 @@ The balances with a `term` that is not current are usually generated/updated by 
           for (GuarantorComponent i : guarantor)
             dst.guarantor.add(i.copy());
         };
+        if (diagnosis != null) {
+          dst.diagnosis = new ArrayList<AccountDiagnosisComponent>();
+          for (AccountDiagnosisComponent i : diagnosis)
+            dst.diagnosis.add(i.copy());
+        };
+        if (procedure != null) {
+          dst.procedure = new ArrayList<AccountProcedureComponent>();
+          for (AccountProcedureComponent i : procedure)
+            dst.procedure.add(i.copy());
+        };
         if (relatedAccount != null) {
           dst.relatedAccount = new ArrayList<AccountRelatedAccountComponent>();
           for (AccountRelatedAccountComponent i : relatedAccount)
@@ -2332,8 +3549,9 @@ The balances with a `term` that is not current are usually generated/updated by 
            && compareDeep(type, o.type, true) && compareDeep(name, o.name, true) && compareDeep(subject, o.subject, true)
            && compareDeep(servicePeriod, o.servicePeriod, true) && compareDeep(coverage, o.coverage, true)
            && compareDeep(owner, o.owner, true) && compareDeep(description, o.description, true) && compareDeep(guarantor, o.guarantor, true)
-           && compareDeep(relatedAccount, o.relatedAccount, true) && compareDeep(currency, o.currency, true)
-           && compareDeep(balance, o.balance, true) && compareDeep(calculatedAt, o.calculatedAt, true);
+           && compareDeep(diagnosis, o.diagnosis, true) && compareDeep(procedure, o.procedure, true) && compareDeep(relatedAccount, o.relatedAccount, true)
+           && compareDeep(currency, o.currency, true) && compareDeep(balance, o.balance, true) && compareDeep(calculatedAt, o.calculatedAt, true)
+          ;
       }
 
       @Override
@@ -2350,7 +3568,7 @@ The balances with a `term` that is not current are usually generated/updated by 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, billingStatus
           , type, name, subject, servicePeriod, coverage, owner, description, guarantor
-          , relatedAccount, currency, balance, calculatedAt);
+          , diagnosis, procedure, relatedAccount, currency, balance, calculatedAt);
       }
 
   @Override
@@ -2383,26 +3601,6 @@ The balances with a `term` that is not current are usually generated/updated by 
    * the path value of "<b>Account:guarantor</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_GUARANTOR = new ca.uhn.fhir.model.api.Include("Account:guarantor").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Account number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Account.identifier", description="Account number", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Account number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>name</b>
@@ -2449,32 +3647,6 @@ The balances with a `term` that is not current are usually generated/updated by 
    * the path value of "<b>Account:owner</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_OWNER = new ca.uhn.fhir.model.api.Include("Account:owner").toLocked();
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>The entity that caused the expenses</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Account.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="Account.subject.where(resolve() is Patient)", description="The entity that caused the expenses", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>The entity that caused the expenses</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Account.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Account:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Account:patient").toLocked();
 
  /**
    * Search parameter: <b>period</b>
@@ -2569,24 +3741,367 @@ The balances with a `term` that is not current are usually generated/updated by 
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Account:subject").toLocked();
 
  /**
-   * Search parameter: <b>type</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>E.g. patient, expense, depreciation</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): Account number
+* [AdverseEvent](adverseevent.html): Business identifier for the event
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [Appointment](appointment.html): An Identifier of the Appointment
+* [AppointmentResponse](appointmentresponse.html): An Identifier in this appointment response
+* [Basic](basic.html): Business identifier
+* [BodyStructure](bodystructure.html): Bodystructure identifier
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [ChargeItem](chargeitem.html): Business Identifier for item
+* [Claim](claim.html): The primary identifier of the financial resource
+* [ClaimResponse](claimresponse.html): The identity of the ClaimResponse
+* [ClinicalImpression](clinicalimpression.html): Business identifier
+* [Communication](communication.html): Unique identifier
+* [CommunicationRequest](communicationrequest.html): Unique identifier
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [Contract](contract.html): The identity of the contract
+* [Coverage](coverage.html): The primary identifier of the insured and the coverage
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The business identifier of the Eligibility
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The business identifier
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DeviceUsage](deviceusage.html): Search by identifier
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentReference](documentreference.html): Identifier of the attachment binary
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EnrollmentRequest](enrollmentrequest.html): The business identifier of the Enrollment
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [ExplanationOfBenefit](explanationofbenefit.html): The business identifier of the Explanation of Benefit
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Flag](flag.html): Business identifier
+* [Goal](goal.html): External Ids for this goal
+* [GuidanceResponse](guidanceresponse.html): The identifier of the guidance response
+* [ImagingSelection](imagingselection.html): Identifiers for the imaging selection
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
+* [Immunization](immunization.html): Business identifier
+* [ImmunizationEvaluation](immunizationevaluation.html): ID of the evaluation
+* [ImmunizationRecommendation](immunizationrecommendation.html): Business identifier
+* [Invoice](invoice.html): Business Identifier for item
+* [List](list.html): Business identifier
+* [MeasureReport](measurereport.html): External identifier of the measure report to be returned
+* [Medication](medication.html): Returns medications with this external identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationStatement](medicationstatement.html): Return statements with this external identifier
+* [MolecularSequence](molecularsequence.html): The unique identity for a particular sequence
+* [NutritionIntake](nutritionintake.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Person](person.html): A person Identifier
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [QuestionnaireResponse](questionnaireresponse.html): The unique identifier for the questionnaire response
+* [RelatedPerson](relatedperson.html): An Identifier of the RelatedPerson
+* [RequestOrchestration](requestorchestration.html): External identifiers for the request orchestration
+* [ResearchSubject](researchsubject.html): Business Identifier for research subject in a study
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [Specimen](specimen.html): The unique identifier associated with the specimen
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [Task](task.html): Search for a task instance by its business identifier
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Account.type</b><br>
+   * Path: <b>Account.identifier | AdverseEvent.identifier | AllergyIntolerance.identifier | Appointment.identifier | AppointmentResponse.identifier | Basic.identifier | BodyStructure.identifier | CarePlan.identifier | CareTeam.identifier | ChargeItem.identifier | Claim.identifier | ClaimResponse.identifier | ClinicalImpression.identifier | Communication.identifier | CommunicationRequest.identifier | Composition.identifier | Condition.identifier | Consent.identifier | Contract.identifier | Coverage.identifier | CoverageEligibilityRequest.identifier | CoverageEligibilityResponse.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DeviceUsage.identifier | DiagnosticReport.identifier | DocumentReference.identifier | Encounter.identifier | EnrollmentRequest.identifier | EpisodeOfCare.identifier | ExplanationOfBenefit.identifier | FamilyMemberHistory.identifier | Flag.identifier | Goal.identifier | GuidanceResponse.identifier | ImagingSelection.identifier | ImagingStudy.identifier | Immunization.identifier | ImmunizationEvaluation.identifier | ImmunizationRecommendation.identifier | Invoice.identifier | List.identifier | MeasureReport.identifier | Medication.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationStatement.identifier | MolecularSequence.identifier | NutritionIntake.identifier | NutritionOrder.identifier | Observation.identifier | Person.identifier | Procedure.identifier | QuestionnaireResponse.identifier | RelatedPerson.identifier | RequestOrchestration.identifier | ResearchSubject.identifier | RiskAssessment.identifier | ServiceRequest.identifier | Specimen.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | Task.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="type", path="Account.type", description="E.g. patient, expense, depreciation", type="token" )
+  @SearchParamDefinition(name="identifier", path="Account.identifier | AdverseEvent.identifier | AllergyIntolerance.identifier | Appointment.identifier | AppointmentResponse.identifier | Basic.identifier | BodyStructure.identifier | CarePlan.identifier | CareTeam.identifier | ChargeItem.identifier | Claim.identifier | ClaimResponse.identifier | ClinicalImpression.identifier | Communication.identifier | CommunicationRequest.identifier | Composition.identifier | Condition.identifier | Consent.identifier | Contract.identifier | Coverage.identifier | CoverageEligibilityRequest.identifier | CoverageEligibilityResponse.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DeviceUsage.identifier | DiagnosticReport.identifier | DocumentReference.identifier | Encounter.identifier | EnrollmentRequest.identifier | EpisodeOfCare.identifier | ExplanationOfBenefit.identifier | FamilyMemberHistory.identifier | Flag.identifier | Goal.identifier | GuidanceResponse.identifier | ImagingSelection.identifier | ImagingStudy.identifier | Immunization.identifier | ImmunizationEvaluation.identifier | ImmunizationRecommendation.identifier | Invoice.identifier | List.identifier | MeasureReport.identifier | Medication.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationStatement.identifier | MolecularSequence.identifier | NutritionIntake.identifier | NutritionOrder.identifier | Observation.identifier | Person.identifier | Procedure.identifier | QuestionnaireResponse.identifier | RelatedPerson.identifier | RequestOrchestration.identifier | ResearchSubject.identifier | RiskAssessment.identifier | ServiceRequest.identifier | Specimen.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | Task.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [Account](account.html): Account number\r\n* [AdverseEvent](adverseevent.html): Business identifier for the event\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [Appointment](appointment.html): An Identifier of the Appointment\r\n* [AppointmentResponse](appointmentresponse.html): An Identifier in this appointment response\r\n* [Basic](basic.html): Business identifier\r\n* [BodyStructure](bodystructure.html): Bodystructure identifier\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [ChargeItem](chargeitem.html): Business Identifier for item\r\n* [Claim](claim.html): The primary identifier of the financial resource\r\n* [ClaimResponse](claimresponse.html): The identity of the ClaimResponse\r\n* [ClinicalImpression](clinicalimpression.html): Business identifier\r\n* [Communication](communication.html): Unique identifier\r\n* [CommunicationRequest](communicationrequest.html): Unique identifier\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [Contract](contract.html): The identity of the contract\r\n* [Coverage](coverage.html): The primary identifier of the insured and the coverage\r\n* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The business identifier of the Eligibility\r\n* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The business identifier\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DeviceUsage](deviceusage.html): Search by identifier\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EnrollmentRequest](enrollmentrequest.html): The business identifier of the Enrollment\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [ExplanationOfBenefit](explanationofbenefit.html): The business identifier of the Explanation of Benefit\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Flag](flag.html): Business identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [GuidanceResponse](guidanceresponse.html): The identifier of the guidance response\r\n* [ImagingSelection](imagingselection.html): Identifiers for the imaging selection\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [ImmunizationEvaluation](immunizationevaluation.html): ID of the evaluation\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Business identifier\r\n* [Invoice](invoice.html): Business Identifier for item\r\n* [List](list.html): Business identifier\r\n* [MeasureReport](measurereport.html): External identifier of the measure report to be returned\r\n* [Medication](medication.html): Returns medications with this external identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationStatement](medicationstatement.html): Return statements with this external identifier\r\n* [MolecularSequence](molecularsequence.html): The unique identity for a particular sequence\r\n* [NutritionIntake](nutritionintake.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Person](person.html): A person Identifier\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [QuestionnaireResponse](questionnaireresponse.html): The unique identifier for the questionnaire response\r\n* [RelatedPerson](relatedperson.html): An Identifier of the RelatedPerson\r\n* [RequestOrchestration](requestorchestration.html): External identifiers for the request orchestration\r\n* [ResearchSubject](researchsubject.html): Business Identifier for research subject in a study\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [Specimen](specimen.html): The unique identifier associated with the specimen\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [Task](task.html): Search for a task instance by its business identifier\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): Account number
+* [AdverseEvent](adverseevent.html): Business identifier for the event
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [Appointment](appointment.html): An Identifier of the Appointment
+* [AppointmentResponse](appointmentresponse.html): An Identifier in this appointment response
+* [Basic](basic.html): Business identifier
+* [BodyStructure](bodystructure.html): Bodystructure identifier
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [ChargeItem](chargeitem.html): Business Identifier for item
+* [Claim](claim.html): The primary identifier of the financial resource
+* [ClaimResponse](claimresponse.html): The identity of the ClaimResponse
+* [ClinicalImpression](clinicalimpression.html): Business identifier
+* [Communication](communication.html): Unique identifier
+* [CommunicationRequest](communicationrequest.html): Unique identifier
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [Contract](contract.html): The identity of the contract
+* [Coverage](coverage.html): The primary identifier of the insured and the coverage
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The business identifier of the Eligibility
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The business identifier
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DeviceUsage](deviceusage.html): Search by identifier
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentReference](documentreference.html): Identifier of the attachment binary
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EnrollmentRequest](enrollmentrequest.html): The business identifier of the Enrollment
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [ExplanationOfBenefit](explanationofbenefit.html): The business identifier of the Explanation of Benefit
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Flag](flag.html): Business identifier
+* [Goal](goal.html): External Ids for this goal
+* [GuidanceResponse](guidanceresponse.html): The identifier of the guidance response
+* [ImagingSelection](imagingselection.html): Identifiers for the imaging selection
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
+* [Immunization](immunization.html): Business identifier
+* [ImmunizationEvaluation](immunizationevaluation.html): ID of the evaluation
+* [ImmunizationRecommendation](immunizationrecommendation.html): Business identifier
+* [Invoice](invoice.html): Business Identifier for item
+* [List](list.html): Business identifier
+* [MeasureReport](measurereport.html): External identifier of the measure report to be returned
+* [Medication](medication.html): Returns medications with this external identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationStatement](medicationstatement.html): Return statements with this external identifier
+* [MolecularSequence](molecularsequence.html): The unique identity for a particular sequence
+* [NutritionIntake](nutritionintake.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Person](person.html): A person Identifier
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [QuestionnaireResponse](questionnaireresponse.html): The unique identifier for the questionnaire response
+* [RelatedPerson](relatedperson.html): An Identifier of the RelatedPerson
+* [RequestOrchestration](requestorchestration.html): External identifiers for the request orchestration
+* [ResearchSubject](researchsubject.html): Business Identifier for research subject in a study
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [Specimen](specimen.html): The unique identifier associated with the specimen
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [Task](task.html): Search for a task instance by its business identifier
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.identifier | AdverseEvent.identifier | AllergyIntolerance.identifier | Appointment.identifier | AppointmentResponse.identifier | Basic.identifier | BodyStructure.identifier | CarePlan.identifier | CareTeam.identifier | ChargeItem.identifier | Claim.identifier | ClaimResponse.identifier | ClinicalImpression.identifier | Communication.identifier | CommunicationRequest.identifier | Composition.identifier | Condition.identifier | Consent.identifier | Contract.identifier | Coverage.identifier | CoverageEligibilityRequest.identifier | CoverageEligibilityResponse.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DeviceUsage.identifier | DiagnosticReport.identifier | DocumentReference.identifier | Encounter.identifier | EnrollmentRequest.identifier | EpisodeOfCare.identifier | ExplanationOfBenefit.identifier | FamilyMemberHistory.identifier | Flag.identifier | Goal.identifier | GuidanceResponse.identifier | ImagingSelection.identifier | ImagingStudy.identifier | Immunization.identifier | ImmunizationEvaluation.identifier | ImmunizationRecommendation.identifier | Invoice.identifier | List.identifier | MeasureReport.identifier | Medication.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationStatement.identifier | MolecularSequence.identifier | NutritionIntake.identifier | NutritionOrder.identifier | Observation.identifier | Person.identifier | Procedure.identifier | QuestionnaireResponse.identifier | RelatedPerson.identifier | RequestOrchestration.identifier | ResearchSubject.identifier | RiskAssessment.identifier | ServiceRequest.identifier | Specimen.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | Task.identifier | VisionPrescription.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): The entity that caused the expenses
+* [AdverseEvent](adverseevent.html): Subject impacted by event
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [Appointment](appointment.html): One of the individuals of the appointment is this patient
+* [AppointmentResponse](appointmentresponse.html): This Response is for this Patient
+* [AuditEvent](auditevent.html): Where the activity involved patient data
+* [Basic](basic.html): Identifies the focus of this resource
+* [BodyStructure](bodystructure.html): Who this is about
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ChargeItem](chargeitem.html): Individual service was done for/to
+* [Claim](claim.html): Patient receiving the products or services
+* [ClaimResponse](claimresponse.html): The subject of care
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
+* [Communication](communication.html): Focus of message
+* [CommunicationRequest](communicationrequest.html): Focus of message
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [Contract](contract.html): The identity of the subject of the contract (if a patient)
+* [Coverage](coverage.html): Retrieve coverages for a patient
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The reference to the patient
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The reference to the patient
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient present at the encounter
+* [EnrollmentRequest](enrollmentrequest.html): The party to be enrolled
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [ExplanationOfBenefit](explanationofbenefit.html): The reference to the patient
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [GuidanceResponse](guidanceresponse.html): The identity of a patient to search for guidance response results
+* [ImagingSelection](imagingselection.html): Who the study is about
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [ImmunizationEvaluation](immunizationevaluation.html): The patient being evaluated
+* [ImmunizationRecommendation](immunizationrecommendation.html): Who this profile is for
+* [Invoice](invoice.html): Recipient(s) of goods and services
+* [List](list.html): If all resources have the same subject
+* [MeasureReport](measurereport.html): The identity of a patient to search for individual measure report results for
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationStatement](medicationstatement.html): Returns statements for a specific patient.
+* [MolecularSequence](molecularsequence.html): The subject that the sequence is about
+* [NutritionIntake](nutritionintake.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Person](person.html): The Person links to this Patient
+* [Procedure](procedure.html): Search by subject - a patient
+* [Provenance](provenance.html): Where the activity involved patient data
+* [QuestionnaireResponse](questionnaireresponse.html): The patient that is the subject of the questionnaire response
+* [RelatedPerson](relatedperson.html): The patient this related person is related to
+* [RequestOrchestration](requestorchestration.html): The identity of a patient to search for request orchestrations
+* [ResearchSubject](researchsubject.html): Who or what is part of study
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [Specimen](specimen.html): The patient the specimen comes from
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
+* [Task](task.html): Search by patient
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject.where(resolve() is Patient) | AdverseEvent.subject.where(resolve() is Patient) | AllergyIntolerance.patient | Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient) | AppointmentResponse.actor.where(resolve() is Patient) | AuditEvent.patient | Basic.subject.where(resolve() is Patient) | BodyStructure.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ChargeItem.subject.where(resolve() is Patient) | Claim.patient | ClaimResponse.patient | ClinicalImpression.subject.where(resolve() is Patient) | Communication.subject.where(resolve() is Patient) | CommunicationRequest.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | Contract.subject.where(resolve() is Patient) | Coverage.beneficiary | CoverageEligibilityRequest.patient | CoverageEligibilityResponse.patient | DetectedIssue.subject.where(resolve() is Patient) | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EnrollmentRequest.candidate | EpisodeOfCare.patient | ExplanationOfBenefit.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | GuidanceResponse.subject.where(resolve() is Patient) | ImagingSelection.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | ImmunizationEvaluation.patient | ImmunizationRecommendation.patient | Invoice.subject.where(resolve() is Patient) | List.subject.where(resolve() is Patient) | MeasureReport.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationStatement.subject.where(resolve() is Patient) | MolecularSequence.subject.where(resolve() is Patient) | NutritionIntake.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Person.link.target.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | Provenance.patient | QuestionnaireResponse.subject.where(resolve() is Patient) | RelatedPerson.patient | RequestOrchestration.subject.where(resolve() is Patient) | ResearchSubject.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | Specimen.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | Task.for.where(resolve() is Patient) | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="Account.subject.where(resolve() is Patient) | AdverseEvent.subject.where(resolve() is Patient) | AllergyIntolerance.patient | Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient) | AppointmentResponse.actor.where(resolve() is Patient) | AuditEvent.patient | Basic.subject.where(resolve() is Patient) | BodyStructure.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ChargeItem.subject.where(resolve() is Patient) | Claim.patient | ClaimResponse.patient | ClinicalImpression.subject.where(resolve() is Patient) | Communication.subject.where(resolve() is Patient) | CommunicationRequest.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | Contract.subject.where(resolve() is Patient) | Coverage.beneficiary | CoverageEligibilityRequest.patient | CoverageEligibilityResponse.patient | DetectedIssue.subject.where(resolve() is Patient) | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EnrollmentRequest.candidate | EpisodeOfCare.patient | ExplanationOfBenefit.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | GuidanceResponse.subject.where(resolve() is Patient) | ImagingSelection.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | ImmunizationEvaluation.patient | ImmunizationRecommendation.patient | Invoice.subject.where(resolve() is Patient) | List.subject.where(resolve() is Patient) | MeasureReport.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationStatement.subject.where(resolve() is Patient) | MolecularSequence.subject.where(resolve() is Patient) | NutritionIntake.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Person.link.target.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | Provenance.patient | QuestionnaireResponse.subject.where(resolve() is Patient) | RelatedPerson.patient | RequestOrchestration.subject.where(resolve() is Patient) | ResearchSubject.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | Specimen.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | Task.for.where(resolve() is Patient) | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [Account](account.html): The entity that caused the expenses\r\n* [AdverseEvent](adverseevent.html): Subject impacted by event\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [Appointment](appointment.html): One of the individuals of the appointment is this patient\r\n* [AppointmentResponse](appointmentresponse.html): This Response is for this Patient\r\n* [AuditEvent](auditevent.html): Where the activity involved patient data\r\n* [Basic](basic.html): Identifies the focus of this resource\r\n* [BodyStructure](bodystructure.html): Who this is about\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ChargeItem](chargeitem.html): Individual service was done for/to\r\n* [Claim](claim.html): Patient receiving the products or services\r\n* [ClaimResponse](claimresponse.html): The subject of care\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Communication](communication.html): Focus of message\r\n* [CommunicationRequest](communicationrequest.html): Focus of message\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [Contract](contract.html): The identity of the subject of the contract (if a patient)\r\n* [Coverage](coverage.html): Retrieve coverages for a patient\r\n* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The reference to the patient\r\n* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The reference to the patient\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EnrollmentRequest](enrollmentrequest.html): The party to be enrolled\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [ExplanationOfBenefit](explanationofbenefit.html): The reference to the patient\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [GuidanceResponse](guidanceresponse.html): The identity of a patient to search for guidance response results\r\n* [ImagingSelection](imagingselection.html): Who the study is about\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [ImmunizationEvaluation](immunizationevaluation.html): The patient being evaluated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Who this profile is for\r\n* [Invoice](invoice.html): Recipient(s) of goods and services\r\n* [List](list.html): If all resources have the same subject\r\n* [MeasureReport](measurereport.html): The identity of a patient to search for individual measure report results for\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationStatement](medicationstatement.html): Returns statements for a specific patient.\r\n* [MolecularSequence](molecularsequence.html): The subject that the sequence is about\r\n* [NutritionIntake](nutritionintake.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Person](person.html): The Person links to this Patient\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [Provenance](provenance.html): Where the activity involved patient data\r\n* [QuestionnaireResponse](questionnaireresponse.html): The patient that is the subject of the questionnaire response\r\n* [RelatedPerson](relatedperson.html): The patient this related person is related to\r\n* [RequestOrchestration](requestorchestration.html): The identity of a patient to search for request orchestrations\r\n* [ResearchSubject](researchsubject.html): Who or what is part of study\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [Specimen](specimen.html): The patient the specimen comes from\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined\r\n* [Task](task.html): Search by patient\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): The entity that caused the expenses
+* [AdverseEvent](adverseevent.html): Subject impacted by event
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [Appointment](appointment.html): One of the individuals of the appointment is this patient
+* [AppointmentResponse](appointmentresponse.html): This Response is for this Patient
+* [AuditEvent](auditevent.html): Where the activity involved patient data
+* [Basic](basic.html): Identifies the focus of this resource
+* [BodyStructure](bodystructure.html): Who this is about
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ChargeItem](chargeitem.html): Individual service was done for/to
+* [Claim](claim.html): Patient receiving the products or services
+* [ClaimResponse](claimresponse.html): The subject of care
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
+* [Communication](communication.html): Focus of message
+* [CommunicationRequest](communicationrequest.html): Focus of message
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [Contract](contract.html): The identity of the subject of the contract (if a patient)
+* [Coverage](coverage.html): Retrieve coverages for a patient
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The reference to the patient
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The reference to the patient
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient present at the encounter
+* [EnrollmentRequest](enrollmentrequest.html): The party to be enrolled
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [ExplanationOfBenefit](explanationofbenefit.html): The reference to the patient
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [GuidanceResponse](guidanceresponse.html): The identity of a patient to search for guidance response results
+* [ImagingSelection](imagingselection.html): Who the study is about
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [ImmunizationEvaluation](immunizationevaluation.html): The patient being evaluated
+* [ImmunizationRecommendation](immunizationrecommendation.html): Who this profile is for
+* [Invoice](invoice.html): Recipient(s) of goods and services
+* [List](list.html): If all resources have the same subject
+* [MeasureReport](measurereport.html): The identity of a patient to search for individual measure report results for
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationStatement](medicationstatement.html): Returns statements for a specific patient.
+* [MolecularSequence](molecularsequence.html): The subject that the sequence is about
+* [NutritionIntake](nutritionintake.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Person](person.html): The Person links to this Patient
+* [Procedure](procedure.html): Search by subject - a patient
+* [Provenance](provenance.html): Where the activity involved patient data
+* [QuestionnaireResponse](questionnaireresponse.html): The patient that is the subject of the questionnaire response
+* [RelatedPerson](relatedperson.html): The patient this related person is related to
+* [RequestOrchestration](requestorchestration.html): The identity of a patient to search for request orchestrations
+* [ResearchSubject](researchsubject.html): Who or what is part of study
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [Specimen](specimen.html): The patient the specimen comes from
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
+* [Task](task.html): Search by patient
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject.where(resolve() is Patient) | AdverseEvent.subject.where(resolve() is Patient) | AllergyIntolerance.patient | Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient) | AppointmentResponse.actor.where(resolve() is Patient) | AuditEvent.patient | Basic.subject.where(resolve() is Patient) | BodyStructure.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ChargeItem.subject.where(resolve() is Patient) | Claim.patient | ClaimResponse.patient | ClinicalImpression.subject.where(resolve() is Patient) | Communication.subject.where(resolve() is Patient) | CommunicationRequest.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | Contract.subject.where(resolve() is Patient) | Coverage.beneficiary | CoverageEligibilityRequest.patient | CoverageEligibilityResponse.patient | DetectedIssue.subject.where(resolve() is Patient) | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EnrollmentRequest.candidate | EpisodeOfCare.patient | ExplanationOfBenefit.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | GuidanceResponse.subject.where(resolve() is Patient) | ImagingSelection.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | ImmunizationEvaluation.patient | ImmunizationRecommendation.patient | Invoice.subject.where(resolve() is Patient) | List.subject.where(resolve() is Patient) | MeasureReport.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationStatement.subject.where(resolve() is Patient) | MolecularSequence.subject.where(resolve() is Patient) | NutritionIntake.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Person.link.target.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | Provenance.patient | QuestionnaireResponse.subject.where(resolve() is Patient) | RelatedPerson.patient | RequestOrchestration.subject.where(resolve() is Patient) | ResearchSubject.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | Specimen.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | Task.for.where(resolve() is Patient) | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Account:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Account:patient").toLocked();
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): E.g. patient, expense, depreciation
+* [AllergyIntolerance](allergyintolerance.html): allergy | intolerance - Underlying mechanism (if known)
+* [Composition](composition.html): Kind of composition (LOINC if possible)
+* [Coverage](coverage.html): The kind of coverage (health plan, auto, Workers Compensation)
+* [DocumentReference](documentreference.html): Kind of document (LOINC if possible)
+* [Encounter](encounter.html): Specific type of encounter
+* [EpisodeOfCare](episodeofcare.html): Type/class  - e.g. specialist referral, disease management
+* [Invoice](invoice.html): Type of Invoice
+* [MedicationDispense](medicationdispense.html): Returns dispenses of a specific type
+* [MolecularSequence](molecularsequence.html): Amino Acid Sequence/ DNA Sequence / RNA Sequence
+* [Specimen](specimen.html): The specimen type
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.type | AllergyIntolerance.type | Composition.type | Coverage.type | DocumentReference.type | Encounter.type | EpisodeOfCare.type | Invoice.type | MedicationDispense.type | MolecularSequence.type | Specimen.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="Account.type | AllergyIntolerance.type | Composition.type | Coverage.type | DocumentReference.type | Encounter.type | EpisodeOfCare.type | Invoice.type | MedicationDispense.type | MolecularSequence.type | Specimen.type", description="Multiple Resources: \r\n\r\n* [Account](account.html): E.g. patient, expense, depreciation\r\n* [AllergyIntolerance](allergyintolerance.html): allergy | intolerance - Underlying mechanism (if known)\r\n* [Composition](composition.html): Kind of composition (LOINC if possible)\r\n* [Coverage](coverage.html): The kind of coverage (health plan, auto, Workers Compensation)\r\n* [DocumentReference](documentreference.html): Kind of document (LOINC if possible)\r\n* [Encounter](encounter.html): Specific type of encounter\r\n* [EpisodeOfCare](episodeofcare.html): Type/class  - e.g. specialist referral, disease management\r\n* [Invoice](invoice.html): Type of Invoice\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of a specific type\r\n* [MolecularSequence](molecularsequence.html): Amino Acid Sequence/ DNA Sequence / RNA Sequence\r\n* [Specimen](specimen.html): The specimen type\r\n", type="token" )
   public static final String SP_TYPE = "type";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>type</b>
    * <p>
-   * Description: <b>E.g. patient, expense, depreciation</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): E.g. patient, expense, depreciation
+* [AllergyIntolerance](allergyintolerance.html): allergy | intolerance - Underlying mechanism (if known)
+* [Composition](composition.html): Kind of composition (LOINC if possible)
+* [Coverage](coverage.html): The kind of coverage (health plan, auto, Workers Compensation)
+* [DocumentReference](documentreference.html): Kind of document (LOINC if possible)
+* [Encounter](encounter.html): Specific type of encounter
+* [EpisodeOfCare](episodeofcare.html): Type/class  - e.g. specialist referral, disease management
+* [Invoice](invoice.html): Type of Invoice
+* [MedicationDispense](medicationdispense.html): Returns dispenses of a specific type
+* [MolecularSequence](molecularsequence.html): Amino Acid Sequence/ DNA Sequence / RNA Sequence
+* [Specimen](specimen.html): The specimen type
+</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Account.type</b><br>
+   * Path: <b>Account.type | AllergyIntolerance.type | Composition.type | Coverage.type | DocumentReference.type | Encounter.type | EpisodeOfCare.type | Invoice.type | MedicationDispense.type | MolecularSequence.type | Specimen.type</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }
+

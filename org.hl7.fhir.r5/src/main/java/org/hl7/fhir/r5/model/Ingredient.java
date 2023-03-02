@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1419,7 +1419,7 @@ public class Ingredient extends DomainResource {
         /**
          * Relevant reference substance.
          */
-        @Child(name = "substance", type = {CodeableReference.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "substance", type = {CodeableReference.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Relevant reference substance", formalDefinition="Relevant reference substance." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-codes")
         protected CodeableReference substance;
@@ -1458,8 +1458,9 @@ public class Ingredient extends DomainResource {
     /**
      * Constructor
      */
-      public IngredientSubstanceStrengthReferenceStrengthComponent(DataType strength) {
+      public IngredientSubstanceStrengthReferenceStrengthComponent(CodeableReference substance, DataType strength) {
         super();
+        this.setSubstance(substance);
         this.setStrength(strength);
       }
 
@@ -1883,20 +1884,27 @@ public class Ingredient extends DomainResource {
     protected BooleanType allergenicIndicator;
 
     /**
+     * A place for providing any notes that are relevant to the component, e.g. removed during process, adjusted for loss on drying.
+     */
+    @Child(name = "comment", type = {MarkdownType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="A place for providing any notes that are relevant to the component, e.g. removed during process, adjusted for loss on drying", formalDefinition="A place for providing any notes that are relevant to the component, e.g. removed during process, adjusted for loss on drying." )
+    protected MarkdownType comment;
+
+    /**
      * The organization(s) that manufacture this ingredient. Can be used to indicate:         1) Organizations we are aware of that manufacture this ingredient         2) Specific Manufacturer(s) currently being used         3) Set of organisations allowed to manufacture this ingredient for this product         Users must be clear on the application of context relevant to their use case.
      */
-    @Child(name = "manufacturer", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "manufacturer", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="An organization that manufactures this ingredient", formalDefinition="The organization(s) that manufacture this ingredient. Can be used to indicate:         1) Organizations we are aware of that manufacture this ingredient         2) Specific Manufacturer(s) currently being used         3) Set of organisations allowed to manufacture this ingredient for this product         Users must be clear on the application of context relevant to their use case." )
     protected List<IngredientManufacturerComponent> manufacturer;
 
     /**
      * The substance that comprises this ingredient.
      */
-    @Child(name = "substance", type = {}, order=8, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "substance", type = {}, order=9, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The substance that comprises this ingredient", formalDefinition="The substance that comprises this ingredient." )
     protected IngredientSubstanceComponent substance;
 
-    private static final long serialVersionUID = -1522820829L;
+    private static final long serialVersionUID = 701648703L;
 
   /**
    * Constructor
@@ -2184,6 +2192,55 @@ public class Ingredient extends DomainResource {
     }
 
     /**
+     * @return {@link #comment} (A place for providing any notes that are relevant to the component, e.g. removed during process, adjusted for loss on drying.). This is the underlying object with id, value and extensions. The accessor "getComment" gives direct access to the value
+     */
+    public MarkdownType getCommentElement() { 
+      if (this.comment == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Ingredient.comment");
+        else if (Configuration.doAutoCreate())
+          this.comment = new MarkdownType(); // bb
+      return this.comment;
+    }
+
+    public boolean hasCommentElement() { 
+      return this.comment != null && !this.comment.isEmpty();
+    }
+
+    public boolean hasComment() { 
+      return this.comment != null && !this.comment.isEmpty();
+    }
+
+    /**
+     * @param value {@link #comment} (A place for providing any notes that are relevant to the component, e.g. removed during process, adjusted for loss on drying.). This is the underlying object with id, value and extensions. The accessor "getComment" gives direct access to the value
+     */
+    public Ingredient setCommentElement(MarkdownType value) { 
+      this.comment = value;
+      return this;
+    }
+
+    /**
+     * @return A place for providing any notes that are relevant to the component, e.g. removed during process, adjusted for loss on drying.
+     */
+    public String getComment() { 
+      return this.comment == null ? null : this.comment.getValue();
+    }
+
+    /**
+     * @param value A place for providing any notes that are relevant to the component, e.g. removed during process, adjusted for loss on drying.
+     */
+    public Ingredient setComment(String value) { 
+      if (Utilities.noString(value))
+        this.comment = null;
+      else {
+        if (this.comment == null)
+          this.comment = new MarkdownType();
+        this.comment.setValue(value);
+      }
+      return this;
+    }
+
+    /**
      * @return {@link #manufacturer} (The organization(s) that manufacture this ingredient. Can be used to indicate:         1) Organizations we are aware of that manufacture this ingredient         2) Specific Manufacturer(s) currently being used         3) Set of organisations allowed to manufacture this ingredient for this product         Users must be clear on the application of context relevant to their use case.)
      */
     public List<IngredientManufacturerComponent> getManufacturer() { 
@@ -2269,6 +2326,7 @@ public class Ingredient extends DomainResource {
         children.add(new Property("function", "CodeableConcept", "A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: antioxidant, alkalizing agent.", 0, java.lang.Integer.MAX_VALUE, function));
         children.add(new Property("group", "CodeableConcept", "A classification of the ingredient according to where in the physical item it tends to be used, such the outer shell of a tablet, inner body or ink.", 0, 1, group));
         children.add(new Property("allergenicIndicator", "boolean", "If the ingredient is a known or suspected allergen. Note that this is a property of the substance, so if a reference to a SubstanceDefinition is used to decribe that (rather than just a code), the allergen information should go there, not here.", 0, 1, allergenicIndicator));
+        children.add(new Property("comment", "markdown", "A place for providing any notes that are relevant to the component, e.g. removed during process, adjusted for loss on drying.", 0, 1, comment));
         children.add(new Property("manufacturer", "", "The organization(s) that manufacture this ingredient. Can be used to indicate:         1) Organizations we are aware of that manufacture this ingredient         2) Specific Manufacturer(s) currently being used         3) Set of organisations allowed to manufacture this ingredient for this product         Users must be clear on the application of context relevant to their use case.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
         children.add(new Property("substance", "", "The substance that comprises this ingredient.", 0, 1, substance));
       }
@@ -2283,6 +2341,7 @@ public class Ingredient extends DomainResource {
         case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: antioxidant, alkalizing agent.", 0, java.lang.Integer.MAX_VALUE, function);
         case 98629247: /*group*/  return new Property("group", "CodeableConcept", "A classification of the ingredient according to where in the physical item it tends to be used, such the outer shell of a tablet, inner body or ink.", 0, 1, group);
         case 75406931: /*allergenicIndicator*/  return new Property("allergenicIndicator", "boolean", "If the ingredient is a known or suspected allergen. Note that this is a property of the substance, so if a reference to a SubstanceDefinition is used to decribe that (rather than just a code), the allergen information should go there, not here.", 0, 1, allergenicIndicator);
+        case 950398559: /*comment*/  return new Property("comment", "markdown", "A place for providing any notes that are relevant to the component, e.g. removed during process, adjusted for loss on drying.", 0, 1, comment);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "", "The organization(s) that manufacture this ingredient. Can be used to indicate:         1) Organizations we are aware of that manufacture this ingredient         2) Specific Manufacturer(s) currently being used         3) Set of organisations allowed to manufacture this ingredient for this product         Users must be clear on the application of context relevant to their use case.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
         case 530040176: /*substance*/  return new Property("substance", "", "The substance that comprises this ingredient.", 0, 1, substance);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -2300,6 +2359,7 @@ public class Ingredient extends DomainResource {
         case 1380938712: /*function*/ return this.function == null ? new Base[0] : this.function.toArray(new Base[this.function.size()]); // CodeableConcept
         case 98629247: /*group*/ return this.group == null ? new Base[0] : new Base[] {this.group}; // CodeableConcept
         case 75406931: /*allergenicIndicator*/ return this.allergenicIndicator == null ? new Base[0] : new Base[] {this.allergenicIndicator}; // BooleanType
+        case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // MarkdownType
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : this.manufacturer.toArray(new Base[this.manufacturer.size()]); // IngredientManufacturerComponent
         case 530040176: /*substance*/ return this.substance == null ? new Base[0] : new Base[] {this.substance}; // IngredientSubstanceComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -2332,6 +2392,9 @@ public class Ingredient extends DomainResource {
         case 75406931: // allergenicIndicator
           this.allergenicIndicator = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
+        case 950398559: // comment
+          this.comment = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
         case -1969347631: // manufacturer
           this.getManufacturer().add((IngredientManufacturerComponent) value); // IngredientManufacturerComponent
           return value;
@@ -2360,6 +2423,8 @@ public class Ingredient extends DomainResource {
           this.group = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("allergenicIndicator")) {
           this.allergenicIndicator = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("comment")) {
+          this.comment = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("manufacturer")) {
           this.getManufacturer().add((IngredientManufacturerComponent) value);
         } else if (name.equals("substance")) {
@@ -2379,6 +2444,7 @@ public class Ingredient extends DomainResource {
         case 1380938712:  return addFunction(); 
         case 98629247:  return getGroup();
         case 75406931:  return getAllergenicIndicatorElement();
+        case 950398559:  return getCommentElement();
         case -1969347631:  return addManufacturer(); 
         case 530040176:  return getSubstance();
         default: return super.makeProperty(hash, name);
@@ -2396,6 +2462,7 @@ public class Ingredient extends DomainResource {
         case 1380938712: /*function*/ return new String[] {"CodeableConcept"};
         case 98629247: /*group*/ return new String[] {"CodeableConcept"};
         case 75406931: /*allergenicIndicator*/ return new String[] {"boolean"};
+        case 950398559: /*comment*/ return new String[] {"markdown"};
         case -1969347631: /*manufacturer*/ return new String[] {};
         case 530040176: /*substance*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -2428,6 +2495,9 @@ public class Ingredient extends DomainResource {
         }
         else if (name.equals("allergenicIndicator")) {
           throw new FHIRException("Cannot call addChild on a primitive type Ingredient.allergenicIndicator");
+        }
+        else if (name.equals("comment")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.comment");
         }
         else if (name.equals("manufacturer")) {
           return addManufacturer();
@@ -2468,6 +2538,7 @@ public class Ingredient extends DomainResource {
         };
         dst.group = group == null ? null : group.copy();
         dst.allergenicIndicator = allergenicIndicator == null ? null : allergenicIndicator.copy();
+        dst.comment = comment == null ? null : comment.copy();
         if (manufacturer != null) {
           dst.manufacturer = new ArrayList<IngredientManufacturerComponent>();
           for (IngredientManufacturerComponent i : manufacturer)
@@ -2489,8 +2560,9 @@ public class Ingredient extends DomainResource {
         Ingredient o = (Ingredient) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(for_, o.for_, true)
            && compareDeep(role, o.role, true) && compareDeep(function, o.function, true) && compareDeep(group, o.group, true)
-           && compareDeep(allergenicIndicator, o.allergenicIndicator, true) && compareDeep(manufacturer, o.manufacturer, true)
-           && compareDeep(substance, o.substance, true);
+           && compareDeep(allergenicIndicator, o.allergenicIndicator, true) && compareDeep(comment, o.comment, true)
+           && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(substance, o.substance, true)
+          ;
       }
 
       @Override
@@ -2501,12 +2573,13 @@ public class Ingredient extends DomainResource {
           return false;
         Ingredient o = (Ingredient) other_;
         return compareValues(status, o.status, true) && compareValues(allergenicIndicator, o.allergenicIndicator, true)
-          ;
+           && compareValues(comment, o.comment, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, for_
-          , role, function, group, allergenicIndicator, manufacturer, substance);
+          , role, function, group, allergenicIndicator, comment, manufacturer, substance
+          );
       }
 
   @Override
@@ -2585,17 +2658,17 @@ public class Ingredient extends DomainResource {
    * <p>
    * Description: <b>The organization that manufactures this ingredient</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Ingredient.manufacturer</b><br>
+   * Path: <b>Ingredient.manufacturer.manufacturer</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="manufacturer", path="Ingredient.manufacturer", description="The organization that manufactures this ingredient", type="reference" )
+  @SearchParamDefinition(name="manufacturer", path="Ingredient.manufacturer.manufacturer", description="The organization that manufactures this ingredient", type="reference", target={Organization.class } )
   public static final String SP_MANUFACTURER = "manufacturer";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>manufacturer</b>
    * <p>
    * Description: <b>The organization that manufactures this ingredient</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Ingredient.manufacturer</b><br>
+   * Path: <b>Ingredient.manufacturer.manufacturer</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANUFACTURER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANUFACTURER);
@@ -2647,6 +2720,46 @@ public class Ingredient extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
  /**
+   * Search parameter: <b>strength-concentration-quantity</b>
+   * <p>
+   * Description: <b>Ingredient concentration strength as quantity</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>Ingredient.substance.strength.concentration.ofType(Quantity)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="strength-concentration-quantity", path="Ingredient.substance.strength.concentration.ofType(Quantity)", description="Ingredient concentration strength as quantity", type="quantity" )
+  public static final String SP_STRENGTH_CONCENTRATION_QUANTITY = "strength-concentration-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>strength-concentration-quantity</b>
+   * <p>
+   * Description: <b>Ingredient concentration strength as quantity</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>Ingredient.substance.strength.concentration.ofType(Quantity)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam STRENGTH_CONCENTRATION_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_STRENGTH_CONCENTRATION_QUANTITY);
+
+ /**
+   * Search parameter: <b>strength-presentation-quantity</b>
+   * <p>
+   * Description: <b>Ingredient presentation strength as quantity</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>Ingredient.substance.strength.presentation.ofType(Quantity)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="strength-presentation-quantity", path="Ingredient.substance.strength.presentation.ofType(Quantity)", description="Ingredient presentation strength as quantity", type="quantity" )
+  public static final String SP_STRENGTH_PRESENTATION_QUANTITY = "strength-presentation-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>strength-presentation-quantity</b>
+   * <p>
+   * Description: <b>Ingredient presentation strength as quantity</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>Ingredient.substance.strength.presentation.ofType(Quantity)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam STRENGTH_PRESENTATION_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_STRENGTH_PRESENTATION_QUANTITY);
+
+ /**
    * Search parameter: <b>substance-code</b>
    * <p>
    * Description: <b>Reference to a concept (by class)</b><br>
@@ -2674,7 +2787,7 @@ public class Ingredient extends DomainResource {
    * Path: <b>Ingredient.substance.code.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="substance-definition", path="Ingredient.substance.code.reference", description="Reference to a resource (by instance)", type="reference" )
+  @SearchParamDefinition(name="substance-definition", path="Ingredient.substance.code.reference", description="Reference to a resource (by instance)", type="reference", target={SubstanceDefinition.class } )
   public static final String SP_SUBSTANCE_DEFINITION = "substance-definition";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>substance-definition</b>
@@ -2700,7 +2813,7 @@ public class Ingredient extends DomainResource {
    * Path: <b>Ingredient.substance.code.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="substance", path="Ingredient.substance.code.reference", description="Reference to a resource (by instance)", type="reference" )
+  @SearchParamDefinition(name="substance", path="Ingredient.substance.code.reference", description="Reference to a resource (by instance)", type="reference", target={SubstanceDefinition.class } )
   public static final String SP_SUBSTANCE = "substance";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>substance</b>
@@ -2720,3 +2833,4 @@ public class Ingredient extends DomainResource {
 
 
 }
+

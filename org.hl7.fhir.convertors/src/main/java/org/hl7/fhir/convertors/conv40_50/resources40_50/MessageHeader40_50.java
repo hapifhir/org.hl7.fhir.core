@@ -1,11 +1,13 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.ContactPoint40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -55,8 +57,8 @@ public class MessageHeader40_50 {
       tgt.addDestination(convertMessageDestinationComponent(t));
     if (src.hasSender())
       tgt.setSender(Reference40_50.convertReference(src.getSender()));
-    if (src.hasEnterer())
-      tgt.setEnterer(Reference40_50.convertReference(src.getEnterer()));
+//    if (src.hasEnterer())
+//      tgt.setEnterer(Reference40_50.convertReference(src.getEnterer()));
     if (src.hasAuthor())
       tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
     if (src.hasSource())
@@ -86,8 +88,8 @@ public class MessageHeader40_50 {
       tgt.addDestination(convertMessageDestinationComponent(t));
     if (src.hasSender())
       tgt.setSender(Reference40_50.convertReference(src.getSender()));
-    if (src.hasEnterer())
-      tgt.setEnterer(Reference40_50.convertReference(src.getEnterer()));
+//    if (src.hasEnterer())
+//      tgt.setEnterer(Reference40_50.convertReference(src.getEnterer()));
     if (src.hasAuthor())
       tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
     if (src.hasSource())
@@ -114,7 +116,7 @@ public class MessageHeader40_50 {
     if (src.hasTarget())
       tgt.setTarget(Reference40_50.convertReference(src.getTarget()));
     if (src.hasEndpoint())
-      tgt.setEndpointElement(Url40_50.convertUrl(src.getEndpointElement()));
+      tgt.setEndpoint(Uri40_50.convertUri(src.getEndpointElement()));
     if (src.hasReceiver())
       tgt.setReceiver(Reference40_50.convertReference(src.getReceiver()));
     return tgt;
@@ -129,8 +131,8 @@ public class MessageHeader40_50 {
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasTarget())
       tgt.setTarget(Reference40_50.convertReference(src.getTarget()));
-    if (src.hasEndpoint())
-      tgt.setEndpointElement(Url40_50.convertUrl(src.getEndpointElement()));
+    if (src.hasEndpointUrlType())
+      tgt.setEndpointElement(Url40_50.convertUrl(src.getEndpointUrlType()));
     if (src.hasReceiver())
       tgt.setReceiver(Reference40_50.convertReference(src.getReceiver()));
     return tgt;
@@ -150,7 +152,7 @@ public class MessageHeader40_50 {
     if (src.hasContact())
       tgt.setContact(ContactPoint40_50.convertContactPoint(src.getContact()));
     if (src.hasEndpoint())
-      tgt.setEndpointElement(Url40_50.convertUrl(src.getEndpointElement()));
+      tgt.setEndpoint(Uri40_50.convertUri(src.getEndpointElement()));
     return tgt;
   }
 
@@ -167,8 +169,8 @@ public class MessageHeader40_50 {
       tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
     if (src.hasContact())
       tgt.setContact(ContactPoint40_50.convertContactPoint(src.getContact()));
-    if (src.hasEndpoint())
-      tgt.setEndpointElement(Url40_50.convertUrl(src.getEndpointElement()));
+    if (src.hasEndpointUrlType())
+      tgt.setEndpointElement(Url40_50.convertUrl(src.getEndpointUrlType()));
     return tgt;
   }
 

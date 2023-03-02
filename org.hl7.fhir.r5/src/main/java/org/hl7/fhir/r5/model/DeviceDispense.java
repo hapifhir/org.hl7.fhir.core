@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -524,95 +524,102 @@ public class DeviceDispense extends DomainResource {
     /**
      * A link to a resource representing the person to whom the device is intended.
      */
-    @Child(name = "subject", type = {Patient.class}, order=7, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {Patient.class, Practitioner.class}, order=7, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who the dispense is for", formalDefinition="A link to a resource representing the person to whom the device is intended." )
     protected Reference subject;
 
     /**
+     * Identifies the person who picked up the device or the person or location where the device was delivered.  This may be a patient or their caregiver, but some cases exist where it can be a healthcare professional or a location.
+     */
+    @Child(name = "receiver", type = {Patient.class, Practitioner.class, RelatedPerson.class, Location.class, PractitionerRole.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Who collected the device or where the medication was delivered", formalDefinition="Identifies the person who picked up the device or the person or location where the device was delivered.  This may be a patient or their caregiver, but some cases exist where it can be a healthcare professional or a location." )
+    protected Reference receiver;
+
+    /**
      * The encounter that establishes the context for this event.
      */
-    @Child(name = "encounter", type = {Encounter.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "encounter", type = {Encounter.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Encounter associated with event", formalDefinition="The encounter that establishes the context for this event." )
     protected Reference encounter;
 
     /**
      * Additional information that supports the device being dispensed.
      */
-    @Child(name = "supportingInformation", type = {Reference.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "supportingInformation", type = {Reference.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Information that supports the dispensing of the device", formalDefinition="Additional information that supports the device being dispensed." )
     protected List<Reference> supportingInformation;
 
     /**
      * Indicates who or what performed the event.
      */
-    @Child(name = "performer", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "performer", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who performed event", formalDefinition="Indicates who or what performed the event." )
     protected List<DeviceDispensePerformerComponent> performer;
 
     /**
      * The principal physical location where the dispense was performed.
      */
-    @Child(name = "location", type = {Location.class}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "location", type = {Location.class}, order=12, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Where the dispense occurred", formalDefinition="The principal physical location where the dispense was performed." )
     protected Reference location;
 
     /**
      * Indicates the type of dispensing event that is performed.
      */
-    @Child(name = "type", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Trial fill, partial fill, emergency fill, etc.", formalDefinition="Indicates the type of dispensing event that is performed." )
+    @Child(name = "type", type = {CodeableConcept.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Trial fill, partial fill, emergency fill, etc", formalDefinition="Indicates the type of dispensing event that is performed." )
     protected CodeableConcept type;
 
     /**
      * The number of devices that have been dispensed.
      */
-    @Child(name = "quantity", type = {Quantity.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "quantity", type = {Quantity.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Amount dispensed", formalDefinition="The number of devices that have been dispensed." )
     protected Quantity quantity;
 
     /**
      * The time when the dispensed product was packaged and reviewed.
      */
-    @Child(name = "preparedDate", type = {DateTimeType.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "preparedDate", type = {DateTimeType.class}, order=15, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When product was packaged and reviewed", formalDefinition="The time when the dispensed product was packaged and reviewed." )
     protected DateTimeType preparedDate;
 
     /**
      * The time the dispensed product was made available to the patient or their representative.
      */
-    @Child(name = "whenHandedOver", type = {DateTimeType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "whenHandedOver", type = {DateTimeType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When product was given out", formalDefinition="The time the dispensed product was made available to the patient or their representative." )
     protected DateTimeType whenHandedOver;
 
     /**
      * Identification of the facility/location where the device was /should be shipped to, as part of the dispense process.
      */
-    @Child(name = "destination", type = {Location.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "destination", type = {Location.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Where the device was sent or should be sent", formalDefinition="Identification of the facility/location where the device was /should be shipped to, as part of the dispense process." )
     protected Reference destination;
 
     /**
      * Extra information about the dispense that could not be conveyed in the other attributes.
      */
-    @Child(name = "note", type = {Annotation.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Information about the dispense", formalDefinition="Extra information about the dispense that could not be conveyed in the other attributes." )
     protected List<Annotation> note;
 
     /**
      * The full representation of the instructions.
      */
-    @Child(name = "usageInstruction", type = {StringType.class}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "usageInstruction", type = {StringType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Full representation of the usage instructions", formalDefinition="The full representation of the instructions." )
     protected StringType usageInstruction;
 
     /**
      * A summary of the events of interest that have occurred, such as when the dispense was verified.
      */
-    @Child(name = "eventHistory", type = {Provenance.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "eventHistory", type = {Provenance.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A list of relevant lifecycle events", formalDefinition="A summary of the events of interest that have occurred, such as when the dispense was verified." )
     protected List<Reference> eventHistory;
 
-    private static final long serialVersionUID = -1613459109L;
+    private static final long serialVersionUID = -2046629635L;
 
   /**
    * Constructor
@@ -957,6 +964,30 @@ public class DeviceDispense extends DomainResource {
      */
     public DeviceDispense setSubject(Reference value) { 
       this.subject = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #receiver} (Identifies the person who picked up the device or the person or location where the device was delivered.  This may be a patient or their caregiver, but some cases exist where it can be a healthcare professional or a location.)
+     */
+    public Reference getReceiver() { 
+      if (this.receiver == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create DeviceDispense.receiver");
+        else if (Configuration.doAutoCreate())
+          this.receiver = new Reference(); // cc
+      return this.receiver;
+    }
+
+    public boolean hasReceiver() { 
+      return this.receiver != null && !this.receiver.isEmpty();
+    }
+
+    /**
+     * @param value {@link #receiver} (Identifies the person who picked up the device or the person or location where the device was delivered.  This may be a patient or their caregiver, but some cases exist where it can be a healthcare professional or a location.)
+     */
+    public DeviceDispense setReceiver(Reference value) { 
+      this.receiver = value;
       return this;
     }
 
@@ -1448,7 +1479,8 @@ public class DeviceDispense extends DomainResource {
         children.add(new Property("statusReason", "CodeableReference(DetectedIssue)", "Indicates the reason why a dispense was or was not performed.", 0, 1, statusReason));
         children.add(new Property("category", "CodeableConcept", "Indicates the type of device dispense.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("device", "CodeableReference(Device|DeviceDefinition)", "Identifies the device being dispensed. This is either a link to a resource representing the details of the device or a simple attribute carrying a code that identifies the device from a known list of devices.", 0, 1, device));
-        children.add(new Property("subject", "Reference(Patient)", "A link to a resource representing the person to whom the device is intended.", 0, 1, subject));
+        children.add(new Property("subject", "Reference(Patient|Practitioner)", "A link to a resource representing the person to whom the device is intended.", 0, 1, subject));
+        children.add(new Property("receiver", "Reference(Patient|Practitioner|RelatedPerson|Location|PractitionerRole)", "Identifies the person who picked up the device or the person or location where the device was delivered.  This may be a patient or their caregiver, but some cases exist where it can be a healthcare professional or a location.", 0, 1, receiver));
         children.add(new Property("encounter", "Reference(Encounter)", "The encounter that establishes the context for this event.", 0, 1, encounter));
         children.add(new Property("supportingInformation", "Reference(Any)", "Additional information that supports the device being dispensed.", 0, java.lang.Integer.MAX_VALUE, supportingInformation));
         children.add(new Property("performer", "", "Indicates who or what performed the event.", 0, java.lang.Integer.MAX_VALUE, performer));
@@ -1473,7 +1505,8 @@ public class DeviceDispense extends DomainResource {
         case 2051346646: /*statusReason*/  return new Property("statusReason", "CodeableReference(DetectedIssue)", "Indicates the reason why a dispense was or was not performed.", 0, 1, statusReason);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Indicates the type of device dispense.", 0, java.lang.Integer.MAX_VALUE, category);
         case -1335157162: /*device*/  return new Property("device", "CodeableReference(Device|DeviceDefinition)", "Identifies the device being dispensed. This is either a link to a resource representing the details of the device or a simple attribute carrying a code that identifies the device from a known list of devices.", 0, 1, device);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient)", "A link to a resource representing the person to whom the device is intended.", 0, 1, subject);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Practitioner)", "A link to a resource representing the person to whom the device is intended.", 0, 1, subject);
+        case -808719889: /*receiver*/  return new Property("receiver", "Reference(Patient|Practitioner|RelatedPerson|Location|PractitionerRole)", "Identifies the person who picked up the device or the person or location where the device was delivered.  This may be a patient or their caregiver, but some cases exist where it can be a healthcare professional or a location.", 0, 1, receiver);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The encounter that establishes the context for this event.", 0, 1, encounter);
         case -1248768647: /*supportingInformation*/  return new Property("supportingInformation", "Reference(Any)", "Additional information that supports the device being dispensed.", 0, java.lang.Integer.MAX_VALUE, supportingInformation);
         case 481140686: /*performer*/  return new Property("performer", "", "Indicates who or what performed the event.", 0, java.lang.Integer.MAX_VALUE, performer);
@@ -1502,6 +1535,7 @@ public class DeviceDispense extends DomainResource {
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case -1335157162: /*device*/ return this.device == null ? new Base[0] : new Base[] {this.device}; // CodeableReference
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
+        case -808719889: /*receiver*/ return this.receiver == null ? new Base[0] : new Base[] {this.receiver}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
         case -1248768647: /*supportingInformation*/ return this.supportingInformation == null ? new Base[0] : this.supportingInformation.toArray(new Base[this.supportingInformation.size()]); // Reference
         case 481140686: /*performer*/ return this.performer == null ? new Base[0] : this.performer.toArray(new Base[this.performer.size()]); // DeviceDispensePerformerComponent
@@ -1546,6 +1580,9 @@ public class DeviceDispense extends DomainResource {
           return value;
         case -1867885268: // subject
           this.subject = TypeConvertor.castToReference(value); // Reference
+          return value;
+        case -808719889: // receiver
+          this.receiver = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1524132147: // encounter
           this.encounter = TypeConvertor.castToReference(value); // Reference
@@ -1607,6 +1644,8 @@ public class DeviceDispense extends DomainResource {
           this.device = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("subject")) {
           this.subject = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("receiver")) {
+          this.receiver = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
           this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("supportingInformation")) {
@@ -1647,6 +1686,7 @@ public class DeviceDispense extends DomainResource {
         case 50511102:  return addCategory(); 
         case -1335157162:  return getDevice();
         case -1867885268:  return getSubject();
+        case -808719889:  return getReceiver();
         case 1524132147:  return getEncounter();
         case -1248768647:  return addSupportingInformation(); 
         case 481140686:  return addPerformer(); 
@@ -1675,6 +1715,7 @@ public class DeviceDispense extends DomainResource {
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case -1335157162: /*device*/ return new String[] {"CodeableReference"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
+        case -808719889: /*receiver*/ return new String[] {"Reference"};
         case 1524132147: /*encounter*/ return new String[] {"Reference"};
         case -1248768647: /*supportingInformation*/ return new String[] {"Reference"};
         case 481140686: /*performer*/ return new String[] {};
@@ -1720,6 +1761,10 @@ public class DeviceDispense extends DomainResource {
         else if (name.equals("subject")) {
           this.subject = new Reference();
           return this.subject;
+        }
+        else if (name.equals("receiver")) {
+          this.receiver = new Reference();
+          return this.receiver;
         }
         else if (name.equals("encounter")) {
           this.encounter = new Reference();
@@ -1803,6 +1848,7 @@ public class DeviceDispense extends DomainResource {
         };
         dst.device = device == null ? null : device.copy();
         dst.subject = subject == null ? null : subject.copy();
+        dst.receiver = receiver == null ? null : receiver.copy();
         dst.encounter = encounter == null ? null : encounter.copy();
         if (supportingInformation != null) {
           dst.supportingInformation = new ArrayList<Reference>();
@@ -1846,10 +1892,10 @@ public class DeviceDispense extends DomainResource {
         DeviceDispense o = (DeviceDispense) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(basedOn, o.basedOn, true) && compareDeep(partOf, o.partOf, true)
            && compareDeep(status, o.status, true) && compareDeep(statusReason, o.statusReason, true) && compareDeep(category, o.category, true)
-           && compareDeep(device, o.device, true) && compareDeep(subject, o.subject, true) && compareDeep(encounter, o.encounter, true)
-           && compareDeep(supportingInformation, o.supportingInformation, true) && compareDeep(performer, o.performer, true)
-           && compareDeep(location, o.location, true) && compareDeep(type, o.type, true) && compareDeep(quantity, o.quantity, true)
-           && compareDeep(preparedDate, o.preparedDate, true) && compareDeep(whenHandedOver, o.whenHandedOver, true)
+           && compareDeep(device, o.device, true) && compareDeep(subject, o.subject, true) && compareDeep(receiver, o.receiver, true)
+           && compareDeep(encounter, o.encounter, true) && compareDeep(supportingInformation, o.supportingInformation, true)
+           && compareDeep(performer, o.performer, true) && compareDeep(location, o.location, true) && compareDeep(type, o.type, true)
+           && compareDeep(quantity, o.quantity, true) && compareDeep(preparedDate, o.preparedDate, true) && compareDeep(whenHandedOver, o.whenHandedOver, true)
            && compareDeep(destination, o.destination, true) && compareDeep(note, o.note, true) && compareDeep(usageInstruction, o.usageInstruction, true)
            && compareDeep(eventHistory, o.eventHistory, true);
       }
@@ -1867,7 +1913,7 @@ public class DeviceDispense extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, basedOn, partOf
-          , status, statusReason, category, device, subject, encounter, supportingInformation
+          , status, statusReason, category, device, subject, receiver, encounter, supportingInformation
           , performer, location, type, quantity, preparedDate, whenHandedOver, destination
           , note, usageInstruction, eventHistory);
       }
@@ -1898,6 +1944,72 @@ public class DeviceDispense extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
 
  /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier of the dispense</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDispense.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="DeviceDispense.identifier", description="The identifier of the dispense", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier of the dispense</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDispense.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Returns device dispenses for a specific patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceDispense.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="DeviceDispense.subject.where(resolve() is Patient)", description="Returns device dispenses for a specific patient", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Returns device dispenses for a specific patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceDispense.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DeviceDispense:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("DeviceDispense:patient").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The status of the dispense</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDispense.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="DeviceDispense.status", description="The status of the dispense", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The status of the dispense</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDispense.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
    * Search parameter: <b>subject</b>
    * <p>
    * Description: <b>The identity of a patient for whom to list dispenses</b><br>
@@ -1905,7 +2017,7 @@ public class DeviceDispense extends DomainResource {
    * Path: <b>DeviceDispense.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="DeviceDispense.subject", description="The identity of a patient for whom to list dispenses", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="subject", path="DeviceDispense.subject", description="The identity of a patient for whom to list dispenses", type="reference", target={Patient.class, Practitioner.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
@@ -1925,3 +2037,4 @@ public class DeviceDispense extends DomainResource {
 
 
 }
+

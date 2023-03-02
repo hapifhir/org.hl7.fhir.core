@@ -54,7 +54,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   private StringBuilder cRN = new StringBuilder();
   private StringBuilder cType = new StringBuilder();
 
-  public JavaParserXmlGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+  public JavaParserXmlGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, jid);
   }
 

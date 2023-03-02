@@ -253,7 +253,7 @@ public class NarrativeGenerationTests {
     
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
     String expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
-    String actual = HEADER+new XhtmlComposer(true, false).compose(x)+FOOTER;
+    String actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
     String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
     String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".actual.html");
     TextFile.stringToFile(expected, expectedFileName);

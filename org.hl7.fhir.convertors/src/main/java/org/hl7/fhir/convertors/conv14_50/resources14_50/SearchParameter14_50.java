@@ -11,6 +11,9 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Stri
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Uri14_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAllEnumFactory;
 
 public class SearchParameter14_50 {
 
@@ -42,7 +45,7 @@ public class SearchParameter14_50 {
       tgt.setRequirements(src.getPurpose());
     if (src.hasCodeElement())
       tgt.setCodeElement(Code14_50.convertCode(src.getCodeElement()));
-    for (CodeType t : src.getBase()) tgt.setBase(t.asStringValue());
+    for (Enumeration<VersionIndependentResourceTypesAll> t : src.getBase()) tgt.setBaseElement(Code14_50.convertCode(t.getCodeType()));
     if (src.hasType())
       tgt.setTypeElement(Enumerations14_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasDescription())
@@ -53,7 +56,7 @@ public class SearchParameter14_50 {
 //      tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
     if (src.hasProcessingMode())
       tgt.setXpathUsageElement(convertXPathUsageType(src.getProcessingModeElement()));
-    for (CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
+    for (Enumeration<VersionIndependentResourceTypesAll> t : src.getTarget()) tgt.getTarget().add(Code14_50.convertCode(t.getCodeType()));
     return tgt;
   }
 
@@ -85,7 +88,7 @@ public class SearchParameter14_50 {
       tgt.setPurpose(src.getRequirements());
     if (src.hasCodeElement())
       tgt.setCodeElement(Code14_50.convertCode(src.getCodeElement()));
-    tgt.getBase().add(Code14_50.convertCode(src.getBaseElement()));
+    tgt.getBase().add(new Enumeration<VersionIndependentResourceTypesAll>(new VersionIndependentResourceTypesAllEnumFactory(), Code14_50.convertCode(src.getBaseElement())));
     if (src.hasType())
       tgt.setTypeElement(Enumerations14_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasDescription())
@@ -96,7 +99,7 @@ public class SearchParameter14_50 {
 //      tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
     if (src.hasXpathUsage())
       tgt.setProcessingModeElement(convertXPathUsageType(src.getXpathUsageElement()));
-    for (org.hl7.fhir.dstu2016may.model.CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
+    for (org.hl7.fhir.dstu2016may.model.CodeType t : src.getTarget()) tgt.getTarget().add(new Enumeration<VersionIndependentResourceTypesAll>(new VersionIndependentResourceTypesAllEnumFactory(), t.getValue()));
     return tgt;
   }
 

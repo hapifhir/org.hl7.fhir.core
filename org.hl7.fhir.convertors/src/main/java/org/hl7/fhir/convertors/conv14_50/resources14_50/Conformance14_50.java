@@ -227,7 +227,7 @@ public class Conformance14_50 {
     org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementImplementationComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementImplementationComponent();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyBackboneElement(src,tgt);
     if (src.hasDescriptionElement())
-      tgt.setDescriptionElement(String14_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String14_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasUrl())
       tgt.setUrl(src.getUrl());
     return tgt;

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +49,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Details and position information for a physical place where services are provided and resources and participants may be stored, found, contained, or accommodated.
+ * Details and position information for a place where services are provided and resources and participants may be stored, found, contained, or accommodated.
  */
 @ResourceDef(name="Location", profile="http://hl7.org/fhir/StructureDefinition/Location")
 public class Location extends DomainResource {
@@ -679,9 +679,9 @@ public class Location extends DomainResource {
     /**
      * Description of the Location, which helps in finding or referencing the place.
      */
-    @Child(name = "description", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Additional details about the location that could be displayed as further information to identify the location beyond its name", formalDefinition="Description of the Location, which helps in finding or referencing the place." )
-    protected StringType description;
+    protected MarkdownType description;
 
     /**
      * Indicates whether a resource instance represents a specific location or a class of locations.
@@ -771,7 +771,7 @@ public class Location extends DomainResource {
     @Description(shortDefinition="Technical endpoints providing access to services operated for the location", formalDefinition="Technical endpoints providing access to services operated for the location." )
     protected List<Reference> endpoint;
 
-    private static final long serialVersionUID = -1677697270L;
+    private static final long serialVersionUID = 1238993068L;
 
   /**
    * Constructor
@@ -1019,12 +1019,12 @@ public class Location extends DomainResource {
     /**
      * @return {@link #description} (Description of the Location, which helps in finding or referencing the place.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public StringType getDescriptionElement() { 
+    public MarkdownType getDescriptionElement() { 
       if (this.description == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Location.description");
         else if (Configuration.doAutoCreate())
-          this.description = new StringType(); // bb
+          this.description = new MarkdownType(); // bb
       return this.description;
     }
 
@@ -1039,7 +1039,7 @@ public class Location extends DomainResource {
     /**
      * @param value {@link #description} (Description of the Location, which helps in finding or referencing the place.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public Location setDescriptionElement(StringType value) { 
+    public Location setDescriptionElement(MarkdownType value) { 
       this.description = value;
       return this;
     }
@@ -1059,7 +1059,7 @@ public class Location extends DomainResource {
         this.description = null;
       else {
         if (this.description == null)
-          this.description = new StringType();
+          this.description = new MarkdownType();
         this.description.setValue(value);
       }
       return this;
@@ -1559,7 +1559,7 @@ public class Location extends DomainResource {
         children.add(new Property("operationalStatus", "Coding", "The operational status covers operation values most relevant to beds (but can also apply to rooms/units/chairs/etc. such as an isolation unit/dialysis chair). This typically covers concepts such as contamination, housekeeping, and other activities like maintenance.", 0, 1, operationalStatus));
         children.add(new Property("name", "string", "Name of the location as used by humans. Does not need to be unique.", 0, 1, name));
         children.add(new Property("alias", "string", "A list of alternate names that the location is known as, or was known as, in the past.", 0, java.lang.Integer.MAX_VALUE, alias));
-        children.add(new Property("description", "string", "Description of the Location, which helps in finding or referencing the place.", 0, 1, description));
+        children.add(new Property("description", "markdown", "Description of the Location, which helps in finding or referencing the place.", 0, 1, description));
         children.add(new Property("mode", "code", "Indicates whether a resource instance represents a specific location or a class of locations.", 0, 1, mode));
         children.add(new Property("type", "CodeableConcept", "Indicates the type of function performed at the location.", 0, java.lang.Integer.MAX_VALUE, type));
         children.add(new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available at the location. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact));
@@ -1582,7 +1582,7 @@ public class Location extends DomainResource {
         case -2103166364: /*operationalStatus*/  return new Property("operationalStatus", "Coding", "The operational status covers operation values most relevant to beds (but can also apply to rooms/units/chairs/etc. such as an isolation unit/dialysis chair). This typically covers concepts such as contamination, housekeeping, and other activities like maintenance.", 0, 1, operationalStatus);
         case 3373707: /*name*/  return new Property("name", "string", "Name of the location as used by humans. Does not need to be unique.", 0, 1, name);
         case 92902992: /*alias*/  return new Property("alias", "string", "A list of alternate names that the location is known as, or was known as, in the past.", 0, java.lang.Integer.MAX_VALUE, alias);
-        case -1724546052: /*description*/  return new Property("description", "string", "Description of the Location, which helps in finding or referencing the place.", 0, 1, description);
+        case -1724546052: /*description*/  return new Property("description", "markdown", "Description of the Location, which helps in finding or referencing the place.", 0, 1, description);
         case 3357091: /*mode*/  return new Property("mode", "code", "Indicates whether a resource instance represents a specific location or a class of locations.", 0, 1, mode);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Indicates the type of function performed at the location.", 0, java.lang.Integer.MAX_VALUE, type);
         case 951526432: /*contact*/  return new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available at the location. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact);
@@ -1608,7 +1608,7 @@ public class Location extends DomainResource {
         case -2103166364: /*operationalStatus*/ return this.operationalStatus == null ? new Base[0] : new Base[] {this.operationalStatus}; // Coding
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 92902992: /*alias*/ return this.alias == null ? new Base[0] : this.alias.toArray(new Base[this.alias.size()]); // StringType
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // Enumeration<LocationMode>
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ExtendedContactDetail
@@ -1646,7 +1646,7 @@ public class Location extends DomainResource {
           this.getAlias().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3357091: // mode
           value = new LocationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -1704,7 +1704,7 @@ public class Location extends DomainResource {
         } else if (name.equals("alias")) {
           this.getAlias().add(TypeConvertor.castToString(value));
         } else if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("mode")) {
           value = new LocationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<LocationMode>
@@ -1769,7 +1769,7 @@ public class Location extends DomainResource {
         case -2103166364: /*operationalStatus*/ return new String[] {"Coding"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 92902992: /*alias*/ return new String[] {"string"};
-        case -1724546052: /*description*/ return new String[] {"string"};
+        case -1724546052: /*description*/ return new String[] {"markdown"};
         case 3357091: /*mode*/ return new String[] {"code"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 951526432: /*contact*/ return new String[] {"ExtendedContactDetail"};
@@ -2192,9 +2192,7 @@ public class Location extends DomainResource {
    * <p>
    * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
 
-Servers which support the near parameter SHALL support the unit string 'km' for kilometers and SHOULD support '[mi_us]' for miles, support for other units is optional. If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant).
-
-If the server is unable to understand the units (and does support the near search parameter), it MIGHT return an OperationOutcome and fail the search with a http status 400 BadRequest. If the server does not support the near parameter, the parameter MIGHT report the unused parameter in a bundled OperationOutcome and still perform the search ignoring the near parameter.
+Servers which support the near parameter SHALL support the unit string 'km' for kilometers and SHOULD support '[mi_us]' for miles, support for other units is optional. If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant).If the server is unable to understand the units (and does support the near search parameter), it MIGHT return an OperationOutcome and fail the search with a http status 400 BadRequest. If the server does not support the near parameter, the parameter MIGHT report the unused parameter in a bundled OperationOutcome and still perform the search ignoring the near parameter.
 
 Note: The algorithm to determine the distance is not defined by the specification, and systems might have different engines that calculate things differently. They could consider geographic point to point, or path via road, or including current traffic conditions, or just simple neighboring postcodes/localities if that's all it had access to.</b><br>
    * Type: <b>special</b><br>
@@ -2208,9 +2206,7 @@ Note: The algorithm to determine the distance is not defined by the specificatio
    * <p>
    * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
 
-Servers which support the near parameter SHALL support the unit string 'km' for kilometers and SHOULD support '[mi_us]' for miles, support for other units is optional. If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant).
-
-If the server is unable to understand the units (and does support the near search parameter), it MIGHT return an OperationOutcome and fail the search with a http status 400 BadRequest. If the server does not support the near parameter, the parameter MIGHT report the unused parameter in a bundled OperationOutcome and still perform the search ignoring the near parameter.
+Servers which support the near parameter SHALL support the unit string 'km' for kilometers and SHOULD support '[mi_us]' for miles, support for other units is optional. If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant).If the server is unable to understand the units (and does support the near search parameter), it MIGHT return an OperationOutcome and fail the search with a http status 400 BadRequest. If the server does not support the near parameter, the parameter MIGHT report the unused parameter in a bundled OperationOutcome and still perform the search ignoring the near parameter.
 
 Note: The algorithm to determine the distance is not defined by the specification, and systems might have different engines that calculate things differently. They could consider geographic point to point, or path via road, or including current traffic conditions, or just simple neighboring postcodes/localities if that's all it had access to.</b><br>
    * Type: <b>special</b><br>
@@ -2333,3 +2329,4 @@ Note: The algorithm to determine the distance is not defined by the specificatio
 
 
 }
+

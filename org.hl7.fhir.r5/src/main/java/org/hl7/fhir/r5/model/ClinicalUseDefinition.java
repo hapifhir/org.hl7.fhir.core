@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -696,10 +696,10 @@ public class ClinicalUseDefinition extends DomainResource {
         protected CodeableConcept relationshipType;
 
         /**
-         * Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.
+         * Reference to a specific medication (active substance, medicinal product or class of products, biological, food etc.) as part of an indication or contraindication.
          */
         @Child(name = "treatment", type = {CodeableReference.class}, order=2, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Reference to a specific medication as part of an indication or contraindication", formalDefinition="Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication." )
+        @Description(shortDefinition="Reference to a specific medication, substance etc. as part of an indication or contraindication", formalDefinition="Reference to a specific medication (active substance, medicinal product or class of products, biological, food etc.) as part of an indication or contraindication." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/therapy")
         protected CodeableReference treatment;
 
@@ -746,7 +746,7 @@ public class ClinicalUseDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #treatment} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
+         * @return {@link #treatment} (Reference to a specific medication (active substance, medicinal product or class of products, biological, food etc.) as part of an indication or contraindication.)
          */
         public CodeableReference getTreatment() { 
           if (this.treatment == null)
@@ -762,7 +762,7 @@ public class ClinicalUseDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #treatment} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
+         * @param value {@link #treatment} (Reference to a specific medication (active substance, medicinal product or class of products, biological, food etc.) as part of an indication or contraindication.)
          */
         public ClinicalUseDefinitionContraindicationOtherTherapyComponent setTreatment(CodeableReference value) { 
           this.treatment = value;
@@ -772,14 +772,14 @@ public class ClinicalUseDefinition extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("relationshipType", "CodeableConcept", "The type of relationship between the medicinal product indication or contraindication and another therapy.", 0, 1, relationshipType));
-          children.add(new Property("treatment", "CodeableReference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition|ActivityDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, treatment));
+          children.add(new Property("treatment", "CodeableReference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition|NutritionProduct|BiologicallyDerivedProduct|ActivityDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products, biological, food etc.) as part of an indication or contraindication.", 0, 1, treatment));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1602839150: /*relationshipType*/  return new Property("relationshipType", "CodeableConcept", "The type of relationship between the medicinal product indication or contraindication and another therapy.", 0, 1, relationshipType);
-          case -63342472: /*treatment*/  return new Property("treatment", "CodeableReference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition|ActivityDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, treatment);
+          case -63342472: /*treatment*/  return new Property("treatment", "CodeableReference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition|NutritionProduct|BiologicallyDerivedProduct|ActivityDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products, biological, food etc.) as part of an indication or contraindication.", 0, 1, treatment);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1520,10 +1520,10 @@ public class ClinicalUseDefinition extends DomainResource {
     @Block()
     public static class ClinicalUseDefinitionInteractionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The specific medication, food, substance or laboratory test that interacts.
+         * The specific medication, product, food, substance etc. or laboratory test that interacts.
          */
         @Child(name = "interactant", type = {}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The specific medication, food, substance or laboratory test that interacts", formalDefinition="The specific medication, food, substance or laboratory test that interacts." )
+        @Description(shortDefinition="The specific medication, product, food etc. or laboratory test that interacts", formalDefinition="The specific medication, product, food, substance etc. or laboratory test that interacts." )
         protected List<ClinicalUseDefinitionInteractionInteractantComponent> interactant;
 
         /**
@@ -1568,7 +1568,7 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
         /**
-         * @return {@link #interactant} (The specific medication, food, substance or laboratory test that interacts.)
+         * @return {@link #interactant} (The specific medication, product, food, substance etc. or laboratory test that interacts.)
          */
         public List<ClinicalUseDefinitionInteractionInteractantComponent> getInteractant() { 
           if (this.interactant == null)
@@ -1747,7 +1747,7 @@ public class ClinicalUseDefinition extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("interactant", "", "The specific medication, food, substance or laboratory test that interacts.", 0, java.lang.Integer.MAX_VALUE, interactant));
+          children.add(new Property("interactant", "", "The specific medication, product, food, substance etc. or laboratory test that interacts.", 0, java.lang.Integer.MAX_VALUE, interactant));
           children.add(new Property("type", "CodeableConcept", "The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction.", 0, 1, type));
           children.add(new Property("effect", "CodeableReference(ObservationDefinition)", "The effect of the interaction, for example \"reduced gastric absorption of primary medication\".", 0, 1, effect));
           children.add(new Property("incidence", "CodeableConcept", "The incidence of the interaction, e.g. theoretical, observed.", 0, 1, incidence));
@@ -1757,7 +1757,7 @@ public class ClinicalUseDefinition extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 1844097009: /*interactant*/  return new Property("interactant", "", "The specific medication, food, substance or laboratory test that interacts.", 0, java.lang.Integer.MAX_VALUE, interactant);
+          case 1844097009: /*interactant*/  return new Property("interactant", "", "The specific medication, product, food, substance etc. or laboratory test that interacts.", 0, java.lang.Integer.MAX_VALUE, interactant);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction.", 0, 1, type);
           case -1306084975: /*effect*/  return new Property("effect", "CodeableReference(ObservationDefinition)", "The effect of the interaction, for example \"reduced gastric absorption of primary medication\".", 0, 1, effect);
           case -1598467132: /*incidence*/  return new Property("incidence", "CodeableConcept", "The incidence of the interaction, e.g. theoretical, observed.", 0, 1, incidence);
@@ -1929,10 +1929,10 @@ public class ClinicalUseDefinition extends DomainResource {
     @Block()
     public static class ClinicalUseDefinitionInteractionInteractantComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The specific medication, food or laboratory test that interacts.
+         * The specific medication, product, food, substance etc. or laboratory test that interacts.
          */
-        @Child(name = "item", type = {MedicinalProductDefinition.class, Medication.class, Substance.class, ObservationDefinition.class, CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The specific medication, food or laboratory test that interacts", formalDefinition="The specific medication, food or laboratory test that interacts." )
+        @Child(name = "item", type = {MedicinalProductDefinition.class, Medication.class, Substance.class, NutritionProduct.class, BiologicallyDerivedProduct.class, ObservationDefinition.class, CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The specific medication, product, food etc. or laboratory test that interacts", formalDefinition="The specific medication, product, food, substance etc. or laboratory test that interacts." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/interactant")
         protected DataType item;
 
@@ -1954,14 +1954,14 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
         /**
-         * @return {@link #item} (The specific medication, food or laboratory test that interacts.)
+         * @return {@link #item} (The specific medication, product, food, substance etc. or laboratory test that interacts.)
          */
         public DataType getItem() { 
           return this.item;
         }
 
         /**
-         * @return {@link #item} (The specific medication, food or laboratory test that interacts.)
+         * @return {@link #item} (The specific medication, product, food, substance etc. or laboratory test that interacts.)
          */
         public Reference getItemReference() throws FHIRException { 
           if (this.item == null)
@@ -1976,7 +1976,7 @@ public class ClinicalUseDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #item} (The specific medication, food or laboratory test that interacts.)
+         * @return {@link #item} (The specific medication, product, food, substance etc. or laboratory test that interacts.)
          */
         public CodeableConcept getItemCodeableConcept() throws FHIRException { 
           if (this.item == null)
@@ -1995,7 +1995,7 @@ public class ClinicalUseDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #item} (The specific medication, food or laboratory test that interacts.)
+         * @param value {@link #item} (The specific medication, product, food, substance etc. or laboratory test that interacts.)
          */
         public ClinicalUseDefinitionInteractionInteractantComponent setItem(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
@@ -2006,16 +2006,16 @@ public class ClinicalUseDefinition extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|ObservationDefinition)|CodeableConcept", "The specific medication, food or laboratory test that interacts.", 0, 1, item));
+          children.add(new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|NutritionProduct|BiologicallyDerivedProduct|ObservationDefinition)|CodeableConcept", "The specific medication, product, food, substance etc. or laboratory test that interacts.", 0, 1, item));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 2116201613: /*item[x]*/  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|ObservationDefinition)|CodeableConcept", "The specific medication, food or laboratory test that interacts.", 0, 1, item);
-          case 3242771: /*item*/  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|ObservationDefinition)|CodeableConcept", "The specific medication, food or laboratory test that interacts.", 0, 1, item);
-          case 1376364920: /*itemReference*/  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|ObservationDefinition)", "The specific medication, food or laboratory test that interacts.", 0, 1, item);
-          case 106644494: /*itemCodeableConcept*/  return new Property("item[x]", "CodeableConcept", "The specific medication, food or laboratory test that interacts.", 0, 1, item);
+          case 2116201613: /*item[x]*/  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|NutritionProduct|BiologicallyDerivedProduct|ObservationDefinition)|CodeableConcept", "The specific medication, product, food, substance etc. or laboratory test that interacts.", 0, 1, item);
+          case 3242771: /*item*/  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|NutritionProduct|BiologicallyDerivedProduct|ObservationDefinition)|CodeableConcept", "The specific medication, product, food, substance etc. or laboratory test that interacts.", 0, 1, item);
+          case 1376364920: /*itemReference*/  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|Substance|NutritionProduct|BiologicallyDerivedProduct|ObservationDefinition)", "The specific medication, product, food, substance etc. or laboratory test that interacts.", 0, 1, item);
+          case 106644494: /*itemCodeableConcept*/  return new Property("item[x]", "CodeableConcept", "The specific medication, product, food, substance etc. or laboratory test that interacts.", 0, 1, item);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -2442,7 +2442,7 @@ public class ClinicalUseDefinition extends DomainResource {
          * @param value A textual definition of this warning, with formatting.
          */
         public ClinicalUseDefinitionWarningComponent setDescription(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.description = null;
           else {
             if (this.description == null)
@@ -2627,10 +2627,10 @@ public class ClinicalUseDefinition extends DomainResource {
     protected List<CodeableConcept> category;
 
     /**
-     * The medication or procedure for which this is an indication.
+     * The medication, product, substance, device, procedure etc. for which this is an indication.
      */
-    @Child(name = "subject", type = {MedicinalProductDefinition.class, Medication.class, ActivityDefinition.class, PlanDefinition.class, Device.class, DeviceDefinition.class, Substance.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The medication or procedure for which this is an indication", formalDefinition="The medication or procedure for which this is an indication." )
+    @Child(name = "subject", type = {MedicinalProductDefinition.class, Medication.class, ActivityDefinition.class, PlanDefinition.class, Device.class, DeviceDefinition.class, Substance.class, NutritionProduct.class, BiologicallyDerivedProduct.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The medication, product, substance, device, procedure etc. for which this is an indication", formalDefinition="The medication, product, substance, device, procedure etc. for which this is an indication." )
     protected List<Reference> subject;
 
     /**
@@ -2859,7 +2859,7 @@ public class ClinicalUseDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} (The medication or procedure for which this is an indication.)
+     * @return {@link #subject} (The medication, product, substance, device, procedure etc. for which this is an indication.)
      */
     public List<Reference> getSubject() { 
       if (this.subject == null)
@@ -3174,7 +3174,7 @@ public class ClinicalUseDefinition extends DomainResource {
         children.add(new Property("identifier", "Identifier", "Business identifier for this issue.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | warning.", 0, 1, type));
         children.add(new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\".", 0, java.lang.Integer.MAX_VALUE, category));
-        children.add(new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance)", "The medication or procedure for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject));
+        children.add(new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance|NutritionProduct|BiologicallyDerivedProduct)", "The medication, product, substance, device, procedure etc. for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject));
         children.add(new Property("status", "CodeableConcept", "Whether this is a current issue or one that has been retired etc.", 0, 1, status));
         children.add(new Property("contraindication", "", "Specifics for when this is a contraindication.", 0, 1, contraindication));
         children.add(new Property("indication", "", "Specifics for when this is an indication.", 0, 1, indication));
@@ -3191,7 +3191,7 @@ public class ClinicalUseDefinition extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier for this issue.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 3575610: /*type*/  return new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | warning.", 0, 1, type);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\".", 0, java.lang.Integer.MAX_VALUE, category);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance)", "The medication or procedure for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance|NutritionProduct|BiologicallyDerivedProduct)", "The medication, product, substance, device, procedure etc. for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject);
         case -892481550: /*status*/  return new Property("status", "CodeableConcept", "Whether this is a current issue or one that has been retired etc.", 0, 1, status);
         case 107135229: /*contraindication*/  return new Property("contraindication", "", "Specifics for when this is a contraindication.", 0, 1, contraindication);
         case -597168804: /*indication*/  return new Property("indication", "", "Specifics for when this is an indication.", 0, 1, indication);
@@ -3481,17 +3481,17 @@ public class ClinicalUseDefinition extends DomainResource {
    * <p>
    * Description: <b>The situation that is being documented as contraindicating against this item, as a reference</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseDefinition.contraindication.diseaseSymptomProcedure</b><br>
+   * Path: <b>ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="contraindication-reference", path="ClinicalUseDefinition.contraindication.diseaseSymptomProcedure", description="The situation that is being documented as contraindicating against this item, as a reference", type="reference" )
+  @SearchParamDefinition(name="contraindication-reference", path="ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.reference", description="The situation that is being documented as contraindicating against this item, as a reference", type="reference", target={ObservationDefinition.class } )
   public static final String SP_CONTRAINDICATION_REFERENCE = "contraindication-reference";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>contraindication-reference</b>
    * <p>
    * Description: <b>The situation that is being documented as contraindicating against this item, as a reference</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseDefinition.contraindication.diseaseSymptomProcedure</b><br>
+   * Path: <b>ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.reference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTRAINDICATION_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTRAINDICATION_REFERENCE);
@@ -3507,17 +3507,17 @@ public class ClinicalUseDefinition extends DomainResource {
    * <p>
    * Description: <b>The situation that is being documented as contraindicating against this item, as a code</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseDefinition.contraindication.diseaseSymptomProcedure</b><br>
+   * Path: <b>ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.concept</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="contraindication", path="ClinicalUseDefinition.contraindication.diseaseSymptomProcedure", description="The situation that is being documented as contraindicating against this item, as a code", type="token" )
+  @SearchParamDefinition(name="contraindication", path="ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.concept", description="The situation that is being documented as contraindicating against this item, as a code", type="token" )
   public static final String SP_CONTRAINDICATION = "contraindication";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>contraindication</b>
    * <p>
    * Description: <b>The situation that is being documented as contraindicating against this item, as a code</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseDefinition.contraindication.diseaseSymptomProcedure</b><br>
+   * Path: <b>ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.concept</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTRAINDICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTRAINDICATION);
@@ -3527,17 +3527,17 @@ public class ClinicalUseDefinition extends DomainResource {
    * <p>
    * Description: <b>The situation in which the undesirable effect may manifest, as a reference</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseDefinition.undesirableEffect.symptomConditionEffect</b><br>
+   * Path: <b>ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="effect-reference", path="ClinicalUseDefinition.undesirableEffect.symptomConditionEffect", description="The situation in which the undesirable effect may manifest, as a reference", type="reference" )
+  @SearchParamDefinition(name="effect-reference", path="ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.reference", description="The situation in which the undesirable effect may manifest, as a reference", type="reference", target={ObservationDefinition.class } )
   public static final String SP_EFFECT_REFERENCE = "effect-reference";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>effect-reference</b>
    * <p>
    * Description: <b>The situation in which the undesirable effect may manifest, as a reference</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseDefinition.undesirableEffect.symptomConditionEffect</b><br>
+   * Path: <b>ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.reference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam EFFECT_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_EFFECT_REFERENCE);
@@ -3553,17 +3553,17 @@ public class ClinicalUseDefinition extends DomainResource {
    * <p>
    * Description: <b>The situation in which the undesirable effect may manifest, as a code</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseDefinition.undesirableEffect.symptomConditionEffect</b><br>
+   * Path: <b>ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.concept</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="effect", path="ClinicalUseDefinition.undesirableEffect.symptomConditionEffect", description="The situation in which the undesirable effect may manifest, as a code", type="token" )
+  @SearchParamDefinition(name="effect", path="ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.concept", description="The situation in which the undesirable effect may manifest, as a code", type="token" )
   public static final String SP_EFFECT = "effect";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>effect</b>
    * <p>
    * Description: <b>The situation in which the undesirable effect may manifest, as a code</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseDefinition.undesirableEffect.symptomConditionEffect</b><br>
+   * Path: <b>ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.concept</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam EFFECT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EFFECT);
@@ -3593,17 +3593,17 @@ public class ClinicalUseDefinition extends DomainResource {
    * <p>
    * Description: <b>The situation that is being documented as an indicaton for this item, as a reference</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseDefinition.indication.diseaseSymptomProcedure</b><br>
+   * Path: <b>ClinicalUseDefinition.indication.diseaseSymptomProcedure.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="indication-reference", path="ClinicalUseDefinition.indication.diseaseSymptomProcedure", description="The situation that is being documented as an indicaton for this item, as a reference", type="reference" )
+  @SearchParamDefinition(name="indication-reference", path="ClinicalUseDefinition.indication.diseaseSymptomProcedure.reference", description="The situation that is being documented as an indicaton for this item, as a reference", type="reference", target={ObservationDefinition.class } )
   public static final String SP_INDICATION_REFERENCE = "indication-reference";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>indication-reference</b>
    * <p>
    * Description: <b>The situation that is being documented as an indicaton for this item, as a reference</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseDefinition.indication.diseaseSymptomProcedure</b><br>
+   * Path: <b>ClinicalUseDefinition.indication.diseaseSymptomProcedure.reference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INDICATION_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INDICATION_REFERENCE);
@@ -3619,17 +3619,17 @@ public class ClinicalUseDefinition extends DomainResource {
    * <p>
    * Description: <b>The situation that is being documented as an indicaton for this item, as a code</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseDefinition.indication.diseaseSymptomProcedure</b><br>
+   * Path: <b>ClinicalUseDefinition.indication.diseaseSymptomProcedure.concept</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="indication", path="ClinicalUseDefinition.indication.diseaseSymptomProcedure", description="The situation that is being documented as an indicaton for this item, as a code", type="token" )
+  @SearchParamDefinition(name="indication", path="ClinicalUseDefinition.indication.diseaseSymptomProcedure.concept", description="The situation that is being documented as an indicaton for this item, as a code", type="token" )
   public static final String SP_INDICATION = "indication";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>indication</b>
    * <p>
    * Description: <b>The situation that is being documented as an indicaton for this item, as a code</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseDefinition.indication.diseaseSymptomProcedure</b><br>
+   * Path: <b>ClinicalUseDefinition.indication.diseaseSymptomProcedure.concept</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam INDICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INDICATION);
@@ -3683,17 +3683,17 @@ public class ClinicalUseDefinition extends DomainResource {
  /**
    * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>Whether this is a current issue or one that has been retired etc</b><br>
+   * Description: <b>Whether this is a current issue or one that has been retired etc.</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalUseDefinition.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="ClinicalUseDefinition.status", description="Whether this is a current issue or one that has been retired etc", type="token" )
+  @SearchParamDefinition(name="status", path="ClinicalUseDefinition.status", description="Whether this is a current issue or one that has been retired etc.", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>Whether this is a current issue or one that has been retired etc</b><br>
+   * Description: <b>Whether this is a current issue or one that has been retired etc.</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalUseDefinition.status</b><br>
    * </p>
@@ -3708,7 +3708,7 @@ public class ClinicalUseDefinition extends DomainResource {
    * Path: <b>ClinicalUseDefinition.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="ClinicalUseDefinition.subject", description="The resource for which this is a clinical usage issue", type="reference", target={ActivityDefinition.class, Device.class, DeviceDefinition.class, Medication.class, MedicinalProductDefinition.class, PlanDefinition.class, Substance.class } )
+  @SearchParamDefinition(name="subject", path="ClinicalUseDefinition.subject", description="The resource for which this is a clinical usage issue", type="reference", target={ActivityDefinition.class, BiologicallyDerivedProduct.class, Device.class, DeviceDefinition.class, Medication.class, MedicinalProductDefinition.class, NutritionProduct.class, PlanDefinition.class, Substance.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
@@ -3748,3 +3748,4 @@ public class ClinicalUseDefinition extends DomainResource {
 
 
 }
+

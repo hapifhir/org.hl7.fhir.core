@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,6 +72,10 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
          */
         INFORMATION, 
         /**
+         * The operation completed successfully.
+         */
+        SUCCESS, 
+        /**
          * added to help the parsers with the generic types
          */
         NULL;
@@ -86,6 +90,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return WARNING;
         if ("information".equals(codeString))
           return INFORMATION;
+        if ("success".equals(codeString))
+          return SUCCESS;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -97,6 +103,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case ERROR: return "error";
             case WARNING: return "warning";
             case INFORMATION: return "information";
+            case SUCCESS: return "success";
             case NULL: return null;
             default: return "?";
           }
@@ -107,6 +114,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case ERROR: return "http://hl7.org/fhir/issue-severity";
             case WARNING: return "http://hl7.org/fhir/issue-severity";
             case INFORMATION: return "http://hl7.org/fhir/issue-severity";
+            case SUCCESS: return "http://hl7.org/fhir/issue-severity";
             case NULL: return null;
             default: return "?";
           }
@@ -117,6 +125,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case ERROR: return "The issue is sufficiently important to cause the action to fail.";
             case WARNING: return "The issue is not important enough to cause the action to fail but may cause it to be performed suboptimally or in a way that is not as desired.";
             case INFORMATION: return "The issue has no relation to the degree of success of the action.";
+            case SUCCESS: return "The operation completed successfully.";
             case NULL: return null;
             default: return "?";
           }
@@ -127,6 +136,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case ERROR: return "Error";
             case WARNING: return "Warning";
             case INFORMATION: return "Information";
+            case SUCCESS: return "Operation Successful";
             case NULL: return null;
             default: return "?";
           }
@@ -146,6 +156,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return IssueSeverity.WARNING;
         if ("information".equals(codeString))
           return IssueSeverity.INFORMATION;
+        if ("success".equals(codeString))
+          return IssueSeverity.SUCCESS;
         throw new IllegalArgumentException("Unknown IssueSeverity code '"+codeString+"'");
         }
         public Enumeration<IssueSeverity> fromType(PrimitiveType<?> code) throws FHIRException {
@@ -164,6 +176,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return new Enumeration<IssueSeverity>(this, IssueSeverity.WARNING, code);
         if ("information".equals(codeString))
           return new Enumeration<IssueSeverity>(this, IssueSeverity.INFORMATION, code);
+        if ("success".equals(codeString))
+          return new Enumeration<IssueSeverity>(this, IssueSeverity.SUCCESS, code);
         throw new FHIRException("Unknown IssueSeverity code '"+codeString+"'");
         }
     public String toCode(IssueSeverity code) {
@@ -175,6 +189,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
         return "warning";
       if (code == IssueSeverity.INFORMATION)
         return "information";
+      if (code == IssueSeverity.SUCCESS)
+        return "success";
       return "?";
       }
     public String toSystem(IssueSeverity code) {
@@ -308,6 +324,10 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
          */
         INFORMATIONAL, 
         /**
+         * The operation completed successfully.
+         */
+        SUCCESS, 
+        /**
          * added to help the parsers with the generic types
          */
         NULL;
@@ -376,6 +396,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return THROTTLED;
         if ("informational".equals(codeString))
           return INFORMATIONAL;
+        if ("success".equals(codeString))
+          return SUCCESS;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -414,6 +436,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case INCOMPLETE: return "incomplete";
             case THROTTLED: return "throttled";
             case INFORMATIONAL: return "informational";
+            case SUCCESS: return "success";
             case NULL: return null;
             default: return "?";
           }
@@ -451,6 +474,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case INCOMPLETE: return "http://hl7.org/fhir/issue-type";
             case THROTTLED: return "http://hl7.org/fhir/issue-type";
             case INFORMATIONAL: return "http://hl7.org/fhir/issue-type";
+            case SUCCESS: return "http://hl7.org/fhir/issue-type";
             case NULL: return null;
             default: return "?";
           }
@@ -488,6 +512,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case INCOMPLETE: return "Not all data sources typically accessed could be reached or responded in time, so the returned information might not be complete (applies to search interactions and some operations).";
             case THROTTLED: return "The system is not prepared to handle this request due to load management.";
             case INFORMATIONAL: return "A message unrelated to the processing success of the completed operation (examples of the latter include things like reminders of password expiry, system maintenance times, etc.).";
+            case SUCCESS: return "The operation completed successfully.";
             case NULL: return null;
             default: return "?";
           }
@@ -525,6 +550,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case INCOMPLETE: return "Incomplete Results";
             case THROTTLED: return "Throttled";
             case INFORMATIONAL: return "Informational Note";
+            case SUCCESS: return "Operation Successful";
             case NULL: return null;
             default: return "?";
           }
@@ -598,6 +624,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return IssueType.THROTTLED;
         if ("informational".equals(codeString))
           return IssueType.INFORMATIONAL;
+        if ("success".equals(codeString))
+          return IssueType.SUCCESS;
         throw new IllegalArgumentException("Unknown IssueType code '"+codeString+"'");
         }
         public Enumeration<IssueType> fromType(PrimitiveType<?> code) throws FHIRException {
@@ -670,6 +698,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return new Enumeration<IssueType>(this, IssueType.THROTTLED, code);
         if ("informational".equals(codeString))
           return new Enumeration<IssueType>(this, IssueType.INFORMATIONAL, code);
+        if ("success".equals(codeString))
+          return new Enumeration<IssueType>(this, IssueType.SUCCESS, code);
         throw new FHIRException("Unknown IssueType code '"+codeString+"'");
         }
     public String toCode(IssueType code) {
@@ -735,6 +765,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
         return "throttled";
       if (code == IssueType.INFORMATIONAL)
         return "informational";
+      if (code == IssueType.SUCCESS)
+        return "success";
       return "?";
       }
     public String toSystem(IssueType code) {
@@ -748,7 +780,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
          * Indicates whether the issue indicates a variation from successful processing.
          */
         @Child(name = "severity", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="fatal | error | warning | information", formalDefinition="Indicates whether the issue indicates a variation from successful processing." )
+        @Description(shortDefinition="fatal | error | warning | information | success", formalDefinition="Indicates whether the issue indicates a variation from successful processing." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/issue-severity")
         protected Enumeration<IssueSeverity> severity;
 
@@ -1513,3 +1545,4 @@ public String toString() {
 
 
 }
+

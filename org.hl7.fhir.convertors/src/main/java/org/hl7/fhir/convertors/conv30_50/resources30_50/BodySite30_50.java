@@ -20,7 +20,7 @@ public class BodySite30_50 {
     if (src.hasActive())
       tgt.setActiveElement(Boolean30_50.convertBoolean(src.getActiveElement()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String30_50.convertStringToMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.dstu3.model.Attachment t : src.getImage()) tgt.addImage(Attachment30_50.convertAttachment(t));
     if (src.hasPatient())
       tgt.setPatient(Reference30_50.convertReference(src.getPatient()));

@@ -41,7 +41,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 public class JavaTypeGenerator extends JavaBaseGenerator {
 
   
-  public JavaTypeGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+  public JavaTypeGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, jid);
   }
 

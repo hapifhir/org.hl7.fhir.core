@@ -46,7 +46,7 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
   private StringBuilder reg = new StringBuilder();
   private StringBuilder regt = new StringBuilder();
 
-  public JavaParserRdfGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+  public JavaParserRdfGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, jid);
   }
   

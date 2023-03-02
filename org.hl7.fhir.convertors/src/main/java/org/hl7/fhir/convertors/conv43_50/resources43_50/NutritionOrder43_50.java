@@ -414,7 +414,7 @@ public class NutritionOrder43_50 {
     if (src.hasMaxVolumeToDeliver())
       tgt.setMaxVolumeToDeliver(SimpleQuantity43_50.convertSimpleQuantity(src.getMaxVolumeToDeliver()));
     if (src.hasAdministrationInstruction())
-      tgt.setAdministrationInstructionElement(String43_50.convertString(src.getAdministrationInstructionElement()));
+      tgt.setAdministrationInstructionElement(String43_50.convertStringToMarkdown(src.getAdministrationInstructionElement()));
     return tgt;
   }
 

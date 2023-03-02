@@ -534,7 +534,7 @@ public class PlanDefinition30_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasUsage())
-      tgt.setUsageElement(String30_50.convertString(src.getUsageElement()));
+      tgt.setUsageElement(String30_50.convertStringToMarkdown(src.getUsageElement()));
     if (src.hasApprovalDate())
       tgt.setApprovalDateElement(Date30_50.convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
@@ -582,9 +582,9 @@ public class PlanDefinition30_50 {
     if (src.hasTitle())
       tgt.setTitleElement(String30_50.convertString(src.getTitleElement()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String30_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasTextEquivalent())
-      tgt.setTextEquivalentElement(String30_50.convertString(src.getTextEquivalentElement()));
+      tgt.setTextEquivalentElement(String30_50.convertStringToMarkdown(src.getTextEquivalentElement()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCode())
       tgt.setCode(CodeableConcept30_50.convertCodeableConcept(t));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReason())

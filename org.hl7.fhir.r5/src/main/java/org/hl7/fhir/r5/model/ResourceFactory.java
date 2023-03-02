@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 
   
@@ -63,6 +63,8 @@ public class ResourceFactory extends Factory {
             return new Binary();
         if ("BiologicallyDerivedProduct".equals(name))
             return new BiologicallyDerivedProduct();
+        if ("BiologicallyDerivedProductDispense".equals(name))
+            return new BiologicallyDerivedProductDispense();
         if ("BodyStructure".equals(name))
             return new BodyStructure();
         if ("Bundle".equals(name))
@@ -117,6 +119,8 @@ public class ResourceFactory extends Factory {
             return new DetectedIssue();
         if ("Device".equals(name))
             return new Device();
+        if ("DeviceAssociation".equals(name))
+            return new DeviceAssociation();
         if ("DeviceDefinition".equals(name))
             return new DeviceDefinition();
         if ("DeviceDispense".equals(name))
@@ -129,12 +133,12 @@ public class ResourceFactory extends Factory {
             return new DeviceUsage();
         if ("DiagnosticReport".equals(name))
             return new DiagnosticReport();
-        if ("DocumentManifest".equals(name))
-            return new DocumentManifest();
         if ("DocumentReference".equals(name))
             return new DocumentReference();
         if ("Encounter".equals(name))
             return new Encounter();
+        if ("EncounterHistory".equals(name))
+            return new EncounterHistory();
         if ("Endpoint".equals(name))
             return new Endpoint();
         if ("EnrollmentRequest".equals(name))
@@ -189,6 +193,8 @@ public class ResourceFactory extends Factory {
             return new Ingredient();
         if ("InsurancePlan".equals(name))
             return new InsurancePlan();
+        if ("InventoryItem".equals(name))
+            return new InventoryItem();
         if ("InventoryReport".equals(name))
             return new InventoryReport();
         if ("Invoice".equals(name))
@@ -217,8 +223,8 @@ public class ResourceFactory extends Factory {
             return new MedicationKnowledge();
         if ("MedicationRequest".equals(name))
             return new MedicationRequest();
-        if ("MedicationUsage".equals(name))
-            return new MedicationUsage();
+        if ("MedicationStatement".equals(name))
+            return new MedicationStatement();
         if ("MedicinalProductDefinition".equals(name))
             return new MedicinalProductDefinition();
         if ("MessageDefinition".equals(name))
@@ -333,6 +339,8 @@ public class ResourceFactory extends Factory {
             return new Task();
         if ("TerminologyCapabilities".equals(name))
             return new TerminologyCapabilities();
+        if ("TestPlan".equals(name))
+            return new TestPlan();
         if ("TestReport".equals(name))
             return new TestReport();
         if ("TestScript".equals(name))
@@ -515,6 +523,7 @@ public class ResourceFactory extends Factory {
         case 63955982: return new Basic();
         case 1989867553: return new Binary();
         case -310041824: return new BiologicallyDerivedProduct();
+        case -1860867939: return new BiologicallyDerivedProductDispense();
         case -202769967: return new BodyStructure();
         case 2000952482: return new Bundle();
         case -871422185: return new CapabilityStatement();
@@ -542,15 +551,16 @@ public class ResourceFactory extends Factory {
         case -18784314: return new CoverageEligibilityResponse();
         case 850563927: return new DetectedIssue();
         case 2043677302: return new Device();
+        case 515535915: return new DeviceAssociation();
         case 1083244649: return new DeviceDefinition();
         case -1031366157: return new DeviceDispense();
         case -949306426: return new DeviceMetric();
         case 776138553: return new DeviceRequest();
         case 115711179: return new DeviceUsage();
         case -1122842661: return new DiagnosticReport();
-        case 1922784394: return new DocumentManifest();
         case -1202791344: return new DocumentReference();
         case -766867181: return new Encounter();
+        case -1213716479: return new EncounterHistory();
         case 1805746613: return new Endpoint();
         case -1377846581: return new EnrollmentRequest();
         case 289362821: return new EnrollmentResponse();
@@ -578,6 +588,7 @@ public class ResourceFactory extends Factory {
         case 1410262602: return new ImplementationGuide();
         case 1787055601: return new Ingredient();
         case -1503864573: return new InsurancePlan();
+        case -726783377: return new InventoryItem();
         case 1884986768: return new InventoryReport();
         case -670115059: return new Invoice();
         case 1830861979: return new Library();
@@ -592,7 +603,7 @@ public class ResourceFactory extends Factory {
         case -408244884: return new MedicationDispense();
         case 1537687119: return new MedicationKnowledge();
         case 1627523232: return new MedicationRequest();
-        case 362406898: return new MedicationUsage();
+        case -2097348800: return new MedicationStatement();
         case -1378257556: return new MedicinalProductDefinition();
         case -2037697382: return new MessageDefinition();
         case -1087398572: return new MessageHeader();
@@ -650,6 +661,7 @@ public class ResourceFactory extends Factory {
         case 665843328: return new SupplyRequest();
         case 2599333: return new Task();
         case -549565975: return new TerminologyCapabilities();
+        case -1082257669: return new TestPlan();
         case -616289146: return new TestReport();
         case -589453283: return new TestScript();
         case -1238034679: return new Transport();

@@ -25,7 +25,7 @@ public class Substance10_50 {
     if (src.hasCode())
       tgt.getCode().setConcept(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     if (src.hasDescriptionElement())
-      tgt.setDescriptionElement(String10_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String10_50.convertStringToMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.dstu2.model.Substance.SubstanceInstanceComponent t : src.getInstance())
       convertSubstanceInstanceComponent(t, tgt);
     for (org.hl7.fhir.dstu2.model.Substance.SubstanceIngredientComponent t : src.getIngredient())

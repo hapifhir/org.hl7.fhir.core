@@ -151,3 +151,97 @@ v: {
   "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "nl-NL"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0-snapshot3", "lang":"nl-NL", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Dutch (Region=Netherlands)",
+  "code" : "nl-NL",
+  "system" : "urn:ietf:bcp:47"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-AU"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0-snapshot3", "lang":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "English (Region=Australia)",
+  "code" : "en-AU",
+  "system" : "urn:ietf:bcp:47"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "fr-CA"
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0-draft-final", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "display" : "French (Canada)",
+  "code" : "fr-CA",
+  "system" : "urn:ietf:bcp:47"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "439401001",
+  "display" : "Diagnosis"
+}, "url": "http://hl7.org/fhir/ValueSet/condition-category", "version": "5.0.0-draft-final", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"true"}####
+v: {
+  "display" : "Diagnosis (observable entity)",
+  "code" : "439401001",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "d"
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "5.0.0-draft-final", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "display" : "天",
+  "code" : "d",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "text/plain"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0-draft-final", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "text/plain",
+  "code" : "text/plain",
+  "system" : "urn:ietf:bcp:13"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "271649006",
+  "display" : "Systolic blood pressure"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0-draft-final", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Systolic blood pressure",
+  "code" : "271649006",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "nl-NL"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0-draft-final", "lang":"nl-NL", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Dutch (Region=Netherlands)",
+  "code" : "nl-NL",
+  "system" : "urn:ietf:bcp:47"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-AU"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0-draft-final", "lang":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "English (Region=Australia)",
+  "code" : "en-AU",
+  "system" : "urn:ietf:bcp:47"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en"
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0-draft-final", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "English",
+  "code" : "en",
+  "system" : "urn:ietf:bcp:47"
+}
+-------------------------------------------------------------------------------------

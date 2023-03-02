@@ -44,7 +44,7 @@ public class Schedule10_50 {
     if (src.hasPlanningHorizon())
       tgt.setPlanningHorizon(Period10_50.convertPeriod(src.getPlanningHorizon()));
     if (src.hasCommentElement())
-      tgt.setCommentElement(String10_50.convertString(src.getCommentElement()));
+      tgt.setCommentElement(String10_50.convertStringToMarkdown(src.getCommentElement()));
     return tgt;
   }
 }

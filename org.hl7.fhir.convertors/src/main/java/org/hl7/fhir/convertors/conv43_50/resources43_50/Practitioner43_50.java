@@ -12,6 +12,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Date43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Practitioner.PractitionerCommunicationComponent;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -65,7 +66,7 @@ public class Practitioner43_50 {
     for (org.hl7.fhir.r4b.model.Practitioner.PractitionerQualificationComponent t : src.getQualification())
       tgt.addQualification(convertPractitionerQualificationComponent(t));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getCommunication())
-      tgt.addCommunication(CodeableConcept43_50.convertCodeableConcept(t));
+      tgt.addCommunication().setLanguage(CodeableConcept43_50.convertCodeableConcept(t));
     return tgt;
   }
 
@@ -89,8 +90,8 @@ public class Practitioner43_50 {
     for (org.hl7.fhir.r5.model.Attachment t : src.getPhoto()) tgt.addPhoto(Attachment43_50.convertAttachment(t));
     for (org.hl7.fhir.r5.model.Practitioner.PractitionerQualificationComponent t : src.getQualification())
       tgt.addQualification(convertPractitionerQualificationComponent(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCommunication())
-      tgt.addCommunication(CodeableConcept43_50.convertCodeableConcept(t));
+    for (PractitionerCommunicationComponent t : src.getCommunication())
+      tgt.addCommunication(CodeableConcept43_50.convertCodeableConcept(t.getLanguage()));
     return tgt;
   }
 

@@ -96,11 +96,4 @@ public class PackageInformation {
   public String toString() {
     return getVID();
   }
-
-  public String dense() {
-    if (id.startsWith("hl7.fhir")) {
-      return id.substring(9);
-    }
-    return id;
-  }
 }
