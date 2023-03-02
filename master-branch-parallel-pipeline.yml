@@ -27,10 +27,10 @@ jobs:
       - task: Maven@3
         inputs:
           mavenPomFile: 'pom.xml'
-          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests'
           mavenOptions: '-Xmx3072m'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'dependency:resolve'
+          goals: 'install'
