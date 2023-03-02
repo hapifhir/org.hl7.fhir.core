@@ -33,6 +33,7 @@ package org.hl7.fhir.r5.model;
 
 
 import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Enumerations {
@@ -108,6 +109,11 @@ public class Enumerations {
         if ("multiple".equals(codeString))
           return MULTIPLE;
         throw new FHIRException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "single", "multiple");
         }
         public String toCode() {
           switch (this) {
@@ -208,6 +214,11 @@ public class Enumerations {
         if ("stop".equals(codeString))
           return STOP;
         throw new FHIRException("Unknown ActionConditionKind code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "applicability", "start", "stop");
         }
         public String toCode() {
           switch (this) {
@@ -318,6 +329,11 @@ public class Enumerations {
         if ("sentence-group".equals(codeString))
           return SENTENCEGROUP;
         throw new FHIRException("Unknown ActionGroupingBehavior code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "visual-group", "logical-group", "sentence-group");
         }
         public String toCode() {
           switch (this) {
@@ -470,6 +486,11 @@ public class Enumerations {
         if ("relatedperson".equals(codeString))
           return RELATEDPERSON;
         throw new FHIRException("Unknown ActionParticipantType code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "careteam", "device", "group", "healthcareservice", "location", "organization", "patient", "practitioner", "practitionerrole", "relatedperson");
         }
         public String toCode() {
           switch (this) {
@@ -645,6 +666,11 @@ public class Enumerations {
           return NO;
         throw new FHIRException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "yes", "no");
+        }
         public String toCode() {
           switch (this) {
             case YES: return "yes";
@@ -780,6 +806,11 @@ public class Enumerations {
         if ("after-end".equals(codeString))
           return AFTEREND;
         throw new FHIRException("Unknown ActionRelationshipType code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "before", "before-start", "before-end", "concurrent", "concurrent-with-start", "concurrent-with-end", "after", "after-start", "after-end");
         }
         public String toCode() {
           switch (this) {
@@ -951,6 +982,11 @@ public class Enumerations {
           return MUSTUNLESSDOCUMENTED;
         throw new FHIRException("Unknown ActionRequiredBehavior code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "must", "could", "must-unless-documented");
+        }
         public String toCode() {
           switch (this) {
             case MUST: return "must";
@@ -1078,6 +1114,11 @@ public class Enumerations {
         if ("one-or-more".equals(codeString))
           return ONEORMORE;
         throw new FHIRException("Unknown ActionSelectionBehavior code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "any", "all", "all-or-none", "exactly-one", "at-most-one", "one-or-more");
         }
         public String toCode() {
           switch (this) {
@@ -1225,6 +1266,11 @@ public class Enumerations {
           return UNKNOWN;
         throw new FHIRException("Unknown AdministrativeGender code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "male", "female", "other", "unknown");
+        }
         public String toCode() {
           switch (this) {
             case MALE: return "male";
@@ -1327,6 +1373,11 @@ public class Enumerations {
                 return null;
         throw new FHIRException("Unknown AllLanguages code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString);
+        }
         public String toCode() {
           switch (this) {
             case NULL: return null;
@@ -1412,6 +1463,11 @@ public class Enumerations {
         if ("example".equals(codeString))
           return EXAMPLE;
         throw new FHIRException("Unknown BindingStrength code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "required", "extensible", "preferred", "example");
         }
         public String toCode() {
           switch (this) {
@@ -1533,6 +1589,11 @@ public class Enumerations {
           return REQUIREMENTS;
         throw new FHIRException("Unknown CapabilityStatementKind code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "instance", "capability", "requirements");
+        }
         public String toCode() {
           switch (this) {
             case INSTANCE: return "instance";
@@ -1648,6 +1709,11 @@ public class Enumerations {
         if ("partial".equals(codeString))
           return PARTIAL;
         throw new FHIRException("Unknown ClaimProcessingCodes code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "queued", "complete", "error", "partial");
         }
         public String toCode() {
           switch (this) {
@@ -2242,6 +2308,11 @@ public class Enumerations {
         if ("zh-TW".equals(codeString))
           return ZHTW;
         throw new FHIRException("Unknown CommonLanguages code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "ar", "bg", "bg-BG", "bn", "cs", "cs-CZ", "bs", "bs-BA", "da", "da-DK", "de", "de-AT", "de-CH", "de-DE", "el", "el-GR", "en", "en-AU", "en-CA", "en-GB", "en-IN", "en-NZ", "en-SG", "en-US", "es", "es-AR", "es-ES", "es-UY", "et", "et-EE", "fi", "fr", "fr-BE", "fr-CH", "fr-FR", "fi-FI", "fr-CA", "fy", "fy-NL", "hi", "hr", "hr-HR", "is", "is-IS", "it", "it-CH", "it-IT", "ja", "ko", "lt", "lt-LT", "lv", "lv-LV", "nl", "nl-BE", "nl-NL", "no", "no-NO", "pa", "pl", "pl-PL", "pt", "pt-PT", "pt-BR", "ro", "ro-RO", "ru", "ru-RU", "sk", "sk-SK", "sl", "sl-SI", "sr", "sr-RS", "sv", "sv-SE", "te", "zh", "zh-CN", "zh-HK", "zh-SG", "zh-TW");
         }
         public String toCode() {
           switch (this) {
@@ -3161,6 +3232,11 @@ public class Enumerations {
           return EPISODEOFCARE;
         throw new FHIRException("Unknown CompartmentType code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "Patient", "Encounter", "RelatedPerson", "Practitioner", "Device", "EpisodeOfCare");
+        }
         public String toCode() {
           switch (this) {
             case PATIENT: return "Patient";
@@ -3348,6 +3424,11 @@ public class Enumerations {
         if ("unknown".equals(codeString))
           return UNKNOWN;
         throw new FHIRException("Unknown CompositionStatus code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "registered", "partial", "preliminary", "final", "amended", "corrected", "appended", "cancelled", "entered-in-error", "deprecated", "unknown");
         }
         public String toCode() {
           switch (this) {
@@ -3551,6 +3632,11 @@ public class Enumerations {
           return NOTRELATEDTO;
         throw new FHIRException("Unknown ConceptMapRelationship code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "related-to", "equivalent", "source-is-narrower-than-target", "source-is-broader-than-target", "not-related-to");
+        }
         public String toCode() {
           switch (this) {
             case RELATEDTO: return "related-to";
@@ -3687,6 +3773,11 @@ public class Enumerations {
           return AUTHOREDBY;
         throw new FHIRException("Unknown ConsentDataMeaning code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "instance", "related", "dependents", "authoredby");
+        }
         public String toCode() {
           switch (this) {
             case INSTANCE: return "instance";
@@ -3800,6 +3891,11 @@ public class Enumerations {
         if ("permit".equals(codeString))
           return PERMIT;
         throw new FHIRException("Unknown ConsentProvisionType code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "deny", "permit");
         }
         public String toCode() {
           switch (this) {
@@ -4974,6 +5070,11 @@ public class Enumerations {
         if ("ZWL".equals(codeString))
           return ZWL;
         throw new FHIRException("Unknown Currencies code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL", "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF", "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GGP", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "IMP", "INR", "IQD", "IRR", "ISK", "JEP", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRU", "MUR", "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STN", "SVC", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TVD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD", "XCD", "XDR", "XOF", "XPD", "XPF", "XPT", "XSU", "XTS", "XUA", "XXX", "YER", "ZAR", "ZMW", "ZWL");
         }
         public String toCode() {
           switch (this) {
@@ -6899,6 +7000,11 @@ public class Enumerations {
           return SUN;
         throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "mon", "tue", "wed", "thu", "fri", "sat", "sun");
+        }
         public String toCode() {
           switch (this) {
             case MON: return "mon";
@@ -7049,6 +7155,11 @@ public class Enumerations {
           return PATIENTREPORTEDNAME;
         throw new FHIRException("Unknown DeviceNameType code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "registered-name", "user-friendly-name", "patient-reported-name");
+        }
         public String toCode() {
           switch (this) {
             case REGISTEREDNAME: return "registered-name";
@@ -7194,6 +7305,11 @@ public class Enumerations {
         if ("unknown".equals(codeString))
           return UNKNOWN;
         throw new FHIRException("Unknown EncounterStatus code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "planned", "in-progress", "on-hold", "discharged", "completed", "cancelled", "discontinued", "entered-in-error", "unknown");
         }
         public String toCode() {
           switch (this) {
@@ -7395,6 +7511,11 @@ public class Enumerations {
           return UNKNOWN;
         throw new FHIRException("Unknown EventStatus code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "preparation", "in-progress", "not-done", "on-hold", "stopped", "completed", "entered-in-error", "unknown");
+        }
         public String toCode() {
           switch (this) {
             case PREPARATION: return "preparation";
@@ -7561,6 +7682,11 @@ public class Enumerations {
           return POLYCHOTOMOUS;
         throw new FHIRException("Unknown EvidenceVariableHandling code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "continuous", "dichotomous", "ordinal", "polychotomous");
+        }
         public String toCode() {
           switch (this) {
             case CONTINUOUS: return "continuous";
@@ -7674,6 +7800,11 @@ public class Enumerations {
         if ("system".equals(codeString))
           return SYSTEM;
         throw new FHIRException("Unknown ExampleScenarioActorType code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "person", "system");
         }
         public String toCode() {
           switch (this) {
@@ -8826,7 +8957,7 @@ The primary difference between a medicationstatement and a medicationadministrat
           return VIRTUALSERVICEDETAIL;
         if ("xhtml".equals(codeString))
           return XHTML;
-        if ("Resource".equals(codeString))
+        if ("Resource".equals(codeString) || "Any".equals(codeString))
           return RESOURCE;
         if ("Binary".equals(codeString))
           return BINARY;
@@ -9151,6 +9282,11 @@ The primary difference between a medicationstatement and a medicationadministrat
         if ("Parameters".equals(codeString))
           return PARAMETERS;
         throw new FHIRException("Unknown FHIRTypes code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "Base", "Element", "BackboneElement", "DataType", "Address", "Annotation", "Attachment", "Availability", "BackboneType", "Dosage", "ElementDefinition", "MarketingStatus", "Population", "ProductShelfLife", "Timing", "CodeableConcept", "CodeableReference", "Coding", "ContactDetail", "ContactPoint", "Contributor", "DataRequirement", "Expression", "ExtendedContactDetail", "Extension", "HumanName", "Identifier", "Meta", "MonetaryComponent", "Money", "Narrative", "ParameterDefinition", "Period", "PrimitiveType", "base64Binary", "boolean", "date", "dateTime", "decimal", "instant", "integer", "positiveInt", "unsignedInt", "integer64", "string", "code", "id", "markdown", "time", "uri", "canonical", "oid", "url", "uuid", "Quantity", "Age", "Count", "Distance", "Duration", "Range", "Ratio", "RatioRange", "Reference", "RelatedArtifact", "SampledData", "Signature", "TriggerDefinition", "UsageContext", "VirtualServiceDetail", "xhtml", "Resource", "Binary", "Bundle", "DomainResource", "Account", "ActivityDefinition", "ActorDefinition", "AdministrableProductDefinition", "AdverseEvent", "AllergyIntolerance", "Appointment", "AppointmentResponse", "ArtifactAssessment", "AuditEvent", "Basic", "BiologicallyDerivedProduct", "BiologicallyDerivedProductDispense", "BodyStructure", "CanonicalResource", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "ChargeItemDefinition", "Citation", "Claim", "ClaimResponse", "ClinicalImpression", "ClinicalUseDefinition", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition", "ConditionDefinition", "Consent", "Contract", "Coverage", "CoverageEligibilityRequest", "CoverageEligibilityResponse", "DetectedIssue", "Device", "DeviceAssociation", "DeviceDefinition", "DeviceDispense", "DeviceMetric", "DeviceRequest", "DeviceUsage", "DiagnosticReport", "DocumentReference", "Encounter", "EncounterHistory", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "FormularyItem", "GenomicStudy", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingSelection", "ImagingStudy", "Immunization", "ImmunizationEvaluation", "ImmunizationRecommendation", "ImplementationGuide", "Ingredient", "InsurancePlan", "InventoryItem", "InventoryReport", "Invoice", "Library", "Linkage", "List", "Location", "ManufacturedItemDefinition", "Measure", "MeasureReport", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationKnowledge", "MedicationRequest", "MedicationStatement", "MedicinalProductDefinition", "MessageDefinition", "MessageHeader", "MetadataResource", "MolecularSequence", "NamingSystem", "NutritionIntake", "NutritionOrder", "NutritionProduct", "Observation", "ObservationDefinition", "OperationDefinition", "OperationOutcome", "Organization", "OrganizationAffiliation", "PackagedProductDefinition", "Patient", "PaymentNotice", "PaymentReconciliation", "Permission", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "Provenance", "Questionnaire", "QuestionnaireResponse", "RegulatedAuthorization", "RelatedPerson", "RequestOrchestration", "Requirements", "ResearchStudy", "ResearchSubject", "RiskAssessment", "Schedule", "SearchParameter", "ServiceRequest", "Slot", "Specimen", "SpecimenDefinition", "StructureDefinition", "StructureMap", "Subscription", "SubscriptionStatus", "SubscriptionTopic", "Substance", "SubstanceDefinition", "SubstanceNucleicAcid", "SubstancePolymer", "SubstanceProtein", "SubstanceReferenceInformation", "SubstanceSourceMaterial", "SupplyDelivery", "SupplyRequest", "Task", "TerminologyCapabilities", "TestPlan", "TestReport", "TestScript", "Transport", "ValueSet", "VerificationResult", "VisionPrescription", "Parameters");
         }
         public String toCode() {
           switch (this) {
@@ -11876,6 +12012,11 @@ The primary difference between a medicationstatement and a medicationadministrat
           return _5_0_0DRAFTFINAL;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "0.01", "0.05", "0.06", "0.11", "0.0", "0.0.80", "0.0.81", "0.0.82", "0.4", "0.4.0", "0.5", "0.5.0", "1.0", "1.0.0", "1.0.1", "1.0.2", "1.1", "1.1.0", "1.4", "1.4.0", "1.6", "1.6.0", "1.8", "1.8.0", "3.0", "3.0.0", "3.0.1", "3.0.2", "3.3", "3.3.0", "3.5", "3.5.0", "4.0", "4.0.0", "4.0.1", "4.1", "4.1.0", "4.2", "4.2.0", "4.3", "4.3.0", "4.3.0-cibuild", "4.3.0-snapshot1", "4.4", "4.4.0", "4.5", "4.5.0", "4.6", "4.6.0", "5.0", "5.0.0", "5.0.0-cibuild", "5.0.0-snapshot1", "5.0.0-snapshot2", "5.0.0-ballot", "5.0.0-snapshot3", "5.0.0-draft-final");
+        }
         public String toCode() {
           switch (this) {
             case _0_01: return "0.01";
@@ -12591,6 +12732,11 @@ The primary difference between a medicationstatement and a medicationadministrat
           return EXISTS;
         throw new FHIRException("Unknown FilterOperator code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "=", "is-a", "descendent-of", "is-not-a", "regex", "in", "not-in", "generalizes", "child-of", "descendent-leaf", "exists");
+        }
         public String toCode() {
           switch (this) {
             case EQUAL: return "=";
@@ -12787,6 +12933,11 @@ The primary difference between a medicationstatement and a medicationadministrat
           return ENTEREDINERROR;
         throw new FHIRException("Unknown FinancialResourceStatusCodes code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "active", "cancelled", "draft", "entered-in-error");
+        }
         public String toCode() {
           switch (this) {
             case ACTIVE: return "active";
@@ -12907,6 +13058,11 @@ The primary difference between a medicationstatement and a medicationadministrat
           return CHANGES;
         throw new FHIRException("Unknown ListMode code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "working", "snapshot", "changes");
+        }
         public String toCode() {
           switch (this) {
             case WORKING: return "working";
@@ -13011,6 +13167,11 @@ The primary difference between a medicationstatement and a medicationadministrat
           return DECREASE;
         throw new FHIRException("Unknown MeasureImprovementNotation code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "increase", "decrease");
+        }
         public String toCode() {
           switch (this) {
             case INCREASE: return "increase";
@@ -13092,6 +13253,11 @@ The primary difference between a medicationstatement and a medicationadministrat
             if (codeString == null || "".equals(codeString))
                 return null;
         throw new FHIRException("Unknown MimeTypes code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString);
         }
         public String toCode() {
           switch (this) {
@@ -13202,6 +13368,11 @@ The primary difference between a medicationstatement and a medicationadministrat
         if ("unknown".equals(codeString))
           return UNKNOWN;
         throw new FHIRException("Unknown ObservationStatus code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "registered", "preliminary", "final", "amended", "corrected", "cancelled", "entered-in-error", "unknown");
         }
         public String toCode() {
           switch (this) {
@@ -13357,6 +13528,11 @@ The primary difference between a medicationstatement and a medicationadministrat
           return OUT;
         throw new FHIRException("Unknown OperationParameterUse code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "in", "out");
+        }
         public String toCode() {
           switch (this) {
             case IN: return "in";
@@ -13462,6 +13638,11 @@ The primary difference between a medicationstatement and a medicationadministrat
         if ("unknown".equals(codeString))
           return UNKNOWN;
         throw new FHIRException("Unknown PublicationStatus code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "draft", "active", "retired", "unknown");
         }
         public String toCode() {
           switch (this) {
@@ -13594,6 +13775,11 @@ The primary difference between a medicationstatement and a medicationadministrat
         if ("ad".equals(codeString))
           return AD;
         throw new FHIRException("Unknown QuantityComparator code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "<", "<=", ">=", ">", "ad");
         }
         public String toCode() {
           switch (this) {
@@ -13760,6 +13946,11 @@ The primary difference between a medicationstatement and a medicationadministrat
         if ("option".equals(codeString))
           return OPTION;
         throw new FHIRException("Unknown RequestIntent code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "proposal", "plan", "directive", "order", "original-order", "reflex-order", "filler-order", "instance-order", "option");
         }
         public String toCode() {
           switch (this) {
@@ -13937,6 +14128,11 @@ The primary difference between a medicationstatement and a medicationadministrat
           return STAT;
         throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "routine", "urgent", "asap", "stat");
+        }
         public String toCode() {
           switch (this) {
             case ROUTINE: return "routine";
@@ -14080,6 +14276,11 @@ The primary difference between a medicationstatement and a medicationadministrat
         if ("unknown".equals(codeString))
           return UNKNOWN;
         throw new FHIRException("Unknown RequestStatus code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "draft", "active", "on-hold", "revoked", "completed", "entered-in-error", "unknown");
         }
         public String toCode() {
           switch (this) {
@@ -15162,6 +15363,11 @@ The primary difference between a medicationstatement and a medicationadministrat
         if ("VisionPrescription".equals(codeString))
           return VISIONPRESCRIPTION;
         throw new FHIRException("Unknown ResourceTypeEnum code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "Account", "ActivityDefinition", "ActorDefinition", "AdministrableProductDefinition", "AdverseEvent", "AllergyIntolerance", "Appointment", "AppointmentResponse", "ArtifactAssessment", "AuditEvent", "Basic", "Binary", "BiologicallyDerivedProduct", "BiologicallyDerivedProductDispense", "BodyStructure", "Bundle", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "ChargeItemDefinition", "Citation", "Claim", "ClaimResponse", "ClinicalImpression", "ClinicalUseDefinition", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition", "ConditionDefinition", "Consent", "Contract", "Coverage", "CoverageEligibilityRequest", "CoverageEligibilityResponse", "DetectedIssue", "Device", "DeviceAssociation", "DeviceDefinition", "DeviceDispense", "DeviceMetric", "DeviceRequest", "DeviceUsage", "DiagnosticReport", "DocumentReference", "Encounter", "EncounterHistory", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "FormularyItem", "GenomicStudy", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingSelection", "ImagingStudy", "Immunization", "ImmunizationEvaluation", "ImmunizationRecommendation", "ImplementationGuide", "Ingredient", "InsurancePlan", "InventoryItem", "InventoryReport", "Invoice", "Library", "Linkage", "List", "Location", "ManufacturedItemDefinition", "Measure", "MeasureReport", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationKnowledge", "MedicationRequest", "MedicationStatement", "MedicinalProductDefinition", "MessageDefinition", "MessageHeader", "MolecularSequence", "NamingSystem", "NutritionIntake", "NutritionOrder", "NutritionProduct", "Observation", "ObservationDefinition", "OperationDefinition", "OperationOutcome", "Organization", "OrganizationAffiliation", "PackagedProductDefinition", "Parameters", "Patient", "PaymentNotice", "PaymentReconciliation", "Permission", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "Provenance", "Questionnaire", "QuestionnaireResponse", "RegulatedAuthorization", "RelatedPerson", "RequestOrchestration", "Requirements", "ResearchStudy", "ResearchSubject", "RiskAssessment", "Schedule", "SearchParameter", "ServiceRequest", "Slot", "Specimen", "SpecimenDefinition", "StructureDefinition", "StructureMap", "Subscription", "SubscriptionStatus", "SubscriptionTopic", "Substance", "SubstanceDefinition", "SubstanceNucleicAcid", "SubstancePolymer", "SubstanceProtein", "SubstanceReferenceInformation", "SubstanceSourceMaterial", "SupplyDelivery", "SupplyRequest", "Task", "TerminologyCapabilities", "TestPlan", "TestReport", "TestScript", "Transport", "ValueSet", "VerificationResult", "VisionPrescription");
         }
         public String toCode() {
           switch (this) {
@@ -16859,6 +17065,11 @@ The primary difference between a medicationstatement and a medicationadministrat
           return AP;
         throw new FHIRException("Unknown SearchComparator code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "eq", "ne", "gt", "lt", "ge", "le", "sa", "eb", "ap");
+        }
         public String toCode() {
           switch (this) {
             case EQ: return "eq";
@@ -17100,6 +17311,11 @@ The primary difference between a medicationstatement and a medicationadministrat
         if ("iterate".equals(codeString))
           return ITERATE;
         throw new FHIRException("Unknown SearchModifierCode code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "missing", "exact", "contains", "not", "text", "in", "not-in", "below", "above", "type", "identifier", "of-type", "code-text", "text-advanced", "iterate");
         }
         public String toCode() {
           switch (this) {
@@ -17367,6 +17583,11 @@ The primary difference between a medicationstatement and a medicationadministrat
           return SPECIAL;
         throw new FHIRException("Unknown SearchParamType code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "number", "date", "string", "token", "reference", "composite", "quantity", "uri", "special");
+        }
         public String toCode() {
           switch (this) {
             case NUMBER: return "number";
@@ -17549,6 +17770,11 @@ The primary difference between a medicationstatement and a medicationadministrat
           return ENTEREDINERROR;
         throw new FHIRException("Unknown SubscriptionStatusCodes code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "requested", "active", "error", "off", "entered-in-error");
+        }
         public String toCode() {
           switch (this) {
             case REQUESTED: return "requested";
@@ -17678,6 +17904,11 @@ The primary difference between a medicationstatement and a medicationadministrat
         if ("predetermination".equals(codeString))
           return PREDETERMINATION;
         throw new FHIRException("Unknown Use code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "claim", "preauthorization", "predetermination");
         }
         public String toCode() {
           switch (this) {
@@ -18990,6 +19221,11 @@ The primary difference between a medicationstatement and a medicationadministrat
         if ("SubstanceSpecification".equals(codeString))
           return SUBSTANCESPECIFICATION;
         throw new FHIRException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "Account", "ActivityDefinition", "ActorDefinition", "AdministrableProductDefinition", "AdverseEvent", "AllergyIntolerance", "Appointment", "AppointmentResponse", "ArtifactAssessment", "AuditEvent", "Basic", "Binary", "BiologicallyDerivedProduct", "BiologicallyDerivedProductDispense", "BodyStructure", "Bundle", "CanonicalResource", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "ChargeItemDefinition", "Citation", "Claim", "ClaimResponse", "ClinicalImpression", "ClinicalUseDefinition", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition", "ConditionDefinition", "Consent", "Contract", "Coverage", "CoverageEligibilityRequest", "CoverageEligibilityResponse", "DetectedIssue", "Device", "DeviceAssociation", "DeviceDefinition", "DeviceDispense", "DeviceMetric", "DeviceRequest", "DeviceUsage", "DiagnosticReport", "DocumentReference", "DomainResource", "Encounter", "EncounterHistory", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "FormularyItem", "GenomicStudy", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingSelection", "ImagingStudy", "Immunization", "ImmunizationEvaluation", "ImmunizationRecommendation", "ImplementationGuide", "Ingredient", "InsurancePlan", "InventoryItem", "InventoryReport", "Invoice", "Library", "Linkage", "List", "Location", "ManufacturedItemDefinition", "Measure", "MeasureReport", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationKnowledge", "MedicationRequest", "MedicationStatement", "MedicinalProductDefinition", "MessageDefinition", "MessageHeader", "MetadataResource", "MolecularSequence", "NamingSystem", "NutritionIntake", "NutritionOrder", "NutritionProduct", "Observation", "ObservationDefinition", "OperationDefinition", "OperationOutcome", "Organization", "OrganizationAffiliation", "PackagedProductDefinition", "Parameters", "Patient", "PaymentNotice", "PaymentReconciliation", "Permission", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "Provenance", "Questionnaire", "QuestionnaireResponse", "RegulatedAuthorization", "RelatedPerson", "RequestOrchestration", "Requirements", "ResearchStudy", "ResearchSubject", "Resource", "RiskAssessment", "Schedule", "SearchParameter", "ServiceRequest", "Slot", "Specimen", "SpecimenDefinition", "StructureDefinition", "StructureMap", "Subscription", "SubscriptionStatus", "SubscriptionTopic", "Substance", "SubstanceDefinition", "SubstanceNucleicAcid", "SubstancePolymer", "SubstanceProtein", "SubstanceReferenceInformation", "SubstanceSourceMaterial", "SupplyDelivery", "SupplyRequest", "Task", "TerminologyCapabilities", "TestPlan", "TestReport", "TestScript", "Transport", "ValueSet", "VerificationResult", "VisionPrescription", "BodySite", "CatalogEntry", "Conformance", "DataElement", "DeviceComponent", "DeviceUseRequest", "DeviceUseStatement", "DiagnosticOrder", "DocumentManifest", "EffectEvidenceSynthesis", "EligibilityRequest", "EligibilityResponse", "ExpansionProfile", "ImagingManifest", "ImagingObjectSelection", "Media", "MedicationOrder", "MedicationUsage", "MedicinalProduct", "MedicinalProductAuthorization", "MedicinalProductContraindication", "MedicinalProductIndication", "MedicinalProductIngredient", "MedicinalProductInteraction", "MedicinalProductManufactured", "MedicinalProductPackaged", "MedicinalProductPharmaceutical", "MedicinalProductUndesirableEffect", "Order", "OrderResponse", "ProcedureRequest", "ProcessRequest", "ProcessResponse", "ReferralRequest", "RequestGroup", "ResearchDefinition", "ResearchElementDefinition", "RiskEvidenceSynthesis", "Sequence", "ServiceDefinition", "SubstanceSpecification");
         }
         public String toCode() {
           switch (this) {
