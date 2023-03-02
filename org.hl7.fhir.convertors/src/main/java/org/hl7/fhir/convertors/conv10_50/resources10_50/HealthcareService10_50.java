@@ -146,7 +146,7 @@ public class HealthcareService10_50 {
     if (src.hasLocation())
       tgt.addLocation(Reference10_50.convertReference(src.getLocation()));
     if (src.hasCommentElement())
-      tgt.setCommentElement(String10_50.convertString(src.getCommentElement()));
+      tgt.setCommentElement(String10_50.convertStringToMarkdown(src.getCommentElement()));
     if (src.hasExtraDetails())
       tgt.setExtraDetails(src.getExtraDetails());
     if (src.hasPhoto())

@@ -38,7 +38,6 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionObligationComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
@@ -60,6 +59,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.ObligationWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
@@ -85,6 +85,71 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlNodeList;
 
 public class StructureDefinitionRenderer extends ResourceRenderer {
+
+  public class ObligationWrapper {
+
+    private Extension ext;
+
+    public ObligationWrapper(Extension ext) {
+      this.ext = ext;
+    }
+
+    public boolean hasActor() {
+      return ext.hasExtension("actor");
+    }
+
+    public boolean hasActor(String id) {
+      return ext.hasExtension("actor") && id.equals(ext.getExtensionByUrl("actor").getValue().primitiveValue());
+    }
+
+    public Coding getCode() {
+      Extension code = ext.getExtensionByUrl("code");
+      if (code != null && code.hasValueCoding()) {
+        return code.getValueCoding();
+      }
+      if (code != null && code.hasValueCodeType()) {
+        return new Coding().setSystem("http://hl7.org/fhir/tools/CodeSystem/obligation").setCode(code.getValueCodeType().primitiveValue());
+      }
+      return null;
+    }
+
+    public boolean hasFilter() {
+      return ext.hasExtension("filter");
+    }
+
+    public String getFilter() {
+      Extension code = ext.getExtensionByUrl("filter");
+      if (code != null && code.getValue() != null) {
+        return code.getValue().primitiveValue();
+      }
+      return null;
+    }
+
+    public boolean hasUsage() {
+      return ext.hasExtension("usage");
+    }
+
+    public String getFilterDocumentation() {
+      Extension code = ext.getExtensionByUrl("filter-desc");
+      if (code != null && code.getValue() != null) {
+        return code.getValue().primitiveValue();
+      }
+      return null;
+    }
+
+    public List<UsageContext> getUsage() {
+      List<UsageContext> usage = new ArrayList<>();
+      for (Extension u : ext.getExtensionsByUrl("usage" )) {
+        if (u.hasValueUsageContext()) {
+          usage.add(u.getValueUsageContext());
+        }
+      }
+      return usage;
+    }
+
+  }
+
+
 
   private List<String> keyRows = new ArrayList<>();
 
@@ -436,10 +501,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
   private void scanObligations(Set<String> cols, List<ElementDefinition> list, ElementDefinition ed) {
 
-    for (ElementDefinitionObligationComponent ob : ed.getObligation()) {
-      if (ob.hasActor()) {
-        for (CanonicalType a : ob.getActor()) {
-          cols.add(a.getValue());
+    for (Extension ob : ed.getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinition/obligation")) {
+      if (ob.hasExtension("actor")) {
+        for (Extension a : ob.getExtensionsByUrl("actor")) {
+          cols.add(a.getValueCanonicalType().primitiveValue());
         }
       } else 
         cols.add("$all");
@@ -664,7 +729,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     for (Column col : columns) { 
       Cell gc = gen.new Cell();
       row.getCells().add(gc);
-      List<ElementDefinitionObligationComponent> obligations = collectObligations(element, col.id);
+      List<ObligationWrapper> obligations = collectObligations(element, col.id);
       if (obligations.size() > 0) {
         Piece p = gen.new Piece(null);
         gc.addPiece(p);
@@ -672,7 +737,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           renderObligation(p.getChildren(), obligations.get(0));
         } else {
           XhtmlNode ul = p.getChildren().ul();
-          for (ElementDefinitionObligationComponent ob : obligations) {
+          for (ObligationWrapper ob : obligations) {
             renderObligation(ul.li().getChildNodes(), ob);
           }
         }
@@ -681,9 +746,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
   }
 
-  private List<ElementDefinitionObligationComponent> collectObligations(ElementDefinition element, String id) {
-    List<ElementDefinitionObligationComponent>  res = new ArrayList<>();
-    for (ElementDefinitionObligationComponent ob : element.getObligation()) {
+  private List<ObligationWrapper> collectObligations(ElementDefinition element, String id) {
+    List<ObligationWrapper>  res = new ArrayList<>();
+    for (Extension ext : element.getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinition/obligation")) {
+      ObligationWrapper ob = new ObligationWrapper(ext); 
       if (("$all".equals(id) && !ob.hasActor()) || (ob.hasActor(id))) {
         res.add(ob);
       }
@@ -691,7 +757,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return res;
   }
 
-  private void renderObligation(XhtmlNodeList children, ElementDefinitionObligationComponent ob) throws IOException {
+  private void renderObligation(XhtmlNodeList children, ObligationWrapper ob) throws IOException {
     if ("http://hl7.org/fhir/tools/CodeSystem/obligation".equals(ob.getCode().getSystem())) {
       boolean first = true;
       String[] codes = ob.getCode().getCode().split("\\+");

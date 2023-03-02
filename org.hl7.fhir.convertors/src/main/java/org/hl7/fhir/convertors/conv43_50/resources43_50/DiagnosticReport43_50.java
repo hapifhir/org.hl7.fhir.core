@@ -70,7 +70,7 @@ public class DiagnosticReport43_50 {
     for (org.hl7.fhir.r4b.model.DiagnosticReport.DiagnosticReportMediaComponent t : src.getMedia())
       tgt.addMedia(convertDiagnosticReportMediaComponent(t));
     if (src.hasConclusion())
-      tgt.setConclusionElement(String43_50.convertString(src.getConclusionElement()));
+      tgt.setConclusionElement(String43_50.convertStringToMarkdown(src.getConclusionElement()));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getConclusionCode())
       tgt.addConclusionCode(CodeableConcept43_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4b.model.Attachment t : src.getPresentedForm())

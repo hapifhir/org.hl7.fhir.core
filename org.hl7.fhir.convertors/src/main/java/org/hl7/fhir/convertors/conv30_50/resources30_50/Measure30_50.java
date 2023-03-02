@@ -59,7 +59,7 @@ public class Measure30_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasUsage())
-      tgt.setUsageElement(String30_50.convertString(src.getUsageElement()));
+      tgt.setUsageElement(String30_50.convertStringToMarkdown(src.getUsageElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasApprovalDate())
@@ -103,9 +103,9 @@ public class Measure30_50 {
     if (src.hasCompositeScoring())
       tgt.setCompositeScoring(CodeableConcept30_50.convertCodeableConcept(src.getCompositeScoring()));
     if (src.hasRiskAdjustment())
-      tgt.setRiskAdjustmentElement(String30_50.convertString(src.getRiskAdjustmentElement()));
+      tgt.setRiskAdjustmentElement(String30_50.convertStringToMarkdown(src.getRiskAdjustmentElement()));
     if (src.hasRateAggregation())
-      tgt.setRateAggregationElement(String30_50.convertString(src.getRateAggregationElement()));
+      tgt.setRateAggregationElement(String30_50.convertStringToMarkdown(src.getRateAggregationElement()));
     if (src.hasRationale())
       tgt.setRationaleElement(MarkDown30_50.convertMarkdown(src.getRationaleElement()));
     if (src.hasClinicalRecommendationStatement())
@@ -259,7 +259,7 @@ public class Measure30_50 {
     if (src.hasIdentifier())
       tgt.setCode(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(new org.hl7.fhir.r5.model.Coding().setCode(src.getIdentifier().getValue())));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String30_50.convertStringToMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent p : src.getPopulation())
       tgt.addPopulation(convertMeasureGroupPopulation(p));
     for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent s : src.getStratifier())
@@ -290,7 +290,7 @@ public class Measure30_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_50.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String30_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasCriteria())
       tgt.setCriteria(new org.hl7.fhir.r5.model.Expression().setExpression(src.getCriteria()));
     if (src.hasName()) {

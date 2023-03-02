@@ -85,7 +85,7 @@ public class EventDefinition40_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasUsage())
-      tgt.setUsageElement(String40_50.convertString(src.getUsageElement()));
+      tgt.setUsageElement(String40_50.convertStringToMarkdown(src.getUsageElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown40_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasApprovalDate())

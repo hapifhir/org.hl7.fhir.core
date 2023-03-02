@@ -63,7 +63,7 @@ public class DetectedIssue43_50 {
     for (org.hl7.fhir.r4b.model.DetectedIssue.DetectedIssueEvidenceComponent t : src.getEvidence())
       tgt.addEvidence(convertDetectedIssueEvidenceComponent(t));
     if (src.hasDetail())
-      tgt.setDetailElement(String43_50.convertString(src.getDetailElement()));
+      tgt.setDetailElement(String43_50.convertStringToMarkdown(src.getDetailElement()));
     if (src.hasReference())
       tgt.setReferenceElement(Uri43_50.convertUri(src.getReferenceElement()));
     for (org.hl7.fhir.r4b.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation())

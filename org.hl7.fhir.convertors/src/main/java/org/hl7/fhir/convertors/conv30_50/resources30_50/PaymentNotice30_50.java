@@ -29,8 +29,8 @@ public class PaymentNotice30_50 {
       tgt.setCreatedElement(DateTime30_50.convertDateTime(src.getCreatedElement()));
     if (src.hasRecipient())
       tgt.setTarget(Reference30_50.convertReference(src.getRecipient()));
-    if (src.hasProvider())
-      tgt.setProvider(Reference30_50.convertReference(src.getProvider()));
+    if (src.hasReporter())
+      tgt.setProvider(Reference30_50.convertReference(src.getReporter()));
     if (src.hasPaymentStatus())
       tgt.setPaymentStatus(CodeableConcept30_50.convertCodeableConcept(src.getPaymentStatus()));
     return tgt;
@@ -56,7 +56,7 @@ public class PaymentNotice30_50 {
     if (src.hasTarget())
       tgt.setRecipient(Reference30_50.convertReference(src.getTarget()));
     if (src.hasProvider())
-      tgt.setProvider(Reference30_50.convertReference(src.getProvider()));
+      tgt.setReporter(Reference30_50.convertReference(src.getProvider()));
     if (src.hasPaymentStatus())
       tgt.setPaymentStatus(CodeableConcept30_50.convertCodeableConcept(src.getPaymentStatus()));
     return tgt;

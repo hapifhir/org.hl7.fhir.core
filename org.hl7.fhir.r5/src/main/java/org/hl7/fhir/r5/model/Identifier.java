@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -212,10 +212,10 @@ public class Identifier extends DataType implements ICompositeType {
     protected CodeableConcept type;
 
     /**
-     * Establishes the namespace for the value - that is, a absolute URL that describes a set values that are unique.
+     * Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique.
      */
     @Child(name = "system", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The namespace for the identifier value", formalDefinition="Establishes the namespace for the value - that is, a absolute URL that describes a set values that are unique." )
+    @Description(shortDefinition="The namespace for the identifier value", formalDefinition="Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique." )
     protected UriType system;
 
     /**
@@ -322,7 +322,7 @@ public class Identifier extends DataType implements ICompositeType {
     }
 
     /**
-     * @return {@link #system} (Establishes the namespace for the value - that is, a absolute URL that describes a set values that are unique.). This is the underlying object with id, value and extensions. The accessor "getSystem" gives direct access to the value
+     * @return {@link #system} (Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique.). This is the underlying object with id, value and extensions. The accessor "getSystem" gives direct access to the value
      */
     public UriType getSystemElement() { 
       if (this.system == null)
@@ -342,7 +342,7 @@ public class Identifier extends DataType implements ICompositeType {
     }
 
     /**
-     * @param value {@link #system} (Establishes the namespace for the value - that is, a absolute URL that describes a set values that are unique.). This is the underlying object with id, value and extensions. The accessor "getSystem" gives direct access to the value
+     * @param value {@link #system} (Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique.). This is the underlying object with id, value and extensions. The accessor "getSystem" gives direct access to the value
      */
     public Identifier setSystemElement(UriType value) { 
       this.system = value;
@@ -350,14 +350,14 @@ public class Identifier extends DataType implements ICompositeType {
     }
 
     /**
-     * @return Establishes the namespace for the value - that is, a absolute URL that describes a set values that are unique.
+     * @return Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique.
      */
     public String getSystem() { 
       return this.system == null ? null : this.system.getValue();
     }
 
     /**
-     * @param value Establishes the namespace for the value - that is, a absolute URL that describes a set values that are unique.
+     * @param value Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique.
      */
     public Identifier setSystem(String value) { 
       if (Utilities.noString(value))
@@ -471,7 +471,7 @@ public class Identifier extends DataType implements ICompositeType {
         super.listChildren(children);
         children.add(new Property("use", "code", "The purpose of this identifier.", 0, 1, use));
         children.add(new Property("type", "CodeableConcept", "A coded type for the identifier that can be used to determine which identifier to use for a specific purpose.", 0, 1, type));
-        children.add(new Property("system", "uri", "Establishes the namespace for the value - that is, a absolute URL that describes a set values that are unique.", 0, 1, system));
+        children.add(new Property("system", "uri", "Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique.", 0, 1, system));
         children.add(new Property("value", "string", "The portion of the identifier typically relevant to the user and which is unique within the context of the system.", 0, 1, value));
         children.add(new Property("period", "Period", "Time period during which identifier is/was valid for use.", 0, 1, period));
         children.add(new Property("assigner", "Reference(Organization)", "Organization that issued/manages the identifier.", 0, 1, assigner));
@@ -482,7 +482,7 @@ public class Identifier extends DataType implements ICompositeType {
         switch (_hash) {
         case 116103: /*use*/  return new Property("use", "code", "The purpose of this identifier.", 0, 1, use);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A coded type for the identifier that can be used to determine which identifier to use for a specific purpose.", 0, 1, type);
-        case -887328209: /*system*/  return new Property("system", "uri", "Establishes the namespace for the value - that is, a absolute URL that describes a set values that are unique.", 0, 1, system);
+        case -887328209: /*system*/  return new Property("system", "uri", "Establishes the namespace for the value - that is, an absolute URL that describes a set values that are unique.", 0, 1, system);
         case 111972721: /*value*/  return new Property("value", "string", "The portion of the identifier typically relevant to the user and which is unique within the context of the system.", 0, 1, value);
         case -991726143: /*period*/  return new Property("period", "Period", "Time period during which identifier is/was valid for use.", 0, 1, period);
         case -369881636: /*assigner*/  return new Property("assigner", "Reference(Organization)", "Organization that issued/manages the identifier.", 0, 1, assigner);
@@ -660,10 +660,6 @@ public class Identifier extends DataType implements ICompositeType {
           , period, assigner);
       }
 
-      @Override
-      public String toString() {
-        return getSystem()+":"+getValue();
-      }
-
 
 }
+

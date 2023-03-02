@@ -98,6 +98,10 @@
   public String getName() {
     return hasPath() ? getPath().contains(".") ? getPath().substring(getPath().lastIndexOf(".")+1) : getPath() : null;
   }
+  
+  public String getNameBase() {
+    return getName().replace("[x]", "");
+  }
 
   public boolean unbounded() {
     return getMax().equals("*") || Integer.parseInt(getMax()) > 1;

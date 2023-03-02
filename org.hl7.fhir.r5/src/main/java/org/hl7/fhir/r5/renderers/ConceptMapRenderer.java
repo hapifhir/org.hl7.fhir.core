@@ -11,6 +11,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r5.model.ConceptMap.MappingPropertyComponent;
 import org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
@@ -97,27 +98,28 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       String src = grp.getSource();
       boolean comment = false;
       boolean ok = true;
+      Map<String, HashSet<String>> props = new HashMap<String, HashSet<String>>();
       Map<String, HashSet<String>> sources = new HashMap<String, HashSet<String>>();
       Map<String, HashSet<String>> targets = new HashMap<String, HashSet<String>>();
       sources.put("code", new HashSet<String>());
       targets.put("code", new HashSet<String>());
-      SourceElementComponent cc = grp.getElement().get(0);
-      String dst = grp.getTarget();
       sources.get("code").add(grp.getSource());
       targets.get("code").add(grp.getTarget());
       for (SourceElementComponent ccl : grp.getElement()) {
         ok = ok && (ccl.getNoMap() || (ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty()));
         for (TargetElementComponent ccm : ccl.getTarget()) {
           comment = comment || !Utilities.noString(ccm.getComment());
+          for (MappingPropertyComponent pp : ccm.getProperty()) {
+            if (!props.containsKey(pp.getCode()))
+              props.put(pp.getCode(), new HashSet<String>());            
+          }
           for (OtherElementComponent d : ccm.getDependsOn()) {
-            if (!sources.containsKey(d.getProperty()))
-              sources.put(d.getProperty(), new HashSet<String>());
-//            sources.get(d.getProperty()).add(d.getSystem());
+            if (!sources.containsKey(d.getAttribute()))
+              sources.put(d.getAttribute(), new HashSet<String>());
           }
           for (OtherElementComponent d : ccm.getProduct()) {
-            if (!targets.containsKey(d.getProperty()))
-              targets.put(d.getProperty(), new HashSet<String>());
-//            targets.get(d.getProperty()).add(d.getSystem());
+            if (!targets.containsKey(d.getAttribute()))
+              targets.put(d.getAttribute(), new HashSet<String>());
           }
         }
       }
@@ -205,6 +207,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (comment) {
           tr.td().b().tx("Comment");
         }
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Properties");
         tr = tbl.tr();
         if (sources.get("code").size() == 1) {
           String url = sources.get("code").iterator().next();
@@ -237,8 +240,18 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               tr.td().b().addText(getDescForConcept(s));
           }
         }
-        if (comment)
+        if (comment) {
           tr.td();
+        }
+        for (String s : props.keySet()) {
+          if (s != null) {
+            if (props.get(s).size() == 1) {
+              String url = props.get(s).iterator().next();
+              renderCSDetailsLink(tr, url, false);           
+            } else
+              tr.td().b().addText(getDescForConcept(s));
+          }
+        }
 
         for (int si = 0; si < grp.getElement().size(); si++) {
           SourceElementComponent ccl = grp.getElement().get(si);
@@ -333,6 +346,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               }
               if (comment)
                 tr.td().addText(ccm.getComment());
+
+              for (String s : props.keySet()) {
+                if (s != null) {
+                  td = tr.td();
+                  td.addText(getValue(ccm.getProperty(), s));
+                }
+              }
             }
           }
           addUnmapped(tbl, grp);
@@ -429,10 +449,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   }
 
 
+  private String getValue(List<MappingPropertyComponent> list, String s) {
+    return "todo";
+  }
 
   private String getValue(List<OtherElementComponent> list, String s, boolean withSystem) {
     for (OtherElementComponent c : list) {
-      if (s.equals(c.getProperty()))
+      if (s.equals(c.getAttribute()))
         if (withSystem)
           return /*c.getSystem()+" / "+*/c.getValue().primitiveValue();
         else
@@ -443,7 +466,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
   private String getDisplay(List<OtherElementComponent> list, String s) {
     for (OtherElementComponent c : list) {
-      if (s.equals(c.getProperty())) {
+      if (s.equals(c.getAttribute())) {
         // return getDisplayForConcept(systemFromCanonical(c.getSystem()), versionFromCanonical(c.getSystem()), c.getValue());
       }
     }

@@ -1286,6 +1286,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
 }
   
   protected void renderMoney(XhtmlNode x, Money money) {
+    if (x.getName().equals("blockquote")) {
+      x = x.para();
+    }
     Currency c = Currency.getInstance(money.getCurrency());
     if (c != null) {
       XhtmlNode s = x.span(null, c.getDisplayName());
@@ -1300,30 +1303,34 @@ public class DataRenderer extends Renderer implements CodeResolver {
   
   protected void renderExpression(XhtmlNode x, Expression expr) {
   // there's two parts: what the expression is, and how it's described. 
-    // we start with what it is, and then how it's desceibed 
+    // we start with what it is, and then how it's described 
+    XhtmlNode p = x;
+    if (p.getName().equals("blockquote")) {
+      p = p.para();
+    }
     if (expr.hasExpression()) {
-      XhtmlNode c = x;
       if (expr.hasReference()) {
-        c = x.ah(expr.getReference());        
+        p = x.ah(expr.getReference());        
       }
+      XhtmlNode c = p;
       if (expr.hasLanguage()) {
         c = c.span(null, expr.getLanguage());
       }
       c.code().tx(expr.getExpression());
     } else if (expr.hasReference()) {
-      x.ah(expr.getReference()).tx("source");
+      p.ah(expr.getReference()).tx("source");
     }
     if (expr.hasName() || expr.hasDescription()) {
-      x.tx("(");
+      p.tx("(");
       if (expr.hasName()) {
-        x.b().tx(expr.getName());
+        p.b().tx(expr.getName());
       }
       if (expr.hasDescription()) {
-        x.tx("\"");
-        x.tx(expr.getDescription());
-        x.tx("\"");
+        p.tx("\"");
+        p.tx(expr.getDescription());
+        p.tx("\"");
       }
-      x.tx(")");
+      p.tx(")");
     }
   }
   

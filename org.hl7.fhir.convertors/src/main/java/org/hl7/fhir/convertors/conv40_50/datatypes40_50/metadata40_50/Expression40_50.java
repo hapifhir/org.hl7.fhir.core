@@ -13,7 +13,7 @@ public class Expression40_50 {
     org.hl7.fhir.r5.model.Expression tgt = new org.hl7.fhir.r5.model.Expression();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasDescription()) tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasName()) tgt.setNameElement(Id40_50.convertId(src.getNameElement()));
+    if (src.hasName()) tgt.setNameElement(Id40_50.convertIdToCode(src.getNameElement()));
     if (src.hasLanguage()) tgt.setLanguageElement(Code40_50.convertCode(src.getLanguageElement()));
     if (src.hasExpression()) tgt.setExpressionElement(String40_50.convertString(src.getExpressionElement()));
     if (src.hasReference()) tgt.setReferenceElement(Uri40_50.convertUri(src.getReferenceElement()));

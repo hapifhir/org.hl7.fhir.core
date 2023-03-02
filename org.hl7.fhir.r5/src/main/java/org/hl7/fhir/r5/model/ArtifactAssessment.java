@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -599,41 +599,48 @@ public class ArtifactAssessment extends DomainResource {
         protected List<CodeableConcept> classifier;
 
         /**
+         * A quantitative rating of the artifact.
+         */
+        @Child(name = "quantity", type = {Quantity.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Quantitative rating", formalDefinition="A quantitative rating of the artifact." )
+        protected Quantity quantity;
+
+        /**
          * Indicates who or what authored the content.
          */
-        @Child(name = "author", type = {Patient.class, Practitioner.class, PractitionerRole.class, Organization.class, Device.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "author", type = {Patient.class, Practitioner.class, PractitionerRole.class, Organization.class, Device.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Who authored the content", formalDefinition="Indicates who or what authored the content." )
         protected Reference author;
 
         /**
          * A URI that points to what the comment is about, such as a line of text in the CQL, or a specific element in a resource.
          */
-        @Child(name = "path", type = {UriType.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "path", type = {UriType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="What the comment is directed to", formalDefinition="A URI that points to what the comment is about, such as a line of text in the CQL, or a specific element in a resource." )
         protected List<UriType> path;
 
         /**
          * Additional related artifacts that provide supporting documentation, additional evidence, or further information related to the content.
          */
-        @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Additional information", formalDefinition="Additional related artifacts that provide supporting documentation, additional evidence, or further information related to the content." )
         protected List<RelatedArtifact> relatedArtifact;
 
         /**
          * Acceptable to publicly share the comment, classifier or rating.
          */
-        @Child(name = "freeToShare", type = {BooleanType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "freeToShare", type = {BooleanType.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Acceptable to publicly share the resource content", formalDefinition="Acceptable to publicly share the comment, classifier or rating." )
         protected BooleanType freeToShare;
 
         /**
          * If the informationType is container, the components of the content.
          */
-        @Child(name = "component", type = {ArtifactAssessmentContentComponent.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "component", type = {ArtifactAssessmentContentComponent.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Contained content", formalDefinition="If the informationType is container, the components of the content." )
         protected List<ArtifactAssessmentContentComponent> component;
 
-        private static final long serialVersionUID = -1157330937L;
+        private static final long serialVersionUID = -111630435L;
 
     /**
      * Constructor
@@ -730,7 +737,7 @@ public class ArtifactAssessment extends DomainResource {
          * @param value A brief summary of the content of this component.
          */
         public ArtifactAssessmentContentComponent setSummary(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.summary = null;
           else {
             if (this.summary == null)
@@ -815,6 +822,30 @@ public class ArtifactAssessment extends DomainResource {
             addClassifier();
           }
           return getClassifier().get(0);
+        }
+
+        /**
+         * @return {@link #quantity} (A quantitative rating of the artifact.)
+         */
+        public Quantity getQuantity() { 
+          if (this.quantity == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ArtifactAssessmentContentComponent.quantity");
+            else if (Configuration.doAutoCreate())
+              this.quantity = new Quantity(); // cc
+          return this.quantity;
+        }
+
+        public boolean hasQuantity() { 
+          return this.quantity != null && !this.quantity.isEmpty();
+        }
+
+        /**
+         * @param value {@link #quantity} (A quantitative rating of the artifact.)
+         */
+        public ArtifactAssessmentContentComponent setQuantity(Quantity value) { 
+          this.quantity = value;
+          return this;
         }
 
         /**
@@ -1059,6 +1090,7 @@ public class ArtifactAssessment extends DomainResource {
           children.add(new Property("summary", "markdown", "A brief summary of the content of this component.", 0, 1, summary));
           children.add(new Property("type", "CodeableConcept", "Indicates what type of content this component represents.", 0, 1, type));
           children.add(new Property("classifier", "CodeableConcept", "Represents a rating, classifier, or assessment of the artifact.", 0, java.lang.Integer.MAX_VALUE, classifier));
+          children.add(new Property("quantity", "Quantity", "A quantitative rating of the artifact.", 0, 1, quantity));
           children.add(new Property("author", "Reference(Patient|Practitioner|PractitionerRole|Organization|Device)", "Indicates who or what authored the content.", 0, 1, author));
           children.add(new Property("path", "uri", "A URI that points to what the comment is about, such as a line of text in the CQL, or a specific element in a resource.", 0, java.lang.Integer.MAX_VALUE, path));
           children.add(new Property("relatedArtifact", "RelatedArtifact", "Additional related artifacts that provide supporting documentation, additional evidence, or further information related to the content.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
@@ -1073,6 +1105,7 @@ public class ArtifactAssessment extends DomainResource {
           case -1857640538: /*summary*/  return new Property("summary", "markdown", "A brief summary of the content of this component.", 0, 1, summary);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Indicates what type of content this component represents.", 0, 1, type);
           case -281470431: /*classifier*/  return new Property("classifier", "CodeableConcept", "Represents a rating, classifier, or assessment of the artifact.", 0, java.lang.Integer.MAX_VALUE, classifier);
+          case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "A quantitative rating of the artifact.", 0, 1, quantity);
           case -1406328437: /*author*/  return new Property("author", "Reference(Patient|Practitioner|PractitionerRole|Organization|Device)", "Indicates who or what authored the content.", 0, 1, author);
           case 3433509: /*path*/  return new Property("path", "uri", "A URI that points to what the comment is about, such as a line of text in the CQL, or a specific element in a resource.", 0, java.lang.Integer.MAX_VALUE, path);
           case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Additional related artifacts that provide supporting documentation, additional evidence, or further information related to the content.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
@@ -1090,6 +1123,7 @@ public class ArtifactAssessment extends DomainResource {
         case -1857640538: /*summary*/ return this.summary == null ? new Base[0] : new Base[] {this.summary}; // MarkdownType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -281470431: /*classifier*/ return this.classifier == null ? new Base[0] : this.classifier.toArray(new Base[this.classifier.size()]); // CodeableConcept
+        case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -1406328437: /*author*/ return this.author == null ? new Base[0] : new Base[] {this.author}; // Reference
         case 3433509: /*path*/ return this.path == null ? new Base[0] : this.path.toArray(new Base[this.path.size()]); // UriType
         case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
@@ -1115,6 +1149,9 @@ public class ArtifactAssessment extends DomainResource {
           return value;
         case -281470431: // classifier
           this.getClassifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case -1285004149: // quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1406328437: // author
           this.author = TypeConvertor.castToReference(value); // Reference
@@ -1147,6 +1184,8 @@ public class ArtifactAssessment extends DomainResource {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("classifier")) {
           this.getClassifier().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("quantity")) {
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("author")) {
           this.author = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("path")) {
@@ -1169,6 +1208,7 @@ public class ArtifactAssessment extends DomainResource {
         case -1857640538:  return getSummaryElement();
         case 3575610:  return getType();
         case -281470431:  return addClassifier(); 
+        case -1285004149:  return getQuantity();
         case -1406328437:  return getAuthor();
         case 3433509:  return addPathElement();
         case 666807069:  return addRelatedArtifact(); 
@@ -1186,6 +1226,7 @@ public class ArtifactAssessment extends DomainResource {
         case -1857640538: /*summary*/ return new String[] {"markdown"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -281470431: /*classifier*/ return new String[] {"CodeableConcept"};
+        case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -1406328437: /*author*/ return new String[] {"Reference"};
         case 3433509: /*path*/ return new String[] {"uri"};
         case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
@@ -1210,6 +1251,10 @@ public class ArtifactAssessment extends DomainResource {
         }
         else if (name.equals("classifier")) {
           return addClassifier();
+        }
+        else if (name.equals("quantity")) {
+          this.quantity = new Quantity();
+          return this.quantity;
         }
         else if (name.equals("author")) {
           this.author = new Reference();
@@ -1247,6 +1292,7 @@ public class ArtifactAssessment extends DomainResource {
           for (CodeableConcept i : classifier)
             dst.classifier.add(i.copy());
         };
+        dst.quantity = quantity == null ? null : quantity.copy();
         dst.author = author == null ? null : author.copy();
         if (path != null) {
           dst.path = new ArrayList<UriType>();
@@ -1274,9 +1320,9 @@ public class ArtifactAssessment extends DomainResource {
           return false;
         ArtifactAssessmentContentComponent o = (ArtifactAssessmentContentComponent) other_;
         return compareDeep(informationType, o.informationType, true) && compareDeep(summary, o.summary, true)
-           && compareDeep(type, o.type, true) && compareDeep(classifier, o.classifier, true) && compareDeep(author, o.author, true)
-           && compareDeep(path, o.path, true) && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(freeToShare, o.freeToShare, true)
-           && compareDeep(component, o.component, true);
+           && compareDeep(type, o.type, true) && compareDeep(classifier, o.classifier, true) && compareDeep(quantity, o.quantity, true)
+           && compareDeep(author, o.author, true) && compareDeep(path, o.path, true) && compareDeep(relatedArtifact, o.relatedArtifact, true)
+           && compareDeep(freeToShare, o.freeToShare, true) && compareDeep(component, o.component, true);
       }
 
       @Override
@@ -1292,7 +1338,8 @@ public class ArtifactAssessment extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(informationType, summary, type
-          , classifier, author, path, relatedArtifact, freeToShare, component);
+          , classifier, quantity, author, path, relatedArtifact, freeToShare, component
+          );
       }
 
   public String fhirType() {
@@ -1310,58 +1357,65 @@ public class ArtifactAssessment extends DomainResource {
     protected List<Identifier> identifier;
 
     /**
+     * A short title for the assessment for use in displaying and selecting.
+     */
+    @Child(name = "title", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="A short title for the assessment for use in displaying and selecting", formalDefinition="A short title for the assessment for use in displaying and selecting." )
+    protected StringType title;
+
+    /**
      * Display of or reference to the bibliographic citation of the comment, classifier, or rating.
      */
-    @Child(name = "citeAs", type = {Citation.class, MarkdownType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "citeAs", type = {Citation.class, MarkdownType.class}, order=2, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="How to cite the comment or rating", formalDefinition="Display of or reference to the bibliographic citation of the comment, classifier, or rating." )
     protected DataType citeAs;
 
     /**
      * The date  (and optionally time) when the artifact assessment was published. The date must change when the disposition changes and it must change if the workflow status code changes. In addition, it should change when the substantive content of the artifact assessment changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the artifact assessment was published. The date must change when the disposition changes and it must change if the workflow status code changes. In addition, it should change when the substantive content of the artifact assessment changes." )
     protected DateTimeType date;
 
     /**
      * A copyright statement relating to the artifact assessment and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the artifact assessment.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the artifact assessment and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the artifact assessment." )
     protected MarkdownType copyright;
 
     /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=5, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the artifact assessment was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="When the artifact assessment was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="When the artifact assessment was last reviewed by the publisher", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * A reference to a resource, canonical resource, or non-FHIR resource which the comment or assessment is about.
      */
-    @Child(name = "artifact", type = {Reference.class, CanonicalType.class, UriType.class}, order=6, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "artifact", type = {Reference.class, CanonicalType.class, UriType.class}, order=7, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The artifact assessed, commented upon or rated", formalDefinition="A reference to a resource, canonical resource, or non-FHIR resource which the comment or assessment is about." )
     protected DataType artifact;
 
     /**
      * A component comment, classifier, or rating of the artifact.
      */
-    @Child(name = "content", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "content", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Comment, classifier, or rating content", formalDefinition="A component comment, classifier, or rating of the artifact." )
     protected List<ArtifactAssessmentContentComponent> content;
 
     /**
      * Indicates the workflow status of the comment or change request.
      */
-    @Child(name = "workflowStatus", type = {CodeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "workflowStatus", type = {CodeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="submitted | triaged | waiting-for-input | resolved-no-change | resolved-change-required | deferred | duplicate | applied | published", formalDefinition="Indicates the workflow status of the comment or change request." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/artifactassessment-workflow-status")
     protected Enumeration<ArtifactAssessmentWorkflowStatus> workflowStatus;
@@ -1369,12 +1423,12 @@ public class ArtifactAssessment extends DomainResource {
     /**
      * Indicates the disposition of the responsible party to the comment or change request.
      */
-    @Child(name = "disposition", type = {CodeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "disposition", type = {CodeType.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="unresolved | not-persuasive | persuasive | persuasive-with-modification | not-persuasive-with-modification", formalDefinition="Indicates the disposition of the responsible party to the comment or change request." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/artifactassessment-disposition")
     protected Enumeration<ArtifactAssessmentDisposition> disposition;
 
-    private static final long serialVersionUID = -2002325424L;
+    private static final long serialVersionUID = 525457507L;
 
   /**
    * Constructor
@@ -1442,6 +1496,55 @@ public class ArtifactAssessment extends DomainResource {
         addIdentifier();
       }
       return getIdentifier().get(0);
+    }
+
+    /**
+     * @return {@link #title} (A short title for the assessment for use in displaying and selecting.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     */
+    public StringType getTitleElement() { 
+      if (this.title == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ArtifactAssessment.title");
+        else if (Configuration.doAutoCreate())
+          this.title = new StringType(); // bb
+      return this.title;
+    }
+
+    public boolean hasTitleElement() { 
+      return this.title != null && !this.title.isEmpty();
+    }
+
+    public boolean hasTitle() { 
+      return this.title != null && !this.title.isEmpty();
+    }
+
+    /**
+     * @param value {@link #title} (A short title for the assessment for use in displaying and selecting.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     */
+    public ArtifactAssessment setTitleElement(StringType value) { 
+      this.title = value;
+      return this;
+    }
+
+    /**
+     * @return A short title for the assessment for use in displaying and selecting.
+     */
+    public String getTitle() { 
+      return this.title == null ? null : this.title.getValue();
+    }
+
+    /**
+     * @param value A short title for the assessment for use in displaying and selecting.
+     */
+    public ArtifactAssessment setTitle(String value) { 
+      if (Utilities.noString(value))
+        this.title = null;
+      else {
+        if (this.title == null)
+          this.title = new StringType();
+        this.title.setValue(value);
+      }
+      return this;
     }
 
     /**
@@ -1583,7 +1686,7 @@ public class ArtifactAssessment extends DomainResource {
      * @param value A copyright statement relating to the artifact assessment and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the artifact assessment.
      */
     public ArtifactAssessment setCopyright(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.copyright = null;
       else {
         if (this.copyright == null)
@@ -1911,6 +2014,7 @@ public class ArtifactAssessment extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this artifact assessment when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("title", "string", "A short title for the assessment for use in displaying and selecting.", 0, 1, title));
         children.add(new Property("citeAs[x]", "Reference(Citation)|markdown", "Display of or reference to the bibliographic citation of the comment, classifier, or rating.", 0, 1, citeAs));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the artifact assessment was published. The date must change when the disposition changes and it must change if the workflow status code changes. In addition, it should change when the substantive content of the artifact assessment changes.", 0, 1, date));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the artifact assessment and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the artifact assessment.", 0, 1, copyright));
@@ -1926,6 +2030,7 @@ public class ArtifactAssessment extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this artifact assessment when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case 110371416: /*title*/  return new Property("title", "string", "A short title for the assessment for use in displaying and selecting.", 0, 1, title);
         case -1706539017: /*citeAs[x]*/  return new Property("citeAs[x]", "Reference(Citation)|markdown", "Display of or reference to the bibliographic citation of the comment, classifier, or rating.", 0, 1, citeAs);
         case -1360156695: /*citeAs*/  return new Property("citeAs[x]", "Reference(Citation)|markdown", "Display of or reference to the bibliographic citation of the comment, classifier, or rating.", 0, 1, citeAs);
         case 1269009762: /*citeAsReference*/  return new Property("citeAs[x]", "Reference(Citation)", "Display of or reference to the bibliographic citation of the comment, classifier, or rating.", 0, 1, citeAs);
@@ -1951,6 +2056,7 @@ public class ArtifactAssessment extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -1360156695: /*citeAs*/ return this.citeAs == null ? new Base[0] : new Base[] {this.citeAs}; // DataType
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
@@ -1970,6 +2076,9 @@ public class ArtifactAssessment extends DomainResource {
         switch (hash) {
         case -1618432855: // identifier
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
+          return value;
+        case 110371416: // title
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -1360156695: // citeAs
           this.citeAs = TypeConvertor.castToType(value); // DataType
@@ -2009,6 +2118,8 @@ public class ArtifactAssessment extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
+        } else if (name.equals("title")) {
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("citeAs[x]")) {
           this.citeAs = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("date")) {
@@ -2038,6 +2149,7 @@ public class ArtifactAssessment extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
+        case 110371416:  return getTitleElement();
         case -1706539017:  return getCiteAs();
         case -1360156695:  return getCiteAs();
         case 3076014:  return getDateElement();
@@ -2058,6 +2170,7 @@ public class ArtifactAssessment extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case 110371416: /*title*/ return new String[] {"string"};
         case -1360156695: /*citeAs*/ return new String[] {"Reference", "markdown"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
@@ -2076,6 +2189,9 @@ public class ArtifactAssessment extends DomainResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identifier")) {
           return addIdentifier();
+        }
+        else if (name.equals("title")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.title");
         }
         else if (name.equals("citeAsReference")) {
           this.citeAs = new Reference();
@@ -2140,6 +2256,7 @@ public class ArtifactAssessment extends DomainResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
+        dst.title = title == null ? null : title.copy();
         dst.citeAs = citeAs == null ? null : citeAs.copy();
         dst.date = date == null ? null : date.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
@@ -2166,8 +2283,8 @@ public class ArtifactAssessment extends DomainResource {
         if (!(other_ instanceof ArtifactAssessment))
           return false;
         ArtifactAssessment o = (ArtifactAssessment) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(citeAs, o.citeAs, true) && compareDeep(date, o.date, true)
-           && compareDeep(copyright, o.copyright, true) && compareDeep(approvalDate, o.approvalDate, true)
+        return compareDeep(identifier, o.identifier, true) && compareDeep(title, o.title, true) && compareDeep(citeAs, o.citeAs, true)
+           && compareDeep(date, o.date, true) && compareDeep(copyright, o.copyright, true) && compareDeep(approvalDate, o.approvalDate, true)
            && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(artifact, o.artifact, true)
            && compareDeep(content, o.content, true) && compareDeep(workflowStatus, o.workflowStatus, true)
            && compareDeep(disposition, o.disposition, true);
@@ -2180,15 +2297,16 @@ public class ArtifactAssessment extends DomainResource {
         if (!(other_ instanceof ArtifactAssessment))
           return false;
         ArtifactAssessment o = (ArtifactAssessment) other_;
-        return compareValues(date, o.date, true) && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
-           && compareValues(lastReviewDate, o.lastReviewDate, true) && compareValues(workflowStatus, o.workflowStatus, true)
-           && compareValues(disposition, o.disposition, true);
+        return compareValues(title, o.title, true) && compareValues(date, o.date, true) && compareValues(copyright, o.copyright, true)
+           && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
+           && compareValues(workflowStatus, o.workflowStatus, true) && compareValues(disposition, o.disposition, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, citeAs, date
-          , copyright, approvalDate, lastReviewDate, artifact, content, workflowStatus, disposition
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, title, citeAs
+          , date, copyright, approvalDate, lastReviewDate, artifact, content, workflowStatus
+          , disposition);
       }
 
   @Override
@@ -2218,3 +2336,4 @@ public class ArtifactAssessment extends DomainResource {
 
 
 }
+

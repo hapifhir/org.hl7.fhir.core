@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://hl7.org/fhir/animal-species",
+  "code" : "canislf",
+  "display" : "Dog"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Dog",
+  "code" : "canislf",
+  "system" : "http://hl7.org/fhir/animal-species"
+}
+-------------------------------------------------------------------------------------

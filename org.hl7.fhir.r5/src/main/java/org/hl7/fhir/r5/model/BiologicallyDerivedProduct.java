@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,7 +66,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
          * The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.
          */
         @Child(name = "source", type = {Patient.class, Organization.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The patient or entity providing the product", formalDefinition="The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product." )
+        @Description(shortDefinition="The patient who underwent the medical procedure to collect the product or the organization that facilitated the collection", formalDefinition="The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product." )
         protected Reference source;
 
         /**
@@ -342,10 +342,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
         /**
          * Code that specifies the property. It should reference an established coding system.
          */
-        @Child(name = "type", type = {Coding.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Code that specifies the property", formalDefinition="Code that specifies the property. It should reference an established coding system." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/biologicallyderived-product-property-type-codes")
-        protected Coding type;
+        protected CodeableConcept type;
 
         /**
          * Property values.
@@ -354,7 +354,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         @Description(shortDefinition="Property values", formalDefinition="Property values." )
         protected DataType value;
 
-        private static final long serialVersionUID = -1544667497L;
+        private static final long serialVersionUID = -1659186716L;
 
     /**
      * Constructor
@@ -366,7 +366,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     /**
      * Constructor
      */
-      public BiologicallyDerivedProductPropertyComponent(Coding type, DataType value) {
+      public BiologicallyDerivedProductPropertyComponent(CodeableConcept type, DataType value) {
         super();
         this.setType(type);
         this.setValue(value);
@@ -375,12 +375,12 @@ public class BiologicallyDerivedProduct extends DomainResource {
         /**
          * @return {@link #type} (Code that specifies the property. It should reference an established coding system.)
          */
-        public Coding getType() { 
+        public CodeableConcept getType() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create BiologicallyDerivedProductPropertyComponent.type");
             else if (Configuration.doAutoCreate())
-              this.type = new Coding(); // cc
+              this.type = new CodeableConcept(); // cc
           return this.type;
         }
 
@@ -391,7 +391,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         /**
          * @param value {@link #type} (Code that specifies the property. It should reference an established coding system.)
          */
-        public BiologicallyDerivedProductPropertyComponent setType(Coding value) { 
+        public BiologicallyDerivedProductPropertyComponent setType(CodeableConcept value) { 
           this.type = value;
           return this;
         }
@@ -554,14 +554,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "Coding", "Code that specifies the property. It should reference an established coding system.", 0, 1, type));
+          children.add(new Property("type", "CodeableConcept", "Code that specifies the property. It should reference an established coding system.", 0, 1, type));
           children.add(new Property("value[x]", "boolean|integer|CodeableConcept|Period|Quantity|Range|Ratio|string|Attachment", "Property values.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "Coding", "Code that specifies the property. It should reference an established coding system.", 0, 1, type);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Code that specifies the property. It should reference an established coding system.", 0, 1, type);
           case -1410166417: /*value[x]*/  return new Property("value[x]", "boolean|integer|CodeableConcept|Period|Quantity|Range|Ratio|string|Attachment", "Property values.", 0, 1, value);
           case 111972721: /*value*/  return new Property("value[x]", "boolean|integer|CodeableConcept|Period|Quantity|Range|Ratio|string|Attachment", "Property values.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Property values.", 0, 1, value);
@@ -581,7 +581,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Coding
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -592,7 +592,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = TypeConvertor.castToCoding(value); // Coding
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
           this.value = TypeConvertor.castToType(value); // DataType
@@ -605,7 +605,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = TypeConvertor.castToCoding(value); // Coding
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
           this.value = TypeConvertor.castToType(value); // DataType
         } else
@@ -627,7 +627,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return new String[] {"Coding"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 111972721: /*value*/ return new String[] {"boolean", "integer", "CodeableConcept", "Period", "Quantity", "Range", "Ratio", "string", "Attachment"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -637,7 +637,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          this.type = new Coding();
+          this.type = new CodeableConcept();
           return this.type;
         }
         else if (name.equals("valueBoolean")) {
@@ -1676,6 +1676,26 @@ public class BiologicallyDerivedProduct extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIOLOGICAL_SOURCE_EVENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIOLOGICAL_SOURCE_EVENT);
 
  /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>A code that identifies the kind of this biologically derived product (SNOMED CT code).</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productCode</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="BiologicallyDerivedProduct.productCode", description="A code that identifies the kind of this biologically derived product (SNOMED CT code).", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>A code that identifies the kind of this biologically derived product (SNOMED CT code).</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productCode</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
    * Search parameter: <b>collector</b>
    * <p>
    * Description: <b>Procedure request to obtain this biologically derived product.</b><br>
@@ -1742,26 +1762,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRODUCT_CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRODUCT_CATEGORY);
 
  /**
-   * Search parameter: <b>product-code</b>
-   * <p>
-   * Description: <b>A code that identifies the kind of this biologically derived product (SNOMED CT code).</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>BiologicallyDerivedProduct.productCode</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="product-code", path="BiologicallyDerivedProduct.productCode", description="A code that identifies the kind of this biologically derived product (SNOMED CT code).", type="token" )
-  public static final String SP_PRODUCT_CODE = "product-code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>product-code</b>
-   * <p>
-   * Description: <b>A code that identifies the kind of this biologically derived product (SNOMED CT code).</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>BiologicallyDerivedProduct.productCode</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRODUCT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRODUCT_CODE);
-
- /**
    * Search parameter: <b>product-status</b>
    * <p>
    * Description: <b>Whether the product is currently available.</b><br>
@@ -1806,6 +1806,26 @@ public class BiologicallyDerivedProduct extends DomainResource {
    * the path value of "<b>BiologicallyDerivedProduct:request</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUEST = new ca.uhn.fhir.model.api.Include("BiologicallyDerivedProduct:request").toLocked();
+
+ /**
+   * Search parameter: <b>serial-number</b>
+   * <p>
+   * Description: <b>Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="serial-number", path="BiologicallyDerivedProduct.identifier", description="Identifier", type="token" )
+  public static final String SP_SERIAL_NUMBER = "serial-number";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>serial-number</b>
+   * <p>
+   * Description: <b>Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERIAL_NUMBER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERIAL_NUMBER);
 
 
 }

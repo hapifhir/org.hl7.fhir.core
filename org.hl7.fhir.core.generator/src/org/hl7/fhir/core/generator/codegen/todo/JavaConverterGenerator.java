@@ -9,7 +9,7 @@ import org.hl7.fhir.core.generator.engine.Definitions;
 
 public class JavaConverterGenerator extends JavaBaseGenerator {
 
-  public JavaConverterGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, Date genDate, String jid)
+  public JavaConverterGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, String genDate, String jid)
       throws UnsupportedEncodingException {
     super(arg0, definitions, config, version, genDate, jid);
     // TODO Auto-generated constructor stub

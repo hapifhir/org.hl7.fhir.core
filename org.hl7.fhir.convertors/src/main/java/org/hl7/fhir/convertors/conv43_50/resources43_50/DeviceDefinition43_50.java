@@ -85,8 +85,8 @@ public class DeviceDefinition43_50 {
 //    if (src.hasOnlineInformation())
 //      tgt.setOnlineInformationElement(Uri43_50.convertUri(src.getOnlineInformationElement()));
     for (org.hl7.fhir.r4b.model.Annotation t : src.getNote()) tgt.addNote(Annotation43_50.convertAnnotation(t));
-    if (src.hasParentDevice())
-      tgt.setParentDevice(Reference43_50.convertReference(src.getParentDevice()));
+//    if (src.hasParentDevice())
+//      tgt.setParentDevice(Reference43_50.convertReference(src.getParentDevice()));
     for (org.hl7.fhir.r4b.model.DeviceDefinition.DeviceDefinitionMaterialComponent t : src.getMaterial())
       tgt.addMaterial(convertDeviceDefinitionMaterialComponent(t));
     return tgt;
@@ -132,8 +132,8 @@ public class DeviceDefinition43_50 {
 //    if (src.hasOnlineInformation())
 //      tgt.setOnlineInformationElement(Uri43_50.convertUri(src.getOnlineInformationElement()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation43_50.convertAnnotation(t));
-    if (src.hasParentDevice())
-      tgt.setParentDevice(Reference43_50.convertReference(src.getParentDevice()));
+//    if (src.hasParentDevice())
+//      tgt.setParentDevice(Reference43_50.convertReference(src.getParentDevice()));
     for (org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionMaterialComponent t : src.getMaterial())
       tgt.addMaterial(convertDeviceDefinitionMaterialComponent(t));
     return tgt;

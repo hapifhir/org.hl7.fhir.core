@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1475,7 +1475,7 @@ public class Citation extends MetadataResource {
          * A formal identifier that is used to identify the cited artifact when it is represented in other formats, or referenced in a specification, model, design or an instance.
          */
         @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Unique identifier. May include DOI, PMID, PMCID, etc.", formalDefinition="A formal identifier that is used to identify the cited artifact when it is represented in other formats, or referenced in a specification, model, design or an instance." )
+        @Description(shortDefinition="Unique identifier. May include DOI, PMID, PMCID, etc", formalDefinition="A formal identifier that is used to identify the cited artifact when it is represented in other formats, or referenced in a specification, model, design or an instance." )
         protected List<Identifier> identifier;
 
         /**
@@ -3651,7 +3651,7 @@ public class Citation extends MetadataResource {
          * @param value Copyright notice for the abstract.
          */
         public CitationCitedArtifactAbstractComponent setCopyright(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.copyright = null;
           else {
             if (this.copyright == null)
@@ -4100,7 +4100,7 @@ public class Citation extends MetadataResource {
          */
         @Child(name = "type", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="documentation | justification | citation | predecessor | successor | derived-from | depends-on | composed-of | part-of | amends | amended-with | appends | appended-with | cites | cited-by | comments-on | comment-in | contains | contained-in | corrects | correction-in | replaces | replaced-with | retracts | retracted-by | signs | similar-to | supports | supported-with | transforms | transformed-into | transformed-with | documents | specification-of | created-with | cite-as | reprint | reprint-of", formalDefinition="The type of relationship to the related artifact." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/related-artifact-type-expanded")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/related-artifact-type-all")
         protected Enumeration<RelatedArtifactTypeExpanded> type;
 
         /**
@@ -4405,7 +4405,7 @@ public class Citation extends MetadataResource {
          * @param value A bibliographic citation for the related artifact. This text SHOULD be formatted according to an accepted citation format.
          */
         public CitationCitedArtifactRelatesToComponent setCitation(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.citation = null;
           else {
             if (this.citation == null)
@@ -4745,127 +4745,106 @@ public class Citation extends MetadataResource {
         protected CitationCitedArtifactPublicationFormPublishedInComponent publishedIn;
 
         /**
-         * Describes the form of the medium cited. Common codes are "Internet" or "Print".
+         * Describes the form of the medium cited. Common codes are "Internet" or "Print". The CitedMedium value set has 6 codes. The codes internet, print, and offline-digital-storage are the common codes for a typical publication form, though internet and print are more common for study citations. Three additional codes (each appending one of the primary codes with "-without-issue" are used for situations when a study is published both within an issue (of a periodical release as commonly done for journals) AND is published separately from the issue (as commonly done with early online publication), to represent specific identification of the publication form not associated with the issue.
          */
         @Child(name = "citedMedium", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Internet or Print", formalDefinition="Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\"." )
+        @Description(shortDefinition="Internet or Print", formalDefinition="Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\". The CitedMedium value set has 6 codes. The codes internet, print, and offline-digital-storage are the common codes for a typical publication form, though internet and print are more common for study citations. Three additional codes (each appending one of the primary codes with \"-without-issue\" are used for situations when a study is published both within an issue (of a periodical release as commonly done for journals) AND is published separately from the issue (as commonly done with early online publication), to represent specific identification of the publication form not associated with the issue." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/cited-medium")
         protected CodeableConcept citedMedium;
 
         /**
-         * Volume number of journal in which the article is published.
+         * Volume number of journal or other collection in which the article is published.
          */
         @Child(name = "volume", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Volume number of journal in which the article is published", formalDefinition="Volume number of journal in which the article is published." )
+        @Description(shortDefinition="Volume number of journal or other collection in which the article is published", formalDefinition="Volume number of journal or other collection in which the article is published." )
         protected StringType volume;
 
         /**
-         * Issue, part or supplement of journal in which the article is published.
+         * Issue, part or supplement of journal or other collection in which the article is published.
          */
         @Child(name = "issue", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Issue, part or supplement of journal in which the article is published", formalDefinition="Issue, part or supplement of journal in which the article is published." )
+        @Description(shortDefinition="Issue, part or supplement of journal or other collection in which the article is published", formalDefinition="Issue, part or supplement of journal or other collection in which the article is published." )
         protected StringType issue;
 
         /**
-         * Year on which the issue of the journal was published.
+         * The date the article was added to the database, or the date the article was released.
          */
-        @Child(name = "publicationDateYear", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Year on which the issue of the journal was published", formalDefinition="Year on which the issue of the journal was published." )
-        protected StringType publicationDateYear;
+        @Child(name = "articleDate", type = {DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The date the article was added to the database, or the date the article was released", formalDefinition="The date the article was added to the database, or the date the article was released." )
+        protected DateTimeType articleDate;
 
         /**
-         * Month on which the issue of the journal was published.
+         * Text representation of the date on which the issue of the cited artifact was published.
          */
-        @Child(name = "publicationDateMonth", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Month on which the issue of the journal was published", formalDefinition="Month on which the issue of the journal was published." )
-        protected StringType publicationDateMonth;
-
-        /**
-         * Day on which the issue of the journal was published.
-         */
-        @Child(name = "publicationDateDay", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Day on which the issue of the journal was published", formalDefinition="Day on which the issue of the journal was published." )
-        protected StringType publicationDateDay;
+        @Child(name = "publicationDateText", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Text representation of the date on which the issue of the cited artifact was published", formalDefinition="Text representation of the date on which the issue of the cited artifact was published." )
+        protected StringType publicationDateText;
 
         /**
          * Spring, Summer, Fall/Autumn, Winter.
          */
-        @Child(name = "publicationDateSeason", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Season on which the issue of the journal was published", formalDefinition="Spring, Summer, Fall/Autumn, Winter." )
+        @Child(name = "publicationDateSeason", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Season in which the cited artifact was published", formalDefinition="Spring, Summer, Fall/Autumn, Winter." )
         protected StringType publicationDateSeason;
-
-        /**
-         * Text representation of the date of which the issue of the journal was published.
-         */
-        @Child(name = "publicationDateText", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Text representation of the date of which the issue of the journal was published", formalDefinition="Text representation of the date of which the issue of the journal was published." )
-        protected StringType publicationDateText;
-
-        /**
-         * The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date).
-         */
-        @Child(name = "articleDate", type = {DateTimeType.class}, order=10, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The date the article was added to the database, or the date the article was released", formalDefinition="The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date)." )
-        protected DateTimeType articleDate;
 
         /**
          * The date the article was last revised or updated in the database.
          */
-        @Child(name = "lastRevisionDate", type = {DateTimeType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "lastRevisionDate", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The date the article was last revised or updated in the database", formalDefinition="The date the article was last revised or updated in the database." )
         protected DateTimeType lastRevisionDate;
 
         /**
-         * Language in which this form of the article is published.
+         * The language or languages in which this form of the article is published.
          */
-        @Child(name = "language", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Language in which this form of the article is published", formalDefinition="Language in which this form of the article is published." )
+        @Child(name = "language", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Language(s) in which this form of the article is published", formalDefinition="The language or languages in which this form of the article is published." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
         protected List<CodeableConcept> language;
 
         /**
          * Entry number or identifier for inclusion in a database.
          */
-        @Child(name = "accessionNumber", type = {StringType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "accessionNumber", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Entry number or identifier for inclusion in a database", formalDefinition="Entry number or identifier for inclusion in a database." )
         protected StringType accessionNumber;
 
         /**
          * Used for full display of pagination.
          */
-        @Child(name = "pageString", type = {StringType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "pageString", type = {StringType.class}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Used for full display of pagination", formalDefinition="Used for full display of pagination." )
         protected StringType pageString;
 
         /**
          * Used for isolated representation of first page.
          */
-        @Child(name = "firstPage", type = {StringType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "firstPage", type = {StringType.class}, order=12, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Used for isolated representation of first page", formalDefinition="Used for isolated representation of first page." )
         protected StringType firstPage;
 
         /**
          * Used for isolated representation of last page.
          */
-        @Child(name = "lastPage", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "lastPage", type = {StringType.class}, order=13, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Used for isolated representation of last page", formalDefinition="Used for isolated representation of last page." )
         protected StringType lastPage;
 
         /**
-         * Actual or approximate number of pages or screens.
+         * Actual or approximate number of pages or screens. Distinct from reporting the page numbers.
          */
-        @Child(name = "pageCount", type = {StringType.class}, order=17, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Number of pages or screens", formalDefinition="Actual or approximate number of pages or screens." )
+        @Child(name = "pageCount", type = {StringType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Number of pages or screens", formalDefinition="Actual or approximate number of pages or screens. Distinct from reporting the page numbers." )
         protected StringType pageCount;
 
         /**
          * Copyright notice for the full article or artifact.
          */
-        @Child(name = "copyright", type = {MarkdownType.class}, order=18, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Copyright notice for the full article or artifact", formalDefinition="Copyright notice for the full article or artifact." )
         protected MarkdownType copyright;
 
-        private static final long serialVersionUID = -1750822803L;
+        private static final long serialVersionUID = 1791622597L;
 
     /**
      * Constructor
@@ -4899,7 +4878,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #citedMedium} (Describes the form of the medium cited. Common codes are "Internet" or "Print".)
+         * @return {@link #citedMedium} (Describes the form of the medium cited. Common codes are "Internet" or "Print". The CitedMedium value set has 6 codes. The codes internet, print, and offline-digital-storage are the common codes for a typical publication form, though internet and print are more common for study citations. Three additional codes (each appending one of the primary codes with "-without-issue" are used for situations when a study is published both within an issue (of a periodical release as commonly done for journals) AND is published separately from the issue (as commonly done with early online publication), to represent specific identification of the publication form not associated with the issue.)
          */
         public CodeableConcept getCitedMedium() { 
           if (this.citedMedium == null)
@@ -4915,7 +4894,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #citedMedium} (Describes the form of the medium cited. Common codes are "Internet" or "Print".)
+         * @param value {@link #citedMedium} (Describes the form of the medium cited. Common codes are "Internet" or "Print". The CitedMedium value set has 6 codes. The codes internet, print, and offline-digital-storage are the common codes for a typical publication form, though internet and print are more common for study citations. Three additional codes (each appending one of the primary codes with "-without-issue" are used for situations when a study is published both within an issue (of a periodical release as commonly done for journals) AND is published separately from the issue (as commonly done with early online publication), to represent specific identification of the publication form not associated with the issue.)
          */
         public CitationCitedArtifactPublicationFormComponent setCitedMedium(CodeableConcept value) { 
           this.citedMedium = value;
@@ -4923,7 +4902,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #volume} (Volume number of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getVolume" gives direct access to the value
+         * @return {@link #volume} (Volume number of journal or other collection in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getVolume" gives direct access to the value
          */
         public StringType getVolumeElement() { 
           if (this.volume == null)
@@ -4943,7 +4922,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #volume} (Volume number of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getVolume" gives direct access to the value
+         * @param value {@link #volume} (Volume number of journal or other collection in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getVolume" gives direct access to the value
          */
         public CitationCitedArtifactPublicationFormComponent setVolumeElement(StringType value) { 
           this.volume = value;
@@ -4951,14 +4930,14 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return Volume number of journal in which the article is published.
+         * @return Volume number of journal or other collection in which the article is published.
          */
         public String getVolume() { 
           return this.volume == null ? null : this.volume.getValue();
         }
 
         /**
-         * @param value Volume number of journal in which the article is published.
+         * @param value Volume number of journal or other collection in which the article is published.
          */
         public CitationCitedArtifactPublicationFormComponent setVolume(String value) { 
           if (Utilities.noString(value))
@@ -4972,7 +4951,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #issue} (Issue, part or supplement of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getIssue" gives direct access to the value
+         * @return {@link #issue} (Issue, part or supplement of journal or other collection in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getIssue" gives direct access to the value
          */
         public StringType getIssueElement() { 
           if (this.issue == null)
@@ -4992,7 +4971,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #issue} (Issue, part or supplement of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getIssue" gives direct access to the value
+         * @param value {@link #issue} (Issue, part or supplement of journal or other collection in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getIssue" gives direct access to the value
          */
         public CitationCitedArtifactPublicationFormComponent setIssueElement(StringType value) { 
           this.issue = value;
@@ -5000,14 +4979,14 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return Issue, part or supplement of journal in which the article is published.
+         * @return Issue, part or supplement of journal or other collection in which the article is published.
          */
         public String getIssue() { 
           return this.issue == null ? null : this.issue.getValue();
         }
 
         /**
-         * @param value Issue, part or supplement of journal in which the article is published.
+         * @param value Issue, part or supplement of journal or other collection in which the article is published.
          */
         public CitationCitedArtifactPublicationFormComponent setIssue(String value) { 
           if (Utilities.noString(value))
@@ -5021,148 +5000,99 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #publicationDateYear} (Year on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateYear" gives direct access to the value
+         * @return {@link #articleDate} (The date the article was added to the database, or the date the article was released.). This is the underlying object with id, value and extensions. The accessor "getArticleDate" gives direct access to the value
          */
-        public StringType getPublicationDateYearElement() { 
-          if (this.publicationDateYear == null)
+        public DateTimeType getArticleDateElement() { 
+          if (this.articleDate == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.publicationDateYear");
+              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.articleDate");
             else if (Configuration.doAutoCreate())
-              this.publicationDateYear = new StringType(); // bb
-          return this.publicationDateYear;
+              this.articleDate = new DateTimeType(); // bb
+          return this.articleDate;
         }
 
-        public boolean hasPublicationDateYearElement() { 
-          return this.publicationDateYear != null && !this.publicationDateYear.isEmpty();
+        public boolean hasArticleDateElement() { 
+          return this.articleDate != null && !this.articleDate.isEmpty();
         }
 
-        public boolean hasPublicationDateYear() { 
-          return this.publicationDateYear != null && !this.publicationDateYear.isEmpty();
+        public boolean hasArticleDate() { 
+          return this.articleDate != null && !this.articleDate.isEmpty();
         }
 
         /**
-         * @param value {@link #publicationDateYear} (Year on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateYear" gives direct access to the value
+         * @param value {@link #articleDate} (The date the article was added to the database, or the date the article was released.). This is the underlying object with id, value and extensions. The accessor "getArticleDate" gives direct access to the value
          */
-        public CitationCitedArtifactPublicationFormComponent setPublicationDateYearElement(StringType value) { 
-          this.publicationDateYear = value;
+        public CitationCitedArtifactPublicationFormComponent setArticleDateElement(DateTimeType value) { 
+          this.articleDate = value;
           return this;
         }
 
         /**
-         * @return Year on which the issue of the journal was published.
+         * @return The date the article was added to the database, or the date the article was released.
          */
-        public String getPublicationDateYear() { 
-          return this.publicationDateYear == null ? null : this.publicationDateYear.getValue();
+        public Date getArticleDate() { 
+          return this.articleDate == null ? null : this.articleDate.getValue();
         }
 
         /**
-         * @param value Year on which the issue of the journal was published.
+         * @param value The date the article was added to the database, or the date the article was released.
          */
-        public CitationCitedArtifactPublicationFormComponent setPublicationDateYear(String value) { 
-          if (Utilities.noString(value))
-            this.publicationDateYear = null;
+        public CitationCitedArtifactPublicationFormComponent setArticleDate(Date value) { 
+          if (value == null)
+            this.articleDate = null;
           else {
-            if (this.publicationDateYear == null)
-              this.publicationDateYear = new StringType();
-            this.publicationDateYear.setValue(value);
+            if (this.articleDate == null)
+              this.articleDate = new DateTimeType();
+            this.articleDate.setValue(value);
           }
           return this;
         }
 
         /**
-         * @return {@link #publicationDateMonth} (Month on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateMonth" gives direct access to the value
+         * @return {@link #publicationDateText} (Text representation of the date on which the issue of the cited artifact was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateText" gives direct access to the value
          */
-        public StringType getPublicationDateMonthElement() { 
-          if (this.publicationDateMonth == null)
+        public StringType getPublicationDateTextElement() { 
+          if (this.publicationDateText == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.publicationDateMonth");
+              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.publicationDateText");
             else if (Configuration.doAutoCreate())
-              this.publicationDateMonth = new StringType(); // bb
-          return this.publicationDateMonth;
+              this.publicationDateText = new StringType(); // bb
+          return this.publicationDateText;
         }
 
-        public boolean hasPublicationDateMonthElement() { 
-          return this.publicationDateMonth != null && !this.publicationDateMonth.isEmpty();
+        public boolean hasPublicationDateTextElement() { 
+          return this.publicationDateText != null && !this.publicationDateText.isEmpty();
         }
 
-        public boolean hasPublicationDateMonth() { 
-          return this.publicationDateMonth != null && !this.publicationDateMonth.isEmpty();
+        public boolean hasPublicationDateText() { 
+          return this.publicationDateText != null && !this.publicationDateText.isEmpty();
         }
 
         /**
-         * @param value {@link #publicationDateMonth} (Month on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateMonth" gives direct access to the value
+         * @param value {@link #publicationDateText} (Text representation of the date on which the issue of the cited artifact was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateText" gives direct access to the value
          */
-        public CitationCitedArtifactPublicationFormComponent setPublicationDateMonthElement(StringType value) { 
-          this.publicationDateMonth = value;
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateTextElement(StringType value) { 
+          this.publicationDateText = value;
           return this;
         }
 
         /**
-         * @return Month on which the issue of the journal was published.
+         * @return Text representation of the date on which the issue of the cited artifact was published.
          */
-        public String getPublicationDateMonth() { 
-          return this.publicationDateMonth == null ? null : this.publicationDateMonth.getValue();
+        public String getPublicationDateText() { 
+          return this.publicationDateText == null ? null : this.publicationDateText.getValue();
         }
 
         /**
-         * @param value Month on which the issue of the journal was published.
+         * @param value Text representation of the date on which the issue of the cited artifact was published.
          */
-        public CitationCitedArtifactPublicationFormComponent setPublicationDateMonth(String value) { 
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateText(String value) { 
           if (Utilities.noString(value))
-            this.publicationDateMonth = null;
+            this.publicationDateText = null;
           else {
-            if (this.publicationDateMonth == null)
-              this.publicationDateMonth = new StringType();
-            this.publicationDateMonth.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #publicationDateDay} (Day on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateDay" gives direct access to the value
-         */
-        public StringType getPublicationDateDayElement() { 
-          if (this.publicationDateDay == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.publicationDateDay");
-            else if (Configuration.doAutoCreate())
-              this.publicationDateDay = new StringType(); // bb
-          return this.publicationDateDay;
-        }
-
-        public boolean hasPublicationDateDayElement() { 
-          return this.publicationDateDay != null && !this.publicationDateDay.isEmpty();
-        }
-
-        public boolean hasPublicationDateDay() { 
-          return this.publicationDateDay != null && !this.publicationDateDay.isEmpty();
-        }
-
-        /**
-         * @param value {@link #publicationDateDay} (Day on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateDay" gives direct access to the value
-         */
-        public CitationCitedArtifactPublicationFormComponent setPublicationDateDayElement(StringType value) { 
-          this.publicationDateDay = value;
-          return this;
-        }
-
-        /**
-         * @return Day on which the issue of the journal was published.
-         */
-        public String getPublicationDateDay() { 
-          return this.publicationDateDay == null ? null : this.publicationDateDay.getValue();
-        }
-
-        /**
-         * @param value Day on which the issue of the journal was published.
-         */
-        public CitationCitedArtifactPublicationFormComponent setPublicationDateDay(String value) { 
-          if (Utilities.noString(value))
-            this.publicationDateDay = null;
-          else {
-            if (this.publicationDateDay == null)
-              this.publicationDateDay = new StringType();
-            this.publicationDateDay.setValue(value);
+            if (this.publicationDateText == null)
+              this.publicationDateText = new StringType();
+            this.publicationDateText.setValue(value);
           }
           return this;
         }
@@ -5217,104 +5147,6 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #publicationDateText} (Text representation of the date of which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateText" gives direct access to the value
-         */
-        public StringType getPublicationDateTextElement() { 
-          if (this.publicationDateText == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.publicationDateText");
-            else if (Configuration.doAutoCreate())
-              this.publicationDateText = new StringType(); // bb
-          return this.publicationDateText;
-        }
-
-        public boolean hasPublicationDateTextElement() { 
-          return this.publicationDateText != null && !this.publicationDateText.isEmpty();
-        }
-
-        public boolean hasPublicationDateText() { 
-          return this.publicationDateText != null && !this.publicationDateText.isEmpty();
-        }
-
-        /**
-         * @param value {@link #publicationDateText} (Text representation of the date of which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateText" gives direct access to the value
-         */
-        public CitationCitedArtifactPublicationFormComponent setPublicationDateTextElement(StringType value) { 
-          this.publicationDateText = value;
-          return this;
-        }
-
-        /**
-         * @return Text representation of the date of which the issue of the journal was published.
-         */
-        public String getPublicationDateText() { 
-          return this.publicationDateText == null ? null : this.publicationDateText.getValue();
-        }
-
-        /**
-         * @param value Text representation of the date of which the issue of the journal was published.
-         */
-        public CitationCitedArtifactPublicationFormComponent setPublicationDateText(String value) { 
-          if (Utilities.noString(value))
-            this.publicationDateText = null;
-          else {
-            if (this.publicationDateText == null)
-              this.publicationDateText = new StringType();
-            this.publicationDateText.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #articleDate} (The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date).). This is the underlying object with id, value and extensions. The accessor "getArticleDate" gives direct access to the value
-         */
-        public DateTimeType getArticleDateElement() { 
-          if (this.articleDate == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.articleDate");
-            else if (Configuration.doAutoCreate())
-              this.articleDate = new DateTimeType(); // bb
-          return this.articleDate;
-        }
-
-        public boolean hasArticleDateElement() { 
-          return this.articleDate != null && !this.articleDate.isEmpty();
-        }
-
-        public boolean hasArticleDate() { 
-          return this.articleDate != null && !this.articleDate.isEmpty();
-        }
-
-        /**
-         * @param value {@link #articleDate} (The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date).). This is the underlying object with id, value and extensions. The accessor "getArticleDate" gives direct access to the value
-         */
-        public CitationCitedArtifactPublicationFormComponent setArticleDateElement(DateTimeType value) { 
-          this.articleDate = value;
-          return this;
-        }
-
-        /**
-         * @return The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date).
-         */
-        public Date getArticleDate() { 
-          return this.articleDate == null ? null : this.articleDate.getValue();
-        }
-
-        /**
-         * @param value The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date).
-         */
-        public CitationCitedArtifactPublicationFormComponent setArticleDate(Date value) { 
-          if (value == null)
-            this.articleDate = null;
-          else {
-            if (this.articleDate == null)
-              this.articleDate = new DateTimeType();
-            this.articleDate.setValue(value);
-          }
-          return this;
-        }
-
-        /**
          * @return {@link #lastRevisionDate} (The date the article was last revised or updated in the database.). This is the underlying object with id, value and extensions. The accessor "getLastRevisionDate" gives direct access to the value
          */
         public DateTimeType getLastRevisionDateElement() { 
@@ -5364,7 +5196,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #language} (Language in which this form of the article is published.)
+         * @return {@link #language} (The language or languages in which this form of the article is published.)
          */
         public List<CodeableConcept> getLanguage() { 
           if (this.language == null)
@@ -5613,7 +5445,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #pageCount} (Actual or approximate number of pages or screens.). This is the underlying object with id, value and extensions. The accessor "getPageCount" gives direct access to the value
+         * @return {@link #pageCount} (Actual or approximate number of pages or screens. Distinct from reporting the page numbers.). This is the underlying object with id, value and extensions. The accessor "getPageCount" gives direct access to the value
          */
         public StringType getPageCountElement() { 
           if (this.pageCount == null)
@@ -5633,7 +5465,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #pageCount} (Actual or approximate number of pages or screens.). This is the underlying object with id, value and extensions. The accessor "getPageCount" gives direct access to the value
+         * @param value {@link #pageCount} (Actual or approximate number of pages or screens. Distinct from reporting the page numbers.). This is the underlying object with id, value and extensions. The accessor "getPageCount" gives direct access to the value
          */
         public CitationCitedArtifactPublicationFormComponent setPageCountElement(StringType value) { 
           this.pageCount = value;
@@ -5641,14 +5473,14 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return Actual or approximate number of pages or screens.
+         * @return Actual or approximate number of pages or screens. Distinct from reporting the page numbers.
          */
         public String getPageCount() { 
           return this.pageCount == null ? null : this.pageCount.getValue();
         }
 
         /**
-         * @param value Actual or approximate number of pages or screens.
+         * @param value Actual or approximate number of pages or screens. Distinct from reporting the page numbers.
          */
         public CitationCitedArtifactPublicationFormComponent setPageCount(String value) { 
           if (Utilities.noString(value))
@@ -5700,7 +5532,7 @@ public class Citation extends MetadataResource {
          * @param value Copyright notice for the full article or artifact.
          */
         public CitationCitedArtifactPublicationFormComponent setCopyright(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.copyright = null;
           else {
             if (this.copyright == null)
@@ -5713,22 +5545,19 @@ public class Citation extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("publishedIn", "", "The collection the cited article or artifact is published in.", 0, 1, publishedIn));
-          children.add(new Property("citedMedium", "CodeableConcept", "Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\".", 0, 1, citedMedium));
-          children.add(new Property("volume", "string", "Volume number of journal in which the article is published.", 0, 1, volume));
-          children.add(new Property("issue", "string", "Issue, part or supplement of journal in which the article is published.", 0, 1, issue));
-          children.add(new Property("publicationDateYear", "string", "Year on which the issue of the journal was published.", 0, 1, publicationDateYear));
-          children.add(new Property("publicationDateMonth", "string", "Month on which the issue of the journal was published.", 0, 1, publicationDateMonth));
-          children.add(new Property("publicationDateDay", "string", "Day on which the issue of the journal was published.", 0, 1, publicationDateDay));
+          children.add(new Property("citedMedium", "CodeableConcept", "Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\". The CitedMedium value set has 6 codes. The codes internet, print, and offline-digital-storage are the common codes for a typical publication form, though internet and print are more common for study citations. Three additional codes (each appending one of the primary codes with \"-without-issue\" are used for situations when a study is published both within an issue (of a periodical release as commonly done for journals) AND is published separately from the issue (as commonly done with early online publication), to represent specific identification of the publication form not associated with the issue.", 0, 1, citedMedium));
+          children.add(new Property("volume", "string", "Volume number of journal or other collection in which the article is published.", 0, 1, volume));
+          children.add(new Property("issue", "string", "Issue, part or supplement of journal or other collection in which the article is published.", 0, 1, issue));
+          children.add(new Property("articleDate", "dateTime", "The date the article was added to the database, or the date the article was released.", 0, 1, articleDate));
+          children.add(new Property("publicationDateText", "string", "Text representation of the date on which the issue of the cited artifact was published.", 0, 1, publicationDateText));
           children.add(new Property("publicationDateSeason", "string", "Spring, Summer, Fall/Autumn, Winter.", 0, 1, publicationDateSeason));
-          children.add(new Property("publicationDateText", "string", "Text representation of the date of which the issue of the journal was published.", 0, 1, publicationDateText));
-          children.add(new Property("articleDate", "dateTime", "The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date).", 0, 1, articleDate));
           children.add(new Property("lastRevisionDate", "dateTime", "The date the article was last revised or updated in the database.", 0, 1, lastRevisionDate));
-          children.add(new Property("language", "CodeableConcept", "Language in which this form of the article is published.", 0, java.lang.Integer.MAX_VALUE, language));
+          children.add(new Property("language", "CodeableConcept", "The language or languages in which this form of the article is published.", 0, java.lang.Integer.MAX_VALUE, language));
           children.add(new Property("accessionNumber", "string", "Entry number or identifier for inclusion in a database.", 0, 1, accessionNumber));
           children.add(new Property("pageString", "string", "Used for full display of pagination.", 0, 1, pageString));
           children.add(new Property("firstPage", "string", "Used for isolated representation of first page.", 0, 1, firstPage));
           children.add(new Property("lastPage", "string", "Used for isolated representation of last page.", 0, 1, lastPage));
-          children.add(new Property("pageCount", "string", "Actual or approximate number of pages or screens.", 0, 1, pageCount));
+          children.add(new Property("pageCount", "string", "Actual or approximate number of pages or screens. Distinct from reporting the page numbers.", 0, 1, pageCount));
           children.add(new Property("copyright", "markdown", "Copyright notice for the full article or artifact.", 0, 1, copyright));
         }
 
@@ -5736,22 +5565,19 @@ public class Citation extends MetadataResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -614144077: /*publishedIn*/  return new Property("publishedIn", "", "The collection the cited article or artifact is published in.", 0, 1, publishedIn);
-          case 612116418: /*citedMedium*/  return new Property("citedMedium", "CodeableConcept", "Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\".", 0, 1, citedMedium);
-          case -810883302: /*volume*/  return new Property("volume", "string", "Volume number of journal in which the article is published.", 0, 1, volume);
-          case 100509913: /*issue*/  return new Property("issue", "string", "Issue, part or supplement of journal in which the article is published.", 0, 1, issue);
-          case 225738583: /*publicationDateYear*/  return new Property("publicationDateYear", "string", "Year on which the issue of the journal was published.", 0, 1, publicationDateYear);
-          case -1602810202: /*publicationDateMonth*/  return new Property("publicationDateMonth", "string", "Month on which the issue of the journal was published.", 0, 1, publicationDateMonth);
-          case 977092930: /*publicationDateDay*/  return new Property("publicationDateDay", "string", "Day on which the issue of the journal was published.", 0, 1, publicationDateDay);
+          case 612116418: /*citedMedium*/  return new Property("citedMedium", "CodeableConcept", "Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\". The CitedMedium value set has 6 codes. The codes internet, print, and offline-digital-storage are the common codes for a typical publication form, though internet and print are more common for study citations. Three additional codes (each appending one of the primary codes with \"-without-issue\" are used for situations when a study is published both within an issue (of a periodical release as commonly done for journals) AND is published separately from the issue (as commonly done with early online publication), to represent specific identification of the publication form not associated with the issue.", 0, 1, citedMedium);
+          case -810883302: /*volume*/  return new Property("volume", "string", "Volume number of journal or other collection in which the article is published.", 0, 1, volume);
+          case 100509913: /*issue*/  return new Property("issue", "string", "Issue, part or supplement of journal or other collection in which the article is published.", 0, 1, issue);
+          case 817743300: /*articleDate*/  return new Property("articleDate", "dateTime", "The date the article was added to the database, or the date the article was released.", 0, 1, articleDate);
+          case 225590343: /*publicationDateText*/  return new Property("publicationDateText", "string", "Text representation of the date on which the issue of the cited artifact was published.", 0, 1, publicationDateText);
           case 2014643069: /*publicationDateSeason*/  return new Property("publicationDateSeason", "string", "Spring, Summer, Fall/Autumn, Winter.", 0, 1, publicationDateSeason);
-          case 225590343: /*publicationDateText*/  return new Property("publicationDateText", "string", "Text representation of the date of which the issue of the journal was published.", 0, 1, publicationDateText);
-          case 817743300: /*articleDate*/  return new Property("articleDate", "dateTime", "The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date).", 0, 1, articleDate);
           case 2129161183: /*lastRevisionDate*/  return new Property("lastRevisionDate", "dateTime", "The date the article was last revised or updated in the database.", 0, 1, lastRevisionDate);
-          case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "Language in which this form of the article is published.", 0, java.lang.Integer.MAX_VALUE, language);
+          case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "The language or languages in which this form of the article is published.", 0, java.lang.Integer.MAX_VALUE, language);
           case 1807963277: /*accessionNumber*/  return new Property("accessionNumber", "string", "Entry number or identifier for inclusion in a database.", 0, 1, accessionNumber);
           case 1287145344: /*pageString*/  return new Property("pageString", "string", "Used for full display of pagination.", 0, 1, pageString);
           case 132895071: /*firstPage*/  return new Property("firstPage", "string", "Used for isolated representation of first page.", 0, 1, firstPage);
           case -1459540411: /*lastPage*/  return new Property("lastPage", "string", "Used for isolated representation of last page.", 0, 1, lastPage);
-          case 857882560: /*pageCount*/  return new Property("pageCount", "string", "Actual or approximate number of pages or screens.", 0, 1, pageCount);
+          case 857882560: /*pageCount*/  return new Property("pageCount", "string", "Actual or approximate number of pages or screens. Distinct from reporting the page numbers.", 0, 1, pageCount);
           case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "Copyright notice for the full article or artifact.", 0, 1, copyright);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -5765,12 +5591,9 @@ public class Citation extends MetadataResource {
         case 612116418: /*citedMedium*/ return this.citedMedium == null ? new Base[0] : new Base[] {this.citedMedium}; // CodeableConcept
         case -810883302: /*volume*/ return this.volume == null ? new Base[0] : new Base[] {this.volume}; // StringType
         case 100509913: /*issue*/ return this.issue == null ? new Base[0] : new Base[] {this.issue}; // StringType
-        case 225738583: /*publicationDateYear*/ return this.publicationDateYear == null ? new Base[0] : new Base[] {this.publicationDateYear}; // StringType
-        case -1602810202: /*publicationDateMonth*/ return this.publicationDateMonth == null ? new Base[0] : new Base[] {this.publicationDateMonth}; // StringType
-        case 977092930: /*publicationDateDay*/ return this.publicationDateDay == null ? new Base[0] : new Base[] {this.publicationDateDay}; // StringType
-        case 2014643069: /*publicationDateSeason*/ return this.publicationDateSeason == null ? new Base[0] : new Base[] {this.publicationDateSeason}; // StringType
-        case 225590343: /*publicationDateText*/ return this.publicationDateText == null ? new Base[0] : new Base[] {this.publicationDateText}; // StringType
         case 817743300: /*articleDate*/ return this.articleDate == null ? new Base[0] : new Base[] {this.articleDate}; // DateTimeType
+        case 225590343: /*publicationDateText*/ return this.publicationDateText == null ? new Base[0] : new Base[] {this.publicationDateText}; // StringType
+        case 2014643069: /*publicationDateSeason*/ return this.publicationDateSeason == null ? new Base[0] : new Base[] {this.publicationDateSeason}; // StringType
         case 2129161183: /*lastRevisionDate*/ return this.lastRevisionDate == null ? new Base[0] : new Base[] {this.lastRevisionDate}; // DateTimeType
         case -1613589672: /*language*/ return this.language == null ? new Base[0] : this.language.toArray(new Base[this.language.size()]); // CodeableConcept
         case 1807963277: /*accessionNumber*/ return this.accessionNumber == null ? new Base[0] : new Base[] {this.accessionNumber}; // StringType
@@ -5799,23 +5622,14 @@ public class Citation extends MetadataResource {
         case 100509913: // issue
           this.issue = TypeConvertor.castToString(value); // StringType
           return value;
-        case 225738583: // publicationDateYear
-          this.publicationDateYear = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -1602810202: // publicationDateMonth
-          this.publicationDateMonth = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 977092930: // publicationDateDay
-          this.publicationDateDay = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 2014643069: // publicationDateSeason
-          this.publicationDateSeason = TypeConvertor.castToString(value); // StringType
+        case 817743300: // articleDate
+          this.articleDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 225590343: // publicationDateText
           this.publicationDateText = TypeConvertor.castToString(value); // StringType
           return value;
-        case 817743300: // articleDate
-          this.articleDate = TypeConvertor.castToDateTime(value); // DateTimeType
+        case 2014643069: // publicationDateSeason
+          this.publicationDateSeason = TypeConvertor.castToString(value); // StringType
           return value;
         case 2129161183: // lastRevisionDate
           this.lastRevisionDate = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -5856,18 +5670,12 @@ public class Citation extends MetadataResource {
           this.volume = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("issue")) {
           this.issue = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("publicationDateYear")) {
-          this.publicationDateYear = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("publicationDateMonth")) {
-          this.publicationDateMonth = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("publicationDateDay")) {
-          this.publicationDateDay = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("publicationDateSeason")) {
-          this.publicationDateSeason = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("publicationDateText")) {
-          this.publicationDateText = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("articleDate")) {
           this.articleDate = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("publicationDateText")) {
+          this.publicationDateText = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("publicationDateSeason")) {
+          this.publicationDateSeason = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("lastRevisionDate")) {
           this.lastRevisionDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("language")) {
@@ -5896,12 +5704,9 @@ public class Citation extends MetadataResource {
         case 612116418:  return getCitedMedium();
         case -810883302:  return getVolumeElement();
         case 100509913:  return getIssueElement();
-        case 225738583:  return getPublicationDateYearElement();
-        case -1602810202:  return getPublicationDateMonthElement();
-        case 977092930:  return getPublicationDateDayElement();
-        case 2014643069:  return getPublicationDateSeasonElement();
-        case 225590343:  return getPublicationDateTextElement();
         case 817743300:  return getArticleDateElement();
+        case 225590343:  return getPublicationDateTextElement();
+        case 2014643069:  return getPublicationDateSeasonElement();
         case 2129161183:  return getLastRevisionDateElement();
         case -1613589672:  return addLanguage(); 
         case 1807963277:  return getAccessionNumberElement();
@@ -5922,12 +5727,9 @@ public class Citation extends MetadataResource {
         case 612116418: /*citedMedium*/ return new String[] {"CodeableConcept"};
         case -810883302: /*volume*/ return new String[] {"string"};
         case 100509913: /*issue*/ return new String[] {"string"};
-        case 225738583: /*publicationDateYear*/ return new String[] {"string"};
-        case -1602810202: /*publicationDateMonth*/ return new String[] {"string"};
-        case 977092930: /*publicationDateDay*/ return new String[] {"string"};
-        case 2014643069: /*publicationDateSeason*/ return new String[] {"string"};
-        case 225590343: /*publicationDateText*/ return new String[] {"string"};
         case 817743300: /*articleDate*/ return new String[] {"dateTime"};
+        case 225590343: /*publicationDateText*/ return new String[] {"string"};
+        case 2014643069: /*publicationDateSeason*/ return new String[] {"string"};
         case 2129161183: /*lastRevisionDate*/ return new String[] {"dateTime"};
         case -1613589672: /*language*/ return new String[] {"CodeableConcept"};
         case 1807963277: /*accessionNumber*/ return new String[] {"string"};
@@ -5957,23 +5759,14 @@ public class Citation extends MetadataResource {
         else if (name.equals("issue")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.issue");
         }
-        else if (name.equals("publicationDateYear")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.publicationDateYear");
-        }
-        else if (name.equals("publicationDateMonth")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.publicationDateMonth");
-        }
-        else if (name.equals("publicationDateDay")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.publicationDateDay");
-        }
-        else if (name.equals("publicationDateSeason")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.publicationDateSeason");
+        else if (name.equals("articleDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.articleDate");
         }
         else if (name.equals("publicationDateText")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.publicationDateText");
         }
-        else if (name.equals("articleDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.articleDate");
+        else if (name.equals("publicationDateSeason")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.publicationDateSeason");
         }
         else if (name.equals("lastRevisionDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.lastRevisionDate");
@@ -6015,12 +5808,9 @@ public class Citation extends MetadataResource {
         dst.citedMedium = citedMedium == null ? null : citedMedium.copy();
         dst.volume = volume == null ? null : volume.copy();
         dst.issue = issue == null ? null : issue.copy();
-        dst.publicationDateYear = publicationDateYear == null ? null : publicationDateYear.copy();
-        dst.publicationDateMonth = publicationDateMonth == null ? null : publicationDateMonth.copy();
-        dst.publicationDateDay = publicationDateDay == null ? null : publicationDateDay.copy();
-        dst.publicationDateSeason = publicationDateSeason == null ? null : publicationDateSeason.copy();
-        dst.publicationDateText = publicationDateText == null ? null : publicationDateText.copy();
         dst.articleDate = articleDate == null ? null : articleDate.copy();
+        dst.publicationDateText = publicationDateText == null ? null : publicationDateText.copy();
+        dst.publicationDateSeason = publicationDateSeason == null ? null : publicationDateSeason.copy();
         dst.lastRevisionDate = lastRevisionDate == null ? null : lastRevisionDate.copy();
         if (language != null) {
           dst.language = new ArrayList<CodeableConcept>();
@@ -6043,13 +5833,12 @@ public class Citation extends MetadataResource {
           return false;
         CitationCitedArtifactPublicationFormComponent o = (CitationCitedArtifactPublicationFormComponent) other_;
         return compareDeep(publishedIn, o.publishedIn, true) && compareDeep(citedMedium, o.citedMedium, true)
-           && compareDeep(volume, o.volume, true) && compareDeep(issue, o.issue, true) && compareDeep(publicationDateYear, o.publicationDateYear, true)
-           && compareDeep(publicationDateMonth, o.publicationDateMonth, true) && compareDeep(publicationDateDay, o.publicationDateDay, true)
-           && compareDeep(publicationDateSeason, o.publicationDateSeason, true) && compareDeep(publicationDateText, o.publicationDateText, true)
-           && compareDeep(articleDate, o.articleDate, true) && compareDeep(lastRevisionDate, o.lastRevisionDate, true)
-           && compareDeep(language, o.language, true) && compareDeep(accessionNumber, o.accessionNumber, true)
-           && compareDeep(pageString, o.pageString, true) && compareDeep(firstPage, o.firstPage, true) && compareDeep(lastPage, o.lastPage, true)
-           && compareDeep(pageCount, o.pageCount, true) && compareDeep(copyright, o.copyright, true);
+           && compareDeep(volume, o.volume, true) && compareDeep(issue, o.issue, true) && compareDeep(articleDate, o.articleDate, true)
+           && compareDeep(publicationDateText, o.publicationDateText, true) && compareDeep(publicationDateSeason, o.publicationDateSeason, true)
+           && compareDeep(lastRevisionDate, o.lastRevisionDate, true) && compareDeep(language, o.language, true)
+           && compareDeep(accessionNumber, o.accessionNumber, true) && compareDeep(pageString, o.pageString, true)
+           && compareDeep(firstPage, o.firstPage, true) && compareDeep(lastPage, o.lastPage, true) && compareDeep(pageCount, o.pageCount, true)
+           && compareDeep(copyright, o.copyright, true);
       }
 
       @Override
@@ -6059,20 +5848,18 @@ public class Citation extends MetadataResource {
         if (!(other_ instanceof CitationCitedArtifactPublicationFormComponent))
           return false;
         CitationCitedArtifactPublicationFormComponent o = (CitationCitedArtifactPublicationFormComponent) other_;
-        return compareValues(volume, o.volume, true) && compareValues(issue, o.issue, true) && compareValues(publicationDateYear, o.publicationDateYear, true)
-           && compareValues(publicationDateMonth, o.publicationDateMonth, true) && compareValues(publicationDateDay, o.publicationDateDay, true)
-           && compareValues(publicationDateSeason, o.publicationDateSeason, true) && compareValues(publicationDateText, o.publicationDateText, true)
-           && compareValues(articleDate, o.articleDate, true) && compareValues(lastRevisionDate, o.lastRevisionDate, true)
-           && compareValues(accessionNumber, o.accessionNumber, true) && compareValues(pageString, o.pageString, true)
-           && compareValues(firstPage, o.firstPage, true) && compareValues(lastPage, o.lastPage, true) && compareValues(pageCount, o.pageCount, true)
-           && compareValues(copyright, o.copyright, true);
+        return compareValues(volume, o.volume, true) && compareValues(issue, o.issue, true) && compareValues(articleDate, o.articleDate, true)
+           && compareValues(publicationDateText, o.publicationDateText, true) && compareValues(publicationDateSeason, o.publicationDateSeason, true)
+           && compareValues(lastRevisionDate, o.lastRevisionDate, true) && compareValues(accessionNumber, o.accessionNumber, true)
+           && compareValues(pageString, o.pageString, true) && compareValues(firstPage, o.firstPage, true) && compareValues(lastPage, o.lastPage, true)
+           && compareValues(pageCount, o.pageCount, true) && compareValues(copyright, o.copyright, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(publishedIn, citedMedium, volume
-          , issue, publicationDateYear, publicationDateMonth, publicationDateDay, publicationDateSeason
-          , publicationDateText, articleDate, lastRevisionDate, language, accessionNumber, pageString
-          , firstPage, lastPage, pageCount, copyright);
+          , issue, articleDate, publicationDateText, publicationDateSeason, lastRevisionDate
+          , language, accessionNumber, pageString, firstPage, lastPage, pageCount, copyright
+          );
       }
 
   public String fhirType() {
@@ -6107,10 +5894,10 @@ public class Citation extends MetadataResource {
         protected StringType title;
 
         /**
-         * Name of the publisher.
+         * Name of or resource describing the publisher.
          */
         @Child(name = "publisher", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Name of the publisher", formalDefinition="Name of the publisher." )
+        @Description(shortDefinition="Name of or resource describing the publisher", formalDefinition="Name of or resource describing the publisher." )
         protected Reference publisher;
 
         /**
@@ -6256,7 +6043,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #publisher} (Name of the publisher.)
+         * @return {@link #publisher} (Name of or resource describing the publisher.)
          */
         public Reference getPublisher() { 
           if (this.publisher == null)
@@ -6272,7 +6059,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #publisher} (Name of the publisher.)
+         * @param value {@link #publisher} (Name of or resource describing the publisher.)
          */
         public CitationCitedArtifactPublicationFormPublishedInComponent setPublisher(Reference value) { 
           this.publisher = value;
@@ -6333,7 +6120,7 @@ public class Citation extends MetadataResource {
           children.add(new Property("type", "CodeableConcept", "Kind of container (e.g. Periodical, database, or book).", 0, 1, type));
           children.add(new Property("identifier", "Identifier", "Journal identifiers include ISSN, ISO Abbreviation and NLMuniqueID; Book identifiers include ISBN.", 0, java.lang.Integer.MAX_VALUE, identifier));
           children.add(new Property("title", "string", "Name of the database or title of the book or journal.", 0, 1, title));
-          children.add(new Property("publisher", "Reference(Organization)", "Name of the publisher.", 0, 1, publisher));
+          children.add(new Property("publisher", "Reference(Organization)", "Name of or resource describing the publisher.", 0, 1, publisher));
           children.add(new Property("publisherLocation", "string", "Geographic location of the publisher.", 0, 1, publisherLocation));
         }
 
@@ -6343,7 +6130,7 @@ public class Citation extends MetadataResource {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Kind of container (e.g. Periodical, database, or book).", 0, 1, type);
           case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Journal identifiers include ISSN, ISO Abbreviation and NLMuniqueID; Book identifiers include ISBN.", 0, java.lang.Integer.MAX_VALUE, identifier);
           case 110371416: /*title*/  return new Property("title", "string", "Name of the database or title of the book or journal.", 0, 1, title);
-          case 1447404028: /*publisher*/  return new Property("publisher", "Reference(Organization)", "Name of the publisher.", 0, 1, publisher);
+          case 1447404028: /*publisher*/  return new Property("publisher", "Reference(Organization)", "Name of or resource describing the publisher.", 0, 1, publisher);
           case -1281627695: /*publisherLocation*/  return new Property("publisherLocation", "string", "Geographic location of the publisher.", 0, 1, publisherLocation);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -6509,10 +6296,10 @@ public class Citation extends MetadataResource {
     @Block()
     public static class CitationCitedArtifactWebLocationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Code the reason for different URLs, e.g. abstract and full-text.
+         * A characterization of the object expected at the web location.
          */
         @Child(name = "classifier", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Code the reason for different URLs, e.g. abstract and full-text", formalDefinition="Code the reason for different URLs, e.g. abstract and full-text." )
+        @Description(shortDefinition="Code the reason for different URLs, e.g. abstract and full-text", formalDefinition="A characterization of the object expected at the web location." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/artifact-url-classifier")
         protected List<CodeableConcept> classifier;
 
@@ -6533,7 +6320,7 @@ public class Citation extends MetadataResource {
       }
 
         /**
-         * @return {@link #classifier} (Code the reason for different URLs, e.g. abstract and full-text.)
+         * @return {@link #classifier} (A characterization of the object expected at the web location.)
          */
         public List<CodeableConcept> getClassifier() { 
           if (this.classifier == null)
@@ -6636,14 +6423,14 @@ public class Citation extends MetadataResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("classifier", "CodeableConcept", "Code the reason for different URLs, e.g. abstract and full-text.", 0, java.lang.Integer.MAX_VALUE, classifier));
+          children.add(new Property("classifier", "CodeableConcept", "A characterization of the object expected at the web location.", 0, java.lang.Integer.MAX_VALUE, classifier));
           children.add(new Property("url", "uri", "The specific URL.", 0, 1, url));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -281470431: /*classifier*/  return new Property("classifier", "CodeableConcept", "Code the reason for different URLs, e.g. abstract and full-text.", 0, java.lang.Integer.MAX_VALUE, classifier);
+          case -281470431: /*classifier*/  return new Property("classifier", "CodeableConcept", "A characterization of the object expected at the web location.", 0, java.lang.Integer.MAX_VALUE, classifier);
           case 116079: /*url*/  return new Property("url", "uri", "The specific URL.", 0, 1, url);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -6786,7 +6573,7 @@ public class Citation extends MetadataResource {
          * Complex or externally created classification.
          */
         @Child(name = "artifactAssessment", type = {ArtifactAssessment.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Complex or externally created classification\n", formalDefinition="Complex or externally created classification." )
+        @Description(shortDefinition="Complex or externally created classification", formalDefinition="Complex or externally created classification." )
         protected List<Reference> artifactAssessment;
 
         private static final long serialVersionUID = 394554928L;
@@ -7089,17 +6876,17 @@ public class Citation extends MetadataResource {
         protected BooleanType complete;
 
         /**
-         * An individual entity named in the author list or contributor list.
+         * An individual entity named as a contributor, for example in the author list or contributor list.
          */
         @Child(name = "entry", type = {}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="An individual entity named in the list", formalDefinition="An individual entity named in the author list or contributor list." )
+        @Description(shortDefinition="An individual entity named as a contributor", formalDefinition="An individual entity named as a contributor, for example in the author list or contributor list." )
         protected List<CitationCitedArtifactContributorshipEntryComponent> entry;
 
         /**
-         * Used to record a display of the author/contributor list without separate coding for each list member.
+         * Used to record a display of the author/contributor list without separate data element for each list member.
          */
         @Child(name = "summary", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Used to record a display of the author/contributor list without separate coding for each list member", formalDefinition="Used to record a display of the author/contributor list without separate coding for each list member." )
+        @Description(shortDefinition="Used to record a display of the author/contributor list without separate data element for each list member", formalDefinition="Used to record a display of the author/contributor list without separate data element for each list member." )
         protected List<ContributorshipSummaryComponent> summary;
 
         private static final long serialVersionUID = 662810405L;
@@ -7157,7 +6944,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #entry} (An individual entity named in the author list or contributor list.)
+         * @return {@link #entry} (An individual entity named as a contributor, for example in the author list or contributor list.)
          */
         public List<CitationCitedArtifactContributorshipEntryComponent> getEntry() { 
           if (this.entry == null)
@@ -7210,7 +6997,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #summary} (Used to record a display of the author/contributor list without separate coding for each list member.)
+         * @return {@link #summary} (Used to record a display of the author/contributor list without separate data element for each list member.)
          */
         public List<ContributorshipSummaryComponent> getSummary() { 
           if (this.summary == null)
@@ -7265,16 +7052,16 @@ public class Citation extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("complete", "boolean", "Indicates if the list includes all authors and/or contributors.", 0, 1, complete));
-          children.add(new Property("entry", "", "An individual entity named in the author list or contributor list.", 0, java.lang.Integer.MAX_VALUE, entry));
-          children.add(new Property("summary", "", "Used to record a display of the author/contributor list without separate coding for each list member.", 0, java.lang.Integer.MAX_VALUE, summary));
+          children.add(new Property("entry", "", "An individual entity named as a contributor, for example in the author list or contributor list.", 0, java.lang.Integer.MAX_VALUE, entry));
+          children.add(new Property("summary", "", "Used to record a display of the author/contributor list without separate data element for each list member.", 0, java.lang.Integer.MAX_VALUE, summary));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -599445191: /*complete*/  return new Property("complete", "boolean", "Indicates if the list includes all authors and/or contributors.", 0, 1, complete);
-          case 96667762: /*entry*/  return new Property("entry", "", "An individual entity named in the author list or contributor list.", 0, java.lang.Integer.MAX_VALUE, entry);
-          case -1857640538: /*summary*/  return new Property("summary", "", "Used to record a display of the author/contributor list without separate coding for each list member.", 0, java.lang.Integer.MAX_VALUE, summary);
+          case 96667762: /*entry*/  return new Property("entry", "", "An individual entity named as a contributor, for example in the author list or contributor list.", 0, java.lang.Integer.MAX_VALUE, entry);
+          case -1857640538: /*summary*/  return new Property("summary", "", "Used to record a display of the author/contributor list without separate data element for each list member.", 0, java.lang.Integer.MAX_VALUE, summary);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -7415,10 +7202,10 @@ public class Citation extends MetadataResource {
     @Block()
     public static class CitationCitedArtifactContributorshipEntryComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The identity of the individual entity.
+         * The identity of the individual contributor.
          */
         @Child(name = "contributor", type = {Practitioner.class, Organization.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The identity of the individual entity", formalDefinition="The identity of the individual entity." )
+        @Description(shortDefinition="The identity of the individual contributor", formalDefinition="The identity of the individual contributor." )
         protected Reference contributor;
 
         /**
@@ -7429,10 +7216,10 @@ public class Citation extends MetadataResource {
         protected StringType forenameInitials;
 
         /**
-         * Organization affiliated with the entity.
+         * Organization affiliated with the contributor.
          */
         @Child(name = "affiliation", type = {Organization.class, PractitionerRole.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Organizational affiliation", formalDefinition="Organization affiliated with the entity." )
+        @Description(shortDefinition="Organizational affiliation", formalDefinition="Organization affiliated with the contributor." )
         protected List<Reference> affiliation;
 
         /**
@@ -7444,10 +7231,10 @@ public class Citation extends MetadataResource {
         protected List<CodeableConcept> contributionType;
 
         /**
-         * The role of the contributor (e.g. author, editor, reviewer).
+         * The role of the contributor (e.g. author, editor, reviewer, funder).
          */
         @Child(name = "role", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The role of the contributor (e.g. author, editor, reviewer)", formalDefinition="The role of the contributor (e.g. author, editor, reviewer)." )
+        @Description(shortDefinition="The role of the contributor (e.g. author, editor, reviewer, funder)", formalDefinition="The role of the contributor (e.g. author, editor, reviewer, funder)." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contributor-role")
         protected CodeableConcept role;
 
@@ -7459,10 +7246,10 @@ public class Citation extends MetadataResource {
         protected List<CitationCitedArtifactContributorshipEntryContributionInstanceComponent> contributionInstance;
 
         /**
-         * Indication of which contributor is the corresponding contributor for the role.
+         * Whether the contributor is the corresponding contributor for the role.
          */
         @Child(name = "correspondingContact", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Indication of which contributor is the corresponding contributor for the role", formalDefinition="Indication of which contributor is the corresponding contributor for the role." )
+        @Description(shortDefinition="Whether the contributor is the corresponding contributor for the role", formalDefinition="Whether the contributor is the corresponding contributor for the role." )
         protected BooleanType correspondingContact;
 
         /**
@@ -7490,7 +7277,7 @@ public class Citation extends MetadataResource {
       }
 
         /**
-         * @return {@link #contributor} (The identity of the individual entity.)
+         * @return {@link #contributor} (The identity of the individual contributor.)
          */
         public Reference getContributor() { 
           if (this.contributor == null)
@@ -7506,7 +7293,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #contributor} (The identity of the individual entity.)
+         * @param value {@link #contributor} (The identity of the individual contributor.)
          */
         public CitationCitedArtifactContributorshipEntryComponent setContributor(Reference value) { 
           this.contributor = value;
@@ -7563,7 +7350,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #affiliation} (Organization affiliated with the entity.)
+         * @return {@link #affiliation} (Organization affiliated with the contributor.)
          */
         public List<Reference> getAffiliation() { 
           if (this.affiliation == null)
@@ -7669,7 +7456,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #role} (The role of the contributor (e.g. author, editor, reviewer).)
+         * @return {@link #role} (The role of the contributor (e.g. author, editor, reviewer, funder).)
          */
         public CodeableConcept getRole() { 
           if (this.role == null)
@@ -7685,7 +7472,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #role} (The role of the contributor (e.g. author, editor, reviewer).)
+         * @param value {@link #role} (The role of the contributor (e.g. author, editor, reviewer, funder).)
          */
         public CitationCitedArtifactContributorshipEntryComponent setRole(CodeableConcept value) { 
           this.role = value;
@@ -7746,7 +7533,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #correspondingContact} (Indication of which contributor is the corresponding contributor for the role.). This is the underlying object with id, value and extensions. The accessor "getCorrespondingContact" gives direct access to the value
+         * @return {@link #correspondingContact} (Whether the contributor is the corresponding contributor for the role.). This is the underlying object with id, value and extensions. The accessor "getCorrespondingContact" gives direct access to the value
          */
         public BooleanType getCorrespondingContactElement() { 
           if (this.correspondingContact == null)
@@ -7766,7 +7553,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #correspondingContact} (Indication of which contributor is the corresponding contributor for the role.). This is the underlying object with id, value and extensions. The accessor "getCorrespondingContact" gives direct access to the value
+         * @param value {@link #correspondingContact} (Whether the contributor is the corresponding contributor for the role.). This is the underlying object with id, value and extensions. The accessor "getCorrespondingContact" gives direct access to the value
          */
         public CitationCitedArtifactContributorshipEntryComponent setCorrespondingContactElement(BooleanType value) { 
           this.correspondingContact = value;
@@ -7774,14 +7561,14 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return Indication of which contributor is the corresponding contributor for the role.
+         * @return Whether the contributor is the corresponding contributor for the role.
          */
         public boolean getCorrespondingContact() { 
           return this.correspondingContact == null || this.correspondingContact.isEmpty() ? false : this.correspondingContact.getValue();
         }
 
         /**
-         * @param value Indication of which contributor is the corresponding contributor for the role.
+         * @param value Whether the contributor is the corresponding contributor for the role.
          */
         public CitationCitedArtifactContributorshipEntryComponent setCorrespondingContact(boolean value) { 
             if (this.correspondingContact == null)
@@ -7837,26 +7624,26 @@ public class Citation extends MetadataResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("contributor", "Reference(Practitioner|Organization)", "The identity of the individual entity.", 0, 1, contributor));
+          children.add(new Property("contributor", "Reference(Practitioner|Organization)", "The identity of the individual contributor.", 0, 1, contributor));
           children.add(new Property("forenameInitials", "string", "Initials for forename.", 0, 1, forenameInitials));
-          children.add(new Property("affiliation", "Reference(Organization|PractitionerRole)", "Organization affiliated with the entity.", 0, java.lang.Integer.MAX_VALUE, affiliation));
+          children.add(new Property("affiliation", "Reference(Organization|PractitionerRole)", "Organization affiliated with the contributor.", 0, java.lang.Integer.MAX_VALUE, affiliation));
           children.add(new Property("contributionType", "CodeableConcept", "This element identifies the specific nature of an individual’s contribution with respect to the cited work.", 0, java.lang.Integer.MAX_VALUE, contributionType));
-          children.add(new Property("role", "CodeableConcept", "The role of the contributor (e.g. author, editor, reviewer).", 0, 1, role));
+          children.add(new Property("role", "CodeableConcept", "The role of the contributor (e.g. author, editor, reviewer, funder).", 0, 1, role));
           children.add(new Property("contributionInstance", "", "Contributions with accounting for time or number.", 0, java.lang.Integer.MAX_VALUE, contributionInstance));
-          children.add(new Property("correspondingContact", "boolean", "Indication of which contributor is the corresponding contributor for the role.", 0, 1, correspondingContact));
+          children.add(new Property("correspondingContact", "boolean", "Whether the contributor is the corresponding contributor for the role.", 0, 1, correspondingContact));
           children.add(new Property("rankingOrder", "positiveInt", "Provides a numerical ranking to represent the degree of contributorship relative to other contributors, such as 1 for first author and 2 for second author.", 0, 1, rankingOrder));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1895276325: /*contributor*/  return new Property("contributor", "Reference(Practitioner|Organization)", "The identity of the individual entity.", 0, 1, contributor);
+          case -1895276325: /*contributor*/  return new Property("contributor", "Reference(Practitioner|Organization)", "The identity of the individual contributor.", 0, 1, contributor);
           case -740521962: /*forenameInitials*/  return new Property("forenameInitials", "string", "Initials for forename.", 0, 1, forenameInitials);
-          case 2019918576: /*affiliation*/  return new Property("affiliation", "Reference(Organization|PractitionerRole)", "Organization affiliated with the entity.", 0, java.lang.Integer.MAX_VALUE, affiliation);
+          case 2019918576: /*affiliation*/  return new Property("affiliation", "Reference(Organization|PractitionerRole)", "Organization affiliated with the contributor.", 0, java.lang.Integer.MAX_VALUE, affiliation);
           case -1600446614: /*contributionType*/  return new Property("contributionType", "CodeableConcept", "This element identifies the specific nature of an individual’s contribution with respect to the cited work.", 0, java.lang.Integer.MAX_VALUE, contributionType);
-          case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The role of the contributor (e.g. author, editor, reviewer).", 0, 1, role);
+          case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The role of the contributor (e.g. author, editor, reviewer, funder).", 0, 1, role);
           case -547910459: /*contributionInstance*/  return new Property("contributionInstance", "", "Contributions with accounting for time or number.", 0, java.lang.Integer.MAX_VALUE, contributionInstance);
-          case -1816008851: /*correspondingContact*/  return new Property("correspondingContact", "boolean", "Indication of which contributor is the corresponding contributor for the role.", 0, 1, correspondingContact);
+          case -1816008851: /*correspondingContact*/  return new Property("correspondingContact", "boolean", "Whether the contributor is the corresponding contributor for the role.", 0, 1, correspondingContact);
           case -762905416: /*rankingOrder*/  return new Property("rankingOrder", "positiveInt", "Provides a numerical ranking to represent the degree of contributorship relative to other contributors, such as 1 for first author and 2 for second author.", 0, 1, rankingOrder);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -8311,10 +8098,10 @@ public class Citation extends MetadataResource {
         protected CodeableConcept type;
 
         /**
-         * The format for the display string.
+         * The format for the display string, such as author last name with first letter capitalized followed by forename initials.
          */
         @Child(name = "style", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The format for the display string", formalDefinition="The format for the display string." )
+        @Description(shortDefinition="The format for the display string", formalDefinition="The format for the display string, such as author last name with first letter capitalized followed by forename initials." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contributor-summary-style")
         protected CodeableConcept style;
 
@@ -8375,7 +8162,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #style} (The format for the display string.)
+         * @return {@link #style} (The format for the display string, such as author last name with first letter capitalized followed by forename initials.)
          */
         public CodeableConcept getStyle() { 
           if (this.style == null)
@@ -8391,7 +8178,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #style} (The format for the display string.)
+         * @param value {@link #style} (The format for the display string, such as author last name with first letter capitalized followed by forename initials.)
          */
         public ContributorshipSummaryComponent setStyle(CodeableConcept value) { 
           this.style = value;
@@ -8470,7 +8257,7 @@ public class Citation extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Used most commonly to express an author list or a contributorship statement.", 0, 1, type));
-          children.add(new Property("style", "CodeableConcept", "The format for the display string.", 0, 1, style));
+          children.add(new Property("style", "CodeableConcept", "The format for the display string, such as author last name with first letter capitalized followed by forename initials.", 0, 1, style));
           children.add(new Property("source", "CodeableConcept", "Used to code the producer or rule for creating the display string.", 0, 1, source));
           children.add(new Property("value", "markdown", "The display string for the author list, contributor list, or contributorship statement.", 0, 1, value));
         }
@@ -8479,7 +8266,7 @@ public class Citation extends MetadataResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Used most commonly to express an author list or a contributorship statement.", 0, 1, type);
-          case 109780401: /*style*/  return new Property("style", "CodeableConcept", "The format for the display string.", 0, 1, style);
+          case 109780401: /*style*/  return new Property("style", "CodeableConcept", "The format for the display string, such as author last name with first letter capitalized followed by forename initials.", 0, 1, style);
           case -896505829: /*source*/  return new Property("source", "CodeableConcept", "Used to code the producer or rule for creating the display string.", 0, 1, source);
           case 111972721: /*value*/  return new Property("value", "markdown", "The display string for the author list, contributor list, or contributorship statement.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -8648,23 +8435,31 @@ public class Citation extends MetadataResource {
     protected StringType version;
 
     /**
+     * Indicates the mechanism used to compare versions to determine which is more current.
+     */
+    @Child(name = "versionAlgorithm", type = {StringType.class, Coding.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="How to compare versions", formalDefinition="Indicates the mechanism used to compare versions to determine which is more current." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/version-algorithm")
+    protected DataType versionAlgorithm;
+
+    /**
      * A natural language name identifying the citation record. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
-    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this citation record (computer friendly)", formalDefinition="A natural language name identifying the citation record. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
     protected StringType name;
 
     /**
      * A short, descriptive, user-friendly title for the citation record.
      */
-    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "title", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this citation record (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the citation record." )
     protected StringType title;
 
     /**
      * The status of this summary. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this summary. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -8672,49 +8467,49 @@ public class Citation extends MetadataResource {
     /**
      * A Boolean value to indicate that this citation record is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this citation record is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
      * The date (and optionally time) when the citation record was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the citation record changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date (and optionally time) when the citation record was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the citation record changes." )
     protected DateTimeType date;
 
     /**
      * The name of the organization or individual that published the citation record.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "publisher", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The publisher of the citation record, not the publisher of the article or artifact being cited", formalDefinition="The name of the organization or individual that published the citation record." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher of the citation record", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the citation from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Natural language description of the citation", formalDefinition="A free text natural language description of the citation from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate citation record instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the citation record content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate citation record instances." )
     protected List<UsageContext> useContext;
 
     /**
      * A legal or geographic region in which the citation record is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for citation record (if applicable)", formalDefinition="A legal or geographic region in which the citation record is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
@@ -8722,91 +8517,98 @@ public class Citation extends MetadataResource {
     /**
      * Explanation of why this citation is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this citation is defined", formalDefinition="Explanation of why this citation is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * Use and/or publishing restrictions for the citation record, not for the cited artifact.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions for the citation record, not for the cited artifact", formalDefinition="Use and/or publishing restrictions for the citation record, not for the cited artifact." )
     protected MarkdownType copyright;
 
     /**
+     * A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    @Child(name = "copyrightLabel", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Copyright holder and year(s) for the ciation record, not for the cited artifact", formalDefinition="A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved')." )
+    protected StringType copyrightLabel;
+
+    /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the citation record was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="When the citation record was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="When the citation record was last reviewed by the publisher", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The period during which the citation record content was or is planned to be in active use.
      */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effectivePeriod", type = {Period.class}, order=19, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the citation record is expected to be used", formalDefinition="The period during which the citation record content was or is planned to be in active use." )
     protected Period effectivePeriod;
 
     /**
      * Who authored or created the citation record.
      */
-    @Child(name = "author", type = {ContactDetail.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "author", type = {ContactDetail.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who authored the citation record", formalDefinition="Who authored or created the citation record." )
     protected List<ContactDetail> author;
 
     /**
      * Who edited or revised the citation record.
      */
-    @Child(name = "editor", type = {ContactDetail.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "editor", type = {ContactDetail.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who edited the citation record", formalDefinition="Who edited or revised the citation record." )
     protected List<ContactDetail> editor;
 
     /**
      * Who reviewed the citation record.
      */
-    @Child(name = "reviewer", type = {ContactDetail.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who reviewed the citation record", formalDefinition="Who reviewed the citation record." )
     protected List<ContactDetail> reviewer;
 
     /**
      * Who endorsed the citation record.
      */
-    @Child(name = "endorser", type = {ContactDetail.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "endorser", type = {ContactDetail.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who endorsed the citation record", formalDefinition="Who endorsed the citation record." )
     protected List<ContactDetail> endorser;
 
     /**
      * A human-readable display of key concepts to represent the citation.
      */
-    @Child(name = "summary", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "summary", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A human-readable display of key concepts to represent the citation", formalDefinition="A human-readable display of key concepts to represent the citation." )
     protected List<CitationSummaryComponent> summary;
 
     /**
      * The assignment to an organizing scheme.
      */
-    @Child(name = "classification", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "classification", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The assignment to an organizing scheme", formalDefinition="The assignment to an organizing scheme." )
     protected List<CitationClassificationComponent> classification;
 
     /**
      * Used for general notes and annotations not coded elsewhere.
      */
-    @Child(name = "note", type = {Annotation.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Used for general notes and annotations not coded elsewhere", formalDefinition="Used for general notes and annotations not coded elsewhere." )
     protected List<Annotation> note;
 
     /**
      * The status of the citation record.
      */
-    @Child(name = "currentState", type = {CodeableConcept.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "currentState", type = {CodeableConcept.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The status of the citation record", formalDefinition="The status of the citation record." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/citation-status-type")
     protected List<CodeableConcept> currentState;
@@ -8814,25 +8616,25 @@ public class Citation extends MetadataResource {
     /**
      * The state or status of the citation record paired with an effective date or period for that state.
      */
-    @Child(name = "statusDate", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "statusDate", type = {}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="An effective date or period for a status of the citation record", formalDefinition="The state or status of the citation record paired with an effective date or period for that state." )
     protected List<CitationStatusDateComponent> statusDate;
 
     /**
      * Artifact related to the citation record.
      */
-    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Artifact related to the citation record", formalDefinition="Artifact related to the citation record." )
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
      * The article or artifact being described.
      */
-    @Child(name = "citedArtifact", type = {}, order=28, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "citedArtifact", type = {}, order=30, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The article or artifact being described", formalDefinition="The article or artifact being described." )
     protected CitationCitedArtifactComponent citedArtifact;
 
-    private static final long serialVersionUID = 3140818L;
+    private static final long serialVersionUID = 717016163L;
 
   /**
    * Constructor
@@ -8997,6 +8799,57 @@ public class Citation extends MetadataResource {
           this.version = new StringType();
         this.version.setValue(value);
       }
+      return this;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      return this.versionAlgorithm;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new StringType();
+      if (!(this.versionAlgorithm instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (StringType) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmStringType() { 
+      return this != null && this.versionAlgorithm instanceof StringType;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new Coding();
+      if (!(this.versionAlgorithm instanceof Coding))
+        throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (Coding) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmCoding() { 
+      return this != null && this.versionAlgorithm instanceof Coding;
+    }
+
+    public boolean hasVersionAlgorithm() { 
+      return this.versionAlgorithm != null && !this.versionAlgorithm.isEmpty();
+    }
+
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Citation setVersionAlgorithm(DataType value) { 
+      if (value != null && !(value instanceof StringType || value instanceof Coding))
+        throw new Error("Not the right type for Citation.versionAlgorithm[x]: "+value.fhirType());
+      this.versionAlgorithm = value;
       return this;
     }
 
@@ -9378,7 +9231,7 @@ public class Citation extends MetadataResource {
      * @param value A free text natural language description of the citation from a consumer's perspective.
      */
     public Citation setDescription(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.description = null;
       else {
         if (this.description == null)
@@ -9533,7 +9386,7 @@ public class Citation extends MetadataResource {
      * @param value Explanation of why this citation is needed and why it has been designed as it has.
      */
     public Citation setPurpose(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.purpose = null;
       else {
         if (this.purpose == null)
@@ -9582,12 +9435,61 @@ public class Citation extends MetadataResource {
      * @param value Use and/or publishing restrictions for the citation record, not for the cited artifact.
      */
     public Citation setCopyright(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.copyright = null;
       else {
         if (this.copyright == null)
           this.copyright = new MarkdownType();
         this.copyright.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      if (this.copyrightLabel == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Citation.copyrightLabel");
+        else if (Configuration.doAutoCreate())
+          this.copyrightLabel = new StringType(); // bb
+      return this.copyrightLabel;
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    public boolean hasCopyrightLabel() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public Citation setCopyrightLabelElement(StringType value) { 
+      this.copyrightLabel = value;
+      return this;
+    }
+
+    /**
+     * @return A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public String getCopyrightLabel() { 
+      return this.copyrightLabel == null ? null : this.copyrightLabel.getValue();
+    }
+
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public Citation setCopyrightLabel(String value) { 
+      if (Utilities.noString(value))
+        this.copyrightLabel = null;
+      else {
+        if (this.copyrightLabel == null)
+          this.copyrightLabel = new StringType();
+        this.copyrightLabel.setValue(value);
       }
       return this;
     }
@@ -10272,83 +10174,6 @@ public class Citation extends MetadataResource {
      * not supported on this implementation
      */
     @Override
-    public int getVersionAlgorithmMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public DataType getVersionAlgorithm() { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-    /**
-     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public StringType getVersionAlgorithmStringType() { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-    public boolean hasVersionAlgorithmStringType() { 
-      return false;////K 
-    }
-    /**
-     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public Coding getVersionAlgorithmCoding() { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-    public boolean hasVersionAlgorithmCoding() { 
-      return false;////K 
-    }
-    public boolean hasVersionAlgorithm() { 
-      return false;
-    }
-    /**
-     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
-     */
-    public Citation setVersionAlgorithm(DataType value) { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"versionAlgorithm[x]\""); 
-    }
-
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getCopyrightLabelMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
-     */
-    public StringType getCopyrightLabelElement() { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"copyrightLabel\"");
-    }
-
-    public boolean hasCopyrightLabelElement() { 
-      return false;
-    }
-    public boolean hasCopyrightLabel() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
-     */
-    public Citation setCopyrightLabelElement(StringType value) { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"copyrightLabel\""); 
-    }
-    public String getCopyrightLabel() { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"copyrightLabel\""); 
-    }
-    /**
-     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
-     */
-    public Citation setCopyrightLabel(String value) { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"copyrightLabel\""); 
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
     public int getTopicMax() { 
       return 0;
     }
@@ -10385,6 +10210,7 @@ public class Citation extends MetadataResource {
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this citation record when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this citation record when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the citation record when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the citation record author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
+        children.add(new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm));
         children.add(new Property("name", "string", "A natural language name identifying the citation record. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the citation record.", 0, 1, title));
         children.add(new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status));
@@ -10397,6 +10223,7 @@ public class Citation extends MetadataResource {
         children.add(new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the citation record is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
         children.add(new Property("purpose", "markdown", "Explanation of why this citation is needed and why it has been designed as it has.", 0, 1, purpose));
         children.add(new Property("copyright", "markdown", "Use and/or publishing restrictions for the citation record, not for the cited artifact.", 0, 1, copyright));
+        children.add(new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel));
         children.add(new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
         children.add(new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate));
         children.add(new Property("effectivePeriod", "Period", "The period during which the citation record content was or is planned to be in active use.", 0, 1, effectivePeriod));
@@ -10419,6 +10246,10 @@ public class Citation extends MetadataResource {
         case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this citation record when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this citation record when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the citation record when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the citation record author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
+        case -115699031: /*versionAlgorithm[x]*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1508158071: /*versionAlgorithm*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1836908904: /*versionAlgorithmString*/  return new Property("versionAlgorithm[x]", "string", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1373807809: /*versionAlgorithmCoding*/  return new Property("versionAlgorithm[x]", "Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the citation record. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the citation record.", 0, 1, title);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status);
@@ -10431,6 +10262,7 @@ public class Citation extends MetadataResource {
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the citation record is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explanation of why this citation is needed and why it has been designed as it has.", 0, 1, purpose);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "Use and/or publishing restrictions for the citation record, not for the cited artifact.", 0, 1, copyright);
+        case 765157229: /*copyrightLabel*/  return new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel);
         case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
         case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate);
         case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the citation record content was or is planned to be in active use.", 0, 1, effectivePeriod);
@@ -10456,6 +10288,7 @@ public class Citation extends MetadataResource {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case 1508158071: /*versionAlgorithm*/ return this.versionAlgorithm == null ? new Base[0] : new Base[] {this.versionAlgorithm}; // DataType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
@@ -10468,6 +10301,7 @@ public class Citation extends MetadataResource {
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // MarkdownType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
+        case 765157229: /*copyrightLabel*/ return this.copyrightLabel == null ? new Base[0] : new Base[] {this.copyrightLabel}; // StringType
         case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
         case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateType
         case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
@@ -10498,6 +10332,9 @@ public class Citation extends MetadataResource {
           return value;
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 1508158071: // versionAlgorithm
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
@@ -10535,6 +10372,9 @@ public class Citation extends MetadataResource {
           return value;
         case 1522889671: // copyright
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case 765157229: // copyrightLabel
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
           return value;
         case 223539345: // approvalDate
           this.approvalDate = TypeConvertor.castToDate(value); // DateType
@@ -10591,6 +10431,8 @@ public class Citation extends MetadataResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
@@ -10616,6 +10458,8 @@ public class Citation extends MetadataResource {
           this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("approvalDate")) {
           this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
@@ -10655,6 +10499,8 @@ public class Citation extends MetadataResource {
         case 116079:  return getUrlElement();
         case -1618432855:  return addIdentifier(); 
         case 351608024:  return getVersionElement();
+        case -115699031:  return getVersionAlgorithm();
+        case 1508158071:  return getVersionAlgorithm();
         case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
         case -892481550:  return getStatusElement();
@@ -10667,6 +10513,7 @@ public class Citation extends MetadataResource {
         case -507075711:  return addJurisdiction(); 
         case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
+        case 765157229:  return getCopyrightLabelElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
         case -403934648:  return getEffectivePeriod();
@@ -10692,6 +10539,7 @@ public class Citation extends MetadataResource {
         case 116079: /*url*/ return new String[] {"uri"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case 1508158071: /*versionAlgorithm*/ return new String[] {"string", "Coding"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"code"};
@@ -10704,6 +10552,7 @@ public class Citation extends MetadataResource {
         case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
         case -220463842: /*purpose*/ return new String[] {"markdown"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
+        case 765157229: /*copyrightLabel*/ return new String[] {"string"};
         case 223539345: /*approvalDate*/ return new String[] {"date"};
         case -1687512484: /*lastReviewDate*/ return new String[] {"date"};
         case -403934648: /*effectivePeriod*/ return new String[] {"Period"};
@@ -10733,6 +10582,14 @@ public class Citation extends MetadataResource {
         }
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.version");
+        }
+        else if (name.equals("versionAlgorithmString")) {
+          this.versionAlgorithm = new StringType();
+          return this.versionAlgorithm;
+        }
+        else if (name.equals("versionAlgorithmCoding")) {
+          this.versionAlgorithm = new Coding();
+          return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.name");
@@ -10769,6 +10626,9 @@ public class Citation extends MetadataResource {
         }
         else if (name.equals("copyright")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.copyright");
+        }
+        else if (name.equals("copyrightLabel")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.copyrightLabel");
         }
         else if (name.equals("approvalDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.approvalDate");
@@ -10838,6 +10698,7 @@ public class Citation extends MetadataResource {
             dst.identifier.add(i.copy());
         };
         dst.version = version == null ? null : version.copy();
+        dst.versionAlgorithm = versionAlgorithm == null ? null : versionAlgorithm.copy();
         dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
         dst.status = status == null ? null : status.copy();
@@ -10862,6 +10723,7 @@ public class Citation extends MetadataResource {
         };
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
+        dst.copyrightLabel = copyrightLabel == null ? null : copyrightLabel.copy();
         dst.approvalDate = approvalDate == null ? null : approvalDate.copy();
         dst.lastReviewDate = lastReviewDate == null ? null : lastReviewDate.copy();
         dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
@@ -10930,10 +10792,11 @@ public class Citation extends MetadataResource {
           return false;
         Citation o = (Citation) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
-           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(status, o.status, true)
-           && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
-           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
-           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
+           && compareDeep(versionAlgorithm, o.versionAlgorithm, true) && compareDeep(name, o.name, true) && compareDeep(title, o.title, true)
+           && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true)
+           && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true)
+           && compareDeep(useContext, o.useContext, true) && compareDeep(jurisdiction, o.jurisdiction, true)
+           && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true) && compareDeep(copyrightLabel, o.copyrightLabel, true)
            && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
            && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(author, o.author, true)
            && compareDeep(editor, o.editor, true) && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true)
@@ -10953,16 +10816,18 @@ public class Citation extends MetadataResource {
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
            && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
            && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
-           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
-           && compareValues(lastReviewDate, o.lastReviewDate, true);
+           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(copyrightLabel, o.copyrightLabel, true)
+           && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , name, title, status, experimental, date, publisher, contact, description, useContext
-          , jurisdiction, purpose, copyright, approvalDate, lastReviewDate, effectivePeriod
-          , author, editor, reviewer, endorser, summary, classification, note, currentState
-          , statusDate, relatedArtifact, citedArtifact);
+          , versionAlgorithm, name, title, status, experimental, date, publisher, contact
+          , description, useContext, jurisdiction, purpose, copyright, copyrightLabel, approvalDate
+          , lastReviewDate, effectivePeriod, author, editor, reviewer, endorser, summary
+          , classification, note, currentState, statusDate, relatedArtifact, citedArtifact
+          );
       }
 
   @Override
@@ -11007,10 +10872,10 @@ public class Citation extends MetadataResource {
 * [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
 </b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context-quantity", path="(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A quantity- or range-valued use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A quantity- or range-valued use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A quantity- or range-valued use context assigned to the charge item definition\r\n* [Citation](citation.html): A quantity- or range-valued use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A quantity- or range-valued use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A quantity- or range-valued use context assigned to the event definition\r\n* [Evidence](evidence.html): A quantity- or range-valued use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A quantity- or range-valued use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A quantity- or range-valued use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A quantity- or range-valued use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide\r\n* [Library](library.html): A quantity- or range-valued use context assigned to the library\r\n* [Measure](measure.html): A quantity- or range-valued use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A quantity- or range-valued use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A quantity- or range-valued use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A quantity- or range-valued use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A quantity- or range-valued use context assigned to the test script\r\n* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set\r\n", type="quantity" )
+  @SearchParamDefinition(name="context-quantity", path="(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A quantity- or range-valued use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A quantity- or range-valued use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A quantity- or range-valued use context assigned to the charge item definition\r\n* [Citation](citation.html): A quantity- or range-valued use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A quantity- or range-valued use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A quantity- or range-valued use context assigned to the event definition\r\n* [Evidence](evidence.html): A quantity- or range-valued use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A quantity- or range-valued use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A quantity- or range-valued use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A quantity- or range-valued use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide\r\n* [Library](library.html): A quantity- or range-valued use context assigned to the library\r\n* [Measure](measure.html): A quantity- or range-valued use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A quantity- or range-valued use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A quantity- or range-valued use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A quantity- or range-valued use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A quantity- or range-valued use context assigned to the test script\r\n* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set\r\n", type="quantity" )
   public static final String SP_CONTEXT_QUANTITY = "context-quantity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
@@ -11049,7 +10914,7 @@ public class Citation extends MetadataResource {
 * [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
 </b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as Quantity) | (ActivityDefinition.useContext.value as Range) | (ActorDefinition.useContext.value as Quantity) | (ActorDefinition.useContext.value as Range) | (CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range) | (Citation.useContext.value as Quantity) | (Citation.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (ConditionDefinition.useContext.value as Quantity) | (ConditionDefinition.useContext.value as Range) | (EventDefinition.useContext.value as Quantity) | (EventDefinition.useContext.value as Range) | (Evidence.useContext.value as Quantity) | (Evidence.useContext.value as Range) | (EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range) | (EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range) | (ExampleScenario.useContext.value as Quantity) | (ExampleScenario.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (Library.useContext.value as Quantity) | (Library.useContext.value as Range) | (Measure.useContext.value as Quantity) | (Measure.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range) | (Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range) | (Requirements.useContext.value as Quantity) | (Requirements.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(Quantity)) | (ActivityDefinition.useContext.value.ofType(Range)) | (ActorDefinition.useContext.value.ofType(Quantity)) | (ActorDefinition.useContext.value.ofType(Range)) | (CapabilityStatement.useContext.value.ofType(Quantity)) | (CapabilityStatement.useContext.value.ofType(Range)) | (ChargeItemDefinition.useContext.value.ofType(Quantity)) | (ChargeItemDefinition.useContext.value.ofType(Range)) | (Citation.useContext.value.ofType(Quantity)) | (Citation.useContext.value.ofType(Range)) | (CodeSystem.useContext.value.ofType(Quantity)) | (CodeSystem.useContext.value.ofType(Range)) | (CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range)) | (ConceptMap.useContext.value.ofType(Quantity)) | (ConceptMap.useContext.value.ofType(Range)) | (ConditionDefinition.useContext.value.ofType(Quantity)) | (ConditionDefinition.useContext.value.ofType(Range)) | (EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range)) | (Evidence.useContext.value.ofType(Quantity)) | (Evidence.useContext.value.ofType(Range)) | (EvidenceReport.useContext.value.ofType(Quantity)) | (EvidenceReport.useContext.value.ofType(Range)) | (EvidenceVariable.useContext.value.ofType(Quantity)) | (EvidenceVariable.useContext.value.ofType(Range)) | (ExampleScenario.useContext.value.ofType(Quantity)) | (ExampleScenario.useContext.value.ofType(Range)) | (GraphDefinition.useContext.value.ofType(Quantity)) | (GraphDefinition.useContext.value.ofType(Range)) | (ImplementationGuide.useContext.value.ofType(Quantity)) | (ImplementationGuide.useContext.value.ofType(Range)) | (Library.useContext.value.ofType(Quantity)) | (Library.useContext.value.ofType(Range)) | (Measure.useContext.value.ofType(Quantity)) | (Measure.useContext.value.ofType(Range)) | (MessageDefinition.useContext.value.ofType(Quantity)) | (MessageDefinition.useContext.value.ofType(Range)) | (NamingSystem.useContext.value.ofType(Quantity)) | (NamingSystem.useContext.value.ofType(Range)) | (OperationDefinition.useContext.value.ofType(Quantity)) | (OperationDefinition.useContext.value.ofType(Range)) | (PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range)) | (Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range)) | (Requirements.useContext.value.ofType(Quantity)) | (Requirements.useContext.value.ofType(Range)) | (SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range)) | (StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range)) | (StructureMap.useContext.value.ofType(Quantity)) | (StructureMap.useContext.value.ofType(Range)) | (TerminologyCapabilities.useContext.value.ofType(Quantity)) | (TerminologyCapabilities.useContext.value.ofType(Range)) | (TestScript.useContext.value.ofType(Quantity)) | (TestScript.useContext.value.ofType(Range)) | (ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
@@ -11343,10 +11208,10 @@ public class Citation extends MetadataResource {
 * [ValueSet](valueset.html): A use context assigned to the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context", path="(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A use context assigned to the charge item definition\r\n* [Citation](citation.html): A use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A use context assigned to the event definition\r\n* [Evidence](evidence.html): A use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [Library](library.html): A use context assigned to the library\r\n* [Measure](measure.html): A use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A use context assigned to the test script\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
+  @SearchParamDefinition(name="context", path="(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): A use context assigned to the activity definition\r\n* [ActorDefinition](actordefinition.html): A use context assigned to the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): A use context assigned to the charge item definition\r\n* [Citation](citation.html): A use context assigned to the citation\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [ConditionDefinition](conditiondefinition.html): A use context assigned to the condition definition\r\n* [EventDefinition](eventdefinition.html): A use context assigned to the event definition\r\n* [Evidence](evidence.html): A use context assigned to the evidence\r\n* [EvidenceReport](evidencereport.html): A use context assigned to the evidence report\r\n* [EvidenceVariable](evidencevariable.html): A use context assigned to the evidence variable\r\n* [ExampleScenario](examplescenario.html): A use context assigned to the example scenario\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [Library](library.html): A use context assigned to the library\r\n* [Measure](measure.html): A use context assigned to the measure\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [PlanDefinition](plandefinition.html): A use context assigned to the plan definition\r\n* [Questionnaire](questionnaire.html): A use context assigned to the questionnaire\r\n* [Requirements](requirements.html): A use context assigned to the requirements\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [TestScript](testscript.html): A use context assigned to the test script\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
   public static final String SP_CONTEXT = "context";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>context</b>
@@ -11385,7 +11250,7 @@ public class Citation extends MetadataResource {
 * [ValueSet](valueset.html): A use context assigned to the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(ActivityDefinition.useContext.value as CodeableConcept) | (ActorDefinition.useContext.value as CodeableConcept) | (CapabilityStatement.useContext.value as CodeableConcept) | (ChargeItemDefinition.useContext.value as CodeableConcept) | (Citation.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (ConditionDefinition.useContext.value as CodeableConcept) | (EventDefinition.useContext.value as CodeableConcept) | (Evidence.useContext.value as CodeableConcept) | (EvidenceReport.useContext.value as CodeableConcept) | (EvidenceVariable.useContext.value as CodeableConcept) | (ExampleScenario.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (Library.useContext.value as CodeableConcept) | (Measure.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (PlanDefinition.useContext.value as CodeableConcept) | (Questionnaire.useContext.value as CodeableConcept) | (Requirements.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (TestScript.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * Path: <b>(ActivityDefinition.useContext.value.ofType(CodeableConcept)) | (ActorDefinition.useContext.value.ofType(CodeableConcept)) | (CapabilityStatement.useContext.value.ofType(CodeableConcept)) | (ChargeItemDefinition.useContext.value.ofType(CodeableConcept)) | (Citation.useContext.value.ofType(CodeableConcept)) | (CodeSystem.useContext.value.ofType(CodeableConcept)) | (CompartmentDefinition.useContext.value.ofType(CodeableConcept)) | (ConceptMap.useContext.value.ofType(CodeableConcept)) | (ConditionDefinition.useContext.value.ofType(CodeableConcept)) | (EventDefinition.useContext.value.ofType(CodeableConcept)) | (Evidence.useContext.value.ofType(CodeableConcept)) | (EvidenceReport.useContext.value.ofType(CodeableConcept)) | (EvidenceVariable.useContext.value.ofType(CodeableConcept)) | (ExampleScenario.useContext.value.ofType(CodeableConcept)) | (GraphDefinition.useContext.value.ofType(CodeableConcept)) | (ImplementationGuide.useContext.value.ofType(CodeableConcept)) | (Library.useContext.value.ofType(CodeableConcept)) | (Measure.useContext.value.ofType(CodeableConcept)) | (MessageDefinition.useContext.value.ofType(CodeableConcept)) | (NamingSystem.useContext.value.ofType(CodeableConcept)) | (OperationDefinition.useContext.value.ofType(CodeableConcept)) | (PlanDefinition.useContext.value.ofType(CodeableConcept)) | (Questionnaire.useContext.value.ofType(CodeableConcept)) | (Requirements.useContext.value.ofType(CodeableConcept)) | (SearchParameter.useContext.value.ofType(CodeableConcept)) | (StructureDefinition.useContext.value.ofType(CodeableConcept)) | (StructureMap.useContext.value.ofType(CodeableConcept)) | (TerminologyCapabilities.useContext.value.ofType(CodeableConcept)) | (TestScript.useContext.value.ofType(CodeableConcept)) | (ValueSet.useContext.value.ofType(CodeableConcept))</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
@@ -11561,6 +11426,7 @@ public class Citation extends MetadataResource {
 
 * [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
 * [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement
 * [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
 * [Citation](citation.html): External identifier for the citation
 * [CodeSystem](codesystem.html): External identifier for the code system
@@ -11571,15 +11437,19 @@ public class Citation extends MetadataResource {
 * [EvidenceReport](evidencereport.html): External identifier for the evidence report
 * [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
 * [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [GraphDefinition](graphdefinition.html): External identifier for the graph definition
+* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide
 * [Library](library.html): External identifier for the library
 * [Measure](measure.html): External identifier for the measure
 * [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
 * [NamingSystem](namingsystem.html): External identifier for the naming system
 * [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [OperationDefinition](operationdefinition.html): External identifier for the search parameter
 * [PlanDefinition](plandefinition.html): External identifier for the plan definition
 * [Questionnaire](questionnaire.html): External identifier for the questionnaire
 * [Requirements](requirements.html): External identifier for the requirements
+* [SearchParameter](searchparameter.html): External identifier for the search parameter
 * [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
@@ -11589,10 +11459,10 @@ public class Citation extends MetadataResource {
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition\r\n* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition\r\n* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition\r\n* [Citation](citation.html): External identifier for the citation\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition\r\n* [EventDefinition](eventdefinition.html): External identifier for the event definition\r\n* [Evidence](evidence.html): External identifier for the evidence\r\n* [EvidenceReport](evidencereport.html): External identifier for the evidence report\r\n* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable\r\n* [ExampleScenario](examplescenario.html): External identifier for the example scenario\r\n* [Library](library.html): External identifier for the library\r\n* [Measure](measure.html): External identifier for the measure\r\n* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition\r\n* [PlanDefinition](plandefinition.html): External identifier for the plan definition\r\n* [Questionnaire](questionnaire.html): External identifier for the questionnaire\r\n* [Requirements](requirements.html): External identifier for the requirements\r\n* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [TestScript](testscript.html): External identifier for the test script\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition\r\n* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition\r\n* [Citation](citation.html): External identifier for the citation\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition\r\n* [EventDefinition](eventdefinition.html): External identifier for the event definition\r\n* [Evidence](evidence.html): External identifier for the evidence\r\n* [EvidenceReport](evidencereport.html): External identifier for the evidence report\r\n* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable\r\n* [ExampleScenario](examplescenario.html): External identifier for the example scenario\r\n* [GraphDefinition](graphdefinition.html): External identifier for the graph definition\r\n* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide\r\n* [Library](library.html): External identifier for the library\r\n* [Measure](measure.html): External identifier for the measure\r\n* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition\r\n* [OperationDefinition](operationdefinition.html): External identifier for the search parameter\r\n* [PlanDefinition](plandefinition.html): External identifier for the plan definition\r\n* [Questionnaire](questionnaire.html): External identifier for the questionnaire\r\n* [Requirements](requirements.html): External identifier for the requirements\r\n* [SearchParameter](searchparameter.html): External identifier for the search parameter\r\n* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [TestScript](testscript.html): External identifier for the test script\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -11601,6 +11471,7 @@ public class Citation extends MetadataResource {
 
 * [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
 * [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement
 * [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
 * [Citation](citation.html): External identifier for the citation
 * [CodeSystem](codesystem.html): External identifier for the code system
@@ -11611,15 +11482,19 @@ public class Citation extends MetadataResource {
 * [EvidenceReport](evidencereport.html): External identifier for the evidence report
 * [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
 * [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [GraphDefinition](graphdefinition.html): External identifier for the graph definition
+* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide
 * [Library](library.html): External identifier for the library
 * [Measure](measure.html): External identifier for the measure
 * [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
 * [NamingSystem](namingsystem.html): External identifier for the naming system
 * [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [OperationDefinition](operationdefinition.html): External identifier for the search parameter
 * [PlanDefinition](plandefinition.html): External identifier for the plan definition
 * [Questionnaire](questionnaire.html): External identifier for the questionnaire
 * [Requirements](requirements.html): External identifier for the requirements
+* [SearchParameter](searchparameter.html): External identifier for the search parameter
 * [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
@@ -11629,7 +11504,7 @@ public class Citation extends MetadataResource {
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -12215,6 +12090,66 @@ public class Citation extends MetadataResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
  /**
+   * Search parameter: <b>classification-type</b>
+   * <p>
+   * Description: <b>A type of classification assigned to the citation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Citation.classification.type)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="classification-type", path="(Citation.classification.type)", description="A type of classification assigned to the citation", type="token" )
+  public static final String SP_CLASSIFICATION_TYPE = "classification-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>classification-type</b>
+   * <p>
+   * Description: <b>A type of classification assigned to the citation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Citation.classification.type)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CLASSIFICATION_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CLASSIFICATION_TYPE);
+
+ /**
+   * Search parameter: <b>classification</b>
+   * <p>
+   * Description: <b>A classification type and value assigned to the citation</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Citation.classification</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="classification", path="Citation.classification", description="A classification type and value assigned to the citation", type="composite", compositeOf={"classification-type", "classifier"} )
+  public static final String SP_CLASSIFICATION = "classification";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>classification</b>
+   * <p>
+   * Description: <b>A classification type and value assigned to the citation</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Citation.classification</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CLASSIFICATION = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CLASSIFICATION);
+
+ /**
+   * Search parameter: <b>classifier</b>
+   * <p>
+   * Description: <b>A classifier assigned to the citation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Citation.classification.classifier)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="classifier", path="(Citation.classification.classifier)", description="A classifier assigned to the citation", type="token" )
+  public static final String SP_CLASSIFIER = "classifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>classifier</b>
+   * <p>
+   * Description: <b>A classifier assigned to the citation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Citation.classification.classifier)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CLASSIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CLASSIFIER);
+
+ /**
    * Search parameter: <b>effective</b>
    * <p>
    * Description: <b>Multiple Resources: 
@@ -12264,3 +12199,4 @@ public class Citation extends MetadataResource {
 
 
 }
+

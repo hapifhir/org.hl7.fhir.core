@@ -7,6 +7,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.DataRequirement40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -68,11 +69,11 @@ public class GuidanceResponse40_50 {
       tgt.addReason(Reference40_50.convertReferenceToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getEvaluationMessage())
-      tgt.addEvaluationMessage(Reference40_50.convertReference(t));
+      tgt.setEvaluationMessage(Reference40_50.convertReference(t));
     if (src.hasOutputParameters())
       tgt.setOutputParameters(Reference40_50.convertReference(src.getOutputParameters()));
     if (src.hasResult())
-      tgt.setResult(Reference40_50.convertReference(src.getResult()));
+      tgt.addResult(Reference40_50.convertReference(src.getResult()));
     for (org.hl7.fhir.r4.model.DataRequirement t : src.getDataRequirement())
       tgt.addDataRequirement(DataRequirement40_50.convertDataRequirement(t));
     return tgt;
@@ -106,12 +107,12 @@ public class GuidanceResponse40_50 {
       if (t.hasReference())
         tgt.addReasonReference(Reference40_50.convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getEvaluationMessage())
-      tgt.addEvaluationMessage(Reference40_50.convertReference(t));
+    if (src.hasEvaluationMessage())
+      tgt.addEvaluationMessage(Reference40_50.convertReference(src.getEvaluationMessage()));
     if (src.hasOutputParameters())
       tgt.setOutputParameters(Reference40_50.convertReference(src.getOutputParameters()));
     if (src.hasResult())
-      tgt.setResult(Reference40_50.convertReference(src.getResult()));
+      tgt.setResult(Reference40_50.convertReference(src.getResultFirstRep()));
     for (org.hl7.fhir.r5.model.DataRequirement t : src.getDataRequirement())
       tgt.addDataRequirement(DataRequirement40_50.convertDataRequirement(t));
     return tgt;

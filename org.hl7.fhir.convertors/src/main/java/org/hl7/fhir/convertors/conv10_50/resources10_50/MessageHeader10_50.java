@@ -6,6 +6,8 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Codeab
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Coding10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.ContactPoint10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class MessageHeader10_50 {
@@ -19,8 +21,8 @@ public class MessageHeader10_50 {
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
     if (src.hasTarget())
       tgt.setTarget(Reference10_50.convertReference(src.getTarget()));
-    if (src.hasEndpoint())
-      tgt.setEndpoint(src.getEndpoint());
+    if (src.hasEndpointUrlType())
+      tgt.setEndpointElement(Uri10_50.convertUri(src.getEndpointUrlType()));
     return tgt;
   }
 
@@ -34,7 +36,7 @@ public class MessageHeader10_50 {
     if (src.hasTarget())
       tgt.setTarget(Reference10_50.convertReference(src.getTarget()));
     if (src.hasEndpoint())
-      tgt.setEndpoint(src.getEndpoint());
+      tgt.setEndpoint(Uri10_50.convertUri(src.getEndpointElement()));
     return tgt;
   }
 
@@ -51,8 +53,8 @@ public class MessageHeader10_50 {
       tgt.setSource(convertMessageSourceComponent(src.getSource()));
     for (org.hl7.fhir.r5.model.MessageHeader.MessageDestinationComponent t : src.getDestination())
       tgt.addDestination(convertMessageDestinationComponent(t));
-    if (src.hasEnterer())
-      tgt.setEnterer(Reference10_50.convertReference(src.getEnterer()));
+//    if (src.hasEnterer())
+//      tgt.setEnterer(Reference10_50.convertReference(src.getEnterer()));
     if (src.hasAuthor())
       tgt.setAuthor(Reference10_50.convertReference(src.getAuthor()));
     if (src.hasResponsible())
@@ -76,8 +78,8 @@ public class MessageHeader10_50 {
       tgt.setSource(convertMessageSourceComponent(src.getSource()));
     for (org.hl7.fhir.dstu2.model.MessageHeader.MessageDestinationComponent t : src.getDestination())
       tgt.addDestination(convertMessageDestinationComponent(t));
-    if (src.hasEnterer())
-      tgt.setEnterer(Reference10_50.convertReference(src.getEnterer()));
+//    if (src.hasEnterer())
+//      tgt.setEnterer(Reference10_50.convertReference(src.getEnterer()));
     if (src.hasAuthor())
       tgt.setAuthor(Reference10_50.convertReference(src.getAuthor()));
     if (src.hasResponsible())
@@ -129,8 +131,8 @@ public class MessageHeader10_50 {
       tgt.setVersionElement(String10_50.convertString(src.getVersionElement()));
     if (src.hasContact())
       tgt.setContact(ContactPoint10_50.convertContactPoint(src.getContact()));
-    if (src.hasEndpoint())
-      tgt.setEndpoint(src.getEndpoint());
+    if (src.hasEndpointUrlType())
+      tgt.setEndpointElement(Uri10_50.convertUri(src.getEndpointUrlType()));
     return tgt;
   }
 
@@ -148,7 +150,7 @@ public class MessageHeader10_50 {
     if (src.hasContact())
       tgt.setContact(ContactPoint10_50.convertContactPoint(src.getContact()));
     if (src.hasEndpoint())
-      tgt.setEndpoint(src.getEndpoint());
+      tgt.setEndpoint(Uri10_50.convertUri(src.getEndpointElement()));
     return tgt;
   }
 

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2654,6 +2654,164 @@ public class VerificationResult extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>attestation-method</b>
+   * <p>
+   * Description: <b>Select validation information for data that was attested to using the specified method</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>VerificationResult.attestation.communicationMethod</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="attestation-method", path="VerificationResult.attestation.communicationMethod", description="Select validation information for data that was attested to using the specified method", type="token" )
+  public static final String SP_ATTESTATION_METHOD = "attestation-method";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>attestation-method</b>
+   * <p>
+   * Description: <b>Select validation information for data that was attested to using the specified method</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>VerificationResult.attestation.communicationMethod</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ATTESTATION_METHOD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ATTESTATION_METHOD);
+
+ /**
+   * Search parameter: <b>attestation-onbehalfof</b>
+   * <p>
+   * Description: <b>Select validation information for data that was attested to on behalf of the specified source</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>VerificationResult.attestation.onBehalfOf</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="attestation-onbehalfof", path="VerificationResult.attestation.onBehalfOf", description="Select validation information for data that was attested to on behalf of the specified source", type="reference", target={Organization.class, Practitioner.class, PractitionerRole.class } )
+  public static final String SP_ATTESTATION_ONBEHALFOF = "attestation-onbehalfof";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>attestation-onbehalfof</b>
+   * <p>
+   * Description: <b>Select validation information for data that was attested to on behalf of the specified source</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>VerificationResult.attestation.onBehalfOf</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ATTESTATION_ONBEHALFOF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ATTESTATION_ONBEHALFOF);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>VerificationResult:attestation-onbehalfof</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ATTESTATION_ONBEHALFOF = new ca.uhn.fhir.model.api.Include("VerificationResult:attestation-onbehalfof").toLocked();
+
+ /**
+   * Search parameter: <b>attestation-who</b>
+   * <p>
+   * Description: <b>Select validation information for data that was attested to by the specified source</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>VerificationResult.attestation.who</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="attestation-who", path="VerificationResult.attestation.who", description="Select validation information for data that was attested to by the specified source", type="reference", target={Organization.class, Practitioner.class, PractitionerRole.class } )
+  public static final String SP_ATTESTATION_WHO = "attestation-who";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>attestation-who</b>
+   * <p>
+   * Description: <b>Select validation information for data that was attested to by the specified source</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>VerificationResult.attestation.who</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ATTESTATION_WHO = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ATTESTATION_WHO);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>VerificationResult:attestation-who</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ATTESTATION_WHO = new ca.uhn.fhir.model.api.Include("VerificationResult:attestation-who").toLocked();
+
+ /**
+   * Search parameter: <b>primarysource-date</b>
+   * <p>
+   * Description: <b>Select validation information for data that was validated against a primary source on the specified date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>VerificationResult.primarySource.validationDate</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="primarysource-date", path="VerificationResult.primarySource.validationDate", description="Select validation information for data that was validated against a primary source on the specified date", type="date" )
+  public static final String SP_PRIMARYSOURCE_DATE = "primarysource-date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>primarysource-date</b>
+   * <p>
+   * Description: <b>Select validation information for data that was validated against a primary source on the specified date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>VerificationResult.primarySource.validationDate</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam PRIMARYSOURCE_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_PRIMARYSOURCE_DATE);
+
+ /**
+   * Search parameter: <b>primarysource-type</b>
+   * <p>
+   * Description: <b>Select validation information for data that was validated against the specified type of primary source organization</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>VerificationResult.primarySource.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="primarysource-type", path="VerificationResult.primarySource.type", description="Select validation information for data that was validated against the specified type of primary source organization", type="token" )
+  public static final String SP_PRIMARYSOURCE_TYPE = "primarysource-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>primarysource-type</b>
+   * <p>
+   * Description: <b>Select validation information for data that was validated against the specified type of primary source organization</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>VerificationResult.primarySource.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRIMARYSOURCE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRIMARYSOURCE_TYPE);
+
+ /**
+   * Search parameter: <b>primarysource-who</b>
+   * <p>
+   * Description: <b>Select validation information for data that was validated against the specified primary source</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>VerificationResult.primarySource.who</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="primarysource-who", path="VerificationResult.primarySource.who", description="Select validation information for data that was validated against the specified primary source", type="reference", target={Organization.class, Practitioner.class, PractitionerRole.class } )
+  public static final String SP_PRIMARYSOURCE_WHO = "primarysource-who";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>primarysource-who</b>
+   * <p>
+   * Description: <b>Select validation information for data that was validated against the specified primary source</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>VerificationResult.primarySource.who</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRIMARYSOURCE_WHO = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRIMARYSOURCE_WHO);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>VerificationResult:primarysource-who</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRIMARYSOURCE_WHO = new ca.uhn.fhir.model.api.Include("VerificationResult:primarysource-who").toLocked();
+
+ /**
+   * Search parameter: <b>status-date</b>
+   * <p>
+   * Description: <b>Select validation information with a validation status that occurred at the specified date/time</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>VerificationResult.statusDate</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status-date", path="VerificationResult.statusDate", description="Select validation information with a validation status that occurred at the specified date/time", type="date" )
+  public static final String SP_STATUS_DATE = "status-date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status-date</b>
+   * <p>
+   * Description: <b>Select validation information with a validation status that occurred at the specified date/time</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>VerificationResult.statusDate</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam STATUS_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_STATUS_DATE);
+
+ /**
    * Search parameter: <b>target</b>
    * <p>
    * Description: <b>A resource that was validated</b><br>
@@ -2661,7 +2819,7 @@ public class VerificationResult extends DomainResource {
    * Path: <b>VerificationResult.target</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="target", path="VerificationResult.target", description="A resource that was validated", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="target", path="VerificationResult.target", description="A resource that was validated", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BiologicallyDerivedProductDispense.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceAssociation.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentReference.class, Encounter.class, EncounterHistory.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryItem.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationStatement.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Parameters.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestPlan.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_TARGET = "target";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>target</b>
@@ -2679,5 +2837,52 @@ public class VerificationResult extends DomainResource {
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_TARGET = new ca.uhn.fhir.model.api.Include("VerificationResult:target").toLocked();
 
+ /**
+   * Search parameter: <b>validation-status</b>
+   * <p>
+   * Description: <b>Select validation information with the specified status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>VerificationResult.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="validation-status", path="VerificationResult.status", description="Select validation information with the specified status", type="token" )
+  public static final String SP_VALIDATION_STATUS = "validation-status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>validation-status</b>
+   * <p>
+   * Description: <b>Select validation information with the specified status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>VerificationResult.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VALIDATION_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VALIDATION_STATUS);
+
+ /**
+   * Search parameter: <b>validator-organization</b>
+   * <p>
+   * Description: <b>Select validation information for data that was validated by the specified organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>VerificationResult.validator.organization</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="validator-organization", path="VerificationResult.validator.organization", description="Select validation information for data that was validated by the specified organization", type="reference", target={Organization.class } )
+  public static final String SP_VALIDATOR_ORGANIZATION = "validator-organization";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>validator-organization</b>
+   * <p>
+   * Description: <b>Select validation information for data that was validated by the specified organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>VerificationResult.validator.organization</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam VALIDATOR_ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_VALIDATOR_ORGANIZATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>VerificationResult:validator-organization</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_VALIDATOR_ORGANIZATION = new ca.uhn.fhir.model.api.Include("VerificationResult:validator-organization").toLocked();
+
 
 }
+

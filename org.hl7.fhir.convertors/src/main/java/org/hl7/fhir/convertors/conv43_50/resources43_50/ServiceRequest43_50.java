@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Annotation43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
@@ -12,6 +13,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestOrderDetailComponent;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -72,7 +74,7 @@ public class ServiceRequest43_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept43_50.convertCodeableConceptToCodeableReference(src.getCode()));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getOrderDetail())
-      tgt.addOrderDetail(CodeableConcept43_50.convertCodeableConcept(t));
+      tgt.addOrderDetail().getParameter().setValue(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasQuantity())
       tgt.setQuantity(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getQuantity()));
     if (src.hasSubject())
@@ -100,13 +102,13 @@ public class ServiceRequest43_50 {
       tgt.addReason(Reference43_50.convertReferenceToCodeableReference(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getInsurance()) tgt.addInsurance(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getSupportingInfo())
-      tgt.addSupportingInfo(Reference43_50.convertReference(t));
+      tgt.addSupportingInfo(Reference43_50.convertReferenceToCodeableReference(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getSpecimen()) tgt.addSpecimen(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getBodySite())
       tgt.addBodySite(CodeableConcept43_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4b.model.Annotation t : src.getNote()) tgt.addNote(Annotation43_50.convertAnnotation(t));
     if (src.hasPatientInstruction())
-      tgt.setPatientInstructionElement(String43_50.convertString(src.getPatientInstructionElement()));
+      tgt.addPatientInstruction().setInstruction(String43_50.convertStringToMarkdown(src.getPatientInstructionElement()));
     for (org.hl7.fhir.r4b.model.Reference t : src.getRelevantHistory())
       tgt.addRelevantHistory(Reference43_50.convertReference(t));
     return tgt;
@@ -139,8 +141,11 @@ public class ServiceRequest43_50 {
       tgt.setDoNotPerformElement(Boolean43_50.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasCode())
       tgt.setCode(CodeableConcept43_50.convertCodeableReferenceToCodeableConcept(src.getCode()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getOrderDetail())
-      tgt.addOrderDetail(CodeableConcept43_50.convertCodeableConcept(t));
+    for (ServiceRequestOrderDetailComponent t : src.getOrderDetail()) {
+      if (t.getParameter().hasValueCodeableConcept()) {
+       tgt.addOrderDetail(CodeableConcept43_50.convertCodeableConcept(t.getParameter().getValueCodeableConcept()));
+      }
+    }
     if (src.hasQuantity())
       tgt.setQuantity(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getQuantity()));
     if (src.hasSubject())
@@ -171,14 +176,15 @@ public class ServiceRequest43_50 {
       if (t.hasReference())
         tgt.addReasonReference(Reference43_50.convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Reference t : src.getInsurance()) tgt.addInsurance(Reference43_50.convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo())
-      tgt.addSupportingInfo(Reference43_50.convertReference(t));
+    for (CodeableReference t : src.getSupportingInfo())
+      if (t.hasReference())
+        tgt.addSupportingInfo(Reference43_50.convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Reference t : src.getSpecimen()) tgt.addSpecimen(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySite())
       tgt.addBodySite(CodeableConcept43_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation43_50.convertAnnotation(t));
-    if (src.hasPatientInstruction())
-      tgt.setPatientInstructionElement(String43_50.convertString(src.getPatientInstructionElement()));
+    if (src.getPatientInstructionFirstRep().hasInstructionMarkdownType())
+      tgt.setPatientInstructionElement(String43_50.convertString(src.getPatientInstructionFirstRep().getInstructionMarkdownType()));
     for (org.hl7.fhir.r5.model.Reference t : src.getRelevantHistory())
       tgt.addRelevantHistory(Reference43_50.convertReference(t));
     return tgt;

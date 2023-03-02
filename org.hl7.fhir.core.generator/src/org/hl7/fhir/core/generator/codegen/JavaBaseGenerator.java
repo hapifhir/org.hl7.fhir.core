@@ -55,10 +55,10 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   protected Definitions definitions;
   protected Configuration config;
   protected String version;
-  protected Date genDate;
+  protected String genDate;
   protected String jid;
 
-  public JavaBaseGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, Date genDate, String jid) throws UnsupportedEncodingException {
+  public JavaBaseGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, String genDate, String jid) throws UnsupportedEncodingException {
     super(arg0, "UTF-8");
     this.definitions = definitions;
     this.config = config;
@@ -67,7 +67,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
     this.jid = jid;
   }
 
-  public void startMark(String version, Date genDate) throws IOException {
+  public void startMark(String version, String genDate) throws IOException {
     write(startLicenseValue());
     write(startVMarkValue());
   }
@@ -77,7 +77,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   }
 
   public String startVMarkValue() {
-    return "// Generated on "+config.DATE_FORMAT().format(genDate)+" for FHIR v"+version+"\r\n\r\n";
+    return "// Generated on "+genDate+" for FHIR v"+version+"\r\n\r\n";
 //    return "// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0\r\n\r\n";
   }
 
@@ -216,7 +216,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   protected String makeConst(String cc) {
     if (cc.equals("*"))
       cc = "ASTERISK";
-    if (Utilities.isOid(cc))
+    if (Utilities.isOid(cc) && Utilities.charCount(cc, '.') > 2)
       cc = "OID_"+cc;
     if (cc.equals("%"))
       cc = "pct";

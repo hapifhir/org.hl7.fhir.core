@@ -57,7 +57,7 @@ public class ListResource43_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
     if (src.hasSubject())
-      tgt.setSubject(Reference43_50.convertReference(src.getSubject()));
+      tgt.addSubject(Reference43_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference43_50.convertReference(src.getEncounter()));
     if (src.hasDate())
@@ -90,7 +90,7 @@ public class ListResource43_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
     if (src.hasSubject())
-      tgt.setSubject(Reference43_50.convertReference(src.getSubject()));
+      tgt.setSubject(Reference43_50.convertReference(src.getSubjectFirstRep()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference43_50.convertReference(src.getEncounter()));
     if (src.hasDate())

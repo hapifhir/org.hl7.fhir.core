@@ -93,7 +93,7 @@ public class ImmunizationRecommendation40_50 {
     for (org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent t : src.getDateCriterion())
       tgt.addDateCriterion(convertImmunizationRecommendationRecommendationDateCriterionComponent(t));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasSeries())
       tgt.setSeriesElement(String40_50.convertString(src.getSeriesElement()));
     if (src.hasDoseNumber())

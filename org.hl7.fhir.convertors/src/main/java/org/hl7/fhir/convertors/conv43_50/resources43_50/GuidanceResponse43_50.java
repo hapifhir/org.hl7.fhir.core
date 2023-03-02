@@ -68,11 +68,11 @@ public class GuidanceResponse43_50 {
       tgt.addReason(Reference43_50.convertReferenceToCodeableReference(t));
     for (org.hl7.fhir.r4b.model.Annotation t : src.getNote()) tgt.addNote(Annotation43_50.convertAnnotation(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getEvaluationMessage())
-      tgt.addEvaluationMessage(Reference43_50.convertReference(t));
+      tgt.setEvaluationMessage(Reference43_50.convertReference(t));
     if (src.hasOutputParameters())
       tgt.setOutputParameters(Reference43_50.convertReference(src.getOutputParameters()));
     if (src.hasResult())
-      tgt.setResult(Reference43_50.convertReference(src.getResult()));
+      tgt.addResult(Reference43_50.convertReference(src.getResult()));
     for (org.hl7.fhir.r4b.model.DataRequirement t : src.getDataRequirement())
       tgt.addDataRequirement(DataRequirement43_50.convertDataRequirement(t));
     return tgt;
@@ -106,12 +106,12 @@ public class GuidanceResponse43_50 {
       if (t.hasReference())
         tgt.addReasonReference(Reference43_50.convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation43_50.convertAnnotation(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getEvaluationMessage())
-      tgt.addEvaluationMessage(Reference43_50.convertReference(t));
+    if (src.hasEvaluationMessage())
+      tgt.addEvaluationMessage(Reference43_50.convertReference(src.getEvaluationMessage()));
     if (src.hasOutputParameters())
       tgt.setOutputParameters(Reference43_50.convertReference(src.getOutputParameters()));
     if (src.hasResult())
-      tgt.setResult(Reference43_50.convertReference(src.getResult()));
+      tgt.setResult(Reference43_50.convertReference(src.getResultFirstRep()));
     for (org.hl7.fhir.r5.model.DataRequirement t : src.getDataRequirement())
       tgt.addDataRequirement(DataRequirement43_50.convertDataRequirement(t));
     return tgt;

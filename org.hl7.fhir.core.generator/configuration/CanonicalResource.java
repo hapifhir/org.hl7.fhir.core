@@ -1,6 +1,6 @@
   @Override
   public String toString() {
-    return fhirType()+"["+getUrl()+"]";
+    return fhirType()+"["+getUrl()+(hasVersion() ? "|"+getVersion(): "")+"]";
   }
   
   public String present() {

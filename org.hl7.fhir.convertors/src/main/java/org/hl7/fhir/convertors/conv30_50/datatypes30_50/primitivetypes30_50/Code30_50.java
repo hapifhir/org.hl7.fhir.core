@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50;
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Enumerations.AllResourceTypes;
 
 public class Code30_50 {
   public static org.hl7.fhir.r5.model.CodeType convertCode(org.hl7.fhir.dstu3.model.CodeType src) throws FHIRException {
@@ -43,12 +42,12 @@ public class Code30_50 {
   }
   
 
-  public static org.hl7.fhir.r5.model.Enumeration<AllResourceTypes> convertResourceEnum(org.hl7.fhir.dstu3.model.CodeType src) {
-    return new Enumeration<AllResourceTypes>(new org.hl7.fhir.r5.model.Enumerations.AllResourceTypesEnumFactory(), src.getValue());
-  }
-
-  public static org.hl7.fhir.dstu3.model.CodeType convertResourceEnum(org.hl7.fhir.r5.model.Enumeration<AllResourceTypes> src) {
-    return new org.hl7.fhir.dstu3.model.CodeType(src.getCode());
-  }
+//  public static org.hl7.fhir.r5.model.Enumeration<AllResourceTypes> convertResourceEnum(org.hl7.fhir.dstu3.model.CodeType src) {
+//    return new Enumeration<AllResourceTypes>(new org.hl7.fhir.r5.model.Enumerations.AllResourceTypesEnumFactory(), src.getValue());
+//  }
+//
+//  public static org.hl7.fhir.dstu3.model.CodeType convertResourceEnum(org.hl7.fhir.r5.model.Enumeration<AllResourceTypes> src) {
+//    return new org.hl7.fhir.dstu3.model.CodeType(src.getCode());
+//  }
   
 }

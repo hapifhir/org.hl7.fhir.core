@@ -10,6 +10,9 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri1
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAllEnumFactory;
 
 public class SearchParameter10_50 {
 
@@ -36,7 +39,7 @@ public class SearchParameter10_50 {
       tgt.setRequirements(src.getPurpose());
     if (src.hasCodeElement())
       tgt.setCodeElement(Code10_50.convertCode(src.getCodeElement()));
-    for (CodeType t : src.getBase()) tgt.setBaseElement(Code10_50.convertCode(t));
+    for (Enumeration<VersionIndependentResourceTypesAll> t : src.getBase()) tgt.setBaseElement(Code10_50.convertCode(t.getCodeType()));
     if (src.hasType())
       tgt.setTypeElement(Enumerations10_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasDescription())
@@ -46,7 +49,7 @@ public class SearchParameter10_50 {
 //      tgt.setXpathElement(String10_50.convertString(src.getXpathElement()));
     if (src.hasProcessingMode())
       tgt.setXpathUsageElement(convertXPathUsageType(src.getProcessingModeElement()));
-    for (CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
+    for (Enumeration<VersionIndependentResourceTypesAll> t : src.getTarget()) tgt.getTarget().add(Code10_50.convertCode(t.getCodeType()));
     return tgt;
   }
 
@@ -73,7 +76,7 @@ public class SearchParameter10_50 {
       tgt.setPurpose(src.getRequirements());
     if (src.hasCodeElement())
       tgt.setCodeElement(Code10_50.convertCode(src.getCodeElement()));
-    tgt.getBase().add(Code10_50.convertCode(src.getBaseElement()));
+    tgt.getBase().add(new Enumeration<VersionIndependentResourceTypesAll>(new VersionIndependentResourceTypesAllEnumFactory(), Code10_50.convertCode(src.getBaseElement())));
     if (src.hasType())
       tgt.setTypeElement(Enumerations10_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasDescription())
@@ -83,7 +86,7 @@ public class SearchParameter10_50 {
 //      tgt.setXpathElement(String10_50.convertString(src.getXpathElement()));
     if (src.hasXpathUsage())
       tgt.setProcessingModeElement(convertXPathUsageType(src.getXpathUsageElement()));
-    for (org.hl7.fhir.dstu2.model.CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
+    for (org.hl7.fhir.dstu2.model.CodeType t : src.getTarget()) tgt.getTarget().add(new Enumeration<VersionIndependentResourceTypesAll>(new VersionIndependentResourceTypesAllEnumFactory(), t.getValue()));
     return tgt;
   }
 

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -509,6 +509,252 @@ public class Claim extends DomainResource {
 
   public String fhirType() {
     return "Claim.payee";
+
+  }
+
+  }
+
+    @Block()
+    public static class ClaimEventComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A coded event such as when a service is expected or a card printed.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Specific event", formalDefinition="A coded event such as when a service is expected or a card printed." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/datestype")
+        protected CodeableConcept type;
+
+        /**
+         * A date or period in the past or future indicating when the event occurred or is expectd to occur.
+         */
+        @Child(name = "when", type = {DateTimeType.class, Period.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Occurance date or period", formalDefinition="A date or period in the past or future indicating when the event occurred or is expectd to occur." )
+        protected DataType when;
+
+        private static final long serialVersionUID = -634897375L;
+
+    /**
+     * Constructor
+     */
+      public ClaimEventComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public ClaimEventComponent(CodeableConcept type, DataType when) {
+        super();
+        this.setType(type);
+        this.setWhen(when);
+      }
+
+        /**
+         * @return {@link #type} (A coded event such as when a service is expected or a card printed.)
+         */
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ClaimEventComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (A coded event such as when a service is expected or a card printed.)
+         */
+        public ClaimEventComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #when} (A date or period in the past or future indicating when the event occurred or is expectd to occur.)
+         */
+        public DataType getWhen() { 
+          return this.when;
+        }
+
+        /**
+         * @return {@link #when} (A date or period in the past or future indicating when the event occurred or is expectd to occur.)
+         */
+        public DateTimeType getWhenDateTimeType() throws FHIRException { 
+          if (this.when == null)
+            this.when = new DateTimeType();
+          if (!(this.when instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.when.getClass().getName()+" was encountered");
+          return (DateTimeType) this.when;
+        }
+
+        public boolean hasWhenDateTimeType() { 
+          return this != null && this.when instanceof DateTimeType;
+        }
+
+        /**
+         * @return {@link #when} (A date or period in the past or future indicating when the event occurred or is expectd to occur.)
+         */
+        public Period getWhenPeriod() throws FHIRException { 
+          if (this.when == null)
+            this.when = new Period();
+          if (!(this.when instanceof Period))
+            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.when.getClass().getName()+" was encountered");
+          return (Period) this.when;
+        }
+
+        public boolean hasWhenPeriod() { 
+          return this != null && this.when instanceof Period;
+        }
+
+        public boolean hasWhen() { 
+          return this.when != null && !this.when.isEmpty();
+        }
+
+        /**
+         * @param value {@link #when} (A date or period in the past or future indicating when the event occurred or is expectd to occur.)
+         */
+        public ClaimEventComponent setWhen(DataType value) { 
+          if (value != null && !(value instanceof DateTimeType || value instanceof Period))
+            throw new Error("Not the right type for Claim.event.when[x]: "+value.fhirType());
+          this.when = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("type", "CodeableConcept", "A coded event such as when a service is expected or a card printed.", 0, 1, type));
+          children.add(new Property("when[x]", "dateTime|Period", "A date or period in the past or future indicating when the event occurred or is expectd to occur.", 0, 1, when));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A coded event such as when a service is expected or a card printed.", 0, 1, type);
+          case 1312831238: /*when[x]*/  return new Property("when[x]", "dateTime|Period", "A date or period in the past or future indicating when the event occurred or is expectd to occur.", 0, 1, when);
+          case 3648314: /*when*/  return new Property("when[x]", "dateTime|Period", "A date or period in the past or future indicating when the event occurred or is expectd to occur.", 0, 1, when);
+          case -1785502475: /*whenDateTime*/  return new Property("when[x]", "dateTime", "A date or period in the past or future indicating when the event occurred or is expectd to occur.", 0, 1, when);
+          case 251476379: /*whenPeriod*/  return new Property("when[x]", "Period", "A date or period in the past or future indicating when the event occurred or is expectd to occur.", 0, 1, when);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 3648314: /*when*/ return this.when == null ? new Base[0] : new Base[] {this.when}; // DataType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 3648314: // when
+          this.when = TypeConvertor.castToType(value); // DataType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("when[x]")) {
+          this.when = TypeConvertor.castToType(value); // DataType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610:  return getType();
+        case 1312831238:  return getWhen();
+        case 3648314:  return getWhen();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 3648314: /*when*/ return new String[] {"dateTime", "Period"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
+        }
+        else if (name.equals("whenDateTime")) {
+          this.when = new DateTimeType();
+          return this.when;
+        }
+        else if (name.equals("whenPeriod")) {
+          this.when = new Period();
+          return this.when;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public ClaimEventComponent copy() {
+        ClaimEventComponent dst = new ClaimEventComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ClaimEventComponent dst) {
+        super.copyValues(dst);
+        dst.type = type == null ? null : type.copy();
+        dst.when = when == null ? null : when.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof ClaimEventComponent))
+          return false;
+        ClaimEventComponent o = (ClaimEventComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(when, o.when, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof ClaimEventComponent))
+          return false;
+        ClaimEventComponent o = (ClaimEventComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, when);
+      }
+
+  public String fhirType() {
+    return "Claim.event";
 
   }
 
@@ -3238,37 +3484,44 @@ public class Claim extends DomainResource {
         protected PositiveIntType sequence;
 
         /**
+         * Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.
+         */
+        @Child(name = "traceNumber", type = {Identifier.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Number for tracking", formalDefinition="Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners." )
+        protected List<Identifier> traceNumber;
+
+        /**
          * CareTeam members related to this service or product.
          */
-        @Child(name = "careTeamSequence", type = {PositiveIntType.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "careTeamSequence", type = {PositiveIntType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable careTeam members", formalDefinition="CareTeam members related to this service or product." )
         protected List<PositiveIntType> careTeamSequence;
 
         /**
          * Diagnosis applicable for this service or product.
          */
-        @Child(name = "diagnosisSequence", type = {PositiveIntType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "diagnosisSequence", type = {PositiveIntType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable diagnoses", formalDefinition="Diagnosis applicable for this service or product." )
         protected List<PositiveIntType> diagnosisSequence;
 
         /**
          * Procedures applicable for this service or product.
          */
-        @Child(name = "procedureSequence", type = {PositiveIntType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "procedureSequence", type = {PositiveIntType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable procedures", formalDefinition="Procedures applicable for this service or product." )
         protected List<PositiveIntType> procedureSequence;
 
         /**
          * Exceptions, special conditions and supporting information applicable for this service or product.
          */
-        @Child(name = "informationSequence", type = {PositiveIntType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "informationSequence", type = {PositiveIntType.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable exception and supporting information", formalDefinition="Exceptions, special conditions and supporting information applicable for this service or product." )
         protected List<PositiveIntType> informationSequence;
 
         /**
          * The type of revenue or cost center providing the product and/or service.
          */
-        @Child(name = "revenue", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "revenue", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Revenue or cost center code", formalDefinition="The type of revenue or cost center providing the product and/or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-revenue-center")
         protected CodeableConcept revenue;
@@ -3276,7 +3529,7 @@ public class Claim extends DomainResource {
         /**
          * Code to identify the general type of benefits under which products and services are provided.
          */
-        @Child(name = "category", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "category", type = {CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Benefit classification", formalDefinition="Code to identify the general type of benefits under which products and services are provided." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-benefitcategory")
         protected CodeableConcept category;
@@ -3284,7 +3537,7 @@ public class Claim extends DomainResource {
         /**
          * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
@@ -3292,15 +3545,22 @@ public class Claim extends DomainResource {
         /**
          * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
          */
-        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrServiceEnd;
 
         /**
+         * Request or Referral for Goods or Service to be rendered.
+         */
+        @Child(name = "request", type = {DeviceRequest.class, MedicationRequest.class, NutritionOrder.class, ServiceRequest.class, SupplyRequest.class, VisionPrescription.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Request or Referral for Service", formalDefinition="Request or Referral for Goods or Service to be rendered." )
+        protected List<Reference> request;
+
+        /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Product or service billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
@@ -3308,7 +3568,7 @@ public class Claim extends DomainResource {
         /**
          * Identifies the program under which this may be recovered.
          */
-        @Child(name = "programCode", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "programCode", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Program the product or service is provided under", formalDefinition="Identifies the program under which this may be recovered." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-program-code")
         protected List<CodeableConcept> programCode;
@@ -3316,14 +3576,14 @@ public class Claim extends DomainResource {
         /**
          * The date or dates when the service or product was supplied, performed or completed.
          */
-        @Child(name = "serviced", type = {DateType.class, Period.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "serviced", type = {DateType.class, Period.class}, order=14, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Date or dates of service or product delivery", formalDefinition="The date or dates when the service or product was supplied, performed or completed." )
         protected DataType serviced;
 
         /**
          * Where the product or service was provided.
          */
-        @Child(name = "location", type = {CodeableConcept.class, Address.class, Location.class}, order=13, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "location", type = {CodeableConcept.class, Address.class, Location.class}, order=15, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Place of service or where product was supplied", formalDefinition="Where the product or service was provided." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-place")
         protected DataType location;
@@ -3331,74 +3591,74 @@ public class Claim extends DomainResource {
         /**
          * The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.
          */
-        @Child(name = "patientPaid", type = {Money.class}, order=14, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "patientPaid", type = {Money.class}, order=16, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Paid by the patient", formalDefinition="The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services." )
         protected Money patientPaid;
 
         /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=15, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=17, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=16, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=18, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=19, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
          * The total of taxes applicable for this product or service.
          */
-        @Child(name = "tax", type = {Money.class}, order=18, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "tax", type = {Money.class}, order=20, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
         protected Money tax;
 
         /**
-         * The quantity times the unit price for an additional service or product or charge.
+         * The total amount claimed for the group (if a grouper) or the line item. Net = unit price * quantity * factor.
          */
-        @Child(name = "net", type = {Money.class}, order=19, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
+        @Child(name = "net", type = {Money.class}, order=21, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total item cost", formalDefinition="The total amount claimed for the group (if a grouper) or the line item. Net = unit price * quantity * factor." )
         protected Money net;
 
         /**
          * Unique Device Identifiers associated with this line item.
          */
-        @Child(name = "udi", type = {Device.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "udi", type = {Device.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
 
         /**
          * Physical location where the service is performed or applies.
          */
-        @Child(name = "bodySite", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "bodySite", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Anatomical location", formalDefinition="Physical location where the service is performed or applies." )
         protected List<BodySiteComponent> bodySite;
 
         /**
-         * The Encounters during which this Claim was created or to which the creation of this record is tightly associated.
+         * Healthcare encounters related to this claim.
          */
-        @Child(name = "encounter", type = {Encounter.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Encounters related to this billed item", formalDefinition="The Encounters during which this Claim was created or to which the creation of this record is tightly associated." )
+        @Child(name = "encounter", type = {Encounter.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Encounters associated with the listed treatments", formalDefinition="Healthcare encounters related to this claim." )
         protected List<Reference> encounter;
 
         /**
          * A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.
          */
-        @Child(name = "detail", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "detail", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Product or service provided", formalDefinition="A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items." )
         protected List<DetailComponent> detail;
 
-        private static final long serialVersionUID = 775749645L;
+        private static final long serialVersionUID = -1174144448L;
 
     /**
      * Constructor
@@ -3458,6 +3718,59 @@ public class Claim extends DomainResource {
               this.sequence = new PositiveIntType();
             this.sequence.setValue(value);
           return this;
+        }
+
+        /**
+         * @return {@link #traceNumber} (Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.)
+         */
+        public List<Identifier> getTraceNumber() { 
+          if (this.traceNumber == null)
+            this.traceNumber = new ArrayList<Identifier>();
+          return this.traceNumber;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ItemComponent setTraceNumber(List<Identifier> theTraceNumber) { 
+          this.traceNumber = theTraceNumber;
+          return this;
+        }
+
+        public boolean hasTraceNumber() { 
+          if (this.traceNumber == null)
+            return false;
+          for (Identifier item : this.traceNumber)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Identifier addTraceNumber() { //3
+          Identifier t = new Identifier();
+          if (this.traceNumber == null)
+            this.traceNumber = new ArrayList<Identifier>();
+          this.traceNumber.add(t);
+          return t;
+        }
+
+        public ItemComponent addTraceNumber(Identifier t) { //3
+          if (t == null)
+            return this;
+          if (this.traceNumber == null)
+            this.traceNumber = new ArrayList<Identifier>();
+          this.traceNumber.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #traceNumber}, creating it if it does not already exist {3}
+         */
+        public Identifier getTraceNumberFirstRep() { 
+          if (getTraceNumber().isEmpty()) {
+            addTraceNumber();
+          }
+          return getTraceNumber().get(0);
         }
 
         /**
@@ -3798,6 +4111,59 @@ public class Claim extends DomainResource {
         public ItemComponent setProductOrServiceEnd(CodeableConcept value) { 
           this.productOrServiceEnd = value;
           return this;
+        }
+
+        /**
+         * @return {@link #request} (Request or Referral for Goods or Service to be rendered.)
+         */
+        public List<Reference> getRequest() { 
+          if (this.request == null)
+            this.request = new ArrayList<Reference>();
+          return this.request;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ItemComponent setRequest(List<Reference> theRequest) { 
+          this.request = theRequest;
+          return this;
+        }
+
+        public boolean hasRequest() { 
+          if (this.request == null)
+            return false;
+          for (Reference item : this.request)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Reference addRequest() { //3
+          Reference t = new Reference();
+          if (this.request == null)
+            this.request = new ArrayList<Reference>();
+          this.request.add(t);
+          return t;
+        }
+
+        public ItemComponent addRequest(Reference t) { //3
+          if (t == null)
+            return this;
+          if (this.request == null)
+            this.request = new ArrayList<Reference>();
+          this.request.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #request}, creating it if it does not already exist {3}
+         */
+        public Reference getRequestFirstRep() { 
+          if (getRequest().isEmpty()) {
+            addRequest();
+          }
+          return getRequest().get(0);
         }
 
         /**
@@ -4187,7 +4553,7 @@ public class Claim extends DomainResource {
         }
 
         /**
-         * @return {@link #net} (The quantity times the unit price for an additional service or product or charge.)
+         * @return {@link #net} (The total amount claimed for the group (if a grouper) or the line item. Net = unit price * quantity * factor.)
          */
         public Money getNet() { 
           if (this.net == null)
@@ -4203,7 +4569,7 @@ public class Claim extends DomainResource {
         }
 
         /**
-         * @param value {@link #net} (The quantity times the unit price for an additional service or product or charge.)
+         * @param value {@link #net} (The total amount claimed for the group (if a grouper) or the line item. Net = unit price * quantity * factor.)
          */
         public ItemComponent setNet(Money value) { 
           this.net = value;
@@ -4317,7 +4683,7 @@ public class Claim extends DomainResource {
         }
 
         /**
-         * @return {@link #encounter} (The Encounters during which this Claim was created or to which the creation of this record is tightly associated.)
+         * @return {@link #encounter} (Healthcare encounters related to this claim.)
          */
         public List<Reference> getEncounter() { 
           if (this.encounter == null)
@@ -4425,6 +4791,7 @@ public class Claim extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("sequence", "positiveInt", "A number to uniquely identify item entries.", 0, 1, sequence));
+          children.add(new Property("traceNumber", "Identifier", "Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.", 0, java.lang.Integer.MAX_VALUE, traceNumber));
           children.add(new Property("careTeamSequence", "positiveInt", "CareTeam members related to this service or product.", 0, java.lang.Integer.MAX_VALUE, careTeamSequence));
           children.add(new Property("diagnosisSequence", "positiveInt", "Diagnosis applicable for this service or product.", 0, java.lang.Integer.MAX_VALUE, diagnosisSequence));
           children.add(new Property("procedureSequence", "positiveInt", "Procedures applicable for this service or product.", 0, java.lang.Integer.MAX_VALUE, procedureSequence));
@@ -4433,6 +4800,7 @@ public class Claim extends DomainResource {
           children.add(new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category));
           children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
           children.add(new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd));
+          children.add(new Property("request", "Reference(DeviceRequest|MedicationRequest|NutritionOrder|ServiceRequest|SupplyRequest|VisionPrescription)", "Request or Referral for Goods or Service to be rendered.", 0, java.lang.Integer.MAX_VALUE, request));
           children.add(new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier));
           children.add(new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode));
           children.add(new Property("serviced[x]", "date|Period", "The date or dates when the service or product was supplied, performed or completed.", 0, 1, serviced));
@@ -4442,10 +4810,10 @@ public class Claim extends DomainResource {
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
           children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
-          children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
+          children.add(new Property("net", "Money", "The total amount claimed for the group (if a grouper) or the line item. Net = unit price * quantity * factor.", 0, 1, net));
           children.add(new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi));
           children.add(new Property("bodySite", "", "Physical location where the service is performed or applies.", 0, java.lang.Integer.MAX_VALUE, bodySite));
-          children.add(new Property("encounter", "Reference(Encounter)", "The Encounters during which this Claim was created or to which the creation of this record is tightly associated.", 0, java.lang.Integer.MAX_VALUE, encounter));
+          children.add(new Property("encounter", "Reference(Encounter)", "Healthcare encounters related to this claim.", 0, java.lang.Integer.MAX_VALUE, encounter));
           children.add(new Property("detail", "", "A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.", 0, java.lang.Integer.MAX_VALUE, detail));
         }
 
@@ -4453,6 +4821,7 @@ public class Claim extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 1349547969: /*sequence*/  return new Property("sequence", "positiveInt", "A number to uniquely identify item entries.", 0, 1, sequence);
+          case 82505966: /*traceNumber*/  return new Property("traceNumber", "Identifier", "Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.", 0, java.lang.Integer.MAX_VALUE, traceNumber);
           case 1070083823: /*careTeamSequence*/  return new Property("careTeamSequence", "positiveInt", "CareTeam members related to this service or product.", 0, java.lang.Integer.MAX_VALUE, careTeamSequence);
           case -909769262: /*diagnosisSequence*/  return new Property("diagnosisSequence", "positiveInt", "Diagnosis applicable for this service or product.", 0, java.lang.Integer.MAX_VALUE, diagnosisSequence);
           case -808920140: /*procedureSequence*/  return new Property("procedureSequence", "positiveInt", "Procedures applicable for this service or product.", 0, java.lang.Integer.MAX_VALUE, procedureSequence);
@@ -4461,6 +4830,7 @@ public class Claim extends DomainResource {
           case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category);
           case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
           case -717476168: /*productOrServiceEnd*/  return new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd);
+          case 1095692943: /*request*/  return new Property("request", "Reference(DeviceRequest|MedicationRequest|NutritionOrder|ServiceRequest|SupplyRequest|VisionPrescription)", "Request or Referral for Goods or Service to be rendered.", 0, java.lang.Integer.MAX_VALUE, request);
           case -615513385: /*modifier*/  return new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier);
           case 1010065041: /*programCode*/  return new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode);
           case -1927922223: /*serviced[x]*/  return new Property("serviced[x]", "date|Period", "The date or dates when the service or product was supplied, performed or completed.", 0, 1, serviced);
@@ -4477,10 +4847,10 @@ public class Claim extends DomainResource {
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
           case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
-          case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
+          case 108957: /*net*/  return new Property("net", "Money", "The total amount claimed for the group (if a grouper) or the line item. Net = unit price * quantity * factor.", 0, 1, net);
           case 115642: /*udi*/  return new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi);
           case 1702620169: /*bodySite*/  return new Property("bodySite", "", "Physical location where the service is performed or applies.", 0, java.lang.Integer.MAX_VALUE, bodySite);
-          case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounters during which this Claim was created or to which the creation of this record is tightly associated.", 0, java.lang.Integer.MAX_VALUE, encounter);
+          case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "Healthcare encounters related to this claim.", 0, java.lang.Integer.MAX_VALUE, encounter);
           case -1335224239: /*detail*/  return new Property("detail", "", "A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.", 0, java.lang.Integer.MAX_VALUE, detail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -4491,6 +4861,7 @@ public class Claim extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 1349547969: /*sequence*/ return this.sequence == null ? new Base[0] : new Base[] {this.sequence}; // PositiveIntType
+        case 82505966: /*traceNumber*/ return this.traceNumber == null ? new Base[0] : this.traceNumber.toArray(new Base[this.traceNumber.size()]); // Identifier
         case 1070083823: /*careTeamSequence*/ return this.careTeamSequence == null ? new Base[0] : this.careTeamSequence.toArray(new Base[this.careTeamSequence.size()]); // PositiveIntType
         case -909769262: /*diagnosisSequence*/ return this.diagnosisSequence == null ? new Base[0] : this.diagnosisSequence.toArray(new Base[this.diagnosisSequence.size()]); // PositiveIntType
         case -808920140: /*procedureSequence*/ return this.procedureSequence == null ? new Base[0] : this.procedureSequence.toArray(new Base[this.procedureSequence.size()]); // PositiveIntType
@@ -4499,6 +4870,7 @@ public class Claim extends DomainResource {
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
         case -717476168: /*productOrServiceEnd*/ return this.productOrServiceEnd == null ? new Base[0] : new Base[] {this.productOrServiceEnd}; // CodeableConcept
+        case 1095692943: /*request*/ return this.request == null ? new Base[0] : this.request.toArray(new Base[this.request.size()]); // Reference
         case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : this.modifier.toArray(new Base[this.modifier.size()]); // CodeableConcept
         case 1010065041: /*programCode*/ return this.programCode == null ? new Base[0] : this.programCode.toArray(new Base[this.programCode.size()]); // CodeableConcept
         case 1379209295: /*serviced*/ return this.serviced == null ? new Base[0] : new Base[] {this.serviced}; // DataType
@@ -4524,6 +4896,9 @@ public class Claim extends DomainResource {
         case 1349547969: // sequence
           this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
+        case 82505966: // traceNumber
+          this.getTraceNumber().add(TypeConvertor.castToIdentifier(value)); // Identifier
+          return value;
         case 1070083823: // careTeamSequence
           this.getCareTeamSequence().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
@@ -4547,6 +4922,9 @@ public class Claim extends DomainResource {
           return value;
         case -717476168: // productOrServiceEnd
           this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 1095692943: // request
+          this.getRequest().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -615513385: // modifier
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -4599,6 +4977,8 @@ public class Claim extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
           this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("traceNumber")) {
+          this.getTraceNumber().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("careTeamSequence")) {
           this.getCareTeamSequence().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("diagnosisSequence")) {
@@ -4615,6 +4995,8 @@ public class Claim extends DomainResource {
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productOrServiceEnd")) {
           this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("request")) {
+          this.getRequest().add(TypeConvertor.castToReference(value));
         } else if (name.equals("modifier")) {
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("programCode")) {
@@ -4652,6 +5034,7 @@ public class Claim extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
+        case 82505966:  return addTraceNumber(); 
         case 1070083823:  return addCareTeamSequenceElement();
         case -909769262:  return addDiagnosisSequenceElement();
         case -808920140:  return addProcedureSequenceElement();
@@ -4660,6 +5043,7 @@ public class Claim extends DomainResource {
         case 50511102:  return getCategory();
         case 1957227299:  return getProductOrService();
         case -717476168:  return getProductOrServiceEnd();
+        case 1095692943:  return addRequest(); 
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
         case -1927922223:  return getServiced();
@@ -4685,6 +5069,7 @@ public class Claim extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969: /*sequence*/ return new String[] {"positiveInt"};
+        case 82505966: /*traceNumber*/ return new String[] {"Identifier"};
         case 1070083823: /*careTeamSequence*/ return new String[] {"positiveInt"};
         case -909769262: /*diagnosisSequence*/ return new String[] {"positiveInt"};
         case -808920140: /*procedureSequence*/ return new String[] {"positiveInt"};
@@ -4693,6 +5078,7 @@ public class Claim extends DomainResource {
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
         case -717476168: /*productOrServiceEnd*/ return new String[] {"CodeableConcept"};
+        case 1095692943: /*request*/ return new String[] {"Reference"};
         case -615513385: /*modifier*/ return new String[] {"CodeableConcept"};
         case 1010065041: /*programCode*/ return new String[] {"CodeableConcept"};
         case 1379209295: /*serviced*/ return new String[] {"date", "Period"};
@@ -4716,6 +5102,9 @@ public class Claim extends DomainResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
           throw new FHIRException("Cannot call addChild on a primitive type Claim.item.sequence");
+        }
+        else if (name.equals("traceNumber")) {
+          return addTraceNumber();
         }
         else if (name.equals("careTeamSequence")) {
           throw new FHIRException("Cannot call addChild on a primitive type Claim.item.careTeamSequence");
@@ -4744,6 +5133,9 @@ public class Claim extends DomainResource {
         else if (name.equals("productOrServiceEnd")) {
           this.productOrServiceEnd = new CodeableConcept();
           return this.productOrServiceEnd;
+        }
+        else if (name.equals("request")) {
+          return addRequest();
         }
         else if (name.equals("modifier")) {
           return addModifier();
@@ -4819,6 +5211,11 @@ public class Claim extends DomainResource {
       public void copyValues(ItemComponent dst) {
         super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
+        if (traceNumber != null) {
+          dst.traceNumber = new ArrayList<Identifier>();
+          for (Identifier i : traceNumber)
+            dst.traceNumber.add(i.copy());
+        };
         if (careTeamSequence != null) {
           dst.careTeamSequence = new ArrayList<PositiveIntType>();
           for (PositiveIntType i : careTeamSequence)
@@ -4843,6 +5240,11 @@ public class Claim extends DomainResource {
         dst.category = category == null ? null : category.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
         dst.productOrServiceEnd = productOrServiceEnd == null ? null : productOrServiceEnd.copy();
+        if (request != null) {
+          dst.request = new ArrayList<Reference>();
+          for (Reference i : request)
+            dst.request.add(i.copy());
+        };
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : modifier)
@@ -4890,16 +5292,16 @@ public class Claim extends DomainResource {
         if (!(other_ instanceof ItemComponent))
           return false;
         ItemComponent o = (ItemComponent) other_;
-        return compareDeep(sequence, o.sequence, true) && compareDeep(careTeamSequence, o.careTeamSequence, true)
-           && compareDeep(diagnosisSequence, o.diagnosisSequence, true) && compareDeep(procedureSequence, o.procedureSequence, true)
-           && compareDeep(informationSequence, o.informationSequence, true) && compareDeep(revenue, o.revenue, true)
-           && compareDeep(category, o.category, true) && compareDeep(productOrService, o.productOrService, true)
-           && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true) && compareDeep(modifier, o.modifier, true)
-           && compareDeep(programCode, o.programCode, true) && compareDeep(serviced, o.serviced, true) && compareDeep(location, o.location, true)
-           && compareDeep(patientPaid, o.patientPaid, true) && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true)
-           && compareDeep(factor, o.factor, true) && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true)
-           && compareDeep(udi, o.udi, true) && compareDeep(bodySite, o.bodySite, true) && compareDeep(encounter, o.encounter, true)
-           && compareDeep(detail, o.detail, true);
+        return compareDeep(sequence, o.sequence, true) && compareDeep(traceNumber, o.traceNumber, true)
+           && compareDeep(careTeamSequence, o.careTeamSequence, true) && compareDeep(diagnosisSequence, o.diagnosisSequence, true)
+           && compareDeep(procedureSequence, o.procedureSequence, true) && compareDeep(informationSequence, o.informationSequence, true)
+           && compareDeep(revenue, o.revenue, true) && compareDeep(category, o.category, true) && compareDeep(productOrService, o.productOrService, true)
+           && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true) && compareDeep(request, o.request, true)
+           && compareDeep(modifier, o.modifier, true) && compareDeep(programCode, o.programCode, true) && compareDeep(serviced, o.serviced, true)
+           && compareDeep(location, o.location, true) && compareDeep(patientPaid, o.patientPaid, true) && compareDeep(quantity, o.quantity, true)
+           && compareDeep(unitPrice, o.unitPrice, true) && compareDeep(factor, o.factor, true) && compareDeep(tax, o.tax, true)
+           && compareDeep(net, o.net, true) && compareDeep(udi, o.udi, true) && compareDeep(bodySite, o.bodySite, true)
+           && compareDeep(encounter, o.encounter, true) && compareDeep(detail, o.detail, true);
       }
 
       @Override
@@ -4916,10 +5318,11 @@ public class Claim extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, careTeamSequence
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, traceNumber, careTeamSequence
           , diagnosisSequence, procedureSequence, informationSequence, revenue, category, productOrService
-          , productOrServiceEnd, modifier, programCode, serviced, location, patientPaid, quantity
-          , unitPrice, factor, tax, net, udi, bodySite, encounter, detail);
+          , productOrServiceEnd, request, modifier, programCode, serviced, location, patientPaid
+          , quantity, unitPrice, factor, tax, net, udi, bodySite, encounter, detail
+          );
       }
 
   public String fhirType() {
@@ -5214,9 +5617,16 @@ public class Claim extends DomainResource {
         protected PositiveIntType sequence;
 
         /**
+         * Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.
+         */
+        @Child(name = "traceNumber", type = {Identifier.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Number for tracking", formalDefinition="Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners." )
+        protected List<Identifier> traceNumber;
+
+        /**
          * The type of revenue or cost center providing the product and/or service.
          */
-        @Child(name = "revenue", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "revenue", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Revenue or cost center code", formalDefinition="The type of revenue or cost center providing the product and/or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-revenue-center")
         protected CodeableConcept revenue;
@@ -5224,7 +5634,7 @@ public class Claim extends DomainResource {
         /**
          * Code to identify the general type of benefits under which products and services are provided.
          */
-        @Child(name = "category", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "category", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Benefit classification", formalDefinition="Code to identify the general type of benefits under which products and services are provided." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-benefitcategory")
         protected CodeableConcept category;
@@ -5232,7 +5642,7 @@ public class Claim extends DomainResource {
         /**
          * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
@@ -5240,7 +5650,7 @@ public class Claim extends DomainResource {
         /**
          * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
          */
-        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrServiceEnd;
@@ -5248,7 +5658,7 @@ public class Claim extends DomainResource {
         /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Service/Product billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
@@ -5256,7 +5666,7 @@ public class Claim extends DomainResource {
         /**
          * Identifies the program under which this may be recovered.
          */
-        @Child(name = "programCode", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "programCode", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Program the product or service is provided under", formalDefinition="Identifies the program under which this may be recovered." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-program-code")
         protected List<CodeableConcept> programCode;
@@ -5264,60 +5674,60 @@ public class Claim extends DomainResource {
         /**
          * The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.
          */
-        @Child(name = "patientPaid", type = {Money.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "patientPaid", type = {Money.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Paid by the patient", formalDefinition="The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services." )
         protected Money patientPaid;
 
         /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=10, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=12, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
          * The total of taxes applicable for this product or service.
          */
-        @Child(name = "tax", type = {Money.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "tax", type = {Money.class}, order=13, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
         protected Money tax;
 
         /**
-         * The quantity times the unit price for an additional service or product or charge.
+         * The total amount claimed for the group (if a grouper) or the line item.detail. Net = unit price * quantity * factor.
          */
-        @Child(name = "net", type = {Money.class}, order=13, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
+        @Child(name = "net", type = {Money.class}, order=14, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total item cost", formalDefinition="The total amount claimed for the group (if a grouper) or the line item.detail. Net = unit price * quantity * factor." )
         protected Money net;
 
         /**
          * Unique Device Identifiers associated with this line item.
          */
-        @Child(name = "udi", type = {Device.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "udi", type = {Device.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
 
         /**
          * A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.
          */
-        @Child(name = "subDetail", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "subDetail", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Product or service provided", formalDefinition="A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items." )
         protected List<SubDetailComponent> subDetail;
 
-        private static final long serialVersionUID = 1738736086L;
+        private static final long serialVersionUID = -733030497L;
 
     /**
      * Constructor
@@ -5377,6 +5787,59 @@ public class Claim extends DomainResource {
               this.sequence = new PositiveIntType();
             this.sequence.setValue(value);
           return this;
+        }
+
+        /**
+         * @return {@link #traceNumber} (Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.)
+         */
+        public List<Identifier> getTraceNumber() { 
+          if (this.traceNumber == null)
+            this.traceNumber = new ArrayList<Identifier>();
+          return this.traceNumber;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public DetailComponent setTraceNumber(List<Identifier> theTraceNumber) { 
+          this.traceNumber = theTraceNumber;
+          return this;
+        }
+
+        public boolean hasTraceNumber() { 
+          if (this.traceNumber == null)
+            return false;
+          for (Identifier item : this.traceNumber)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Identifier addTraceNumber() { //3
+          Identifier t = new Identifier();
+          if (this.traceNumber == null)
+            this.traceNumber = new ArrayList<Identifier>();
+          this.traceNumber.add(t);
+          return t;
+        }
+
+        public DetailComponent addTraceNumber(Identifier t) { //3
+          if (t == null)
+            return this;
+          if (this.traceNumber == null)
+            this.traceNumber = new ArrayList<Identifier>();
+          this.traceNumber.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #traceNumber}, creating it if it does not already exist {3}
+         */
+        public Identifier getTraceNumberFirstRep() { 
+          if (getTraceNumber().isEmpty()) {
+            addTraceNumber();
+          }
+          return getTraceNumber().get(0);
         }
 
         /**
@@ -5745,7 +6208,7 @@ public class Claim extends DomainResource {
         }
 
         /**
-         * @return {@link #net} (The quantity times the unit price for an additional service or product or charge.)
+         * @return {@link #net} (The total amount claimed for the group (if a grouper) or the line item.detail. Net = unit price * quantity * factor.)
          */
         public Money getNet() { 
           if (this.net == null)
@@ -5761,7 +6224,7 @@ public class Claim extends DomainResource {
         }
 
         /**
-         * @param value {@link #net} (The quantity times the unit price for an additional service or product or charge.)
+         * @param value {@link #net} (The total amount claimed for the group (if a grouper) or the line item.detail. Net = unit price * quantity * factor.)
          */
         public DetailComponent setNet(Money value) { 
           this.net = value;
@@ -5877,6 +6340,7 @@ public class Claim extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("sequence", "positiveInt", "A number to uniquely identify item entries.", 0, 1, sequence));
+          children.add(new Property("traceNumber", "Identifier", "Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.", 0, java.lang.Integer.MAX_VALUE, traceNumber));
           children.add(new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue));
           children.add(new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category));
           children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
@@ -5888,7 +6352,7 @@ public class Claim extends DomainResource {
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
           children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
-          children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
+          children.add(new Property("net", "Money", "The total amount claimed for the group (if a grouper) or the line item.detail. Net = unit price * quantity * factor.", 0, 1, net));
           children.add(new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi));
           children.add(new Property("subDetail", "", "A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.", 0, java.lang.Integer.MAX_VALUE, subDetail));
         }
@@ -5897,6 +6361,7 @@ public class Claim extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 1349547969: /*sequence*/  return new Property("sequence", "positiveInt", "A number to uniquely identify item entries.", 0, 1, sequence);
+          case 82505966: /*traceNumber*/  return new Property("traceNumber", "Identifier", "Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.", 0, java.lang.Integer.MAX_VALUE, traceNumber);
           case 1099842588: /*revenue*/  return new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue);
           case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category);
           case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
@@ -5908,7 +6373,7 @@ public class Claim extends DomainResource {
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
           case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
-          case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
+          case 108957: /*net*/  return new Property("net", "Money", "The total amount claimed for the group (if a grouper) or the line item.detail. Net = unit price * quantity * factor.", 0, 1, net);
           case 115642: /*udi*/  return new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi);
           case -828829007: /*subDetail*/  return new Property("subDetail", "", "A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.", 0, java.lang.Integer.MAX_VALUE, subDetail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -5920,6 +6385,7 @@ public class Claim extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 1349547969: /*sequence*/ return this.sequence == null ? new Base[0] : new Base[] {this.sequence}; // PositiveIntType
+        case 82505966: /*traceNumber*/ return this.traceNumber == null ? new Base[0] : this.traceNumber.toArray(new Base[this.traceNumber.size()]); // Identifier
         case 1099842588: /*revenue*/ return this.revenue == null ? new Base[0] : new Base[] {this.revenue}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
@@ -5944,6 +6410,9 @@ public class Claim extends DomainResource {
         switch (hash) {
         case 1349547969: // sequence
           this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
+        case 82505966: // traceNumber
+          this.getTraceNumber().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 1099842588: // revenue
           this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -5996,6 +6465,8 @@ public class Claim extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
           this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("traceNumber")) {
+          this.getTraceNumber().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("revenue")) {
           this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
@@ -6033,6 +6504,7 @@ public class Claim extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
+        case 82505966:  return addTraceNumber(); 
         case 1099842588:  return getRevenue();
         case 50511102:  return getCategory();
         case 1957227299:  return getProductOrService();
@@ -6056,6 +6528,7 @@ public class Claim extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969: /*sequence*/ return new String[] {"positiveInt"};
+        case 82505966: /*traceNumber*/ return new String[] {"Identifier"};
         case 1099842588: /*revenue*/ return new String[] {"CodeableConcept"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
@@ -6079,6 +6552,9 @@ public class Claim extends DomainResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
           throw new FHIRException("Cannot call addChild on a primitive type Claim.item.detail.sequence");
+        }
+        else if (name.equals("traceNumber")) {
+          return addTraceNumber();
         }
         else if (name.equals("revenue")) {
           this.revenue = new CodeableConcept();
@@ -6144,6 +6620,11 @@ public class Claim extends DomainResource {
       public void copyValues(DetailComponent dst) {
         super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
+        if (traceNumber != null) {
+          dst.traceNumber = new ArrayList<Identifier>();
+          for (Identifier i : traceNumber)
+            dst.traceNumber.add(i.copy());
+        };
         dst.revenue = revenue == null ? null : revenue.copy();
         dst.category = category == null ? null : category.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
@@ -6183,9 +6664,10 @@ public class Claim extends DomainResource {
         if (!(other_ instanceof DetailComponent))
           return false;
         DetailComponent o = (DetailComponent) other_;
-        return compareDeep(sequence, o.sequence, true) && compareDeep(revenue, o.revenue, true) && compareDeep(category, o.category, true)
-           && compareDeep(productOrService, o.productOrService, true) && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true)
-           && compareDeep(modifier, o.modifier, true) && compareDeep(programCode, o.programCode, true) && compareDeep(patientPaid, o.patientPaid, true)
+        return compareDeep(sequence, o.sequence, true) && compareDeep(traceNumber, o.traceNumber, true)
+           && compareDeep(revenue, o.revenue, true) && compareDeep(category, o.category, true) && compareDeep(productOrService, o.productOrService, true)
+           && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true) && compareDeep(modifier, o.modifier, true)
+           && compareDeep(programCode, o.programCode, true) && compareDeep(patientPaid, o.patientPaid, true)
            && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true) && compareDeep(factor, o.factor, true)
            && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true) && compareDeep(udi, o.udi, true)
            && compareDeep(subDetail, o.subDetail, true);
@@ -6202,9 +6684,9 @@ public class Claim extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, revenue, category
-          , productOrService, productOrServiceEnd, modifier, programCode, patientPaid, quantity
-          , unitPrice, factor, tax, net, udi, subDetail);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, traceNumber, revenue
+          , category, productOrService, productOrServiceEnd, modifier, programCode, patientPaid
+          , quantity, unitPrice, factor, tax, net, udi, subDetail);
       }
 
   public String fhirType() {
@@ -6224,9 +6706,16 @@ public class Claim extends DomainResource {
         protected PositiveIntType sequence;
 
         /**
+         * Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.
+         */
+        @Child(name = "traceNumber", type = {Identifier.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Number for tracking", formalDefinition="Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners." )
+        protected List<Identifier> traceNumber;
+
+        /**
          * The type of revenue or cost center providing the product and/or service.
          */
-        @Child(name = "revenue", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "revenue", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Revenue or cost center code", formalDefinition="The type of revenue or cost center providing the product and/or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-revenue-center")
         protected CodeableConcept revenue;
@@ -6234,7 +6723,7 @@ public class Claim extends DomainResource {
         /**
          * Code to identify the general type of benefits under which products and services are provided.
          */
-        @Child(name = "category", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "category", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Benefit classification", formalDefinition="Code to identify the general type of benefits under which products and services are provided." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-benefitcategory")
         protected CodeableConcept category;
@@ -6242,7 +6731,7 @@ public class Claim extends DomainResource {
         /**
          * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
@@ -6250,7 +6739,7 @@ public class Claim extends DomainResource {
         /**
          * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
          */
-        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrServiceEnd;
@@ -6258,7 +6747,7 @@ public class Claim extends DomainResource {
         /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Service/Product billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
@@ -6266,7 +6755,7 @@ public class Claim extends DomainResource {
         /**
          * Identifies the program under which this may be recovered.
          */
-        @Child(name = "programCode", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "programCode", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Program the product or service is provided under", formalDefinition="Identifies the program under which this may be recovered." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-program-code")
         protected List<CodeableConcept> programCode;
@@ -6274,53 +6763,53 @@ public class Claim extends DomainResource {
         /**
          * The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.
          */
-        @Child(name = "patientPaid", type = {Money.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "patientPaid", type = {Money.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Paid by the patient", formalDefinition="The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services." )
         protected Money patientPaid;
 
         /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=10, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=12, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
          * The total of taxes applicable for this product or service.
          */
-        @Child(name = "tax", type = {Money.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "tax", type = {Money.class}, order=13, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
         protected Money tax;
 
         /**
-         * The quantity times the unit price for an additional service or product or charge.
+         * The total amount claimed for line item.detail.subDetail. Net = unit price * quantity * factor.
          */
-        @Child(name = "net", type = {Money.class}, order=13, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
+        @Child(name = "net", type = {Money.class}, order=14, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total item cost", formalDefinition="The total amount claimed for line item.detail.subDetail. Net = unit price * quantity * factor." )
         protected Money net;
 
         /**
          * Unique Device Identifiers associated with this line item.
          */
-        @Child(name = "udi", type = {Device.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "udi", type = {Device.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
 
-        private static final long serialVersionUID = 483115499L;
+        private static final long serialVersionUID = -2049468862L;
 
     /**
      * Constructor
@@ -6380,6 +6869,59 @@ public class Claim extends DomainResource {
               this.sequence = new PositiveIntType();
             this.sequence.setValue(value);
           return this;
+        }
+
+        /**
+         * @return {@link #traceNumber} (Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.)
+         */
+        public List<Identifier> getTraceNumber() { 
+          if (this.traceNumber == null)
+            this.traceNumber = new ArrayList<Identifier>();
+          return this.traceNumber;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public SubDetailComponent setTraceNumber(List<Identifier> theTraceNumber) { 
+          this.traceNumber = theTraceNumber;
+          return this;
+        }
+
+        public boolean hasTraceNumber() { 
+          if (this.traceNumber == null)
+            return false;
+          for (Identifier item : this.traceNumber)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Identifier addTraceNumber() { //3
+          Identifier t = new Identifier();
+          if (this.traceNumber == null)
+            this.traceNumber = new ArrayList<Identifier>();
+          this.traceNumber.add(t);
+          return t;
+        }
+
+        public SubDetailComponent addTraceNumber(Identifier t) { //3
+          if (t == null)
+            return this;
+          if (this.traceNumber == null)
+            this.traceNumber = new ArrayList<Identifier>();
+          this.traceNumber.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #traceNumber}, creating it if it does not already exist {3}
+         */
+        public Identifier getTraceNumberFirstRep() { 
+          if (getTraceNumber().isEmpty()) {
+            addTraceNumber();
+          }
+          return getTraceNumber().get(0);
         }
 
         /**
@@ -6748,7 +7290,7 @@ public class Claim extends DomainResource {
         }
 
         /**
-         * @return {@link #net} (The quantity times the unit price for an additional service or product or charge.)
+         * @return {@link #net} (The total amount claimed for line item.detail.subDetail. Net = unit price * quantity * factor.)
          */
         public Money getNet() { 
           if (this.net == null)
@@ -6764,7 +7306,7 @@ public class Claim extends DomainResource {
         }
 
         /**
-         * @param value {@link #net} (The quantity times the unit price for an additional service or product or charge.)
+         * @param value {@link #net} (The total amount claimed for line item.detail.subDetail. Net = unit price * quantity * factor.)
          */
         public SubDetailComponent setNet(Money value) { 
           this.net = value;
@@ -6827,6 +7369,7 @@ public class Claim extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("sequence", "positiveInt", "A number to uniquely identify item entries.", 0, 1, sequence));
+          children.add(new Property("traceNumber", "Identifier", "Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.", 0, java.lang.Integer.MAX_VALUE, traceNumber));
           children.add(new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue));
           children.add(new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category));
           children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
@@ -6838,7 +7381,7 @@ public class Claim extends DomainResource {
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
           children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
-          children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
+          children.add(new Property("net", "Money", "The total amount claimed for line item.detail.subDetail. Net = unit price * quantity * factor.", 0, 1, net));
           children.add(new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi));
         }
 
@@ -6846,6 +7389,7 @@ public class Claim extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 1349547969: /*sequence*/  return new Property("sequence", "positiveInt", "A number to uniquely identify item entries.", 0, 1, sequence);
+          case 82505966: /*traceNumber*/  return new Property("traceNumber", "Identifier", "Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.", 0, java.lang.Integer.MAX_VALUE, traceNumber);
           case 1099842588: /*revenue*/  return new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue);
           case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category);
           case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
@@ -6857,7 +7401,7 @@ public class Claim extends DomainResource {
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
           case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
-          case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
+          case 108957: /*net*/  return new Property("net", "Money", "The total amount claimed for line item.detail.subDetail. Net = unit price * quantity * factor.", 0, 1, net);
           case 115642: /*udi*/  return new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -6868,6 +7412,7 @@ public class Claim extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 1349547969: /*sequence*/ return this.sequence == null ? new Base[0] : new Base[] {this.sequence}; // PositiveIntType
+        case 82505966: /*traceNumber*/ return this.traceNumber == null ? new Base[0] : this.traceNumber.toArray(new Base[this.traceNumber.size()]); // Identifier
         case 1099842588: /*revenue*/ return this.revenue == null ? new Base[0] : new Base[] {this.revenue}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
@@ -6891,6 +7436,9 @@ public class Claim extends DomainResource {
         switch (hash) {
         case 1349547969: // sequence
           this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
+        case 82505966: // traceNumber
+          this.getTraceNumber().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 1099842588: // revenue
           this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -6940,6 +7488,8 @@ public class Claim extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("sequence")) {
           this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("traceNumber")) {
+          this.getTraceNumber().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("revenue")) {
           this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
@@ -6975,6 +7525,7 @@ public class Claim extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
+        case 82505966:  return addTraceNumber(); 
         case 1099842588:  return getRevenue();
         case 50511102:  return getCategory();
         case 1957227299:  return getProductOrService();
@@ -6997,6 +7548,7 @@ public class Claim extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1349547969: /*sequence*/ return new String[] {"positiveInt"};
+        case 82505966: /*traceNumber*/ return new String[] {"Identifier"};
         case 1099842588: /*revenue*/ return new String[] {"CodeableConcept"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
@@ -7019,6 +7571,9 @@ public class Claim extends DomainResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
           throw new FHIRException("Cannot call addChild on a primitive type Claim.item.detail.subDetail.sequence");
+        }
+        else if (name.equals("traceNumber")) {
+          return addTraceNumber();
         }
         else if (name.equals("revenue")) {
           this.revenue = new CodeableConcept();
@@ -7081,6 +7636,11 @@ public class Claim extends DomainResource {
       public void copyValues(SubDetailComponent dst) {
         super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
+        if (traceNumber != null) {
+          dst.traceNumber = new ArrayList<Identifier>();
+          for (Identifier i : traceNumber)
+            dst.traceNumber.add(i.copy());
+        };
         dst.revenue = revenue == null ? null : revenue.copy();
         dst.category = category == null ? null : category.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
@@ -7115,9 +7675,10 @@ public class Claim extends DomainResource {
         if (!(other_ instanceof SubDetailComponent))
           return false;
         SubDetailComponent o = (SubDetailComponent) other_;
-        return compareDeep(sequence, o.sequence, true) && compareDeep(revenue, o.revenue, true) && compareDeep(category, o.category, true)
-           && compareDeep(productOrService, o.productOrService, true) && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true)
-           && compareDeep(modifier, o.modifier, true) && compareDeep(programCode, o.programCode, true) && compareDeep(patientPaid, o.patientPaid, true)
+        return compareDeep(sequence, o.sequence, true) && compareDeep(traceNumber, o.traceNumber, true)
+           && compareDeep(revenue, o.revenue, true) && compareDeep(category, o.category, true) && compareDeep(productOrService, o.productOrService, true)
+           && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true) && compareDeep(modifier, o.modifier, true)
+           && compareDeep(programCode, o.programCode, true) && compareDeep(patientPaid, o.patientPaid, true)
            && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true) && compareDeep(factor, o.factor, true)
            && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true) && compareDeep(udi, o.udi, true)
           ;
@@ -7134,9 +7695,9 @@ public class Claim extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, revenue, category
-          , productOrService, productOrServiceEnd, modifier, programCode, patientPaid, quantity
-          , unitPrice, factor, tax, net, udi);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, traceNumber, revenue
+          , category, productOrService, productOrServiceEnd, modifier, programCode, patientPaid
+          , quantity, unitPrice, factor, tax, net, udi);
       }
 
   public String fhirType() {
@@ -7154,9 +7715,16 @@ public class Claim extends DomainResource {
     protected List<Identifier> identifier;
 
     /**
+     * Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.
+     */
+    @Child(name = "traceNumber", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Number for tracking", formalDefinition="Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners." )
+    protected List<Identifier> traceNumber;
+
+    /**
      * The status of the resource instance.
      */
-    @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=2, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="active | cancelled | draft | entered-in-error", formalDefinition="The status of the resource instance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fm-status")
     protected Enumeration<FinancialResourceStatusCodes> status;
@@ -7164,7 +7732,7 @@ public class Claim extends DomainResource {
     /**
      * The category of claim, e.g. oral, pharmacy, vision, institutional, professional.
      */
-    @Child(name = "type", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "type", type = {CodeableConcept.class}, order=3, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Category or discipline", formalDefinition="The category of claim, e.g. oral, pharmacy, vision, institutional, professional." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-type")
     protected CodeableConcept type;
@@ -7172,7 +7740,7 @@ public class Claim extends DomainResource {
     /**
      * A finer grained suite of claim type codes which may convey additional information such as Inpatient vs Outpatient and/or a specialty service.
      */
-    @Child(name = "subType", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "subType", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="More granular claim type", formalDefinition="A finer grained suite of claim type codes which may convey additional information such as Inpatient vs Outpatient and/or a specialty service." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-subtype")
     protected CodeableConcept subType;
@@ -7180,7 +7748,7 @@ public class Claim extends DomainResource {
     /**
      * A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.
      */
-    @Child(name = "use", type = {CodeType.class}, order=4, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "use", type = {CodeType.class}, order=5, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="claim | preauthorization | predetermination", formalDefinition="A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-use")
     protected Enumeration<Use> use;
@@ -7188,49 +7756,49 @@ public class Claim extends DomainResource {
     /**
      * The party to whom the professional services and/or products have been supplied or are being considered and for whom actual or forecast reimbursement is sought.
      */
-    @Child(name = "patient", type = {Patient.class}, order=5, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "patient", type = {Patient.class}, order=6, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The recipient of the products and services", formalDefinition="The party to whom the professional services and/or products have been supplied or are being considered and for whom actual or forecast reimbursement is sought." )
     protected Reference patient;
 
     /**
      * The period for which charges are being submitted.
      */
-    @Child(name = "billablePeriod", type = {Period.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "billablePeriod", type = {Period.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Relevant time frame for the claim", formalDefinition="The period for which charges are being submitted." )
     protected Period billablePeriod;
 
     /**
      * The date this resource was created.
      */
-    @Child(name = "created", type = {DateTimeType.class}, order=7, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "created", type = {DateTimeType.class}, order=8, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Resource creation date", formalDefinition="The date this resource was created." )
     protected DateTimeType created;
 
     /**
      * Individual who created the claim, predetermination or preauthorization.
      */
-    @Child(name = "enterer", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "enterer", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Author of the claim", formalDefinition="Individual who created the claim, predetermination or preauthorization." )
     protected Reference enterer;
 
     /**
      * The Insurer who is target of the request.
      */
-    @Child(name = "insurer", type = {Organization.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "insurer", type = {Organization.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Target", formalDefinition="The Insurer who is target of the request." )
     protected Reference insurer;
 
     /**
      * The provider which is responsible for the claim, predetermination or preauthorization.
      */
-    @Child(name = "provider", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "provider", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Party responsible for the claim", formalDefinition="The provider which is responsible for the claim, predetermination or preauthorization." )
     protected Reference provider;
 
     /**
      * The provider-required urgency of processing the request. Typical values include: stat, normal, deferred.
      */
-    @Child(name = "priority", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "priority", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Desired processing urgency", formalDefinition="The provider-required urgency of processing the request. Typical values include: stat, normal, deferred." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/process-priority")
     protected CodeableConcept priority;
@@ -7238,7 +7806,7 @@ public class Claim extends DomainResource {
     /**
      * A code to indicate whether and for whom funds are to be reserved for future claims.
      */
-    @Child(name = "fundsReserve", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "fundsReserve", type = {CodeableConcept.class}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="For whom to reserve funds", formalDefinition="A code to indicate whether and for whom funds are to be reserved for future claims." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fundsreserve")
     protected CodeableConcept fundsReserve;
@@ -7246,124 +7814,131 @@ public class Claim extends DomainResource {
     /**
      * Other claims which are related to this claim such as prior submissions or claims for related services or for the same event.
      */
-    @Child(name = "related", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "related", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Prior or corollary claims", formalDefinition="Other claims which are related to this claim such as prior submissions or claims for related services or for the same event." )
     protected List<RelatedClaimComponent> related;
 
     /**
      * Prescription is the document/authorization given to the claim author for them to provide products and services for which consideration (reimbursement) is sought. Could be a RX for medications, an 'order' for oxygen or wheelchair or physiotherapy treatments.
      */
-    @Child(name = "prescription", type = {DeviceRequest.class, MedicationRequest.class, VisionPrescription.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "prescription", type = {DeviceRequest.class, MedicationRequest.class, VisionPrescription.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Prescription authorizing services and products", formalDefinition="Prescription is the document/authorization given to the claim author for them to provide products and services for which consideration (reimbursement) is sought. Could be a RX for medications, an 'order' for oxygen or wheelchair or physiotherapy treatments." )
     protected Reference prescription;
 
     /**
      * Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.
      */
-    @Child(name = "originalPrescription", type = {DeviceRequest.class, MedicationRequest.class, VisionPrescription.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "originalPrescription", type = {DeviceRequest.class, MedicationRequest.class, VisionPrescription.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Original prescription if superseded by fulfiller", formalDefinition="Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products." )
     protected Reference originalPrescription;
 
     /**
      * The party to be reimbursed for cost of the products and services according to the terms of the policy.
      */
-    @Child(name = "payee", type = {}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "payee", type = {}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Recipient of benefits payable", formalDefinition="The party to be reimbursed for cost of the products and services according to the terms of the policy." )
     protected PayeeComponent payee;
 
     /**
      * The referral information received by the claim author, it is not to be used when the author generates a referral for a patient. A copy of that referral may be provided as supporting information. Some insurers require proof of referral to pay for services or to pay specialist rates for services.
      */
-    @Child(name = "referral", type = {ServiceRequest.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "referral", type = {ServiceRequest.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Treatment referral", formalDefinition="The referral information received by the claim author, it is not to be used when the author generates a referral for a patient. A copy of that referral may be provided as supporting information. Some insurers require proof of referral to pay for services or to pay specialist rates for services." )
     protected Reference referral;
 
     /**
-     * The Encounters during which this Claim was created or to which the creation of this record is tightly associated.
+     * Healthcare encounters related to this claim.
      */
-    @Child(name = "encounter", type = {Encounter.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Encounters related to this billed item", formalDefinition="The Encounters during which this Claim was created or to which the creation of this record is tightly associated." )
+    @Child(name = "encounter", type = {Encounter.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Encounters associated with the listed treatments", formalDefinition="Healthcare encounters related to this claim." )
     protected List<Reference> encounter;
 
     /**
      * Facility where the services were provided.
      */
-    @Child(name = "facility", type = {Location.class, Organization.class}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "facility", type = {Location.class, Organization.class}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Servicing facility", formalDefinition="Facility where the services were provided." )
     protected Reference facility;
 
     /**
      * A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.
      */
-    @Child(name = "diagnosisRelatedGroup", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "diagnosisRelatedGroup", type = {CodeableConcept.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Package billing code", formalDefinition="A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-diagnosisrelatedgroup")
     protected CodeableConcept diagnosisRelatedGroup;
 
     /**
+     * Information code for an event with a corresponding date or period.
+     */
+    @Child(name = "event", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Event information", formalDefinition="Information code for an event with a corresponding date or period." )
+    protected List<ClaimEventComponent> event;
+
+    /**
      * The members of the team who provided the products and services.
      */
-    @Child(name = "careTeam", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "careTeam", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Members of the care team", formalDefinition="The members of the team who provided the products and services." )
     protected List<CareTeamComponent> careTeam;
 
     /**
      * Additional information codes regarding exceptions, special considerations, the condition, situation, prior or concurrent issues.
      */
-    @Child(name = "supportingInfo", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "supportingInfo", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Supporting information", formalDefinition="Additional information codes regarding exceptions, special considerations, the condition, situation, prior or concurrent issues." )
     protected List<SupportingInformationComponent> supportingInfo;
 
     /**
      * Information about diagnoses relevant to the claim items.
      */
-    @Child(name = "diagnosis", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "diagnosis", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Pertinent diagnosis information", formalDefinition="Information about diagnoses relevant to the claim items." )
     protected List<DiagnosisComponent> diagnosis;
 
     /**
      * Procedures performed on the patient relevant to the billing items with the claim.
      */
-    @Child(name = "procedure", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "procedure", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Clinical procedures performed", formalDefinition="Procedures performed on the patient relevant to the billing items with the claim." )
     protected List<ProcedureComponent> procedure;
 
     /**
      * Financial instruments for reimbursement for the health care products and services specified on the claim.
      */
-    @Child(name = "insurance", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "insurance", type = {}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Patient insurance information", formalDefinition="Financial instruments for reimbursement for the health care products and services specified on the claim." )
     protected List<InsuranceComponent> insurance;
 
     /**
      * Details of an accident which resulted in injuries which required the products and services listed in the claim.
      */
-    @Child(name = "accident", type = {}, order=26, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "accident", type = {}, order=28, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Details of the event", formalDefinition="Details of an accident which resulted in injuries which required the products and services listed in the claim." )
     protected AccidentComponent accident;
 
     /**
      * The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.
      */
-    @Child(name = "patientPaid", type = {Money.class}, order=27, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "patientPaid", type = {Money.class}, order=29, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Paid by the patient", formalDefinition="The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services." )
     protected Money patientPaid;
 
     /**
      * A claim line. Either a simple  product or service or a 'group' of details which can each be a simple items or groups of sub-details.
      */
-    @Child(name = "item", type = {}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "item", type = {}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Product or service provided", formalDefinition="A claim line. Either a simple  product or service or a 'group' of details which can each be a simple items or groups of sub-details." )
     protected List<ItemComponent> item;
 
     /**
      * The total value of the all the items in the claim.
      */
-    @Child(name = "total", type = {Money.class}, order=29, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "total", type = {Money.class}, order=31, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Total claim cost", formalDefinition="The total value of the all the items in the claim." )
     protected Money total;
 
-    private static final long serialVersionUID = 2135549259L;
+    private static final long serialVersionUID = -64601265L;
 
   /**
    * Constructor
@@ -7435,6 +8010,59 @@ public class Claim extends DomainResource {
         addIdentifier();
       }
       return getIdentifier().get(0);
+    }
+
+    /**
+     * @return {@link #traceNumber} (Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.)
+     */
+    public List<Identifier> getTraceNumber() { 
+      if (this.traceNumber == null)
+        this.traceNumber = new ArrayList<Identifier>();
+      return this.traceNumber;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Claim setTraceNumber(List<Identifier> theTraceNumber) { 
+      this.traceNumber = theTraceNumber;
+      return this;
+    }
+
+    public boolean hasTraceNumber() { 
+      if (this.traceNumber == null)
+        return false;
+      for (Identifier item : this.traceNumber)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Identifier addTraceNumber() { //3
+      Identifier t = new Identifier();
+      if (this.traceNumber == null)
+        this.traceNumber = new ArrayList<Identifier>();
+      this.traceNumber.add(t);
+      return t;
+    }
+
+    public Claim addTraceNumber(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.traceNumber == null)
+        this.traceNumber = new ArrayList<Identifier>();
+      this.traceNumber.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #traceNumber}, creating it if it does not already exist {3}
+     */
+    public Identifier getTraceNumberFirstRep() { 
+      if (getTraceNumber().isEmpty()) {
+        addTraceNumber();
+      }
+      return getTraceNumber().get(0);
     }
 
     /**
@@ -7938,7 +8566,7 @@ public class Claim extends DomainResource {
     }
 
     /**
-     * @return {@link #encounter} (The Encounters during which this Claim was created or to which the creation of this record is tightly associated.)
+     * @return {@link #encounter} (Healthcare encounters related to this claim.)
      */
     public List<Reference> getEncounter() { 
       if (this.encounter == null)
@@ -8036,6 +8664,59 @@ public class Claim extends DomainResource {
     public Claim setDiagnosisRelatedGroup(CodeableConcept value) { 
       this.diagnosisRelatedGroup = value;
       return this;
+    }
+
+    /**
+     * @return {@link #event} (Information code for an event with a corresponding date or period.)
+     */
+    public List<ClaimEventComponent> getEvent() { 
+      if (this.event == null)
+        this.event = new ArrayList<ClaimEventComponent>();
+      return this.event;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Claim setEvent(List<ClaimEventComponent> theEvent) { 
+      this.event = theEvent;
+      return this;
+    }
+
+    public boolean hasEvent() { 
+      if (this.event == null)
+        return false;
+      for (ClaimEventComponent item : this.event)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ClaimEventComponent addEvent() { //3
+      ClaimEventComponent t = new ClaimEventComponent();
+      if (this.event == null)
+        this.event = new ArrayList<ClaimEventComponent>();
+      this.event.add(t);
+      return t;
+    }
+
+    public Claim addEvent(ClaimEventComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.event == null)
+        this.event = new ArrayList<ClaimEventComponent>();
+      this.event.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #event}, creating it if it does not already exist {3}
+     */
+    public ClaimEventComponent getEventFirstRep() { 
+      if (getEvent().isEmpty()) {
+        addEvent();
+      }
+      return getEvent().get(0);
     }
 
     /**
@@ -8431,6 +9112,7 @@ public class Claim extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "A unique identifier assigned to this claim.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("traceNumber", "Identifier", "Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.", 0, java.lang.Integer.MAX_VALUE, traceNumber));
         children.add(new Property("status", "code", "The status of the resource instance.", 0, 1, status));
         children.add(new Property("type", "CodeableConcept", "The category of claim, e.g. oral, pharmacy, vision, institutional, professional.", 0, 1, type));
         children.add(new Property("subType", "CodeableConcept", "A finer grained suite of claim type codes which may convey additional information such as Inpatient vs Outpatient and/or a specialty service.", 0, 1, subType));
@@ -8448,9 +9130,10 @@ public class Claim extends DomainResource {
         children.add(new Property("originalPrescription", "Reference(DeviceRequest|MedicationRequest|VisionPrescription)", "Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.", 0, 1, originalPrescription));
         children.add(new Property("payee", "", "The party to be reimbursed for cost of the products and services according to the terms of the policy.", 0, 1, payee));
         children.add(new Property("referral", "Reference(ServiceRequest)", "The referral information received by the claim author, it is not to be used when the author generates a referral for a patient. A copy of that referral may be provided as supporting information. Some insurers require proof of referral to pay for services or to pay specialist rates for services.", 0, 1, referral));
-        children.add(new Property("encounter", "Reference(Encounter)", "The Encounters during which this Claim was created or to which the creation of this record is tightly associated.", 0, java.lang.Integer.MAX_VALUE, encounter));
+        children.add(new Property("encounter", "Reference(Encounter)", "Healthcare encounters related to this claim.", 0, java.lang.Integer.MAX_VALUE, encounter));
         children.add(new Property("facility", "Reference(Location|Organization)", "Facility where the services were provided.", 0, 1, facility));
         children.add(new Property("diagnosisRelatedGroup", "CodeableConcept", "A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.", 0, 1, diagnosisRelatedGroup));
+        children.add(new Property("event", "", "Information code for an event with a corresponding date or period.", 0, java.lang.Integer.MAX_VALUE, event));
         children.add(new Property("careTeam", "", "The members of the team who provided the products and services.", 0, java.lang.Integer.MAX_VALUE, careTeam));
         children.add(new Property("supportingInfo", "", "Additional information codes regarding exceptions, special considerations, the condition, situation, prior or concurrent issues.", 0, java.lang.Integer.MAX_VALUE, supportingInfo));
         children.add(new Property("diagnosis", "", "Information about diagnoses relevant to the claim items.", 0, java.lang.Integer.MAX_VALUE, diagnosis));
@@ -8466,6 +9149,7 @@ public class Claim extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A unique identifier assigned to this claim.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case 82505966: /*traceNumber*/  return new Property("traceNumber", "Identifier", "Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.", 0, java.lang.Integer.MAX_VALUE, traceNumber);
         case -892481550: /*status*/  return new Property("status", "code", "The status of the resource instance.", 0, 1, status);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The category of claim, e.g. oral, pharmacy, vision, institutional, professional.", 0, 1, type);
         case -1868521062: /*subType*/  return new Property("subType", "CodeableConcept", "A finer grained suite of claim type codes which may convey additional information such as Inpatient vs Outpatient and/or a specialty service.", 0, 1, subType);
@@ -8483,9 +9167,10 @@ public class Claim extends DomainResource {
         case -1814015861: /*originalPrescription*/  return new Property("originalPrescription", "Reference(DeviceRequest|MedicationRequest|VisionPrescription)", "Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.", 0, 1, originalPrescription);
         case 106443592: /*payee*/  return new Property("payee", "", "The party to be reimbursed for cost of the products and services according to the terms of the policy.", 0, 1, payee);
         case -722568291: /*referral*/  return new Property("referral", "Reference(ServiceRequest)", "The referral information received by the claim author, it is not to be used when the author generates a referral for a patient. A copy of that referral may be provided as supporting information. Some insurers require proof of referral to pay for services or to pay specialist rates for services.", 0, 1, referral);
-        case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounters during which this Claim was created or to which the creation of this record is tightly associated.", 0, java.lang.Integer.MAX_VALUE, encounter);
+        case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "Healthcare encounters related to this claim.", 0, java.lang.Integer.MAX_VALUE, encounter);
         case 501116579: /*facility*/  return new Property("facility", "Reference(Location|Organization)", "Facility where the services were provided.", 0, 1, facility);
         case -1599182171: /*diagnosisRelatedGroup*/  return new Property("diagnosisRelatedGroup", "CodeableConcept", "A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.", 0, 1, diagnosisRelatedGroup);
+        case 96891546: /*event*/  return new Property("event", "", "Information code for an event with a corresponding date or period.", 0, java.lang.Integer.MAX_VALUE, event);
         case -7323378: /*careTeam*/  return new Property("careTeam", "", "The members of the team who provided the products and services.", 0, java.lang.Integer.MAX_VALUE, careTeam);
         case 1922406657: /*supportingInfo*/  return new Property("supportingInfo", "", "Additional information codes regarding exceptions, special considerations, the condition, situation, prior or concurrent issues.", 0, java.lang.Integer.MAX_VALUE, supportingInfo);
         case 1196993265: /*diagnosis*/  return new Property("diagnosis", "", "Information about diagnoses relevant to the claim items.", 0, java.lang.Integer.MAX_VALUE, diagnosis);
@@ -8504,6 +9189,7 @@ public class Claim extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case 82505966: /*traceNumber*/ return this.traceNumber == null ? new Base[0] : this.traceNumber.toArray(new Base[this.traceNumber.size()]); // Identifier
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<FinancialResourceStatusCodes>
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -1868521062: /*subType*/ return this.subType == null ? new Base[0] : new Base[] {this.subType}; // CodeableConcept
@@ -8524,6 +9210,7 @@ public class Claim extends DomainResource {
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : this.encounter.toArray(new Base[this.encounter.size()]); // Reference
         case 501116579: /*facility*/ return this.facility == null ? new Base[0] : new Base[] {this.facility}; // Reference
         case -1599182171: /*diagnosisRelatedGroup*/ return this.diagnosisRelatedGroup == null ? new Base[0] : new Base[] {this.diagnosisRelatedGroup}; // CodeableConcept
+        case 96891546: /*event*/ return this.event == null ? new Base[0] : this.event.toArray(new Base[this.event.size()]); // ClaimEventComponent
         case -7323378: /*careTeam*/ return this.careTeam == null ? new Base[0] : this.careTeam.toArray(new Base[this.careTeam.size()]); // CareTeamComponent
         case 1922406657: /*supportingInfo*/ return this.supportingInfo == null ? new Base[0] : this.supportingInfo.toArray(new Base[this.supportingInfo.size()]); // SupportingInformationComponent
         case 1196993265: /*diagnosis*/ return this.diagnosis == null ? new Base[0] : this.diagnosis.toArray(new Base[this.diagnosis.size()]); // DiagnosisComponent
@@ -8543,6 +9230,9 @@ public class Claim extends DomainResource {
         switch (hash) {
         case -1618432855: // identifier
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
+          return value;
+        case 82505966: // traceNumber
+          this.getTraceNumber().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
           value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -8606,6 +9296,9 @@ public class Claim extends DomainResource {
         case -1599182171: // diagnosisRelatedGroup
           this.diagnosisRelatedGroup = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
+        case 96891546: // event
+          this.getEvent().add((ClaimEventComponent) value); // ClaimEventComponent
+          return value;
         case -7323378: // careTeam
           this.getCareTeam().add((CareTeamComponent) value); // CareTeamComponent
           return value;
@@ -8642,6 +9335,8 @@ public class Claim extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
+        } else if (name.equals("traceNumber")) {
+          this.getTraceNumber().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
           value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
@@ -8684,6 +9379,8 @@ public class Claim extends DomainResource {
           this.facility = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("diagnosisRelatedGroup")) {
           this.diagnosisRelatedGroup = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("event")) {
+          this.getEvent().add((ClaimEventComponent) value);
         } else if (name.equals("careTeam")) {
           this.getCareTeam().add((CareTeamComponent) value);
         } else if (name.equals("supportingInfo")) {
@@ -8711,6 +9408,7 @@ public class Claim extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
+        case 82505966:  return addTraceNumber(); 
         case -892481550:  return getStatusElement();
         case 3575610:  return getType();
         case -1868521062:  return getSubType();
@@ -8731,6 +9429,7 @@ public class Claim extends DomainResource {
         case 1524132147:  return addEncounter(); 
         case 501116579:  return getFacility();
         case -1599182171:  return getDiagnosisRelatedGroup();
+        case 96891546:  return addEvent(); 
         case -7323378:  return addCareTeam(); 
         case 1922406657:  return addSupportingInfo(); 
         case 1196993265:  return addDiagnosis(); 
@@ -8749,6 +9448,7 @@ public class Claim extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case 82505966: /*traceNumber*/ return new String[] {"Identifier"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -1868521062: /*subType*/ return new String[] {"CodeableConcept"};
@@ -8769,6 +9469,7 @@ public class Claim extends DomainResource {
         case 1524132147: /*encounter*/ return new String[] {"Reference"};
         case 501116579: /*facility*/ return new String[] {"Reference"};
         case -1599182171: /*diagnosisRelatedGroup*/ return new String[] {"CodeableConcept"};
+        case 96891546: /*event*/ return new String[] {};
         case -7323378: /*careTeam*/ return new String[] {};
         case 1922406657: /*supportingInfo*/ return new String[] {};
         case 1196993265: /*diagnosis*/ return new String[] {};
@@ -8787,6 +9488,9 @@ public class Claim extends DomainResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identifier")) {
           return addIdentifier();
+        }
+        else if (name.equals("traceNumber")) {
+          return addTraceNumber();
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type Claim.status");
@@ -8863,6 +9567,9 @@ public class Claim extends DomainResource {
           this.diagnosisRelatedGroup = new CodeableConcept();
           return this.diagnosisRelatedGroup;
         }
+        else if (name.equals("event")) {
+          return addEvent();
+        }
         else if (name.equals("careTeam")) {
           return addCareTeam();
         }
@@ -8915,6 +9622,11 @@ public class Claim extends DomainResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
+        if (traceNumber != null) {
+          dst.traceNumber = new ArrayList<Identifier>();
+          for (Identifier i : traceNumber)
+            dst.traceNumber.add(i.copy());
+        };
         dst.status = status == null ? null : status.copy();
         dst.type = type == null ? null : type.copy();
         dst.subType = subType == null ? null : subType.copy();
@@ -8943,6 +9655,11 @@ public class Claim extends DomainResource {
         };
         dst.facility = facility == null ? null : facility.copy();
         dst.diagnosisRelatedGroup = diagnosisRelatedGroup == null ? null : diagnosisRelatedGroup.copy();
+        if (event != null) {
+          dst.event = new ArrayList<ClaimEventComponent>();
+          for (ClaimEventComponent i : event)
+            dst.event.add(i.copy());
+        };
         if (careTeam != null) {
           dst.careTeam = new ArrayList<CareTeamComponent>();
           for (CareTeamComponent i : careTeam)
@@ -8989,15 +9706,15 @@ public class Claim extends DomainResource {
         if (!(other_ instanceof Claim))
           return false;
         Claim o = (Claim) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(type, o.type, true)
-           && compareDeep(subType, o.subType, true) && compareDeep(use, o.use, true) && compareDeep(patient, o.patient, true)
-           && compareDeep(billablePeriod, o.billablePeriod, true) && compareDeep(created, o.created, true)
-           && compareDeep(enterer, o.enterer, true) && compareDeep(insurer, o.insurer, true) && compareDeep(provider, o.provider, true)
-           && compareDeep(priority, o.priority, true) && compareDeep(fundsReserve, o.fundsReserve, true) && compareDeep(related, o.related, true)
-           && compareDeep(prescription, o.prescription, true) && compareDeep(originalPrescription, o.originalPrescription, true)
+        return compareDeep(identifier, o.identifier, true) && compareDeep(traceNumber, o.traceNumber, true)
+           && compareDeep(status, o.status, true) && compareDeep(type, o.type, true) && compareDeep(subType, o.subType, true)
+           && compareDeep(use, o.use, true) && compareDeep(patient, o.patient, true) && compareDeep(billablePeriod, o.billablePeriod, true)
+           && compareDeep(created, o.created, true) && compareDeep(enterer, o.enterer, true) && compareDeep(insurer, o.insurer, true)
+           && compareDeep(provider, o.provider, true) && compareDeep(priority, o.priority, true) && compareDeep(fundsReserve, o.fundsReserve, true)
+           && compareDeep(related, o.related, true) && compareDeep(prescription, o.prescription, true) && compareDeep(originalPrescription, o.originalPrescription, true)
            && compareDeep(payee, o.payee, true) && compareDeep(referral, o.referral, true) && compareDeep(encounter, o.encounter, true)
            && compareDeep(facility, o.facility, true) && compareDeep(diagnosisRelatedGroup, o.diagnosisRelatedGroup, true)
-           && compareDeep(careTeam, o.careTeam, true) && compareDeep(supportingInfo, o.supportingInfo, true)
+           && compareDeep(event, o.event, true) && compareDeep(careTeam, o.careTeam, true) && compareDeep(supportingInfo, o.supportingInfo, true)
            && compareDeep(diagnosis, o.diagnosis, true) && compareDeep(procedure, o.procedure, true) && compareDeep(insurance, o.insurance, true)
            && compareDeep(accident, o.accident, true) && compareDeep(patientPaid, o.patientPaid, true) && compareDeep(item, o.item, true)
            && compareDeep(total, o.total, true);
@@ -9015,10 +9732,10 @@ public class Claim extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, type
-          , subType, use, patient, billablePeriod, created, enterer, insurer, provider
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, traceNumber, status
+          , type, subType, use, patient, billablePeriod, created, enterer, insurer, provider
           , priority, fundsReserve, related, prescription, originalPrescription, payee, referral
-          , encounter, facility, diagnosisRelatedGroup, careTeam, supportingInfo, diagnosis
+          , encounter, facility, diagnosisRelatedGroup, event, careTeam, supportingInfo, diagnosis
           , procedure, insurance, accident, patientPaid, item, total);
       }
 
@@ -9100,32 +9817,6 @@ public class Claim extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_DETAIL_UDI = new ca.uhn.fhir.model.api.Include("Claim:detail-udi").toLocked();
 
  /**
-   * Search parameter: <b>encounter</b>
-   * <p>
-   * Description: <b>Encounters associated with a billed line item</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Claim.item.encounter</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="encounter", path="Claim.item.encounter", description="Encounters associated with a billed line item", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
-   * <p>
-   * Description: <b>Encounters associated with a billed line item</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Claim.item.encounter</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Claim:encounter</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("Claim:encounter").toLocked();
-
- /**
    * Search parameter: <b>enterer</b>
    * <p>
    * Description: <b>The party responsible for the entry of the Claim</b><br>
@@ -9178,26 +9869,6 @@ public class Claim extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_FACILITY = new ca.uhn.fhir.model.api.Include("Claim:facility").toLocked();
 
  /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The primary identifier of the financial resource</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Claim.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Claim.identifier", description="The primary identifier of the financial resource", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The primary identifier of the financial resource</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Claim.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
    * Search parameter: <b>insurer</b>
    * <p>
    * Description: <b>The target payor/insurer for the Claim</b><br>
@@ -9248,32 +9919,6 @@ public class Claim extends DomainResource {
    * the path value of "<b>Claim:item-udi</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ITEM_UDI = new ca.uhn.fhir.model.api.Include("Claim:item-udi").toLocked();
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Patient receiving the products or services</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Claim.patient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="Claim.patient", description="Patient receiving the products or services", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Patient receiving the products or services</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Claim.patient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Claim:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Claim:patient").toLocked();
 
  /**
    * Search parameter: <b>payee</b>
@@ -9438,6 +10083,410 @@ public class Claim extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_USE);
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AuditEvent](auditevent.html): Encounter related to the activity recorded in the AuditEvent
+* [CarePlan](careplan.html): The Encounter during which this CarePlan was created
+* [ChargeItem](chargeitem.html): Encounter associated with event
+* [Claim](claim.html): Encounters associated with a billed line item
+* [ClinicalImpression](clinicalimpression.html): The Encounter during which this ClinicalImpression was created
+* [Communication](communication.html): The Encounter during which this Communication was created
+* [CommunicationRequest](communicationrequest.html): The Encounter during which this CommunicationRequest was created
+* [Composition](composition.html): Context of the Composition
+* [Condition](condition.html): The Encounter during which this Condition was created
+* [DeviceRequest](devicerequest.html): Encounter during which request was created
+* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made
+* [EncounterHistory](encounterhistory.html): The Encounter associated with this set of history values
+* [ExplanationOfBenefit](explanationofbenefit.html): Encounters associated with a billed line item
+* [Flag](flag.html): Alert relevant during encounter
+* [ImagingStudy](imagingstudy.html): The context of the study
+* [List](list.html): Context in which list created
+* [MedicationDispense](medicationdispense.html): Returns dispenses with a specific encounter
+* [MedicationStatement](medicationstatement.html): Returns statements for a specific encounter
+* [NutritionIntake](nutritionintake.html): Returns statements for a specific encounter
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier
+* [Observation](observation.html): Encounter related to the observation
+* [Procedure](procedure.html): The Encounter during which this Procedure was created
+* [Provenance](provenance.html): Encounter related to the Provenance
+* [QuestionnaireResponse](questionnaireresponse.html): Encounter associated with the questionnaire response
+* [RequestOrchestration](requestorchestration.html): The encounter the request orchestration applies to
+* [RiskAssessment](riskassessment.html): Where was assessment performed?
+* [ServiceRequest](servicerequest.html): An encounter in which this request is made
+* [Task](task.html): Search by encounter
+* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.encounter | CarePlan.encounter | ChargeItem.encounter | Claim.item.encounter | ClinicalImpression.encounter | Communication.encounter | CommunicationRequest.encounter | Composition.encounter | Condition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | EncounterHistory.encounter | ExplanationOfBenefit.item.encounter | Flag.encounter | ImagingStudy.encounter | List.encounter | MedicationDispense.encounter | MedicationStatement.encounter | NutritionIntake.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | Provenance.encounter | QuestionnaireResponse.encounter | RequestOrchestration.encounter | RiskAssessment.encounter | ServiceRequest.encounter | Task.encounter | VisionPrescription.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="AuditEvent.encounter | CarePlan.encounter | ChargeItem.encounter | Claim.item.encounter | ClinicalImpression.encounter | Communication.encounter | CommunicationRequest.encounter | Composition.encounter | Condition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | EncounterHistory.encounter | ExplanationOfBenefit.item.encounter | Flag.encounter | ImagingStudy.encounter | List.encounter | MedicationDispense.encounter | MedicationStatement.encounter | NutritionIntake.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | Provenance.encounter | QuestionnaireResponse.encounter | RequestOrchestration.encounter | RiskAssessment.encounter | ServiceRequest.encounter | Task.encounter | VisionPrescription.encounter", description="Multiple Resources: \r\n\r\n* [AuditEvent](auditevent.html): Encounter related to the activity recorded in the AuditEvent\r\n* [CarePlan](careplan.html): The Encounter during which this CarePlan was created\r\n* [ChargeItem](chargeitem.html): Encounter associated with event\r\n* [Claim](claim.html): Encounters associated with a billed line item\r\n* [ClinicalImpression](clinicalimpression.html): The Encounter during which this ClinicalImpression was created\r\n* [Communication](communication.html): The Encounter during which this Communication was created\r\n* [CommunicationRequest](communicationrequest.html): The Encounter during which this CommunicationRequest was created\r\n* [Composition](composition.html): Context of the Composition\r\n* [Condition](condition.html): The Encounter during which this Condition was created\r\n* [DeviceRequest](devicerequest.html): Encounter during which request was created\r\n* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made\r\n* [EncounterHistory](encounterhistory.html): The Encounter associated with this set of history values\r\n* [ExplanationOfBenefit](explanationofbenefit.html): Encounters associated with a billed line item\r\n* [Flag](flag.html): Alert relevant during encounter\r\n* [ImagingStudy](imagingstudy.html): The context of the study\r\n* [List](list.html): Context in which list created\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with a specific encounter\r\n* [MedicationStatement](medicationstatement.html): Returns statements for a specific encounter\r\n* [NutritionIntake](nutritionintake.html): Returns statements for a specific encounter\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier\r\n* [Observation](observation.html): Encounter related to the observation\r\n* [Procedure](procedure.html): The Encounter during which this Procedure was created\r\n* [Provenance](provenance.html): Encounter related to the Provenance\r\n* [QuestionnaireResponse](questionnaireresponse.html): Encounter associated with the questionnaire response\r\n* [RequestOrchestration](requestorchestration.html): The encounter the request orchestration applies to\r\n* [RiskAssessment](riskassessment.html): Where was assessment performed?\r\n* [ServiceRequest](servicerequest.html): An encounter in which this request is made\r\n* [Task](task.html): Search by encounter\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AuditEvent](auditevent.html): Encounter related to the activity recorded in the AuditEvent
+* [CarePlan](careplan.html): The Encounter during which this CarePlan was created
+* [ChargeItem](chargeitem.html): Encounter associated with event
+* [Claim](claim.html): Encounters associated with a billed line item
+* [ClinicalImpression](clinicalimpression.html): The Encounter during which this ClinicalImpression was created
+* [Communication](communication.html): The Encounter during which this Communication was created
+* [CommunicationRequest](communicationrequest.html): The Encounter during which this CommunicationRequest was created
+* [Composition](composition.html): Context of the Composition
+* [Condition](condition.html): The Encounter during which this Condition was created
+* [DeviceRequest](devicerequest.html): Encounter during which request was created
+* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made
+* [EncounterHistory](encounterhistory.html): The Encounter associated with this set of history values
+* [ExplanationOfBenefit](explanationofbenefit.html): Encounters associated with a billed line item
+* [Flag](flag.html): Alert relevant during encounter
+* [ImagingStudy](imagingstudy.html): The context of the study
+* [List](list.html): Context in which list created
+* [MedicationDispense](medicationdispense.html): Returns dispenses with a specific encounter
+* [MedicationStatement](medicationstatement.html): Returns statements for a specific encounter
+* [NutritionIntake](nutritionintake.html): Returns statements for a specific encounter
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier
+* [Observation](observation.html): Encounter related to the observation
+* [Procedure](procedure.html): The Encounter during which this Procedure was created
+* [Provenance](provenance.html): Encounter related to the Provenance
+* [QuestionnaireResponse](questionnaireresponse.html): Encounter associated with the questionnaire response
+* [RequestOrchestration](requestorchestration.html): The encounter the request orchestration applies to
+* [RiskAssessment](riskassessment.html): Where was assessment performed?
+* [ServiceRequest](servicerequest.html): An encounter in which this request is made
+* [Task](task.html): Search by encounter
+* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.encounter | CarePlan.encounter | ChargeItem.encounter | Claim.item.encounter | ClinicalImpression.encounter | Communication.encounter | CommunicationRequest.encounter | Composition.encounter | Condition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | EncounterHistory.encounter | ExplanationOfBenefit.item.encounter | Flag.encounter | ImagingStudy.encounter | List.encounter | MedicationDispense.encounter | MedicationStatement.encounter | NutritionIntake.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | Provenance.encounter | QuestionnaireResponse.encounter | RequestOrchestration.encounter | RiskAssessment.encounter | ServiceRequest.encounter | Task.encounter | VisionPrescription.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Claim:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("Claim:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): Account number
+* [AdverseEvent](adverseevent.html): Business identifier for the event
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [Appointment](appointment.html): An Identifier of the Appointment
+* [AppointmentResponse](appointmentresponse.html): An Identifier in this appointment response
+* [Basic](basic.html): Business identifier
+* [BodyStructure](bodystructure.html): Bodystructure identifier
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [ChargeItem](chargeitem.html): Business Identifier for item
+* [Claim](claim.html): The primary identifier of the financial resource
+* [ClaimResponse](claimresponse.html): The identity of the ClaimResponse
+* [ClinicalImpression](clinicalimpression.html): Business identifier
+* [Communication](communication.html): Unique identifier
+* [CommunicationRequest](communicationrequest.html): Unique identifier
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [Contract](contract.html): The identity of the contract
+* [Coverage](coverage.html): The primary identifier of the insured and the coverage
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The business identifier of the Eligibility
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The business identifier
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DeviceUsage](deviceusage.html): Search by identifier
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentReference](documentreference.html): Identifier of the attachment binary
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EnrollmentRequest](enrollmentrequest.html): The business identifier of the Enrollment
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [ExplanationOfBenefit](explanationofbenefit.html): The business identifier of the Explanation of Benefit
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Flag](flag.html): Business identifier
+* [Goal](goal.html): External Ids for this goal
+* [GuidanceResponse](guidanceresponse.html): The identifier of the guidance response
+* [ImagingSelection](imagingselection.html): Identifiers for the imaging selection
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
+* [Immunization](immunization.html): Business identifier
+* [ImmunizationEvaluation](immunizationevaluation.html): ID of the evaluation
+* [ImmunizationRecommendation](immunizationrecommendation.html): Business identifier
+* [Invoice](invoice.html): Business Identifier for item
+* [List](list.html): Business identifier
+* [MeasureReport](measurereport.html): External identifier of the measure report to be returned
+* [Medication](medication.html): Returns medications with this external identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationStatement](medicationstatement.html): Return statements with this external identifier
+* [MolecularSequence](molecularsequence.html): The unique identity for a particular sequence
+* [NutritionIntake](nutritionintake.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Person](person.html): A person Identifier
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [QuestionnaireResponse](questionnaireresponse.html): The unique identifier for the questionnaire response
+* [RelatedPerson](relatedperson.html): An Identifier of the RelatedPerson
+* [RequestOrchestration](requestorchestration.html): External identifiers for the request orchestration
+* [ResearchSubject](researchsubject.html): Business Identifier for research subject in a study
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [Specimen](specimen.html): The unique identifier associated with the specimen
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [Task](task.html): Search for a task instance by its business identifier
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.identifier | AdverseEvent.identifier | AllergyIntolerance.identifier | Appointment.identifier | AppointmentResponse.identifier | Basic.identifier | BodyStructure.identifier | CarePlan.identifier | CareTeam.identifier | ChargeItem.identifier | Claim.identifier | ClaimResponse.identifier | ClinicalImpression.identifier | Communication.identifier | CommunicationRequest.identifier | Composition.identifier | Condition.identifier | Consent.identifier | Contract.identifier | Coverage.identifier | CoverageEligibilityRequest.identifier | CoverageEligibilityResponse.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DeviceUsage.identifier | DiagnosticReport.identifier | DocumentReference.identifier | Encounter.identifier | EnrollmentRequest.identifier | EpisodeOfCare.identifier | ExplanationOfBenefit.identifier | FamilyMemberHistory.identifier | Flag.identifier | Goal.identifier | GuidanceResponse.identifier | ImagingSelection.identifier | ImagingStudy.identifier | Immunization.identifier | ImmunizationEvaluation.identifier | ImmunizationRecommendation.identifier | Invoice.identifier | List.identifier | MeasureReport.identifier | Medication.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationStatement.identifier | MolecularSequence.identifier | NutritionIntake.identifier | NutritionOrder.identifier | Observation.identifier | Person.identifier | Procedure.identifier | QuestionnaireResponse.identifier | RelatedPerson.identifier | RequestOrchestration.identifier | ResearchSubject.identifier | RiskAssessment.identifier | ServiceRequest.identifier | Specimen.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | Task.identifier | VisionPrescription.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Account.identifier | AdverseEvent.identifier | AllergyIntolerance.identifier | Appointment.identifier | AppointmentResponse.identifier | Basic.identifier | BodyStructure.identifier | CarePlan.identifier | CareTeam.identifier | ChargeItem.identifier | Claim.identifier | ClaimResponse.identifier | ClinicalImpression.identifier | Communication.identifier | CommunicationRequest.identifier | Composition.identifier | Condition.identifier | Consent.identifier | Contract.identifier | Coverage.identifier | CoverageEligibilityRequest.identifier | CoverageEligibilityResponse.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DeviceUsage.identifier | DiagnosticReport.identifier | DocumentReference.identifier | Encounter.identifier | EnrollmentRequest.identifier | EpisodeOfCare.identifier | ExplanationOfBenefit.identifier | FamilyMemberHistory.identifier | Flag.identifier | Goal.identifier | GuidanceResponse.identifier | ImagingSelection.identifier | ImagingStudy.identifier | Immunization.identifier | ImmunizationEvaluation.identifier | ImmunizationRecommendation.identifier | Invoice.identifier | List.identifier | MeasureReport.identifier | Medication.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationStatement.identifier | MolecularSequence.identifier | NutritionIntake.identifier | NutritionOrder.identifier | Observation.identifier | Person.identifier | Procedure.identifier | QuestionnaireResponse.identifier | RelatedPerson.identifier | RequestOrchestration.identifier | ResearchSubject.identifier | RiskAssessment.identifier | ServiceRequest.identifier | Specimen.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | Task.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [Account](account.html): Account number\r\n* [AdverseEvent](adverseevent.html): Business identifier for the event\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [Appointment](appointment.html): An Identifier of the Appointment\r\n* [AppointmentResponse](appointmentresponse.html): An Identifier in this appointment response\r\n* [Basic](basic.html): Business identifier\r\n* [BodyStructure](bodystructure.html): Bodystructure identifier\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [ChargeItem](chargeitem.html): Business Identifier for item\r\n* [Claim](claim.html): The primary identifier of the financial resource\r\n* [ClaimResponse](claimresponse.html): The identity of the ClaimResponse\r\n* [ClinicalImpression](clinicalimpression.html): Business identifier\r\n* [Communication](communication.html): Unique identifier\r\n* [CommunicationRequest](communicationrequest.html): Unique identifier\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [Contract](contract.html): The identity of the contract\r\n* [Coverage](coverage.html): The primary identifier of the insured and the coverage\r\n* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The business identifier of the Eligibility\r\n* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The business identifier\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DeviceUsage](deviceusage.html): Search by identifier\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EnrollmentRequest](enrollmentrequest.html): The business identifier of the Enrollment\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [ExplanationOfBenefit](explanationofbenefit.html): The business identifier of the Explanation of Benefit\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Flag](flag.html): Business identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [GuidanceResponse](guidanceresponse.html): The identifier of the guidance response\r\n* [ImagingSelection](imagingselection.html): Identifiers for the imaging selection\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [ImmunizationEvaluation](immunizationevaluation.html): ID of the evaluation\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Business identifier\r\n* [Invoice](invoice.html): Business Identifier for item\r\n* [List](list.html): Business identifier\r\n* [MeasureReport](measurereport.html): External identifier of the measure report to be returned\r\n* [Medication](medication.html): Returns medications with this external identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationStatement](medicationstatement.html): Return statements with this external identifier\r\n* [MolecularSequence](molecularsequence.html): The unique identity for a particular sequence\r\n* [NutritionIntake](nutritionintake.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Person](person.html): A person Identifier\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [QuestionnaireResponse](questionnaireresponse.html): The unique identifier for the questionnaire response\r\n* [RelatedPerson](relatedperson.html): An Identifier of the RelatedPerson\r\n* [RequestOrchestration](requestorchestration.html): External identifiers for the request orchestration\r\n* [ResearchSubject](researchsubject.html): Business Identifier for research subject in a study\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [Specimen](specimen.html): The unique identifier associated with the specimen\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [Task](task.html): Search for a task instance by its business identifier\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): Account number
+* [AdverseEvent](adverseevent.html): Business identifier for the event
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [Appointment](appointment.html): An Identifier of the Appointment
+* [AppointmentResponse](appointmentresponse.html): An Identifier in this appointment response
+* [Basic](basic.html): Business identifier
+* [BodyStructure](bodystructure.html): Bodystructure identifier
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [ChargeItem](chargeitem.html): Business Identifier for item
+* [Claim](claim.html): The primary identifier of the financial resource
+* [ClaimResponse](claimresponse.html): The identity of the ClaimResponse
+* [ClinicalImpression](clinicalimpression.html): Business identifier
+* [Communication](communication.html): Unique identifier
+* [CommunicationRequest](communicationrequest.html): Unique identifier
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [Contract](contract.html): The identity of the contract
+* [Coverage](coverage.html): The primary identifier of the insured and the coverage
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The business identifier of the Eligibility
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The business identifier
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DeviceUsage](deviceusage.html): Search by identifier
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentReference](documentreference.html): Identifier of the attachment binary
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EnrollmentRequest](enrollmentrequest.html): The business identifier of the Enrollment
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [ExplanationOfBenefit](explanationofbenefit.html): The business identifier of the Explanation of Benefit
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Flag](flag.html): Business identifier
+* [Goal](goal.html): External Ids for this goal
+* [GuidanceResponse](guidanceresponse.html): The identifier of the guidance response
+* [ImagingSelection](imagingselection.html): Identifiers for the imaging selection
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
+* [Immunization](immunization.html): Business identifier
+* [ImmunizationEvaluation](immunizationevaluation.html): ID of the evaluation
+* [ImmunizationRecommendation](immunizationrecommendation.html): Business identifier
+* [Invoice](invoice.html): Business Identifier for item
+* [List](list.html): Business identifier
+* [MeasureReport](measurereport.html): External identifier of the measure report to be returned
+* [Medication](medication.html): Returns medications with this external identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationStatement](medicationstatement.html): Return statements with this external identifier
+* [MolecularSequence](molecularsequence.html): The unique identity for a particular sequence
+* [NutritionIntake](nutritionintake.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Person](person.html): A person Identifier
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [QuestionnaireResponse](questionnaireresponse.html): The unique identifier for the questionnaire response
+* [RelatedPerson](relatedperson.html): An Identifier of the RelatedPerson
+* [RequestOrchestration](requestorchestration.html): External identifiers for the request orchestration
+* [ResearchSubject](researchsubject.html): Business Identifier for research subject in a study
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [Specimen](specimen.html): The unique identifier associated with the specimen
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [Task](task.html): Search for a task instance by its business identifier
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.identifier | AdverseEvent.identifier | AllergyIntolerance.identifier | Appointment.identifier | AppointmentResponse.identifier | Basic.identifier | BodyStructure.identifier | CarePlan.identifier | CareTeam.identifier | ChargeItem.identifier | Claim.identifier | ClaimResponse.identifier | ClinicalImpression.identifier | Communication.identifier | CommunicationRequest.identifier | Composition.identifier | Condition.identifier | Consent.identifier | Contract.identifier | Coverage.identifier | CoverageEligibilityRequest.identifier | CoverageEligibilityResponse.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DeviceUsage.identifier | DiagnosticReport.identifier | DocumentReference.identifier | Encounter.identifier | EnrollmentRequest.identifier | EpisodeOfCare.identifier | ExplanationOfBenefit.identifier | FamilyMemberHistory.identifier | Flag.identifier | Goal.identifier | GuidanceResponse.identifier | ImagingSelection.identifier | ImagingStudy.identifier | Immunization.identifier | ImmunizationEvaluation.identifier | ImmunizationRecommendation.identifier | Invoice.identifier | List.identifier | MeasureReport.identifier | Medication.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationStatement.identifier | MolecularSequence.identifier | NutritionIntake.identifier | NutritionOrder.identifier | Observation.identifier | Person.identifier | Procedure.identifier | QuestionnaireResponse.identifier | RelatedPerson.identifier | RequestOrchestration.identifier | ResearchSubject.identifier | RiskAssessment.identifier | ServiceRequest.identifier | Specimen.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | Task.identifier | VisionPrescription.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): The entity that caused the expenses
+* [AdverseEvent](adverseevent.html): Subject impacted by event
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [Appointment](appointment.html): One of the individuals of the appointment is this patient
+* [AppointmentResponse](appointmentresponse.html): This Response is for this Patient
+* [AuditEvent](auditevent.html): Where the activity involved patient data
+* [Basic](basic.html): Identifies the focus of this resource
+* [BodyStructure](bodystructure.html): Who this is about
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ChargeItem](chargeitem.html): Individual service was done for/to
+* [Claim](claim.html): Patient receiving the products or services
+* [ClaimResponse](claimresponse.html): The subject of care
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
+* [Communication](communication.html): Focus of message
+* [CommunicationRequest](communicationrequest.html): Focus of message
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [Contract](contract.html): The identity of the subject of the contract (if a patient)
+* [Coverage](coverage.html): Retrieve coverages for a patient
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The reference to the patient
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The reference to the patient
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient present at the encounter
+* [EnrollmentRequest](enrollmentrequest.html): The party to be enrolled
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [ExplanationOfBenefit](explanationofbenefit.html): The reference to the patient
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [GuidanceResponse](guidanceresponse.html): The identity of a patient to search for guidance response results
+* [ImagingSelection](imagingselection.html): Who the study is about
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [ImmunizationEvaluation](immunizationevaluation.html): The patient being evaluated
+* [ImmunizationRecommendation](immunizationrecommendation.html): Who this profile is for
+* [Invoice](invoice.html): Recipient(s) of goods and services
+* [List](list.html): If all resources have the same subject
+* [MeasureReport](measurereport.html): The identity of a patient to search for individual measure report results for
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationStatement](medicationstatement.html): Returns statements for a specific patient.
+* [MolecularSequence](molecularsequence.html): The subject that the sequence is about
+* [NutritionIntake](nutritionintake.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Person](person.html): The Person links to this Patient
+* [Procedure](procedure.html): Search by subject - a patient
+* [Provenance](provenance.html): Where the activity involved patient data
+* [QuestionnaireResponse](questionnaireresponse.html): The patient that is the subject of the questionnaire response
+* [RelatedPerson](relatedperson.html): The patient this related person is related to
+* [RequestOrchestration](requestorchestration.html): The identity of a patient to search for request orchestrations
+* [ResearchSubject](researchsubject.html): Who or what is part of study
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [Specimen](specimen.html): The patient the specimen comes from
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
+* [Task](task.html): Search by patient
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject.where(resolve() is Patient) | AdverseEvent.subject.where(resolve() is Patient) | AllergyIntolerance.patient | Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient) | AppointmentResponse.actor.where(resolve() is Patient) | AuditEvent.patient | Basic.subject.where(resolve() is Patient) | BodyStructure.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ChargeItem.subject.where(resolve() is Patient) | Claim.patient | ClaimResponse.patient | ClinicalImpression.subject.where(resolve() is Patient) | Communication.subject.where(resolve() is Patient) | CommunicationRequest.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | Contract.subject.where(resolve() is Patient) | Coverage.beneficiary | CoverageEligibilityRequest.patient | CoverageEligibilityResponse.patient | DetectedIssue.subject.where(resolve() is Patient) | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EnrollmentRequest.candidate | EpisodeOfCare.patient | ExplanationOfBenefit.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | GuidanceResponse.subject.where(resolve() is Patient) | ImagingSelection.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | ImmunizationEvaluation.patient | ImmunizationRecommendation.patient | Invoice.subject.where(resolve() is Patient) | List.subject.where(resolve() is Patient) | MeasureReport.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationStatement.subject.where(resolve() is Patient) | MolecularSequence.subject.where(resolve() is Patient) | NutritionIntake.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Person.link.target.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | Provenance.patient | QuestionnaireResponse.subject.where(resolve() is Patient) | RelatedPerson.patient | RequestOrchestration.subject.where(resolve() is Patient) | ResearchSubject.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | Specimen.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | Task.for.where(resolve() is Patient) | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="Account.subject.where(resolve() is Patient) | AdverseEvent.subject.where(resolve() is Patient) | AllergyIntolerance.patient | Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient) | AppointmentResponse.actor.where(resolve() is Patient) | AuditEvent.patient | Basic.subject.where(resolve() is Patient) | BodyStructure.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ChargeItem.subject.where(resolve() is Patient) | Claim.patient | ClaimResponse.patient | ClinicalImpression.subject.where(resolve() is Patient) | Communication.subject.where(resolve() is Patient) | CommunicationRequest.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | Contract.subject.where(resolve() is Patient) | Coverage.beneficiary | CoverageEligibilityRequest.patient | CoverageEligibilityResponse.patient | DetectedIssue.subject.where(resolve() is Patient) | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EnrollmentRequest.candidate | EpisodeOfCare.patient | ExplanationOfBenefit.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | GuidanceResponse.subject.where(resolve() is Patient) | ImagingSelection.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | ImmunizationEvaluation.patient | ImmunizationRecommendation.patient | Invoice.subject.where(resolve() is Patient) | List.subject.where(resolve() is Patient) | MeasureReport.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationStatement.subject.where(resolve() is Patient) | MolecularSequence.subject.where(resolve() is Patient) | NutritionIntake.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Person.link.target.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | Provenance.patient | QuestionnaireResponse.subject.where(resolve() is Patient) | RelatedPerson.patient | RequestOrchestration.subject.where(resolve() is Patient) | ResearchSubject.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | Specimen.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | Task.for.where(resolve() is Patient) | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [Account](account.html): The entity that caused the expenses\r\n* [AdverseEvent](adverseevent.html): Subject impacted by event\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [Appointment](appointment.html): One of the individuals of the appointment is this patient\r\n* [AppointmentResponse](appointmentresponse.html): This Response is for this Patient\r\n* [AuditEvent](auditevent.html): Where the activity involved patient data\r\n* [Basic](basic.html): Identifies the focus of this resource\r\n* [BodyStructure](bodystructure.html): Who this is about\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ChargeItem](chargeitem.html): Individual service was done for/to\r\n* [Claim](claim.html): Patient receiving the products or services\r\n* [ClaimResponse](claimresponse.html): The subject of care\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Communication](communication.html): Focus of message\r\n* [CommunicationRequest](communicationrequest.html): Focus of message\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [Contract](contract.html): The identity of the subject of the contract (if a patient)\r\n* [Coverage](coverage.html): Retrieve coverages for a patient\r\n* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The reference to the patient\r\n* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The reference to the patient\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EnrollmentRequest](enrollmentrequest.html): The party to be enrolled\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [ExplanationOfBenefit](explanationofbenefit.html): The reference to the patient\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [GuidanceResponse](guidanceresponse.html): The identity of a patient to search for guidance response results\r\n* [ImagingSelection](imagingselection.html): Who the study is about\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [ImmunizationEvaluation](immunizationevaluation.html): The patient being evaluated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Who this profile is for\r\n* [Invoice](invoice.html): Recipient(s) of goods and services\r\n* [List](list.html): If all resources have the same subject\r\n* [MeasureReport](measurereport.html): The identity of a patient to search for individual measure report results for\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationStatement](medicationstatement.html): Returns statements for a specific patient.\r\n* [MolecularSequence](molecularsequence.html): The subject that the sequence is about\r\n* [NutritionIntake](nutritionintake.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Person](person.html): The Person links to this Patient\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [Provenance](provenance.html): Where the activity involved patient data\r\n* [QuestionnaireResponse](questionnaireresponse.html): The patient that is the subject of the questionnaire response\r\n* [RelatedPerson](relatedperson.html): The patient this related person is related to\r\n* [RequestOrchestration](requestorchestration.html): The identity of a patient to search for request orchestrations\r\n* [ResearchSubject](researchsubject.html): Who or what is part of study\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [Specimen](specimen.html): The patient the specimen comes from\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined\r\n* [Task](task.html): Search by patient\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Account](account.html): The entity that caused the expenses
+* [AdverseEvent](adverseevent.html): Subject impacted by event
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [Appointment](appointment.html): One of the individuals of the appointment is this patient
+* [AppointmentResponse](appointmentresponse.html): This Response is for this Patient
+* [AuditEvent](auditevent.html): Where the activity involved patient data
+* [Basic](basic.html): Identifies the focus of this resource
+* [BodyStructure](bodystructure.html): Who this is about
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ChargeItem](chargeitem.html): Individual service was done for/to
+* [Claim](claim.html): Patient receiving the products or services
+* [ClaimResponse](claimresponse.html): The subject of care
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
+* [Communication](communication.html): Focus of message
+* [CommunicationRequest](communicationrequest.html): Focus of message
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [Contract](contract.html): The identity of the subject of the contract (if a patient)
+* [Coverage](coverage.html): Retrieve coverages for a patient
+* [CoverageEligibilityRequest](coverageeligibilityrequest.html): The reference to the patient
+* [CoverageEligibilityResponse](coverageeligibilityresponse.html): The reference to the patient
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient present at the encounter
+* [EnrollmentRequest](enrollmentrequest.html): The party to be enrolled
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [ExplanationOfBenefit](explanationofbenefit.html): The reference to the patient
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [GuidanceResponse](guidanceresponse.html): The identity of a patient to search for guidance response results
+* [ImagingSelection](imagingselection.html): Who the study is about
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [ImmunizationEvaluation](immunizationevaluation.html): The patient being evaluated
+* [ImmunizationRecommendation](immunizationrecommendation.html): Who this profile is for
+* [Invoice](invoice.html): Recipient(s) of goods and services
+* [List](list.html): If all resources have the same subject
+* [MeasureReport](measurereport.html): The identity of a patient to search for individual measure report results for
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationStatement](medicationstatement.html): Returns statements for a specific patient.
+* [MolecularSequence](molecularsequence.html): The subject that the sequence is about
+* [NutritionIntake](nutritionintake.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Person](person.html): The Person links to this Patient
+* [Procedure](procedure.html): Search by subject - a patient
+* [Provenance](provenance.html): Where the activity involved patient data
+* [QuestionnaireResponse](questionnaireresponse.html): The patient that is the subject of the questionnaire response
+* [RelatedPerson](relatedperson.html): The patient this related person is related to
+* [RequestOrchestration](requestorchestration.html): The identity of a patient to search for request orchestrations
+* [ResearchSubject](researchsubject.html): Who or what is part of study
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [Specimen](specimen.html): The patient the specimen comes from
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
+* [Task](task.html): Search by patient
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject.where(resolve() is Patient) | AdverseEvent.subject.where(resolve() is Patient) | AllergyIntolerance.patient | Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient) | AppointmentResponse.actor.where(resolve() is Patient) | AuditEvent.patient | Basic.subject.where(resolve() is Patient) | BodyStructure.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ChargeItem.subject.where(resolve() is Patient) | Claim.patient | ClaimResponse.patient | ClinicalImpression.subject.where(resolve() is Patient) | Communication.subject.where(resolve() is Patient) | CommunicationRequest.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | Contract.subject.where(resolve() is Patient) | Coverage.beneficiary | CoverageEligibilityRequest.patient | CoverageEligibilityResponse.patient | DetectedIssue.subject.where(resolve() is Patient) | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EnrollmentRequest.candidate | EpisodeOfCare.patient | ExplanationOfBenefit.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | GuidanceResponse.subject.where(resolve() is Patient) | ImagingSelection.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | ImmunizationEvaluation.patient | ImmunizationRecommendation.patient | Invoice.subject.where(resolve() is Patient) | List.subject.where(resolve() is Patient) | MeasureReport.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationStatement.subject.where(resolve() is Patient) | MolecularSequence.subject.where(resolve() is Patient) | NutritionIntake.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Person.link.target.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | Provenance.patient | QuestionnaireResponse.subject.where(resolve() is Patient) | RelatedPerson.patient | RequestOrchestration.subject.where(resolve() is Patient) | ResearchSubject.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | Specimen.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | Task.for.where(resolve() is Patient) | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Claim:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Claim:patient").toLocked();
 
 
 }

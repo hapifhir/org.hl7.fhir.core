@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1412,7 +1412,7 @@ public class TestReport extends DomainResource {
          * @param value An explanatory message associated with the result.
          */
         public SetupActionOperationComponent setMessage(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.message = null;
           else {
             if (this.message == null)
@@ -1640,7 +1640,14 @@ public class TestReport extends DomainResource {
         @Description(shortDefinition="A link to further details on the result", formalDefinition="A link to further details on the result." )
         protected StringType detail;
 
-        private static final long serialVersionUID = 467968193L;
+        /**
+         * Links or references providing traceability to the testing requirements for this assert.
+         */
+        @Child(name = "requirement", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Links or references to the testing requirements", formalDefinition="Links or references providing traceability to the testing requirements for this assert." )
+        protected List<SetupActionAssertRequirementComponent> requirement;
+
+        private static final long serialVersionUID = -132618689L;
 
     /**
      * Constructor
@@ -1741,7 +1748,7 @@ public class TestReport extends DomainResource {
          * @param value An explanatory message associated with the result.
          */
         public SetupActionAssertComponent setMessage(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.message = null;
           else {
             if (this.message == null)
@@ -1800,11 +1807,65 @@ public class TestReport extends DomainResource {
           return this;
         }
 
+        /**
+         * @return {@link #requirement} (Links or references providing traceability to the testing requirements for this assert.)
+         */
+        public List<SetupActionAssertRequirementComponent> getRequirement() { 
+          if (this.requirement == null)
+            this.requirement = new ArrayList<SetupActionAssertRequirementComponent>();
+          return this.requirement;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public SetupActionAssertComponent setRequirement(List<SetupActionAssertRequirementComponent> theRequirement) { 
+          this.requirement = theRequirement;
+          return this;
+        }
+
+        public boolean hasRequirement() { 
+          if (this.requirement == null)
+            return false;
+          for (SetupActionAssertRequirementComponent item : this.requirement)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public SetupActionAssertRequirementComponent addRequirement() { //3
+          SetupActionAssertRequirementComponent t = new SetupActionAssertRequirementComponent();
+          if (this.requirement == null)
+            this.requirement = new ArrayList<SetupActionAssertRequirementComponent>();
+          this.requirement.add(t);
+          return t;
+        }
+
+        public SetupActionAssertComponent addRequirement(SetupActionAssertRequirementComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.requirement == null)
+            this.requirement = new ArrayList<SetupActionAssertRequirementComponent>();
+          this.requirement.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #requirement}, creating it if it does not already exist {3}
+         */
+        public SetupActionAssertRequirementComponent getRequirementFirstRep() { 
+          if (getRequirement().isEmpty()) {
+            addRequirement();
+          }
+          return getRequirement().get(0);
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("result", "code", "The result of this assertion.", 0, 1, result));
           children.add(new Property("message", "markdown", "An explanatory message associated with the result.", 0, 1, message));
           children.add(new Property("detail", "string", "A link to further details on the result.", 0, 1, detail));
+          children.add(new Property("requirement", "", "Links or references providing traceability to the testing requirements for this assert.", 0, java.lang.Integer.MAX_VALUE, requirement));
         }
 
         @Override
@@ -1813,6 +1874,7 @@ public class TestReport extends DomainResource {
           case -934426595: /*result*/  return new Property("result", "code", "The result of this assertion.", 0, 1, result);
           case 954925063: /*message*/  return new Property("message", "markdown", "An explanatory message associated with the result.", 0, 1, message);
           case -1335224239: /*detail*/  return new Property("detail", "string", "A link to further details on the result.", 0, 1, detail);
+          case 363387971: /*requirement*/  return new Property("requirement", "", "Links or references providing traceability to the testing requirements for this assert.", 0, java.lang.Integer.MAX_VALUE, requirement);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1824,6 +1886,7 @@ public class TestReport extends DomainResource {
         case -934426595: /*result*/ return this.result == null ? new Base[0] : new Base[] {this.result}; // Enumeration<TestReportActionResult>
         case 954925063: /*message*/ return this.message == null ? new Base[0] : new Base[] {this.message}; // MarkdownType
         case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : new Base[] {this.detail}; // StringType
+        case 363387971: /*requirement*/ return this.requirement == null ? new Base[0] : this.requirement.toArray(new Base[this.requirement.size()]); // SetupActionAssertRequirementComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1842,6 +1905,9 @@ public class TestReport extends DomainResource {
         case -1335224239: // detail
           this.detail = TypeConvertor.castToString(value); // StringType
           return value;
+        case 363387971: // requirement
+          this.getRequirement().add((SetupActionAssertRequirementComponent) value); // SetupActionAssertRequirementComponent
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -1856,6 +1922,8 @@ public class TestReport extends DomainResource {
           this.message = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("detail")) {
           this.detail = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("requirement")) {
+          this.getRequirement().add((SetupActionAssertRequirementComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -1867,6 +1935,7 @@ public class TestReport extends DomainResource {
         case -934426595:  return getResultElement();
         case 954925063:  return getMessageElement();
         case -1335224239:  return getDetailElement();
+        case 363387971:  return addRequirement(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -1878,6 +1947,7 @@ public class TestReport extends DomainResource {
         case -934426595: /*result*/ return new String[] {"code"};
         case 954925063: /*message*/ return new String[] {"markdown"};
         case -1335224239: /*detail*/ return new String[] {"string"};
+        case 363387971: /*requirement*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1894,6 +1964,9 @@ public class TestReport extends DomainResource {
         else if (name.equals("detail")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestReport.setup.action.assert.detail");
         }
+        else if (name.equals("requirement")) {
+          return addRequirement();
+        }
         else
           return super.addChild(name);
       }
@@ -1909,6 +1982,11 @@ public class TestReport extends DomainResource {
         dst.result = result == null ? null : result.copy();
         dst.message = message == null ? null : message.copy();
         dst.detail = detail == null ? null : detail.copy();
+        if (requirement != null) {
+          dst.requirement = new ArrayList<SetupActionAssertRequirementComponent>();
+          for (SetupActionAssertRequirementComponent i : requirement)
+            dst.requirement.add(i.copy());
+        };
       }
 
       @Override
@@ -1919,7 +1997,7 @@ public class TestReport extends DomainResource {
           return false;
         SetupActionAssertComponent o = (SetupActionAssertComponent) other_;
         return compareDeep(result, o.result, true) && compareDeep(message, o.message, true) && compareDeep(detail, o.detail, true)
-          ;
+           && compareDeep(requirement, o.requirement, true);
       }
 
       @Override
@@ -1935,11 +2013,201 @@ public class TestReport extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(result, message, detail
-          );
+          , requirement);
       }
 
   public String fhirType() {
     return "TestReport.setup.action.assert";
+
+  }
+
+  }
+
+    @Block()
+    public static class SetupActionAssertRequirementComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Link or reference providing traceability to the testing requirement for this test.
+         */
+        @Child(name = "link", type = {UriType.class, CanonicalType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Link or reference to the testing requirement", formalDefinition="Link or reference providing traceability to the testing requirement for this test." )
+        protected DataType link;
+
+        private static final long serialVersionUID = -91187948L;
+
+    /**
+     * Constructor
+     */
+      public SetupActionAssertRequirementComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #link} (Link or reference providing traceability to the testing requirement for this test.)
+         */
+        public DataType getLink() { 
+          return this.link;
+        }
+
+        /**
+         * @return {@link #link} (Link or reference providing traceability to the testing requirement for this test.)
+         */
+        public UriType getLinkUriType() throws FHIRException { 
+          if (this.link == null)
+            this.link = new UriType();
+          if (!(this.link instanceof UriType))
+            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.link.getClass().getName()+" was encountered");
+          return (UriType) this.link;
+        }
+
+        public boolean hasLinkUriType() { 
+          return this != null && this.link instanceof UriType;
+        }
+
+        /**
+         * @return {@link #link} (Link or reference providing traceability to the testing requirement for this test.)
+         */
+        public CanonicalType getLinkCanonicalType() throws FHIRException { 
+          if (this.link == null)
+            this.link = new CanonicalType();
+          if (!(this.link instanceof CanonicalType))
+            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.link.getClass().getName()+" was encountered");
+          return (CanonicalType) this.link;
+        }
+
+        public boolean hasLinkCanonicalType() { 
+          return this != null && this.link instanceof CanonicalType;
+        }
+
+        public boolean hasLink() { 
+          return this.link != null && !this.link.isEmpty();
+        }
+
+        /**
+         * @param value {@link #link} (Link or reference providing traceability to the testing requirement for this test.)
+         */
+        public SetupActionAssertRequirementComponent setLink(DataType value) { 
+          if (value != null && !(value instanceof UriType || value instanceof CanonicalType))
+            throw new Error("Not the right type for TestReport.setup.action.assert.requirement.link[x]: "+value.fhirType());
+          this.link = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("link[x]", "uri|canonical(Requirements)", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 177076806: /*link[x]*/  return new Property("link[x]", "uri|canonical(Requirements)", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link);
+          case 3321850: /*link*/  return new Property("link[x]", "uri|canonical(Requirements)", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link);
+          case 177070866: /*linkUri*/  return new Property("link[x]", "uri", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link);
+          case -2064880102: /*linkCanonical*/  return new Property("link[x]", "canonical(Requirements)", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3321850: /*link*/ return this.link == null ? new Base[0] : new Base[] {this.link}; // DataType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3321850: // link
+          this.link = TypeConvertor.castToType(value); // DataType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("link[x]")) {
+          this.link = TypeConvertor.castToType(value); // DataType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 177076806:  return getLink();
+        case 3321850:  return getLink();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3321850: /*link*/ return new String[] {"uri", "canonical"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("linkUri")) {
+          this.link = new UriType();
+          return this.link;
+        }
+        else if (name.equals("linkCanonical")) {
+          this.link = new CanonicalType();
+          return this.link;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public SetupActionAssertRequirementComponent copy() {
+        SetupActionAssertRequirementComponent dst = new SetupActionAssertRequirementComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionAssertRequirementComponent dst) {
+        super.copyValues(dst);
+        dst.link = link == null ? null : link.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof SetupActionAssertRequirementComponent))
+          return false;
+        SetupActionAssertRequirementComponent o = (SetupActionAssertRequirementComponent) other_;
+        return compareDeep(link, o.link, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof SetupActionAssertRequirementComponent))
+          return false;
+        SetupActionAssertRequirementComponent o = (SetupActionAssertRequirementComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(link);
+      }
+
+  public String fhirType() {
+    return "TestReport.setup.action.assert.requirement";
 
   }
 
@@ -3897,3 +4165,4 @@ public class TestReport extends DomainResource {
 
 
 }
+

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,17 +51,17 @@ import ca.uhn.fhir.model.api.annotation.Block;
 public class MarketingStatus extends BackboneType implements ICompositeType {
 
     /**
-     * The country in which the marketing authorisation has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.
+     * The country in which the marketing authorization has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.
      */
     @Child(name = "country", type = {CodeableConcept.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The country in which the marketing authorisation has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements", formalDefinition="The country in which the marketing authorisation has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements." )
+    @Description(shortDefinition="The country in which the marketing authorization has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements", formalDefinition="The country in which the marketing authorization has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements." )
     protected CodeableConcept country;
 
     /**
-     * Where a Medicines Regulatory Agency has granted a marketing authorisation for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified.
+     * Where a Medicines Regulatory Agency has granted a marketing authorization for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified.
      */
     @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Where a Medicines Regulatory Agency has granted a marketing authorisation for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified", formalDefinition="Where a Medicines Regulatory Agency has granted a marketing authorisation for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified." )
+    @Description(shortDefinition="Where a Medicines Regulatory Agency has granted a marketing authorization for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified", formalDefinition="Where a Medicines Regulatory Agency has granted a marketing authorization for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified." )
     protected CodeableConcept jurisdiction;
 
     /**
@@ -72,17 +72,17 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
     protected CodeableConcept status;
 
     /**
-     * The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.
+     * The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.
      */
     @Child(name = "dateRange", type = {Period.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain", formalDefinition="The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain." )
+    @Description(shortDefinition="The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain", formalDefinition="The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain." )
     protected Period dateRange;
 
     /**
-     * The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.
+     * The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.
      */
     @Child(name = "restoreDate", type = {DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain", formalDefinition="The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain." )
+    @Description(shortDefinition="The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain", formalDefinition="The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain." )
     protected DateTimeType restoreDate;
 
     private static final long serialVersionUID = -1445736863L;
@@ -103,7 +103,7 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @return {@link #country} (The country in which the marketing authorisation has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.)
+     * @return {@link #country} (The country in which the marketing authorization has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.)
      */
     public CodeableConcept getCountry() { 
       if (this.country == null)
@@ -119,7 +119,7 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @param value {@link #country} (The country in which the marketing authorisation has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.)
+     * @param value {@link #country} (The country in which the marketing authorization has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.)
      */
     public MarketingStatus setCountry(CodeableConcept value) { 
       this.country = value;
@@ -127,7 +127,7 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @return {@link #jurisdiction} (Where a Medicines Regulatory Agency has granted a marketing authorisation for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified.)
+     * @return {@link #jurisdiction} (Where a Medicines Regulatory Agency has granted a marketing authorization for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified.)
      */
     public CodeableConcept getJurisdiction() { 
       if (this.jurisdiction == null)
@@ -143,7 +143,7 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @param value {@link #jurisdiction} (Where a Medicines Regulatory Agency has granted a marketing authorisation for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified.)
+     * @param value {@link #jurisdiction} (Where a Medicines Regulatory Agency has granted a marketing authorization for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified.)
      */
     public MarketingStatus setJurisdiction(CodeableConcept value) { 
       this.jurisdiction = value;
@@ -175,7 +175,7 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @return {@link #dateRange} (The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.)
+     * @return {@link #dateRange} (The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.)
      */
     public Period getDateRange() { 
       if (this.dateRange == null)
@@ -191,7 +191,7 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @param value {@link #dateRange} (The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.)
+     * @param value {@link #dateRange} (The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.)
      */
     public MarketingStatus setDateRange(Period value) { 
       this.dateRange = value;
@@ -199,7 +199,7 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @return {@link #restoreDate} (The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.). This is the underlying object with id, value and extensions. The accessor "getRestoreDate" gives direct access to the value
+     * @return {@link #restoreDate} (The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.). This is the underlying object with id, value and extensions. The accessor "getRestoreDate" gives direct access to the value
      */
     public DateTimeType getRestoreDateElement() { 
       if (this.restoreDate == null)
@@ -219,7 +219,7 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @param value {@link #restoreDate} (The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.). This is the underlying object with id, value and extensions. The accessor "getRestoreDate" gives direct access to the value
+     * @param value {@link #restoreDate} (The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.). This is the underlying object with id, value and extensions. The accessor "getRestoreDate" gives direct access to the value
      */
     public MarketingStatus setRestoreDateElement(DateTimeType value) { 
       this.restoreDate = value;
@@ -227,14 +227,14 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @return The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.
+     * @return The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.
      */
     public Date getRestoreDate() { 
       return this.restoreDate == null ? null : this.restoreDate.getValue();
     }
 
     /**
-     * @param value The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.
+     * @param value The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.
      */
     public MarketingStatus setRestoreDate(Date value) { 
       if (value == null)
@@ -249,21 +249,21 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("country", "CodeableConcept", "The country in which the marketing authorisation has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.", 0, 1, country));
-        children.add(new Property("jurisdiction", "CodeableConcept", "Where a Medicines Regulatory Agency has granted a marketing authorisation for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified.", 0, 1, jurisdiction));
+        children.add(new Property("country", "CodeableConcept", "The country in which the marketing authorization has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.", 0, 1, country));
+        children.add(new Property("jurisdiction", "CodeableConcept", "Where a Medicines Regulatory Agency has granted a marketing authorization for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified.", 0, 1, jurisdiction));
         children.add(new Property("status", "CodeableConcept", "This attribute provides information on the status of the marketing of the medicinal product See ISO/TS 20443 for more information and examples.", 0, 1, status));
-        children.add(new Property("dateRange", "Period", "The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.", 0, 1, dateRange));
-        children.add(new Property("restoreDate", "dateTime", "The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.", 0, 1, restoreDate));
+        children.add(new Property("dateRange", "Period", "The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.", 0, 1, dateRange));
+        children.add(new Property("restoreDate", "dateTime", "The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.", 0, 1, restoreDate));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 957831062: /*country*/  return new Property("country", "CodeableConcept", "The country in which the marketing authorisation has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.", 0, 1, country);
-        case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "Where a Medicines Regulatory Agency has granted a marketing authorisation for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified.", 0, 1, jurisdiction);
+        case 957831062: /*country*/  return new Property("country", "CodeableConcept", "The country in which the marketing authorization has been granted shall be specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.", 0, 1, country);
+        case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "Where a Medicines Regulatory Agency has granted a marketing authorization for which specific provisions within a jurisdiction apply, the jurisdiction can be specified using an appropriate controlled terminology The controlled term and the controlled term identifier shall be specified.", 0, 1, jurisdiction);
         case -892481550: /*status*/  return new Property("status", "CodeableConcept", "This attribute provides information on the status of the marketing of the medicinal product See ISO/TS 20443 for more information and examples.", 0, 1, status);
-        case -261425617: /*dateRange*/  return new Property("dateRange", "Period", "The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.", 0, 1, dateRange);
-        case 329465692: /*restoreDate*/  return new Property("restoreDate", "dateTime", "The date when the Medicinal Product is placed on the market by the Marketing Authorisation Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.", 0, 1, restoreDate);
+        case -261425617: /*dateRange*/  return new Property("dateRange", "Period", "The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.", 0, 1, dateRange);
+        case 329465692: /*restoreDate*/  return new Property("restoreDate", "dateTime", "The date when the Medicinal Product is placed on the market by the Marketing Authorization Holder (or where applicable, the manufacturer/distributor) in a country and/or jurisdiction shall be provided A complete date consisting of day, month and year shall be specified using the ISO 8601 date format NOTE “Placed on the market” refers to the release of the Medicinal Product into the distribution chain.", 0, 1, restoreDate);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 

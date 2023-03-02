@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
 import ca.uhn.fhir.util.DatatypeUtil;
 import  org.hl7.fhir.instance.model.api.IPrimitiveType;
 /**
- * HumanName Type: A name, normally of a human, that can be used for other living entities (eg. animals but not organizations) that have been assigned names by a human and may need the use of name parts or the need for usage information.
+ * HumanName Type: A name, normally of a human, that can be used for other living entities (e.g. animals but not organizations) that have been assigned names by a human and may need the use of name parts or the need for usage information.
  */
 @DatatypeDef(name="HumanName")
 public class HumanName extends DataType implements ICompositeType {
@@ -930,3 +930,4 @@ public class HumanName extends DataType implements ICompositeType {
 // end addition
 
 }
+

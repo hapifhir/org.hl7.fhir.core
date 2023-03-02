@@ -358,6 +358,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       engine.initContext(timeTracker);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
       loadTx(engine);
+      if (VersionUtilities.isR5Ver(version)) {
+        engine.loadPackage("hl7.fhir.uv.extensions", null);
+      }
       return engine;
     }
 
@@ -373,6 +376,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
       if (THO) {
         loadTx(engine);
+      }
+      if (VersionUtilities.isR5Ver(version)) {
+        engine.loadPackage("hl7.fhir.uv.extensions", null);
       }
       return engine;
     }
@@ -394,6 +400,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if (pid != null) {
         engine.loadPackage(pid, null);
       }
+      
     }
   }
 

@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 
 
@@ -48,6 +48,7 @@ Account,
     Basic,
     Binary,
     BiologicallyDerivedProduct,
+    BiologicallyDerivedProductDispense,
     BodyStructure,
     Bundle,
     CapabilityStatement,
@@ -75,15 +76,16 @@ Account,
     CoverageEligibilityResponse,
     DetectedIssue,
     Device,
+    DeviceAssociation,
     DeviceDefinition,
     DeviceDispense,
     DeviceMetric,
     DeviceRequest,
     DeviceUsage,
     DiagnosticReport,
-    DocumentManifest,
     DocumentReference,
     Encounter,
+    EncounterHistory,
     Endpoint,
     EnrollmentRequest,
     EnrollmentResponse,
@@ -111,6 +113,7 @@ Account,
     ImplementationGuide,
     Ingredient,
     InsurancePlan,
+    InventoryItem,
     InventoryReport,
     Invoice,
     Library,
@@ -125,7 +128,7 @@ Account,
     MedicationDispense,
     MedicationKnowledge,
     MedicationRequest,
-    MedicationUsage,
+    MedicationStatement,
     MedicinalProductDefinition,
     MessageDefinition,
     MessageHeader,
@@ -183,6 +186,7 @@ Account,
     SupplyRequest,
     Task,
     TerminologyCapabilities,
+    TestPlan,
     TestReport,
     TestScript,
     Transport,
@@ -219,6 +223,8 @@ Account,
       return "binary";
     case BiologicallyDerivedProduct:
       return "biologicallyderivedproduct";
+    case BiologicallyDerivedProductDispense:
+      return "biologicallyderivedproductdispense";
     case BodyStructure:
       return "bodystructure";
     case Bundle:
@@ -273,6 +279,8 @@ Account,
       return "detectedissue";
     case Device:
       return "device";
+    case DeviceAssociation:
+      return "deviceassociation";
     case DeviceDefinition:
       return "devicedefinition";
     case DeviceDispense:
@@ -285,12 +293,12 @@ Account,
       return "deviceusage";
     case DiagnosticReport:
       return "diagnosticreport";
-    case DocumentManifest:
-      return "documentmanifest";
     case DocumentReference:
       return "documentreference";
     case Encounter:
       return "encounter";
+    case EncounterHistory:
+      return "encounterhistory";
     case Endpoint:
       return "endpoint";
     case EnrollmentRequest:
@@ -345,6 +353,8 @@ Account,
       return "ingredient";
     case InsurancePlan:
       return "insuranceplan";
+    case InventoryItem:
+      return "inventoryitem";
     case InventoryReport:
       return "inventoryreport";
     case Invoice:
@@ -373,8 +383,8 @@ Account,
       return "medicationknowledge";
     case MedicationRequest:
       return "medicationrequest";
-    case MedicationUsage:
-      return "medicationusage";
+    case MedicationStatement:
+      return "medicationstatement";
     case MedicinalProductDefinition:
       return "medicinalproductdefinition";
     case MessageDefinition:
@@ -489,6 +499,8 @@ Account,
       return "task";
     case TerminologyCapabilities:
       return "terminologycapabilities";
+    case TestPlan:
+      return "testplan";
     case TestReport:
       return "testreport";
     case TestScript:
@@ -534,6 +546,8 @@ Account,
       return Binary;
     if ("BiologicallyDerivedProduct".equals(code))
       return BiologicallyDerivedProduct;
+    if ("BiologicallyDerivedProductDispense".equals(code))
+      return BiologicallyDerivedProductDispense;
     if ("BodyStructure".equals(code))
       return BodyStructure;
     if ("Bundle".equals(code))
@@ -588,6 +602,8 @@ Account,
       return DetectedIssue;
     if ("Device".equals(code))
       return Device;
+    if ("DeviceAssociation".equals(code))
+      return DeviceAssociation;
     if ("DeviceDefinition".equals(code))
       return DeviceDefinition;
     if ("DeviceDispense".equals(code))
@@ -600,12 +616,12 @@ Account,
       return DeviceUsage;
     if ("DiagnosticReport".equals(code))
       return DiagnosticReport;
-    if ("DocumentManifest".equals(code))
-      return DocumentManifest;
     if ("DocumentReference".equals(code))
       return DocumentReference;
     if ("Encounter".equals(code))
       return Encounter;
+    if ("EncounterHistory".equals(code))
+      return EncounterHistory;
     if ("Endpoint".equals(code))
       return Endpoint;
     if ("EnrollmentRequest".equals(code))
@@ -660,6 +676,8 @@ Account,
       return Ingredient;
     if ("InsurancePlan".equals(code))
       return InsurancePlan;
+    if ("InventoryItem".equals(code))
+      return InventoryItem;
     if ("InventoryReport".equals(code))
       return InventoryReport;
     if ("Invoice".equals(code))
@@ -688,8 +706,8 @@ Account,
       return MedicationKnowledge;
     if ("MedicationRequest".equals(code))
       return MedicationRequest;
-    if ("MedicationUsage".equals(code))
-      return MedicationUsage;
+    if ("MedicationStatement".equals(code))
+      return MedicationStatement;
     if ("MedicinalProductDefinition".equals(code))
       return MedicinalProductDefinition;
     if ("MessageDefinition".equals(code))
@@ -804,6 +822,8 @@ Account,
       return Task;
     if ("TerminologyCapabilities".equals(code))
       return TerminologyCapabilities;
+    if ("TestPlan".equals(code))
+      return TestPlan;
     if ("TestReport".equals(code))
       return TestReport;
     if ("TestScript".equals(code))

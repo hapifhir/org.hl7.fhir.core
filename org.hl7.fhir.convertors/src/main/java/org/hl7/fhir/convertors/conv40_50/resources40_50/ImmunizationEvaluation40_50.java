@@ -63,7 +63,7 @@ public class ImmunizationEvaluation40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getDoseStatusReason())
       tgt.addDoseStatusReason(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasSeries())
       tgt.setSeriesElement(String40_50.convertString(src.getSeriesElement()));
     if (src.hasDoseNumber())

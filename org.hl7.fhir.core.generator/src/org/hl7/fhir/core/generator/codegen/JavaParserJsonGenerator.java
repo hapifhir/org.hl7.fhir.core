@@ -57,7 +57,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private StringBuilder cregtp = new StringBuilder();
   private StringBuilder cregti = new StringBuilder();
 
-  public JavaParserJsonGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+  public JavaParserJsonGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, jid);
   }
 

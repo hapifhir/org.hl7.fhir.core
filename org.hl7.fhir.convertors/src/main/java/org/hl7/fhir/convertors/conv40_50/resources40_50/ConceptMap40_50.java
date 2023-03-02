@@ -94,7 +94,7 @@ public class ConceptMap40_50 {
     if (src.hasTarget())
       tgt.setTargetScope(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTarget()));
     for (org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup())
-      tgt.addGroup(convertConceptMapGroupComponent(t));
+      tgt.addGroup(convertConceptMapGroupComponent(t, tgt));
     return tgt;
   }
 
@@ -138,11 +138,11 @@ public class ConceptMap40_50 {
     if (src.hasTargetScope())
       tgt.setTarget(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTargetScope()));
     for (org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup())
-      tgt.addGroup(convertConceptMapGroupComponent(t));
+      tgt.addGroup(convertConceptMapGroupComponent(t, src));
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent convertConceptMapGroupComponent(org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent convertConceptMapGroupComponent(org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent src, org.hl7.fhir.r5.model.ConceptMap tgtMap) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent();
@@ -152,7 +152,7 @@ public class ConceptMap40_50 {
     if (src.hasTarget() || src.hasTargetVersion())
       tgt.setTargetElement(convertUriAndVersionToCanonical(src.getTargetElement(), src.getTargetVersionElement()));
     for (org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent t : src.getElement())
-      tgt.addElement(convertSourceElementComponent(t));
+      tgt.addElement(convertSourceElementComponent(t, tgtMap));
     if (src.hasUnmapped())
       tgt.setUnmapped(convertConceptMapGroupUnmappedComponent(src.getUnmapped()));
     return tgt;
@@ -173,7 +173,7 @@ public class ConceptMap40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent convertConceptMapGroupComponent(org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent convertConceptMapGroupComponent(org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent src, org.hl7.fhir.r5.model.ConceptMap srcMap) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent();
@@ -189,13 +189,13 @@ public class ConceptMap40_50 {
       tgt.setTargetVersion(cp.getVersion());
     }
     for (org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent t : src.getElement())
-      tgt.addElement(convertSourceElementComponent(t));
+      tgt.addElement(convertSourceElementComponent(t, srcMap));
     if (src.hasUnmapped())
       tgt.setUnmapped(convertConceptMapGroupUnmappedComponent(src.getUnmapped()));
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent convertSourceElementComponent(org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent convertSourceElementComponent(org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent src, org.hl7.fhir.r5.model.ConceptMap tgtMap) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent();
@@ -208,13 +208,13 @@ public class ConceptMap40_50 {
       if (t.getEquivalence() == org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED) {
         tgt.setNoMap(true);
       } else {
-        tgt.addTarget(convertTargetElementComponent(t));
+        tgt.addTarget(convertTargetElementComponent(t, tgtMap));
       }
     }
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent convertSourceElementComponent(org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent convertSourceElementComponent(org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent src, org.hl7.fhir.r5.model.ConceptMap srcMap) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent();
@@ -227,12 +227,12 @@ public class ConceptMap40_50 {
       tgt.addTarget(new org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent().setEquivalence(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED));
     } else {
       for (org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent t : src.getTarget())
-        tgt.addTarget(convertTargetElementComponent(t));
+        tgt.addTarget(convertTargetElementComponent(t, srcMap));
     }
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent convertTargetElementComponent(org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent convertTargetElementComponent(org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent src, org.hl7.fhir.r5.model.ConceptMap tgtMap) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent();
@@ -246,13 +246,13 @@ public class ConceptMap40_50 {
     if (src.hasComment())
       tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
     for (org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
-      tgt.addDependsOn(convertOtherElementComponent(t));
+      tgt.addDependsOn(convertOtherElementComponent(t, tgtMap));
     for (org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent t : src.getProduct())
-      tgt.addProduct(convertOtherElementComponent(t));
+      tgt.addProduct(convertOtherElementComponent(t, tgtMap));
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent convertTargetElementComponent(org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent convertTargetElementComponent(org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent src, org.hl7.fhir.r5.model.ConceptMap srcMap) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent();
@@ -268,9 +268,9 @@ public class ConceptMap40_50 {
     if (src.hasComment())
       tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
     for (org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
-      tgt.addDependsOn(convertOtherElementComponent(t));
+      tgt.addDependsOn(convertOtherElementComponent(t, srcMap));
     for (org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent t : src.getProduct())
-      tgt.addProduct(convertOtherElementComponent(t));
+      tgt.addProduct(convertOtherElementComponent(t, srcMap));
     return tgt;
   }
 
@@ -350,13 +350,13 @@ public class ConceptMap40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent convertOtherElementComponent(org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent convertOtherElementComponent(org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent src, org.hl7.fhir.r5.model.ConceptMap tgtMap) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasProperty())
-      tgt.setPropertyElement(Uri40_50.convertUri(src.getPropertyElement()));
+      tgt.setAttribute(tgtMap.registerAttribute(src.getProperty()));
     if (src.hasSystem()) {
       tgt.setValue(new Coding().setSystem(src.getSystem()).setCode(src.getValue()).setDisplay(src.getDisplay()));
     } else if (src.hasValueElement()) {
@@ -365,14 +365,14 @@ public class ConceptMap40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent convertOtherElementComponent(org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent convertOtherElementComponent(org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent src, org.hl7.fhir.r5.model.ConceptMap srcMap) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-    if (src.hasProperty())
-      tgt.setPropertyElement(Uri40_50.convertUri(src.getPropertyElement()));
-    
+    if (src.hasAttribute())
+      tgt.setProperty(srcMap.getAttributeUri(src.getAttribute()));    
+
     if (src.hasValueCoding()) {
       tgt.setSystem(src.getValueCoding().getSystem());
       tgt.setValue(src.getValueCoding().getCode());

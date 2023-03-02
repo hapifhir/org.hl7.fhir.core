@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1463,7 +1463,7 @@ public class DeviceDefinition extends DomainResource {
         /**
          * A human-friendly name that is used to refer to the device - depending on the type, it can be the brand name, the common name or alias, or other.
          */
-        @Child(name = "name", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "name", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A name that is used to refer to the device", formalDefinition="A human-friendly name that is used to refer to the device - depending on the type, it can be the brand name, the common name or alias, or other." )
         protected StringType name;
 
@@ -1471,7 +1471,7 @@ public class DeviceDefinition extends DomainResource {
          * The type of deviceName.
 RegisteredName | UserFriendlyName | PatientReportedName.
          */
-        @Child(name = "type", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "type", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="registered-name | user-friendly-name | patient-reported-name", formalDefinition="The type of deviceName.\nRegisteredName | UserFriendlyName | PatientReportedName." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-nametype")
         protected Enumeration<DeviceNameType> type;
@@ -1721,7 +1721,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * A classification or risk class of the device model.
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A classification or risk class of the device model", formalDefinition="A classification or risk class of the device model." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-type")
         protected CodeableConcept type;
@@ -1959,11 +1959,388 @@ RegisteredName | UserFriendlyName | PatientReportedName.
   }
 
     @Block()
+    public static class DeviceDefinitionConformsToComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Describes the type of the standard, specification, or formal guidance.
+         */
+        @Child(name = "category", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Describes the common type of the standard, specification, or formal guidance", formalDefinition="Describes the type of the standard, specification, or formal guidance." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-specification-category")
+        protected CodeableConcept category;
+
+        /**
+         * Code that identifies the specific standard, specification, protocol, formal guidance, regulation, legislation, or certification scheme to which the device adheres.
+         */
+        @Child(name = "specification", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Identifies the standard, specification, or formal guidance that the device adheres to the Device Specification type", formalDefinition="Code that identifies the specific standard, specification, protocol, formal guidance, regulation, legislation, or certification scheme to which the device adheres." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-specification-type")
+        protected CodeableConcept specification;
+
+        /**
+         * Identifies the specific form or variant of the standard, specification, or formal guidance. This may be a 'version number', release, document edition, publication year, or other label.
+         */
+        @Child(name = "version", type = {StringType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="The specific form or variant of the standard, specification or formal guidance", formalDefinition="Identifies the specific form or variant of the standard, specification, or formal guidance. This may be a 'version number', release, document edition, publication year, or other label." )
+        protected List<StringType> version;
+
+        /**
+         * Standard, regulation, certification, or guidance website, document, or other publication, or similar, supporting the conformance.
+         */
+        @Child(name = "source", type = {RelatedArtifact.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Standard, regulation, certification, or guidance website, document, or other publication, or similar, supporting the conformance", formalDefinition="Standard, regulation, certification, or guidance website, document, or other publication, or similar, supporting the conformance." )
+        protected List<RelatedArtifact> source;
+
+        private static final long serialVersionUID = -370906560L;
+
+    /**
+     * Constructor
+     */
+      public DeviceDefinitionConformsToComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public DeviceDefinitionConformsToComponent(CodeableConcept specification) {
+        super();
+        this.setSpecification(specification);
+      }
+
+        /**
+         * @return {@link #category} (Describes the type of the standard, specification, or formal guidance.)
+         */
+        public CodeableConcept getCategory() { 
+          if (this.category == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DeviceDefinitionConformsToComponent.category");
+            else if (Configuration.doAutoCreate())
+              this.category = new CodeableConcept(); // cc
+          return this.category;
+        }
+
+        public boolean hasCategory() { 
+          return this.category != null && !this.category.isEmpty();
+        }
+
+        /**
+         * @param value {@link #category} (Describes the type of the standard, specification, or formal guidance.)
+         */
+        public DeviceDefinitionConformsToComponent setCategory(CodeableConcept value) { 
+          this.category = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #specification} (Code that identifies the specific standard, specification, protocol, formal guidance, regulation, legislation, or certification scheme to which the device adheres.)
+         */
+        public CodeableConcept getSpecification() { 
+          if (this.specification == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DeviceDefinitionConformsToComponent.specification");
+            else if (Configuration.doAutoCreate())
+              this.specification = new CodeableConcept(); // cc
+          return this.specification;
+        }
+
+        public boolean hasSpecification() { 
+          return this.specification != null && !this.specification.isEmpty();
+        }
+
+        /**
+         * @param value {@link #specification} (Code that identifies the specific standard, specification, protocol, formal guidance, regulation, legislation, or certification scheme to which the device adheres.)
+         */
+        public DeviceDefinitionConformsToComponent setSpecification(CodeableConcept value) { 
+          this.specification = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #version} (Identifies the specific form or variant of the standard, specification, or formal guidance. This may be a 'version number', release, document edition, publication year, or other label.)
+         */
+        public List<StringType> getVersion() { 
+          if (this.version == null)
+            this.version = new ArrayList<StringType>();
+          return this.version;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public DeviceDefinitionConformsToComponent setVersion(List<StringType> theVersion) { 
+          this.version = theVersion;
+          return this;
+        }
+
+        public boolean hasVersion() { 
+          if (this.version == null)
+            return false;
+          for (StringType item : this.version)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #version} (Identifies the specific form or variant of the standard, specification, or formal guidance. This may be a 'version number', release, document edition, publication year, or other label.)
+         */
+        public StringType addVersionElement() {//2 
+          StringType t = new StringType();
+          if (this.version == null)
+            this.version = new ArrayList<StringType>();
+          this.version.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #version} (Identifies the specific form or variant of the standard, specification, or formal guidance. This may be a 'version number', release, document edition, publication year, or other label.)
+         */
+        public DeviceDefinitionConformsToComponent addVersion(String value) { //1
+          StringType t = new StringType();
+          t.setValue(value);
+          if (this.version == null)
+            this.version = new ArrayList<StringType>();
+          this.version.add(t);
+          return this;
+        }
+
+        /**
+         * @param value {@link #version} (Identifies the specific form or variant of the standard, specification, or formal guidance. This may be a 'version number', release, document edition, publication year, or other label.)
+         */
+        public boolean hasVersion(String value) { 
+          if (this.version == null)
+            return false;
+          for (StringType v : this.version)
+            if (v.getValue().equals(value)) // string
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #source} (Standard, regulation, certification, or guidance website, document, or other publication, or similar, supporting the conformance.)
+         */
+        public List<RelatedArtifact> getSource() { 
+          if (this.source == null)
+            this.source = new ArrayList<RelatedArtifact>();
+          return this.source;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public DeviceDefinitionConformsToComponent setSource(List<RelatedArtifact> theSource) { 
+          this.source = theSource;
+          return this;
+        }
+
+        public boolean hasSource() { 
+          if (this.source == null)
+            return false;
+          for (RelatedArtifact item : this.source)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public RelatedArtifact addSource() { //3
+          RelatedArtifact t = new RelatedArtifact();
+          if (this.source == null)
+            this.source = new ArrayList<RelatedArtifact>();
+          this.source.add(t);
+          return t;
+        }
+
+        public DeviceDefinitionConformsToComponent addSource(RelatedArtifact t) { //3
+          if (t == null)
+            return this;
+          if (this.source == null)
+            this.source = new ArrayList<RelatedArtifact>();
+          this.source.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #source}, creating it if it does not already exist {3}
+         */
+        public RelatedArtifact getSourceFirstRep() { 
+          if (getSource().isEmpty()) {
+            addSource();
+          }
+          return getSource().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("category", "CodeableConcept", "Describes the type of the standard, specification, or formal guidance.", 0, 1, category));
+          children.add(new Property("specification", "CodeableConcept", "Code that identifies the specific standard, specification, protocol, formal guidance, regulation, legislation, or certification scheme to which the device adheres.", 0, 1, specification));
+          children.add(new Property("version", "string", "Identifies the specific form or variant of the standard, specification, or formal guidance. This may be a 'version number', release, document edition, publication year, or other label.", 0, java.lang.Integer.MAX_VALUE, version));
+          children.add(new Property("source", "RelatedArtifact", "Standard, regulation, certification, or guidance website, document, or other publication, or similar, supporting the conformance.", 0, java.lang.Integer.MAX_VALUE, source));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Describes the type of the standard, specification, or formal guidance.", 0, 1, category);
+          case 1307197699: /*specification*/  return new Property("specification", "CodeableConcept", "Code that identifies the specific standard, specification, protocol, formal guidance, regulation, legislation, or certification scheme to which the device adheres.", 0, 1, specification);
+          case 351608024: /*version*/  return new Property("version", "string", "Identifies the specific form or variant of the standard, specification, or formal guidance. This may be a 'version number', release, document edition, publication year, or other label.", 0, java.lang.Integer.MAX_VALUE, version);
+          case -896505829: /*source*/  return new Property("source", "RelatedArtifact", "Standard, regulation, certification, or guidance website, document, or other publication, or similar, supporting the conformance.", 0, java.lang.Integer.MAX_VALUE, source);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
+        case 1307197699: /*specification*/ return this.specification == null ? new Base[0] : new Base[] {this.specification}; // CodeableConcept
+        case 351608024: /*version*/ return this.version == null ? new Base[0] : this.version.toArray(new Base[this.version.size()]); // StringType
+        case -896505829: /*source*/ return this.source == null ? new Base[0] : this.source.toArray(new Base[this.source.size()]); // RelatedArtifact
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 50511102: // category
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 1307197699: // specification
+          this.specification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 351608024: // version
+          this.getVersion().add(TypeConvertor.castToString(value)); // StringType
+          return value;
+        case -896505829: // source
+          this.getSource().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("category")) {
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("specification")) {
+          this.specification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("version")) {
+          this.getVersion().add(TypeConvertor.castToString(value));
+        } else if (name.equals("source")) {
+          this.getSource().add(TypeConvertor.castToRelatedArtifact(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 50511102:  return getCategory();
+        case 1307197699:  return getSpecification();
+        case 351608024:  return addVersionElement();
+        case -896505829:  return addSource(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 50511102: /*category*/ return new String[] {"CodeableConcept"};
+        case 1307197699: /*specification*/ return new String[] {"CodeableConcept"};
+        case 351608024: /*version*/ return new String[] {"string"};
+        case -896505829: /*source*/ return new String[] {"RelatedArtifact"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("category")) {
+          this.category = new CodeableConcept();
+          return this.category;
+        }
+        else if (name.equals("specification")) {
+          this.specification = new CodeableConcept();
+          return this.specification;
+        }
+        else if (name.equals("version")) {
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.conformsTo.version");
+        }
+        else if (name.equals("source")) {
+          return addSource();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public DeviceDefinitionConformsToComponent copy() {
+        DeviceDefinitionConformsToComponent dst = new DeviceDefinitionConformsToComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionConformsToComponent dst) {
+        super.copyValues(dst);
+        dst.category = category == null ? null : category.copy();
+        dst.specification = specification == null ? null : specification.copy();
+        if (version != null) {
+          dst.version = new ArrayList<StringType>();
+          for (StringType i : version)
+            dst.version.add(i.copy());
+        };
+        if (source != null) {
+          dst.source = new ArrayList<RelatedArtifact>();
+          for (RelatedArtifact i : source)
+            dst.source.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof DeviceDefinitionConformsToComponent))
+          return false;
+        DeviceDefinitionConformsToComponent o = (DeviceDefinitionConformsToComponent) other_;
+        return compareDeep(category, o.category, true) && compareDeep(specification, o.specification, true)
+           && compareDeep(version, o.version, true) && compareDeep(source, o.source, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof DeviceDefinitionConformsToComponent))
+          return false;
+        DeviceDefinitionConformsToComponent o = (DeviceDefinitionConformsToComponent) other_;
+        return compareValues(version, o.version, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(category, specification, version
+          , source);
+      }
+
+  public String fhirType() {
+    return "DeviceDefinition.conformsTo";
+
+  }
+
+  }
+
+    @Block()
     public static class DeviceDefinitionHasPartComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Reference to the device that is part of the current device.
          */
-        @Child(name = "reference", type = {DeviceDefinition.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "reference", type = {DeviceDefinition.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Reference to the part", formalDefinition="Reference to the device that is part of the current device." )
         protected Reference reference;
 
@@ -3233,6 +3610,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Code that specifies the property", formalDefinition="Code that specifies the property." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-property-type")
         protected CodeableConcept type;
 
         /**
@@ -4107,23 +4485,23 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * A clinical condition for which the device was designed to be used.
          */
-        @Child(name = "indication", type = {CodeableReference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "indication", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="A clinical condition for which the device was designed to be used", formalDefinition="A clinical condition for which the device was designed to be used." )
-        protected List<CodeableReference> indication;
+        protected List<CodeableConcept> indication;
 
         /**
          * A specific situation when a device should not be used because it may cause harm.
          */
-        @Child(name = "contraindication", type = {CodeableReference.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "contraindication", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="A specific situation when a device should not be used because it may cause harm", formalDefinition="A specific situation when a device should not be used because it may cause harm." )
-        protected List<CodeableReference> contraindication;
+        protected List<CodeableConcept> contraindication;
 
         /**
          * Specific hazard alert information that a user needs to know before using the device.
          */
-        @Child(name = "warning", type = {CodeableReference.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "warning", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Specific hazard alert information that a user needs to know before using the device", formalDefinition="Specific hazard alert information that a user needs to know before using the device." )
-        protected List<CodeableReference> warning;
+        protected List<CodeableConcept> warning;
 
         /**
          * A description of the general purpose or medical use of the device or its function.
@@ -4132,7 +4510,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         @Description(shortDefinition="A description of the general purpose or medical use of the device or its function", formalDefinition="A description of the general purpose or medical use of the device or its function." )
         protected StringType intendedUse;
 
-        private static final long serialVersionUID = -591777054L;
+        private static final long serialVersionUID = -1323961659L;
 
     /**
      * Constructor
@@ -4233,7 +4611,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
          * @param value Detailed written and visual directions for the user on how to use the device.
          */
         public DeviceDefinitionGuidelineComponent setUsageInstruction(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.usageInstruction = null;
           else {
             if (this.usageInstruction == null)
@@ -4299,16 +4677,16 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @return {@link #indication} (A clinical condition for which the device was designed to be used.)
          */
-        public List<CodeableReference> getIndication() { 
+        public List<CodeableConcept> getIndication() { 
           if (this.indication == null)
-            this.indication = new ArrayList<CodeableReference>();
+            this.indication = new ArrayList<CodeableConcept>();
           return this.indication;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public DeviceDefinitionGuidelineComponent setIndication(List<CodeableReference> theIndication) { 
+        public DeviceDefinitionGuidelineComponent setIndication(List<CodeableConcept> theIndication) { 
           this.indication = theIndication;
           return this;
         }
@@ -4316,25 +4694,25 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         public boolean hasIndication() { 
           if (this.indication == null)
             return false;
-          for (CodeableReference item : this.indication)
+          for (CodeableConcept item : this.indication)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CodeableReference addIndication() { //3
-          CodeableReference t = new CodeableReference();
+        public CodeableConcept addIndication() { //3
+          CodeableConcept t = new CodeableConcept();
           if (this.indication == null)
-            this.indication = new ArrayList<CodeableReference>();
+            this.indication = new ArrayList<CodeableConcept>();
           this.indication.add(t);
           return t;
         }
 
-        public DeviceDefinitionGuidelineComponent addIndication(CodeableReference t) { //3
+        public DeviceDefinitionGuidelineComponent addIndication(CodeableConcept t) { //3
           if (t == null)
             return this;
           if (this.indication == null)
-            this.indication = new ArrayList<CodeableReference>();
+            this.indication = new ArrayList<CodeableConcept>();
           this.indication.add(t);
           return this;
         }
@@ -4342,7 +4720,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @return The first repetition of repeating field {@link #indication}, creating it if it does not already exist {3}
          */
-        public CodeableReference getIndicationFirstRep() { 
+        public CodeableConcept getIndicationFirstRep() { 
           if (getIndication().isEmpty()) {
             addIndication();
           }
@@ -4352,16 +4730,16 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @return {@link #contraindication} (A specific situation when a device should not be used because it may cause harm.)
          */
-        public List<CodeableReference> getContraindication() { 
+        public List<CodeableConcept> getContraindication() { 
           if (this.contraindication == null)
-            this.contraindication = new ArrayList<CodeableReference>();
+            this.contraindication = new ArrayList<CodeableConcept>();
           return this.contraindication;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public DeviceDefinitionGuidelineComponent setContraindication(List<CodeableReference> theContraindication) { 
+        public DeviceDefinitionGuidelineComponent setContraindication(List<CodeableConcept> theContraindication) { 
           this.contraindication = theContraindication;
           return this;
         }
@@ -4369,25 +4747,25 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         public boolean hasContraindication() { 
           if (this.contraindication == null)
             return false;
-          for (CodeableReference item : this.contraindication)
+          for (CodeableConcept item : this.contraindication)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CodeableReference addContraindication() { //3
-          CodeableReference t = new CodeableReference();
+        public CodeableConcept addContraindication() { //3
+          CodeableConcept t = new CodeableConcept();
           if (this.contraindication == null)
-            this.contraindication = new ArrayList<CodeableReference>();
+            this.contraindication = new ArrayList<CodeableConcept>();
           this.contraindication.add(t);
           return t;
         }
 
-        public DeviceDefinitionGuidelineComponent addContraindication(CodeableReference t) { //3
+        public DeviceDefinitionGuidelineComponent addContraindication(CodeableConcept t) { //3
           if (t == null)
             return this;
           if (this.contraindication == null)
-            this.contraindication = new ArrayList<CodeableReference>();
+            this.contraindication = new ArrayList<CodeableConcept>();
           this.contraindication.add(t);
           return this;
         }
@@ -4395,7 +4773,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @return The first repetition of repeating field {@link #contraindication}, creating it if it does not already exist {3}
          */
-        public CodeableReference getContraindicationFirstRep() { 
+        public CodeableConcept getContraindicationFirstRep() { 
           if (getContraindication().isEmpty()) {
             addContraindication();
           }
@@ -4405,16 +4783,16 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @return {@link #warning} (Specific hazard alert information that a user needs to know before using the device.)
          */
-        public List<CodeableReference> getWarning() { 
+        public List<CodeableConcept> getWarning() { 
           if (this.warning == null)
-            this.warning = new ArrayList<CodeableReference>();
+            this.warning = new ArrayList<CodeableConcept>();
           return this.warning;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public DeviceDefinitionGuidelineComponent setWarning(List<CodeableReference> theWarning) { 
+        public DeviceDefinitionGuidelineComponent setWarning(List<CodeableConcept> theWarning) { 
           this.warning = theWarning;
           return this;
         }
@@ -4422,25 +4800,25 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         public boolean hasWarning() { 
           if (this.warning == null)
             return false;
-          for (CodeableReference item : this.warning)
+          for (CodeableConcept item : this.warning)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CodeableReference addWarning() { //3
-          CodeableReference t = new CodeableReference();
+        public CodeableConcept addWarning() { //3
+          CodeableConcept t = new CodeableConcept();
           if (this.warning == null)
-            this.warning = new ArrayList<CodeableReference>();
+            this.warning = new ArrayList<CodeableConcept>();
           this.warning.add(t);
           return t;
         }
 
-        public DeviceDefinitionGuidelineComponent addWarning(CodeableReference t) { //3
+        public DeviceDefinitionGuidelineComponent addWarning(CodeableConcept t) { //3
           if (t == null)
             return this;
           if (this.warning == null)
-            this.warning = new ArrayList<CodeableReference>();
+            this.warning = new ArrayList<CodeableConcept>();
           this.warning.add(t);
           return this;
         }
@@ -4448,7 +4826,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @return The first repetition of repeating field {@link #warning}, creating it if it does not already exist {3}
          */
-        public CodeableReference getWarningFirstRep() { 
+        public CodeableConcept getWarningFirstRep() { 
           if (getWarning().isEmpty()) {
             addWarning();
           }
@@ -4509,9 +4887,9 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           children.add(new Property("useContext", "UsageContext", "The circumstances that form the setting for using the device.", 0, java.lang.Integer.MAX_VALUE, useContext));
           children.add(new Property("usageInstruction", "markdown", "Detailed written and visual directions for the user on how to use the device.", 0, 1, usageInstruction));
           children.add(new Property("relatedArtifact", "RelatedArtifact", "A source of information or reference for this guideline.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
-          children.add(new Property("indication", "CodeableReference(ClinicalUseDefinition)", "A clinical condition for which the device was designed to be used.", 0, java.lang.Integer.MAX_VALUE, indication));
-          children.add(new Property("contraindication", "CodeableReference(ClinicalUseDefinition)", "A specific situation when a device should not be used because it may cause harm.", 0, java.lang.Integer.MAX_VALUE, contraindication));
-          children.add(new Property("warning", "CodeableReference(ClinicalUseDefinition)", "Specific hazard alert information that a user needs to know before using the device.", 0, java.lang.Integer.MAX_VALUE, warning));
+          children.add(new Property("indication", "CodeableConcept", "A clinical condition for which the device was designed to be used.", 0, java.lang.Integer.MAX_VALUE, indication));
+          children.add(new Property("contraindication", "CodeableConcept", "A specific situation when a device should not be used because it may cause harm.", 0, java.lang.Integer.MAX_VALUE, contraindication));
+          children.add(new Property("warning", "CodeableConcept", "Specific hazard alert information that a user needs to know before using the device.", 0, java.lang.Integer.MAX_VALUE, warning));
           children.add(new Property("intendedUse", "string", "A description of the general purpose or medical use of the device or its function.", 0, 1, intendedUse));
         }
 
@@ -4521,9 +4899,9 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The circumstances that form the setting for using the device.", 0, java.lang.Integer.MAX_VALUE, useContext);
           case 2138372141: /*usageInstruction*/  return new Property("usageInstruction", "markdown", "Detailed written and visual directions for the user on how to use the device.", 0, 1, usageInstruction);
           case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "A source of information or reference for this guideline.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
-          case -597168804: /*indication*/  return new Property("indication", "CodeableReference(ClinicalUseDefinition)", "A clinical condition for which the device was designed to be used.", 0, java.lang.Integer.MAX_VALUE, indication);
-          case 107135229: /*contraindication*/  return new Property("contraindication", "CodeableReference(ClinicalUseDefinition)", "A specific situation when a device should not be used because it may cause harm.", 0, java.lang.Integer.MAX_VALUE, contraindication);
-          case 1124446108: /*warning*/  return new Property("warning", "CodeableReference(ClinicalUseDefinition)", "Specific hazard alert information that a user needs to know before using the device.", 0, java.lang.Integer.MAX_VALUE, warning);
+          case -597168804: /*indication*/  return new Property("indication", "CodeableConcept", "A clinical condition for which the device was designed to be used.", 0, java.lang.Integer.MAX_VALUE, indication);
+          case 107135229: /*contraindication*/  return new Property("contraindication", "CodeableConcept", "A specific situation when a device should not be used because it may cause harm.", 0, java.lang.Integer.MAX_VALUE, contraindication);
+          case 1124446108: /*warning*/  return new Property("warning", "CodeableConcept", "Specific hazard alert information that a user needs to know before using the device.", 0, java.lang.Integer.MAX_VALUE, warning);
           case -1618671268: /*intendedUse*/  return new Property("intendedUse", "string", "A description of the general purpose or medical use of the device or its function.", 0, 1, intendedUse);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -4536,9 +4914,9 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -669707736: /*useContext*/ return this.useContext == null ? new Base[0] : this.useContext.toArray(new Base[this.useContext.size()]); // UsageContext
         case 2138372141: /*usageInstruction*/ return this.usageInstruction == null ? new Base[0] : new Base[] {this.usageInstruction}; // MarkdownType
         case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
-        case -597168804: /*indication*/ return this.indication == null ? new Base[0] : this.indication.toArray(new Base[this.indication.size()]); // CodeableReference
-        case 107135229: /*contraindication*/ return this.contraindication == null ? new Base[0] : this.contraindication.toArray(new Base[this.contraindication.size()]); // CodeableReference
-        case 1124446108: /*warning*/ return this.warning == null ? new Base[0] : this.warning.toArray(new Base[this.warning.size()]); // CodeableReference
+        case -597168804: /*indication*/ return this.indication == null ? new Base[0] : this.indication.toArray(new Base[this.indication.size()]); // CodeableConcept
+        case 107135229: /*contraindication*/ return this.contraindication == null ? new Base[0] : this.contraindication.toArray(new Base[this.contraindication.size()]); // CodeableConcept
+        case 1124446108: /*warning*/ return this.warning == null ? new Base[0] : this.warning.toArray(new Base[this.warning.size()]); // CodeableConcept
         case -1618671268: /*intendedUse*/ return this.intendedUse == null ? new Base[0] : new Base[] {this.intendedUse}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -4558,13 +4936,13 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case -597168804: // indication
-          this.getIndication().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
+          this.getIndication().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 107135229: // contraindication
-          this.getContraindication().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
+          this.getContraindication().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1124446108: // warning
-          this.getWarning().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
+          this.getWarning().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1618671268: // intendedUse
           this.intendedUse = TypeConvertor.castToString(value); // StringType
@@ -4583,11 +4961,11 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else if (name.equals("relatedArtifact")) {
           this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("indication")) {
-          this.getIndication().add(TypeConvertor.castToCodeableReference(value));
+          this.getIndication().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("contraindication")) {
-          this.getContraindication().add(TypeConvertor.castToCodeableReference(value));
+          this.getContraindication().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("warning")) {
-          this.getWarning().add(TypeConvertor.castToCodeableReference(value));
+          this.getWarning().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("intendedUse")) {
           this.intendedUse = TypeConvertor.castToString(value); // StringType
         } else
@@ -4616,9 +4994,9 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -669707736: /*useContext*/ return new String[] {"UsageContext"};
         case 2138372141: /*usageInstruction*/ return new String[] {"markdown"};
         case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
-        case -597168804: /*indication*/ return new String[] {"CodeableReference"};
-        case 107135229: /*contraindication*/ return new String[] {"CodeableReference"};
-        case 1124446108: /*warning*/ return new String[] {"CodeableReference"};
+        case -597168804: /*indication*/ return new String[] {"CodeableConcept"};
+        case 107135229: /*contraindication*/ return new String[] {"CodeableConcept"};
+        case 1124446108: /*warning*/ return new String[] {"CodeableConcept"};
         case -1618671268: /*intendedUse*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -4672,18 +5050,18 @@ RegisteredName | UserFriendlyName | PatientReportedName.
             dst.relatedArtifact.add(i.copy());
         };
         if (indication != null) {
-          dst.indication = new ArrayList<CodeableReference>();
-          for (CodeableReference i : indication)
+          dst.indication = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : indication)
             dst.indication.add(i.copy());
         };
         if (contraindication != null) {
-          dst.contraindication = new ArrayList<CodeableReference>();
-          for (CodeableReference i : contraindication)
+          dst.contraindication = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : contraindication)
             dst.contraindication.add(i.copy());
         };
         if (warning != null) {
-          dst.warning = new ArrayList<CodeableReference>();
-          for (CodeableReference i : warning)
+          dst.warning = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : warning)
             dst.warning.add(i.copy());
         };
         dst.intendedUse = intendedUse == null ? null : intendedUse.copy();
@@ -5376,7 +5754,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     /**
      * Unique instance identifiers assigned to a device by the software, manufacturers, other organizations or owners. For example: handle ID. The identifier is typically valued if the udiDeviceIdentifier, partNumber or modelNumber is not valued and represents a different type of identifier.  However, it is permissible to still include those identifiers in DeviceDefinition.identifier with the appropriate identifier.type.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Instance identifier", formalDefinition="Unique instance identifiers assigned to a device by the software, manufacturers, other organizations or owners. For example: handle ID. The identifier is typically valued if the udiDeviceIdentifier, partNumber or modelNumber is not valued and represents a different type of identifier.  However, it is permissible to still include those identifiers in DeviceDefinition.identifier with the appropriate identifier.type." )
     protected List<Identifier> identifier;
 
@@ -5404,42 +5782,42 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     /**
      * A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.
      */
-    @Child(name = "manufacturer", type = {Organization.class}, order=5, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "manufacturer", type = {Organization.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name of device manufacturer", formalDefinition="A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction." )
     protected Reference manufacturer;
 
     /**
      * The name or names of the device as given by the manufacturer.
      */
-    @Child(name = "deviceName", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "deviceName", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The name or names of the device as given by the manufacturer", formalDefinition="The name or names of the device as given by the manufacturer." )
     protected List<DeviceDefinitionDeviceNameComponent> deviceName;
 
     /**
      * The model number for the device for example as defined by the manufacturer or labeler, or other agency.
      */
-    @Child(name = "modelNumber", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "modelNumber", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The catalog or model number for the device for example as defined by the manufacturer", formalDefinition="The model number for the device for example as defined by the manufacturer or labeler, or other agency." )
     protected StringType modelNumber;
 
     /**
      * What kind of device or device system this is.
      */
-    @Child(name = "classification", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "classification", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="What kind of device or device system this is", formalDefinition="What kind of device or device system this is." )
     protected List<DeviceDefinitionClassificationComponent> classification;
 
     /**
-     * The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.
+     * Identifies the standards, specifications, or formal guidances for the capabilities supported by the device. The device may be certified as conformant to these specifications e.g., communication, performance, process, measurement, or specialization standards.
      */
-    @Child(name = "specialization", type = {RelatedArtifact.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication", formalDefinition="The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication." )
-    protected List<RelatedArtifact> specialization;
+    @Child(name = "conformsTo", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Identifies the standards, specifications, or formal guidances for the capabilities supported by the device", formalDefinition="Identifies the standards, specifications, or formal guidances for the capabilities supported by the device. The device may be certified as conformant to these specifications e.g., communication, performance, process, measurement, or specialization standards." )
+    protected List<DeviceDefinitionConformsToComponent> conformsTo;
 
     /**
      * A device that is part (for example a component) of the present device.
      */
-    @Child(name = "hasPart", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "hasPart", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A device, part of the current one", formalDefinition="A device that is part (for example a component) of the present device." )
     protected List<DeviceDefinitionHasPartComponent> hasPart;
 
@@ -5515,23 +5893,16 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     protected List<Annotation> note;
 
     /**
-     * The parent device it can be part of.
-     */
-    @Child(name = "parentDevice", type = {DeviceDefinition.class}, order=21, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The parent device it can be part of", formalDefinition="The parent device it can be part of." )
-    protected Reference parentDevice;
-
-    /**
      * A substance used to create the material(s) of which the device is made.
      */
-    @Child(name = "material", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "material", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A substance used to create the material(s) of which the device is made", formalDefinition="A substance used to create the material(s) of which the device is made." )
     protected List<DeviceDefinitionMaterialComponent> material;
 
     /**
      * Indicates the production identifier(s) that are expected to appear in the UDI carrier on the device label.
      */
-    @Child(name = "productionIdentifierInUDI", type = {CodeType.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "productionIdentifierInUDI", type = {CodeType.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="lot-number | manufactured-date | serial-number | expiration-date | biological-source | software-version", formalDefinition="Indicates the production identifier(s) that are expected to appear in the UDI carrier on the device label." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-productidentifierinudi")
     protected List<Enumeration<DeviceProductionIdentifierInUDI>> productionIdentifierInUDI;
@@ -5539,25 +5910,25 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     /**
      * Information aimed at providing directions for the usage of this model of device.
      */
-    @Child(name = "guideline", type = {}, order=24, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "guideline", type = {}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information aimed at providing directions for the usage of this model of device", formalDefinition="Information aimed at providing directions for the usage of this model of device." )
     protected DeviceDefinitionGuidelineComponent guideline;
 
     /**
      * Tracking of latest field safety corrective action.
      */
-    @Child(name = "correctiveAction", type = {}, order=25, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "correctiveAction", type = {}, order=24, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Tracking of latest field safety corrective action", formalDefinition="Tracking of latest field safety corrective action." )
     protected DeviceDefinitionCorrectiveActionComponent correctiveAction;
 
     /**
      * Billing code or reference associated with the device.
      */
-    @Child(name = "chargeItem", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "chargeItem", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Billing code or reference associated with the device", formalDefinition="Billing code or reference associated with the device." )
     protected List<DeviceDefinitionChargeItemComponent> chargeItem;
 
-    private static final long serialVersionUID = 1343213621L;
+    private static final long serialVersionUID = -260935704L;
 
   /**
    * Constructor
@@ -5605,7 +5976,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
      * @param value Additional information to describe the device.
      */
     public DeviceDefinition setDescription(String value) { 
-      if (value == null)
+      if (Utilities.noString(value))
         this.description = null;
       else {
         if (this.description == null)
@@ -6003,56 +6374,56 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     }
 
     /**
-     * @return {@link #specialization} (The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.)
+     * @return {@link #conformsTo} (Identifies the standards, specifications, or formal guidances for the capabilities supported by the device. The device may be certified as conformant to these specifications e.g., communication, performance, process, measurement, or specialization standards.)
      */
-    public List<RelatedArtifact> getSpecialization() { 
-      if (this.specialization == null)
-        this.specialization = new ArrayList<RelatedArtifact>();
-      return this.specialization;
+    public List<DeviceDefinitionConformsToComponent> getConformsTo() { 
+      if (this.conformsTo == null)
+        this.conformsTo = new ArrayList<DeviceDefinitionConformsToComponent>();
+      return this.conformsTo;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public DeviceDefinition setSpecialization(List<RelatedArtifact> theSpecialization) { 
-      this.specialization = theSpecialization;
+    public DeviceDefinition setConformsTo(List<DeviceDefinitionConformsToComponent> theConformsTo) { 
+      this.conformsTo = theConformsTo;
       return this;
     }
 
-    public boolean hasSpecialization() { 
-      if (this.specialization == null)
+    public boolean hasConformsTo() { 
+      if (this.conformsTo == null)
         return false;
-      for (RelatedArtifact item : this.specialization)
+      for (DeviceDefinitionConformsToComponent item : this.conformsTo)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public RelatedArtifact addSpecialization() { //3
-      RelatedArtifact t = new RelatedArtifact();
-      if (this.specialization == null)
-        this.specialization = new ArrayList<RelatedArtifact>();
-      this.specialization.add(t);
+    public DeviceDefinitionConformsToComponent addConformsTo() { //3
+      DeviceDefinitionConformsToComponent t = new DeviceDefinitionConformsToComponent();
+      if (this.conformsTo == null)
+        this.conformsTo = new ArrayList<DeviceDefinitionConformsToComponent>();
+      this.conformsTo.add(t);
       return t;
     }
 
-    public DeviceDefinition addSpecialization(RelatedArtifact t) { //3
+    public DeviceDefinition addConformsTo(DeviceDefinitionConformsToComponent t) { //3
       if (t == null)
         return this;
-      if (this.specialization == null)
-        this.specialization = new ArrayList<RelatedArtifact>();
-      this.specialization.add(t);
+      if (this.conformsTo == null)
+        this.conformsTo = new ArrayList<DeviceDefinitionConformsToComponent>();
+      this.conformsTo.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #specialization}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #conformsTo}, creating it if it does not already exist {3}
      */
-    public RelatedArtifact getSpecializationFirstRep() { 
-      if (getSpecialization().isEmpty()) {
-        addSpecialization();
+    public DeviceDefinitionConformsToComponent getConformsToFirstRep() { 
+      if (getConformsTo().isEmpty()) {
+        addConformsTo();
       }
-      return getSpecialization().get(0);
+      return getConformsTo().get(0);
     }
 
     /**
@@ -6610,30 +6981,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     }
 
     /**
-     * @return {@link #parentDevice} (The parent device it can be part of.)
-     */
-    public Reference getParentDevice() { 
-      if (this.parentDevice == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DeviceDefinition.parentDevice");
-        else if (Configuration.doAutoCreate())
-          this.parentDevice = new Reference(); // cc
-      return this.parentDevice;
-    }
-
-    public boolean hasParentDevice() { 
-      return this.parentDevice != null && !this.parentDevice.isEmpty();
-    }
-
-    /**
-     * @param value {@link #parentDevice} (The parent device it can be part of.)
-     */
-    public DeviceDefinition setParentDevice(Reference value) { 
-      this.parentDevice = value;
-      return this;
-    }
-
-    /**
      * @return {@link #material} (A substance used to create the material(s) of which the device is made.)
      */
     public List<DeviceDefinitionMaterialComponent> getMaterial() { 
@@ -6859,7 +7206,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         children.add(new Property("deviceName", "", "The name or names of the device as given by the manufacturer.", 0, java.lang.Integer.MAX_VALUE, deviceName));
         children.add(new Property("modelNumber", "string", "The model number for the device for example as defined by the manufacturer or labeler, or other agency.", 0, 1, modelNumber));
         children.add(new Property("classification", "", "What kind of device or device system this is.", 0, java.lang.Integer.MAX_VALUE, classification));
-        children.add(new Property("specialization", "RelatedArtifact", "The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.", 0, java.lang.Integer.MAX_VALUE, specialization));
+        children.add(new Property("conformsTo", "", "Identifies the standards, specifications, or formal guidances for the capabilities supported by the device. The device may be certified as conformant to these specifications e.g., communication, performance, process, measurement, or specialization standards.", 0, java.lang.Integer.MAX_VALUE, conformsTo));
         children.add(new Property("hasPart", "", "A device that is part (for example a component) of the present device.", 0, java.lang.Integer.MAX_VALUE, hasPart));
         children.add(new Property("packaging", "", "Information about the packaging of the device, i.e. how the device is packaged.", 0, java.lang.Integer.MAX_VALUE, packaging));
         children.add(new Property("version", "", "The version of the device or software.", 0, java.lang.Integer.MAX_VALUE, version));
@@ -6871,7 +7218,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         children.add(new Property("contact", "ContactPoint", "Contact details for an organization or a particular human that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("link", "", "An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device.", 0, java.lang.Integer.MAX_VALUE, link));
         children.add(new Property("note", "Annotation", "Descriptive information, usage information or implantation information that is not captured in an existing element.", 0, java.lang.Integer.MAX_VALUE, note));
-        children.add(new Property("parentDevice", "Reference(DeviceDefinition)", "The parent device it can be part of.", 0, 1, parentDevice));
         children.add(new Property("material", "", "A substance used to create the material(s) of which the device is made.", 0, java.lang.Integer.MAX_VALUE, material));
         children.add(new Property("productionIdentifierInUDI", "code", "Indicates the production identifier(s) that are expected to appear in the UDI carrier on the device label.", 0, java.lang.Integer.MAX_VALUE, productionIdentifierInUDI));
         children.add(new Property("guideline", "", "Information aimed at providing directions for the usage of this model of device.", 0, 1, guideline));
@@ -6891,7 +7237,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case 780988929: /*deviceName*/  return new Property("deviceName", "", "The name or names of the device as given by the manufacturer.", 0, java.lang.Integer.MAX_VALUE, deviceName);
         case 346619858: /*modelNumber*/  return new Property("modelNumber", "string", "The model number for the device for example as defined by the manufacturer or labeler, or other agency.", 0, 1, modelNumber);
         case 382350310: /*classification*/  return new Property("classification", "", "What kind of device or device system this is.", 0, java.lang.Integer.MAX_VALUE, classification);
-        case 682815883: /*specialization*/  return new Property("specialization", "RelatedArtifact", "The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.", 0, java.lang.Integer.MAX_VALUE, specialization);
+        case 1014198088: /*conformsTo*/  return new Property("conformsTo", "", "Identifies the standards, specifications, or formal guidances for the capabilities supported by the device. The device may be certified as conformant to these specifications e.g., communication, performance, process, measurement, or specialization standards.", 0, java.lang.Integer.MAX_VALUE, conformsTo);
         case 696815021: /*hasPart*/  return new Property("hasPart", "", "A device that is part (for example a component) of the present device.", 0, java.lang.Integer.MAX_VALUE, hasPart);
         case 1802065795: /*packaging*/  return new Property("packaging", "", "Information about the packaging of the device, i.e. how the device is packaged.", 0, java.lang.Integer.MAX_VALUE, packaging);
         case 351608024: /*version*/  return new Property("version", "", "The version of the device or software.", 0, java.lang.Integer.MAX_VALUE, version);
@@ -6903,7 +7249,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case 951526432: /*contact*/  return new Property("contact", "ContactPoint", "Contact details for an organization or a particular human that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, contact);
         case 3321850: /*link*/  return new Property("link", "", "An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device.", 0, java.lang.Integer.MAX_VALUE, link);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Descriptive information, usage information or implantation information that is not captured in an existing element.", 0, java.lang.Integer.MAX_VALUE, note);
-        case 620260256: /*parentDevice*/  return new Property("parentDevice", "Reference(DeviceDefinition)", "The parent device it can be part of.", 0, 1, parentDevice);
         case 299066663: /*material*/  return new Property("material", "", "A substance used to create the material(s) of which the device is made.", 0, java.lang.Integer.MAX_VALUE, material);
         case 312405811: /*productionIdentifierInUDI*/  return new Property("productionIdentifierInUDI", "code", "Indicates the production identifier(s) that are expected to appear in the UDI carrier on the device label.", 0, java.lang.Integer.MAX_VALUE, productionIdentifierInUDI);
         case -2075718416: /*guideline*/  return new Property("guideline", "", "Information aimed at providing directions for the usage of this model of device.", 0, 1, guideline);
@@ -6926,7 +7271,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case 780988929: /*deviceName*/ return this.deviceName == null ? new Base[0] : this.deviceName.toArray(new Base[this.deviceName.size()]); // DeviceDefinitionDeviceNameComponent
         case 346619858: /*modelNumber*/ return this.modelNumber == null ? new Base[0] : new Base[] {this.modelNumber}; // StringType
         case 382350310: /*classification*/ return this.classification == null ? new Base[0] : this.classification.toArray(new Base[this.classification.size()]); // DeviceDefinitionClassificationComponent
-        case 682815883: /*specialization*/ return this.specialization == null ? new Base[0] : this.specialization.toArray(new Base[this.specialization.size()]); // RelatedArtifact
+        case 1014198088: /*conformsTo*/ return this.conformsTo == null ? new Base[0] : this.conformsTo.toArray(new Base[this.conformsTo.size()]); // DeviceDefinitionConformsToComponent
         case 696815021: /*hasPart*/ return this.hasPart == null ? new Base[0] : this.hasPart.toArray(new Base[this.hasPart.size()]); // DeviceDefinitionHasPartComponent
         case 1802065795: /*packaging*/ return this.packaging == null ? new Base[0] : this.packaging.toArray(new Base[this.packaging.size()]); // DeviceDefinitionPackagingComponent
         case 351608024: /*version*/ return this.version == null ? new Base[0] : this.version.toArray(new Base[this.version.size()]); // DeviceDefinitionVersionComponent
@@ -6938,7 +7283,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactPoint
         case 3321850: /*link*/ return this.link == null ? new Base[0] : this.link.toArray(new Base[this.link.size()]); // DeviceDefinitionLinkComponent
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-        case 620260256: /*parentDevice*/ return this.parentDevice == null ? new Base[0] : new Base[] {this.parentDevice}; // Reference
         case 299066663: /*material*/ return this.material == null ? new Base[0] : this.material.toArray(new Base[this.material.size()]); // DeviceDefinitionMaterialComponent
         case 312405811: /*productionIdentifierInUDI*/ return this.productionIdentifierInUDI == null ? new Base[0] : this.productionIdentifierInUDI.toArray(new Base[this.productionIdentifierInUDI.size()]); // Enumeration<DeviceProductionIdentifierInUDI>
         case -2075718416: /*guideline*/ return this.guideline == null ? new Base[0] : new Base[] {this.guideline}; // DeviceDefinitionGuidelineComponent
@@ -6979,8 +7323,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case 382350310: // classification
           this.getClassification().add((DeviceDefinitionClassificationComponent) value); // DeviceDefinitionClassificationComponent
           return value;
-        case 682815883: // specialization
-          this.getSpecialization().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
+        case 1014198088: // conformsTo
+          this.getConformsTo().add((DeviceDefinitionConformsToComponent) value); // DeviceDefinitionConformsToComponent
           return value;
         case 696815021: // hasPart
           this.getHasPart().add((DeviceDefinitionHasPartComponent) value); // DeviceDefinitionHasPartComponent
@@ -7014,9 +7358,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return value;
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
-          return value;
-        case 620260256: // parentDevice
-          this.parentDevice = TypeConvertor.castToReference(value); // Reference
           return value;
         case 299066663: // material
           this.getMaterial().add((DeviceDefinitionMaterialComponent) value); // DeviceDefinitionMaterialComponent
@@ -7059,8 +7400,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           this.modelNumber = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("classification")) {
           this.getClassification().add((DeviceDefinitionClassificationComponent) value);
-        } else if (name.equals("specialization")) {
-          this.getSpecialization().add(TypeConvertor.castToRelatedArtifact(value));
+        } else if (name.equals("conformsTo")) {
+          this.getConformsTo().add((DeviceDefinitionConformsToComponent) value);
         } else if (name.equals("hasPart")) {
           this.getHasPart().add((DeviceDefinitionHasPartComponent) value);
         } else if (name.equals("packaging")) {
@@ -7083,8 +7424,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           this.getLink().add((DeviceDefinitionLinkComponent) value);
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
-        } else if (name.equals("parentDevice")) {
-          this.parentDevice = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("material")) {
           this.getMaterial().add((DeviceDefinitionMaterialComponent) value);
         } else if (name.equals("productionIdentifierInUDI")) {
@@ -7113,7 +7452,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case 780988929:  return addDeviceName(); 
         case 346619858:  return getModelNumberElement();
         case 382350310:  return addClassification(); 
-        case 682815883:  return addSpecialization(); 
+        case 1014198088:  return addConformsTo(); 
         case 696815021:  return addHasPart(); 
         case 1802065795:  return addPackaging(); 
         case 351608024:  return addVersion(); 
@@ -7125,7 +7464,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case 951526432:  return addContact(); 
         case 3321850:  return addLink(); 
         case 3387378:  return addNote(); 
-        case 620260256:  return getParentDevice();
         case 299066663:  return addMaterial(); 
         case 312405811:  return addProductionIdentifierInUDIElement();
         case -2075718416:  return getGuideline();
@@ -7148,7 +7486,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case 780988929: /*deviceName*/ return new String[] {};
         case 346619858: /*modelNumber*/ return new String[] {"string"};
         case 382350310: /*classification*/ return new String[] {};
-        case 682815883: /*specialization*/ return new String[] {"RelatedArtifact"};
+        case 1014198088: /*conformsTo*/ return new String[] {};
         case 696815021: /*hasPart*/ return new String[] {};
         case 1802065795: /*packaging*/ return new String[] {};
         case 351608024: /*version*/ return new String[] {};
@@ -7160,7 +7498,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case 951526432: /*contact*/ return new String[] {"ContactPoint"};
         case 3321850: /*link*/ return new String[] {};
         case 3387378: /*note*/ return new String[] {"Annotation"};
-        case 620260256: /*parentDevice*/ return new String[] {"Reference"};
         case 299066663: /*material*/ return new String[] {};
         case 312405811: /*productionIdentifierInUDI*/ return new String[] {"code"};
         case -2075718416: /*guideline*/ return new String[] {};
@@ -7201,8 +7538,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         else if (name.equals("classification")) {
           return addClassification();
         }
-        else if (name.equals("specialization")) {
-          return addSpecialization();
+        else if (name.equals("conformsTo")) {
+          return addConformsTo();
         }
         else if (name.equals("hasPart")) {
           return addHasPart();
@@ -7237,10 +7574,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
         else if (name.equals("note")) {
           return addNote();
-        }
-        else if (name.equals("parentDevice")) {
-          this.parentDevice = new Reference();
-          return this.parentDevice;
         }
         else if (name.equals("material")) {
           return addMaterial();
@@ -7305,10 +7638,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           for (DeviceDefinitionClassificationComponent i : classification)
             dst.classification.add(i.copy());
         };
-        if (specialization != null) {
-          dst.specialization = new ArrayList<RelatedArtifact>();
-          for (RelatedArtifact i : specialization)
-            dst.specialization.add(i.copy());
+        if (conformsTo != null) {
+          dst.conformsTo = new ArrayList<DeviceDefinitionConformsToComponent>();
+          for (DeviceDefinitionConformsToComponent i : conformsTo)
+            dst.conformsTo.add(i.copy());
         };
         if (hasPart != null) {
           dst.hasPart = new ArrayList<DeviceDefinitionHasPartComponent>();
@@ -7361,7 +7694,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        dst.parentDevice = parentDevice == null ? null : parentDevice.copy();
         if (material != null) {
           dst.material = new ArrayList<DeviceDefinitionMaterialComponent>();
           for (DeviceDefinitionMaterialComponent i : material)
@@ -7396,12 +7728,12 @@ RegisteredName | UserFriendlyName | PatientReportedName.
            && compareDeep(udiDeviceIdentifier, o.udiDeviceIdentifier, true) && compareDeep(regulatoryIdentifier, o.regulatoryIdentifier, true)
            && compareDeep(partNumber, o.partNumber, true) && compareDeep(manufacturer, o.manufacturer, true)
            && compareDeep(deviceName, o.deviceName, true) && compareDeep(modelNumber, o.modelNumber, true)
-           && compareDeep(classification, o.classification, true) && compareDeep(specialization, o.specialization, true)
+           && compareDeep(classification, o.classification, true) && compareDeep(conformsTo, o.conformsTo, true)
            && compareDeep(hasPart, o.hasPart, true) && compareDeep(packaging, o.packaging, true) && compareDeep(version, o.version, true)
            && compareDeep(safety, o.safety, true) && compareDeep(shelfLifeStorage, o.shelfLifeStorage, true)
            && compareDeep(languageCode, o.languageCode, true) && compareDeep(property, o.property, true) && compareDeep(owner, o.owner, true)
            && compareDeep(contact, o.contact, true) && compareDeep(link, o.link, true) && compareDeep(note, o.note, true)
-           && compareDeep(parentDevice, o.parentDevice, true) && compareDeep(material, o.material, true) && compareDeep(productionIdentifierInUDI, o.productionIdentifierInUDI, true)
+           && compareDeep(material, o.material, true) && compareDeep(productionIdentifierInUDI, o.productionIdentifierInUDI, true)
            && compareDeep(guideline, o.guideline, true) && compareDeep(correctiveAction, o.correctiveAction, true)
            && compareDeep(chargeItem, o.chargeItem, true);
       }
@@ -7421,15 +7753,35 @@ RegisteredName | UserFriendlyName | PatientReportedName.
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, identifier, udiDeviceIdentifier
           , regulatoryIdentifier, partNumber, manufacturer, deviceName, modelNumber, classification
-          , specialization, hasPart, packaging, version, safety, shelfLifeStorage, languageCode
-          , property, owner, contact, link, note, parentDevice, material, productionIdentifierInUDI
-          , guideline, correctiveAction, chargeItem);
+          , conformsTo, hasPart, packaging, version, safety, shelfLifeStorage, languageCode
+          , property, owner, contact, link, note, material, productionIdentifierInUDI, guideline
+          , correctiveAction, chargeItem);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.DeviceDefinition;
    }
+
+ /**
+   * Search parameter: <b>device-name</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in DeviceDefinition.name or DeviceDefinition.classification.type - the latter to search for 'generic' devices.</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>DeviceDefinition.deviceName.name | DeviceDefinition.classification.type.coding.display | DeviceDefinition.classification.type.text</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="device-name", path="DeviceDefinition.deviceName.name | DeviceDefinition.classification.type.coding.display | DeviceDefinition.classification.type.text", description="A server defined search that may match any of the string fields in DeviceDefinition.name or DeviceDefinition.classification.type - the latter to search for 'generic' devices.", type="string" )
+  public static final String SP_DEVICE_NAME = "device-name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>device-name</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in DeviceDefinition.name or DeviceDefinition.classification.type - the latter to search for 'generic' devices.</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>DeviceDefinition.deviceName.name | DeviceDefinition.classification.type.coding.display | DeviceDefinition.classification.type.text</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DEVICE_NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DEVICE_NAME);
 
  /**
    * Search parameter: <b>identifier</b>
@@ -7452,50 +7804,97 @@ RegisteredName | UserFriendlyName | PatientReportedName.
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>parent</b>
+   * Search parameter: <b>manufacturer</b>
    * <p>
-   * Description: <b>The parent DeviceDefinition resource</b><br>
+   * Description: <b>The manufacturer of the device</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceDefinition.parentDevice</b><br>
+   * Path: <b>DeviceDefinition.manufacturer</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="parent", path="DeviceDefinition.parentDevice", description="The parent DeviceDefinition resource", type="reference", target={DeviceDefinition.class } )
-  public static final String SP_PARENT = "parent";
+  @SearchParamDefinition(name="manufacturer", path="DeviceDefinition.manufacturer", description="The manufacturer of the device", type="reference", target={Organization.class } )
+  public static final String SP_MANUFACTURER = "manufacturer";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>parent</b>
+   * <b>Fluent Client</b> search parameter constant for <b>manufacturer</b>
    * <p>
-   * Description: <b>The parent DeviceDefinition resource</b><br>
+   * Description: <b>The manufacturer of the device</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceDefinition.parentDevice</b><br>
+   * Path: <b>DeviceDefinition.manufacturer</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARENT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANUFACTURER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANUFACTURER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceDefinition:parent</b>".
+   * the path value of "<b>DeviceDefinition:manufacturer</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARENT = new ca.uhn.fhir.model.api.Include("DeviceDefinition:parent").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MANUFACTURER = new ca.uhn.fhir.model.api.Include("DeviceDefinition:manufacturer").toLocked();
+
+ /**
+   * Search parameter: <b>organization</b>
+   * <p>
+   * Description: <b>The organization responsible for the device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceDefinition.owner</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="organization", path="DeviceDefinition.owner", description="The organization responsible for the device", type="reference", target={Organization.class } )
+  public static final String SP_ORGANIZATION = "organization";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
+   * <p>
+   * Description: <b>The organization responsible for the device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceDefinition.owner</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DeviceDefinition:organization</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("DeviceDefinition:organization").toLocked();
+
+ /**
+   * Search parameter: <b>specification</b>
+   * <p>
+   * Description: <b>The specification that the device conforms to</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDefinition.conformsTo.specification</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="specification", path="DeviceDefinition.conformsTo.specification", description="The specification that the device conforms to", type="token" )
+  public static final String SP_SPECIFICATION = "specification";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>specification</b>
+   * <p>
+   * Description: <b>The specification that the device conforms to</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDefinition.conformsTo.specification</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIFICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIFICATION);
 
  /**
    * Search parameter: <b>type</b>
    * <p>
-   * Description: <b>The device component type</b><br>
+   * Description: <b>The device type</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>DeviceDefinition.classification.type</b><br>
+   * Path: <b>DeviceDefinition.conformsTo.category</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="type", path="DeviceDefinition.classification.type", description="The device component type", type="token" )
+  @SearchParamDefinition(name="type", path="DeviceDefinition.conformsTo.category", description="The device type", type="token" )
   public static final String SP_TYPE = "type";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>type</b>
    * <p>
-   * Description: <b>The device component type</b><br>
+   * Description: <b>The device type</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>DeviceDefinition.classification.type</b><br>
+   * Path: <b>DeviceDefinition.conformsTo.category</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }
+

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
+// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3321,16 +3321,16 @@ public class Transport extends DomainResource {
     protected List<Reference> basedOn;
 
     /**
-     * An identifier that links together multiple transports and other requests that were created in the same context.
+     * A shared identifier common to multiple independent Request instances that were activated/authorized more or less simultaneously by a single author.  The presence of the same identifier on each request ties those requests together and may have business ramifications in terms of reporting of results, billing, etc.  E.g. a requisition number shared by a set of lab tests ordered together, or a prescription number shared by all meds ordered at one time.
      */
     @Child(name = "groupIdentifier", type = {Identifier.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Requisition or grouper id", formalDefinition="An identifier that links together multiple transports and other requests that were created in the same context." )
+    @Description(shortDefinition="Requisition or grouper id", formalDefinition="A shared identifier common to multiple independent Request instances that were activated/authorized more or less simultaneously by a single author.  The presence of the same identifier on each request ties those requests together and may have business ramifications in terms of reporting of results, billing, etc.  E.g. a requisition number shared by a set of lab tests ordered together, or a prescription number shared by all meds ordered at one time." )
     protected Identifier groupIdentifier;
 
     /**
      * A larger event of which this particular event is a component or step.
      */
-    @Child(name = "partOf", type = {Transport.class, Contract.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "partOf", type = {Transport.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Part of referenced event", formalDefinition="A larger event of which this particular event is a component or step." )
     protected List<Reference> partOf;
 
@@ -3509,27 +3509,20 @@ public class Transport extends DomainResource {
     protected Reference currentLocation;
 
     /**
-     * A description or code indicating why this transport needs to be performed.
-     */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=30, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Why transport is needed", formalDefinition="A description or code indicating why this transport needs to be performed." )
-    protected CodeableConcept reasonCode;
-
-    /**
      * A resource reference indicating why this transport needs to be performed.
      */
-    @Child(name = "reasonReference", type = {Reference.class}, order=31, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "reason", type = {CodeableReference.class}, order=30, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why transport is needed", formalDefinition="A resource reference indicating why this transport needs to be performed." )
-    protected Reference reasonReference;
+    protected CodeableReference reason;
 
     /**
      * The transport event prior to this one.
      */
-    @Child(name = "history", type = {Transport.class}, order=32, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "history", type = {Transport.class}, order=31, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Parent (or preceding) transport", formalDefinition="The transport event prior to this one." )
     protected Reference history;
 
-    private static final long serialVersionUID = -1897671987L;
+    private static final long serialVersionUID = -2095581755L;
 
   /**
    * Constructor
@@ -3753,7 +3746,7 @@ public class Transport extends DomainResource {
     }
 
     /**
-     * @return {@link #groupIdentifier} (An identifier that links together multiple transports and other requests that were created in the same context.)
+     * @return {@link #groupIdentifier} (A shared identifier common to multiple independent Request instances that were activated/authorized more or less simultaneously by a single author.  The presence of the same identifier on each request ties those requests together and may have business ramifications in terms of reporting of results, billing, etc.  E.g. a requisition number shared by a set of lab tests ordered together, or a prescription number shared by all meds ordered at one time.)
      */
     public Identifier getGroupIdentifier() { 
       if (this.groupIdentifier == null)
@@ -3769,7 +3762,7 @@ public class Transport extends DomainResource {
     }
 
     /**
-     * @param value {@link #groupIdentifier} (An identifier that links together multiple transports and other requests that were created in the same context.)
+     * @param value {@link #groupIdentifier} (A shared identifier common to multiple independent Request instances that were activated/authorized more or less simultaneously by a single author.  The presence of the same identifier on each request ties those requests together and may have business ramifications in terms of reporting of results, billing, etc.  E.g. a requisition number shared by a set of lab tests ordered together, or a prescription number shared by all meds ordered at one time.)
      */
     public Transport setGroupIdentifier(Identifier value) { 
       this.groupIdentifier = value;
@@ -4751,50 +4744,26 @@ public class Transport extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonCode} (A description or code indicating why this transport needs to be performed.)
+     * @return {@link #reason} (A resource reference indicating why this transport needs to be performed.)
      */
-    public CodeableConcept getReasonCode() { 
-      if (this.reasonCode == null)
+    public CodeableReference getReason() { 
+      if (this.reason == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Transport.reasonCode");
+          throw new Error("Attempt to auto-create Transport.reason");
         else if (Configuration.doAutoCreate())
-          this.reasonCode = new CodeableConcept(); // cc
-      return this.reasonCode;
+          this.reason = new CodeableReference(); // cc
+      return this.reason;
     }
 
-    public boolean hasReasonCode() { 
-      return this.reasonCode != null && !this.reasonCode.isEmpty();
-    }
-
-    /**
-     * @param value {@link #reasonCode} (A description or code indicating why this transport needs to be performed.)
-     */
-    public Transport setReasonCode(CodeableConcept value) { 
-      this.reasonCode = value;
-      return this;
+    public boolean hasReason() { 
+      return this.reason != null && !this.reason.isEmpty();
     }
 
     /**
-     * @return {@link #reasonReference} (A resource reference indicating why this transport needs to be performed.)
+     * @param value {@link #reason} (A resource reference indicating why this transport needs to be performed.)
      */
-    public Reference getReasonReference() { 
-      if (this.reasonReference == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Transport.reasonReference");
-        else if (Configuration.doAutoCreate())
-          this.reasonReference = new Reference(); // cc
-      return this.reasonReference;
-    }
-
-    public boolean hasReasonReference() { 
-      return this.reasonReference != null && !this.reasonReference.isEmpty();
-    }
-
-    /**
-     * @param value {@link #reasonReference} (A resource reference indicating why this transport needs to be performed.)
-     */
-    public Transport setReasonReference(Reference value) { 
-      this.reasonReference = value;
+    public Transport setReason(CodeableReference value) { 
+      this.reason = value;
       return this;
     }
 
@@ -4828,8 +4797,8 @@ public class Transport extends DomainResource {
         children.add(new Property("instantiatesCanonical", "canonical(ActivityDefinition)", "The URL pointing to a *FHIR*-defined protocol, guideline, orderset or other definition that is adhered to in whole or in part by this Transport.", 0, 1, instantiatesCanonical));
         children.add(new Property("instantiatesUri", "uri", "The URL pointing to an *externally* maintained  protocol, guideline, orderset or other definition that is adhered to in whole or in part by this Transport.", 0, 1, instantiatesUri));
         children.add(new Property("basedOn", "Reference(Any)", "BasedOn refers to a higher-level authorization that triggered the creation of the transport.  It references a \"request\" resource such as a ServiceRequest or Transport, which is distinct from the \"request\" resource the Transport is seeking to fulfill.  This latter resource is referenced by FocusOn.  For example, based on a ServiceRequest (= BasedOn), a transport is created to fulfill a procedureRequest ( = FocusOn ) to transport a specimen to the lab.", 0, java.lang.Integer.MAX_VALUE, basedOn));
-        children.add(new Property("groupIdentifier", "Identifier", "An identifier that links together multiple transports and other requests that were created in the same context.", 0, 1, groupIdentifier));
-        children.add(new Property("partOf", "Reference(Transport|Contract)", "A larger event of which this particular event is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf));
+        children.add(new Property("groupIdentifier", "Identifier", "A shared identifier common to multiple independent Request instances that were activated/authorized more or less simultaneously by a single author.  The presence of the same identifier on each request ties those requests together and may have business ramifications in terms of reporting of results, billing, etc.  E.g. a requisition number shared by a set of lab tests ordered together, or a prescription number shared by all meds ordered at one time.", 0, 1, groupIdentifier));
+        children.add(new Property("partOf", "Reference(Transport)", "A larger event of which this particular event is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf));
         children.add(new Property("status", "code", "A code specifying the state of the transport event.", 0, 1, status));
         children.add(new Property("statusReason", "CodeableConcept", "An explanation as to why this transport is held, failed, was refused, etc.", 0, 1, statusReason));
         children.add(new Property("intent", "code", "Indicates the \"level\" of actionability associated with the Transport, i.e. i+R[9]Cs this a proposed transport, a planned transport, an actionable transport, etc.", 0, 1, intent));
@@ -4854,8 +4823,7 @@ public class Transport extends DomainResource {
         children.add(new Property("output", "", "Outputs produced by the Transport.", 0, java.lang.Integer.MAX_VALUE, output));
         children.add(new Property("requestedLocation", "Reference(Location)", "The desired or final location for the transport.", 0, 1, requestedLocation));
         children.add(new Property("currentLocation", "Reference(Location)", "The current location for the entity to be transported.", 0, 1, currentLocation));
-        children.add(new Property("reasonCode", "CodeableConcept", "A description or code indicating why this transport needs to be performed.", 0, 1, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this transport needs to be performed.", 0, 1, reasonReference));
+        children.add(new Property("reason", "CodeableReference(Any)", "A resource reference indicating why this transport needs to be performed.", 0, 1, reason));
         children.add(new Property("history", "Reference(Transport)", "The transport event prior to this one.", 0, 1, history));
       }
 
@@ -4866,8 +4834,8 @@ public class Transport extends DomainResource {
         case 8911915: /*instantiatesCanonical*/  return new Property("instantiatesCanonical", "canonical(ActivityDefinition)", "The URL pointing to a *FHIR*-defined protocol, guideline, orderset or other definition that is adhered to in whole or in part by this Transport.", 0, 1, instantiatesCanonical);
         case -1926393373: /*instantiatesUri*/  return new Property("instantiatesUri", "uri", "The URL pointing to an *externally* maintained  protocol, guideline, orderset or other definition that is adhered to in whole or in part by this Transport.", 0, 1, instantiatesUri);
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(Any)", "BasedOn refers to a higher-level authorization that triggered the creation of the transport.  It references a \"request\" resource such as a ServiceRequest or Transport, which is distinct from the \"request\" resource the Transport is seeking to fulfill.  This latter resource is referenced by FocusOn.  For example, based on a ServiceRequest (= BasedOn), a transport is created to fulfill a procedureRequest ( = FocusOn ) to transport a specimen to the lab.", 0, java.lang.Integer.MAX_VALUE, basedOn);
-        case -445338488: /*groupIdentifier*/  return new Property("groupIdentifier", "Identifier", "An identifier that links together multiple transports and other requests that were created in the same context.", 0, 1, groupIdentifier);
-        case -995410646: /*partOf*/  return new Property("partOf", "Reference(Transport|Contract)", "A larger event of which this particular event is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf);
+        case -445338488: /*groupIdentifier*/  return new Property("groupIdentifier", "Identifier", "A shared identifier common to multiple independent Request instances that were activated/authorized more or less simultaneously by a single author.  The presence of the same identifier on each request ties those requests together and may have business ramifications in terms of reporting of results, billing, etc.  E.g. a requisition number shared by a set of lab tests ordered together, or a prescription number shared by all meds ordered at one time.", 0, 1, groupIdentifier);
+        case -995410646: /*partOf*/  return new Property("partOf", "Reference(Transport)", "A larger event of which this particular event is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf);
         case -892481550: /*status*/  return new Property("status", "code", "A code specifying the state of the transport event.", 0, 1, status);
         case 2051346646: /*statusReason*/  return new Property("statusReason", "CodeableConcept", "An explanation as to why this transport is held, failed, was refused, etc.", 0, 1, statusReason);
         case -1183762788: /*intent*/  return new Property("intent", "code", "Indicates the \"level\" of actionability associated with the Transport, i.e. i+R[9]Cs this a proposed transport, a planned transport, an actionable transport, etc.", 0, 1, intent);
@@ -4892,8 +4860,7 @@ public class Transport extends DomainResource {
         case -1005512447: /*output*/  return new Property("output", "", "Outputs produced by the Transport.", 0, java.lang.Integer.MAX_VALUE, output);
         case -1788392125: /*requestedLocation*/  return new Property("requestedLocation", "Reference(Location)", "The desired or final location for the transport.", 0, 1, requestedLocation);
         case -140429234: /*currentLocation*/  return new Property("currentLocation", "Reference(Location)", "The current location for the entity to be transported.", 0, 1, currentLocation);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "A description or code indicating why this transport needs to be performed.", 0, 1, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this transport needs to be performed.", 0, 1, reasonReference);
+        case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Any)", "A resource reference indicating why this transport needs to be performed.", 0, 1, reason);
         case 926934164: /*history*/  return new Property("history", "Reference(Transport)", "The transport event prior to this one.", 0, 1, history);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -4933,8 +4900,7 @@ public class Transport extends DomainResource {
         case -1005512447: /*output*/ return this.output == null ? new Base[0] : this.output.toArray(new Base[this.output.size()]); // TransportOutputComponent
         case -1788392125: /*requestedLocation*/ return this.requestedLocation == null ? new Base[0] : new Base[] {this.requestedLocation}; // Reference
         case -140429234: /*currentLocation*/ return this.currentLocation == null ? new Base[0] : new Base[] {this.currentLocation}; // Reference
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : new Base[] {this.reasonCode}; // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : new Base[] {this.reasonReference}; // Reference
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : new Base[] {this.reason}; // CodeableReference
         case 926934164: /*history*/ return this.history == null ? new Base[0] : new Base[] {this.history}; // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -5037,11 +5003,8 @@ public class Transport extends DomainResource {
         case -140429234: // currentLocation
           this.currentLocation = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 722137681: // reasonCode
-          this.reasonCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.reasonReference = TypeConvertor.castToReference(value); // Reference
+        case -934964668: // reason
+          this.reason = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case 926934164: // history
           this.history = TypeConvertor.castToReference(value); // Reference
@@ -5116,10 +5079,8 @@ public class Transport extends DomainResource {
           this.requestedLocation = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("currentLocation")) {
           this.currentLocation = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("reasonCode")) {
-          this.reasonCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("reasonReference")) {
-          this.reasonReference = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("reason")) {
+          this.reason = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("history")) {
           this.history = TypeConvertor.castToReference(value); // Reference
         } else
@@ -5160,8 +5121,7 @@ public class Transport extends DomainResource {
         case -1005512447:  return addOutput(); 
         case -1788392125:  return getRequestedLocation();
         case -140429234:  return getCurrentLocation();
-        case 722137681:  return getReasonCode();
-        case -1146218137:  return getReasonReference();
+        case -934964668:  return getReason();
         case 926934164:  return getHistory();
         default: return super.makeProperty(hash, name);
         }
@@ -5201,8 +5161,7 @@ public class Transport extends DomainResource {
         case -1005512447: /*output*/ return new String[] {};
         case -1788392125: /*requestedLocation*/ return new String[] {"Reference"};
         case -140429234: /*currentLocation*/ return new String[] {"Reference"};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
+        case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case 926934164: /*history*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -5313,13 +5272,9 @@ public class Transport extends DomainResource {
           this.currentLocation = new Reference();
           return this.currentLocation;
         }
-        else if (name.equals("reasonCode")) {
-          this.reasonCode = new CodeableConcept();
-          return this.reasonCode;
-        }
-        else if (name.equals("reasonReference")) {
-          this.reasonReference = new Reference();
-          return this.reasonReference;
+        else if (name.equals("reason")) {
+          this.reason = new CodeableReference();
+          return this.reason;
         }
         else if (name.equals("history")) {
           this.history = new Reference();
@@ -5408,8 +5363,7 @@ public class Transport extends DomainResource {
         };
         dst.requestedLocation = requestedLocation == null ? null : requestedLocation.copy();
         dst.currentLocation = currentLocation == null ? null : currentLocation.copy();
-        dst.reasonCode = reasonCode == null ? null : reasonCode.copy();
-        dst.reasonReference = reasonReference == null ? null : reasonReference.copy();
+        dst.reason = reason == null ? null : reason.copy();
         dst.history = history == null ? null : history.copy();
       }
 
@@ -5436,8 +5390,7 @@ public class Transport extends DomainResource {
            && compareDeep(insurance, o.insurance, true) && compareDeep(note, o.note, true) && compareDeep(relevantHistory, o.relevantHistory, true)
            && compareDeep(restriction, o.restriction, true) && compareDeep(input, o.input, true) && compareDeep(output, o.output, true)
            && compareDeep(requestedLocation, o.requestedLocation, true) && compareDeep(currentLocation, o.currentLocation, true)
-           && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
-           && compareDeep(history, o.history, true);
+           && compareDeep(reason, o.reason, true) && compareDeep(history, o.history, true);
       }
 
       @Override
@@ -5459,8 +5412,8 @@ public class Transport extends DomainResource {
           , instantiatesUri, basedOn, groupIdentifier, partOf, status, statusReason, intent
           , priority, code, description, focus, for_, encounter, completionTime, authoredOn
           , lastModified, requester, performerType, owner, location, insurance, note, relevantHistory
-          , restriction, input, output, requestedLocation, currentLocation, reasonCode, reasonReference
-          , history);
+          , restriction, input, output, requestedLocation, currentLocation, reason, history
+          );
       }
 
   @Override
@@ -5510,3 +5463,4 @@ public class Transport extends DomainResource {
 
 
 }
+

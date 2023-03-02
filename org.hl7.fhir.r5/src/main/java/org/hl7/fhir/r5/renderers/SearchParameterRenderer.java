@@ -7,11 +7,12 @@ import java.util.List;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.SearchComparator;
+import org.hl7.fhir.r5.model.Enumerations.SearchModifierCode;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
 import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
-import org.hl7.fhir.r5.model.SearchParameter.SearchComparator;
-import org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode;
 import org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -56,8 +57,8 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     XhtmlNode tr = tbl.tr();
     tr.td().tx(Utilities.pluralize("Resource", spd.getBase().size()));
     XhtmlNode td = tr.td();
-    for (CodeType t : spd.getBase()) {
-      StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.toString());
+    for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getBase()) {
+      StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
       if (sd != null && sd.hasUserData("path")) {
         td.sep(", ");
         td.ah(sd.getUserString("path")).tx(t.getCode());
@@ -85,8 +86,8 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       if (isAllConcreteResources(spd.getTarget())) {
         td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html")).tx("All Resources");
       } else {
-        for (CodeType t : spd.getTarget()) {
-          StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.toString());
+        for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getTarget()) {
+          StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
           if (sd != null && sd.hasUserData("path")) {
             td.sep(", ");
             td.ah(sd.getUserString("path")).tx(t.getCode());
@@ -156,13 +157,13 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     return false;
   }
 
-  private boolean isAllConcreteResources(List<CodeType> target) {
+  private boolean isAllConcreteResources(List<Enumeration<VersionIndependentResourceTypesAll>> list) {
     for (String s : context.getWorker().getResourceNames()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(s);
       if (!sd.getAbstract() && !Utilities.existsInList(sd.getType(), "Parameters")) {
         boolean found = false;
-        for (CodeType c : target) {
-          found = found || sd.getName().equals(c.getValue());
+        for (Enumeration<VersionIndependentResourceTypesAll> c : list) {
+          found = found || sd.getName().equals(c.getCode());
         }
         if (!found) {
           return false;

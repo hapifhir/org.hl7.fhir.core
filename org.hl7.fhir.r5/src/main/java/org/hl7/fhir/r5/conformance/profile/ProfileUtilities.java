@@ -48,6 +48,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ElementRedirection;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.AllowUnknownProfile;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.Property;
@@ -128,6 +129,12 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  *
  */
 public class ProfileUtilities extends TranslatingUtilities {
+
+  public enum AllowUnknownProfile {
+    NONE, // exception if there's any unknown profiles (the default)
+    NON_EXTNEIONS, // don't raise an exception except on Extension (because more is going on there
+    ALL_TYPES // allow any unknow profile
+  }
 
   private static final List<String> INHERITED_ED_URLS = Arrays.asList(
       "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style",
@@ -272,6 +279,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean wantFixDifferentialFirstElementType;
   private Set<String> masterSourceFileNames;
   private Map<ElementDefinition, SourcedChildDefinitions> childMapCache = new HashMap<>();
+  private AllowUnknownProfile allowUnknownProfile = AllowUnknownProfile.ALL_TYPES;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
@@ -607,6 +615,9 @@ public class ProfileUtilities extends TranslatingUtilities {
           System.out.println("Snapshot: ");
           for (ElementDefinition ed : derived.getSnapshot().getElement())
             System.out.println("  "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+          System.out.println("diff: ");
+          for (ElementDefinition ed : diff.getElement())
+            System.out.println("  "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed)+" [gen = "+(ed.hasUserData(UD_GENERATED_IN_SNAPSHOT) ? ed.getUserData(UD_GENERATED_IN_SNAPSHOT) : "--")+"]");
         }
         CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
         //Check that all differential elements have a corresponding snapshot element
@@ -1954,7 +1965,20 @@ public class ProfileUtilities extends TranslatingUtilities {
       base.getAlias().addAll(e.getAlias());
       base.getMapping().clear();
       base.getMapping().addAll(e.getMapping());
-    } 
+    } else if (source.getType().size() == 1 && source.getTypeFirstRep().hasProfile()) {
+      String type = source.getTypeFirstRep().getWorkingCode();
+      if ("Extension".equals(type)) {
+        System.out.println("Can't find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");          
+        if (allowUnknownProfile != AllowUnknownProfile.ALL_TYPES) {
+          throw new DefinitionException("Unable to find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue());          
+        }
+      } else {
+        System.out.println("Can't find "+type+" profile "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");          
+        if (allowUnknownProfile == AllowUnknownProfile.NONE) {
+          throw new DefinitionException("Unable to find "+type+" profile "+source.getTypeFirstRep().getProfile().get(0).asStringValue());          
+        }
+      }
+    }
     if (derived != null) {
       if (derived.hasSliceName()) {
         base.setSliceName(derived.getSliceName());
@@ -3872,6 +3896,14 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public static boolean isExtensionDefinition(StructureDefinition sd) {
     return sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.getType().equals("Extension");
+  }
+
+  public AllowUnknownProfile getAllowUnknownProfile() {
+    return allowUnknownProfile;
+  }
+
+  public void setAllowUnknownProfile(AllowUnknownProfile allowUnknownProfile) {
+    this.allowUnknownProfile = allowUnknownProfile;
   }
 
   
