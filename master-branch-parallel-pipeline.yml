@@ -8,14 +8,29 @@ trigger: none
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+jobs:
+  - job: setup
+    displayName: cache-maven-dependencies
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - checkout: self
+        fetchDepth: 1
+      - task: Cache@2
+        inputs:
+          key: maven | $(Build.BuildId)
+          path: $(MAVEN_CACHE_FOLDER)
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: mkdir -p $(MAVEN_CACHE_FOLDER); pwd; ls -al $(MAVEN_CACHE_FOLDER)
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+          mavenOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'dependency:resolve'
