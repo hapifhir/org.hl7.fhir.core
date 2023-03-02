@@ -19,7 +19,7 @@ jobs:
       - task: Cache@2
         inputs:
           key: maven | $(Build.BuildId)
-          path: $(MAVEN_CACHE_FOLDER)
+          path: $(MAVEN_CACHE_FOLDER), $(System.DefaultWorkingDirectory)/$(GIT_REPO)/org.hl7.fhir.convertors/target
       - task: Bash@3
         inputs:
           targetType: 'inline'
