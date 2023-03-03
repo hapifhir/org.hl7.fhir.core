@@ -1,8 +1,7 @@
 ## Validator Changes
 
-* Fix NPE in Structure Map validation
+* no changes
 
 ## Other code changes
 
-* Add back code missed when regenerating R5
-* Update conversions for discovered issues for R5
+* no changes
