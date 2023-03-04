@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
+import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Reference10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.CodeableConcept10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identifier10_50;
@@ -8,6 +9,7 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Range1
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.SimpleQuantity10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Instant10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Observation10_50 {
@@ -34,8 +36,15 @@ public class Observation10_50 {
     if (src.hasIssuedElement())
       tgt.setIssuedElement(Instant10_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference10_50.convertReference(t));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getValue()));
+
+    if (src.hasValue()) {
+      if (src.hasValueMarkdownType()) {
+        tgt.setValue(String10_50.convertMarkdownToString(src.getValueMarkdownType()));
+      } else {
+        tgt.setValue(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getValue()));
+      }
+    }
+    
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept10_50.convertCodeableConcept(src.getDataAbsentReason()));
     if (src.hasInterpretation())
@@ -84,8 +93,15 @@ public class Observation10_50 {
       tgt.setIssuedElement(Instant10_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getPerformer())
       tgt.addPerformer(Reference10_50.convertReference(t));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getValue()));
+
+    if (src.hasValue()) {
+      if (src.hasValueStringType()) {
+        tgt.setValue(String10_50.convertStringToMarkdown(src.getValueStringType()));
+      } else {
+        tgt.setValue(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getValue()));
+      }
+    }
+    
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept10_50.convertCodeableConcept(src.getDataAbsentReason()));
     if (src.hasInterpretation())

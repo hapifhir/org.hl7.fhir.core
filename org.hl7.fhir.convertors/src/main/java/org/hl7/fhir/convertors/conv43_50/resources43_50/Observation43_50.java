@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Annotation43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
@@ -67,8 +69,13 @@ public class Observation43_50 {
     if (src.hasIssued())
       tgt.setIssuedElement(Instant43_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r4b.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference43_50.convertReference(t));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getValue()));
+    if (src.hasValue()) {
+      if (src.hasValueStringType()) {
+        tgt.setValue(String43_50.convertStringToMarkdown(src.getValueStringType()));
+      } else {
+        tgt.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getValue()));
+      }
+    }
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept43_50.convertCodeableConcept(src.getDataAbsentReason()));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getInterpretation())
@@ -117,8 +124,13 @@ public class Observation43_50 {
     if (src.hasIssued())
       tgt.setIssuedElement(Instant43_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference43_50.convertReference(t));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getValue()));
+    if (src.hasValue()) {
+      if (src.hasValueMarkdownType()) {
+        tgt.setValue(String43_50.convertMarkdownToString(src.getValueMarkdownType()));
+      } else {
+        tgt.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getValue()));
+      }
+    }
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept43_50.convertCodeableConcept(src.getDataAbsentReason()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getInterpretation())
