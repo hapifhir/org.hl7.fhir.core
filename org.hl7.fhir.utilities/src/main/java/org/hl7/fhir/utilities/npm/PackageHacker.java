@@ -29,7 +29,7 @@ public class PackageHacker {
   private static boolean useSecureReferences = false;
   
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/5.0.0-draft-final/hl7.fhir.r5.search.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/vitals/2020Sep/package.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -42,15 +42,7 @@ public class PackageHacker {
     System.out.println(nice(pck.getNpm()));
     
     change(pck.getNpm());
-//    fixContent(pck.getFolders().get("package").getContent());
-//    if (pck.getFolders().containsKey("openapi")) {
-//      fixContent(pck.getFolders().get("openapi").getContent());
-//    }
-//    if (pck.getFolders().containsKey("xml")) {
-//      fixContent(pck.getFolders().get("xml").getContent());
-//    }
-//    fixExampleContent(pck.getFolders().get("example").getContent());
-    
+
     System.out.println("Revised Package");
     System.out.println("=======================");
     System.out.println(nice(pck.getNpm()));
@@ -79,35 +71,9 @@ public class PackageHacker {
   }
 
   private void change(JsonObject npm) throws FileNotFoundException, IOException {
-//    fixVersions(npm);
+//    fixVersions(npm, ver);
     npm.remove("notForPublication");
-//    npm.remove("name");
-//    npm.add("name", "hl7.fhir.r5.search");
-//    npm.remove("title");
-//    npm.add("title", "FHIR 5.0.0-draft-final package : Server Search Parameters");
-//    npm.add("url", "https://hl7chile.cl/fhir/ig/CoreCL/1.7.0");
-//    npm.remove("name");
-//    npm.addProperty("name", "hl7.fhir.uv.smart-app-launch");
-//    npm.remove("canonical");
-//    npm.addProperty("canonical", "http://hl7.org/fhir/us/davinci-drug-formulary");
-////    npm.remove("description");
-////    npm.addProperty("description", "Group Wrapper that includes all the R4 packages");
-//    npm.remove("url");
-//    npm.addProperty("url", "http://hl7.org/fhir/R4B");
-//    npm.remove("homepage");
-//    npm.addProperty("homepage", "http://hl7.org/fhir/R4B");
-//    npm.remove("dependencies");
-//    JsonObject dep = new JsonObject();
-//    npm.add("dependencies", dep);
-//    dep.addProperty("hl7.fhir.r4.core", "4.0.1");
-//    dep.addProperty("ch.fhir.ig.ch-core", "2.0.0");
-//    dep.addProperty("ch.fhir.ig.ch-epr-term", "2.0.4");
-//    dep.addProperty("ch.fhir.ig.ch-emed","current");
-
-//    dep.addProperty("hl7.fhir.r4.examples", "4.0.1");
-//    dep.addProperty("hl7.fhir.r4.expansions", "4.0.1");
-//    dep.addProperty("hl7.fhir.r4.elements", "4.0.1");
-//    npm.addProperty("jurisdiction", "urn:iso:std:iso:3166#CL");
+    npm.set("name", "hl7.fhir.us.vitals");
   }
 
   private void fixVersionInContent(Map<String, byte[]> content) {
