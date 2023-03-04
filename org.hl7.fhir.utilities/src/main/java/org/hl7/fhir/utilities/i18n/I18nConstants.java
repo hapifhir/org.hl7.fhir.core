@@ -527,6 +527,8 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH = "Type_Specific_Checks_DT_Primitive_Length";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY = "Type_Specific_Checks_DT_Primitive_NotEmpty";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX = "Type_Specific_Checks_DT_Primitive_Regex";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE = "Type_Specific_Checks_DT_Primitive_Regex_Type";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_EXCEPTION = "TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_EXCEPTION";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT = "Type_Specific_Checks_DT_Primitive_ValueExt";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS = "Type_Specific_Checks_DT_Primitive_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS = "TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS";
