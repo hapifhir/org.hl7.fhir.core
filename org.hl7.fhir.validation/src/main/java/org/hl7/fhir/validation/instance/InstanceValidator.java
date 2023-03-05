@@ -3518,14 +3518,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, tp.getValue(), profile);
         if (sd != null) {
           types.add(sd.getType());
-        }
-        StructureDefinition sdF = sdFT;
-        while (sdF != null) {
-          if (sdF.getType().equals(sd.getType())) {
-            rok = true;
-            break;
+          StructureDefinition sdF = sdFT;
+          while (sdF != null) {
+            if (sdF.getType().equals(sd.getType())) {
+              rok = true;
+              break;
+            }
+            sdF = sdF.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sdF.getBaseDefinition(), sdF) : null;
           }
-          sdF = sdF.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sdF.getBaseDefinition(), sdF) : null;
         }
       }
       ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, types.isEmpty() || rok,
@@ -4048,7 +4048,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           return false;
         else
           lastWasSpace = true;
-      } else if (Character.isWhitespace(c))
+      } else if (Character.isWhitespace(c) || c == '\u00A0')
         return false;
       else
         lastWasSpace = false;

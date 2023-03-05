@@ -415,16 +415,6 @@ public class CodeSystemUtilities {
     return cs;
   }
 
-  public static boolean makeCSShareable(CodeSystem cs) {
-    if (!cs.hasMeta())
-      cs.setMeta(new Meta());
-    for (UriType t : cs.getMeta().getProfile()) 
-      if ("http://hl7.org/fhir/StructureDefinition/shareablecodesystem".equals(t.getValue()))
-        return false;
-    cs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"));
-    return true;
-  }
-
   public static void setOID(CodeSystem cs, String oid) {
     if (!oid.startsWith("urn:oid:"))
        oid = "urn:oid:" + oid;

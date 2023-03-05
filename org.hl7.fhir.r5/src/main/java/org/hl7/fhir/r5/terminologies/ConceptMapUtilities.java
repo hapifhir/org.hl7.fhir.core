@@ -3,12 +3,16 @@ package org.hl7.fhir.r5.terminologies;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.Meta;
+import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 
 public class ConceptMapUtilities {
@@ -66,5 +70,19 @@ public class ConceptMapUtilities {
     return list;
   }
 
+
+  public static ConceptMap makeShareable(ConceptMap cm) {
+    if (!cm.hasExperimental()) {
+      cm.setExperimental(false);
+    }
+
+    if (!cm.hasMeta())
+      cm.setMeta(new Meta());
+    for (UriType t : cm.getMeta().getProfile()) 
+      if ("http://hl7.org/fhir/StructureDefinition/shareableconceptmap".equals(t.getValue()))
+        return cm;
+    cm.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareableconceptmap"));
+    return cm;
+  }
 
 }
