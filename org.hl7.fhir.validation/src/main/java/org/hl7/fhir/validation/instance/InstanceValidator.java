@@ -185,6 +185,7 @@ import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
+import org.hl7.fhir.validation.instance.type.ConceptMapValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator;
 import org.hl7.fhir.validation.instance.type.SearchParameterValidator;
@@ -5036,6 +5037,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
       return new CodeSystemValidator(context, timeTracker, this, xverManager, jurisdiction).validateCodeSystem(errors, element, stack, baseOptions.setLanguage(stack.getWorkingLang()));
+    } else if (element.getType().equals("ConceptMap")) {
+      return new ConceptMapValidator(context, timeTracker, this, xverManager, jurisdiction).validateConceptMap(errors, element, stack, baseOptions.setLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("SearchParameter")) {
       return new SearchParameterValidator(context, timeTracker, fpe, xverManager, jurisdiction).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {

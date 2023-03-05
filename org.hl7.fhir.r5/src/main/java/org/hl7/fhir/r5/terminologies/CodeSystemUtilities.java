@@ -47,6 +47,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
@@ -677,6 +678,19 @@ public class CodeSystemUtilities {
 
   public static boolean isNotCurrent(CodeSystem cs, ConceptDefinitionComponent c) {
     return isInactive(cs, c) || isDeprecated(cs, c, false);
+  }
+
+  public static List<String> getDisplays(CodeSystem srcCS, ConceptDefinitionComponent cd) {
+    List<String> list = new ArrayList<>();
+    if (cd.hasDisplay()) {
+      list.add(cd.getDisplay());
+    }
+    for (ConceptDefinitionDesignationComponent d : cd.getDesignation()) {
+      if (!list.contains(d.getValue())) {
+        list.add(d.getValue());
+      }
+    }
+    return list;
   }
 }
 
