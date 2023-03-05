@@ -81,8 +81,8 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   private Location location;
   private NodeType nodeType;
   private String name;
-  private Map<String, String> attributes = new HashMap<String, String>();
-  private XhtmlNodeList childNodes = new XhtmlNodeList();
+  protected Map<String, String> attributes;
+  protected XhtmlNodeList childNodes;
   private String content;
   private boolean notPretty;
   private boolean seperated;  
@@ -122,11 +122,26 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return this;
   }
 
+  public boolean hasAttributes() {
+    return attributes != null && !attributes.isEmpty();
+  }
+  
   public Map<String, String> getAttributes() {
+    if (attributes == null) {
+      attributes = new HashMap<String, String>();
+    }
     return attributes;
   }
 
+  public boolean hasChildren() {
+    return childNodes != null && !childNodes.isEmpty();
+  }
+
+
   public XhtmlNodeList getChildNodes() {
+    if (childNodes == null) {
+      childNodes = new XhtmlNodeList();
+    }
     return childNodes;
   }
 
@@ -151,19 +166,21 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
             "code", "samp", "img", "map", "area")) {
           errors.add("Error at "+path+": Found "+name+" in a resource");          
         }      
-        for (String an : attributes.keySet()) {
-          boolean ok = an.startsWith("xmlns") || Utilities.existsInList(an,
-              "title", "style", "class", "ID", "lang", "xml:lang", "dir", "accesskey", "tabindex",
-              // tables
-              "span", "width", "align", "valign", "char", "charoff", "abbr", "axis", "headers", "scope", "rowspan", "colspan") ||
-              Utilities.existsInList(name + "." + an, "a.href", "a.name", "img.src", "img.border", "div.xmlns", "blockquote.cite", "q.cite",
-                  "a.charset", "a.type", "a.name", "a.href", "a.hreflang", "a.rel", "a.rev", "a.shape", "a.coords", "img.src",
-                  "img.alt", "img.longdesc", "img.height", "img.width", "img.usemap", "img.ismap", "map.name", "area.shape",
-                  "area.coords", "area.href", "area.nohref", "area.alt", "table.summary", "table.width", "table.border",
-                  "table.frame", "table.rules", "table.cellspacing", "table.cellpadding", "pre.space", "td.nowrap"
-                  );
-          if (!ok)
-            errors.add("Error at "+path+": Found attribute "+name+"."+an+" in a resource");          
+        if (hasAttributes()) {
+          for (String an : attributes.keySet()) {
+            boolean ok = an.startsWith("xmlns") || Utilities.existsInList(an,
+                "title", "style", "class", "ID", "lang", "xml:lang", "dir", "accesskey", "tabindex",
+                // tables
+                "span", "width", "align", "valign", "char", "charoff", "abbr", "axis", "headers", "scope", "rowspan", "colspan") ||
+                Utilities.existsInList(name + "." + an, "a.href", "a.name", "img.src", "img.border", "div.xmlns", "blockquote.cite", "q.cite",
+                    "a.charset", "a.type", "a.name", "a.href", "a.hreflang", "a.rel", "a.rev", "a.shape", "a.coords", "img.src",
+                    "img.alt", "img.longdesc", "img.height", "img.width", "img.usemap", "img.ismap", "map.name", "area.shape",
+                    "area.coords", "area.href", "area.nohref", "area.alt", "table.summary", "table.width", "table.border",
+                    "table.frame", "table.rules", "table.cellspacing", "table.cellpadding", "pre.space", "td.nowrap"
+                    );
+            if (!ok)
+              errors.add("Error at "+path+": Found attribute "+name+"."+an+" in a resource");          
+          }
         }
       }
       if (inPara && Utilities.existsInList(name, "div",  "blockquote", "table", "ol", "ul", "p")) {
@@ -173,7 +190,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
         errors.add("Error at "+path+": Found an <a> inside an <a> paragraph");
       }
 
-      if (childNodes != null) {
+      if (hasChildren()) {
         if ("p".equals(name)) {
           inPara = true;
         }
@@ -202,13 +219,13 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 //    }
     XhtmlNode node = new XhtmlNode(NodeType.Element);
     node.setName(name);
-    if (childNodes.isInPara() || name.equals("p")) {
+    if (getChildNodes().isInPara() || name.equals("p")) {
       node.getChildNodes().setInPara(true);
     }
-    if (childNodes.isInLink() || name.equals("a")) {
+    if (getChildNodes().isInLink() || name.equals("a")) {
       node.getChildNodes().setInLink(true);
     }
-    childNodes.add(node);
+    getChildNodes().add(node);
     return node;
   }
 
@@ -218,14 +235,14 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
       throw new Error("Wrong node type. is "+nodeType.toString());
     XhtmlNode node = new XhtmlNode(NodeType.Element);
-    if (childNodes.isInPara() || name.equals("p")) {
+    if (getChildNodes().isInPara() || name.equals("p")) {
       node.getChildNodes().setInPara(true);
     }
-    if (childNodes.isInLink() || name.equals("a")) {
+    if (getChildNodes().isInLink() || name.equals("a")) {
       node.getChildNodes().setInLink(true);
     }
     node.setName(name);
-    childNodes.add(index, node);
+    getChildNodes().add(index, node);
     return node;
   }
 
@@ -235,7 +252,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       throw new Error("Wrong node type");
     XhtmlNode node = new XhtmlNode(NodeType.Comment);
     node.setContent(content);
-    childNodes.add(node);
+    getChildNodes().add(node);
     return node;
   }
 
@@ -245,7 +262,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       throw new Error("Wrong node type");
     XhtmlNode node = new XhtmlNode(NodeType.DocType);
     node.setContent(content);
-    childNodes.add(node);
+    getChildNodes().add(node);
     return node;
   }
 
@@ -255,7 +272,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       throw new Error("Wrong node type");
     XhtmlNode node = new XhtmlNode(NodeType.Instruction);
     node.setContent(content);
-    childNodes.add(node);
+    getChildNodes().add(node);
     return node;
   }
   public XhtmlNode addText(String content)
@@ -265,7 +282,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (content != null) {
       XhtmlNode node = new XhtmlNode(NodeType.Text);
       node.setContent(content);
-      childNodes.add(node);
+      getChildNodes().add(node);
       return node;
     } else 
       return null;
@@ -280,35 +297,42 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
     XhtmlNode node = new XhtmlNode(NodeType.Text);
     node.setContent(content);
-    childNodes.add(index, node);
+    getChildNodes().add(index, node);
     return node;
   }
 
   public boolean allChildrenAreText()
   {
     boolean res = true;
-    for (XhtmlNode n : childNodes)
-      res = res && n.getNodeType() == NodeType.Text;
+    if (hasChildren()) {
+      for (XhtmlNode n : childNodes)
+        res = res && n.getNodeType() == NodeType.Text;
+    }
     return res;
   }
 
   public XhtmlNode getElement(String name) {
-    for (XhtmlNode n : childNodes)
-      if (n.getNodeType() == NodeType.Element && name.equals(n.getName())) 
-        return n;
+    if (hasChildren()) {
+      for (XhtmlNode n : childNodes)
+        if (n.getNodeType() == NodeType.Element && name.equals(n.getName())) 
+          return n;
+    }
     return null;
   }
 
   public XhtmlNode getFirstElement() {
-    for (XhtmlNode n : childNodes)
-      if (n.getNodeType() == NodeType.Element) 
-        return n;
+    if (hasChildren()) {
+      for (XhtmlNode n : childNodes)
+        if (n.getNodeType() == NodeType.Element) 
+          return n;
+    }
     return null;
   }
 
   public String allText() {
-    if (childNodes == null || childNodes.isEmpty())
+    if (!hasChildren()) {
       return getContent();
+    }
     
     StringBuilder b = new StringBuilder();
     for (XhtmlNode n : childNodes)
@@ -326,16 +350,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       throw new Error("name is null");
     if (value == null)
       throw new Error("value is null");
-    attributes.put(name, value);
+    getAttributes().put(name, value);
     return this;
   }
 
   public boolean hasAttribute(String name) {
-    return getAttributes().containsKey(name);
+    return hasAttributes() && getAttributes().containsKey(name);
   }
 
   public String getAttribute(String name) {
-    return getAttributes().get(name);
+    return hasAttributes() ? getAttributes().get(name) : null;
   }
 
   public XhtmlNode setAttribute(String name, String value) {
@@ -349,18 +373,22 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public XhtmlNode copy() {
     XhtmlNode dst = new XhtmlNode(nodeType);
     dst.name = name;
-    for (String n : attributes.keySet()) {
-      dst.attributes.put(n, attributes.get(n));
+    if (hasAttributes()) {
+      for (String n : attributes.keySet()) {
+        dst.getAttributes().put(n, attributes.get(n));
+      }
     }
-    for (XhtmlNode n : childNodes)
-      dst.childNodes.add(n.copy());
+    if (hasChildren()) {
+      for (XhtmlNode n : childNodes)
+        dst.getChildNodes().add(n.copy());
+    }
     dst.content = content;
     return dst;
   }
 
   @Override
   public boolean isEmpty() {
-    return (childNodes == null || childNodes.isEmpty()) && content == null;
+    return !hasChildren() && content == null;
   }
 
   public boolean equalsDeep(XhtmlNode other) {
@@ -370,16 +398,26 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
     if (!(nodeType == other.nodeType) || !compare(name, other.name) || !compare(content, other.content))
       return false;
-    if (attributes.size() != other.attributes.size())
+    if (hasAttributes() != other.hasAttributes()) {
       return false;
-    for (String an : attributes.keySet())
-      if (!attributes.get(an).equals(other.attributes.get(an)))
+    }
+    if (hasAttributes()) {
+      if (attributes.size() != other.attributes.size())
         return false;
-    if (childNodes.size() != other.childNodes.size())
+      for (String an : attributes.keySet())
+        if (!attributes.get(an).equals(other.attributes.get(an)))
+          return false;
+    }
+    if (hasChildren() != other.hasChildren()) {
       return false;
-    for (int i = 0; i < childNodes.size(); i++) {
-      if (!compareDeep(childNodes.get(i), other.childNodes.get(i)))
+    }
+    if (hasChildren()) {
+      if (childNodes.size() != other.childNodes.size())
         return false;
+      for (int i = 0; i < childNodes.size(); i++) {
+        if (!compareDeep(childNodes.get(i), other.childNodes.get(i)))
+          return false;
+      }
     }
     return true;
   }
@@ -401,9 +439,11 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
   public String getNsDecl() {
-    for (String an : attributes.keySet()) {
-      if (an.equals("xmlns")) {
-        return attributes.get(an);
+    if (hasAttributes()) {
+      for (String an : attributes.keySet()) {
+        if (an.equals("xmlns")) {
+          return attributes.get(an);
+        }
       }
     }
     return null;
@@ -462,8 +502,8 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
     try {
       XhtmlDocument fragment = new XhtmlParser().parse(val, "div");
-      this.attributes = fragment.getAttributes();
-      this.childNodes = fragment.getChildNodes();
+      this.attributes = fragment.attributes;
+      this.childNodes = fragment.childNodes;
       // Strip the <? .. ?> declaration if one was present
       if (childNodes.size() > 0 && childNodes.get(0) != null && childNodes.get(0).getNodeType() == NodeType.Instruction) {
         childNodes.remove(0);
@@ -475,7 +515,6 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       // TODO: composer shouldn't throw exception like this
       throw new RuntimeException(e);
     }
-
   }
 
   public XhtmlNode getElementByIndex(int i) {
