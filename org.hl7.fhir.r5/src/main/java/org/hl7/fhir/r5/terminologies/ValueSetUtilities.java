@@ -51,6 +51,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
@@ -309,6 +310,22 @@ public class ValueSetUtilities {
     } catch (FHIRException e) {
       return false;
     }  
+  }
+
+  public static boolean hasCodeInExpansion(ValueSet vs, Coding code) {
+    return hasCodeInExpansion(vs.getExpansion().getContains(), code);
+  }
+
+  private static boolean hasCodeInExpansion(List<ValueSetExpansionContainsComponent> list, Coding code) {
+    for (ValueSetExpansionContainsComponent c : list) {
+      if (c.getSystem().equals(code.getSystem()) && c.getCode().equals(code.getCode())) {
+        return true;
+      }
+      if (hasCodeInExpansion(c.getContains(), code)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 

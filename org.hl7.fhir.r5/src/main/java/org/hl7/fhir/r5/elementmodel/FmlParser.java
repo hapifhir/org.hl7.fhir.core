@@ -12,8 +12,10 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.ExpressionNode;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
@@ -78,6 +80,10 @@ public class FmlParser extends ParserBase {
         }
       }
       lexer.setMetadataFormat(false);
+      if (!result.hasChild("status")) {
+        result.makeElement("status").setValue("draft");
+      }
+      
       while (lexer.hasToken("conceptmap"))
         parseConceptMap(result, lexer);
 
@@ -85,6 +91,9 @@ public class FmlParser extends ParserBase {
         parseUses(result, lexer);
       while (lexer.hasToken("imports"))
         parseImports(result, lexer);
+
+      while (lexer.hasToken("conceptmap"))
+        parseConceptMap(result, lexer);
 
       while (!lexer.done()) {
         parseGroup(result, lexer);
@@ -94,24 +103,22 @@ public class FmlParser extends ParserBase {
     } catch (Exception e) {
       logError("2023-02-24", -1, -1, "?", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
     }
-
-    if (!result.hasChild("status")) {
-      result.makeElement("status").setValue("draft");
-    }
     result.setIgnorePropertyOrder(true);
     return result;
   }
 
-  private void parseConceptMap(Element result, FHIRLexer lexer) throws FHIRLexerException {
+  private void parseConceptMap(Element structureMap, FHIRLexer lexer) throws FHIRLexerException {
     lexer.token("conceptmap");
-    Element map = Manager.build(context, context.fetchTypeDefinition("ConceptMap"));
+    Element map = structureMap.makeElement("contained");
+    StructureDefinition sd = context.fetchTypeDefinition("ConceptMap");
+    map.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(map.getProperty()), map.getProperty());
+    map.setType("ConceptMap");
     Element eid = map.makeElement("id").markLocation(lexer.getCurrentLocation());
     String id = lexer.readConstant("map id");
     if (id.startsWith("#"))
       throw lexer.error("Concept Map identifier must start with #");
     eid.setValue(id);
-    map.makeElement("status").setValue(PublicationStatus.DRAFT.toCode()); // todo: how to add this to the text format
-    result.makeElement("contained").setElement("resource", map);
+    map.makeElement("status").setValue(structureMap.getChildValue("status"));
     lexer.token("{");
     //    lexer.token("source");
     //    map.setSource(new UriType(lexer.readConstant("source")));

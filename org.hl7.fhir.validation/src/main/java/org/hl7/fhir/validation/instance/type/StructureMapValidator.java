@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.r5.model.Property;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent;
@@ -20,6 +25,12 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapInputMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.model.TypeDetails;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.ConceptMapUtilities;
+import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
@@ -668,6 +679,46 @@ public class StructureMapValidator extends BaseValidator {
                   ok = false;
                 }
                 break;
+              case "translate":
+                ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 3, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
+                Element srcE = params.size() > 0 ? params.get(0).getNamedChild("value") : null;
+                Element mapE = params.size() > 1? params.get(1).getNamedChild("value") : null;
+                Element modeE = params.size() > 2 ? params.get(2).getNamedChild("value") : null;
+                VariableDefn sv = null;
+                // srcE - if it's an id, the variable must exist
+                if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), srcE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, "source")) {
+                  if ("id".equals(srcE.fhirType())) {
+                    sv = variables.getVariable(srcE.getValue(), true);
+                    rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), sv != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_UNKNOWN_SOURCE, srcE.getValue());
+                  }
+                } else { 
+                  ok = false; 
+                }
+                // mapE - it must resolve (may be reference to contained)
+                if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), mapE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, "map_uri")) {
+                  String ref = mapE.getValue();
+                  ConceptMap cm = null;
+                  if (ref.startsWith("#")) {
+                    cm = (ConceptMap) loadContainedResource(errors, stack.getLiteralPath(), src, ref.substring(1), ConceptMap.class);
+                    ok = rule(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), srcE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, ref) && ok;                          
+                  } else {
+                    // todo: look in Bundle?
+                    cm = this.context.fetchResource(ConceptMap.class, ref);
+                    warning(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), srcE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, ref);                          
+                  }
+                  if (cm != null && (v != null && v.hasTypeInfo() || (sv != null && sv.hasTypeInfo()))) {
+                    ok = checkConceptMap(errors, target.line(), target.col(), stack.getLiteralPath(), cm, sv == null ? null : sv.getEd(), el == null ? null : el.getEd()) && ok;
+                  }
+                }
+                if (modeE != null) {
+                  String t = modeE.getValue();
+                  if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), Utilities.existsInList(t, "code", "system", "display", "Coding", "CodeableConcept"), I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_BAD_MODE, t)) {
+                    // cross check the type
+                  } else {
+                    ok = false;
+                  }
+                }
+                break;
               default:
                 rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
                 ok = false;
@@ -685,6 +736,58 @@ public class StructureMapValidator extends BaseValidator {
           }
         }
         //      
+      }
+    }
+    return ok;
+  
+  }
+
+  private boolean checkConceptMap(List<ValidationMessage> errors, int line, int col, String literalPath, ConceptMap cm, ElementDefinition srcED, ElementDefinition tgtED) { 
+    boolean ok = true;
+    ValueSet srcVS = null;
+    if (srcED != null) {
+      if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcED.getBinding().hasValueSet() && srcED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_SOURCE)) {
+        srcVS = context.fetchResource(ValueSet.class, srcED.getBinding().getValueSet());
+        if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcVS != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_SOURCE)) {
+          ValueSetExpansionOutcome vse = context.expandVS(srcVS, true, false);
+          if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vse.isOk(), I18nConstants.SM_TARGET_TRANSLATE_BINDING_VSE_SOURCE, vse.getError())) {
+            CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+            for (ValueSetExpansionContainsComponent c : vse.getValueset().getExpansion().getContains()) {
+              if (ConceptMapUtilities.hasMappingForSource(cm, c.getSystem(), c.getVersion(), c.getCode())) {
+                b.append(c.getCode());
+              }
+            }
+            if (b.count() > 0) {
+              warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcED.getBinding().hasValueSet() && srcED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_SOURCE_UNMAPPED, b.toString());
+            }
+          }          
+        }        
+      }
+    }
+    if (srcED != null) {
+      if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, tgtED.getBinding().hasValueSet() && tgtED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_TARGET)) {
+        ValueSet vs = context.fetchResource(ValueSet.class, tgtED.getBinding().getValueSet());
+        if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vs != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_TARGET)) {
+          ValueSetExpansionOutcome vse = context.expandVS(vs, true, false);
+          if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vse.isOk(), I18nConstants.SM_TARGET_TRANSLATE_BINDING_VSE_TARGET, vse.getError())) {
+            List<String> systems = new ArrayList<>();
+            if (srcVS != null) {
+              for (ConceptSetComponent  inc : srcVS.getCompose().getInclude()) {
+                systems.add(inc.getSystem());
+              }
+            }
+            List<Coding> codes = ConceptMapUtilities.listTargets(cm, systems);
+            CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+            for (Coding code : codes) {
+              if (ValueSetUtilities.hasCodeInExpansion(vse.getValueset(), code)) {
+                b.append(code.getCode());
+              }
+            }
+            if (b.count() > 0) {
+              warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcED.getBinding().hasValueSet() && srcED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_TARGET_WRONG, b.toString());
+            }
+          }          
+        }        
       }
     }
     return ok;
