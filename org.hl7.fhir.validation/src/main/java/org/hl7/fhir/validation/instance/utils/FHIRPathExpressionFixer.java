@@ -126,5 +126,15 @@ public class FHIRPathExpressionFixer {
     }
     return expr;
   }
+
+  public static String fixRegex(String regex) {
+    if (regex == null) {
+      return null;
+    }
+    if (regex.equals("-?(0|[1-9][0-9]{0,17})(\\.[0-9]{1,17})?([eE][+-]?[0-9]{1,9}})?")) {
+      return "-?(0|[1-9][0-9]{0,17})(\\.[0-9]{1,17})?([eE](0|[+\\-]?[1-9][0-9]{0,9}))?";
+    }
+    return regex;
+  }
   
 }
