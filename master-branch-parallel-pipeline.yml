@@ -1,0 +1,40 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+  - job: setup
+    displayName: cache-maven-dependencies
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - checkout: self
+        fetchDepth: 1
+      - task: Cache@2
+        inputs:
+          key: maven | $(Build.BuildId) | artifacts
+          path: $(MAVEN_CACHE_FOLDER)
+      - task: Cache@2
+        inputs:
+          key: maven | $(Build.BuildId) | targets
+          path: $(System.DefaultWorkingDirectory)/org.hl7.fhir.convertors/target/**, $(System.DefaultWorkingDirectory)/org.hl7.fhir.utilities/target/**
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: mkdir -p $(MAVEN_CACHE_FOLDER); pwd; ls -al $(MAVEN_CACHE_FOLDER)
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests'
+          mavenOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install'
