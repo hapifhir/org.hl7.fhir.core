@@ -185,6 +185,7 @@ import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
+import org.hl7.fhir.validation.instance.type.ConceptMapValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator;
 import org.hl7.fhir.validation.instance.type.SearchParameterValidator;
@@ -2288,6 +2289,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (regex != null) {
       ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches(regex), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX, e.primitiveValue(), regex) && ok;
     }
+    
     if (!"xhtml".equals(type)) {
       if (securityChecks) {
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_ERROR) && ok;
@@ -2304,9 +2306,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String url = e.primitiveValue();
       ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_OID) && ok;
       ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("uuid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_UUID) && ok;
-      rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, url.equals(url.trim().replace(" ", ""))
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, url.equals(url.trim().replace(" ", ""))
         // work around an old invalid example in a core package
-        || "http://www.acme.com/identifiers/patient or urn:ietf:rfc:3986 if the Identifier.value itself is a full uri".equals(url), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_WS, url);
+        || "http://www.acme.com/identifiers/patient or urn:ietf:rfc:3986 if the Identifier.value itself is a full uri".equals(url), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_WS, url) && ok;
       ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || url.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
       ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
 
@@ -2429,6 +2431,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, v >= 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT0) && ok;
         if (type.equals("positiveInt"))
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, v > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT1) && ok;
+      } else {
+        ok = false;
       }
     }
     if (type.equals("integer64")) {
@@ -2540,9 +2544,45 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (context.hasPattern()) {
       ok = checkFixedValue(errors, path, e, context.getPattern(), profile.getVersionedUrl(), context.getSliceName(), null, true) && ok;
     }
+    
 
+    if (ok && !Utilities.existsInList(e.fhirType(), "id", "base64Binary", "markdown")) { // ids get checked elsewhere
+      String regext = FHIRPathExpressionFixer.fixRegex(getRegexFromType(e.fhirType()));
+      if (regext != null) {
+        try {
+          boolean matches = e.primitiveValue().matches(regext);
+          if (!matches) {
+            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, matches, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE, e.primitiveValue(), e.fhirType(), regext) && ok;
+          }
+        } catch (Throwable ex) {
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_EXCEPTION, regext, e.fhirType(), ex.getMessage()) && ok;          
+        }
+      }
+    }
+  
     // for nothing to check
     return ok;
+  }
+
+  private String getRegexFromType(String fhirType) {
+    StructureDefinition sd = context.fetchTypeDefinition(fhirType);
+    if (sd != null) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        if (ed.getPath().endsWith(".value")) {
+          String regex = ed.getExtensionString(ToolingExtensions.EXT_REGEX);
+          if (regex != null) {
+            return regex;
+          }
+          for (TypeRefComponent td : ed.getType()) {
+            regex = td.getExtensionString(ToolingExtensions.EXT_REGEX);
+            if (regex != null) {
+              return regex;
+            }
+          }
+        }
+      }
+    }
+    return null;
   }
 
   private boolean checkTypeValue(List<ValidationMessage> errors, String path, Element e, Element sd) {
@@ -3478,14 +3518,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, tp.getValue(), profile);
         if (sd != null) {
           types.add(sd.getType());
-        }
-        StructureDefinition sdF = sdFT;
-        while (sdF != null) {
-          if (sdF.getType().equals(sd.getType())) {
-            rok = true;
-            break;
+          StructureDefinition sdF = sdFT;
+          while (sdF != null) {
+            if (sdF.getType().equals(sd.getType())) {
+              rok = true;
+              break;
+            }
+            sdF = sdF.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sdF.getBaseDefinition(), sdF) : null;
           }
-          sdF = sdF.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sdF.getBaseDefinition(), sdF) : null;
         }
       }
       ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, types.isEmpty() || rok,
@@ -4008,7 +4048,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           return false;
         else
           lastWasSpace = true;
-      } else if (Character.isWhitespace(c))
+      } else if (Character.isWhitespace(c) || c == '\u00A0')
         return false;
       else
         lastWasSpace = false;
@@ -4997,6 +5037,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
       return new CodeSystemValidator(context, timeTracker, this, xverManager, jurisdiction).validateCodeSystem(errors, element, stack, baseOptions.setLanguage(stack.getWorkingLang()));
+    } else if (element.getType().equals("ConceptMap")) {
+      return new ConceptMapValidator(context, timeTracker, this, xverManager, jurisdiction).validateConceptMap(errors, element, stack, baseOptions.setLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("SearchParameter")) {
       return new SearchParameterValidator(context, timeTracker, fpe, xverManager, jurisdiction).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {

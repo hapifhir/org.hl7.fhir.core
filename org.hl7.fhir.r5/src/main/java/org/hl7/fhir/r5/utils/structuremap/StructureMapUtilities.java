@@ -660,6 +660,9 @@ public class StructureMapUtilities {
     while (lexer.hasToken("imports"))
       parseImports(result, lexer);
 
+    while (lexer.hasToken("conceptmap"))
+      parseConceptMap(result, lexer);
+    
     while (!lexer.done()) {
       parseGroup(result, lexer);
     }
