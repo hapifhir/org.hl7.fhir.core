@@ -111,12 +111,12 @@ public class FmlParser extends ParserBase {
     lexer.token("conceptmap");
     Element map = structureMap.makeElement("contained");
     StructureDefinition sd = context.fetchTypeDefinition("ConceptMap");
-    map.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(map.getProperty()), map.getProperty());
+    map.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(map.getElementProperty() != null ? map.getElementProperty() : map.getProperty()), map.getProperty());
     map.setType("ConceptMap");
     Element eid = map.makeElement("id").markLocation(lexer.getCurrentLocation());
     String id = lexer.readConstant("map id");
     if (id.startsWith("#"))
-      throw lexer.error("Concept Map identifier must start with #");
+      throw lexer.error("Concept Map identifier must not start with #");
     eid.setValue(id);
     map.makeElement("status").setValue(structureMap.getChildValue("status"));
     lexer.token("{");
@@ -363,8 +363,8 @@ public class FmlParser extends ParserBase {
       rule.forceElement("target").makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
       Element dep = rule.forceElement("dependent");
       dep.makeElement("name").setValue(StructureMapUtilities.DEF_GROUP_NAME);
-      dep.makeElement("parameter").makeElement("valueId").setValue(StructureMapUtilities.AUTO_VAR_NAME);
-      dep.makeElement("parameter").makeElement("valueId").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+      dep.addElement("parameter").makeElement("valueId").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+      dep.addElement("parameter").makeElement("valueId").setValue(StructureMapUtilities.AUTO_VAR_NAME);
       // no dependencies - imply what is to be done based on types
     }
     if (newFmt) {
@@ -502,7 +502,7 @@ public class FmlParser extends ParserBase {
         loc = lexer.getCurrentLocation();
         ExpressionNode node = fpe.parse(lexer);
         target.setUserData(StructureMapUtilities.MAP_EXPRESSION, node);
-        target.addElement("parameter").markLocation(loc).setValue(node.toString());
+        target.addElement("parameter").markLocation(loc).makeElement("valueString").setValue(node.toString());
       } else {
         while (!lexer.hasToken(")")) {
           parseParameter(target, lexer);
@@ -519,9 +519,9 @@ public class FmlParser extends ParserBase {
         while (lexer.hasToken(".")) {
           id = id + lexer.take() + lexer.take();
         }
-        target.addElement("parameter").markLocation(loc).setValue(id);
+        target.addElement("parameter").markLocation(loc).makeElement("valueId").setValue(id);
       } else {
-        target.addElement("parameter").markLocation(lexer.getCurrentLocation()).setValue(readConstant(name, lexer));
+        target.addElement("parameter").markLocation(lexer.getCurrentLocation()).makeElement("valueString").setValue(readConstant(name, lexer));
       }
     }
     if (lexer.hasToken("as")) {

@@ -197,7 +197,7 @@ public class VersionUtilities {
     if (s.contains("#")) {
       s = s.substring(0, s.indexOf("#"));
     }
-    return Utilities.existsInList(s, "hl7.fhir.core","hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core");
+    return Utilities.existsInList(s, "hl7.fhir.core","hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core", "hl7.fhir.r4b.core", "hl7.fhir.r5.core");
   }
 
   public static String getMajMin(String version) {
