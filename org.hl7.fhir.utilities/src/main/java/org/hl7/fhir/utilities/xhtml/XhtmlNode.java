@@ -762,7 +762,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   @Override
   protected void addChildren(XhtmlNodeList childNodes) {
-    this.childNodes.addAll(childNodes);    
+    this.getChildNodes().addAll(childNodes);    
   }
 
   
