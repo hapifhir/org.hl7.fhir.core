@@ -45,6 +45,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.R2016MayToR5Loader;
@@ -265,7 +266,7 @@ public class UtilitiesXTests {
 	}
 
 	private static Node skipBlankText(Node node) {
-	  while (node != null && (((node.getNodeType() == Node.TEXT_NODE) && Utilities.isWhitespace(node.getTextContent())) || (node.getNodeType() == Node.COMMENT_NODE))) 
+	  while (node != null && (((node.getNodeType() == Node.TEXT_NODE) && StringUtils.isWhitespace(node.getTextContent())) || (node.getNodeType() == Node.COMMENT_NODE))) 
 	    node = node.getNextSibling();
 	  return node;
 	}

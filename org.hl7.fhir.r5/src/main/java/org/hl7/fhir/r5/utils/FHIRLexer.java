@@ -338,7 +338,7 @@ public class FHIRLexer {
           comments.add(source.substring(start, cursor).trim());
           cursor = cursor + 2;
         }
-      } else if (Character.isWhitespace(source.charAt(cursor))) {
+      } else if (Utilities.isWhitespace(source.charAt(cursor))) {
         last13 = currentLocation.checkChar(source.charAt(cursor), last13);
         cursor++;
       } else {

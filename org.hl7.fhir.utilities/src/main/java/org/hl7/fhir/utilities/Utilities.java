@@ -826,7 +826,7 @@ public class Utilities {
     boolean isWhitespace = false;
     for (int i = 0; i < s.length(); i++) {
       char c = s.charAt(i);
-      if (!Character.isWhitespace(c)) {
+      if (!isWhitespace(c)) {
         b.append(Character.toLowerCase(c));
         isWhitespace = false;
       } else if (!isWhitespace) {
@@ -858,15 +858,6 @@ public class Utilities {
 
   public static void copyFileToDirectory(File source, File destDir) throws IOException {
     copyFile(source, new File(path(destDir.getAbsolutePath(), source.getName())));
-  }
-
-
-  public static boolean isWhitespace(String s) {
-    boolean ok = true;
-    for (int i = 0; i < s.length(); i++)
-      ok = ok && Character.isWhitespace(s.charAt(i));
-    return ok;
-
   }
 
 
@@ -1002,7 +993,11 @@ public class Utilities {
         b.append("\\\"");
       else if (c == '\\')
         b.append("\\\\");
-      else if (((int) c) < 32)
+      else if (c == ' ')
+        b.append(" ");
+      else if (isWhitespace(c)) {
+        b.append("\\u"+Integer.toHexString(c));
+      } else if (((int) c) < 32)
         b.append("\\u" + Utilities.padLeft(String.valueOf((int) c), '0', 4));
       else
         b.append(c);
@@ -1086,15 +1081,15 @@ public class Utilities {
 
       int expectedByte = in1.read();
       while (expectedByte != -1) {
-        boolean w1 = isWhitespace(expectedByte);
+        boolean w1 = Character.isWhitespace(expectedByte);
         if (w1)
-          while (isWhitespace(expectedByte))
+          while (Character.isWhitespace(expectedByte))
             expectedByte = in1.read();
         int foundByte = in2.read();
         if (w1) {
-          if (!isWhitespace(foundByte))
+          if (!Character.isWhitespace(foundByte))
             return false;
-          while (isWhitespace(foundByte))
+          while (Character.isWhitespace(foundByte))
             foundByte = in2.read();
         }
         if (expectedByte != foundByte)
@@ -1119,10 +1114,6 @@ public class Utilities {
         }
       }
     }
-  }
-
-  private static boolean isWhitespace(int b) {
-    return b == 9 || b == 10 || b == 13 || b == 32;
   }
 
 
@@ -1880,5 +1871,54 @@ public class Utilities {
   public static boolean isValidCRName(String name) {
     return name != null && name.matches("[A-Z]([A-Za-z0-9_]){1,254}");
   }
+  
+  public static boolean isAllWhitespace(String s) {
+    if (Utilities.noString(s)) {
+      return true;
+    }
+    for (char ch : s.toCharArray()) {
+      if (!isWhitespace(ch)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  public static String trimWS(String s) {
+    if (Utilities.noString(s)) {
+      return s;
+    }
+    int start = 0;
+    while (start < s.length() && isWhitespace(s.charAt(start))) {
+      start++;      
+    }
+    if (start == s.length()) {
+      return "";
+    }
+    int end = s.length() - 1;
+    while (end >= 0 && isWhitespace(s.charAt(end))) {
+      end--;      
+    }
+    if (start > end) {
+      return "";
+    }
+    return s.substring(start, end+1);    
+  }
+  
+  // from https://en.wikipedia.org/wiki/Whitespace_character#Unicode  
+  public static boolean isWhitespace(int ch) {
+    return Utilities.existsInList(ch, '\u0009', '\n', '\u000B','\u000C','\r','\u0020','\u0085','\u00A0',
+        '\u1680','\u2000','\u2001','\u2002','\u2003','\u2004','\u2005','\u2006','\u2007','\u2008','\u2009','\u200A',
+        '\u2028', '\u2029', '\u202F', '\u205F', '\u3000');
+  }
+
+//public static boolean !isWhitespace(String s) {
+//boolean ok = true;
+//for (int i = 0; i < s.length(); i++)
+//  ok = ok && Character.isWhitespace(s.charAt(i));
+//return ok;
+//
+//}
+
 
 }
