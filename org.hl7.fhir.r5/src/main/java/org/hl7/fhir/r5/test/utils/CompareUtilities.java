@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.test.utils;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.ToolGlobalSettings;
@@ -147,7 +148,7 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private static Node skipBlankText(Node node) {
-    while (node != null && (((node.getNodeType() == Node.TEXT_NODE) && Utilities.isWhitespace(node.getTextContent())) || (node.getNodeType() == Node.COMMENT_NODE)))
+    while (node != null && (((node.getNodeType() == Node.TEXT_NODE) && StringUtils.isWhitespace(node.getTextContent())) || (node.getNodeType() == Node.COMMENT_NODE)))
       node = node.getNextSibling();
     return node;
   }

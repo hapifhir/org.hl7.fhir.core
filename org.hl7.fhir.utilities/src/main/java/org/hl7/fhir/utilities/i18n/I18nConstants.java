@@ -534,6 +534,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS = "TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_LENGTH = "Type_Specific_Checks_DT_String_Length";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS = "Type_Specific_Checks_DT_String_WS";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS_ALL = "Type_Specific_Checks_DT_String_WS_ALL";
   public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID = "Type_Specific_Checks_DT_Time_Valid";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_OID = "Type_Specific_Checks_DT_URI_OID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_UUID = "Type_Specific_Checks_DT_URI_UUID";

@@ -33,6 +33,7 @@ package org.hl7.fhir.utilities.xhtml;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
@@ -81,7 +82,7 @@ public class CDANarrativeFormat {
       xn.addComment(n.getTextContent());
       return;
     case Node.TEXT_NODE: 
-      if (!Utilities.isWhitespace(n.getTextContent()))
+      if (!StringUtils.isWhitespace(n.getTextContent()))
         xn.addText(n.getTextContent());
       return;
     case Node.ELEMENT_NODE:
