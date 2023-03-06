@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.renderers;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -43,6 +44,22 @@ public class NativeRenderer extends ValidationOutputRenderer {
     }
     x.setOutputStyle(IParser.OutputStyle.PRETTY);
     x.compose(dst, bundle);
+  }
+
+  @Override
+  public boolean isSingleFile() {
+    return true;
+  }
+
+  @Override
+  public String getStyleCode() {
+    return format.toString().toLowerCase();
+  }
+
+  @Override
+  public void setFolder(File dir) {
+    throw new Error("Not supported");
+    
   }
   
 }
