@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.renderers;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -40,4 +41,10 @@ public abstract class ValidationOutputRenderer {
   public boolean handlesBundleDirectly() {
     return false;
   }
+
+  public abstract boolean isSingleFile();
+
+  public abstract String getStyleCode();
+
+  public abstract void setFolder(File dir);
 }

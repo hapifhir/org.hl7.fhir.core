@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.services;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
@@ -47,6 +48,7 @@ import org.hl7.fhir.validation.cli.model.ValidationOutcome;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
 import org.hl7.fhir.validation.cli.model.ValidationResponse;
 import org.hl7.fhir.validation.cli.renderers.CSVRenderer;
+import org.hl7.fhir.validation.cli.renderers.CompactRenderer;
 import org.hl7.fhir.validation.cli.renderers.DefaultRenderer;
 import org.hl7.fhir.validation.cli.renderers.ESLintCompactRenderer;
 import org.hl7.fhir.validation.cli.renderers.NativeRenderer;
@@ -119,15 +121,22 @@ public class ValidationService {
     System.out.println();
 
     PrintStream dst = null;
-    if (cliContext.getOutput() == null) {
-      dst = System.out;
-    } else {
-      dst = new PrintStream(new FileOutputStream(cliContext.getOutput()));
-    }
-
     ValidationOutputRenderer renderer = makeValidationOutputRenderer(cliContext);
-    renderer.setOutput(dst);
     renderer.setCrumbTrails(validator.isCrumbTrails());
+    if (renderer.isSingleFile()) {
+      if (cliContext.getOutput() == null) {
+        dst = System.out;
+      } else {
+        dst = new PrintStream(new FileOutputStream(cliContext.getOutput()));
+      }
+      renderer.setOutput(dst);
+    } else {
+      File dir = new File(cliContext.getOutput());
+      if (!dir.isDirectory()) {
+        throw new Error("THe output location "+dir.getAbsolutePath()+" must be a directory for the output style "+renderer.getStyleCode());
+      }
+      renderer.setFolder(dir);
+    }
     
     int ec = 0;
     
@@ -154,7 +163,7 @@ public class ValidationService {
       renderer.finish();
     }
     
-    if (cliContext.getOutput() != null) {
+    if (cliContext.getOutput() != null && dst != null) {
       dst.close();
     }
 
@@ -190,6 +199,10 @@ public class ValidationService {
       }
     } else if (Utilities.existsInList(style, "eslint-compact")) {
       return new ESLintCompactRenderer();
+    } else if (Utilities.existsInList(style, "compact-split")) {
+      return new CompactRenderer(true);
+    } else if (Utilities.existsInList(style, "compact")) {
+      return new CompactRenderer(false);
     } else if (Utilities.existsInList(style, "csv")) {
       return new CSVRenderer();
     } else if (Utilities.existsInList(style, "xml")) {
