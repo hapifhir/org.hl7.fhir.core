@@ -12,6 +12,15 @@ import java.io.IOException;
 
 public class FTPClient {
 
+  @Getter
+  private long createRemotePathIfNotExistsMillis;
+  
+  @Getter
+  private long storeFileTimeMillis;
+
+  @Getter
+  private long deleteFileTimeMillis;
+
   private static final Logger logger = LoggerFactory.getLogger(FTPClient.class);
 
   private final org.apache.commons.net.ftp.FTPClient clientImpl;
@@ -54,7 +63,7 @@ public class FTPClient {
 
     this.user = user;
     this.password = password;
-
+    
     clientImpl = new org.apache.commons.net.ftp.FTPClient();
   }
 
@@ -84,6 +93,8 @@ public class FTPClient {
 
     checkForPositiveCompletionAndLogErrors("FTP server could not connect.", true);
 
+    resetTimers();
+
     logger.debug("Initial Working directory: " + clientImpl.printWorkingDirectory());
 
     clientImpl.changeWorkingDirectory(path);
@@ -95,6 +106,12 @@ public class FTPClient {
     logger.debug("Resolved working directory: " + resolvedPath);
   }
 
+  private void resetTimers() {
+    this.createRemotePathIfNotExistsMillis = 0;
+    this.storeFileTimeMillis = 0;
+    this.deleteFileTimeMillis = 0;
+  }
+
   /**
    * Delete a file on the FTP server
    * 
@@ -103,8 +120,10 @@ public class FTPClient {
   public void delete(String path) throws IOException {
     String resolvedPath = resolveRemotePath(path);
     logger.debug("Deleting remote file: " + resolvedPath);
+    long startTime = System.currentTimeMillis();
     clientImpl.deleteFile(resolvedPath);
     checkForPositiveCompletionAndLogErrors("Error deleting file.", false);
+    this.deleteFileTimeMillis += System.currentTimeMillis() - startTime;
     logger.debug("Remote file deleted: " + resolvedPath);
   }
 
@@ -114,6 +133,7 @@ public class FTPClient {
    * @throws IOException
    */
   protected void createRemotePathIfNotExists(String filePath) throws IOException {
+    long startTime = System.currentTimeMillis();
     String[] subPath = filePath.split(remoteSeparator);
     try {
     for (int i = 0 ; i < subPath.length - 1; i++){
@@ -132,6 +152,7 @@ public class FTPClient {
     } finally {
       clientImpl.changeWorkingDirectory(this.resolvedPath);
     }
+    this.createRemotePathIfNotExistsMillis += System.currentTimeMillis() - startTime;
   }
 
   protected boolean remotePathExists(String path) throws IOException {
@@ -149,6 +170,7 @@ public class FTPClient {
       throw new IllegalArgumentException("Absolute remote path is not permitted. Path: " + path);
     }
     return String.join(remoteSeparator, path);
+    
   }
 
   /**
@@ -161,6 +183,7 @@ public class FTPClient {
     logger.debug("Uploading file to remote path: " + resolvedPath);
     createRemotePathIfNotExists(path);
 
+    final long startTime = System.currentTimeMillis();
     FileInputStream localStream = new FileInputStream(source);
     clientImpl.setFileType(FTP.BINARY_FILE_TYPE);
     clientImpl.enterLocalPassiveMode();
@@ -168,6 +191,8 @@ public class FTPClient {
     localStream.close();
 
     checkForPositiveCompletionAndLogErrors("Error uploading file.", false);
+    this.storeFileTimeMillis += System.currentTimeMillis() - startTime;
+
     logger.debug("Remote file uploaded: " + resolvedPath);
   }
 
