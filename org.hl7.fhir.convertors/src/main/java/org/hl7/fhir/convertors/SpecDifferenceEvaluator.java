@@ -14,6 +14,7 @@ import org.hl7.fhir.convertors.conv40_50.resources40_50.StructureDefinition40_50
 import org.hl7.fhir.convertors.conv40_50.resources40_50.ValueSet40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -21,6 +22,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -84,39 +86,50 @@ import com.google.gson.JsonPrimitive;
 
 public class SpecDifferenceEvaluator {
 
-  private final SpecPackage original = new SpecPackage();
+
+  private IWorkerContext context;
+  private final SpecPackage originalR4 = new SpecPackage();
+  private final SpecPackage originalR4B = new SpecPackage();
   private final SpecPackage revision = new SpecPackage();
   private final Map<String, String> renames = new HashMap<String, String>();
+  private final Map<String, String> deletionComments = new HashMap<String, String>();
   private final List<String> moves = new ArrayList<String>();
   private XhtmlNode tbl;
   private TypeLinkProvider linker;
-
-  public static void main(String[] args) throws Exception {
-    System.out.println("gen diff");
-    SpecDifferenceEvaluator self = new SpecDifferenceEvaluator();
-    self.loadFromIni(new IniFile("C:\\work\\org.hl7.fhir\\build\\source\\fhir.ini"));
-//    loadVS2(self.original.valuesets, "C:\\work\\org.hl7.fhir.dstu2.original\\build\\publish\\valuesets.xml");
-//    loadVS(self.revision.valuesets, "C:\\work\\org.hl7.fhir.dstu2.original\\build\\publish\\valuesets.xml");
-
-    loadSD4(self.original.getTypes(), "C:\\work\\org.hl7.fhir\\build\\source\\release4\\profiles-types.xml");
-    loadSD(self.revision.getTypes(), "C:\\work\\org.hl7.fhir\\build\\publish\\profiles-types.xml");
-    loadSD4(self.original.getResources(), "C:\\work\\org.hl7.fhir\\build\\source\\release4\\profiles-resources.xml");
-    loadSD(self.revision.getResources(), "C:\\work\\org.hl7.fhir\\build\\publish\\profiles-resources.xml");
-    loadVS4(self.original.getExpansions(), "C:\\work\\org.hl7.fhir\\build\\source\\release4\\expansions.xml");
-    loadVS(self.revision.getExpansions(), "C:\\work\\org.hl7.fhir\\build\\publish\\expansions.xml");
-    loadVS4(self.original.getValuesets(), "C:\\work\\org.hl7.fhir\\build\\source\\release4\\valuesets.xml");
-    loadVS(self.revision.getValuesets(), "C:\\work\\org.hl7.fhir\\build\\publish\\valuesets.xml");
-    StringBuilder b = new StringBuilder();
-    b.append("<html>\r\n");
-    b.append("<head>\r\n");
-    b.append("<link href=\"fhir.css\" rel=\"stylesheet\"/>\r\n");
-    b.append("</head>\r\n");
-    b.append("<body>\r\n");
-    b.append(self.getDiffAsHtml(null));
-    b.append("</body>\r\n");
-    b.append("</html>\r\n");
-    TextFile.stringToFile(b.toString(), Utilities.path("[tmp]", "diff.html"));
-    System.out.println("done");
+  
+//
+//  public static void main(String[] args) throws Exception {
+//    System.out.println("gen diff");
+//    SpecDifferenceEvaluator self = new SpecDifferenceEvaluator();
+//    self.loadFromIni(new IniFile("C:\\work\\org.hl7.fhir\\build\\source\\fhir.ini"));
+////    loadVS2(self.original.valuesets, "C:\\work\\org.hl7.fhir.dstu2.original\\build\\publish\\valuesets.xml");
+////    loadVS(self.revision.valuesets, "C:\\work\\org.hl7.fhir.dstu2.original\\build\\publish\\valuesets.xml");
+//
+//    loadSD4(self.original.getTypes(), "C:\\work\\org.hl7.fhir\\build\\source\\release4\\profiles-types.xml");
+//    loadSD(self.revision.getTypes(), "C:\\work\\org.hl7.fhir\\build\\publish\\profiles-types.xml");
+//    loadSD4(self.original.getResources(), "C:\\work\\org.hl7.fhir\\build\\source\\release4\\profiles-resources.xml");
+//    loadSD(self.revision.getResources(), "C:\\work\\org.hl7.fhir\\build\\publish\\profiles-resources.xml");
+//    loadVS4(self.original.getExpansions(), "C:\\work\\org.hl7.fhir\\build\\source\\release4\\expansions.xml");
+//    loadVS(self.revision.getExpansions(), "C:\\work\\org.hl7.fhir\\build\\publish\\expansions.xml");
+//    loadVS4(self.original.getValuesets(), "C:\\work\\org.hl7.fhir\\build\\source\\release4\\valuesets.xml");
+//    loadVS(self.revision.getValuesets(), "C:\\work\\org.hl7.fhir\\build\\publish\\valuesets.xml");
+//    StringBuilder b = new StringBuilder();
+//    b.append("<html>\r\n");
+//    b.append("<head>\r\n");
+//    b.append("<link href=\"fhir.css\" rel=\"stylesheet\"/>\r\n");
+//    b.append("</head>\r\n");
+//    b.append("<body>\r\n");
+//    b.append(self.getDiffAsHtml(null));
+//    b.append("</body>\r\n");
+//    b.append("</html>\r\n");
+//    TextFile.stringToFile(b.toString(), Utilities.path("[tmp]", "diff.html"));
+//    System.out.println("done");
+//  }
+//  
+  
+  public SpecDifferenceEvaluator(IWorkerContext context) {
+    super();
+    this.context = context;
   }
 
   private static void loadSD4(Map<String, StructureDefinition> map, String fn) throws FHIRException, IOException {
@@ -161,31 +174,39 @@ public class SpecDifferenceEvaluator {
   }
 
   public void loadFromIni(IniFile ini) {
-    String[] names = ini.getPropertyNames("r5-renames");
-    if (names != null)
-      for (String n : names)
-        // note reverse of order
-        renames.put(ini.getStringProperty("r5-renames", n), n);
-    names = ini.getPropertyNames("r4b-renames");
-    if (names != null)
-      for (String n : names)
-        // note reverse of order
-        renames.put(ini.getStringProperty("r4b-renames", n), n);
+    String[] names = ini.getPropertyNames("r5-changes");
+    if (names != null) {
+      for (String n : names) {
+        String v = ini.getStringProperty("r5-renames", n);
+        if (!Utilities.noString(v)) {
+          if (v.startsWith("@")) {
+            // note reverse of order
+            renames.put(v.substring(1), n);
+          } else {
+            deletionComments.put(n, v);
+          }
+        }
+      }
+    }
   }
 
-  public SpecPackage getOriginal() {
-    return original;
+  public SpecPackage getOriginalR4() {
+    return originalR4;
+  }
+
+  public SpecPackage getOriginalR4B() {
+    return originalR4B;
   }
 
   public SpecPackage getRevision() {
     return revision;
   }
 
-  public void getDiffAsJson(JsonObject json, StructureDefinition rev) throws IOException {
+  public void getDiffAsJson(JsonObject json, StructureDefinition rev, boolean r4) throws IOException {
     this.linker = null;
-    StructureDefinition orig = original.getResources().get(checkRename(rev.getName()));
+    StructureDefinition orig = (r4 ? originalR4 : originalR4B).getResources().get(checkRename(rev.getName()));
     if (orig == null)
-      orig = original.getTypes().get(checkRename(rev.getName()));
+      orig = (r4 ? originalR4 : originalR4B).getTypes().get(checkRename(rev.getName()));
     JsonArray types = new JsonArray();
     json.add("types", types);
     types.add(new JsonPrimitive(rev.getName()));
@@ -195,15 +216,15 @@ public class SpecDifferenceEvaluator {
       type.addProperty("status", "new");
     else {
       start();
-      compareJson(type, orig, rev);
+      compareJson(type, orig, rev, r4);
     }
   }
 
-  public void getDiffAsXml(Document doc, Element xml, StructureDefinition rev) throws IOException {
+  public void getDiffAsXml(Document doc, Element xml, StructureDefinition rev, boolean r4) throws IOException {
     this.linker = null;
-    StructureDefinition orig = original.getResources().get(checkRename(rev.getName()));
+    StructureDefinition orig = (r4 ? originalR4 : originalR4B).getResources().get(checkRename(rev.getName()));
     if (orig == null)
-      orig = original.getTypes().get(checkRename(rev.getName()));
+      orig = (r4 ? originalR4 : originalR4B).getTypes().get(checkRename(rev.getName()));
     Element type = doc.createElement("type");
     type.setAttribute("name", rev.getName());
     xml.appendChild(type);
@@ -211,17 +232,17 @@ public class SpecDifferenceEvaluator {
       type.setAttribute("status", "new");
     else {
       start();
-      compareXml(doc, type, orig, rev);
+      compareXml(doc, type, orig, rev, r4);
     }
   }
 
-  public void getDiffAsJson(JsonObject json) throws IOException {
+  public void getDiffAsJson(JsonObject json, boolean r4) throws IOException {
     this.linker = null;
     JsonArray types = new JsonArray();
     json.add("types", types);
 
     for (String s : sorted(revision.getTypes().keySet())) {
-      StructureDefinition orig = original.getTypes().get(s);
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getTypes().get(s);
       StructureDefinition rev = revision.getTypes().get(s);
       types.add(new JsonPrimitive(rev.getName()));
       JsonObject type = new JsonObject();
@@ -235,11 +256,11 @@ public class SpecDifferenceEvaluator {
         type.addProperty("past-status", orig.getDerivation().toCode());
         type.addProperty("current-status", rev.getDerivation().toCode());
       } else {
-        compareJson(type, orig, rev);
+        compareJson(type, orig, rev, r4);
       }
     }
-    for (String s : sorted(original.getTypes().keySet())) {
-      StructureDefinition orig = original.getTypes().get(s);
+    for (String s : sorted((r4 ? originalR4 : originalR4B).getTypes().keySet())) {
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getTypes().get(s);
       StructureDefinition rev = revision.getTypes().get(s);
       if (rev == null) {
         types.add(new JsonPrimitive(orig.getName()));
@@ -250,7 +271,7 @@ public class SpecDifferenceEvaluator {
     }
 
     for (String s : sorted(revision.getResources().keySet())) {
-      StructureDefinition orig = original.getResources().get(checkRename(s));
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getResources().get(checkRename(s));
       StructureDefinition rev = revision.getResources().get(s);
       types.add(new JsonPrimitive(rev.getName()));
       JsonObject type = new JsonObject();
@@ -258,11 +279,11 @@ public class SpecDifferenceEvaluator {
       if (orig == null) {
         type.addProperty("status", "new");
       } else {
-        compareJson(type, orig, rev);
+        compareJson(type, orig, rev, r4);
       }
     }
-    for (String s : sorted(original.getResources().keySet())) {
-      StructureDefinition orig = original.getResources().get(s);
+    for (String s : sorted((r4 ? originalR4 : originalR4B).getResources().keySet())) {
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getResources().get(s);
       StructureDefinition rev = revision.getResources().get(s);
       if (rev == null) {
         types.add(new JsonPrimitive(orig.getName()));
@@ -273,11 +294,11 @@ public class SpecDifferenceEvaluator {
     }
   }
 
-  public void getDiffAsXml(Document doc, Element xml) throws IOException {
+  public void getDiffAsXml(Document doc, Element xml, boolean r4) throws IOException {
     this.linker = null;
 
     for (String s : sorted(revision.getTypes().keySet())) {
-      StructureDefinition orig = original.getTypes().get(s);
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getTypes().get(s);
       StructureDefinition rev = revision.getTypes().get(s);
       Element type = doc.createElement("type");
       type.setAttribute("name", rev.getName());
@@ -291,11 +312,11 @@ public class SpecDifferenceEvaluator {
         type.setAttribute("past-status", orig.getDerivation().toCode());
         type.setAttribute("current-status", rev.getDerivation().toCode());
       } else {
-        compareXml(doc, type, orig, rev);
+        compareXml(doc, type, orig, rev, r4);
       }
     }
-    for (String s : sorted(original.getTypes().keySet())) {
-      StructureDefinition orig = original.getTypes().get(s);
+    for (String s : sorted((r4 ? originalR4 : originalR4B).getTypes().keySet())) {
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getTypes().get(s);
       StructureDefinition rev = revision.getTypes().get(s);
       if (rev == null) {
         Element type = doc.createElement("type");
@@ -306,7 +327,7 @@ public class SpecDifferenceEvaluator {
     }
 
     for (String s : sorted(revision.getResources().keySet())) {
-      StructureDefinition orig = original.getResources().get(checkRename(s));
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getResources().get(checkRename(s));
       StructureDefinition rev = revision.getResources().get(s);
       Element type = doc.createElement("type");
       type.setAttribute("name", rev.getName());
@@ -314,11 +335,11 @@ public class SpecDifferenceEvaluator {
       if (orig == null) {
         type.setAttribute("status", "new");
       } else {
-        compareXml(doc, type, orig, rev);
+        compareXml(doc, type, orig, rev, r4);
       }
     }
-    for (String s : sorted(original.getResources().keySet())) {
-      StructureDefinition orig = original.getResources().get(s);
+    for (String s : sorted((r4 ? originalR4 : originalR4B).getResources().keySet())) {
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getResources().get(s);
       StructureDefinition rev = revision.getResources().get(s);
       if (rev == null) {
         Element type = doc.createElement("type");
@@ -332,25 +353,41 @@ public class SpecDifferenceEvaluator {
   public String getDiffAsHtml(TypeLinkProvider linker, StructureDefinition rev) throws IOException {
     this.linker = linker;
 
-    StructureDefinition orig = original.getResources().get(checkRename(rev.getName()));
+    String r4 = getDiffAsHtml(linker, rev, true);
+    String r4b = getDiffAsHtml(linker, rev, true);
+    String r4x = r4.replace("4.0.1", "X");
+    String r4bx = r4b.replace("4.3.0", "X");
+    if (r4x.equals(r4bx)) {
+      return "<p><b>Changes from both R4 and R4B</b></p>\r\n"+ r4 + "\r\n<p>See the <a href=\"diff.html\">Full Difference</a> for further information</p>\r\n";      
+    } else {
+      return "<p><b>Changes from R4 and R4B</b></p>\r\n"+ r4 + "\r\n<p><b>Changes from R4 and R4B</b></p>\r\n"+r4b+"\r\n<p>See the <a href=\"diff.html\">Full Difference</a> for further information</p>\r\n";
+    }
+  }
+
+  private String getDiffAsHtml(TypeLinkProvider linker2, StructureDefinition rev, boolean r4) throws IOException {
+    StructureDefinition orig = (r4 ? originalR4 : originalR4B).getResources().get(checkRename(rev.getName()));
     if (orig == null)
-      orig = original.getTypes().get(checkRename(rev.getName()));
+      orig = (r4 ? originalR4 : originalR4B).getTypes().get(checkRename(rev.getName()));
     if (orig == null)
-      return "<p>This " + rev.getKind().toCode() + " did not exist in Release 3</p>";
+      return "<p>This " + rev.getKind().toCode() + " did not exist in Release "+(r4 ? "R4" : "R4B")+"</p>";
     else {
-       start();
-      compare(orig, rev);
-      return new XhtmlComposer(false, true).compose(tbl) + "\r\n<p>See the <a href=\"diff.html\">Full Difference</a> for further information</p>\r\n";
+      start();
+      compare(orig, rev, r4);
+      return new XhtmlComposer(false, false).compose(tbl) ;
     }
   }
 
   public String getDiffAsHtml(TypeLinkProvider linker) throws IOException {
+    return getDiffAsHtml(linker, true) + getDiffAsHtml(linker, false);  
+  }
+  
+  public String getDiffAsHtml(TypeLinkProvider linker, boolean r4) throws IOException {
     this.linker = linker;
     start();
 
     header("Types");
     for (String s : sorted(revision.getTypes().keySet())) {
-      StructureDefinition orig = original.getTypes().get(s);
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getTypes().get(s);
       StructureDefinition rev = revision.getTypes().get(s);
       if (orig == null) {
         markNew(rev.getName(), true, false, false);
@@ -359,11 +396,11 @@ public class SpecDifferenceEvaluator {
       } else if (rev.hasDerivation() && orig.hasDerivation() && rev.getDerivation() != orig.getDerivation()) {
         markChanged(rev.getName(), "Changed from a " + orig.getDerivation().toCode() + " to a " + rev.getDerivation().toCode(), true);
       } else {
-        compare(orig, rev);
+        compare(orig, rev, r4);
       }
     }
-    for (String s : sorted(original.getTypes().keySet())) {
-      StructureDefinition orig = original.getTypes().get(s);
+    for (String s : sorted((r4 ? originalR4 : originalR4B).getTypes().keySet())) {
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getTypes().get(s);
       StructureDefinition rev = revision.getTypes().get(s);
       if (rev == null)
         markDeleted(orig.getName(), true);
@@ -371,16 +408,16 @@ public class SpecDifferenceEvaluator {
 
     header("Resources");
     for (String s : sorted(revision.getResources().keySet())) {
-      StructureDefinition orig = original.getResources().get(checkRename(s));
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getResources().get(checkRename(s));
       StructureDefinition rev = revision.getResources().get(s);
       if (orig == null) {
         markNew(rev.getName(), true, true, false);
       } else {
-        compare(orig, rev);
+        compare(orig, rev, r4);
       }
     }
-    for (String s : sorted(original.getResources().keySet())) {
-      StructureDefinition orig = original.getResources().get(s);
+    for (String s : sorted((r4 ? originalR4 : originalR4B).getResources().keySet())) {
+      StructureDefinition orig = (r4 ? originalR4 : originalR4B).getResources().get(s);
       StructureDefinition rev = revision.getResources().get(s);
       if (rev == null)
         markDeleted(orig.getName(), true);
@@ -442,7 +479,12 @@ public class SpecDifferenceEvaluator {
     XhtmlNode left = tr.addTag("td").setAttribute("class", "diff-left");
     XhtmlNode right = tr.addTag("td").setAttribute("class", "diff-right");
     left.addText(name);
-    right.ul().li().addText("deleted");
+    String comm = deletionComments.get(name);
+    if (comm == null) {
+      right.ul().li().addText("Deleted");
+    } else {
+      right.ul().li().addText("Deleted ("+comm+")");
+    }
   }
 
   private void markNew(String name, boolean item, boolean res, boolean mand) {
@@ -460,7 +502,7 @@ public class SpecDifferenceEvaluator {
       right.ul().li().addText(res ? "Added Resource" : !name.contains(".") ? "Added Type" : mand ? "Added Mandatory Element " : "Added Element");
   }
 
-  private void compare(StructureDefinition orig, StructureDefinition rev) {
+  private void compare(StructureDefinition orig, StructureDefinition rev, boolean r4) {
     moves.clear();
     XhtmlNode tr = tbl.addTag("tr").setAttribute("class", "diff-item");
     XhtmlNode left = tr.addTag("td").setAttribute("class", "diff-left");
@@ -491,7 +533,7 @@ public class SpecDifferenceEvaluator {
         changed = true;
         markNew(ed.getPath(), false, false, ed.getMin() > 0);
       } else
-        changed = compareElement(ed, oed) || changed;
+        changed = compareElement(ed, oed, r4) || changed;
     }
 
     List<String> dels = new ArrayList<String>();
@@ -524,11 +566,11 @@ public class SpecDifferenceEvaluator {
     // now, look for matches by name (ignoring slicing for now)
     String tp = mapPath(tn, target.getPath());
     if (tp.endsWith("[x]"))
-      tp = tp.substring(0, tp.length() - 4);
+      tp = tp.substring(0, tp.length() - 3);
     for (ElementDefinition ed : list) {
       String p = ed.getPath();
       if (p.endsWith("[x]"))
-        p = p.substring(0, p.length() - 4);
+        p = p.substring(0, p.length() - 3);
       if (p.equals(tp))
         return ed;
     }
@@ -551,8 +593,13 @@ public class SpecDifferenceEvaluator {
     return path;
   }
 
-  private boolean compareElement(ElementDefinition rev, ElementDefinition orig) {
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("\r\n");
+  private boolean compareElement(ElementDefinition rev, ElementDefinition orig, boolean r4) {
+    XhtmlNode tr = new XhtmlNode(NodeType.Element, "tr");
+    XhtmlNode left = tr.addTag("td").setAttribute("class", "diff-left");
+    left.addText(rev.getPath());
+    XhtmlNode right = tr.addTag("td").setAttribute("class", "diff-right");
+    XhtmlNode ul = right.addTag("ul");
+
     String rn = tail(rev.getPath());
     String on = tail(orig.getPath());
     String rp = head(rev.getPath());
@@ -560,81 +607,58 @@ public class SpecDifferenceEvaluator {
     boolean renamed = false;
     if (!rn.equals(on) && rev.getPath().contains(".")) {
       if (rp.equals(op))
-        b.append("Renamed from " + on + " to " + rn);
+        ul.li().tx("Renamed from " + on + " to " + rn);
       else
-        b.append("Moved from " + orig.getPath() + " to " + rn);
+        ul.li().tx("Moved from " + orig.getPath() + " to " + rn);
       renamed = true;
     } else if (!rev.getPath().equals(orig.getPath())) {
       if (!moveAlreadyNoted(rev.getPath(), orig.getPath())) {
         noteMove(rev.getPath(), orig.getPath());
-        b.append("Moved from " + head(orig.getPath()) + " to " + head(rev.getPath()));
+        ul.li().tx("Moved from " + head(orig.getPath()) + " to " + head(rev.getPath()));
         renamed = true;
       }
     }
+    tr.setAttribute("class", renamed ? "diff-changed-item" : "diff-entry");
 
     if (rev.getMin() != orig.getMin())
-      b.append("Min Cardinality changed from " + orig.getMin() + " to " + rev.getMin());
+      ul.li().tx("Min Cardinality changed from " + orig.getMin() + " to " + rev.getMin());
 
     if (!rev.getMax().equals(orig.getMax()))
-      b.append("Max Cardinality changed from " + orig.getMax() + " to " + rev.getMax());
+      ul.li().tx("Max Cardinality changed from " + orig.getMax() + " to " + rev.getMax());
 
-    analyseTypes(b, rev, orig);
+    analyseTypes(ul, rev, orig);
 
     if (hasBindingToNote(rev) || hasBindingToNote(orig)) {
-      String s = compareBindings(rev, orig);
-      if (!Utilities.noString(s))
-        b.append(s);
+      compareBindings(ul, rev, orig, r4);
     }
 
     if (rev.hasDefaultValue() || orig.hasDefaultValue()) {
       if (!rev.hasDefaultValue())
-        b.append("Default Value " + describeValue(orig.getDefaultValue()) + " removed");
+        ul.li().tx("Default Value " + describeValue(orig.getDefaultValue()) + " removed");
       else if (!orig.hasDefaultValue())
-        b.append("Default Value " + describeValue(rev.getDefaultValue()) + " added");
+        ul.li().tx("Default Value " + describeValue(rev.getDefaultValue()) + " added");
       else {
         // do not use Base.compare here, because it is subject to type differences
         String s1 = describeValue(orig.getDefaultValue());
         String s2 = describeValue(rev.getDefaultValue());
         if (!s1.equals(s2))
-          b.append("Default Value changed from " + s1 + " to " + s2);
+          ul.li().tx("Default Value changed from " + s1 + " to " + s2);
       }
     }
 
     if (rev.getIsModifier() != orig.getIsModifier()) {
       if (rev.getIsModifier())
-        b.append("Now marked as Modifier");
+        ul.li().tx("Now marked as Modifier");
       else
-        b.append("No longer marked as Modifier");
+        ul.li().tx("No longer marked as Modifier");
     }
 
-    if (b.length() > 0) {
-      XhtmlNode tr = tbl.addTag("tr").setAttribute("class", renamed ? "diff-changed-item" : "diff-entry");
-      XhtmlNode left = tr.addTag("td").setAttribute("class", "diff-left");
-      left.addText(rev.getPath());
-      XhtmlNode right = tr.addTag("td").setAttribute("class", "diff-right");
-      XhtmlNode ul = null;
-      for (String s : b.toString().split("\\r?\\n")) {
-        if (!Utilities.noString(s)) {
-          if (ul == null)
-            ul = right.addTag("ul");
-          XhtmlNode li = ul.addTag("li").notPretty();
-          if (s.contains("`")) {
-            String[] p = s.split("\\`");
-            boolean code = true;
-            li.addText(p[0]);
-            for (int i = 1; i < p.length; i++) {
-              if (code)
-                li.addTag("code").addText(p[i]);
-              else
-                li.addText(p[i]);
-              code = !code;
-            }
-          } else
-            li.addText(s);
-        }
-      }
+    if (ul.hasChildren()) {
+      tbl.add(tr);
+      return true;
+    } else {
+      return false;
     }
-    return b.length() > 0;
   }
 
   private void noteMove(String revpath, String origpath) {
@@ -657,64 +681,78 @@ public class SpecDifferenceEvaluator {
     return "{complex}";
   }
 
-  private String compareBindings(ElementDefinition rev, ElementDefinition orig) {
+  private void compareBindings(XhtmlNode ul, ElementDefinition rev, ElementDefinition orig, boolean r4) {
     if (!hasBindingToNote(rev)) {
-      return "Remove Binding " + describeBinding(orig);
+      ul.li().tx("Remove Binding " + describeBinding(orig));
     } else if (!hasBindingToNote(orig)) {
-      return "Add Binding " + describeBinding(rev);
+      ul.li().tx("Add Binding " + describeBinding(rev));
     } else {
-      return compareBindings(rev.getBinding(), orig.getBinding());
+      compareBindings(ul, rev.getPath(), rev.getBinding(), orig.getBinding(), r4, !rev.typeSummary().equals("code"));
     }
   }
 
-  private String compareBindings(ElementDefinitionBindingComponent rev, ElementDefinitionBindingComponent orig) {
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("\r\n");
+  private void compareBindings(XhtmlNode ul, String path, ElementDefinitionBindingComponent rev, ElementDefinitionBindingComponent orig, boolean r4, boolean systemMatters) {
     if (rev.getStrength() != orig.getStrength())
-      b.append("Change binding strength from " + orig.getStrength().toCode() + " to " + rev.getStrength().toCode());
+      ul.li().tx("Change binding strength from " + orig.getStrength().toCode() + " to " + rev.getStrength().toCode());
     if (!canonicalsMatch(rev.getValueSet(), orig.getValueSet())) {
-      b.append("Change value set from " + describeReference(orig.getValueSet()) + " to " + describeReference(rev.getValueSet()));
+      XhtmlNode li = ul.li();
+      li.tx("Change value set from ");
+      describeReference(li, orig.getValueSet());
+      li.tx(" to ");
+      describeReference(li, rev.getValueSet());
     }
-    if (!maxValueSetsMatch(rev, orig))
-      b.append("Change max value set from " + describeMax(orig) + " to " + describeMax(rev));
+    if (!maxValueSetsMatch(rev, orig)) {
+      XhtmlNode li = ul.li();
+      li.tx("Change max value set from ");
+      describeMax(li, orig);
+      li.tx(" to ");
+      describeMax(li, rev);
+    }
     if (rev.getStrength() == BindingStrength.REQUIRED && orig.getStrength() == BindingStrength.REQUIRED) {
       ValueSet vrev = getValueSet(rev.getValueSet(), revision.getExpansions());
-      ValueSet vorig = getValueSet(rev.getValueSet(), original.getExpansions());
-      CommaSeparatedStringBuilder br = new CommaSeparatedStringBuilder();
-      int ir = 0;
-      CommaSeparatedStringBuilder bo = new CommaSeparatedStringBuilder();
-      int io = 0;
+      ValueSet vorig = getValueSet(orig.getValueSet(), (r4 ? originalR4 : originalR4B).getExpansions());
+      XhtmlNode liAdd = new XhtmlNode(NodeType.Element, "li");
+      XhtmlNode liDel = new XhtmlNode(NodeType.Element, "li");
+      int cAdd = 0;
+      int cDel = 0;
       if (vrev != null && vorig != null) {
         for (ValueSetExpansionContainsComponent cc : vorig.getExpansion().getContains()) {
-          if (!hasCode(vrev, cc)) {
-            io++;
-            bo.append("`" + Utilities.escapeXml(cc.getCode()) + "`");
+          if (!hasCode(vrev, cc, systemMatters)) {
+            liDel.sep(", ");
+            liDel.code().tx(cc.getCode());
+            cDel++;
           }
         }
         for (ValueSetExpansionContainsComponent cc : vrev.getExpansion().getContains()) {
-          if (!hasCode(vorig, cc)) {
-            ir++;
-            br.append("`" + Utilities.escapeXml(cc.getCode()) + "`");
+          if (!hasCode(vorig, cc, systemMatters)) {
+            liAdd.sep(", ");
+            liAdd.code().tx(cc.getCode());
+            cAdd++;
           }
         }
       }
-      if (io > 0)
-        b.append("Remove " + Utilities.pluralize("Code", io) + " " + bo);
-      if (ir > 0)
-        b.append("Add " + Utilities.pluralize("Code", ir) + "  " + br);
-
+      if (cDel > 0) {
+        XhtmlNode li = ul.li();
+        li.tx("Remove " + Utilities.pluralize("code", cDel) + " ");
+        li.getChildNodes().addAll(liDel.getChildNodes());
+      }
+      if (cAdd > 0) {
+        XhtmlNode li = ul.li();
+        li.tx("Add " + Utilities.pluralize("code", cAdd) + " ");
+        li.getChildNodes().addAll(liAdd.getChildNodes());
+      }
     }
     if (rev.getStrength() == BindingStrength.EXTENSIBLE && orig.getStrength() == BindingStrength.EXTENSIBLE) {
       ValueSet vrev = getValueSet(rev.getValueSet(), revision.getValuesets());
-      ValueSet vorig = getValueSet(orig.getValueSet(), original.getValuesets());
+      ValueSet vorig = getValueSet(orig.getValueSet(), (r4 ? originalR4 : originalR4B).getValuesets());
       if (vrev != null && vrev.hasCompose() && vrev.getCompose().getInclude().size() == 1 && vrev.getCompose().getIncludeFirstRep().hasSystem() &&
         vorig != null && vorig.hasCompose() && vorig.getCompose().getInclude().size() == 1 && vorig.getCompose().getIncludeFirstRep().hasSystem()) {
         if (!vorig.getCompose().getIncludeFirstRep().getSystem().equals(vrev.getCompose().getIncludeFirstRep().getSystem())) {
-          b.append("Change code system for extensibly bound codes from \"" + vorig.getCompose().getIncludeFirstRep().getSystem() + "\" to \"" + vrev.getCompose().getIncludeFirstRep().getSystem() + "\"");
+          ul.li().tx("Change code system for extensibly bound codes from \"" + vorig.getCompose().getIncludeFirstRep().getSystem() + "\" to \"" + vrev.getCompose().getIncludeFirstRep().getSystem() + "\"");
         }
       }
     }
 
-    return b.toString();
   }
 
   private boolean canonicalsMatch(String url1, String url2) {
@@ -731,26 +769,46 @@ public class SpecDifferenceEvaluator {
     }
   }
 
-  private String describeMax(ElementDefinitionBindingComponent orig) {
-    if (!orig.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-      return "n/a";
-    return "`" + ToolingExtensions.readStringExtension(orig, ToolingExtensions.EXT_MAX_VALUESET) + "`";
+
+  private String getMaxValueSet(ElementDefinitionBindingComponent bnd) {
+    return ToolingExtensions.readStringExtension(bnd, ToolingExtensions.EXT_MAX_VALUESET);
   }
+  
+  private boolean hasMaxValueSet(ElementDefinitionBindingComponent bnd) {
+    return bnd.hasExtension(ToolingExtensions.EXT_MAX_VALUESET);
+  }
+  
+  private void describeMax(XhtmlNode li, ElementDefinitionBindingComponent orig) {
+    String ref = getMaxValueSet(orig);
+    if (ref == null) {
+      li.code().tx("none");
+    } else {
+      ValueSet vs = context.fetchResource(ValueSet.class, ref);
+      if (vs == null || !vs.hasUserData("path")) {
+        li.code().tx(ref);
+      } else {
+        li.ah(vs.getUserString("path")).tx(vs.present());
+      }
+    }
+  }
+
 
   private boolean maxValueSetsMatch(ElementDefinitionBindingComponent rev, ElementDefinitionBindingComponent orig) {
-    if (!rev.hasExtension(ToolingExtensions.EXT_MAX_VALUESET) && !orig.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
+    boolean rb = hasMaxValueSet(rev);
+    boolean ob = hasMaxValueSet(orig);
+    if (!rb && !ob)
       return true;
-    if (rev.hasExtension(ToolingExtensions.EXT_MAX_VALUESET) != orig.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
+    if (rb != ob)
       return false;
-    return ToolingExtensions.readStringExtension(rev, ToolingExtensions.EXT_MAX_VALUESET).equals(ToolingExtensions.readStringExtension(orig, ToolingExtensions.EXT_MAX_VALUESET));
+    String rs = getMaxValueSet(rev);
+    String os = getMaxValueSet(orig);
+    return rs.equals(os);
   }
 
-//  "Remove code "+
-//  "add code "+
 
   private String describeBinding(ElementDefinition orig) {
-    if (orig.getBinding().hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-      return "`" + orig.getBinding().getValueSet() + "` (" + orig.getBinding().getStrength().toCode() + "), max =`" + ToolingExtensions.readStringExtension(orig.getBinding(), ToolingExtensions.EXT_MAX_VALUESET) + "`";
+    if (hasMaxValueSet(orig.getBinding()))
+      return "`" + orig.getBinding().getValueSet() + "` (" + orig.getBinding().getStrength().toCode() + "), max =`" + getMaxValueSet(orig.getBinding()) + "`";
     else
       return "`" + orig.getBinding().getValueSet() + "` (" + orig.getBinding().getStrength().toCode() + ")";
   }
@@ -758,35 +816,46 @@ public class SpecDifferenceEvaluator {
   private void describeBinding(JsonObject element, String name, ElementDefinition orig) {
     JsonObject binding = new JsonObject();
     element.add(name, binding);
-    binding.addProperty("reference", describeReference(orig.getBinding().getValueSet()));
+    binding.addProperty("reference", orig.getBinding().getValueSet());
     binding.addProperty("strength", orig.getBinding().getStrength().toCode());
-    if (orig.getBinding().hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-      binding.addProperty("max", ToolingExtensions.readStringExtension(orig.getBinding(), ToolingExtensions.EXT_MAX_VALUESET));
+    if (hasMaxValueSet(orig.getBinding()))
+      binding.addProperty("max", getMaxValueSet(orig.getBinding()));
   }
 
   private void describeBinding(Document doc, Element element, String name, ElementDefinition orig) {
     Element binding = doc.createElement(name);
     element.appendChild(binding);
-    binding.setAttribute("reference", describeReference(orig.getBinding().getValueSet()));
+    binding.setAttribute("reference", orig.getBinding().getValueSet());
     binding.setAttribute("strength", orig.getBinding().getStrength().toCode());
-    if (orig.getBinding().hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-      binding.setAttribute("max", ToolingExtensions.readStringExtension(orig.getBinding(), ToolingExtensions.EXT_MAX_VALUESET));
+    if (hasMaxValueSet(orig.getBinding()))
+      binding.setAttribute("max", getMaxValueSet(orig.getBinding()));
   }
 
-  private String describeReference(String ref) {
-    return ref;
+  private void describeReference(XhtmlNode li, String ref) {
+    Resource res = context.fetchResource(Resource.class, ref);
+    if (res != null && res.hasUserData("path")) {
+      if (res instanceof CanonicalResource) {
+        CanonicalResource cr = (CanonicalResource) res;
+        li.ah(res.getUserString("path")).tx(cr.present());
+      } else {
+        li.ah(res.getUserString("path")).tx(ref);
+      }
+    } else {
+      li.code().tx(ref);
+    }
   }
 
-  private ValueSet getValueSet(String ref, Map<String, ValueSet> expansions) {
+  private ValueSet getValueSet(String ref, List<ValueSet> expansions) {
     if (ref != null) {
       if (Utilities.isAbsoluteUrl(ref)) {
-        for (ValueSet ve : expansions.values()) {
+        ref = VersionUtilities.removeVersionFromCanonical(ref);
+        for (ValueSet ve : expansions) {
           if (ref.equals(ve.getUrl()))
             return ve;
         }
       } else if (ref.startsWith("ValueSet/")) {
         ref = ref.substring(9);
-        for (ValueSet ve : expansions.values()) {
+        for (ValueSet ve : expansions) {
           if (ve.getId().equals(ref))
             return ve;
         }
@@ -808,7 +877,7 @@ public class SpecDifferenceEvaluator {
 
   private boolean hasBindingToNote(ElementDefinition ed) {
     return ed.hasBinding() &&
-      (ed.getBinding().getStrength() == BindingStrength.EXTENSIBLE || ed.getBinding().getStrength() == BindingStrength.REQUIRED || ed.getBinding().hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) &&
+      (ed.getBinding().getStrength() == BindingStrength.EXTENSIBLE || ed.getBinding().getStrength() == BindingStrength.REQUIRED || hasMaxValueSet(ed.getBinding())) &&
       ed.getBinding().hasValueSet();
   }
 
@@ -820,7 +889,7 @@ public class SpecDifferenceEvaluator {
     return path.contains(".") ? path.substring(0, path.lastIndexOf(".")) : path;
   }
 
-  private void analyseTypes(CommaSeparatedStringBuilder bp, ElementDefinition rev, ElementDefinition orig) {
+  private void analyseTypes(XhtmlNode ul, ElementDefinition rev, ElementDefinition orig) {
     if (rev.getType().size() == 1 && orig.getType().size() == 1) {
       String r = describeType(rev.getType().get(0));
       if (Utilities.noString(r) && Utilities.existsInList(rev.getId(), "Element.id"))
@@ -831,9 +900,9 @@ public class SpecDifferenceEvaluator {
       if (r == null && o == null)
         System.out.println("null @ " + rev.getPath());
       if (r.contains("(") && o.contains("(") && r.startsWith(o.substring(0, o.indexOf("(") + 1))) {
-        compareParameters(bp, rev.getType().get(0), orig.getType().get(0));
+        compareParameters(ul, rev.getType().get(0), orig.getType().get(0));
       } else if (!r.equals(o))
-        bp.append("Type changed from " + o + " to " + r);
+        ul.li().tx("Type changed from " + o + " to " + r);
     } else {
       CommaSeparatedStringBuilder removed = new CommaSeparatedStringBuilder();
       CommaSeparatedStringBuilder added = new CommaSeparatedStringBuilder();
@@ -849,19 +918,19 @@ public class SpecDifferenceEvaluator {
       for (TypeRefComponent tr : rev.getType()) {
         TypeRefComponent tm = getType(rev.getType(), tr);
         if (tm != null) {
-          compareParameters(bp, tr, tm);
+          compareParameters(ul, tr, tm);
         }
       }
       if (added.length() > 0)
-        bp.append("Add " + Utilities.pluralize("Type", added.count()) + " " + added);
+        ul.li().tx("Add " + Utilities.pluralize("Type", added.count()) + " " + added);
       if (removed.length() > 0)
-        bp.append("Remove " + Utilities.pluralize("Type", removed.count()) + " " + removed);
+        ul.li().tx("Remove " + Utilities.pluralize("Type", removed.count()) + " " + removed);
       if (retargetted.length() > 0)
-        bp.append(retargetted.toString());
+        ul.li().tx(retargetted.toString());
     }
   }
 
-  private void compareParameters(CommaSeparatedStringBuilder bp, TypeRefComponent tr, TypeRefComponent tm) {
+  private void compareParameters(XhtmlNode ul, TypeRefComponent tr, TypeRefComponent tm) {
     List<String> added = new ArrayList<>();
     List<String> removed = new ArrayList<>();
 
@@ -878,9 +947,9 @@ public class SpecDifferenceEvaluator {
     }
 
     if (!added.isEmpty())
-      bp.append("Type " + tr.getWorkingCode() + ": Added Target " + Utilities.pluralize("Type", added.size()) + " " + csv(added));
+      ul.li().tx("Type " + tr.getWorkingCode() + ": Added Target " + Utilities.pluralize("Type", added.size()) + " " + csv(added));
     if (!removed.isEmpty())
-      bp.append("Type " + tr.getWorkingCode() + ": Removed Target " + Utilities.pluralize("Type", removed.size()) + " " + csv(removed));
+      ul.li().tx("Type " + tr.getWorkingCode() + ": Removed Target " + Utilities.pluralize("Type", removed.size()) + " " + csv(removed));
   }
 
   private String trimNS(String v) {
@@ -973,18 +1042,19 @@ public class SpecDifferenceEvaluator {
     }
   }
 
-  public void saveR4AsR5(ZipGenerator zip, FhirFormat fmt) throws IOException {
-    for (StructureDefinition t : original.getTypes().values())
+  public void saveR4AsR5(ZipGenerator zip, FhirFormat fmt, boolean r4) throws IOException {
+    SpecPackage src = (r4 ? originalR4 : originalR4B);
+    for (StructureDefinition t : src.getTypes().values())
       saveResource(zip, t, fmt);
-    for (StructureDefinition t : original.getResources().values())
+    for (StructureDefinition t : src.getResources().values())
       saveResource(zip, t, fmt);
-    for (StructureDefinition t : original.getProfiles().values())
+    for (StructureDefinition t : src.getProfiles().values())
       saveResource(zip, t, fmt);
-    for (StructureDefinition t : original.getExtensions().values())
+    for (StructureDefinition t : src.getExtensions().values())
       saveResource(zip, t, fmt);
-    for (ValueSet t : original.getValuesets().values())
+    for (ValueSet t : src.getValuesets())
       saveResource(zip, t, fmt);
-    for (ValueSet t : original.getExpansions().values())
+    for (ValueSet t : src.getExpansions())
       saveResource(zip, t, fmt);
   }
 
@@ -997,7 +1067,7 @@ public class SpecDifferenceEvaluator {
     zip.addBytes(t.fhirType() + "-" + t.getId() + "." + fmt.getExtension(), bs.toByteArray(), true);
   }
 
-  private void compareJson(JsonObject type, StructureDefinition orig, StructureDefinition rev) {
+  private void compareJson(JsonObject type, StructureDefinition orig, StructureDefinition rev, boolean r4) {
     JsonObject elements = new JsonObject();
     // first, we must match revision elements to old elements
     boolean changed = false;
@@ -1021,7 +1091,7 @@ public class SpecDifferenceEvaluator {
         elements.add(ed.getPath(), element);
         element.addProperty("status", "new");
       } else
-        changed = compareElementJson(elements, ed, oed) || changed;
+        changed = compareElementJson(elements, ed, oed, r4) || changed;
     }
 
     List<String> dels = new ArrayList<String>();
@@ -1057,7 +1127,7 @@ public class SpecDifferenceEvaluator {
 
   }
 
-  private void compareXml(Document doc, Element type, StructureDefinition orig, StructureDefinition rev) {
+  private void compareXml(Document doc, Element type, StructureDefinition orig, StructureDefinition rev, boolean r4) {
     // first, we must match revision elements to old elements
     boolean changed = false;
     if (!orig.getName().equals(rev.getName())) {
@@ -1081,7 +1151,7 @@ public class SpecDifferenceEvaluator {
         type.appendChild(element);
         element.setAttribute("status", "new");
       } else
-        changed = compareElementXml(doc, type, ed, oed) || changed;
+        changed = compareElementXml(doc, type, ed, oed, r4) || changed;
     }
 
     List<String> dels = new ArrayList<String>();
@@ -1115,7 +1185,7 @@ public class SpecDifferenceEvaluator {
 
   }
 
-  private boolean compareElementJson(JsonObject elements, ElementDefinition rev, ElementDefinition orig) {
+  private boolean compareElementJson(JsonObject elements, ElementDefinition rev, ElementDefinition orig, boolean r4) {
     JsonObject element = new JsonObject();
 
     String rn = tail(rev.getPath());
@@ -1137,7 +1207,7 @@ public class SpecDifferenceEvaluator {
     analyseTypes(element, rev, orig);
 
     if (hasBindingToNote(rev) || hasBindingToNote(orig)) {
-      compareBindings(element, rev, orig);
+      compareBindings(element, rev, orig, r4);
     }
 
     if (rev.hasDefaultValue() || orig.hasDefaultValue()) {
@@ -1177,7 +1247,7 @@ public class SpecDifferenceEvaluator {
     }
   }
 
-  private boolean compareElementXml(Document doc, Element type, ElementDefinition rev, ElementDefinition orig) {
+  private boolean compareElementXml(Document doc, Element type, ElementDefinition rev, ElementDefinition orig, boolean r4) {
     Element element = doc.createElement("element");
 
     String rn = tail(rev.getPath());
@@ -1199,7 +1269,7 @@ public class SpecDifferenceEvaluator {
     analyseTypes(doc, element, rev, orig);
 
     if (hasBindingToNote(rev) || hasBindingToNote(orig)) {
-      compareBindings(doc, element, rev, orig);
+      compareBindings(doc, element, rev, orig, r4);
     }
 
     if (rev.hasDefaultValue() || orig.hasDefaultValue()) {
@@ -1351,21 +1421,21 @@ public class SpecDifferenceEvaluator {
     return e;
   }
 
-  private void compareBindings(JsonObject element, ElementDefinition rev, ElementDefinition orig) {
+  private void compareBindings(JsonObject element, ElementDefinition rev, ElementDefinition orig, boolean r4) {
     if (!hasBindingToNote(rev)) {
       element.addProperty("binding-status", "removed");
       describeBinding(element, "old-binding", orig);
     } else if (!hasBindingToNote(orig)) {
       element.addProperty("binding-status", "added");
       describeBinding(element, "new-binding", rev);
-    } else if (compareBindings(element, rev.getBinding(), orig.getBinding())) {
+    } else if (compareBindings(element, rev.getBinding(), orig.getBinding(), r4, !rev.typeSummary().equals("code"))) {
       element.addProperty("binding-status", "changed");
       describeBinding(element, "old-binding", orig);
       describeBinding(element, "new-binding", rev);
     }
   }
 
-  private boolean compareBindings(JsonObject element, ElementDefinitionBindingComponent rev, ElementDefinitionBindingComponent orig) {
+  private boolean compareBindings(JsonObject element, ElementDefinitionBindingComponent rev, ElementDefinitionBindingComponent orig, boolean r4, boolean systemMatters) {
     boolean res = false;
     if (rev.getStrength() != orig.getStrength()) {
       element.addProperty("binding-strength-changed", true);
@@ -1384,14 +1454,14 @@ public class SpecDifferenceEvaluator {
       JsonArray oa = new JsonArray();
       JsonArray ra = new JsonArray();
       ValueSet vrev = getValueSet(rev.getValueSet(), revision.getExpansions());
-      ValueSet vorig = getValueSet(rev.getValueSet(), original.getExpansions());
+      ValueSet vorig = getValueSet(rev.getValueSet(), (r4 ? originalR4 : originalR4B).getExpansions());
       if (vrev != null && vorig != null) {
         for (ValueSetExpansionContainsComponent cc : vorig.getExpansion().getContains()) {
-          if (!hasCode(vrev, cc))
+          if (!hasCode(vrev, cc, systemMatters))
             oa.add(new JsonPrimitive(cc.getCode()));
         }
         for (ValueSetExpansionContainsComponent cc : vrev.getExpansion().getContains()) {
-          if (!hasCode(vorig, cc))
+          if (!hasCode(vorig, cc, systemMatters))
             ra.add(new JsonPrimitive(cc.getCode()));
         }
       }
@@ -1407,29 +1477,29 @@ public class SpecDifferenceEvaluator {
     return res;
   }
 
-  private boolean hasCode(ValueSet vs, ValueSetExpansionContainsComponent cc) {
+  private boolean hasCode(ValueSet vs, ValueSetExpansionContainsComponent cc, boolean systemMatters) {
     for (ValueSetExpansionContainsComponent ct : vs.getExpansion().getContains()) {
-      if (ct.getSystem().equals(cc.getSystem()) && ct.getCode().equals(cc.getCode()))
+      if ((!systemMatters || ct.getSystem().equals(cc.getSystem())) && ct.getCode().equals(cc.getCode()))
         return true;
     }
     return false;
   }
 
-  private void compareBindings(Document doc, Element element, ElementDefinition rev, ElementDefinition orig) {
+  private void compareBindings(Document doc, Element element, ElementDefinition rev, ElementDefinition orig, boolean r4) {
     if (!hasBindingToNote(rev)) {
       element.setAttribute("binding-status", "removed");
       describeBinding(doc, element, "old-binding", orig);
     } else if (!hasBindingToNote(orig)) {
       element.setAttribute("binding-status", "added");
       describeBinding(doc, element, "new-binding", rev);
-    } else if (compareBindings(doc, element, rev.getBinding(), orig.getBinding())) {
+    } else if (compareBindings(doc, element, rev.getBinding(), orig.getBinding(), r4, !rev.typeSummary().equals("code"))) {
       element.setAttribute("binding-status", "changed");
       describeBinding(doc, element, "old-binding", orig);
       describeBinding(doc, element, "new-binding", rev);
     }
   }
 
-  private boolean compareBindings(Document doc, Element element, ElementDefinitionBindingComponent rev, ElementDefinitionBindingComponent orig) {
+  private boolean compareBindings(Document doc, Element element, ElementDefinitionBindingComponent rev, ElementDefinitionBindingComponent orig, boolean r4, boolean systemMatters) {
     boolean res = false;
     if (rev.getStrength() != orig.getStrength()) {
       element.setAttribute("binding-strength-changed", "true");
@@ -1445,17 +1515,17 @@ public class SpecDifferenceEvaluator {
     }
     if (rev.getStrength() == BindingStrength.REQUIRED && orig.getStrength() == BindingStrength.REQUIRED) {
       ValueSet vrev = getValueSet(rev.getValueSet(), revision.getExpansions());
-      ValueSet vorig = getValueSet(rev.getValueSet(), original.getExpansions());
+      ValueSet vorig = getValueSet(rev.getValueSet(), (r4 ? originalR4 : originalR4B).getExpansions());
       boolean changed = false;
       if (vrev != null && vorig != null) {
         for (ValueSetExpansionContainsComponent cc : vorig.getExpansion().getContains()) {
-          if (!hasCode(vrev, cc)) {
+          if (!hasCode(vrev, cc, systemMatters)) {
             element.appendChild(makeElementWithAttribute(doc, "removed-code", "code", cc.getCode()));
             changed = true;
           }
         }
         for (ValueSetExpansionContainsComponent cc : vrev.getExpansion().getContains()) {
-          if (!hasCode(vorig, cc)) {
+          if (!hasCode(vorig, cc, systemMatters)) {
             element.appendChild(makeElementWithAttribute(doc, "added-code", "code", cc.getCode()));
             changed = true;
           }
