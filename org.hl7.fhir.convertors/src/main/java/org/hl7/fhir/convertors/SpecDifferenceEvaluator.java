@@ -177,7 +177,7 @@ public class SpecDifferenceEvaluator {
     String[] names = ini.getPropertyNames("r5-changes");
     if (names != null) {
       for (String n : names) {
-        String v = ini.getStringProperty("r5-renames", n);
+        String v = ini.getStringProperty("r5-changes", n);
         if (!Utilities.noString(v)) {
           if (v.startsWith("@")) {
             // note reverse of order
