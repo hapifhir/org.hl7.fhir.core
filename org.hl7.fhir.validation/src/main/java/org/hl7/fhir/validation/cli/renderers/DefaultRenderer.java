@@ -1,5 +1,7 @@
 package org.hl7.fhir.validation.cli.renderers;
 
+import java.io.File;
+
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -69,4 +71,21 @@ public class DefaultRenderer extends ValidationOutputRenderer {
     return "  " + issue.getSeverity().getDisplay() + loc + ": " + issue.getDetails().getText();
   }
 
+
+  @Override
+  public boolean isSingleFile() {
+    return true;
+  }
+
+  @Override
+  public String getStyleCode() {
+    return "(default)";
+  }
+
+  @Override
+  public void setFolder(File dir) {
+    throw new Error("Not supported");
+    
+  }
+  
 }
