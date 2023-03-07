@@ -659,6 +659,12 @@ public class Element extends Base {
     return this;
   }
 
+  public Element markLocation(Element src) {
+    this.line = src.line();
+    this.col = src.col(); 
+    return this;
+  }
+
 	public void clearDecorations() {
 	  clearUserData("fhir.decorations");
 	  for (Element e : children) {
