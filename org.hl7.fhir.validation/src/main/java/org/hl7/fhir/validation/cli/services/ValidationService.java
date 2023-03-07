@@ -5,8 +5,11 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.hl7.fhir.r5.conformance.R5ExtensionsLoader;
 import org.hl7.fhir.r5.context.ContextUtilities;
@@ -59,9 +62,11 @@ import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 public class ValidationService {
 
   private final SessionCache sessionCache;
+  private String runDate;
 
   public ValidationService() {
     sessionCache = new SessionCache();
+    runDate = new SimpleDateFormat("hh:mm:ss", new Locale("en", "US")).format(new Date());
   }
 
   protected ValidationService(SessionCache cache) {
@@ -123,6 +128,7 @@ public class ValidationService {
     PrintStream dst = null;
     ValidationOutputRenderer renderer = makeValidationOutputRenderer(cliContext);
     renderer.setCrumbTrails(validator.isCrumbTrails());
+    renderer.setRunDate(runDate);
     if (renderer.isSingleFile()) {
       if (cliContext.getOutput() == null) {
         dst = System.out;
