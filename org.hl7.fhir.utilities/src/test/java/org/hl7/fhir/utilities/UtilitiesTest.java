@@ -240,6 +240,31 @@ class UtilitiesTest {
     Assertions.assertEquals("# %", Utilities.trimWS("# %"));
     Assertions.assertEquals("", Utilities.trimWS("\u0009\n\u000B\u000C\r\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000"));
   }
+
+  @Test
+  @DisplayName("regex tests")
+  void testRegex() {
+    Assertions.assertFalse("".matches(".+"));
+    Assertions.assertTrue(".".matches(".+"));
+    Assertions.assertTrue(" t ".matches(".+"));
+    Assertions.assertTrue(" ".matches(".+"));
+    Assertions.assertFalse("".matches("^.+$"));
+    Assertions.assertTrue(".".matches("^.+$"));
+    Assertions.assertTrue(" t ".matches("^.+$"));
+    Assertions.assertTrue(" ".matches("^.+$"));
+    Assertions.assertFalse("".matches("[\\s\\S]+"));
+    Assertions.assertTrue(".".matches("[\\s\\S]+"));
+    Assertions.assertTrue(" t ".matches("[\\s\\S]+"));
+    Assertions.assertTrue(" ".matches("[\\s\\S]+"));
+    Assertions.assertFalse("".matches("^[\\s\\S]+$"));
+    Assertions.assertTrue(".".matches("^[\\s\\S]+$"));
+    Assertions.assertTrue(" t ".matches("^[\\s\\S]+$"));
+    Assertions.assertTrue(" ".matches("^[\\s\\S]+$"));
+    Assertions.assertTrue("Example Requirements Set 2".matches("^[\\s\\S]+$"));
+    Assertions.assertTrue("\u0009\n\u000B\u000C\r\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000".matches("^[\\s\\S]+$"));
+    Assertions.assertFalse("\u0009\n\u000B\u000C\r\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000".matches(".+"));
+    Assertions.assertFalse("\u0009\n\u000B\u000C\r\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000".matches("^.+$"));
+  }
   
   
 }
