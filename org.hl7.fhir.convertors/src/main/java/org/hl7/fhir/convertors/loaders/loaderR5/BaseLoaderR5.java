@@ -170,6 +170,9 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
     if (ed.hasBinding()) {
       ed.getBinding().setValueSet(patchUrl(ed.getBinding().getValueSet(), "ValueSet"));
     }
+    if (ed.hasContentReference()) {
+      ed.setContentReference(patchUrl(ed.getContentReference(), "StructureDefinition"));
+    }
   }
 
 }
