@@ -362,9 +362,9 @@ public class FmlParser extends ParserBase {
       rule.forceElement("target").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
       rule.forceElement("target").makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
       Element dep = rule.forceElement("dependent").markLocation(rule);
-      dep.makeElement("name").setValue(StructureMapUtilities.DEF_GROUP_NAME);
-      dep.addElement("parameter").makeElement("valueId").setValue(StructureMapUtilities.AUTO_VAR_NAME);
-      dep.addElement("parameter").makeElement("valueId").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+      dep.makeElement("name").markLocation(rule).setValue(StructureMapUtilities.DEF_GROUP_NAME);
+      dep.addElement("parameter").markLocation(dep).makeElement("valueId").markLocation(dep).setValue(StructureMapUtilities.AUTO_VAR_NAME);
+      dep.addElement("parameter").markLocation(dep).makeElement("valueId").markLocation(dep).setValue(StructureMapUtilities.AUTO_VAR_NAME);
       // no dependencies - imply what is to be done based on types
     }
     if (newFmt) {
@@ -387,7 +387,7 @@ public class FmlParser extends ParserBase {
   }
 
   private void parseRuleReference(Element rule, FHIRLexer lexer) throws FHIRLexerException {
-    Element ref = rule.addElement("dependent").markLocation(lexer.getCommentLocation());
+    Element ref = rule.addElement("dependent").markLocation(lexer.getCurrentLocation());
     ref.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
     lexer.token("(");
     boolean done = false;
