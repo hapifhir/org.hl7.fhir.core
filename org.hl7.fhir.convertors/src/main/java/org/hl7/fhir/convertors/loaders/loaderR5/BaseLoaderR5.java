@@ -17,6 +17,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -158,7 +159,12 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
         tr.setCode(URL_BASE+versionString()+"/StructureDefinition/"+tr.getCode());
       }
       for (CanonicalType s : tr.getTargetProfile()) {
-        s.setValue(patchUrl(s.getValue(), "StructureDefinitino"));
+        s.setValue(patchUrl(s.getValue(), "StructureDefinition"));
+      }
+      if (tr.hasExtension(ToolingExtensions.EXT_FHIR_TYPE)) {
+        String code = ToolingExtensions.readStringExtension(tr, ToolingExtensions.EXT_FHIR_TYPE);
+        String url = URL_BASE+versionString()+"/StructureDefinition/"+code;
+        ToolingExtensions.setUrlExtension(tr, ToolingExtensions.EXT_FHIR_TYPE, url);
       }
     }
     if (ed.hasBinding()) {
