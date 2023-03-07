@@ -176,6 +176,22 @@ public class StructureMapValidator extends BaseValidator {
       return null;
     }
 
+    public String summary() {
+      return mode+" "+getWorkingType()+" "+name;
+    }
+
+    public boolean matches(VariableDefn other) {
+      if (!(name.equals(other.name) && mode.equals(other.mode))) {
+        return false;
+      }
+      if (sd == null && other.sd == null) {
+        return true;
+      } else if (sd == null || other.sd == null) {
+        return false;
+      }
+      return sd.getUrl().equals(other.sd.getUrl()) && ed.getPath().equals(other.ed.getPath()) && Utilities.stringsEqual(type, other.type);
+    }
+
   }
 
   public class VariableSet {
@@ -233,6 +249,26 @@ public class StructureMapValidator extends BaseValidator {
       VariableDefn vn = v.copy();
       vn.name = pname;
       list.add(vn);
+    }
+
+    public String summary() {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (VariableDefn v : list) {
+        b.append(v.summary());
+      }
+      return b.toString();
+    }
+
+    public boolean matches(VariableSet other) {
+      if (list.size() != other.list.size()) {
+        return false;
+      }
+      for (int i = 0; i < list.size(); i++) {
+        if (!list.get(i).matches(other.list.get(i))) {
+          return false;
+        }
+      }
+      return true;
     }
   }
 
@@ -485,7 +521,7 @@ public class StructureMapValidator extends BaseValidator {
       cc++;
     }
     
-    // process the targets
+    // process the nested rules
     List<Element> rules = rule.getChildrenByName("rule");
     cc = 0;
     for (Element child : rules) {
@@ -901,7 +937,23 @@ public class StructureMapValidator extends BaseValidator {
     } else {
       for (ElementDefinition t : children) {
         if (t.getNameBase().equals(element)) {
-          result.add(new ElementDefinitionSource(sd, t));
+          if (t.hasContentReference()) {
+            String url = t.getContentReference().substring(0, t.getContentReference().indexOf("#"));
+            String path = t.getContentReference().substring(t.getContentReference().indexOf("#")+1);
+            StructureDefinition sdt = "".equals(url) || url.equals(sd.getUrl()) ? sd : context.fetchResource(StructureDefinition.class, url);
+            if (sdt == null) {
+              throw new Error("Unable to resolve "+url);
+            } else {
+              ElementDefinition t2 = sdt.getSnapshot().getElementByPath(path);
+              if (t2 == null) {
+                throw new Error("Unable to resolve "+path+" in "+url);
+              } else {
+                result.add(new ElementDefinitionSource(sdt, t2));
+              }
+            }
+          } else {
+            result.add(new ElementDefinitionSource(sd, t));
+          }
         }
       }
     }
@@ -987,7 +1039,8 @@ public class StructureMapValidator extends BaseValidator {
           if (ok && grp.hasUserData("element.source")) {
             Element g = (Element) grp.getUserData("element.source");
             if (g.hasUserData("structuremap.parameters")) {
-              throw new Error("bang! - this situation is not handled");
+              VariableSet pvars = (VariableSet) g.getUserData("structuremap.parameters");
+              rule(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), pvars.matches(lvars), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE, grp.getName(), pvars.summary(), lvars.summary());
             } else {
               g.setUserData("structuremap.parameters", lvars);
             }

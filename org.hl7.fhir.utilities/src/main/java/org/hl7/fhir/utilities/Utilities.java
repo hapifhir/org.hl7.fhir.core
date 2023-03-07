@@ -1912,6 +1912,16 @@ public class Utilities {
         '\u2028', '\u2029', '\u202F', '\u205F', '\u3000');
   }
 
+  public static boolean stringsEqual(String s1, String s2) {
+    if  (s1 == null && s2 == null) {
+      return true;
+    } else if (s1 == null) {
+      return false;
+    } else {
+      return s1.equals(s2);
+    }
+  }
+
 //public static boolean !isWhitespace(String s) {
 //boolean ok = true;
 //for (int i = 0; i < s.length(); i++)
