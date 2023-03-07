@@ -33,7 +33,7 @@ public class PackageValidator {
         NpmPackage pi = pcm.loadPackage(v.getId(), v.getVersion());        
         if (VersionUtilities.isR4Ver(pi.fhirVersion()) || VersionUtilities.isR3Ver(pi.fhirVersion()) || VersionUtilities.isR2Ver(pi.fhirVersion())) {
           for (String n : pi.list("package")) {
-            if (n.endsWith(".json") && !n.equals("ig-r4.json")) {
+            if (n.endsWith(".json") && !n.equals("ig-r4.json") && !n.equals("ig-r4.jsonX")) {
               InputStream s = pi.load("package", n);
               try {
                 parseResource(s, pi.fhirVersion());

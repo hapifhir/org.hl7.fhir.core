@@ -919,7 +919,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             throw new FHIRException(context.formatMessage(I18nConstants.ILLEGAL_PATH__IN_DIFFERENTIAL_IN__NAME_PORTION_EXCEEDS_64_CHARS_IN_LENGTH, p, url));
           }
           for (char ch : pp.toCharArray()) {
-            if (Character.isWhitespace(ch)) {
+            if (Utilities.isWhitespace(ch)) {
               throw new FHIRException(context.formatMessage(I18nConstants.ILLEGAL_PATH__IN_DIFFERENTIAL_IN__NO_UNICODE_WHITESPACE, p, url));
             }
             if (Utilities.existsInList(ch, ',', ':', ';', '\'', '"', '/', '|', '?', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '{', '}')) {

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,17 +36,17 @@ public class CompactRenderer extends ValidationOutputRenderer {
   }
 
   private void render(PrintStream d, OperationOutcome op) {
-    d.println(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE));
+    d.println(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE)+" "+getRunDate());
     List<String> lines = new ArrayList<>();
     for (OperationOutcome.OperationOutcomeIssueComponent issue : op.getIssue()) {
       String path = issue.hasExpression() ? issue.getExpression().get(0).asStringValue() : "n/a";
       int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
       int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);      
-      lines.add("["+Integer.toString(line) + ", " + Integer.toString(col)+"] "+path+": "+issue.getSeverity().getDisplay()+" - "+issue.getDetails().getText());
+      lines.add(Utilities.padLeft(Integer.toString(line), '0', 8) + ":" + Utilities.padLeft(Integer.toString(col), '0', 8)+":"+path+"|["+Integer.toString(line) + ", " + Integer.toString(col)+"] "+path+": "+issue.getSeverity().getDisplay()+" - "+issue.getDetails().getText());
     }
     Collections.sort(lines);
     for (String s : lines) {
-      d.println(s);
+      d.println(s.substring(s.indexOf("|")+1));
     }
   }
 

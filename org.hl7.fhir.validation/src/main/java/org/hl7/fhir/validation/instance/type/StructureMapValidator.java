@@ -160,6 +160,14 @@ public class StructureMapValidator extends BaseValidator {
 
     public String getWorkingType() {
       if (type != null) {
+        if (ed != null) {
+          for (TypeRefComponent td : ed.getType()) {
+            StructureDefinition sd = context.fetchTypeDefinition(td.getWorkingCode());
+            if (sd != null && sd.getType().equals(type)) {
+              return td.getWorkingCode();
+            }
+          }
+        }
         return type;
       }
       if (ed != null && ed.getType().size() == 1) {
@@ -558,7 +566,8 @@ public class StructureMapValidator extends BaseValidator {
 
   private boolean hasType(ElementDefinition ed, String type) {
     for (TypeRefComponent td : ed.getType()) {
-      if (type.equals(td.getWorkingCode())) {
+      StructureDefinition sd = context.fetchTypeDefinition(td.getWorkingCode());
+      if (sd != null && type.equals(sd.getType())) {
         return true;
       }
     }
@@ -802,12 +811,12 @@ public class StructureMapValidator extends BaseValidator {
     //  * there's a default type group for the type of the source type
     // otherwise, we can't know the target type. 
     
-    if (ruleInfo.getDefVariable() != null && "create".equals(transform) && params.isEmpty()) {
+    if (ruleInfo.getDefVariable() != null && Utilities.existsInList(transform, "create", "copy") && params.isEmpty()) {
       VariableDefn v = variables.getVariable(ruleInfo.getDefVariable(), SOURCE);
       if (v != null && v.getEd() != null  && (v.getEd().getType().size() == 1 || v.getType() != null)) {
         List<Element> dependents = rule.getChildrenByName("dependent");
         if (dependents.size() == 1 && StructureMapUtilities.DEF_GROUP_NAME.equals(dependents.get(0).getChildValue("name"))) {
-          String type = v.getType() != null ? v.getType() : v.getEd().getTypeFirstRep().getWorkingCode();
+          String type = v.getType() != null ? getTypeFromDefn(v.getEd(), v.getType()) : v.getEd().getTypeFirstRep().getWorkingCode();
           // now, we look for a default group.
           // todo: look in this source
           // now look through the inputs
@@ -830,6 +839,16 @@ public class StructureMapValidator extends BaseValidator {
     return null;
   }
 
+  private String getTypeFromDefn(ElementDefinition ed, String type) {
+    for (TypeRefComponent td : ed.getType()) {
+      StructureDefinition sd = context.fetchTypeDefinition(td.getWorkingCode());
+      if (sd != null && type.equals(sd.getType())) {
+        return td.getWorkingCode();
+      }
+    }
+    return type;
+  }
+
   private boolean sameTypes(String type1, String type2) {
     if (type1 == null || type2 == null) {
       return false;
@@ -844,11 +863,11 @@ public class StructureMapValidator extends BaseValidator {
   }
 
   private String getTypeForGroupInput(StructureMap map, StructureMapGroupComponent grp,  StructureMapGroupInputComponent input) {
-    String type = input.getType();
-    StructureMapModelMode mode = input.getMode() == StructureMapInputMode.SOURCE ? StructureMapModelMode.SOURCE : StructureMapModelMode.TARGET;
     if (input == null) {
       return null;
     }
+    String type = input.getType();
+    StructureMapModelMode mode = input.getMode() == StructureMapInputMode.SOURCE ? StructureMapModelMode.SOURCE : StructureMapModelMode.TARGET;
     for (StructureMapStructureComponent st : map.getStructure()) {
       if (type.equals(st.getAlias()) && mode == st.getMode()) {
         return st.getUrl();
