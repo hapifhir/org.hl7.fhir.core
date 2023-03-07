@@ -135,7 +135,7 @@ public class FHIRPathExpressionFixer {
       return "-?(0|[1-9][0-9]{0,17})(\\.[0-9]{1,17})?([eE](0|[+\\-]?[1-9][0-9]{0,9}))?";
     }
     if (regex.equals("[ \\r\\n\\t\\S]+")) {
-      return "^[\\s\\r\\n\\t\\S]+$";
+      return "^[\\s\\S]+$";
     }
     return regex;
   }
