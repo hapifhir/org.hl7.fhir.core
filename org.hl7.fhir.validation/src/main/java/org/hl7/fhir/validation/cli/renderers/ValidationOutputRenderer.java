@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 
 public abstract class ValidationOutputRenderer {
 
+  private String runDate;
   protected boolean crumbTrails;
   protected boolean moreThanOne;
   protected PrintStream dst;
@@ -19,6 +20,14 @@ public abstract class ValidationOutputRenderer {
 
   public void setCrumbTrails(boolean crumbTrails) {
     this.crumbTrails = crumbTrails;
+  }
+
+  public String getRunDate() {
+    return runDate;
+  }
+
+  public void setRunDate(String runDate) {
+    this.runDate = runDate;
   }
 
   public void start(boolean moreThanOne) {

@@ -2258,7 +2258,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT) && ok;
       else if (e.primitiveValue().length() == 0)
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY) && ok;
-      else if (StringUtils.isWhitespace(e.primitiveValue()))
+      else if (Utilities.isAllWhitespace(e.primitiveValue()))
         warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS);
       if (context.hasBinding()) {
         ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, e.line(), e.col(), path, context.getBinding().getStrength() != BindingStrength.REQUIRED, I18nConstants.Terminology_TX_Code_ValueSet_MISSING) && ok;
@@ -2306,7 +2306,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String url = e.primitiveValue();
       ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_OID) && ok;
       ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("uuid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_UUID) && ok;
-      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, url.equals(url.trim().replace(" ", ""))
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, url.equals(Utilities.trimWS(url).replace(" ", ""))
         // work around an old invalid example in a core package
         || "http://www.acme.com/identifiers/patient or urn:ietf:rfc:3986 if the Identifier.value itself is a full uri".equals(url), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_WS, url) && ok;
       ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || url.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
@@ -2353,7 +2353,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (type.equalsIgnoreCase("string") && e.hasPrimitiveValue()) {
       if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || e.primitiveValue().length() > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY)) {
-        warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || e.primitiveValue().trim().equals(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS, prepWSPresentation(e.primitiveValue()));
+        if (warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || !Utilities.isAllWhitespace(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS_ALL, prepWSPresentation(e.primitiveValue()))) {
+          warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || Utilities.trimWS(e.primitiveValue()).equals(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS, prepWSPresentation(e.primitiveValue()));
+        }
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().length() <= 1048576, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_LENGTH)) {
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
         } else {
@@ -2623,24 +2625,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (Utilities.noString(s)) {
       return "";
     }
-    if (!StringUtils.containsWhitespace(s.trim())) {
-      return s;
-    }
-    int b = 0;
-    while (Character.isWhitespace(s.charAt(b))) {
-      b++;
-    }
-    while (!Character.isWhitespace(s.charAt(b))) {
-      b++;
-    }
-    int e = s.length() - 1;
-    while (Character.isWhitespace(s.charAt(e))) {
-      e--;
-    }
-    while (!Character.isWhitespace(s.charAt(e))) {
-      e--;
-    }
-    return s.substring(0, b)+"..."+s.substring(e+1);
+    return Utilities.escapeJson(s);
   }
 
   public boolean validateReference(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, String url) {
@@ -2803,7 +2788,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     for (int i = 0; i < theEncoded.length(); i++) {
       char nextChar = theEncoded.charAt(i);
-      if (Character.isWhitespace(nextChar)) {
+      if (Utilities.isWhitespace(nextChar)) {
         continue;
       }
       if (Character.isLetterOrDigit(nextChar)) {
@@ -2826,7 +2811,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     for (int i = 0; i < theEncoded.length(); i++) {
       char nextChar = theEncoded.charAt(i);
-      if (Character.isWhitespace(nextChar)) {
+      if (Utilities.isWhitespace(nextChar)) {
         return true;
       }
     }
@@ -2930,7 +2915,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return context.formatMessage(I18nConstants.XHTML_URL_DATA_DATA_INVALID, value);                        
       } else {
         if (p[0].startsWith(" ")) {
-          p[0] = p[0].trim(); 
+          p[0] = Utilities.trimWS(p[0]); 
         }
         String mMsg = checkValidMimeType(p[0].substring(0, p[0].lastIndexOf(";")));
         if (mMsg != null) {
@@ -4039,7 +4024,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean passesCodeWhitespaceRules(String v) {
-    if (!v.trim().equals(v))
+    if (!Utilities.trimWS(v).equals(v))
       return false;
     boolean lastWasSpace = true;
     for (char c : v.toCharArray()) {
@@ -4048,7 +4033,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           return false;
         else
           lastWasSpace = true;
-      } else if (Character.isWhitespace(c) || c == '\u00A0')
+      } else if (Utilities.isWhitespace(c))
         return false;
       else
         lastWasSpace = false;

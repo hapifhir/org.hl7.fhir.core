@@ -77,6 +77,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
@@ -303,7 +304,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
             myPieces.add(new Piece("br"));            
           }
           if (c.getNodeType() == NodeType.Text) {
-            if (!Utilities.isWhitespace(c.getContent()))
+            if (!StringUtils.isWhitespace(c.getContent()))
               addNode(myPieces, c, style);
           } else if ("p".equals(c.getName())) {
             for (XhtmlNode g : c.getChildNodes()) {
