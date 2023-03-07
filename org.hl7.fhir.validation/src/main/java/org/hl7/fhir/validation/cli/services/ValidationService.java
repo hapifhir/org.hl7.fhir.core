@@ -139,13 +139,13 @@ public class ValidationService {
     } else {
       File dir = new File(cliContext.getOutput());
       if (!dir.isDirectory()) {
-        throw new Error("THe output location "+dir.getAbsolutePath()+" must be a directory for the output style "+renderer.getStyleCode());
+        throw new Error("The output location "+dir.getAbsolutePath()+" must be an existing directory for the output style "+renderer.getStyleCode());
       }
       renderer.setFolder(dir);
     }
-    
+
     int ec = 0;
-    
+
     if (r instanceof Bundle) {
       if (renderer.handlesBundleDirectly()) {
         renderer.render((Bundle) r);
@@ -153,7 +153,7 @@ public class ValidationService {
         renderer.start(((Bundle) r).getEntry().size() > 1);
         for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry()) {
           OperationOutcome op = (OperationOutcome) e.getResource();
-          ec = ec + countErrors(op); 
+          ec = ec + countErrors(op);
           renderer.render(op);
         }
         renderer.finish();
@@ -168,7 +168,7 @@ public class ValidationService {
       renderer.render((OperationOutcome) r);
       renderer.finish();
     }
-    
+
     if (cliContext.getOutput() != null && dst != null) {
       dst.close();
     }
@@ -187,17 +187,17 @@ public class ValidationService {
       if (issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL || issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR)
         error++;
     }
-    return error;    
+    return error;
   }
 
   private ValidationOutputRenderer makeValidationOutputRenderer(CliContext cliContext) {
     String style = cliContext.getOutputStyle();
-    // adding to this list? 
+    // adding to this list?
     // Must document the option at https://confluence.hl7.org/display/FHIR/Using+the+FHIR+Validator#UsingtheFHIRValidator-ManagingOutput
-    // if you're going to make a PR, document the link where the outputstyle is documented, along with a sentence that describes it, in the PR notes 
+    // if you're going to make a PR, document the link where the outputstyle is documented, along with a sentence that describes it, in the PR notes
     if (Utilities.noString(style)) {
       if (cliContext.getOutput() == null) {
-        return new DefaultRenderer();        
+        return new DefaultRenderer();
       } else if (cliContext.getOutput().endsWith(".json")) {
         return new NativeRenderer(FhirFormat.JSON);
       } else {
@@ -217,7 +217,7 @@ public class ValidationService {
       return new NativeRenderer(FhirFormat.JSON);
     } else {
       System.out.println("Unknown output style '"+style+"'");
-      return new DefaultRenderer();      
+      return new DefaultRenderer();
     }
   }
 
@@ -415,7 +415,7 @@ public class ValidationService {
       for (String s : cliContext.getExtensions()) {
         if ("any".equals(s)) {
           validator.setAnyExtensionsAllowed(true);
-        } else {          
+        } else {
           validator.getExtensionDomains().add(s);
         }
       }
@@ -435,7 +435,7 @@ public class ValidationService {
       validator.setForPublication(cliContext.isForPublication());
       validator.setShowTimes(cliContext.isShowTimes());
       validator.setAllowExampleUrls(cliContext.isAllowExampleUrls());
-      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator);    
+      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator);
       validator.setFetcher(fetcher);
       validator.getContext().setLocator(fetcher);
       validator.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
@@ -450,7 +450,7 @@ public class ValidationService {
   }
 
 
-  
+
 
   public String determineVersion(CliContext cliContext) throws Exception {
     return determineVersion(cliContext, null);
@@ -493,9 +493,9 @@ public class ValidationService {
       ok = false;
       System.out.println(" ...Unable to generate spreadsheet for "+cliContext.getSources().get(0)+": no way to generate a spreadsheet for a "+cr.fhirType());
     }
-    
+
     if (ok) {
       System.out.println(" ...generated spreadsheet successfully");
-    } 
+    }
   }
 }
