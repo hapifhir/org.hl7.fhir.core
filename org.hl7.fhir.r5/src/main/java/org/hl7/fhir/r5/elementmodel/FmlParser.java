@@ -273,6 +273,7 @@ public class FmlParser extends ParserBase {
         lexer.token("<");
         if (lexer.hasToken("types")) {
           group.makeElement("typeMode").markLocation(lexer.getCurrentLocation()).setValue(StructureMapGroupTypeMode.TYPES.toCode());
+          lexer.token("types");
         } else {
           group.makeElement("typeMode").markLocation(lexer.getCurrentLocation()).setValue(StructureMapGroupTypeMode.TYPEANDTYPES.toCode());
           lexer.token("type");
