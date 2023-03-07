@@ -285,7 +285,7 @@ public class StructureMapValidator extends BaseValidator {
     cc = 0;
     for (Element group : groups) {
       if (!group.hasUserData("structuremap.validated")) {
-        hint(errors, "2023-03-01", IssueType.INFORMATIONAL, group.line(), group.col(), stack.getLiteralPath(), ok, I18nConstants.SM_ORPHAN_GROUP);
+        hint(errors, "2023-03-01", IssueType.INFORMATIONAL, group.line(), group.col(), stack.push(group, cc, null, null).getLiteralPath(), ok, I18nConstants.SM_ORPHAN_GROUP, group.getName());
         ok = validateGroup(errors, src, group, stack.push(group, cc, null, null)) && ok;
       }
       cc++;
