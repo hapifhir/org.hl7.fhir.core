@@ -84,7 +84,7 @@ public class NpmPackageVersionConverter {
     output.put("package/other/spec.internals", convertSpec(content.get("package/other/spec.internals")));
 
     for (Entry<String, byte[]> e : content.entrySet()) {
-      if (!e.getKey().equals("package/package.json") && !e.getKey().equals("package/other/spec.internals") && !e.getKey().endsWith("ig-r4.json")) {
+      if (!e.getKey().equals("package/package.json") && !e.getKey().equals("package/other/spec.internals") && !e.getKey().endsWith("ig-r4.json") && !e.getKey().endsWith("ig-r4.jsonX")) {
         byte[] cnv = e.getValue();
         try {
           JsonObject json = JsonParser.parseObject(e.getValue());
