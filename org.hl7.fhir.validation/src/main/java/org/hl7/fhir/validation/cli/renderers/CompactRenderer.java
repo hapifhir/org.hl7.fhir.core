@@ -41,11 +41,11 @@ public class CompactRenderer extends ValidationOutputRenderer {
       String path = issue.hasExpression() ? issue.getExpression().get(0).asStringValue() : "n/a";
       int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
       int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);      
-      lines.add("["+Integer.toString(line) + ", " + Integer.toString(col)+"] "+path+": "+issue.getSeverity().getDisplay()+" - "+issue.getDetails().getText());
+      lines.add(Utilities.padLeft(Integer.toString(line), '0', 8) + ":" + Utilities.padLeft(Integer.toString(col), '0', 8)+":"+path+"|["+Integer.toString(line) + ", " + Integer.toString(col)+"] "+path+": "+issue.getSeverity().getDisplay()+" - "+issue.getDetails().getText());
     }
     Collections.sort(lines);
     for (String s : lines) {
-      d.println(s);
+      d.println(s.substring(s.indexOf("|")+1));
     }
   }
 
