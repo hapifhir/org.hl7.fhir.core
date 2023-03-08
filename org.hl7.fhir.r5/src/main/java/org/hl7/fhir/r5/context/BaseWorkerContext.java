@@ -2150,6 +2150,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  @Override
+  public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
+    List<StructureDefinition> res = new ArrayList<>();
+    structures.listAll(res);
+    res.removeIf(sd -> !sd.getType().equals(typeName));
+    return res;
+  }
+
   public boolean isTlogging() {
     return tlogging;
   }

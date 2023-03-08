@@ -6045,7 +6045,12 @@ public class FHIRPathEngine {
   }
 
   private boolean isAbstractType(List<TypeRefComponent> list) {
-    return list.size() != 1 ? true : Utilities.existsInList(list.get(0).getCode(), "Element", "BackboneElement", "Resource", "DomainResource");
+    if (list.size() != 1) {
+      return false;
+    } else {
+      StructureDefinition sd = worker.fetchTypeDefinition(list.get(0).getCode());
+      return sd != null && sd.getAbstract();
+    }
   }
 
   private boolean hasType(ElementDefinition ed, String s) {
