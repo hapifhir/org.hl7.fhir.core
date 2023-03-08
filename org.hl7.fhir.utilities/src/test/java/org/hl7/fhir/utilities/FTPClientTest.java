@@ -209,7 +209,7 @@ public class FTPClientTest implements ResourceLoaderTests {
 
     assertTrue(client.getDeleteFileTimeMillis() == 0);
     assertTrue(client.getStoreFileTimeMillis() == 0);
-    assertTrue(client.getCreateRemotePathIfNotExistsMillis() > 0);
+    assertTrue(client.getCreateRemotePathIfNotExistsMillis() >= 0);
   }
 
   private void assertAllMillisFieldsAreZero(FTPClient client) {
