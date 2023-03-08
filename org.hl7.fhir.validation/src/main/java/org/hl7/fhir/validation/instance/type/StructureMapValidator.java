@@ -170,8 +170,12 @@ public class StructureMapValidator extends BaseValidator {
         }
         return type;
       }
-      if (ed != null && ed.getType().size() == 1) {
-        return ed.getType().get(0).getWorkingCode();
+      if (ed != null) {
+        if (!ed.getPath().contains(".")) {
+          return ed.getPath();
+        } else if (ed.getType().size() == 1) {
+          return ed.getType().get(0).getWorkingCode();
+        }
       }
       return null;
     }
@@ -243,6 +247,16 @@ public class StructureMapValidator extends BaseValidator {
         }
       }
       return null;
+    }
+
+    public VariableDefn getVariable(String name) {
+      VariableDefn t = null;
+      for (VariableDefn v : list) {
+        if (name.equals(v.getName())) {
+          t = (t == null) ? v : null;
+        }
+      }
+      return t;
     }
 
     public void add(String pname, VariableDefn v) {
@@ -321,7 +335,7 @@ public class StructureMapValidator extends BaseValidator {
     cc = 0;
     for (Element group : groups) {
       if (!group.hasUserData("structuremap.validated")) {
-        hint(errors, "2023-03-01", IssueType.INFORMATIONAL, group.line(), group.col(), stack.push(group, cc, null, null).getLiteralPath(), ok, I18nConstants.SM_ORPHAN_GROUP, group.getName());
+        hint(errors, "2023-03-01", IssueType.INFORMATIONAL, group.line(), group.col(), stack.push(group, cc, null, null).getLiteralPath(), ok, I18nConstants.SM_ORPHAN_GROUP, group.getChildValue("name"));
         ok = validateGroup(errors, src, group, stack.push(group, cc, null, null)) && ok;
       }
       cc++;
@@ -710,7 +724,7 @@ public class StructureMapValidator extends BaseValidator {
                   String exp = params.get(0).getChildValue("value");
                   if (rule(errors, "2023-03-01", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), exp != null, I18nConstants.SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE, "0", params.size())) {
                     try {
-                      TypeDetails td = fpe.check(null, v.getSd().getType(), v.getEd().getPath(), fpe.parse(exp));
+                      TypeDetails td = fpe.check(variables, v.getSd().getType(), v.getEd().getPath(), fpe.parse(exp));
                       if (td.getTypes().size() == 1) {
                         type = td.getType();
                       }
