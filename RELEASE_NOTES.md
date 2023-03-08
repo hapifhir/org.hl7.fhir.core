@@ -6,3 +6,5 @@
 ## Other code changes
 
 * rename ig-r4.json to ig-r4.jsonx in IGs
+* move R5 package to test cases 
+
