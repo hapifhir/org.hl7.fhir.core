@@ -262,19 +262,10 @@ public class FTPClient {
 
 
   public static void main(String[] args) throws IOException, FHIRException {
-    /*
     FTPClient ftp = new FTPClient(getNamedParam(args, "-upload-server"), getNamedParam(args, "-upload-path"), getNamedParam(args, "-upload-user"), getNamedParam(args, "-upload-password"));
     ftp.connect();
     ftp.upload("/Users/grahamegrieve/temp/test.xml", "testing/test.xml");
     ftp.delete("testing/test.xml");
-    ftp.disconnect();
-     */
-    System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug");
-    FTPClient ftp = new FTPClient("localhost", "bleh", "dummyFtpUser", "shrampythexmasshramp");
-    ftp.connect();
-    ftp.upload("D:\\IN\\2023-03-08-ftpclient-speed\\test.xml", "nah/perhaps/test.xml");
-    ftp.upload("D:\\IN\\2023-03-08-ftpclient-speed\\test.xml", "nah/maybe/test.xml");
-    //ftp.delete("nah/perhaps/test.xml");
     ftp.disconnect();
   }
   private static String getNamedParam(String[] args, String param) {
