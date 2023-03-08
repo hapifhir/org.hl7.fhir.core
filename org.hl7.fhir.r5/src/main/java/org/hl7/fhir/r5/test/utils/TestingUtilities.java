@@ -114,7 +114,13 @@ public class TestingUtilities extends BaseTestingUtilities {
     FilesystemPackageCacheManager pcm;
     try {
       pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-      IWorkerContext fcontext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
+      IWorkerContext fcontext = null;
+      if (VersionUtilities.isR5Ver(version)) {
+        // for purposes of stability, the R5 core package comes from the test case repository
+        fcontext = getWorkerContext(loadR5CorePackage());
+      } else {
+        fcontext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
+      }
       fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
       fcontext.setExpansionProfile(new Parameters());
       if (!fcontext.hasPackage("hl7.terminology.r5", null)) {
@@ -133,6 +139,10 @@ public class TestingUtilities extends BaseTestingUtilities {
       e.printStackTrace();
       throw new Error(e);
     }
+  }
+
+  private static NpmPackage loadR5CorePackage() throws IOException {
+    return NpmPackage.fromPackage(TestingUtilities.loadTestResourceStream("r5", "packages", "hl7.fhir.r5.core.tgz"));
   }
 
   public static String getTerminologyCacheDirectory() {
