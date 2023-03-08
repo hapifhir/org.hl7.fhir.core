@@ -1,10 +1,7 @@
 ## Validator Changes
 
-* Fix up issues validating whitespace
-* Multiple fixes to StructureMap and ConceptMap validation
+* no changes
 
 ## Other code changes
 
-* rename ig-r4.json to ig-r4.jsonx in IGs
-* move R5 package to test cases 
-
+* no changes
