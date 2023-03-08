@@ -111,6 +111,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.ExpressionNode;
+import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.Identifier;
@@ -191,6 +192,8 @@ import org.hl7.fhir.validation.instance.type.QuestionnaireValidator;
 import org.hl7.fhir.validation.instance.type.SearchParameterValidator;
 import org.hl7.fhir.validation.instance.type.StructureDefinitionValidator;
 import org.hl7.fhir.validation.instance.type.StructureMapValidator;
+import org.hl7.fhir.validation.instance.type.StructureMapValidator.VariableDefn;
+import org.hl7.fhir.validation.instance.type.StructureMapValidator.VariableSet;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator;
 import org.hl7.fhir.validation.instance.utils.ChildIterator;
 import org.hl7.fhir.validation.instance.utils.ElementInfo;
@@ -270,6 +273,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     @Override
     public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+      if (appContext instanceof VariableSet) {
+        VariableSet vars = (VariableSet) appContext;
+        VariableDefn v = vars.getVariable(name.substring(1));
+        if (v != null && v.hasTypeInfo()) {
+          return new TypeDetails(CollectionStatus.SINGLETON, v.getWorkingType());
+        } else {
+          return null;
+        }
+      }
       ValidatorHostContext c = (ValidatorHostContext) appContext;
       if (externalHostServices != null)
         return externalHostServices.resolveConstantType(c.getAppContext(), name);
