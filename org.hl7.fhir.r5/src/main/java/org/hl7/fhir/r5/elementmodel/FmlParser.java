@@ -550,7 +550,7 @@ public class FmlParser extends ParserBase {
   }
  
   private void parseInput(Element group, FHIRLexer lexer, boolean newFmt) throws FHIRException {
-    Element input = group.addElement("input");
+    Element input = group.addElement("input").markLocation(lexer.getCurrentLocation());
     if (newFmt) {
       input.makeElement("mode").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
     } else
