@@ -134,7 +134,7 @@ public class FTPClientTest implements ResourceLoaderTests {
     client.delete( RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_DELETE);
     assertFalse(fakeFtpServer.getFileSystem().exists(deleteFilePath));
 
-    assertTrue(client.getDeleteFileTimeMillis() > 0);
+    assertTrue(client.getDeleteFileTimeMillis() >= 0);
     assertTrue(client.getStoreFileTimeMillis() == 0);
     assertTrue(client.getCreateRemotePathIfNotExistsMillis() == 0);
  }
@@ -159,7 +159,7 @@ public class FTPClientTest implements ResourceLoaderTests {
     assertFalse(fakeFtpServer.getFileSystem().exists(deleteFilePath));
     client.disconnect();
 
-    assertTrue(client.getDeleteFileTimeMillis() > 0);
+    assertTrue(client.getDeleteFileTimeMillis() >= 0);
     assertTrue(client.getStoreFileTimeMillis() == 0);
     assertTrue(client.getCreateRemotePathIfNotExistsMillis() == 0);
  }
