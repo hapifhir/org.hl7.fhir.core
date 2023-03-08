@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.context;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Date;
 
 /*
@@ -736,12 +737,20 @@ public interface IWorkerContext {
   /**
    * This is a short cut for fetchResource(StructureDefinition.class, ...)
    * but it accepts a typename - that is, it resolves based on StructureDefinition.type 
-   * or StructureDefinition.url
+   * or StructureDefinition.url. This only resolves to http://hl7.org/fhir/StructureDefinition/{typename}
    * 
    * @param typeName
    * @return
    */
   public StructureDefinition fetchTypeDefinition(String typeName);
+
+  /**
+   * This finds all the structure definitions that have the given typeName
+   * 
+   * @param typeName
+   * @return
+   */
+  public List<StructureDefinition> fetchTypeDefinitions(String n);
 
 
   /**

@@ -1243,7 +1243,7 @@ public class StructureMapUtilities {
     // todo: check inputs
     if (group.hasExtends()) {
       ResolvedGroup rg = resolveGroupReference(map, group, group.getExtends());
-      executeGroup(indent + " ", context, rg.targetMap, vars, rg.target, false);
+      executeGroup(indent + " ", context, rg.getTargetMap(), vars, rg.getTargetGroup(), false);
     }
 
     for (StructureMapGroupRuleComponent r : group.getRule()) {
@@ -1279,9 +1279,9 @@ public class StructureMapUtilities {
           String tgtType = tgt.fhirType();
           ResolvedGroup defGroup = resolveGroupByTypes(map, rule.getName(), group, srcType, tgtType);
           Variables vdef = new Variables();
-          vdef.add(VariableMode.INPUT, defGroup.target.getInput().get(0).getName(), src);
-          vdef.add(VariableMode.OUTPUT, defGroup.target.getInput().get(1).getName(), tgt);
-          executeGroup(indent + "  ", context, defGroup.targetMap, vdef, defGroup.target, false);
+          vdef.add(VariableMode.INPUT, defGroup.getTargetGroup().getInput().get(0).getName(), src);
+          vdef.add(VariableMode.OUTPUT, defGroup.getTargetGroup().getInput().get(1).getName(), tgt);
+          executeGroup(indent + "  ", context, defGroup.getTargetMap(), vdef, defGroup.getTargetGroup(), false);
         }
       }
     }
@@ -1290,12 +1290,12 @@ public class StructureMapUtilities {
   private void executeDependency(String indent, TransformContext context, StructureMap map, Variables vin, StructureMapGroupComponent group, StructureMapGroupRuleDependentComponent dependent) throws FHIRException {
     ResolvedGroup rg = resolveGroupReference(map, group, dependent.getName());
 
-    if (rg.target.getInput().size() != dependent.getParameter().size()) {
-      throw new FHIRException("Rule '" + dependent.getName() + "' has " + rg.target.getInput().size() + " but the invocation has " + dependent.getParameter().size() + " variables");
+    if (rg.getTargetGroup().getInput().size() != dependent.getParameter().size()) {
+      throw new FHIRException("Rule '" + dependent.getName() + "' has " + rg.getTargetGroup().getInput().size() + " but the invocation has " + dependent.getParameter().size() + " variables");
     }
     Variables v = new Variables();
-    for (int i = 0; i < rg.target.getInput().size(); i++) {
-      StructureMapGroupInputComponent input = rg.target.getInput().get(i);
+    for (int i = 0; i < rg.getTargetGroup().getInput().size(); i++) {
+      StructureMapGroupInputComponent input = rg.getTargetGroup().getInput().get(i);
       StructureMapGroupRuleTargetParameterComponent rdp = dependent.getParameter().get(i);
       String var = rdp.getValue().primitiveValue();
       VariableMode mode = input.getMode() == StructureMapInputMode.SOURCE ? VariableMode.INPUT : VariableMode.OUTPUT;
@@ -1306,7 +1306,7 @@ public class StructureMapUtilities {
         throw new FHIRException("Rule '" + dependent.getName() + "' " + mode.toString() + " variable '" + input.getName() + "' named as '" + var + "' has no value (vars = " + vin.summary() + ")");
       v.add(mode, input.getName(), vv);
     }
-    executeGroup(indent + "  ", context, rg.targetMap, v, rg.target, false);
+    executeGroup(indent + "  ", context, rg.getTargetMap(), v, rg.getTargetGroup(), false);
   }
 
   private String determineTypeFromSourceType(StructureMap map, StructureMapGroupComponent source, Base base, String[] types) throws FHIRException {
@@ -1315,20 +1315,18 @@ public class StructureMapUtilities {
     if (source.hasUserData(kn))
       return source.getUserString(kn);
 
-    ResolvedGroup res = new ResolvedGroup();
-    res.targetMap = null;
-    res.target = null;
+    ResolvedGroup res = new ResolvedGroup(null, null);
     for (StructureMapGroupComponent grp : map.getGroup()) {
       if (matchesByType(map, grp, type)) {
-        if (res.targetMap == null) {
-          res.targetMap = map;
-          res.target = grp;
+        if (res.getTargetMap() == null) {
+          res.setTargetMap(map);
+          res.setTargetGroup(grp);
         } else
           throw new FHIRException("Multiple possible matches looking for default rule for '" + type + "'");
       }
     }
-    if (res.targetMap != null) {
-      String result = getActualType(res.targetMap, res.target.getInput().get(1).getType());
+    if (res.getTargetMap() != null) {
+      String result = getActualType(res.getTargetMap(), res.getTargetGroup().getInput().get(1).getType());
       source.setUserData(kn, result);
       return result;
     }
@@ -1341,19 +1339,19 @@ public class StructureMapUtilities {
         if (!impMap.getUrl().equals(map.getUrl())) {
           for (StructureMapGroupComponent grp : impMap.getGroup()) {
             if (matchesByType(impMap, grp, type)) {
-              if (res.targetMap == null) {
-                res.targetMap = impMap;
-                res.target = grp;
+              if (res.getTargetMap() == null) {
+                res.setTargetMap(impMap);
+                res.setTargetGroup(grp);
               } else
-                throw new FHIRException("Multiple possible matches for default rule for '" + type + "' in " + res.targetMap.getUrl() + " (" + res.target.getName() + ") and " + impMap.getUrl() + " (" + grp.getName() + ")");
+                throw new FHIRException("Multiple possible matches for default rule for '" + type + "' in " + res.getTargetMap().getUrl() + " (" + res.getTargetGroup().getName() + ") and " + impMap.getUrl() + " (" + grp.getName() + ")");
             }
           }
         }
       }
     }
-    if (res.target == null)
+    if (res.getTargetGroup() == null)
       throw new FHIRException("No matches found for default rule for '" + type + "' from " + map.getUrl());
-    String result = getActualType(res.targetMap, res.target.getInput().get(1).getType()); // should be .getType, but R2...
+    String result = getActualType(res.getTargetMap(), res.getTargetGroup().getInput().get(1).getType()); // should be .getType, but R2...
     source.setUserData(kn, result);
     return result;
   }
@@ -1390,19 +1388,17 @@ public class StructureMapUtilities {
     if (source.hasUserData(kn))
       return (ResolvedGroup) source.getUserData(kn);
 
-    ResolvedGroup res = new ResolvedGroup();
-    res.targetMap = null;
-    res.target = null;
+    ResolvedGroup res = new ResolvedGroup(null, null);
     for (StructureMapGroupComponent grp : map.getGroup()) {
       if (matchesByType(map, grp, srcType, tgtType)) {
-        if (res.targetMap == null) {
-          res.targetMap = map;
-          res.target = grp;
+        if (res.getTargetMap() == null) {
+          res.setTargetMap(map);
+          res.setTargetGroup(grp);
         } else
           throw new FHIRException("Multiple possible matches looking for rule for '" + srcType + "/" + tgtType + "', from rule '" + ruleid + "'");
       }
     }
-    if (res.targetMap != null) {
+    if (res.getTargetMap() != null) {
       source.setUserData(kn, res);
       return res;
     }
@@ -1415,17 +1411,17 @@ public class StructureMapUtilities {
         if (!impMap.getUrl().equals(map.getUrl())) {
           for (StructureMapGroupComponent grp : impMap.getGroup()) {
             if (matchesByType(impMap, grp, srcType, tgtType)) {
-              if (res.targetMap == null) {
-                res.targetMap = impMap;
-                res.target = grp;
+              if (res.getTargetMap() == null) {
+                res.setTargetMap(impMap);
+                res.setTargetGroup(grp);
               } else
-                throw new FHIRException("Multiple possible matches for rule for '" + srcType + "/" + tgtType + "' in " + res.targetMap.getUrl() + " and " + impMap.getUrl() + ", from rule '" + ruleid + "'");
+                throw new FHIRException("Multiple possible matches for rule for '" + srcType + "/" + tgtType + "' in " + res.getTargetMap().getUrl() + " and " + impMap.getUrl() + ", from rule '" + ruleid + "'");
             }
           }
         }
       }
     }
-    if (res.target == null)
+    if (res.getTargetGroup() == null)
       throw new FHIRException("No matches found for rule for '" + srcType + " to " + tgtType + "' from " + map.getUrl() + ", from rule '" + ruleid + "'");
     source.setUserData(kn, res);
     return res;
@@ -1493,19 +1489,17 @@ public class StructureMapUtilities {
     if (source.hasUserData(kn))
       return (ResolvedGroup) source.getUserData(kn);
 
-    ResolvedGroup res = new ResolvedGroup();
-    res.targetMap = null;
-    res.target = null;
+    ResolvedGroup res = new ResolvedGroup(null, null);
     for (StructureMapGroupComponent grp : map.getGroup()) {
       if (grp.getName().equals(name)) {
-        if (res.targetMap == null) {
-          res.targetMap = map;
-          res.target = grp;
+        if (res.getTargetMap() == null) {
+          res.setTargetMap(map);
+          res.setTargetGroup(grp);
         } else
           throw new FHIRException("Multiple possible matches for rule '" + name + "'");
       }
     }
-    if (res.targetMap != null) {
+    if (res.getTargetMap() != null) {
       source.setUserData(kn, res);
       return res;
     }
@@ -1518,19 +1512,19 @@ public class StructureMapUtilities {
         if (!impMap.getUrl().equals(map.getUrl())) {
           for (StructureMapGroupComponent grp : impMap.getGroup()) {
             if (grp.getName().equals(name)) {
-              if (res.targetMap == null) {
-                res.targetMap = impMap;
-                res.target = grp;
+              if (res.getTargetMap() == null) {
+                res.setTargetMap(impMap);
+                res.setTargetGroup(grp);
               } else
                 throw new FHIRException("Multiple possible matches for rule group '" + name + "' in " +
-                  res.targetMap.getUrl() + "#" + res.target.getName() + " and " +
+                  res.getTargetMap().getUrl() + "#" + res.getTargetGroup().getName() + " and " +
                   impMap.getUrl() + "#" + grp.getName());
             }
           }
         }
       }
     }
-    if (res.target == null)
+    if (res.getTargetGroup() == null)
       throw new FHIRException("No matches found for rule '" + name + "'. Reference found in " + map.getUrl());
     source.setUserData(kn, res);
     return res;
