@@ -9,6 +9,7 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import ca.uhn.fhir.model.api.IElement;
@@ -105,7 +106,9 @@ public abstract class Base implements Serializable, IBase, IElement {
   /**
    * Round tracking xml comments for testing convenience
    */
-  private List<String> formatCommentsPost; 
+  private List<String> formatCommentsPost;
+
+  private List<ValidationMessage> validationMessages; 
    
   
   public Object getUserData(String name) {
@@ -167,7 +170,15 @@ public abstract class Base implements Serializable, IBase, IElement {
   }      
 
   public boolean hasFormatComment() {
-  	return (formatCommentsPre != null && !formatCommentsPre.isEmpty()) || (formatCommentsPost != null && !formatCommentsPost.isEmpty());
+    return hasFormatCommentPre() || hasFormatCommentPost();
+  }
+  
+  public boolean hasFormatCommentPre() {
+    return formatCommentsPre != null && !formatCommentsPre.isEmpty();
+  }
+  
+  public boolean hasFormatCommentPost() {
+    return formatCommentsPost != null && !formatCommentsPost.isEmpty();
   }
   
   public List<String> getFormatCommentsPre() {
@@ -182,6 +193,29 @@ public abstract class Base implements Serializable, IBase, IElement {
     return formatCommentsPost;
   }  
   
+
+  public void copyFormatComments(Base other) {
+    if (other.hasFormatComment()) {
+      formatCommentsPre = new ArrayList<>();
+      formatCommentsPre.addAll(other.formatCommentsPre);      
+    } else {
+      formatCommentsPre = null;
+    }
+  }
+  
+
+  public void addFormatCommentsPre(List<String> comments) {
+    if (comments != null && !comments.isEmpty()) {
+      getFormatCommentsPre().addAll(comments); 
+    }    
+  }
+
+  public void addFormatCommentsPost(List<String> comments) {
+    if (comments != null && !comments.isEmpty()) {
+      getFormatCommentsPost().addAll(comments); 
+    }    
+  }
+
 	// these 3 allow evaluation engines to get access to primitive values
 	public boolean isPrimitive() {
 		return false;
@@ -463,4 +497,24 @@ public abstract class Base implements Serializable, IBase, IElement {
     this.validationInfo.add(vi);
     return vi;
   }
+  
+  
+  
+  // validation messages: the validator does not populate these (yet)
+  public Base addValidationMessage(ValidationMessage msg) {
+    if (validationMessages == null) {
+      validationMessages = new ArrayList<>();
+    }
+    validationMessages.add(msg);
+    return this;
+  }
+  
+  public boolean hasValidationMessages() {
+    return validationMessages != null && !validationMessages.isEmpty();
+  }
+  
+  public List<ValidationMessage> getValidationMessages() {
+    return validationMessages != null ? validationMessages : new ArrayList<>();
+  }
+
 }

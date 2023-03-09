@@ -315,18 +315,23 @@ public class FHIRLexer {
 
   private void skipWhitespaceAndComments() {
     comments.clear();
+    commentLocation = null;
     boolean last13 = false;
     boolean done = false;
     while (cursor < source.length() && !done) {
       if (cursor < source.length() -1 && "//".equals(source.substring(cursor, cursor+2)) && !isMetadataStart()) {
-        commentLocation = currentLocation;
+        if (commentLocation == null) {
+          commentLocation = currentLocation.copy();
+        }
         int start = cursor+2;
         while (cursor < source.length() && !((source.charAt(cursor) == '\r') || source.charAt(cursor) == '\n')) { 
           cursor++;        
         }
         comments.add(source.substring(start, cursor).trim());
       } else if (cursor < source.length() - 1 && "/*".equals(source.substring(cursor, cursor+2))) {
-        commentLocation = currentLocation;
+        if (commentLocation == null) {
+          commentLocation = currentLocation.copy();
+        }
         int start = cursor+2;
         while (cursor < source.length() - 1 && !"*/".equals(source.substring(cursor, cursor+2))) { 
           last13 = currentLocation.checkChar(source.charAt(cursor), last13);
@@ -568,6 +573,20 @@ public class FHIRLexer {
   }
   public void setMetadataFormat(boolean metadataFormat) {
     this.metadataFormat = metadataFormat;
+  }
+  public List<String> cloneComments() {
+    List<String> res = new ArrayList<>();
+    res.addAll(getComments());
+    return res;
+  }
+  public String tokenWithTrailingComment(String token) {
+    int line = getCurrentLocation().getLine();
+    token(token);
+    if (getComments().size() > 0 && getCommentLocation().getLine() == line) {
+      return getFirstComment();
+    } else {
+      return null;
+    }
   }
 
 }
