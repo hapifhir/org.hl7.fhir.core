@@ -613,39 +613,33 @@ public class Utilities {
     return s.toString();
   }
 
-
+  private static boolean isPathRoot(String pathString) {
+    boolean actual;
+    Path path = Path.of(pathString);
+    Path normalizedPath = path.normalize();
+    actual = normalizedPath.equals(path.getRoot());
+    return actual;
+  }
   public static String path(String... args) throws IOException {
     StringBuilder s = new StringBuilder();
-    boolean d = false;
-    boolean first = true;
+    boolean argIsNotEmptyOrNull = false;
+
+    if (args[0] == null || noString(args[0].trim())) {
+      throw new RuntimeException("First entry cannot be null or empty");
+    }
+
+    if (isPathRoot(args[0])) {
+      throw new RuntimeException("First entry cannot be root: " + args[0]);
+    }
+
     for (String arg : args) {
-      if (first && arg == null)
-        continue;
-      first = false;
-      if (!d)
-        d = !noString(arg);
+      if (!argIsNotEmptyOrNull)
+        argIsNotEmptyOrNull = !noString(arg);
       else if (!s.toString().endsWith(File.separator))
         s.append(File.separator);
       String a = arg;
       if (s.length() == 0) {
-        if ("[tmp]".equals(a)) {
-          if (hasCTempDir()) {
-            a = C_TEMP_DIR;
-          } else if (ToolGlobalSettings.hasTempPath()) {            
-            a = ToolGlobalSettings.getTempPath();
-          } else {
-            a = System.getProperty("java.io.tmpdir");
-          }
-        } else if ("[user]".equals(a)) {
-          a = System.getProperty("user.home");
-        } else if (a.startsWith("[") && a.endsWith("]")) {
-          String ev = System.getenv(a.replace("[", "").replace("]", ""));
-          if (ev != null) {
-            a = ev;
-          } else {
-            a = "null";
-          }
-        }
+        a = replaceVariables(a);
       }
       a = a.replace("\\", File.separator);
       a = a.replace("/", File.separator);
@@ -671,7 +665,32 @@ public class Utilities {
       } else
         s.append(a);
     }
+    if (!Path.of(s.toString()).normalize().startsWith(Path.of(replaceVariables(args[0])).normalize())) {
+     throw new RuntimeException("Computed path does not start with first element: " + String.join(", ", args));
+    }
     return s.toString();
+  }
+
+  private static String replaceVariables(String a) {
+    if ("[tmp]".equals(a)) {
+      if (hasCTempDir()) {
+        return C_TEMP_DIR;
+      } else if (ToolGlobalSettings.hasTempPath()) {
+        return ToolGlobalSettings.getTempPath();
+      } else {
+        return System.getProperty("java.io.tmpdir");
+      }
+    } else if ("[user]".equals(a)) {
+      return System.getProperty("user.home");
+    } else if (a.startsWith("[") && a.endsWith("]")) {
+      String ev = System.getenv(a.replace("[", "").replace("]", ""));
+      if (ev != null) {
+        return ev;
+      } else {
+        return "null";
+      }
+    }
+    return a;
   }
 
   private static boolean hasCTempDir() {

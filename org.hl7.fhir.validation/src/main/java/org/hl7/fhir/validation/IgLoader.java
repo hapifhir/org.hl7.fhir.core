@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -374,16 +375,19 @@ public class IgLoader {
   protected Map<String, byte[]> readZip(InputStream stream) throws IOException {
     Map<String, byte[]> res = new HashMap<>();
     ZipInputStream zip = new ZipInputStream(stream);
-    ZipEntry ze;
-    while ((ze = zip.getNextEntry()) != null) {
-      String name = ze.getName();
+    ZipEntry zipEntry;
+    while ((zipEntry = zip.getNextEntry()) != null) {
+      String entryName = zipEntry.getName();
+      if (entryName.contains("..") || Path.of(entryName).isAbsolute()) {
+        throw new RuntimeException("Entry with an illegal path: " + entryName);
+      }
       ByteArrayOutputStream b = new ByteArrayOutputStream();
       int n;
       byte[] buf = new byte[1024];
       while ((n = ((InputStream) zip).read(buf, 0, 1024)) > -1) {
         b.write(buf, 0, n);
       }
-      res.put(name, b.toByteArray());
+      res.put(entryName, b.toByteArray());
       zip.closeEntry();
     }
     zip.close();
