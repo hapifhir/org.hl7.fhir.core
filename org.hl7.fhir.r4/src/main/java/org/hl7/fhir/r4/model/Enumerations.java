@@ -10158,6 +10158,7 @@ The primary difference between a medication statement and a medication administr
          * R5Connectathon 32 release.
          */
         _5_0_0SNAPSHOT3, 
+        _5_0_0DRAFTFINAL,
         /**
          * added to help the parsers
          */
@@ -10277,6 +10278,8 @@ The primary difference between a medication statement and a medication administr
           return _5_0_0BALLOT;
         if ("5.0.0-snapshot3".equals(codeString))
           return _5_0_0SNAPSHOT3;
+        if ("5.0.0-draft-final".equals(codeString))
+          return _5_0_0DRAFTFINAL;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
@@ -10448,6 +10451,7 @@ The primary difference between a medication statement and a medication administr
             case _5_0_0SNAPSHOT2: return "5.0.0-snapshot2";
             case _5_0_0BALLOT: return "5.0.0-ballot";
             case _5_0_0SNAPSHOT3: return "5.0.0-snapshot3";
+            case _5_0_0DRAFTFINAL: return "5.0.0-draft-final";
             case NULL: return null;
             default: return "?";
           }
@@ -10510,6 +10514,7 @@ The primary difference between a medication statement and a medication administr
             case _5_0_0SNAPSHOT2: return "http://hl7.org/fhir/FHIR-version";
             case _5_0_0BALLOT: return "http://hl7.org/fhir/FHIR-version";
             case _5_0_0SNAPSHOT3: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0_0DRAFTFINAL: return "http://hl7.org/fhir/FHIR-version";
             case NULL: return null;
             default: return "?";
           }
@@ -10572,6 +10577,7 @@ The primary difference between a medication statement and a medication administr
             case _5_0_0SNAPSHOT2: return "R5 Interim tooling stage.";
             case _5_0_0BALLOT: return "R5 Ballot.";
             case _5_0_0SNAPSHOT3: return "R5 Connectathon 32 release.";
+            case _5_0_0DRAFTFINAL: return "R5 Final QA.";
             case NULL: return null;
             default: return "?";
           }
@@ -10634,6 +10640,7 @@ The primary difference between a medication statement and a medication administr
             case _5_0_0SNAPSHOT2: return "5.0.0-snapshot2";
             case _5_0_0BALLOT: return "5.0.0-ballot";
             case _5_0_0SNAPSHOT3: return "5.0.0-snapshot3";
+            case _5_0_0DRAFTFINAL: return "5.0.0-draft-final";
             case NULL: return null;
             default: return "?";
           }
@@ -10753,6 +10760,8 @@ The primary difference between a medication statement and a medication administr
           return FHIRVersion._5_0_0BALLOT;
         if ("5.0.0-snapshot3".equals(codeString))
           return FHIRVersion._5_0_0SNAPSHOT3;
+        if ("5.0.0-draft-final".equals(codeString))
+          return FHIRVersion._5_0_0DRAFTFINAL;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public Enumeration<FHIRVersion> fromType(PrimitiveType<?> code) throws FHIRException {
@@ -10875,6 +10884,8 @@ The primary difference between a medication statement and a medication administr
           return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0BALLOT, code);
         if ("5.0.0-snapshot3".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT3, code);
+        if ("5.0.0-draft-final".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0DRAFTFINAL, code);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -10990,6 +11001,8 @@ The primary difference between a medication statement and a medication administr
         return "5.0.0-ballot";
       if (code == FHIRVersion._5_0_0SNAPSHOT3)
         return "5.0.0-snapshot3";
+      if (code == FHIRVersion._5_0_0DRAFTFINAL)
+        return "5.0.0-draft-final";
       return "?";
       }
     public String toSystem(FHIRVersion code) {
