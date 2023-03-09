@@ -765,6 +765,10 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     this.getChildNodes().addAll(childNodes);    
   }
 
+
+  public XhtmlNode color(String color) {
+    return span("color: "+color, null);
+  }
   
   
 }

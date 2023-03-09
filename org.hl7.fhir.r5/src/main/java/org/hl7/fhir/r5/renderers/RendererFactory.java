@@ -91,6 +91,9 @@ public class RendererFactory {
     if ("Requirements".equals(resourceName)) {
       return new RequirementsRenderer(context);
     }
+    if ("StructureMap".equals(resourceName)) {
+      return new StructureMapRenderer(context);
+    }
     return new ProfileDrivenRenderer(context);    
   }
 

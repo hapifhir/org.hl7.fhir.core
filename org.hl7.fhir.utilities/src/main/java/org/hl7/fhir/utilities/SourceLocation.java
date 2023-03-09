@@ -43,4 +43,7 @@ public class SourceLocation {
       return false;
     }
   }
+  public SourceLocation copy() {
+    return new SourceLocation(line, column);
+  }
 }

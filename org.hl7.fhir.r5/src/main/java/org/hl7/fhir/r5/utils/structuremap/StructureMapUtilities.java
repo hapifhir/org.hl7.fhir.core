@@ -71,6 +71,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -113,6 +114,7 @@ public class StructureMapUtilities {
   private final Map<String, Integer> ids = new HashMap<String, Integer>();
   private ValidationOptions terminologyServiceOptions = new ValidationOptions();
   private final ProfileUtilities profileUtilities;
+  private boolean exceptionsForChecks = true;
 
   public StructureMapUtilities(IWorkerContext worker, ITransformerServices services, ProfileKnowledgeProvider pkp) {
     super();
@@ -672,8 +674,9 @@ public class StructureMapUtilities {
 
   
   private void parseConceptMap(StructureMap result, FHIRLexer lexer) throws FHIRLexerException {
-    lexer.token("conceptmap");
     ConceptMap map = new ConceptMap();
+    map.addFormatCommentsPre(lexer.getComments());
+    lexer.token("conceptmap");
     String id = lexer.readConstant("map id");
     if (id.startsWith("#"))
       throw lexer.error("Concept Map identifier must start with #");
@@ -694,10 +697,12 @@ public class StructureMapUtilities {
       prefixes.put(n, v);
     }
     while (lexer.hasToken("unmapped")) {
+      List<String> comments = lexer.cloneComments();
       lexer.token("unmapped");
       lexer.token("for");
       String n = readPrefix(prefixes, lexer);
       ConceptMapGroupComponent g = getGroup(map, n, null);
+      g.addFormatCommentsPre(comments);
       lexer.token("=");
       String v = lexer.take();
       if (v.equals("provided")) {
@@ -706,6 +711,7 @@ public class StructureMapUtilities {
         throw lexer.error("Only unmapped mode PROVIDED is supported at this time");
     }
     while (!lexer.hasToken("}")) {
+      List<String> comments = lexer.cloneComments();
       String srcs = readPrefix(prefixes, lexer);
       lexer.token(":");
       String sc = lexer.getCurrent().startsWith("\"") ? lexer.readConstant("code") : lexer.take();
@@ -713,17 +719,21 @@ public class StructureMapUtilities {
       String tgts = readPrefix(prefixes, lexer);
       ConceptMapGroupComponent g = getGroup(map, srcs, tgts);
       SourceElementComponent e = g.addElement();
+      e.addFormatCommentsPre(comments);
       e.setCode(sc);
-      if (e.getCode().startsWith("\""))
+      if (e.getCode().startsWith("\"")) {
         e.setCode(lexer.processConstant(e.getCode()));
+      }
       TargetElementComponent tgt = e.addTarget();
       tgt.setRelationship(rel);
       lexer.token(":");
       tgt.setCode(lexer.take());
-      if (tgt.getCode().startsWith("\""))
+      if (tgt.getCode().startsWith("\"")) {
         tgt.setCode(lexer.processConstant(tgt.getCode()));
-      tgt.setComment(lexer.getFirstComment());
+      }
+      // tgt.setComment(lexer.getAllComments());
     }
+    map.addFormatCommentsPost(lexer.getComments());
     lexer.token("}");
   }
 
@@ -781,7 +791,7 @@ public class StructureMapUtilities {
     lexer.token("as");
     st.setMode(StructureMapModelMode.fromCode(lexer.take()));
     lexer.skipToken(";");
-    st.setDocumentation(lexer.getFirstComment());
+    st.setDocumentation(lexer.getAllComments());
   }
   
   
@@ -859,6 +869,7 @@ public class StructureMapUtilities {
         parseRule(result, group.getRule(), lexer, false);
       }
     }
+    group.addFormatCommentsPost(lexer.getComments());
     lexer.next();
     if (newFmt && lexer.hasToken(";"))
       lexer.next();
@@ -880,7 +891,7 @@ public class StructureMapUtilities {
     if (!newFmt) {
       lexer.token("as");
       input.setMode(StructureMapInputMode.fromCode(lexer.take()));
-      input.setDocumentation(lexer.getFirstComment());
+      input.setDocumentation(lexer.getAllComments());
       lexer.skipToken(";");
     }
   }
@@ -894,7 +905,7 @@ public class StructureMapUtilities {
       lexer.token(":");
       lexer.token("for");
     } else {
-      rule.setDocumentation(lexer.getFirstComment());
+      rule.addFormatCommentsPre(lexer.getComments());
     }
     list.add(rule);
     boolean done = false;
@@ -934,9 +945,6 @@ public class StructureMapUtilities {
         }
       }
     }
-    if (!rule.hasDocumentation() && lexer.hasComments()) {
-      rule.setDocumentation(lexer.getFirstComment());
-    }
     if (isSimpleSyntax(rule)) {
       rule.getSourceFirstRep().setVariable(AUTO_VAR_NAME);
       rule.getTargetFirstRep().setVariable(AUTO_VAR_NAME);
@@ -951,14 +959,17 @@ public class StructureMapUtilities {
           rule.setName(lexer.take());
         }
       } else {
-        if (rule.getSource().size() != 1 || !rule.getSourceFirstRep().hasElement())
+        if (rule.getSource().size() != 1 || !rule.getSourceFirstRep().hasElement() && exceptionsForChecks )
           throw lexer.error("Complex rules must have an explicit name");
         if (rule.getSourceFirstRep().hasType())
           rule.setName(rule.getSourceFirstRep().getElement() + "-" + rule.getSourceFirstRep().getType());
         else
           rule.setName(rule.getSourceFirstRep().getElement());
       }
-      lexer.token(";");
+      String doco = lexer.tokenWithTrailingComment(";");
+      if (doco != null) {
+        rule.setDocumentation(doco);
+      }
     }
   }
 
@@ -2638,6 +2649,14 @@ public class StructureMapUtilities {
 
   public void setTerminologyServiceOptions(ValidationOptions terminologyServiceOptions) {
     this.terminologyServiceOptions = terminologyServiceOptions;
+  }
+
+  public boolean isExceptionsForChecks() {
+    return exceptionsForChecks;
+  }
+
+  public void setExceptionsForChecks(boolean exceptionsForChecks) {
+    this.exceptionsForChecks = exceptionsForChecks;
   }
 
 }

@@ -63,6 +63,7 @@ public class ResourceParser extends ParserBase {
 
   private void parseChildren(String path, Base src, Element dst) {
     dst.setSource(src);
+    dst.copyFormatComments(src);
     List<Property> properties = dst.getProperty().getChildProperties(dst.getName(), null);
     for (org.hl7.fhir.r5.model.Property c : src.children()) {
       if (c.hasValues()) {
