@@ -667,7 +667,11 @@ public class Utilities {
     StringBuilder s = new StringBuilder();
     boolean argIsNotEmptyOrNull = false;
 
+    boolean first = true;
     for (String arg : args) {
+      if (first && arg == null)
+        continue;
+      first = false;
       if (!argIsNotEmptyOrNull)
         argIsNotEmptyOrNull = !noString(arg);
       else if (!s.toString().endsWith(File.separator))
