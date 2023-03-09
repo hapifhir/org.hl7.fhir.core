@@ -146,6 +146,7 @@ public class FmlParser extends ParserBase {
         throw lexer.error("Only unmapped mode PROVIDED is supported at this time");
     }
     while (!lexer.hasToken("}")) {
+      String comments = lexer.hasComments() ? lexer.getAllComments() : null;
       String srcs = readPrefix(prefixes, lexer);
       lexer.token(":");
       SourceLocation scloc = lexer.getCurrentLocation();
@@ -155,6 +156,11 @@ public class FmlParser extends ParserBase {
       String tgts = readPrefix(prefixes, lexer);
       Element g = getGroupE(map, srcs, tgts);
       Element e = g.addElement("element");
+      if (comments != null) {
+        for (String s : comments.split("\\r\\n")) {
+          e.getComments().add(s);
+        }
+      }
       e.makeElement("code").markLocation(scloc).setValue(sc.startsWith("\"") ? lexer.processConstant(sc) : sc);
       Element tgt = e.addElement("target");
       tgt.makeElement("relationship").markLocation(relLoc).setValue(rel.toCode());

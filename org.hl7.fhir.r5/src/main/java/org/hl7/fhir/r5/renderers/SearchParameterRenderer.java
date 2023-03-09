@@ -183,7 +183,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
 
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
-    return ((OperationDefinition) r).present();
+    return ((SearchParameter) r).present();
   }
 
 }

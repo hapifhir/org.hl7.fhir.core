@@ -34,6 +34,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRende
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -153,6 +154,7 @@ public class NarrativeGenerationTests {
     private String id;
     private String sdmode;
     private boolean header;
+    private boolean pretty;
     private boolean meta;
     private boolean technical;
     private String register;
@@ -169,6 +171,7 @@ public class NarrativeGenerationTests {
         register = null;
       }
       header = "true".equals(test.getAttribute("header"));
+      pretty = !"false".equals(test.getAttribute("pretty"));
       meta = "true".equals(test.getAttribute("meta"));
       technical = "technical".equals(test.getAttribute("mode"));
     }
@@ -247,13 +250,15 @@ public class NarrativeGenerationTests {
     Resource source;
     if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".json")) {
       source = (Resource) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".json"));
+    } else  if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".fml")) {
+      source = (Resource) new StructureMapUtilities(context).parse(TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".fml")), "source");
     } else {
       source = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"));      
     }
     
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
     String expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
-    String actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
+    String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
     String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
     String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".actual.html");
     TextFile.stringToFile(expected, expectedFileName);
