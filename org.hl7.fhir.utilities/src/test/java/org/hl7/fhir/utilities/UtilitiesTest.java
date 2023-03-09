@@ -340,10 +340,10 @@ class UtilitiesTest {
 
   public static Stream<Arguments> windowsValidPaths() {
     return Stream.of(
-      Arguments.of((Object) new String[]{"C://root"}, "C://root"),
-      Arguments.of( (Object) new String[]{"C://root", "child"}, "C://root/child"),
-      Arguments.of((Object) new String[]{"C://root", "../root/child"}, "C://root/child"),
-      Arguments.of((Object) new String[]{"C://root", "child", "anotherchild"}, "C://root/child/anotherchild"),
+      Arguments.of((Object) new String[]{"C://root"}, "C:\\\\root"),
+      Arguments.of( (Object) new String[]{"C://root", "child"}, "C:\\\\root\\child"),
+      Arguments.of((Object) new String[]{"C://root", "../root/child"}, "C:\\\\root\\child"),
+      Arguments.of((Object) new String[]{"C://root", "child", "anotherchild"}, "C:\\\\root\\child\\anotherchild"),
       Arguments.of((Object) new String[]{"C:\\\\root"}, "C:\\\\root"),
       Arguments.of( (Object) new String[]{"C:\\\\root", "child"}, "C:\\\\root\\child"),
       Arguments.of((Object) new String[]{"C:\\\\root", "..\\root\\child"}, "C:\\\\root\\child"),
