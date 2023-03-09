@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Additional checks in path construction for zip slip vulnerability
