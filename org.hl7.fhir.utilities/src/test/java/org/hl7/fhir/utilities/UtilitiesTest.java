@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -7,11 +8,17 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class UtilitiesTest {
 
@@ -39,22 +46,22 @@ class UtilitiesTest {
   @DisplayName("Test Utilities.path maps temp directory correctly")
   public void testTempDirPath() throws IOException {
     if (ToolGlobalSettings.hasTempPath()) {
-      Assertions.assertEquals(Utilities.path("[tmp]", TEST_TXT), ToolGlobalSettings.getTempPath() +File.separator+ TEST_TXT);      
+      assertEquals(Utilities.path("[tmp]", TEST_TXT), ToolGlobalSettings.getTempPath() +File.separator+ TEST_TXT);
     } else {
-      Assertions.assertEquals(Utilities.path("[tmp]", TEST_TXT), getTempDirectory() + TEST_TXT);
+      assertEquals(Utilities.path("[tmp]", TEST_TXT), getTempDirectory() + TEST_TXT);
     }
   }
 
   @Test
   @DisplayName("Test Utilities.path maps user directory correctly")
   public void testUserDirPath() throws IOException {
-    Assertions.assertEquals(Utilities.path("[user]", TEST_TXT), getUserDirectory() + TEST_TXT);
+    assertEquals(Utilities.path("[user]", TEST_TXT), getUserDirectory() + TEST_TXT);
   }
 
   @Test
   @DisplayName("Test Utilities.path maps JAVA_HOME correctly")
   public void testJavaHomeDirPath() throws IOException {
-    Assertions.assertEquals(Utilities.path("[JAVA_HOME]", TEST_TXT), getJavaHomeDirectory() + TEST_TXT);
+    assertEquals(Utilities.path("[JAVA_HOME]", TEST_TXT), getJavaHomeDirectory() + TEST_TXT);
   }
 
   private String getJavaHomeDirectory() {
@@ -171,24 +178,24 @@ class UtilitiesTest {
   @Test
   @DisplayName("Decimal Reasoning Tests")
   void testDecimalRoutines() {
-    Assertions.assertEquals("-0.500000", Utilities.lowBoundaryForDecimal("0", 6));
-    Assertions.assertEquals("0.50000000", Utilities.lowBoundaryForDecimal("1", 8));
-    Assertions.assertEquals("0.950000", Utilities.lowBoundaryForDecimal("1.0", 6));
-    Assertions.assertEquals("0.95", Utilities.lowBoundaryForDecimal("1.0", 2));
-    Assertions.assertEquals("-1.05000000", Utilities.lowBoundaryForDecimal("-1.0", 8));
-    Assertions.assertEquals("1.23", Utilities.lowBoundaryForDecimal("1.234", 2));
-    Assertions.assertEquals("1.57", Utilities.lowBoundaryForDecimal("1.567", 2));
+    assertEquals("-0.500000", Utilities.lowBoundaryForDecimal("0", 6));
+    assertEquals("0.50000000", Utilities.lowBoundaryForDecimal("1", 8));
+    assertEquals("0.950000", Utilities.lowBoundaryForDecimal("1.0", 6));
+    assertEquals("0.95", Utilities.lowBoundaryForDecimal("1.0", 2));
+    assertEquals("-1.05000000", Utilities.lowBoundaryForDecimal("-1.0", 8));
+    assertEquals("1.23", Utilities.lowBoundaryForDecimal("1.234", 2));
+    assertEquals("1.57", Utilities.lowBoundaryForDecimal("1.567", 2));
 
-    Assertions.assertEquals("0.50000000", Utilities.highBoundaryForDecimal("0", 8));
-    Assertions.assertEquals("1.500000", Utilities.highBoundaryForDecimal("1", 6));
-    Assertions.assertEquals("1.0500000000", Utilities.highBoundaryForDecimal("1.0", 10));
-    Assertions.assertEquals("-0.9500", Utilities.highBoundaryForDecimal("-1.0", 4));
+    assertEquals("0.50000000", Utilities.highBoundaryForDecimal("0", 8));
+    assertEquals("1.500000", Utilities.highBoundaryForDecimal("1", 6));
+    assertEquals("1.0500000000", Utilities.highBoundaryForDecimal("1.0", 10));
+    assertEquals("-0.9500", Utilities.highBoundaryForDecimal("-1.0", 4));
 
-    Assertions.assertEquals(0, Utilities.getDecimalPrecision("0"));
-    Assertions.assertEquals(0, Utilities.getDecimalPrecision("1"));
-    Assertions.assertEquals(1, Utilities.getDecimalPrecision("1.0"));
-    Assertions.assertEquals(1, Utilities.getDecimalPrecision("-1.0"));
-    Assertions.assertEquals(4, Utilities.getDecimalPrecision("-1.0200"));
+    assertEquals(0, Utilities.getDecimalPrecision("0"));
+    assertEquals(0, Utilities.getDecimalPrecision("1"));
+    assertEquals(1, Utilities.getDecimalPrecision("1.0"));
+    assertEquals(1, Utilities.getDecimalPrecision("-1.0"));
+    assertEquals(4, Utilities.getDecimalPrecision("-1.0200"));
   }
   
   @Test
@@ -212,23 +219,172 @@ class UtilitiesTest {
 //    Assertions.assertEquals("2021-04-04T21:22:23.999Z", Utilities.highBoundaryForDate("2021-04-04T21:22:23Z"));
 //    Assertions.assertEquals("2021-04-04T21:22:23.245+10:00", Utilities.highBoundaryForDate("2021-04-04T21:22:23.245+10:00"));
     
-    Assertions.assertEquals(8, Utilities.getDatePrecision("1900-01-01"));
-    Assertions.assertEquals(4, Utilities.getDatePrecision("1900"));
-    Assertions.assertEquals(6, Utilities.getDatePrecision("1900-06"));
-    Assertions.assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00"));
-    Assertions.assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000"));
-    Assertions.assertEquals(8, Utilities.getDatePrecision("1900-01-01Z"));
-    Assertions.assertEquals(4, Utilities.getDatePrecision("1900Z"));
-    Assertions.assertEquals(6, Utilities.getDatePrecision("1900-06Z"));
-    Assertions.assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00Z"));
-    Assertions.assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000Z"));
-    Assertions.assertEquals(8, Utilities.getDatePrecision("1900-01-01+10:00"));
-    Assertions.assertEquals(4, Utilities.getDatePrecision("1900+10:00"));
-    Assertions.assertEquals(6, Utilities.getDatePrecision("1900-06+10:00"));
-    Assertions.assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00+10:00"));
-    Assertions.assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000-10:00"));
+    assertEquals(8, Utilities.getDatePrecision("1900-01-01"));
+    assertEquals(4, Utilities.getDatePrecision("1900"));
+    assertEquals(6, Utilities.getDatePrecision("1900-06"));
+    assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00"));
+    assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000"));
+    assertEquals(8, Utilities.getDatePrecision("1900-01-01Z"));
+    assertEquals(4, Utilities.getDatePrecision("1900Z"));
+    assertEquals(6, Utilities.getDatePrecision("1900-06Z"));
+    assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00Z"));
+    assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000Z"));
+    assertEquals(8, Utilities.getDatePrecision("1900-01-01+10:00"));
+    assertEquals(4, Utilities.getDatePrecision("1900+10:00"));
+    assertEquals(6, Utilities.getDatePrecision("1900-06+10:00"));
+    assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00+10:00"));
+    assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000-10:00"));
   }
   
+  public static Stream<Arguments> windowsRootPaths() {
+    return Stream.of(
+      Arguments.of((Object)new String[]{"C:"}),
+      Arguments.of((Object)new String[]{"D:"}),
+      Arguments.of((Object)new String[]{"C:", "anything"}),
+      Arguments.of((Object)new String[]{"D:", "anything"}),
+      Arguments.of((Object)new String[]{"C:/", "anything"}),
+      Arguments.of((Object)new String[]{"C:/.", "anything"}),
+      Arguments.of((Object)new String[]{"C:\\"}),
+      Arguments.of((Object)new String[]{"D:\\"}),
+      Arguments.of((Object)new String[]{"C:/child/.."}),
+      Arguments.of((Object)new String[]{"C:/child/..", "anything"}),
+      Arguments.of((Object)new String[]{"C:/child/../child/.."}),
+      Arguments.of((Object)new String[]{"C:/child/../child/..", "anything"}),
+      Arguments.of((Object)new String[]{"C:/child/second/../.."}),
+      Arguments.of((Object)new String[]{"C:/child/second/../..", "anything"}),
+      Arguments.of((Object)new String[]{"C:\\child\\.."}),
+      Arguments.of((Object)new String[]{"C:\\child\\..", "anything"}),
+      Arguments.of((Object)new String[]{"C:\\child\\..\\child/.."}),
+      Arguments.of((Object)new String[]{"C:\\child\\..\\child\\..", "anything"}),
+      Arguments.of((Object)new String[]{"C:\\child\\second\\..\\.."}),
+      Arguments.of((Object)new String[]{"C:\\child\\second\\..\\..", "anything"})
+    );
+  }
+  @ParameterizedTest
+  @MethodSource("windowsRootPaths")
+  @EnabledOnOs({OS.WINDOWS})
+  public void testPathCantStartWithRootWindows(String[] pathStrings) {
+    testCantStartWithRoot(pathStrings);
+  }
+
+  public static Stream<Arguments> macAndLinuxRootPaths() {
+    return Stream.of(
+      Arguments.of((Object)new String[]{"/"}),
+      Arguments.of((Object)new String[]{"/", "anything"}),
+      Arguments.of((Object)new String[]{"//"}),
+      Arguments.of((Object)new String[]{"//", "anything"}),
+      Arguments.of((Object)new String[]{"//child/.."}),
+      Arguments.of((Object)new String[]{"//child/..", "anything"}),
+      Arguments.of((Object)new String[]{"//child/../child/.."}),
+      Arguments.of((Object)new String[]{"//child/../child/..", "anything"}),
+      Arguments.of((Object)new String[]{"//child/second/../.."}),
+      Arguments.of((Object)new String[]{"//child/second/../..", "anything"})
+    );
+  }
+  @ParameterizedTest
+  @MethodSource("macAndLinuxRootPaths")
+  @EnabledOnOs({OS.MAC, OS.LINUX})
+  public void testPathCantStartWithRootMacAndLinux(String[] pathStrings) {
+    testCantStartWithRoot(pathStrings);
+  }
+
+  private static void testCantStartWithRoot(String[] pathStrings) {
+    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+      Utilities.path(pathStrings);
+    });
+    assertTrue(thrown.getMessage().endsWith(pathStrings[0]));
+  }
+
+  public static Stream<Arguments> macAndLinuxNonFirstElementStartPaths() {
+    return Stream.of(
+      Arguments.of((Object)new String[]{"/root", ".."}),
+      Arguments.of((Object)new String[]{"/root", "child/../.."}),
+      Arguments.of((Object)new String[]{"/root", "child", "/../.."}),
+      Arguments.of((Object)new String[]{"/root", "child", "../.."}),
+      Arguments.of((Object)new String[]{"/root/a", "../.."}),
+      Arguments.of((Object)new String[]{"/root/a", "child/../.."}),
+      Arguments.of((Object)new String[]{"/root/a", "child", "/../../.."}),
+      Arguments.of((Object)new String[]{"/root/a", "child", "../../.."})
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("macAndLinuxNonFirstElementStartPaths")
+  @EnabledOnOs({OS.MAC, OS.LINUX})
+  public void testPathMustStartWithFirstElementMacAndLinux(String[] pathStrings) {
+    testPathMustStartWithFirstElement(pathStrings);
+  }
+
+  private static void testPathMustStartWithFirstElement(String[] pathStrings) {
+    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+      Utilities.path(pathStrings);
+    });
+    assertTrue(thrown.getMessage().startsWith("Computed path does not start with first element: " + pathStrings[0]));
+  }
+
+  public static Stream<Arguments> macAndLinuxValidPaths() {
+    return Stream.of(
+      Arguments.of((Object) new String[]{"/root"}, "/root"),
+      Arguments.of( (Object) new String[]{"/root", "child"}, "/root/child"),
+      Arguments.of((Object) new String[]{"/root", "../root/child"}, "/root/child"),
+      Arguments.of((Object) new String[]{"/root", "child", "anotherchild"}, "/root/child/anotherchild")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("macAndLinuxValidPaths")
+  @EnabledOnOs({OS.MAC, OS.LINUX})
+  public void testValidPathsMacAndLinux(String[] pathStrings, String expectedPath) throws IOException {
+    testValidPath(pathStrings,expectedPath);
+  }
+
+  public static Stream<Arguments> windowsValidPaths() {
+    return Stream.of(
+      Arguments.of((Object) new String[]{"C://root"}, "C://root"),
+      Arguments.of( (Object) new String[]{"C://root", "child"}, "C://root/child"),
+      Arguments.of((Object) new String[]{"C://root", "../root/child"}, "C://root/child"),
+      Arguments.of((Object) new String[]{"C://root", "child", "anotherchild"}, "C://root/child/anotherchild"),
+      Arguments.of((Object) new String[]{"C:\\\\root"}, "C:\\\\root"),
+      Arguments.of( (Object) new String[]{"C:\\\\root", "child"}, "C:\\\\root\\child"),
+      Arguments.of((Object) new String[]{"C:\\\\root", "..\\root\\child"}, "C:\\\\root\\child"),
+      Arguments.of((Object) new String[]{"C:\\\\root", "child", "anotherchild"}, "C:\\\\root\\child\\anotherchild")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("windowsValidPaths")
+  @EnabledOnOs({OS.WINDOWS})
+  public void testValidPathsWindows(String[] pathStrings, String expectedPath) throws IOException {
+    testValidPath(pathStrings,expectedPath);
+  }
+
+  private static void testValidPath(String[] pathsStrings, String expectedPath) throws IOException {
+    String actualPath = Utilities.path(pathsStrings);
+    assertEquals(expectedPath, actualPath);
+  }
+
+  public static Stream<Arguments> nullOrEmptyFirstEntryPaths() {
+    return Stream.of(
+      Arguments.of((Object)new String[]{null, "child"}),
+      Arguments.of((Object)new String[]{null, "child/otherchild"}),
+      Arguments.of((Object)new String[]{null, "child", "otherchild"}),
+      Arguments.of((Object)new String[]{"", "child"}),
+      Arguments.of((Object)new String[]{"", "child/otherchild"}),
+      Arguments.of((Object)new String[]{"", "child", "otherchild"}),
+      Arguments.of((Object)new String[]{"  ", "child"}),
+      Arguments.of((Object)new String[]{"  ", "child/otherchild"}),
+      Arguments.of((Object)new String[]{"  ", "child", "otherchild"})
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("nullOrEmptyFirstEntryPaths")
+  public void testNullOrEmptyFirstPathEntryFails(String[] pathsStrings) {
+    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+      Utilities.path(pathsStrings);
+    });
+    assertEquals("First entry cannot be null or empty",thrown.getMessage());
+  }
 
   @Test
   @DisplayName("trimWS tests")
@@ -265,6 +421,5 @@ class UtilitiesTest {
     Assertions.assertFalse("\u0009\n\u000B\u000C\r\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000".matches(".+"));
     Assertions.assertFalse("\u0009\n\u000B\u000C\r\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000".matches("^.+$"));
   }
-  
   
 }
