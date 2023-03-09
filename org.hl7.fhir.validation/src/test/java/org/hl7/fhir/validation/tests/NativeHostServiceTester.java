@@ -9,35 +9,45 @@ import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminolo
 
 public class NativeHostServiceTester {
 
+  private static final boolean DEBUG = false;
+
   @Test
   public void test() throws Exception {
-    System.out.println("starting...");
+
+    msg("starting...");
     
     NativeHostServices svc = new NativeHostServices();
     svc.init("hl7.fhir.r4.core#4.0.1");
     svc.connectToTxSvc("http://tx.fhir.org/r4", null, getTerminologyCacheDirectory("nativeHost").toString());
-    System.out.println("base: "+svc.status());
+    msg("base: "+svc.status());
 
     svc.seeResource(TestingUtilities.loadTestResourceBytes("validator", "misc", "ValueSet-dicm-2-AnatomicModifier.json"), FhirFormat.JSON);
-    System.out.println("added: "+svc.status());
+    msg("added: "+svc.status());
     
     svc.dropResource("ValueSet", "dicm-2-AnatomicModifier");
-    System.out.println("removed: "+svc.status());
+    msg("removed: "+svc.status());
 
-    System.out.println("validate:");
+    msg("validate:");
     byte[] res = svc.validateResource("my-loc", TestingUtilities.loadTestResourceBytes("validator", "patient-example.xml"), "XML", "any-extensions id-optional");
-    System.out.println(new String(res));
+    msg(new String(res));
     
-    System.out.println("convert:");
+    msg("convert:");
     byte[] r4 = svc.convertResource(TestingUtilities.loadTestResourceBytes("validator", "patient-example.xml"), "xml", "4.0");
-    System.out.println(new String(r4));    
+    msg(new String(r4));    
     
-    System.out.println("unconvert:");
+    msg("unconvert:");
     byte[] r2 = svc.convertResource(TestingUtilities.loadTestResourceBytes("validator", "patient-example.xml"), "xml", "1.0");
-    System.out.println(new String(r2));    
+    msg(new String(r2));    
     
     
-    System.out.println("done");
+    msg("done");
+  }
+
+  private void msg(String m) {
+    if (DEBUG) {
+      System.out.println(m);
+    }
+    
   }
 
 }
