@@ -343,8 +343,8 @@ public class StructureMapUtilities {
   }
 
   private static void renderRule(StringBuilder b, StructureMapGroupRuleComponent r, int indent) {
-    if (r.getDocumentation() != null) {
-      renderMultilineDoco(b, r.getDocumentation(), indent);
+    if (r.hasFormatCommentPre()) {
+      renderMultilineDoco(b, r.getFormatCommentsPre(), indent);
     }
     for (int i = 0; i < indent; i++)
       b.append(' ');
@@ -612,6 +612,16 @@ public class StructureMapUtilities {
       b.append("\r\n");
     }
   }
+  private static void renderMultilineDoco(StringBuilder b, List<String> doco, int indent) {
+    if (doco == null || doco.isEmpty())
+      return;
+    for (String line : doco) {
+      for (int i = 0; i < indent; i++)
+        b.append(' ');
+      renderDoco(b, line);
+      b.append("\r\n");
+    }
+  }
 
   public ITransformerServices getServices() {
     return services;
@@ -789,9 +799,20 @@ public class StructureMapUtilities {
       st.setAlias(lexer.take());
     }
     lexer.token("as");
-    st.setMode(StructureMapModelMode.fromCode(lexer.take()));
-    lexer.skipToken(";");
-    st.setDocumentation(lexer.getAllComments());
+    String doco;
+    if (lexer.getCurrent().equals("source")) {
+      st.setMode(StructureMapModelMode.SOURCE);
+      doco = lexer.tokenWithTrailingComment("source");
+    } else if (lexer.getCurrent().equals("target")) {
+      st.setMode(StructureMapModelMode.TARGET);
+      doco = lexer.tokenWithTrailingComment("target");
+    } else {
+      throw lexer.error("Found '"+lexer.getCurrent()+"' expecting 'source' or 'target'");
+    }
+    if (lexer.hasToken(";")) {
+      doco = lexer.tokenWithTrailingComment(";");
+    }
+    st.setDocumentation(doco);
   }
   
   
