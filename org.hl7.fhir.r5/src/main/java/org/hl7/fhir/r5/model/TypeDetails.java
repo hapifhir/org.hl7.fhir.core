@@ -229,22 +229,34 @@ public class TypeDetails {
         tail = n.substring( n.indexOf("#")+1);
         tail = tail.substring(tail.indexOf("."));
       }
-      String t = ProfiledType.ns(n);
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, t);
-      while (sd != null) {
-        if (tail == null && typesContains(sd.getUrl()))
-          return true;
-        if (tail == null && getSystemType(sd.getUrl()) != null && typesContains(getSystemType(sd.getUrl())))
-          return true;
-        if (tail != null && typesContains(sd.getUrl()+"#"+sd.getType()+tail))
-          return true;
-        if (sd.hasBaseDefinition()) {
-          if (sd.getType().equals("uri"))
-            sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/string");
-          else
-            sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-        } else
-          sd = null;
+      List<StructureDefinition> list = new ArrayList<>();
+      if (!Utilities.isAbsoluteUrl(n)) {
+        list.addAll(context.fetchTypeDefinitions(n));
+      } else {
+        String t = ProfiledType.ns(n);
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, t);
+        if (sd != null) {
+          list.add(sd);
+        }
+      }
+      for (int i = 0; i < list.size(); i++) {
+        StructureDefinition sd = list.get(i);
+        while (sd != null) {
+          if (tail == null && typesContains(sd.getUrl()))
+            return true;
+          if (tail == null && getSystemType(sd.getUrl()) != null && typesContains(getSystemType(sd.getUrl())))
+            return true;
+          if (tail != null && typesContains(sd.getUrl()+"#"+sd.getType()+tail))
+            return true;
+          if (sd.hasBaseDefinition()) {
+            if (sd.getType().equals("uri"))
+              sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/string");
+            else
+              sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+          } else {
+            sd = null;
+          }
+        }
       }
     }
     return false;

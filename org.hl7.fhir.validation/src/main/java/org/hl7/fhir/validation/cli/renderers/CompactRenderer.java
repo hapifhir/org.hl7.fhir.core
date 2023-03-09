@@ -26,17 +26,29 @@ public class CompactRenderer extends ValidationOutputRenderer {
   @Override
   public void render(OperationOutcome op) throws IOException {
     if (split) {
-      String file = Utilities.changeFileExt(tail(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE)), ".txt");
-      PrintStream dstF = new PrintStream(new FileOutputStream(Utilities.path(dir.getAbsolutePath(), file)));
-      render(dstF, op);
-      dstF.close();
+      File file = new File(Utilities.path(dir.getAbsolutePath(), Utilities.changeFileExt(tail(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE)), ".txt")));
+      if (op.isSuccess()) {
+        if (file.exists()) {
+          file.delete();
+        }
+      } else {
+        PrintStream dstF = new PrintStream(new FileOutputStream(file));
+        render(dstF, op);
+        dstF.close();
+      }
     } else {
       render(dst, op);
     }
   }
 
   private void render(PrintStream d, OperationOutcome op) {
-    d.println(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE)+" "+getRunDate());
+    if (split) {
+      d.println(new File(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE)).getName()+" "+getRunDate()+":");      
+    } else {
+      d.println();
+      d.println("----------------------------------------------------------------------------------");
+      d.println(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE)+" "+getRunDate());
+    }
     List<String> lines = new ArrayList<>();
     for (OperationOutcome.OperationOutcomeIssueComponent issue : op.getIssue()) {
       String path = issue.hasExpression() ? issue.getExpression().get(0).asStringValue() : "n/a";
@@ -47,6 +59,10 @@ public class CompactRenderer extends ValidationOutputRenderer {
     Collections.sort(lines);
     for (String s : lines) {
       d.println(s.substring(s.indexOf("|")+1));
+    }
+    if (split) {
+    } else {
+      d.println();
     }
   }
 
