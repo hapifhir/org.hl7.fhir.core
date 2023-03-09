@@ -10,6 +10,8 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
+import org.hl7.fhir.r5.conformance.profile.BindingResolution;
+import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
@@ -49,7 +51,9 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-public class ProfileComparer extends CanonicalResourceComparer {
+import kotlin.NotImplementedError;
+
+public class ProfileComparer extends CanonicalResourceComparer implements ProfileKnowledgeProvider {
 
   public class ProfileComparison extends CanonicalResourceComparison<StructureDefinition> {
 
@@ -994,8 +998,8 @@ public class ProfileComparer extends CanonicalResourceComparer {
       if (sn != null)
         sName = sName +":"+sn;
       StructureDefinitionRenderer.UnusedTracker used = new StructureDefinitionRenderer.UnusedTracker();
-      StructureDefinitionRenderer sdrLeft = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
-      StructureDefinitionRenderer sdrRight= new StructureDefinitionRenderer(new RenderingContext(utilsRight.getContext(), null, utilsRight.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+      StructureDefinitionRenderer sdrLeft = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+      StructureDefinitionRenderer sdrRight= new StructureDefinitionRenderer(new RenderingContext(utilsRight.getContext(), null, utilsRight.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
 
 
         
@@ -1097,6 +1101,60 @@ private String tail(String path) {
     return path.substring(path.lastIndexOf('.')+1);
   else
     return path;
+}
+
+@Override
+public boolean isDatatype(String typeSimple) {
+  // TODO Auto-generated method stub
+  return false;
+}
+
+@Override
+public boolean isPrimitiveType(String typeSimple) {
+  // TODO Auto-generated method stub
+  return false;
+}
+
+@Override
+public boolean isResource(String typeSimple) {
+//  return false;
+  throw new NotImplementedError();
+}
+
+@Override
+public boolean hasLinkFor(String typeSimple) {
+  return false;
+}
+
+@Override
+public String getLinkFor(String corePath, String typeSimple) {
+  return "??|??";
+}
+
+@Override
+public BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding, String path)
+    throws FHIRException {
+  return new BindingResolution("??", "??");
+}
+
+@Override
+public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+  return new BindingResolution("??", "??");
+}
+
+@Override
+public String getLinkForProfile(StructureDefinition profile, String url) {
+  return "??|??";
+}
+
+@Override
+public boolean prependLinks() {
+  return false;
+}
+
+@Override
+public String getLinkForUrl(String corePath, String s) {
+  throw new NotImplementedError();
 }
   
 
