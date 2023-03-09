@@ -4,6 +4,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,15 +15,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -96,5 +95,44 @@ public class IgLoaderTests {
     });
 
     assertLinesMatch(Arrays.asList(".*Unsupported FHIR Version.*"), Arrays.asList(exception.getMessage()));
+  }
+
+  public static Stream<Arguments> zipSlipData()  {
+
+    return Stream.of(
+      Arguments.of("/zip-slip/zip-slip.zip", "Entry with an illegal path: ../evil.txt"),
+      Arguments.of("/zip-slip/zip-slip-2.zip", "Entry with an illegal path: child/../../evil.txt"),
+      Arguments.of("/zip-slip/zip-slip-peer.zip", "Entry with an illegal path: ../childpeer/evil.txt"),
+      Arguments.of("/zip-slip/zip-slip-win.zip", "Entry with an illegal path: ../evil.txt")
+    );
+  }
+
+  @ParameterizedTest(name = "{index}: file {0}")
+  @MethodSource("zipSlipData")
+  public void testReadZipSlip(String classPath, String expectedMessage) {
+    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+      IgLoader igLoader = Mockito.spy(new IgLoader(
+        filesystemPackageCacheManager,
+        simpleWorkerContext,
+        "4.0.1"
+      ));
+      igLoader.readZip(IgLoaderTests.class.getResourceAsStream((classPath)));
+    });
+    assertNotNull(thrown);
+    Assertions.assertEquals(expectedMessage, thrown.getMessage());
+  }
+
+  @Test
+  public void testReadZip() throws IOException {
+    IgLoader igLoader = Mockito.spy(new IgLoader(
+      filesystemPackageCacheManager,
+      simpleWorkerContext,
+      "4.0.1"
+    ));
+    Map<String, byte[]> map = igLoader.readZip(IgLoaderTests.class.getResourceAsStream("/zip-slip/zip-normal.zip"));
+    final String testPath = "zip-normal/depth1/test.txt";
+    assertTrue(map.containsKey(testPath));
+    String testFileContent = new String(map.get(testPath), StandardCharsets.UTF_8);
+    Assertions.assertEquals("dummy file content", testFileContent);
   }
 }

@@ -471,9 +471,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   
 	private void loadFromStream(InputStream stream, IContextResourceLoader loader) throws IOException, FHIRException {
 		ZipInputStream zip = new ZipInputStream(stream);
-		ZipEntry ze;
-		while ((ze = zip.getNextEntry()) != null) {
-      loadDefinitionItem(ze.getName(), zip, loader, null, null);
+    ZipEntry zipEntry;
+    while ((zipEntry = zip.getNextEntry()) != null) {
+      String entryName = zipEntry.getName();
+      if (entryName.contains("..")) {
+        throw new RuntimeException("Entry with an illegal path: " + entryName);
+      }
+      loadDefinitionItem(entryName, zip, loader, null, null);
 			zip.closeEntry();
 		}
 		zip.close();
