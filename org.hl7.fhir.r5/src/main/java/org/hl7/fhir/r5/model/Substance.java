@@ -269,7 +269,7 @@ public class Substance extends DomainResource {
          */
         public SubstanceIngredientComponent setSubstance(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for Substance.ingredient.substance[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Substance.ingredient.substance[x]: "+value.fhirType());
           this.substance = value;
           return this;
         }

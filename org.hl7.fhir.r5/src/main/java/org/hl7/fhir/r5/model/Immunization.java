@@ -2050,7 +2050,7 @@ public class Immunization extends DomainResource {
      */
     public Immunization setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof StringType))
-        throw new Error("Not the right type for Immunization.occurrence[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Immunization.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
       return this;
     }

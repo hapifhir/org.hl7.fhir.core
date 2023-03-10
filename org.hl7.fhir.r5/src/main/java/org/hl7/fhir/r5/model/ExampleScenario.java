@@ -695,7 +695,7 @@ public class ExampleScenario extends CanonicalResource {
          */
         public ExampleScenarioInstanceComponent setStructureProfile(DataType value) { 
           if (value != null && !(value instanceof CanonicalType || value instanceof UriType))
-            throw new Error("Not the right type for ExampleScenario.instance.structureProfile[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExampleScenario.instance.structureProfile[x]: "+value.fhirType());
           this.structureProfile = value;
           return this;
         }
@@ -4120,7 +4120,7 @@ public class ExampleScenario extends CanonicalResource {
      */
     public ExampleScenario setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for ExampleScenario.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ExampleScenario.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }

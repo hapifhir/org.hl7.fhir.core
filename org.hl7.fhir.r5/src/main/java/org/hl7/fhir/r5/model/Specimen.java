@@ -655,7 +655,7 @@ public class Specimen extends DomainResource {
          */
         public SpecimenCollectionComponent setCollected(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-            throw new Error("Not the right type for Specimen.collection.collected[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Specimen.collection.collected[x]: "+value.fhirType());
           this.collected = value;
           return this;
         }
@@ -850,7 +850,7 @@ public class Specimen extends DomainResource {
          */
         public SpecimenCollectionComponent setFastingStatus(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Duration))
-            throw new Error("Not the right type for Specimen.collection.fastingStatus[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Specimen.collection.fastingStatus[x]: "+value.fhirType());
           this.fastingStatus = value;
           return this;
         }
@@ -1320,7 +1320,7 @@ public class Specimen extends DomainResource {
          */
         public SpecimenProcessingComponent setTime(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-            throw new Error("Not the right type for Specimen.processing.time[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Specimen.processing.time[x]: "+value.fhirType());
           this.time = value;
           return this;
         }

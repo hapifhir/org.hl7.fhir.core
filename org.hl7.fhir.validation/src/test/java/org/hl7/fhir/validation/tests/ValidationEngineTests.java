@@ -270,7 +270,7 @@ public class ValidationEngineTests {
   private int hints(OperationOutcome op) {
     int i = 0;
     for (OperationOutcomeIssueComponent vm : op.getIssue()) {
-      if (vm.getSeverity() == IssueSeverity.INFORMATION)
+      if (vm.getSeverity() == IssueSeverity.INFORMATION || vm.getSeverity() == IssueSeverity.SUCCESS)
         i++;
     }
     return i;

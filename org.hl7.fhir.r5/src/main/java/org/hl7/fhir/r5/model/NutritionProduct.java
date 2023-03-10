@@ -805,7 +805,7 @@ public class NutritionProduct extends DomainResource {
          */
         public NutritionProductCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof StringType || value instanceof Quantity || value instanceof Base64BinaryType || value instanceof Attachment || value instanceof BooleanType))
-            throw new Error("Not the right type for NutritionProduct.characteristic.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for NutritionProduct.characteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

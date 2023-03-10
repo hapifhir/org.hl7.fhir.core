@@ -1356,7 +1356,7 @@ public class DetectedIssue extends DomainResource {
      */
     public DetectedIssue setIdentified(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-        throw new Error("Not the right type for DetectedIssue.identified[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for DetectedIssue.identified[x]: "+value.fhirType());
       this.identified = value;
       return this;
     }

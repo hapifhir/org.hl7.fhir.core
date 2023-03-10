@@ -774,7 +774,7 @@ public class PlanDefinition extends MetadataResource {
          */
         public PlanDefinitionGoalTargetComponent setDetail(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Ratio))
-            throw new Error("Not the right type for PlanDefinition.goal.target.detail[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for PlanDefinition.goal.target.detail[x]: "+value.fhirType());
           this.detail = value;
           return this;
         }
@@ -2434,7 +2434,7 @@ public class PlanDefinition extends MetadataResource {
          */
         public PlanDefinitionActionComponent setSubject(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference || value instanceof CanonicalType))
-            throw new Error("Not the right type for PlanDefinition.action.subject[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for PlanDefinition.action.subject[x]: "+value.fhirType());
           this.subject = value;
           return this;
         }
@@ -2780,7 +2780,7 @@ public class PlanDefinition extends MetadataResource {
          */
         public PlanDefinitionActionComponent setTiming(DataType value) { 
           if (value != null && !(value instanceof Age || value instanceof Duration || value instanceof Range || value instanceof Timing))
-            throw new Error("Not the right type for PlanDefinition.action.timing[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for PlanDefinition.action.timing[x]: "+value.fhirType());
           this.timing = value;
           return this;
         }
@@ -3177,7 +3177,7 @@ public class PlanDefinition extends MetadataResource {
          */
         public PlanDefinitionActionComponent setDefinition(DataType value) { 
           if (value != null && !(value instanceof CanonicalType || value instanceof UriType))
-            throw new Error("Not the right type for PlanDefinition.action.definition[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for PlanDefinition.action.definition[x]: "+value.fhirType());
           this.definition = value;
           return this;
         }
@@ -5023,7 +5023,7 @@ public class PlanDefinition extends MetadataResource {
          */
         public PlanDefinitionActionRelatedActionComponent setOffset(DataType value) { 
           if (value != null && !(value instanceof Duration || value instanceof Range))
-            throw new Error("Not the right type for PlanDefinition.action.relatedAction.offset[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for PlanDefinition.action.relatedAction.offset[x]: "+value.fhirType());
           this.offset = value;
           return this;
         }
@@ -6356,7 +6356,7 @@ public class PlanDefinition extends MetadataResource {
      */
     public PlanDefinition setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for PlanDefinition.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for PlanDefinition.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }
@@ -6683,7 +6683,7 @@ public class PlanDefinition extends MetadataResource {
      */
     public PlanDefinition setSubject(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference || value instanceof CanonicalType))
-        throw new Error("Not the right type for PlanDefinition.subject[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for PlanDefinition.subject[x]: "+value.fhirType());
       this.subject = value;
       return this;
     }
@@ -7896,7 +7896,7 @@ public class PlanDefinition extends MetadataResource {
      */
     public PlanDefinition setAsNeeded(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof CodeableConcept))
-        throw new Error("Not the right type for PlanDefinition.asNeeded[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for PlanDefinition.asNeeded[x]: "+value.fhirType());
       this.asNeeded = value;
       return this;
     }

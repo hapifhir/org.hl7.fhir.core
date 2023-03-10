@@ -178,7 +178,7 @@ public class RiskAssessment extends DomainResource {
          */
         public RiskAssessmentPredictionComponent setProbability(DataType value) { 
           if (value != null && !(value instanceof DecimalType || value instanceof Range))
-            throw new Error("Not the right type for RiskAssessment.prediction.probability[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for RiskAssessment.prediction.probability[x]: "+value.fhirType());
           this.probability = value;
           return this;
         }
@@ -320,7 +320,7 @@ public class RiskAssessment extends DomainResource {
          */
         public RiskAssessmentPredictionComponent setWhen(DataType value) { 
           if (value != null && !(value instanceof Period || value instanceof Range))
-            throw new Error("Not the right type for RiskAssessment.prediction.when[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for RiskAssessment.prediction.when[x]: "+value.fhirType());
           this.when = value;
           return this;
         }
@@ -999,7 +999,7 @@ public class RiskAssessment extends DomainResource {
      */
     public RiskAssessment setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-        throw new Error("Not the right type for RiskAssessment.occurrence[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for RiskAssessment.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
       return this;
     }

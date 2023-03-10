@@ -699,7 +699,7 @@ public class ClinicalImpression extends DomainResource {
      */
     public ClinicalImpression setEffective(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-        throw new Error("Not the right type for ClinicalImpression.effective[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ClinicalImpression.effective[x]: "+value.fhirType());
       this.effective = value;
       return this;
     }

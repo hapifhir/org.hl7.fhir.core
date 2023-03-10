@@ -1207,7 +1207,7 @@ public class TestPlan extends DomainResource {
          */
         public TestPlanTestCaseTestDataComponent setSource(DataType value) { 
           if (value != null && !(value instanceof StringType || value instanceof Reference))
-            throw new Error("Not the right type for TestPlan.testCase.testData.source[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for TestPlan.testCase.testData.source[x]: "+value.fhirType());
           this.source = value;
           return this;
         }

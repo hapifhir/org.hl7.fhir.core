@@ -240,7 +240,7 @@ public class AdministrableProductDefinition extends DomainResource {
          */
         public AdministrableProductDefinitionPropertyComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof DateType || value instanceof BooleanType || value instanceof MarkdownType || value instanceof Attachment || value instanceof Reference))
-            throw new Error("Not the right type for AdministrableProductDefinition.property.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for AdministrableProductDefinition.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

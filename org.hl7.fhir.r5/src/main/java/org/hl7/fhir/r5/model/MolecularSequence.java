@@ -933,7 +933,7 @@ public class MolecularSequence extends DomainResource {
          */
         public MolecularSequenceRelativeStartingSequenceComponent setSequence(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof StringType || value instanceof Reference))
-            throw new Error("Not the right type for MolecularSequence.relative.startingSequence.sequence[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MolecularSequence.relative.startingSequence.sequence[x]: "+value.fhirType());
           this.sequence = value;
           return this;
         }

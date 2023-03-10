@@ -1275,7 +1275,7 @@ Reflex | Repeat | Re-run.
          */
         public ObservationComponentComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof MarkdownType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Ratio || value instanceof SampledData || value instanceof TimeType || value instanceof DateTimeType || value instanceof Period || value instanceof Attachment || value instanceof Reference || value instanceof CanonicalType))
-            throw new Error("Not the right type for Observation.component.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Observation.component.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -1973,7 +1973,7 @@ Reflex | Repeat | Re-run.
      */
     public Observation setInstantiates(DataType value) { 
       if (value != null && !(value instanceof CanonicalType || value instanceof Reference))
-        throw new Error("Not the right type for Observation.instantiates[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Observation.instantiates[x]: "+value.fhirType());
       this.instantiates = value;
       return this;
     }
@@ -2436,7 +2436,7 @@ Reflex | Repeat | Re-run.
      */
     public Observation setEffective(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing || value instanceof InstantType))
-        throw new Error("Not the right type for Observation.effective[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Observation.effective[x]: "+value.fhirType());
       this.effective = value;
       return this;
     }
@@ -2769,7 +2769,7 @@ Reflex | Repeat | Re-run.
      */
     public Observation setValue(DataType value) { 
       if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof MarkdownType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Ratio || value instanceof SampledData || value instanceof TimeType || value instanceof DateTimeType || value instanceof Period || value instanceof Attachment || value instanceof Reference || value instanceof CanonicalType))
-        throw new Error("Not the right type for Observation.value[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Observation.value[x]: "+value.fhirType());
       this.value = value;
       return this;
     }

@@ -537,7 +537,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public ExplanationOfBenefitEventComponent setWhen(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-            throw new Error("Not the right type for ExplanationOfBenefit.event.when[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.event.when[x]: "+value.fhirType());
           this.when = value;
           return this;
         }
@@ -1477,7 +1477,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public SupportingInformationComponent setTiming(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Period))
-            throw new Error("Not the right type for ExplanationOfBenefit.supportingInfo.timing[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.supportingInfo.timing[x]: "+value.fhirType());
           this.timing = value;
           return this;
         }
@@ -1588,7 +1588,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public SupportingInformationComponent setValue(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof StringType || value instanceof Quantity || value instanceof Attachment || value instanceof Reference || value instanceof Identifier))
-            throw new Error("Not the right type for ExplanationOfBenefit.supportingInfo.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.supportingInfo.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -1985,7 +1985,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public DiagnosisComponent setDiagnosis(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for ExplanationOfBenefit.diagnosis.diagnosis[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.diagnosis.diagnosis[x]: "+value.fhirType());
           this.diagnosis = value;
           return this;
         }
@@ -2487,7 +2487,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public ProcedureComponent setProcedure(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for ExplanationOfBenefit.procedure.procedure[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.procedure.procedure[x]: "+value.fhirType());
           this.procedure = value;
           return this;
         }
@@ -3202,7 +3202,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public AccidentComponent setLocation(DataType value) { 
           if (value != null && !(value instanceof Address || value instanceof Reference))
-            throw new Error("Not the right type for ExplanationOfBenefit.accident.location[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.accident.location[x]: "+value.fhirType());
           this.location = value;
           return this;
         }
@@ -4223,7 +4223,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public ItemComponent setServiced(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Period))
-            throw new Error("Not the right type for ExplanationOfBenefit.item.serviced[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.item.serviced[x]: "+value.fhirType());
           this.serviced = value;
           return this;
         }
@@ -4289,7 +4289,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public ItemComponent setLocation(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Address || value instanceof Reference))
-            throw new Error("Not the right type for ExplanationOfBenefit.item.location[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.item.location[x]: "+value.fhirType());
           this.location = value;
           return this;
         }
@@ -9638,7 +9638,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public AddedItemComponent setServiced(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Period))
-            throw new Error("Not the right type for ExplanationOfBenefit.addItem.serviced[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.addItem.serviced[x]: "+value.fhirType());
           this.serviced = value;
           return this;
         }
@@ -9704,7 +9704,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public AddedItemComponent setLocation(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Address || value instanceof Reference))
-            throw new Error("Not the right type for ExplanationOfBenefit.addItem.location[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.addItem.location[x]: "+value.fhirType());
           this.location = value;
           return this;
         }
@@ -14592,7 +14592,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public BenefitComponent setAllowed(DataType value) { 
           if (value != null && !(value instanceof UnsignedIntType || value instanceof StringType || value instanceof Money))
-            throw new Error("Not the right type for ExplanationOfBenefit.benefitBalance.financial.allowed[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.benefitBalance.financial.allowed[x]: "+value.fhirType());
           this.allowed = value;
           return this;
         }
@@ -14643,7 +14643,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         public BenefitComponent setUsed(DataType value) { 
           if (value != null && !(value instanceof UnsignedIntType || value instanceof Money))
-            throw new Error("Not the right type for ExplanationOfBenefit.benefitBalance.financial.used[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ExplanationOfBenefit.benefitBalance.financial.used[x]: "+value.fhirType());
           this.used = value;
           return this;
         }

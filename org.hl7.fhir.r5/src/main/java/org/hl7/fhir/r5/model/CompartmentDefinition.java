@@ -812,7 +812,7 @@ public class CompartmentDefinition extends CanonicalResource {
      */
     public CompartmentDefinition setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for CompartmentDefinition.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for CompartmentDefinition.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }

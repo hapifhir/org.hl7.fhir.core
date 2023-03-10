@@ -159,7 +159,7 @@ public class ClaimResponse extends DomainResource {
          */
         public ClaimResponseEventComponent setWhen(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-            throw new Error("Not the right type for ClaimResponse.event.when[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ClaimResponse.event.when[x]: "+value.fhirType());
           this.when = value;
           return this;
         }
@@ -3284,7 +3284,7 @@ public class ClaimResponse extends DomainResource {
          */
         public AddedItemComponent setServiced(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Period))
-            throw new Error("Not the right type for ClaimResponse.addItem.serviced[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ClaimResponse.addItem.serviced[x]: "+value.fhirType());
           this.serviced = value;
           return this;
         }
@@ -3350,7 +3350,7 @@ public class ClaimResponse extends DomainResource {
          */
         public AddedItemComponent setLocation(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Address || value instanceof Reference))
-            throw new Error("Not the right type for ClaimResponse.addItem.location[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ClaimResponse.addItem.location[x]: "+value.fhirType());
           this.location = value;
           return this;
         }
