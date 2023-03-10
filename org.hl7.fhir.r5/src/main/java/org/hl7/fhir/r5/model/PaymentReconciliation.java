@@ -529,7 +529,7 @@ public class PaymentReconciliation extends DomainResource {
          */
         public PaymentReconciliationAllocationComponent setTargetItem(DataType value) { 
           if (value != null && !(value instanceof StringType || value instanceof Identifier || value instanceof PositiveIntType))
-            throw new Error("Not the right type for PaymentReconciliation.allocation.targetItem[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for PaymentReconciliation.allocation.targetItem[x]: "+value.fhirType());
           this.targetItem = value;
           return this;
         }

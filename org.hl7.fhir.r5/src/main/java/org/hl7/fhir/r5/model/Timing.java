@@ -907,7 +907,7 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
          */
         public TimingRepeatComponent setBounds(DataType value) { 
           if (value != null && !(value instanceof Duration || value instanceof Range || value instanceof Period))
-            throw new Error("Not the right type for Timing.repeat.bounds[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Timing.repeat.bounds[x]: "+value.fhirType());
           this.bounds = value;
           return this;
         }

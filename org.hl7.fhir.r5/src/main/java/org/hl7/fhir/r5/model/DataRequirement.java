@@ -914,7 +914,7 @@ public class DataRequirement extends DataType implements ICompositeType {
          */
         public DataRequirementDateFilterComponent setValue(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Duration))
-            throw new Error("Not the right type for DataRequirement.dateFilter.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for DataRequirement.dateFilter.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -1323,7 +1323,7 @@ public class DataRequirement extends DataType implements ICompositeType {
          */
         public DataRequirementValueFilterComponent setValue(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Duration))
-            throw new Error("Not the right type for DataRequirement.valueFilter.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for DataRequirement.valueFilter.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -1990,7 +1990,7 @@ The value of mustSupport SHALL be a FHIRPath resolvable on the type of the DataR
      */
     public DataRequirement setSubject(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-        throw new Error("Not the right type for DataRequirement.subject[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for DataRequirement.subject[x]: "+value.fhirType());
       this.subject = value;
       return this;
     }

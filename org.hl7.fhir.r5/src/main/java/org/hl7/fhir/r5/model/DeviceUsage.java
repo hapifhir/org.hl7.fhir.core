@@ -980,7 +980,7 @@ public class DeviceUsage extends DomainResource {
      */
     public DeviceUsage setTiming(DataType value) { 
       if (value != null && !(value instanceof Timing || value instanceof Period || value instanceof DateTimeType))
-        throw new Error("Not the right type for DeviceUsage.timing[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for DeviceUsage.timing[x]: "+value.fhirType());
       this.timing = value;
       return this;
     }

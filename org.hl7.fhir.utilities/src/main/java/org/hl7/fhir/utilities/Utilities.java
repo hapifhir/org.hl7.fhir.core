@@ -704,6 +704,9 @@ public class Utilities {
       } else
         s.append(a);
     }
+//    if (!Path.of(s.toString()).normalize().startsWith(Path.of(replaceVariables(args[0])).normalize())) {
+//     throw new RuntimeException("Computed path '"+s.toString()+"' normalised to '"+Path.of(s.toString()).normalize()+"' does not start with first element: " + String.join(", ", args));
+//    }
     return s.toString();
   }
 

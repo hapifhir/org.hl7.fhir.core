@@ -7890,7 +7890,7 @@ public class ImplementationGuide extends CanonicalResource {
          */
         public ImplementationGuideDefinitionPageComponent setSource(DataType value) { 
           if (value != null && !(value instanceof UrlType || value instanceof StringType || value instanceof MarkdownType))
-            throw new Error("Not the right type for ImplementationGuide.definition.page.source[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ImplementationGuide.definition.page.source[x]: "+value.fhirType());
           this.source = value;
           return this;
         }
@@ -10464,7 +10464,7 @@ public class ImplementationGuide extends CanonicalResource {
      */
     public ImplementationGuide setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for ImplementationGuide.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ImplementationGuide.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }

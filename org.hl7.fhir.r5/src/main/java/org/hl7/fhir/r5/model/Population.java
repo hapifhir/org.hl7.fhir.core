@@ -133,7 +133,7 @@ public class Population extends BackboneType implements ICompositeType {
      */
     public Population setAge(DataType value) { 
       if (value != null && !(value instanceof Range || value instanceof CodeableConcept))
-        throw new Error("Not the right type for Population.age[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Population.age[x]: "+value.fhirType());
       this.age = value;
       return this;
     }

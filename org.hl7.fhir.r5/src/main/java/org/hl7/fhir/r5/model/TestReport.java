@@ -2087,7 +2087,7 @@ public class TestReport extends DomainResource {
          */
         public SetupActionAssertRequirementComponent setLink(DataType value) { 
           if (value != null && !(value instanceof UriType || value instanceof CanonicalType))
-            throw new Error("Not the right type for TestReport.setup.action.assert.requirement.link[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for TestReport.setup.action.assert.requirement.link[x]: "+value.fhirType());
           this.link = value;
           return this;
         }

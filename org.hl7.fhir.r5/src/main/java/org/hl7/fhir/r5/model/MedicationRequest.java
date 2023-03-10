@@ -1317,7 +1317,7 @@ public class MedicationRequest extends DomainResource {
          */
         public MedicationRequestSubstitutionComponent setAllowed(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof CodeableConcept))
-            throw new Error("Not the right type for MedicationRequest.substitution.allowed[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MedicationRequest.substitution.allowed[x]: "+value.fhirType());
           this.allowed = value;
           return this;
         }

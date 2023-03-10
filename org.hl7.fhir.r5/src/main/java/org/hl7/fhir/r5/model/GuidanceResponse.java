@@ -469,7 +469,7 @@ public class GuidanceResponse extends DomainResource {
      */
     public GuidanceResponse setModule(DataType value) { 
       if (value != null && !(value instanceof UriType || value instanceof CanonicalType || value instanceof CodeableConcept))
-        throw new Error("Not the right type for GuidanceResponse.module[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for GuidanceResponse.module[x]: "+value.fhirType());
       this.module = value;
       return this;
     }

@@ -1418,7 +1418,7 @@ public class Requirements extends CanonicalResource {
      */
     public Requirements setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for Requirements.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Requirements.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }

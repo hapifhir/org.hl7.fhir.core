@@ -798,7 +798,7 @@ public class EvidenceVariable extends MetadataResource {
          */
         public EvidenceVariableCharacteristicComponent setInstances(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Range))
-            throw new Error("Not the right type for EvidenceVariable.characteristic.instances[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for EvidenceVariable.characteristic.instances[x]: "+value.fhirType());
           this.instances = value;
           return this;
         }
@@ -849,7 +849,7 @@ public class EvidenceVariable extends MetadataResource {
          */
         public EvidenceVariableCharacteristicComponent setDuration(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Range))
-            throw new Error("Not the right type for EvidenceVariable.characteristic.duration[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for EvidenceVariable.characteristic.duration[x]: "+value.fhirType());
           this.duration = value;
           return this;
         }
@@ -1508,7 +1508,7 @@ public class EvidenceVariable extends MetadataResource {
          */
         public EvidenceVariableCharacteristicDefinitionByTypeAndValueComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof BooleanType || value instanceof Quantity || value instanceof Range || value instanceof Reference || value instanceof IdType))
-            throw new Error("Not the right type for EvidenceVariable.characteristic.definitionByTypeAndValue.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for EvidenceVariable.characteristic.definitionByTypeAndValue.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -2301,7 +2301,7 @@ public class EvidenceVariable extends MetadataResource {
          */
         public EvidenceVariableCharacteristicTimeFromEventComponent setEvent(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference || value instanceof DateTimeType || value instanceof IdType))
-            throw new Error("Not the right type for EvidenceVariable.characteristic.timeFromEvent.event[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for EvidenceVariable.characteristic.timeFromEvent.event[x]: "+value.fhirType());
           this.event = value;
           return this;
         }
@@ -2684,7 +2684,7 @@ public class EvidenceVariable extends MetadataResource {
          */
         public EvidenceVariableCategoryComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range))
-            throw new Error("Not the right type for EvidenceVariable.category.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for EvidenceVariable.category.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -3256,7 +3256,7 @@ public class EvidenceVariable extends MetadataResource {
      */
     public EvidenceVariable setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for EvidenceVariable.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for EvidenceVariable.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }

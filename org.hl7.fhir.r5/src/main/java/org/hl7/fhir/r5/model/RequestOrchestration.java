@@ -1032,7 +1032,7 @@ public class RequestOrchestration extends DomainResource {
          */
         public RequestOrchestrationActionComponent setTiming(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Age || value instanceof Period || value instanceof Duration || value instanceof Range || value instanceof Timing))
-            throw new Error("Not the right type for RequestOrchestration.action.timing[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for RequestOrchestration.action.timing[x]: "+value.fhirType());
           this.timing = value;
           return this;
         }
@@ -1453,7 +1453,7 @@ public class RequestOrchestration extends DomainResource {
          */
         public RequestOrchestrationActionComponent setDefinition(DataType value) { 
           if (value != null && !(value instanceof CanonicalType || value instanceof UriType))
-            throw new Error("Not the right type for RequestOrchestration.action.definition[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for RequestOrchestration.action.definition[x]: "+value.fhirType());
           this.definition = value;
           return this;
         }
@@ -3262,7 +3262,7 @@ public class RequestOrchestration extends DomainResource {
          */
         public RequestOrchestrationActionRelatedActionComponent setOffset(DataType value) { 
           if (value != null && !(value instanceof Duration || value instanceof Range))
-            throw new Error("Not the right type for RequestOrchestration.action.relatedAction.offset[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for RequestOrchestration.action.relatedAction.offset[x]: "+value.fhirType());
           this.offset = value;
           return this;
         }
@@ -3710,7 +3710,7 @@ public class RequestOrchestration extends DomainResource {
          */
         public RequestOrchestrationActionParticipantComponent setActor(DataType value) { 
           if (value != null && !(value instanceof CanonicalType || value instanceof Reference))
-            throw new Error("Not the right type for RequestOrchestration.action.participant.actor[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for RequestOrchestration.action.participant.actor[x]: "+value.fhirType());
           this.actor = value;
           return this;
         }

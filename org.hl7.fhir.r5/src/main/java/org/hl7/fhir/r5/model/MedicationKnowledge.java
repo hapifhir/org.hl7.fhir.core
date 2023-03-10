@@ -829,7 +829,7 @@ public class MedicationKnowledge extends DomainResource {
          */
         public MedicationKnowledgeCostComponent setCost(DataType value) { 
           if (value != null && !(value instanceof Money || value instanceof CodeableConcept))
-            throw new Error("Not the right type for MedicationKnowledge.cost.cost[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MedicationKnowledge.cost.cost[x]: "+value.fhirType());
           this.cost = value;
           return this;
         }
@@ -2216,7 +2216,7 @@ public class MedicationKnowledge extends DomainResource {
          */
         public MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range))
-            throw new Error("Not the right type for MedicationKnowledge.indicationGuideline.dosingGuideline.patientCharacteristic.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MedicationKnowledge.indicationGuideline.dosingGuideline.patientCharacteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -2472,7 +2472,7 @@ public class MedicationKnowledge extends DomainResource {
          */
         public MedicationKnowledgeMedicineClassificationComponent setSource(DataType value) { 
           if (value != null && !(value instanceof StringType || value instanceof UriType))
-            throw new Error("Not the right type for MedicationKnowledge.medicineClassification.source[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MedicationKnowledge.medicineClassification.source[x]: "+value.fhirType());
           this.source = value;
           return this;
         }
@@ -3422,7 +3422,7 @@ public class MedicationKnowledge extends DomainResource {
          */
         public MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof CodeableConcept))
-            throw new Error("Not the right type for MedicationKnowledge.storageGuideline.environmentalSetting.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MedicationKnowledge.storageGuideline.environmentalSetting.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -4997,7 +4997,7 @@ public class MedicationKnowledge extends DomainResource {
          */
         public MedicationKnowledgeDefinitionalIngredientComponent setStrength(DataType value) { 
           if (value != null && !(value instanceof Ratio || value instanceof CodeableConcept || value instanceof Quantity))
-            throw new Error("Not the right type for MedicationKnowledge.definitional.ingredient.strength[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MedicationKnowledge.definitional.ingredient.strength[x]: "+value.fhirType());
           this.strength = value;
           return this;
         }
@@ -5300,7 +5300,7 @@ public class MedicationKnowledge extends DomainResource {
          */
         public MedicationKnowledgeDefinitionalDrugCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof StringType || value instanceof Quantity || value instanceof Base64BinaryType || value instanceof Attachment))
-            throw new Error("Not the right type for MedicationKnowledge.definitional.drugCharacteristic.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MedicationKnowledge.definitional.drugCharacteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

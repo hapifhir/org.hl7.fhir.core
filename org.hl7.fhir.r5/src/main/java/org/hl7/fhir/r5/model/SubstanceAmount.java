@@ -352,7 +352,7 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
      */
     public SubstanceAmount setAmount(DataType value) { 
       if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof StringType))
-        throw new Error("Not the right type for SubstanceAmount.amount[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for SubstanceAmount.amount[x]: "+value.fhirType());
       this.amount = value;
       return this;
     }

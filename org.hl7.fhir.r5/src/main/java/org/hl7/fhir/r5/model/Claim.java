@@ -619,7 +619,7 @@ public class Claim extends DomainResource {
          */
         public ClaimEventComponent setWhen(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-            throw new Error("Not the right type for Claim.event.when[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Claim.event.when[x]: "+value.fhirType());
           this.when = value;
           return this;
         }
@@ -1357,7 +1357,7 @@ public class Claim extends DomainResource {
          */
         public SupportingInformationComponent setTiming(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Period))
-            throw new Error("Not the right type for Claim.supportingInfo.timing[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Claim.supportingInfo.timing[x]: "+value.fhirType());
           this.timing = value;
           return this;
         }
@@ -1468,7 +1468,7 @@ public class Claim extends DomainResource {
          */
         public SupportingInformationComponent setValue(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof StringType || value instanceof Quantity || value instanceof Attachment || value instanceof Reference || value instanceof Identifier))
-            throw new Error("Not the right type for Claim.supportingInfo.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Claim.supportingInfo.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -1865,7 +1865,7 @@ public class Claim extends DomainResource {
          */
         public DiagnosisComponent setDiagnosis(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for Claim.diagnosis.diagnosis[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Claim.diagnosis.diagnosis[x]: "+value.fhirType());
           this.diagnosis = value;
           return this;
         }
@@ -2367,7 +2367,7 @@ public class Claim extends DomainResource {
          */
         public ProcedureComponent setProcedure(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for Claim.procedure.procedure[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Claim.procedure.procedure[x]: "+value.fhirType());
           this.procedure = value;
           return this;
         }
@@ -3318,7 +3318,7 @@ public class Claim extends DomainResource {
          */
         public AccidentComponent setLocation(DataType value) { 
           if (value != null && !(value instanceof Address || value instanceof Reference))
-            throw new Error("Not the right type for Claim.accident.location[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Claim.accident.location[x]: "+value.fhirType());
           this.location = value;
           return this;
         }
@@ -4318,7 +4318,7 @@ public class Claim extends DomainResource {
          */
         public ItemComponent setServiced(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Period))
-            throw new Error("Not the right type for Claim.item.serviced[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Claim.item.serviced[x]: "+value.fhirType());
           this.serviced = value;
           return this;
         }
@@ -4384,7 +4384,7 @@ public class Claim extends DomainResource {
          */
         public ItemComponent setLocation(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Address || value instanceof Reference))
-            throw new Error("Not the right type for Claim.item.location[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Claim.item.location[x]: "+value.fhirType());
           this.location = value;
           return this;
         }

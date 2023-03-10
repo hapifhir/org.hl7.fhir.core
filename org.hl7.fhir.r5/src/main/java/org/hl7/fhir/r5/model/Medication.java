@@ -337,7 +337,7 @@ public class Medication extends DomainResource {
          */
         public MedicationIngredientComponent setStrength(DataType value) { 
           if (value != null && !(value instanceof Ratio || value instanceof CodeableConcept || value instanceof Quantity))
-            throw new Error("Not the right type for Medication.ingredient.strength[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Medication.ingredient.strength[x]: "+value.fhirType());
           this.strength = value;
           return this;
         }

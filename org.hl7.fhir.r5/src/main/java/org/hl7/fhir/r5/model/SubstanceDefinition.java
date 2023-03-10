@@ -363,7 +363,7 @@ public class SubstanceDefinition extends DomainResource {
          */
         public SubstanceDefinitionMoietyComponent setAmount(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof StringType))
-            throw new Error("Not the right type for SubstanceDefinition.moiety.amount[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for SubstanceDefinition.moiety.amount[x]: "+value.fhirType());
           this.amount = value;
           return this;
         }
@@ -1123,7 +1123,7 @@ public class SubstanceDefinition extends DomainResource {
          */
         public SubstanceDefinitionPropertyComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
-            throw new Error("Not the right type for SubstanceDefinition.property.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for SubstanceDefinition.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -4206,7 +4206,7 @@ public class SubstanceDefinition extends DomainResource {
          */
         public SubstanceDefinitionRelationshipComponent setSubstanceDefinition(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
-            throw new Error("Not the right type for SubstanceDefinition.relationship.substanceDefinition[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for SubstanceDefinition.relationship.substanceDefinition[x]: "+value.fhirType());
           this.substanceDefinition = value;
           return this;
         }
@@ -4341,7 +4341,7 @@ public class SubstanceDefinition extends DomainResource {
          */
         public SubstanceDefinitionRelationshipComponent setAmount(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Ratio || value instanceof StringType))
-            throw new Error("Not the right type for SubstanceDefinition.relationship.amount[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for SubstanceDefinition.relationship.amount[x]: "+value.fhirType());
           this.amount = value;
           return this;
         }

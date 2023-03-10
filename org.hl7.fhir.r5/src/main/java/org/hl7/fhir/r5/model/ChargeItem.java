@@ -1051,7 +1051,7 @@ public class ChargeItem extends DomainResource {
      */
     public ChargeItem setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
-        throw new Error("Not the right type for ChargeItem.occurrence[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ChargeItem.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
       return this;
     }

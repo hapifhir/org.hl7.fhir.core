@@ -2459,7 +2459,7 @@ public class CodeSystem extends MetadataResource {
          */
         public ConceptPropertyComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeType || value instanceof Coding || value instanceof StringType || value instanceof IntegerType || value instanceof BooleanType || value instanceof DateTimeType || value instanceof DecimalType))
-            throw new Error("Not the right type for CodeSystem.concept.property.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for CodeSystem.concept.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -3104,7 +3104,7 @@ public class CodeSystem extends MetadataResource {
      */
     public CodeSystem setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for CodeSystem.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for CodeSystem.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }

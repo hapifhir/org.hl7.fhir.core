@@ -553,7 +553,7 @@ public class TriggerDefinition extends DataType implements ICompositeType {
      */
     public TriggerDefinition setTiming(DataType value) { 
       if (value != null && !(value instanceof Timing || value instanceof Reference || value instanceof DateType || value instanceof DateTimeType))
-        throw new Error("Not the right type for TriggerDefinition.timing[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for TriggerDefinition.timing[x]: "+value.fhirType());
       this.timing = value;
       return this;
     }

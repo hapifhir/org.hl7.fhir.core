@@ -1381,7 +1381,7 @@ public class Contract extends DomainResource {
          */
         public TermComponent setTopic(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for Contract.term.topic[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Contract.term.topic[x]: "+value.fhirType());
           this.topic = value;
           return this;
         }
@@ -3704,7 +3704,7 @@ public class Contract extends DomainResource {
          */
         public AnswerComponent setValue(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof DecimalType || value instanceof IntegerType || value instanceof DateType || value instanceof DateTimeType || value instanceof TimeType || value instanceof StringType || value instanceof UriType || value instanceof Attachment || value instanceof Coding || value instanceof Quantity || value instanceof Reference))
-            throw new Error("Not the right type for Contract.term.offer.answer.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Contract.term.offer.answer.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -5568,7 +5568,7 @@ public class Contract extends DomainResource {
          */
         public ValuedItemComponent setEntity(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for Contract.term.asset.valuedItem.entity[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Contract.term.asset.valuedItem.entity[x]: "+value.fhirType());
           this.entity = value;
           return this;
         }
@@ -6984,7 +6984,7 @@ public class Contract extends DomainResource {
          */
         public ActionComponent setOccurrence(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
-            throw new Error("Not the right type for Contract.term.action.occurrence[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Contract.term.action.occurrence[x]: "+value.fhirType());
           this.occurrence = value;
           return this;
         }
@@ -8539,7 +8539,7 @@ public class Contract extends DomainResource {
          */
         public FriendlyLanguageComponent setContent(DataType value) { 
           if (value != null && !(value instanceof Attachment || value instanceof Reference))
-            throw new Error("Not the right type for Contract.friendly.content[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Contract.friendly.content[x]: "+value.fhirType());
           this.content = value;
           return this;
         }
@@ -8737,7 +8737,7 @@ public class Contract extends DomainResource {
          */
         public LegalLanguageComponent setContent(DataType value) { 
           if (value != null && !(value instanceof Attachment || value instanceof Reference))
-            throw new Error("Not the right type for Contract.legal.content[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Contract.legal.content[x]: "+value.fhirType());
           this.content = value;
           return this;
         }
@@ -8935,7 +8935,7 @@ public class Contract extends DomainResource {
          */
         public ComputableLanguageComponent setContent(DataType value) { 
           if (value != null && !(value instanceof Attachment || value instanceof Reference))
-            throw new Error("Not the right type for Contract.rule.content[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Contract.rule.content[x]: "+value.fhirType());
           this.content = value;
           return this;
         }
@@ -10240,7 +10240,7 @@ public class Contract extends DomainResource {
      */
     public Contract setTopic(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-        throw new Error("Not the right type for Contract.topic[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Contract.topic[x]: "+value.fhirType());
       this.topic = value;
       return this;
     }
@@ -10763,7 +10763,7 @@ public class Contract extends DomainResource {
      */
     public Contract setLegallyBinding(DataType value) { 
       if (value != null && !(value instanceof Attachment || value instanceof Reference))
-        throw new Error("Not the right type for Contract.legallyBinding[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Contract.legallyBinding[x]: "+value.fhirType());
       this.legallyBinding = value;
       return this;
     }

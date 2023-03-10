@@ -115,12 +115,24 @@ public class ConceptMapValidator  extends BaseValidator {
     Element e = grp.getNamedChild("source");
     if (warning(errors, "2023-03-05", IssueType.REQUIRED, grp.line(), grp.col(), stack.getLiteralPath(), e != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_MISSING)) {
       srcCS = context.fetchCodeSystem(e.getValue());
-      warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), srcCS != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_UNKNOWN, e.getValue());                      
+      if (warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), srcCS != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_UNKNOWN, e.getValue())) {
+        if (srcCS.getContent() == CodeSystemContentMode.NOTPRESENT) {
+          srcCS = null;
+        } else if (!warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), isOkCodeSystem(srcCS), I18nConstants.CONCEPTMAP_GROUP_SOURCE_INCOMPLETE, e.getValue(), srcCS.getContent().toCode())) {
+          srcCS = null;
+        }
+      };                      
     }
     e = grp.getNamedChild("target");
     if (warning(errors, "2023-03-05", IssueType.REQUIRED, grp.line(), grp.col(), stack.getLiteralPath(), e != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_MISSING)) {
       tgtCS = context.fetchCodeSystem(e.getValue());
-      warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), tgtCS != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_UNKNOWN, e.getValue());                      
+      if (warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), tgtCS != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_UNKNOWN, e.getValue())) {                              
+        if (tgtCS.getContent() == CodeSystemContentMode.NOTPRESENT) {
+          tgtCS = null;
+        } else if (!warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), isOkCodeSystem(tgtCS), I18nConstants.CONCEPTMAP_GROUP_TARGET_INCOMPLETE, e.getValue(), tgtCS.getContent().toCode())) {
+          tgtCS = null;
+        }
+      }
     }
     List<Element> elements = grp.getChildrenByName("element");
     int ci = 0;
@@ -129,6 +141,10 @@ public class ConceptMapValidator  extends BaseValidator {
       ci++;
     }    
     return ok;
+  }
+
+  private boolean isOkCodeSystem(CodeSystem tgtCS) {
+    return tgtCS.getContent() != CodeSystemContentMode.EXAMPLE && tgtCS.getContent() != CodeSystemContentMode.FRAGMENT;
   }
 
   private boolean validateGroupElement(List<ValidationMessage> errors, Element src, NodeStack stack, CodeSystem srcCS, CodeSystem tgtCS, Map<String, PropertyDefinition> props, Map<String, String> attribs) {

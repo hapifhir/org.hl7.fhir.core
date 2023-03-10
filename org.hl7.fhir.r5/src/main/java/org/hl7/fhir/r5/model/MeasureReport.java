@@ -699,7 +699,7 @@ public class MeasureReport extends DomainResource {
          */
         public MeasureReportGroupComponent setMeasureScore(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof DateTimeType || value instanceof CodeableConcept || value instanceof Period || value instanceof Range || value instanceof Duration))
-            throw new Error("Not the right type for MeasureReport.group.measureScore[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MeasureReport.group.measureScore[x]: "+value.fhirType());
           this.measureScore = value;
           return this;
         }
@@ -1882,7 +1882,7 @@ public class MeasureReport extends DomainResource {
          */
         public StratifierGroupComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof BooleanType || value instanceof Quantity || value instanceof Range || value instanceof Reference))
-            throw new Error("Not the right type for MeasureReport.group.stratifier.stratum.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MeasureReport.group.stratifier.stratum.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -2099,7 +2099,7 @@ public class MeasureReport extends DomainResource {
          */
         public StratifierGroupComponent setMeasureScore(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof DateTimeType || value instanceof CodeableConcept || value instanceof Period || value instanceof Range || value instanceof Duration))
-            throw new Error("Not the right type for MeasureReport.group.stratifier.stratum.measureScore[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MeasureReport.group.stratifier.stratum.measureScore[x]: "+value.fhirType());
           this.measureScore = value;
           return this;
         }
@@ -2528,7 +2528,7 @@ public class MeasureReport extends DomainResource {
          */
         public StratifierGroupComponentComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof BooleanType || value instanceof Quantity || value instanceof Range || value instanceof Reference))
-            throw new Error("Not the right type for MeasureReport.group.stratifier.stratum.component.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MeasureReport.group.stratifier.stratum.component.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
