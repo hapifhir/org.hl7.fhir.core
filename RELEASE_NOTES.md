@@ -1,7 +1,7 @@
 ## Validator Changes
 
-* Add support for new ColorRGB code system (special case)
+* no changes
 
 ## Other code changes
 
-* Add support for special case code systems internally
+* no changes
