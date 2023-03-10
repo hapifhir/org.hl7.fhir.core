@@ -2031,7 +2031,7 @@ public class Device extends DomainResource {
          */
         public DevicePropertyComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Attachment))
-            throw new Error("Not the right type for Device.property.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Device.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

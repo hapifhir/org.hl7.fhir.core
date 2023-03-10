@@ -286,7 +286,7 @@ public class CoverageEligibilityRequest extends DomainResource {
          */
         public CoverageEligibilityRequestEventComponent setWhen(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-            throw new Error("Not the right type for CoverageEligibilityRequest.event.when[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for CoverageEligibilityRequest.event.when[x]: "+value.fhirType());
           this.when = value;
           return this;
         }
@@ -1807,7 +1807,7 @@ public class CoverageEligibilityRequest extends DomainResource {
          */
         public DiagnosisComponent setDiagnosis(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for CoverageEligibilityRequest.item.diagnosis.diagnosis[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for CoverageEligibilityRequest.item.diagnosis.diagnosis[x]: "+value.fhirType());
           this.diagnosis = value;
           return this;
         }
@@ -2368,7 +2368,7 @@ public class CoverageEligibilityRequest extends DomainResource {
      */
     public CoverageEligibilityRequest setServiced(DataType value) { 
       if (value != null && !(value instanceof DateType || value instanceof Period))
-        throw new Error("Not the right type for CoverageEligibilityRequest.serviced[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for CoverageEligibilityRequest.serviced[x]: "+value.fhirType());
       this.serviced = value;
       return this;
     }

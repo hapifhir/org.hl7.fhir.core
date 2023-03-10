@@ -179,7 +179,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
          */
         public BiologicallyDerivedProductCollectionComponent setCollected(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-            throw new Error("Not the right type for BiologicallyDerivedProduct.collection.collected[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for BiologicallyDerivedProduct.collection.collected[x]: "+value.fhirType());
           this.collected = value;
           return this;
         }
@@ -547,7 +547,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
          */
         public BiologicallyDerivedProductPropertyComponent setValue(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof IntegerType || value instanceof CodeableConcept || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof StringType || value instanceof Attachment))
-            throw new Error("Not the right type for BiologicallyDerivedProduct.property.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for BiologicallyDerivedProduct.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

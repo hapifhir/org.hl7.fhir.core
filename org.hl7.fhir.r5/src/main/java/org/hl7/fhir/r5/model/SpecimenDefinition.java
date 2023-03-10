@@ -1180,7 +1180,7 @@ public class SpecimenDefinition extends DomainResource {
          */
         public SpecimenDefinitionTypeTestedContainerComponent setMinimumVolume(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof StringType))
-            throw new Error("Not the right type for SpecimenDefinition.typeTested.container.minimumVolume[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for SpecimenDefinition.typeTested.container.minimumVolume[x]: "+value.fhirType());
           this.minimumVolume = value;
           return this;
         }
@@ -1591,7 +1591,7 @@ public class SpecimenDefinition extends DomainResource {
          */
         public SpecimenDefinitionTypeTestedContainerAdditiveComponent setAdditive(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for SpecimenDefinition.typeTested.container.additive.additive[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for SpecimenDefinition.typeTested.container.additive.additive[x]: "+value.fhirType());
           this.additive = value;
           return this;
         }
@@ -2425,7 +2425,7 @@ public class SpecimenDefinition extends DomainResource {
      */
     public SpecimenDefinition setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for SpecimenDefinition.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for SpecimenDefinition.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }
@@ -2786,7 +2786,7 @@ public class SpecimenDefinition extends DomainResource {
      */
     public SpecimenDefinition setSubject(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-        throw new Error("Not the right type for SpecimenDefinition.subject[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for SpecimenDefinition.subject[x]: "+value.fhirType());
       this.subject = value;
       return this;
     }

@@ -2136,7 +2136,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
             write(getTypename(t));            
           }
           write("))\r\n");
-          write(indent+"    throw new Error(\"Not the right type for "+e.getPath()+": \"+value.fhirType());\r\n");         
+          write(indent+"    throw new FHIRException(\"Not the right type for "+e.getPath()+": \"+value.fhirType());\r\n");         
         }
         write(indent+"  this."+getElementName(e.getName(), true)+" = value;\r\n");
         write(indent+"  return this;\r\n");

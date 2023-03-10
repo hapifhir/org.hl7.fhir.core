@@ -134,7 +134,7 @@ public class Annotation extends DataType implements ICompositeType {
      */
     public Annotation setAuthor(DataType value) { 
       if (value != null && !(value instanceof Reference || value instanceof StringType))
-        throw new Error("Not the right type for Annotation.author[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Annotation.author[x]: "+value.fhirType());
       this.author = value;
       return this;
     }

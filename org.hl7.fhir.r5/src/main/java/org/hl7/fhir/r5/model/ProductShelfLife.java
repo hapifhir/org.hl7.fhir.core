@@ -150,7 +150,7 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
      */
     public ProductShelfLife setPeriod(DataType value) { 
       if (value != null && !(value instanceof Duration || value instanceof StringType))
-        throw new Error("Not the right type for ProductShelfLife.period[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ProductShelfLife.period[x]: "+value.fhirType());
       this.period = value;
       return this;
     }

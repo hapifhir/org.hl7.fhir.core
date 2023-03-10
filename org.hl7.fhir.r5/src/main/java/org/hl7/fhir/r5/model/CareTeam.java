@@ -355,7 +355,7 @@ public class CareTeam extends DomainResource {
          */
         public CareTeamParticipantComponent setCoverage(DataType value) { 
           if (value != null && !(value instanceof Period || value instanceof Timing))
-            throw new Error("Not the right type for CareTeam.participant.coverage[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for CareTeam.participant.coverage[x]: "+value.fhirType());
           this.coverage = value;
           return this;
         }

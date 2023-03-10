@@ -909,7 +909,7 @@ public class QuestionnaireResponse extends DomainResource {
          */
         public QuestionnaireResponseItemAnswerComponent setValue(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof DecimalType || value instanceof IntegerType || value instanceof DateType || value instanceof DateTimeType || value instanceof TimeType || value instanceof StringType || value instanceof UriType || value instanceof Attachment || value instanceof Coding || value instanceof Quantity || value instanceof Reference))
-            throw new Error("Not the right type for QuestionnaireResponse.item.answer.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for QuestionnaireResponse.item.answer.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

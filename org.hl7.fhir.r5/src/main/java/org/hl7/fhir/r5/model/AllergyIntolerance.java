@@ -1726,7 +1726,7 @@ public class AllergyIntolerance extends DomainResource {
      */
     public AllergyIntolerance setOnset(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Age || value instanceof Period || value instanceof Range || value instanceof StringType))
-        throw new Error("Not the right type for AllergyIntolerance.onset[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for AllergyIntolerance.onset[x]: "+value.fhirType());
       this.onset = value;
       return this;
     }

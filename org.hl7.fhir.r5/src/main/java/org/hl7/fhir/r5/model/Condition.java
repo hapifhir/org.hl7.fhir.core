@@ -1076,7 +1076,7 @@ public class Condition extends DomainResource {
      */
     public Condition setOnset(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Age || value instanceof Period || value instanceof Range || value instanceof StringType))
-        throw new Error("Not the right type for Condition.onset[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Condition.onset[x]: "+value.fhirType());
       this.onset = value;
       return this;
     }
@@ -1172,7 +1172,7 @@ public class Condition extends DomainResource {
      */
     public Condition setAbatement(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Age || value instanceof Period || value instanceof Range || value instanceof StringType))
-        throw new Error("Not the right type for Condition.abatement[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Condition.abatement[x]: "+value.fhirType());
       this.abatement = value;
       return this;
     }

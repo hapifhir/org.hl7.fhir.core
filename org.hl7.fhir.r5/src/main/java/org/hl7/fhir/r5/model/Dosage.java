@@ -154,7 +154,7 @@ public class Dosage extends BackboneType implements ICompositeType {
          */
         public DosageDoseAndRateComponent setDose(DataType value) { 
           if (value != null && !(value instanceof Range || value instanceof Quantity))
-            throw new Error("Not the right type for Dosage.doseAndRate.dose[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Dosage.doseAndRate.dose[x]: "+value.fhirType());
           this.dose = value;
           return this;
         }
@@ -220,7 +220,7 @@ public class Dosage extends BackboneType implements ICompositeType {
          */
         public DosageDoseAndRateComponent setRate(DataType value) { 
           if (value != null && !(value instanceof Ratio || value instanceof Range || value instanceof Quantity))
-            throw new Error("Not the right type for Dosage.doseAndRate.rate[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Dosage.doseAndRate.rate[x]: "+value.fhirType());
           this.rate = value;
           return this;
         }

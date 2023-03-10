@@ -1326,7 +1326,7 @@ public class PackagedProductDefinition extends DomainResource {
          */
         public PackagedProductDefinitionPackagingPropertyComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
-            throw new Error("Not the right type for PackagedProductDefinition.packaging.property.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for PackagedProductDefinition.packaging.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

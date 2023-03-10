@@ -986,7 +986,7 @@ public class DocumentReference extends DomainResource {
          */
         public DocumentReferenceContentProfileComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Coding || value instanceof UriType || value instanceof CanonicalType))
-            throw new Error("Not the right type for DocumentReference.content.profile.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for DocumentReference.content.profile.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

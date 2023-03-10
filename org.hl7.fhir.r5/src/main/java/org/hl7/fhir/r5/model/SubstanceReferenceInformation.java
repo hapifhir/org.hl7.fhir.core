@@ -862,7 +862,7 @@ public class SubstanceReferenceInformation extends DomainResource {
          */
         public SubstanceReferenceInformationTargetComponent setAmount(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof StringType))
-            throw new Error("Not the right type for SubstanceReferenceInformation.target.amount[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for SubstanceReferenceInformation.target.amount[x]: "+value.fhirType());
           this.amount = value;
           return this;
         }

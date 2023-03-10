@@ -4857,7 +4857,7 @@ public String toString() {
          */
         public StructureMapGroupRuleTargetParameterComponent setValue(DataType value) { 
           if (value != null && !(value instanceof IdType || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType || value instanceof DateType || value instanceof TimeType || value instanceof DateTimeType))
-            throw new Error("Not the right type for StructureMap.group.rule.target.parameter.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for StructureMap.group.rule.target.parameter.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -5643,7 +5643,7 @@ public String toString() {
      */
     public StructureMap setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for StructureMap.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for StructureMap.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }

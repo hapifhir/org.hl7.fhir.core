@@ -2612,8 +2612,12 @@ public class StructureMapUtilities {
     b.append("\r\n");
     StructureMap map = parse(b.toString(), sd.getUrl());
     map.setId(tail(map.getUrl()));
-    if (!map.hasStatus())
+    if (!map.hasStatus()) {
       map.setStatus(PublicationStatus.DRAFT);
+    }
+    if (!map.hasDescription() && map.hasTitle()) {
+      map.setDescription(map.getTitle());
+    }
     map.getText().setStatus(NarrativeStatus.GENERATED);
     map.getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
     map.getText().getDiv().addTag("pre").addText(render(map));

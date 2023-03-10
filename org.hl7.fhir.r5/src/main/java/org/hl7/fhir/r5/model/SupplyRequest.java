@@ -354,7 +354,7 @@ public class SupplyRequest extends DomainResource {
          */
         public SupplyRequestParameterComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range || value instanceof BooleanType))
-            throw new Error("Not the right type for SupplyRequest.parameter.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for SupplyRequest.parameter.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -1054,7 +1054,7 @@ public class SupplyRequest extends DomainResource {
      */
     public SupplyRequest setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
-        throw new Error("Not the right type for SupplyRequest.occurrence[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for SupplyRequest.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
       return this;
     }

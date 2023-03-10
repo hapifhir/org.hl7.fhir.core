@@ -414,7 +414,7 @@ public class CoverageEligibilityResponse extends DomainResource {
          */
         public CoverageEligibilityResponseEventComponent setWhen(DataType value) { 
           if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-            throw new Error("Not the right type for CoverageEligibilityResponse.event.when[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for CoverageEligibilityResponse.event.when[x]: "+value.fhirType());
           this.when = value;
           return this;
         }
@@ -2013,7 +2013,7 @@ public class CoverageEligibilityResponse extends DomainResource {
          */
         public BenefitComponent setAllowed(DataType value) { 
           if (value != null && !(value instanceof UnsignedIntType || value instanceof StringType || value instanceof Money))
-            throw new Error("Not the right type for CoverageEligibilityResponse.insurance.item.benefit.allowed[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for CoverageEligibilityResponse.insurance.item.benefit.allowed[x]: "+value.fhirType());
           this.allowed = value;
           return this;
         }
@@ -2079,7 +2079,7 @@ public class CoverageEligibilityResponse extends DomainResource {
          */
         public BenefitComponent setUsed(DataType value) { 
           if (value != null && !(value instanceof UnsignedIntType || value instanceof StringType || value instanceof Money))
-            throw new Error("Not the right type for CoverageEligibilityResponse.insurance.item.benefit.used[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for CoverageEligibilityResponse.insurance.item.benefit.used[x]: "+value.fhirType());
           this.used = value;
           return this;
         }
@@ -2925,7 +2925,7 @@ public class CoverageEligibilityResponse extends DomainResource {
      */
     public CoverageEligibilityResponse setServiced(DataType value) { 
       if (value != null && !(value instanceof DateType || value instanceof Period))
-        throw new Error("Not the right type for CoverageEligibilityResponse.serviced[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for CoverageEligibilityResponse.serviced[x]: "+value.fhirType());
       this.serviced = value;
       return this;
     }
