@@ -137,7 +137,7 @@ public class Type10_30 {
     if (src instanceof org.hl7.fhir.dstu2.model.Timing)
       return Timing10_30.convertTiming((org.hl7.fhir.dstu2.model.Timing) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown type " + src.fhirType());
+      throw new FHIRException("The type " + src.fhirType()+" cannot be converted from R2 to R3");
     } else {
       return null;
     }
@@ -229,7 +229,7 @@ public class Type10_30 {
     if (src instanceof org.hl7.fhir.dstu3.model.Timing)
       return Timing10_30.convertTiming((org.hl7.fhir.dstu3.model.Timing) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown type " + src.fhirType());
+      throw new FHIRException("The type " + src.fhirType()+" cannot be converted from R3 to R2");
     } else {
       return null;
     }
