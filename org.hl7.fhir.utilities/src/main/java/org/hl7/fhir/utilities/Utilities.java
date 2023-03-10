@@ -643,7 +643,7 @@ public class Utilities {
       throw new RuntimeException("First entry cannot be root: " + args[0]);
     }
 
-    String output = readPath(args);
+    String output = uncheckedPath(args);
 
     if (!Path.of(output.toString()).normalize().startsWith(Path.of(replaceVariables(args[0])).normalize())) {
      throw new RuntimeException("Computed path does not start with first element: " + String.join(", ", args));
@@ -656,14 +656,14 @@ public class Utilities {
    * Variables such as [tmp] and [user] are replaced.
    *
    * This method does not check for unintentional access to areas of the file
-   * system outside of the first entry. ONLY USE THIS METHOD IN CASES WHERE
-   * FILES ARE READ, NEVER WRITTEN.
+   * system outside of the first entry. ONLY USE THIS METHOD IN CASES WHERE YOU
+   * ARE CERTAIN THE COMPOSED PATH IS NOT MALICIOUS.
    *
    * @param args
    * @return
    * @throws IOException
    */
-  public static String readPath(String... args) {
+  public static String uncheckedPath(String... args) {
     StringBuilder s = new StringBuilder();
     boolean argIsNotEmptyOrNull = false;
 
