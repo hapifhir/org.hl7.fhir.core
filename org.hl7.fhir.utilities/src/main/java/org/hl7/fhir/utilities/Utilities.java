@@ -620,10 +620,21 @@ public class Utilities {
     actual = normalizedPath.equals(path.getRoot());
     return actual;
   }
-  public static String path(String... args) throws IOException {
-    StringBuilder s = new StringBuilder();
-    boolean argIsNotEmptyOrNull = false;
 
+  /**
+   * Composes a path string using by concatenating the passed arguments.
+   * Variables such as [tmp] and [user] are replaced.
+   *
+   * In order to prevent unintentional access to areas of the file system
+   * outside of the first entry, this method will throw exceptions in situations
+   * where the constructed path is at a higher level than the first entry, or
+   * where the first entry is null or empty.
+   *
+   * @param args
+   * @return
+   * @throws IOException
+   */
+  public static String path(String... args) throws IOException {
     if (args[0] == null || noString(args[0].trim())) {
       throw new RuntimeException("First entry cannot be null or empty");
     }
@@ -632,7 +643,35 @@ public class Utilities {
       throw new RuntimeException("First entry cannot be root: " + args[0]);
     }
 
+    String output = uncheckedPath(args);
+
+    if (!Path.of(output.toString()).normalize().startsWith(Path.of(replaceVariables(args[0])).normalize())) {
+     throw new RuntimeException("Computed path does not start with first element: " + String.join(", ", args));
+    }
+    return output.toString();
+  }
+
+  /**
+   * Composes a path string using by concatenating the passed arguments.
+   * Variables such as [tmp] and [user] are replaced.
+   *
+   * This method does not check for unintentional access to areas of the file
+   * system outside of the first entry. ONLY USE THIS METHOD IN CASES WHERE YOU
+   * ARE CERTAIN THE COMPOSED PATH IS NOT MALICIOUS.
+   *
+   * @param args
+   * @return
+   * @throws IOException
+   */
+  public static String uncheckedPath(String... args) {
+    StringBuilder s = new StringBuilder();
+    boolean argIsNotEmptyOrNull = false;
+
+    boolean first = true;
     for (String arg : args) {
+      if (first && arg == null)
+        continue;
+      first = false;
       if (!argIsNotEmptyOrNull)
         argIsNotEmptyOrNull = !noString(arg);
       else if (!s.toString().endsWith(File.separator))
@@ -664,9 +703,6 @@ public class Utilities {
         s = new StringBuilder(s.substring(0, i + 1));
       } else
         s.append(a);
-    }
-    if (!Path.of(s.toString()).normalize().startsWith(Path.of(replaceVariables(args[0])).normalize())) {
-     throw new RuntimeException("Computed path does not start with first element: " + String.join(", ", args));
     }
     return s.toString();
   }
