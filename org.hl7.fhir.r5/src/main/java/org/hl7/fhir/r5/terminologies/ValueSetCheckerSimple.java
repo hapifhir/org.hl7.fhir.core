@@ -601,39 +601,50 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
             problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM, valueset.getVersionedUrl(), i, vsi.getSystem()));
             return false;
           }
-          CodeSystem cs = resolveCodeSystem(vsi.getSystem(), vsi.getVersion());
-          if (cs != null && cs.getContent() == CodeSystemContentMode.COMPLETE) {
+          CodeSystemProvider csp = CodeSystemProvider.factory(vsi.getSystem());
+          if (csp != null) {
+            Boolean ok = csp.checkCode(code);
+            if (ok == null) {
+              problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE, valueset.getVersionedUrl(), vsi.getSystem()));
+              sys.add(vsi.getSystem());
+            } else if (ok) {
+              sys.add(vsi.getSystem());
+            }
+          } else {
+            CodeSystem cs = resolveCodeSystem(vsi.getSystem(), vsi.getVersion());
+            if (cs != null && cs.getContent() == CodeSystemContentMode.COMPLETE) {
 
-            if (vsi.hasConcept()) {
+              if (vsi.hasConcept()) {
+                for (ConceptReferenceComponent cc : vsi.getConcept()) {
+                  boolean match = cs.getCaseSensitive() ? cc.getCode().equals(code) : cc.getCode().equalsIgnoreCase(code);
+                  if (match) {
+                    sys.add(vsi.getSystem());
+                  }
+                }
+              } else {
+                ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code);
+                if (cc != null) {
+                  sys.add(vsi.getSystem());
+                }
+              }
+            } else if (vsi.hasConcept()) {
               for (ConceptReferenceComponent cc : vsi.getConcept()) {
-                boolean match = cs.getCaseSensitive() ? cc.getCode().equals(code) : cc.getCode().equalsIgnoreCase(code);
+                boolean match = cc.getCode().equals(code);
                 if (match) {
                   sys.add(vsi.getSystem());
                 }
               }
             } else {
-              ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code);
-              if (cc != null) {
-                sys.add(vsi.getSystem());
-              }
-            }
-          } else if (vsi.hasConcept()) {
-            for (ConceptReferenceComponent cc : vsi.getConcept()) {
-              boolean match = cc.getCode().equals(code);
-              if (match) {
-                sys.add(vsi.getSystem());
-              }
-            }
-          } else {
-            // we'll try to expand this one then 
-            ValueSetExpansionOutcome vse = context.expandVS(vsi, false, false);
-            if (vse.isOk()) {
-              if (!checkSystems(vse.getValueset().getExpansion().getContains(), code, sys, problems)) {
+              // we'll try to expand this one then 
+              ValueSetExpansionOutcome vse = context.expandVS(vsi, false, false);
+              if (vse.isOk()) {
+                if (!checkSystems(vse.getValueset().getExpansion().getContains(), code, sys, problems)) {
+                  return false;
+                }
+              } else {
+                problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM, valueset.getVersionedUrl(), i, vsi.getSystem(), vse.getAllErrors().toString()));              
                 return false;
               }
-            } else {
-              problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM, valueset.getVersionedUrl(), i, vsi.getSystem(), vse.getAllErrors().toString()));              
-              return false;
             }
           }
         }

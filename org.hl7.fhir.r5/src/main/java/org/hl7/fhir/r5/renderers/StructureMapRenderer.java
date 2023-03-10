@@ -343,7 +343,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       }
     }
     if (r.getTarget().size() > 1) {
-      x.b().tx(" -> ");
+      x.color(COLOR_SYNTAX).b().tx(" -> ");
       boolean first = true;
       for (StructureMapGroupRuleTargetComponent rt : r.getTarget()) {
         if (first)
@@ -360,7 +360,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
         renderTarget(x, rt, false);
       }
     } else if (r.hasTarget()) {
-      x.b().tx(" -> ");
+      x.color(COLOR_SYNTAX).b().tx(" -> ");
       renderTarget(x, r.getTarget().get(0), canBeAbbreviated);
     }
     if (r.hasRule()) {
