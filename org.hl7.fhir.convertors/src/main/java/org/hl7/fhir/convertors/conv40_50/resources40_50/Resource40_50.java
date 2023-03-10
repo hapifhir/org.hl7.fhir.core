@@ -275,7 +275,7 @@ public class Resource40_50 {
     if (src instanceof org.hl7.fhir.r4.model.VisionPrescription)
       return VisionPrescription40_50.convertVisionPrescription((org.hl7.fhir.r4.model.VisionPrescription) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown resource " + src.fhirType());
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R4 to R5");
     } else {
       return null;
     }
@@ -519,7 +519,7 @@ public class Resource40_50 {
     if (src instanceof org.hl7.fhir.r5.model.VisionPrescription)
       return VisionPrescription40_50.convertVisionPrescription((org.hl7.fhir.r5.model.VisionPrescription) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown resource " + src.fhirType());
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R5 to R4");
     } else {
       return null;
     }

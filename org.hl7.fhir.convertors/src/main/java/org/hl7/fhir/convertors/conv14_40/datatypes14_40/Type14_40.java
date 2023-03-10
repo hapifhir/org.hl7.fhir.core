@@ -133,7 +133,7 @@ public class Type14_40 {
     if (src instanceof org.hl7.fhir.dstu2016may.model.Timing)
       return Timing14_40.convertTiming((org.hl7.fhir.dstu2016may.model.Timing) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown type " + src.fhirType());
+      throw new FHIRException("The type " + src.fhirType()+" cannot be converted from R2B to R4");
     } else {
       return null;
     }
@@ -215,7 +215,7 @@ public class Type14_40 {
     if (src instanceof org.hl7.fhir.r4.model.Timing)
       return Timing14_40.convertTiming((org.hl7.fhir.r4.model.Timing) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown type " + src.fhirType());
+      throw new FHIRException("The type " + src.fhirType()+" cannot be converted from R4 to R2B");
     } else {
       return null;
     }

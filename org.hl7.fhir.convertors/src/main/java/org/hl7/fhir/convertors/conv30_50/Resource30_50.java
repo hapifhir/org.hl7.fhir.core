@@ -278,7 +278,9 @@ public class Resource30_50 {
       return TestScript30_50.convertTestScript((org.hl7.fhir.dstu3.model.TestScript) src);
     if (src instanceof org.hl7.fhir.dstu3.model.ValueSet)
       return ValueSet30_50.convertValueSet((org.hl7.fhir.dstu3.model.ValueSet) src);
-    if (advisor.failFastOnNullOrUnknownEntry()) throw new FHIRException("Unknown resource " + src.fhirType());
+    if (advisor.failFastOnNullOrUnknownEntry()) {
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R3 to R5");
+    }
     else return null;
   }
 
@@ -442,7 +444,7 @@ public class Resource30_50 {
     if (src instanceof org.hl7.fhir.r5.model.ValueSet)
       return ValueSet30_50.convertValueSet((org.hl7.fhir.r5.model.ValueSet) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown resource " + src.fhirType());
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R5 to R3");
     } else {
       return null;
     }
