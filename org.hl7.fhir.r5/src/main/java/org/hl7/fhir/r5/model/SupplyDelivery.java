@@ -277,7 +277,7 @@ public class SupplyDelivery extends DomainResource {
          */
         public SupplyDeliverySuppliedItemComponent setItem(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for SupplyDelivery.suppliedItem.item[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for SupplyDelivery.suppliedItem.item[x]: "+value.fhirType());
           this.item = value;
           return this;
         }
@@ -876,7 +876,7 @@ public class SupplyDelivery extends DomainResource {
      */
     public SupplyDelivery setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
-        throw new Error("Not the right type for SupplyDelivery.occurrence[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for SupplyDelivery.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
       return this;
     }

@@ -434,7 +434,7 @@ public class ServiceRequest extends DomainResource {
          */
         public ServiceRequestOrderDetailParameterComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Ratio || value instanceof Range || value instanceof BooleanType || value instanceof CodeableConcept || value instanceof StringType || value instanceof Period))
-            throw new Error("Not the right type for ServiceRequest.orderDetail.parameter.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ServiceRequest.orderDetail.parameter.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -664,7 +664,7 @@ public class ServiceRequest extends DomainResource {
          */
         public ServiceRequestPatientInstructionComponent setInstruction(DataType value) { 
           if (value != null && !(value instanceof MarkdownType || value instanceof Reference))
-            throw new Error("Not the right type for ServiceRequest.patientInstruction.instruction[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ServiceRequest.patientInstruction.instruction[x]: "+value.fhirType());
           this.instruction = value;
           return this;
         }
@@ -1730,7 +1730,7 @@ public class ServiceRequest extends DomainResource {
      */
     public ServiceRequest setQuantity(DataType value) { 
       if (value != null && !(value instanceof Quantity || value instanceof Ratio || value instanceof Range))
-        throw new Error("Not the right type for ServiceRequest.quantity[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ServiceRequest.quantity[x]: "+value.fhirType());
       this.quantity = value;
       return this;
     }
@@ -1897,7 +1897,7 @@ public class ServiceRequest extends DomainResource {
      */
     public ServiceRequest setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
-        throw new Error("Not the right type for ServiceRequest.occurrence[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ServiceRequest.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
       return this;
     }
@@ -1948,7 +1948,7 @@ public class ServiceRequest extends DomainResource {
      */
     public ServiceRequest setAsNeeded(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof CodeableConcept))
-        throw new Error("Not the right type for ServiceRequest.asNeeded[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ServiceRequest.asNeeded[x]: "+value.fhirType());
       this.asNeeded = value;
       return this;
     }

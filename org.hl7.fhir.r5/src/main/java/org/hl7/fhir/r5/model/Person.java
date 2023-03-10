@@ -1097,7 +1097,7 @@ public class Person extends DomainResource {
      */
     public Person setDeceased(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof DateTimeType))
-        throw new Error("Not the right type for Person.deceased[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Person.deceased[x]: "+value.fhirType());
       this.deceased = value;
       return this;
     }

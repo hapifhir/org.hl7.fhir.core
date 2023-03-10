@@ -616,7 +616,7 @@ public class FamilyMemberHistory extends DomainResource {
          */
         public FamilyMemberHistoryConditionComponent setOnset(DataType value) { 
           if (value != null && !(value instanceof Age || value instanceof Range || value instanceof Period || value instanceof StringType))
-            throw new Error("Not the right type for FamilyMemberHistory.condition.onset[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for FamilyMemberHistory.condition.onset[x]: "+value.fhirType());
           this.onset = value;
           return this;
         }
@@ -1109,7 +1109,7 @@ public class FamilyMemberHistory extends DomainResource {
          */
         public FamilyMemberHistoryProcedureComponent setPerformed(DataType value) { 
           if (value != null && !(value instanceof Age || value instanceof Range || value instanceof Period || value instanceof StringType || value instanceof DateTimeType))
-            throw new Error("Not the right type for FamilyMemberHistory.procedure.performed[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for FamilyMemberHistory.procedure.performed[x]: "+value.fhirType());
           this.performed = value;
           return this;
         }
@@ -2052,7 +2052,7 @@ public class FamilyMemberHistory extends DomainResource {
      */
     public FamilyMemberHistory setBorn(DataType value) { 
       if (value != null && !(value instanceof Period || value instanceof DateType || value instanceof StringType))
-        throw new Error("Not the right type for FamilyMemberHistory.born[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for FamilyMemberHistory.born[x]: "+value.fhirType());
       this.born = value;
       return this;
     }
@@ -2118,7 +2118,7 @@ public class FamilyMemberHistory extends DomainResource {
      */
     public FamilyMemberHistory setAge(DataType value) { 
       if (value != null && !(value instanceof Age || value instanceof Range || value instanceof StringType))
-        throw new Error("Not the right type for FamilyMemberHistory.age[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for FamilyMemberHistory.age[x]: "+value.fhirType());
       this.age = value;
       return this;
     }
@@ -2259,7 +2259,7 @@ public class FamilyMemberHistory extends DomainResource {
      */
     public FamilyMemberHistory setDeceased(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof Age || value instanceof Range || value instanceof DateType || value instanceof StringType))
-        throw new Error("Not the right type for FamilyMemberHistory.deceased[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for FamilyMemberHistory.deceased[x]: "+value.fhirType());
       this.deceased = value;
       return this;
     }

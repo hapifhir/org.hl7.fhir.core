@@ -1666,7 +1666,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
      */
     public Patient setDeceased(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof DateTimeType))
-        throw new Error("Not the right type for Patient.deceased[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Patient.deceased[x]: "+value.fhirType());
       this.deceased = value;
       return this;
     }
@@ -1794,7 +1794,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
      */
     public Patient setMultipleBirth(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof IntegerType))
-        throw new Error("Not the right type for Patient.multipleBirth[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Patient.multipleBirth[x]: "+value.fhirType());
       this.multipleBirth = value;
       return this;
     }

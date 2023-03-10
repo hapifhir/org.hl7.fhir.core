@@ -439,7 +439,7 @@ public class Goal extends DomainResource {
          */
         public GoalTargetComponent setDetail(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Ratio))
-            throw new Error("Not the right type for Goal.target.detail[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Goal.target.detail[x]: "+value.fhirType());
           this.detail = value;
           return this;
         }
@@ -490,7 +490,7 @@ public class Goal extends DomainResource {
          */
         public GoalTargetComponent setDue(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Duration))
-            throw new Error("Not the right type for Goal.target.due[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Goal.target.due[x]: "+value.fhirType());
           this.due = value;
           return this;
         }
@@ -1156,7 +1156,7 @@ public class Goal extends DomainResource {
      */
     public Goal setStart(DataType value) { 
       if (value != null && !(value instanceof DateType || value instanceof CodeableConcept))
-        throw new Error("Not the right type for Goal.start[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Goal.start[x]: "+value.fhirType());
       this.start = value;
       return this;
     }

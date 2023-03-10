@@ -4049,7 +4049,7 @@ public class Evidence extends MetadataResource {
      */
     public Evidence setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for Evidence.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Evidence.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }
@@ -4198,7 +4198,7 @@ public class Evidence extends MetadataResource {
      */
     public Evidence setCiteAs(DataType value) { 
       if (value != null && !(value instanceof Reference || value instanceof MarkdownType))
-        throw new Error("Not the right type for Evidence.citeAs[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Evidence.citeAs[x]: "+value.fhirType());
       this.citeAs = value;
       return this;
     }

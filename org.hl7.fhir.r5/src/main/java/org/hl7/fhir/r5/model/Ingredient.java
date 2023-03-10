@@ -787,7 +787,7 @@ public class Ingredient extends DomainResource {
          */
         public IngredientSubstanceStrengthComponent setPresentation(DataType value) { 
           if (value != null && !(value instanceof Ratio || value instanceof RatioRange || value instanceof CodeableConcept || value instanceof Quantity))
-            throw new Error("Not the right type for Ingredient.substance.strength.presentation[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Ingredient.substance.strength.presentation[x]: "+value.fhirType());
           this.presentation = value;
           return this;
         }
@@ -917,7 +917,7 @@ public class Ingredient extends DomainResource {
          */
         public IngredientSubstanceStrengthComponent setConcentration(DataType value) { 
           if (value != null && !(value instanceof Ratio || value instanceof RatioRange || value instanceof CodeableConcept || value instanceof Quantity))
-            throw new Error("Not the right type for Ingredient.substance.strength.concentration[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Ingredient.substance.strength.concentration[x]: "+value.fhirType());
           this.concentration = value;
           return this;
         }
@@ -1549,7 +1549,7 @@ public class Ingredient extends DomainResource {
          */
         public IngredientSubstanceStrengthReferenceStrengthComponent setStrength(DataType value) { 
           if (value != null && !(value instanceof Ratio || value instanceof RatioRange || value instanceof Quantity))
-            throw new Error("Not the right type for Ingredient.substance.strength.referenceStrength.strength[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Ingredient.substance.strength.referenceStrength.strength[x]: "+value.fhirType());
           this.strength = value;
           return this;
         }

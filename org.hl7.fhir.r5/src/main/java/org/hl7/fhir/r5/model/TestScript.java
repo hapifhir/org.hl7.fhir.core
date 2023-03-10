@@ -8408,7 +8408,7 @@ public class TestScript extends CanonicalResource {
          */
         public SetupActionAssertRequirementComponent setLink(DataType value) { 
           if (value != null && !(value instanceof UriType || value instanceof CanonicalType))
-            throw new Error("Not the right type for TestScript.setup.action.assert.requirement.link[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for TestScript.setup.action.assert.requirement.link[x]: "+value.fhirType());
           this.link = value;
           return this;
         }
@@ -9837,7 +9837,7 @@ public class TestScript extends CanonicalResource {
      */
     public TestScript setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for TestScript.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for TestScript.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }

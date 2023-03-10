@@ -219,7 +219,7 @@ public class RegulatedAuthorization extends DomainResource {
          */
         public RegulatedAuthorizationCaseComponent setDate(DataType value) { 
           if (value != null && !(value instanceof Period || value instanceof DateTimeType))
-            throw new Error("Not the right type for RegulatedAuthorization.case.date[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for RegulatedAuthorization.case.date[x]: "+value.fhirType());
           this.date = value;
           return this;
         }

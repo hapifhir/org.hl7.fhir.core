@@ -912,7 +912,7 @@ public class Coverage extends DomainResource {
          */
         public CostToBeneficiaryComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Money))
-            throw new Error("Not the right type for Coverage.costToBeneficiary.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Coverage.costToBeneficiary.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

@@ -3071,7 +3071,7 @@ public class NutritionOrder extends DomainResource {
          */
         public NutritionOrderEnteralFormulaAdministrationComponent setRate(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof Ratio))
-            throw new Error("Not the right type for NutritionOrder.enteralFormula.administration.rate[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for NutritionOrder.enteralFormula.administration.rate[x]: "+value.fhirType());
           this.rate = value;
           return this;
         }

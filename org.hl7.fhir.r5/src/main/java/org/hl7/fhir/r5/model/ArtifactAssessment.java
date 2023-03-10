@@ -1593,7 +1593,7 @@ public class ArtifactAssessment extends DomainResource {
      */
     public ArtifactAssessment setCiteAs(DataType value) { 
       if (value != null && !(value instanceof Reference || value instanceof MarkdownType))
-        throw new Error("Not the right type for ArtifactAssessment.citeAs[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ArtifactAssessment.citeAs[x]: "+value.fhirType());
       this.citeAs = value;
       return this;
     }
@@ -1855,7 +1855,7 @@ public class ArtifactAssessment extends DomainResource {
      */
     public ArtifactAssessment setArtifact(DataType value) { 
       if (value != null && !(value instanceof Reference || value instanceof CanonicalType || value instanceof UriType))
-        throw new Error("Not the right type for ArtifactAssessment.artifact[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ArtifactAssessment.artifact[x]: "+value.fhirType());
       this.artifact = value;
       return this;
     }

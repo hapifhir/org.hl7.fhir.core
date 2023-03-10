@@ -1141,7 +1141,7 @@ public class ClinicalUseDefinition extends DomainResource {
          */
         public ClinicalUseDefinitionIndicationComponent setDuration(DataType value) { 
           if (value != null && !(value instanceof Range || value instanceof StringType))
-            throw new Error("Not the right type for ClinicalUseDefinition.indication.duration[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ClinicalUseDefinition.indication.duration[x]: "+value.fhirType());
           this.duration = value;
           return this;
         }
@@ -1999,7 +1999,7 @@ public class ClinicalUseDefinition extends DomainResource {
          */
         public ClinicalUseDefinitionInteractionInteractantComponent setItem(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
-            throw new Error("Not the right type for ClinicalUseDefinition.interaction.interactant.item[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ClinicalUseDefinition.interaction.interactant.item[x]: "+value.fhirType());
           this.item = value;
           return this;
         }

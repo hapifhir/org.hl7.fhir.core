@@ -674,7 +674,7 @@ public class EvidenceReport extends MetadataResource {
          */
         public EvidenceReportSubjectCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof CodeableConcept || value instanceof BooleanType || value instanceof Quantity || value instanceof Range))
-            throw new Error("Not the right type for EvidenceReport.subject.characteristic.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for EvidenceReport.subject.characteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -2833,7 +2833,7 @@ public class EvidenceReport extends MetadataResource {
      */
     public EvidenceReport setCiteAs(DataType value) { 
       if (value != null && !(value instanceof Reference || value instanceof MarkdownType))
-        throw new Error("Not the right type for EvidenceReport.citeAs[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for EvidenceReport.citeAs[x]: "+value.fhirType());
       this.citeAs = value;
       return this;
     }

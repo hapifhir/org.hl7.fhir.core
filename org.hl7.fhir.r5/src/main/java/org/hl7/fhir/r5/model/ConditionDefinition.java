@@ -825,7 +825,7 @@ public class ConditionDefinition extends MetadataResource {
          */
         public ConditionDefinitionPreconditionComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity))
-            throw new Error("Not the right type for ConditionDefinition.precondition.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ConditionDefinition.precondition.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -1850,7 +1850,7 @@ public class ConditionDefinition extends MetadataResource {
      */
     public ConditionDefinition setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for ConditionDefinition.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ConditionDefinition.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }
