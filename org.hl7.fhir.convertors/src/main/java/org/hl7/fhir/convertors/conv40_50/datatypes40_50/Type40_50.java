@@ -184,7 +184,7 @@ public class Type40_50 {
     if (src instanceof org.hl7.fhir.r4.model.ElementDefinition)
       return ElementDefinition40_50.convertElementDefinition((org.hl7.fhir.r4.model.ElementDefinition) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown type " + src.fhirType());
+      throw new FHIRException("The type " + src.fhirType()+" cannot be converted from R4 to R5");
     } else {
       return null;
     }
@@ -305,7 +305,7 @@ public class Type40_50 {
     if (src instanceof org.hl7.fhir.r5.model.ElementDefinition)
       return ElementDefinition40_50.convertElementDefinition((org.hl7.fhir.r5.model.ElementDefinition) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown type " + src.fhirType());
+      throw new FHIRException("The type " + src.fhirType()+" cannot be converted from R5 to R4");
     } else {
       return null;
     }

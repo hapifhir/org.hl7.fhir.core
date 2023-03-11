@@ -31,7 +31,6 @@ public class BuildExtensions extends ToolingExtensions {
   public static final String EXT_NAME = "http://hl7.org/fhir/build/StructureDefinition/name";
   public static final String EXT_V2_MAP = "http://hl7.org/fhir/build/StructureDefinition/v2-map";
   public static final String EXT_V3_MAP = "http://hl7.org/fhir/build/StructureDefinition/v3-map";
-  public static final String EXT_BINDING_DEFINITION = "http://hl7.org/fhir/build/StructureDefinition/binding-definition";
   public static final String EXT_URI = "http://hl7.org/fhir/build/StructureDefinition/uri";
   public static final String EXT_WEBSITE = "http://hl7.org/fhir/build/StructureDefinition/website";
   public static final String EXT_EMAIL = "http://hl7.org/fhir/build/StructureDefinition/email";
@@ -41,7 +40,6 @@ public class BuildExtensions extends ToolingExtensions {
   public static final String EXT_NOTES = "http://hl7.org/fhir/build/StructureDefinition/notes";
   public static final String EXT_CODE = "http://hl7.org/fhir/build/StructureDefinition/code";
   public static final String EXT_TYPE = "http://hl7.org/fhir/build/StructureDefinition/type";
-  public static final String EXT_SUMMARY = "http://hl7.org/fhir/build/StructureDefinition/summary";
 //  public static final String EXT_EXPLANATION = "http://hl7.org/fhir/build/StructureDefinition/explanation";
   public static final String EXT_NO_BINDING = "http://hl7.org/fhir/build/StructureDefinition/no-binding";
   public static final String EXT_OP_EXAMPLE = "http://hl7.org/fhir/build/StructureDefinition/example";

@@ -66,7 +66,7 @@ public class Resource14_40 {
     if (src instanceof org.hl7.fhir.dstu2016may.model.ValueSet)
       return ValueSet14_40.convertValueSet((org.hl7.fhir.dstu2016may.model.ValueSet) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown resource " + src.fhirType());
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R2B to R4");
     } else {
       return null;
     }
@@ -107,7 +107,7 @@ public class Resource14_40 {
     if (src instanceof org.hl7.fhir.r4.model.ValueSet)
       return ValueSet14_40.convertValueSet((org.hl7.fhir.r4.model.ValueSet) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown resource " + src.fhirType());
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R4 to R2B");
     } else {
       return null;
     }

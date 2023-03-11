@@ -148,7 +148,7 @@ public class Type30_50 {
     if (src instanceof org.hl7.fhir.dstu3.model.TriggerDefinition)
       return TriggerDefinition30_50.convertTriggerDefinition((org.hl7.fhir.dstu3.model.TriggerDefinition) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown type " + src.fhirType());
+      throw new FHIRException("The type " + src.fhirType()+" cannot be converted from R3 to R5");
     } else {
       return null;
     }
@@ -250,7 +250,7 @@ public class Type30_50 {
     if (src instanceof org.hl7.fhir.r5.model.TriggerDefinition)
       return TriggerDefinition30_50.convertTriggerDefinition((org.hl7.fhir.r5.model.TriggerDefinition) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown type " + src.fhirType());
+      throw new FHIRException("The type " + src.fhirType()+" cannot be converted from R5 to R3");
     } else {
       return null;
     }
