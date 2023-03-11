@@ -2768,7 +2768,7 @@ Reflex | Repeat | Re-run.
      * @param value {@link #value} (The information determined as a result of making the observation, if the information has a simple value.)
      */
     public Observation setValue(DataType value) { 
-      if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof MarkdownType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Ratio || value instanceof SampledData || value instanceof TimeType || value instanceof DateTimeType || value instanceof Period || value instanceof Attachment || value instanceof Reference || value instanceof CanonicalType))
+      if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Ratio || value instanceof SampledData || value instanceof TimeType || value instanceof DateTimeType || value instanceof Period || value instanceof Attachment || value instanceof Reference || value instanceof CanonicalType))
         throw new FHIRException("Not the right type for Observation.value[x]: "+value.fhirType());
       this.value = value;
       return this;

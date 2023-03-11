@@ -97,7 +97,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }      
   }
 
-  public class CanonicalListSorter implements Comparator<CanonicalResource> {
+  public static class CanonicalListSorter implements Comparator<CanonicalResource> {
 
     @Override
     public int compare(CanonicalResource arg0, CanonicalResource arg1) {

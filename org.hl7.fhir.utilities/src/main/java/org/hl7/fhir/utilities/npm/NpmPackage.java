@@ -550,9 +550,18 @@ public class NpmPackage {
   public List<String> listResources(String... types) throws IOException {
     List<String> res = new ArrayList<String>();
     NpmPackageFolder folder = folders.get("package");
-    for (String s : types) {
-      if (folder.types.containsKey(s))
-        res.addAll(folder.types.get(s));
+    if (types.length == 0) {
+      for (String s : folder.types.keySet()) {
+        if (folder.types.containsKey(s)) {
+          res.addAll(folder.types.get(s));
+        }
+      }
+    } else {
+      for (String s : types) {
+        if (folder.types.containsKey(s)) {
+          res.addAll(folder.types.get(s));
+        }
+      }
     }
     Collections.sort(res);
     return res;
