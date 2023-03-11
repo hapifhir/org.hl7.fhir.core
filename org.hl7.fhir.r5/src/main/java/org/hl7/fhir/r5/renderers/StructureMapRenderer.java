@@ -87,7 +87,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       renderMetadata(x, "url", map.getUrlElement());
       renderMetadata(x, "name", map.getNameElement());
       renderMetadata(x, "title", map.getTitleElement());
-      renderMetadata(x, "url", map.getStatusElement(), "draft");      
+      renderMetadata(x, "status", map.getStatusElement());      
       x.tx("\r\n");
     } else {
       x.b().tx("map");
@@ -109,7 +109,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
   }
 
   private void renderMetadata(XhtmlNode x, String name, DataType value) {
-    renderMetadata(x, name, value, null);
+    if (!value.isEmpty()) {
+      renderMetadata(x, name, value, null);
+    }
   }
   
   private void renderMetadata(XhtmlNode x, String name, DataType value, String def) {
@@ -151,16 +153,16 @@ public class StructureMapRenderer extends TerminologyRenderer {
       if (!prefixesSrc.containsKey(cg.getSource())) {
         prefixesSrc.put(cg.getSource(), String.valueOf(prefix));
         x.b().tx("  prefix ");
-        x.tx(prefix);
+        x.tx(""+prefix);
         x.color(COLOR_SYNTAX).tx(" = \"");
-        x.tx(""+cg.getSource());
+        x.tx(cg.getSource());
         x.color(COLOR_SYNTAX).tx("\"\r\n");
         prefix++;
       }
       if (!prefixesTgt.containsKey(cg.getTarget())) {
         prefixesTgt.put(cg.getTarget(), String.valueOf(prefix));
         x.b().tx("  prefix ");
-        x.tx(prefix);
+        x.tx(""+prefix);
         x.color(COLOR_SYNTAX).tx(" = \"");
         x.tx(""+cg.getTarget());
         x.color(COLOR_SYNTAX).tx("\"\r\n");
