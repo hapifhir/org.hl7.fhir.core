@@ -664,7 +664,9 @@ public class StructureMapUtilities {
         }
       }
     }
-    result.setId(result.getName());
+    if (!result.hasId() && result.hasName()) {
+      result.setId(Utilities.makeId(result.getName()));
+    }
     if (!result.hasStatus()) {
       result.setStatus(PublicationStatus.DRAFT);
     }
