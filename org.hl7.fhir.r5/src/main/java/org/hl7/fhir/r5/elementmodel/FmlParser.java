@@ -83,8 +83,14 @@ public class FmlParser extends ParserBase {
       if (!result.hasChild("status")) {
         result.makeElement("status").setValue("draft");
       }
+      if (!result.hasChild("id") && result.hasChild("name")) {
+        String id = Utilities.makeId(result.getChildValue("name"));
+        if (!Utilities.noString(id)) {
+          result.makeElement("id").setValue(id);
+        }
+      }
       if (!result.hasChild("description") && result.hasChild("title")) {
-        result.makeElement("description").setValue(result.getChildValue("title"));
+        result.makeElement("description").setValue(Utilities.makeId(result.getChildValue("title")));
       }
       
       while (lexer.hasToken("conceptmap"))
