@@ -665,7 +665,10 @@ public class StructureMapUtilities {
       }
     }
     if (!result.hasId() && result.hasName()) {
-      result.setId(Utilities.makeId(result.getName()));
+      String id = Utilities.makeId(result.getName());
+      if (Utilities.noString(id)) {
+        result.setId(id);
+      }
     }
     if (!result.hasStatus()) {
       result.setStatus(PublicationStatus.DRAFT);
