@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -155,7 +156,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
         x.b().tx("  prefix ");
         x.tx(""+prefix);
         x.color(COLOR_SYNTAX).tx(" = \"");
-        x.tx(cg.getSource());
+        CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getSource());
+        if (cs != null && cs.hasUserData("path")) {
+          x.ah(cs.getUserString("path"), cs.present()).tx(cg.getSource());
+        } else {
+          x.tx(cg.getSource());
+        }
         x.color(COLOR_SYNTAX).tx("\"\r\n");
         prefix++;
       }
@@ -164,7 +170,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
         x.b().tx("  prefix ");
         x.tx(""+prefix);
         x.color(COLOR_SYNTAX).tx(" = \"");
-        x.tx(""+cg.getTarget());
+        CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getTarget());
+        if (cs != null && cs.hasUserData("path")) {
+          x.ah(cs.getUserString("path"), cs.present()).tx(cg.getTarget());
+        } else {
+          x.tx(""+cg.getTarget());
+        }
         x.color(COLOR_SYNTAX).tx("\"\r\n");
         prefix++;
       }
@@ -247,7 +258,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
     for (StructureMapStructureComponent s : map.getStructure()) {
       x.b().tx("uses");
       x.color(COLOR_SYNTAX).tx(" \"");
-      x.tx(s.getUrl());
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, s.getUrl());
+      if (sd != null && sd.hasUserData("path")) {
+        x.ah(sd.getUserString("path"), sd.present()).tx(s.getUrl());
+      } else {
+        x.tx(s.getUrl());
+      }
       x.color(COLOR_SYNTAX).tx("\" ");
       if (s.hasAlias()) {
         x.b().tx("alias ");
@@ -267,7 +283,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
     for (UriType s : map.getImport()) {
       x.b().tx("imports");
       x.color(COLOR_SYNTAX).tx(" \"");
-      x.tx(s.getValue());
+      StructureMap m = context.getContext().fetchResource(StructureMap.class, s.getValue());
+      if (m != null) {
+        x.ah(m.getUserString("path"), m.present()).tx(s.getValue());
+      } else {
+        x.tx(s.getValue());
+      }
       x.color(COLOR_SYNTAX).tx("\"\r\n");
     }
     if (map.hasImport())
