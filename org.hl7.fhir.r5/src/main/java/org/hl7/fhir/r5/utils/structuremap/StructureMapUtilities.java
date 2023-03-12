@@ -664,6 +664,14 @@ public class StructureMapUtilities {
         }
       }
     }
+    result.setId(result.getName());
+    if (!result.hasStatus()) {
+      result.setStatus(PublicationStatus.DRAFT);
+    }
+    if (!result.hasDescription() && result.hasTitle()) {
+      result.setDescription(result.getTitle());
+    }
+
     while (lexer.hasToken("conceptmap"))
       parseConceptMap(result, lexer);
 
