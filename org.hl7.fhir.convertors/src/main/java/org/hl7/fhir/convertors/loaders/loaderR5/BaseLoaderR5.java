@@ -112,6 +112,7 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
   // and we only patch URLs to support version transforms
   // so we just patch sd/od -> vs -> cs
   protected void doPatchUrls(Resource resource) {
+    resource.setUserData("old.load.mode", true);
     if (resource instanceof CanonicalResource) {
       CanonicalResource cr = (CanonicalResource) resource;
       cr.setUrl(patchUrl(cr.getUrl(), cr.fhirType()));

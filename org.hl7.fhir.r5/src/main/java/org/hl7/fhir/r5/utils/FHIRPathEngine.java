@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MergedList;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.SourceLocation;
@@ -4173,6 +4174,10 @@ public class FHIRPathEngine {
         result.add(new StringType(Utilities.escapeXml(cnt)));        
       } else if ("json".equals(param)) {
         result.add(new StringType(Utilities.escapeJson(cnt)));        
+      } else if ("url".equals(param)) {
+        result.add(new StringType(Utilities.URLEncode(cnt)));        
+      } else if ("md".equals(param)) {
+        result.add(new StringType(MarkDownProcessor.makeStringSafeAsMarkdown(cnt)));        
       }
     }
 
@@ -4190,6 +4195,10 @@ public class FHIRPathEngine {
         result.add(new StringType(Utilities.unescapeXml(cnt)));        
       } else if ("json".equals(param)) {
         result.add(new StringType(Utilities.unescapeJson(cnt)));        
+      } else if ("url".equals(param)) {
+        result.add(new StringType(Utilities.URLDecode(cnt)));        
+      } else if ("md".equals(param)) {
+        result.add(new StringType(MarkDownProcessor.makeMarkdownForString(cnt)));        
       }
     }
 
@@ -4222,9 +4231,14 @@ public class FHIRPathEngine {
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
-
+    String param2 = param;
+    if (exp.getParameters().size() == 2) {
+      nl = execute(context, focus, exp.getParameters().get(1), true);
+      param2 = nl.get(0).primitiveValue();
+    }
+    
     List<Base> result = new ArrayList<Base>();
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(param);
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(param, param2);
     for (Base i : focus) {
       b.append(i.primitiveValue());    
     }
