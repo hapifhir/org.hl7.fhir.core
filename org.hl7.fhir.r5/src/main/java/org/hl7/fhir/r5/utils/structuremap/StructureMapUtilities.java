@@ -106,7 +106,7 @@ public class StructureMapUtilities {
   private static final boolean RENDER_MULTIPLE_TARGETS_ONELINE = true;
   public static final String AUTO_VAR_NAME = "vvv";
   public static final String DEF_GROUP_NAME = "DefaultMappingGroupAnonymousAlias";
-
+  
   private final IWorkerContext worker;
   private final FHIRPathEngine fpe;
   private ITransformerServices services;
@@ -658,6 +658,9 @@ public class StructureMapUtilities {
         case "title" : 
           result.setTitle(lexer.readConstant("title"));
           break;
+        case "status" : 
+          result.setStatus(PublicationStatus.fromCode(lexer.readConstant("status")));
+          break;
         default:
           lexer.readConstant("nothing");
           // nothing
@@ -666,7 +669,7 @@ public class StructureMapUtilities {
     }
     if (!result.hasId() && result.hasName()) {
       String id = Utilities.makeId(result.getName());
-      if (Utilities.noString(id)) {
+      if (!Utilities.noString(id)) {
         result.setId(id);
       }
     }
@@ -2695,6 +2698,67 @@ public class StructureMapUtilities {
 
   public void setExceptionsForChecks(boolean exceptionsForChecks) {
     this.exceptionsForChecks = exceptionsForChecks;
+  }
+
+  public List<StructureMap> getMapsForUrl(List<StructureMap> maps, String url, StructureMapInputMode mode) {
+    List<StructureMap> res = new ArrayList<>();
+    for (StructureMap map : maps) {
+      if (mapIsForUrl(map, url, mode)) {
+        res.add(map);
+      }
+    }
+    return res;
+  }
+
+  private boolean mapIsForUrl(StructureMap map, String url, StructureMapInputMode mode) {
+    for (StructureMapGroupComponent grp : map.getGroup()) {
+      if (grp.getTypeMode() != StructureMapGroupTypeMode.NULL) {
+        for (StructureMapGroupInputComponent p : grp.getInput()) {
+          if (mode == null || mode == p.getMode()) { 
+            String t = resolveInputType(p, map);
+            if (url.equals(t)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  public List<StructureMap> getMapsForUrlPrefix(List<StructureMap> maps, String url, StructureMapInputMode mode) {
+    List<StructureMap> res = new ArrayList<>();
+    for (StructureMap map : maps) {
+      if (mapIsForUrlPrefix(map, url, mode)) {
+        res.add(map);
+      }
+    }
+    return res;
+  }
+
+  private boolean mapIsForUrlPrefix(StructureMap map, String url, StructureMapInputMode mode) {
+    for (StructureMapGroupComponent grp : map.getGroup()) {
+      if (grp.getTypeMode() != StructureMapGroupTypeMode.NULL) {
+        for (StructureMapGroupInputComponent p : grp.getInput()) {
+          if (mode == null || mode == p.getMode()) { 
+            String t = resolveInputType(p, map);
+            if (t != null && t.startsWith(url)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  private String resolveInputType(StructureMapGroupInputComponent p, StructureMap map) {
+    for (StructureMapStructureComponent struc : map.getStructure()) {
+      if (struc.hasAlias() && struc.getAlias().equals(p.getType())) {
+        return struc.getUrl();
+      }
+    }
+    return null;
   }
 
 }

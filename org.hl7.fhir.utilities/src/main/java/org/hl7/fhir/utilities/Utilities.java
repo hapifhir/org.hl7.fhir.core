@@ -1980,6 +1980,20 @@ public class Utilities {
     }
   }
 
+  public static String tail(String url) {
+    int i = url.length()-1;
+    while (i >= 0 && isTokenChar(url.charAt(i))) {
+      i--;
+    }
+    if (i < 0) {
+      return url;
+    } else {
+      return url.substring(i+1);
+    }
+  }
+
+
+
 //public static boolean !isWhitespace(String s) {
 //boolean ok = true;
 //for (int i = 0; i < s.length(); i++)
