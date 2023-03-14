@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix NPE in string handling
