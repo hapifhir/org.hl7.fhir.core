@@ -1422,13 +1422,15 @@ public class Utilities {
       return false;
     }
     for (String l : list) {
-      if (s.startsWith(l)) {
-        return true;
+      if (l != null) {
+        if (s.startsWith(l)) {
+          return true;
+        }
       }
     }
     return false;
   }
-  
+
   public static boolean startsWithInList(String s, Collection<String> list) {
     if (s == null) {
       return false;
