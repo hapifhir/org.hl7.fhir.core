@@ -243,8 +243,9 @@ public abstract class ParserBase {
     return logical;
   }
 
-  public void setLogical(StructureDefinition logical) {
+  public ParserBase setLogical(StructureDefinition logical) {
     this.logical = logical;
+    return this;
   }
 
 }
