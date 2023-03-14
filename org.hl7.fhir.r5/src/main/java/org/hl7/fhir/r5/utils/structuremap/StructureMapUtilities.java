@@ -2761,4 +2761,30 @@ public class StructureMapUtilities {
     return null;
   }
 
+  public ResolvedGroup getGroupForUrl(StructureMap map, String url, StructureMapInputMode mode) {
+    for (StructureMapGroupComponent grp : map.getGroup()) {
+      if (grp.getTypeMode() != StructureMapGroupTypeMode.NULL) {
+        for (StructureMapGroupInputComponent p : grp.getInput()) {
+          if (mode == null || mode == p.getMode()) { 
+            String t = resolveInputType(p, map);
+            if (url.equals(t)) {
+              return new ResolvedGroup(map, grp);
+            }
+          }
+        }
+      }
+    }
+    return null;
+ }
+
+  public String getInputType(ResolvedGroup grp, StructureMapInputMode mode) {
+    if (grp.getTargetGroup().getInput().size() != 2 || grp.getTargetGroup().getInput().get(0).getMode() == grp.getTargetGroup().getInput().get(1).getMode()) {
+      return null;      
+    } else if (grp.getTargetGroup().getInput().get(0).getMode() == mode) {
+      return resolveInputType(grp.getTargetGroup().getInput().get(0), grp.getTargetMap());
+    } else {
+      return resolveInputType(grp.getTargetGroup().getInput().get(1), grp.getTargetMap());
+    }
+  }
+
 }

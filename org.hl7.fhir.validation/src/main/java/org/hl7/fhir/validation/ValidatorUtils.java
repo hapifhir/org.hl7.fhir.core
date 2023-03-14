@@ -47,7 +47,7 @@ public class ValidatorUtils {
     }
   }
 
-  protected static IWorkerContext.IContextResourceLoader loaderForVersion(String version) {
+  public static IWorkerContext.IContextResourceLoader loaderForVersion(String version) {
     if (Utilities.noString(version)) {
       return null;
     }
