@@ -635,20 +635,7 @@ public class Utilities {
    * @throws IOException
    */
   public static String path(String... args) throws IOException {
-    if (args[0] == null || noString(args[0].trim())) {
-      throw new RuntimeException("First entry cannot be null or empty");
-    }
-
-    if (isPathRoot(args[0])) {
-      throw new RuntimeException("First entry cannot be root: " + args[0]);
-    }
-
-    String output = uncheckedPath(args);
-
-    if (!Path.of(output.toString()).normalize().startsWith(Path.of(replaceVariables(args[0])).normalize())) {
-     throw new RuntimeException("Computed path does not start with first element: " + String.join(", ", args));
-    }
-    return output.toString();
+    return PathBuilder.getPathBuilder().buildPath(args);
   }
 
   /**
@@ -664,50 +651,11 @@ public class Utilities {
    * @throws IOException
    */
   public static String uncheckedPath(String... args) {
-    StringBuilder s = new StringBuilder();
-    boolean argIsNotEmptyOrNull = false;
-
-    boolean first = true;
-    for (String arg : args) {
-      if (first && arg == null)
-        continue;
-      first = false;
-      if (!argIsNotEmptyOrNull)
-        argIsNotEmptyOrNull = !noString(arg);
-      else if (!s.toString().endsWith(File.separator))
-        s.append(File.separator);
-      String a = arg;
-      if (s.length() == 0) {
-        a = replaceVariables(a);
-      }
-      a = a.replace("\\", File.separator);
-      a = a.replace("/", File.separator);
-      if (s.length() > 0 && a.startsWith(File.separator))
-        a = a.substring(File.separator.length());
-
-      while (a.startsWith(".." + File.separator)) {
-        if (s.length() == 0) {
-          s = new StringBuilder(Paths.get(".").toAbsolutePath().normalize().toString());
-        } else {
-          String p = s.toString().substring(0, s.length() - 1);
-          if (!p.contains(File.separator)) {
-            s = new StringBuilder();
-          } else {
-            s = new StringBuilder(p.substring(0, p.lastIndexOf(File.separator)) + File.separator);
-          }
-        }
-        a = a.substring(3);
-      }
-      if ("..".equals(a)) {
-        int i = s.substring(0, s.length() - 1).lastIndexOf(File.separator);
-        s = new StringBuilder(s.substring(0, i + 1));
-      } else
-        s.append(a);
-    }
-//    if (!Path.of(s.toString()).normalize().startsWith(Path.of(replaceVariables(args[0])).normalize())) {
-//     throw new RuntimeException("Computed path '"+s.toString()+"' normalised to '"+Path.of(s.toString()).normalize()+"' does not start with first element: " + String.join(", ", args));
-//    }
-    return s.toString();
+    return PathBuilder.getPathBuilder()
+      .withRequireNonRootFirstEntry(false)
+      .withRequireNonNullNonEmptyFirstEntry(false)
+      .withRequirePathIsChildOfTarget(false)
+      .buildPath(args);
   }
 
   private static String replaceVariables(String a) {
