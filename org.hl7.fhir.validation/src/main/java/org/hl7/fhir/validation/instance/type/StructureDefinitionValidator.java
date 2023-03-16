@@ -169,7 +169,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       if (Utilities.noString(tc) && type.hasChild("code")) {
         if (VersionUtilities.isR4Plus(context.getVersion())) {
-          throw new Error("Snapshot for " + sd.getId() +" element " + path + " has type.code without a value ");          
+          rule(errors, "2023-03-16", IssueType.INVALID, stack.getLiteralPath(), false, I18nConstants.SD_NO_TYPE_CODE_ON_CODE, path, sd.getId());
         }
       }
       if (!Utilities.noString(tc)) {
