@@ -133,6 +133,14 @@ public class XhtmlType extends PrimitiveType<String> {
   protected String parse(String theValue) {
     return theValue;
   }
+
+  public Narrative getPlace() {
+    return place;
+  }
+
+  public void setPlace(Narrative place) {
+    this.place = place;
+  }
   
 
 }

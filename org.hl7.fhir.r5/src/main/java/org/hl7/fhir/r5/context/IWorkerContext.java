@@ -274,7 +274,7 @@ public interface IWorkerContext {
     /** 
      * @return List of the resource types that should be loaded
      */
-    String[] getTypes();
+    List<String> getTypes();
 
     /**
      * Request to actually load the resources and do whatever is required
@@ -804,7 +804,7 @@ public interface IWorkerContext {
    * @return the number of resources loaded
    */
   @Deprecated
-  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String[] types) throws FileNotFoundException, IOException, FHIRException;
+  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, List<String> types) throws FileNotFoundException, IOException, FHIRException;
 
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package

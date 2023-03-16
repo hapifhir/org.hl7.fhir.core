@@ -303,7 +303,7 @@ public class Narrative extends BaseNarrative implements INarrative {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<NarrativeStatus>
-        case 99473: /*div*/ return this.div == null ? new Base[0] : new Base[] {new StringType(new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this.div))}; // XhtmlNode
+        case 99473: /*div*/ return this.div == null ? new Base[0] : new Base[] {new XhtmlType(this)}; // XhtmlNode
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -318,6 +318,7 @@ public class Narrative extends BaseNarrative implements INarrative {
           return value;
         case 99473: // div
           this.div = TypeConvertor.castToXhtml(value); // XhtmlNode
+          ((XhtmlType) value).setPlace(this);
           return value;
         default: return super.setProperty(hash, name, value);
         }
