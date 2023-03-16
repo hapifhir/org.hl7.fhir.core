@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.PEInstance.PEInstanceDataKind;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.junit.jupiter.api.Assertions;
@@ -38,7 +39,7 @@ public class PETests {
       ctxt = TestingUtilities.getSharedWorkerContext();
       FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager(true);
       NpmPackage npm = pc.loadPackage("hl7.fhir.us.core", "5.0.0");
-      ctxt.loadFromPackage(npm, new TestPackageLoader(new String[] { "StructureDefinition" }));
+      ctxt.loadFromPackage(npm, new TestPackageLoader(Utilities.strings("StructureDefinition" )));
       
       ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-extension-simple.json")));
       ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-extension-complex.json")));

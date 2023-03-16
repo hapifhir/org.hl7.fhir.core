@@ -1994,6 +1994,14 @@ public class Utilities {
     }
   }
 
+  public static List<String> strings(String... members) {
+    List<String> ret = new ArrayList<>();
+    for (String m : members) {
+      ret.add(m);
+    }
+    return ret;
+  }
+
 
 
 //public static boolean !isWhitespace(String s) {

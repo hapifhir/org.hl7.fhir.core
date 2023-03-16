@@ -59,7 +59,7 @@ public class R2016MayToR5Loader extends BaseLoaderR5 {
 
   private final BaseAdvisor_14_50 advisor = new BaseAdvisor_14_50();
 
-  public R2016MayToR5Loader(String[] types, ILoaderKnowledgeProviderR5 lkp) {
+  public R2016MayToR5Loader(List<String> types, ILoaderKnowledgeProviderR5 lkp) {
     super(types, lkp);
   }
 

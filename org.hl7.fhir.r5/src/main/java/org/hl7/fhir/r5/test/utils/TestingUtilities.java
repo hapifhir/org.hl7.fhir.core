@@ -126,12 +126,12 @@ public class TestingUtilities extends BaseTestingUtilities {
       if (!fcontext.hasPackage("hl7.terminology.r5", null)) {
         NpmPackage utg = pcm.loadPackage("hl7.terminology.r5");
         System.out.println("Loading THO: "+utg.name()+"#"+utg.version());
-        fcontext.loadFromPackage(utg, new TestPackageLoader(new String[]{"CodeSystem", "ValueSet"}));
+        fcontext.loadFromPackage(utg, new TestPackageLoader(Utilities.strings("CodeSystem", "ValueSet")));
       } 
       if (!fcontext.hasPackage("hl7.fhir.uv.extensions", null)) {
         NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", "current");
         System.out.println("Loading Extensions: "+ext.name()+"#"+ext.version());
-        fcontext.loadFromPackage(ext, new TestPackageLoader(new String[]{"CodeSystem", "ValueSet", "StructureDefinition"}));
+        fcontext.loadFromPackage(ext, new TestPackageLoader(Utilities.strings("CodeSystem", "ValueSet", "StructureDefinition")));
       } 
       R5Hacker.fixR5BrokenResources(fcontext);
       return fcontext;
