@@ -508,15 +508,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
     try {
       XhtmlDocument fragment = new XhtmlParser().parse(val, "div");
-      this.attributes = fragment.attributes;
-      this.childNodes = fragment.childNodes;
+      XhtmlNode root = fragment.getChildNodes().get(0);
+      this.attributes = root.attributes;
+      this.childNodes = root.childNodes;
       // Strip the <? .. ?> declaration if one was present
       if (childNodes.size() > 0 && childNodes.get(0) != null && childNodes.get(0).getNodeType() == NodeType.Instruction) {
         childNodes.remove(0);
       }
-      this.content = fragment.getContent();
-      this.name = fragment.getName();
-      this.nodeType= fragment.getNodeType();
+      this.content = root.getContent();
+      this.name = root.getName();
+      this.nodeType= root.getNodeType();
     } catch (Exception e) {
       // TODO: composer shouldn't throw exception like this
       throw new RuntimeException(e);
