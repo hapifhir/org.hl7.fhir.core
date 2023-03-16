@@ -1,7 +1,8 @@
 ## Validator Changes
 
-* no changes
+* Fixing issues parsing Bundle.issues in R5
 
 ## Other code changes
 
-* no changes
+* Fix bugs handling XHTML 
+* Refactor package loading API - List(String) instead of String[]
