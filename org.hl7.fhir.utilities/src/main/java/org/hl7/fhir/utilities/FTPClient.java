@@ -99,10 +99,14 @@ public class FTPClient {
    */
   public void connect() throws IOException {
     if (port != -1) {
+      logger.debug("Connecting to : " + server + ":" + port);
       clientImpl.connect(server, port);
+      logger.debug("Connected");
     }
     else {
+      logger.debug("Connecting to : " + server);
       clientImpl.connect(server);
+      logger.debug("Connected");
     }
 
     clientImpl.login(user, password);
@@ -140,7 +144,7 @@ public class FTPClient {
     clientImpl.deleteFile(resolvedPath);
     this.deleteFileTimeNanos += System.nanoTime() - startTime;
     throwExceptionForNegativeCompletion("Error deleting file.", false);
-    logger.debug("Remote file deleted: " + resolvedPath);
+    logger.debug("Deleted remote file: " + resolvedPath);
   }
 
   /**
@@ -158,17 +162,22 @@ public class FTPClient {
       }
       boolean exists = clientImpl.changeWorkingDirectory(subPath[i]);
       if (!exists) {
-        logger.debug("Remote directory does not exist: " + clientImpl.printWorkingDirectory() + remoteSeparator + subPath[i]);
+        logger.debug("Creating non-existent directory: " + clientImpl.printWorkingDirectory() + remoteSeparator + subPath[i] + " Creating");
         clientImpl.makeDirectory(subPath[i]);
         throwExceptionForNegativeCompletion("Creating directory:", true);
+        logger.debug("Created directory: " + subPath[i]);
+
+        logger.debug("Changing to created directory: " + subPath[i]);
         clientImpl.changeWorkingDirectory(subPath[i]);
         throwExceptionForNegativeCompletion("Changing to directory:", true);
-        logger.debug("Made remote directory: " + clientImpl.printWorkingDirectory());
+        logger.debug("Changed to directory: " + subPath[i]);
       }
     }} catch (IOException e) {
       throw new IOException("Error creating remote path: " + filePath, e);
     } finally {
+      logger.debug("Changing to original directory: " + this.resolvedPath);
       clientImpl.changeWorkingDirectory(this.resolvedPath);
+      logger.debug("Changed to original directory: " + this.resolvedPath);
     }
     this.createRemotePathIfNotExistsNanos += System.nanoTime() - startTime;
   }
@@ -204,12 +213,14 @@ public class FTPClient {
 
     FTPReplyCodeAndString reply = getFTPReplyCodeAndString();
     if (FTPReply.isPositiveCompletion(reply.replyCode)) {
-      logger.debug("Remote file uploaded: " + resolvedPath);
+      logger.debug("Uploaded file: " + resolvedPath);
       return;
     } else if (possibleDirectoryNotExistsCode(reply)) {
+      logger.debug("Uploading failed with reply: " + reply);
       createRemotePathIfNotExists(resolvedPath);
       attemptUpload(source, resolvedPath);
       throwExceptionForNegativeCompletion("Error uploading file (second attempt).", false);
+      logger.debug("Uploaded file after path creation: " + resolvedPath);
       return;
     }
 
