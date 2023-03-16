@@ -686,7 +686,7 @@ public class MedicationAdministration extends DomainResource {
          */
         public MedicationAdministrationDosageComponent setRate(DataType value) { 
           if (value != null && !(value instanceof Ratio || value instanceof Quantity))
-            throw new Error("Not the right type for MedicationAdministration.dosage.rate[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MedicationAdministration.dosage.rate[x]: "+value.fhirType());
           this.rate = value;
           return this;
         }
@@ -1558,7 +1558,7 @@ public class MedicationAdministration extends DomainResource {
      */
     public MedicationAdministration setOccurence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
-        throw new Error("Not the right type for MedicationAdministration.occurence[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for MedicationAdministration.occurence[x]: "+value.fhirType());
       this.occurence = value;
       return this;
     }

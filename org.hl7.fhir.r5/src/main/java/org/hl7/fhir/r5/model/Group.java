@@ -537,7 +537,7 @@ public class Group extends DomainResource {
          */
         public GroupCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof BooleanType || value instanceof Quantity || value instanceof Range || value instanceof Reference))
-            throw new Error("Not the right type for Group.characteristic.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Group.characteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

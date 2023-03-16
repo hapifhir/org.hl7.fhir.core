@@ -544,7 +544,7 @@ public class Invoice extends DomainResource {
          */
         public InvoiceLineItemComponent setServiced(DataType value) { 
           if (value != null && !(value instanceof DateType || value instanceof Period))
-            throw new Error("Not the right type for Invoice.lineItem.serviced[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Invoice.lineItem.serviced[x]: "+value.fhirType());
           this.serviced = value;
           return this;
         }
@@ -595,7 +595,7 @@ public class Invoice extends DomainResource {
          */
         public InvoiceLineItemComponent setChargeItem(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
-            throw new Error("Not the right type for Invoice.lineItem.chargeItem[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Invoice.lineItem.chargeItem[x]: "+value.fhirType());
           this.chargeItem = value;
           return this;
         }
@@ -1338,7 +1338,7 @@ public class Invoice extends DomainResource {
      */
     public Invoice setPeriod(DataType value) { 
       if (value != null && !(value instanceof DateType || value instanceof Period))
-        throw new Error("Not the right type for Invoice.period[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Invoice.period[x]: "+value.fhirType());
       this.period = value;
       return this;
     }

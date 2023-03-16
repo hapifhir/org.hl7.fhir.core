@@ -2545,7 +2545,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.XHTML_NS.equals(ns), I18nConstants.XHTML_XHTML_NS_INVALID, ns, FormatUtilities.XHTML_NS) && ok;
         // check that inner namespaces are all correct
         checkInnerNS(errors, e, path, xhtml.getChildNodes());
-        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, "div".equals(xhtml.getName()), I18nConstants.XHTML_XHTML_NAME_INVALID, ns) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, "div".equals(xhtml.getName()), I18nConstants.XHTML_XHTML_NAME_INVALID, xhtml.getName()) && ok;
         // check that no illegal elements and attributes have been used
         ok = checkInnerNames(errors, e, path, xhtml.getChildNodes(), false) && ok;
         ok = checkUrls(errors, e, path, xhtml.getChildNodes()) && ok;
@@ -5179,7 +5179,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (containedValidationPolicy.checkValid()) {
           // special case: resource wrapper is reset if we're crossing a bundle boundary, but not otherwise
           ValidatorHostContext hc = null;
-          if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.PARAMETER) {
+          if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.BUNDLE_ISSUES || special == SpecialElement.PARAMETER) {
             resource = element;
             assert Utilities.existsInList(hostContext.getResource().fhirType(), "Bundle", "Parameters") : "Containing Resource is "+hostContext.getResource().fhirType()+", expected Bundle or Parameters at "+stack.getLiteralPath();
             hc = hostContext.forEntry(element, hostContext.getResource()); // root becomes the grouping resource (should be either bundle or parameters)
@@ -5531,7 +5531,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean checkDisplay = true;
 
     SpecialElement special = ei.getElement().getSpecial();
-    if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.PARAMETER) {
+    if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.BUNDLE_ISSUES || special == SpecialElement.PARAMETER) {
       ok = checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, ei.getElement(), ei.getElement(), localStack, false) && ok;
     } else {
       ok = checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, resource, ei.getElement(), localStack, false) && ok;
@@ -6222,9 +6222,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (eid.getProperty() != null && eid.getProperty().getDefinition() != null && eid.getProperty().getDefinition().getBase().getPath().equals("Resource.id")) {
           NodeStack ns = stack.push(eid, -1, eid.getProperty().getDefinition(), null);
           if (eid.primitiveValue() != null && eid.primitiveValue().length() > 64) {
-            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MALFORMED_LENGTH) && ok;
+            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MALFORMED_LENGTH, eid.primitiveValue().length()) && ok;
           } else {
-            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), FormatUtilities.isValidId(eid.primitiveValue()), I18nConstants.RESOURCE_RES_ID_MALFORMED_CHARS) && ok;
+            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), FormatUtilities.isValidId(eid.primitiveValue()), I18nConstants.RESOURCE_RES_ID_MALFORMED_CHARS, eid.primitiveValue()) && ok;
           }
         }
       }

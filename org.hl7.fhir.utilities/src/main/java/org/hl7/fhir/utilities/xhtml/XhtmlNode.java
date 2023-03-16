@@ -508,15 +508,14 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
     try {
       XhtmlDocument fragment = new XhtmlParser().parse(val, "div");
-      this.attributes = fragment.attributes;
-      this.childNodes = fragment.childNodes;
-      // Strip the <? .. ?> declaration if one was present
-      if (childNodes.size() > 0 && childNodes.get(0) != null && childNodes.get(0).getNodeType() == NodeType.Instruction) {
-        childNodes.remove(0);
-      }
-      this.content = fragment.getContent();
-      this.name = fragment.getName();
-      this.nodeType= fragment.getNodeType();
+      // Skip the <? .. ?> declaration if one was present
+      XhtmlNodeList nodes = fragment.getChildNodes();
+      XhtmlNode root = nodes.get((nodes.size() > 0 && nodes.get(0) != null && nodes.get(0).getNodeType() == NodeType.Instruction)  ? 1 : 0);
+      this.attributes = root.attributes;
+      this.childNodes = root.childNodes;
+      this.content = root.getContent();
+      this.name = root.getName();
+      this.nodeType= root.getNodeType();
     } catch (Exception e) {
       // TODO: composer shouldn't throw exception like this
       throw new RuntimeException(e);
@@ -765,6 +764,10 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     this.getChildNodes().addAll(childNodes);    
   }
 
+
+  public XhtmlNode color(String color) {
+    return span("color: "+color, null);
+  }
   
   
 }

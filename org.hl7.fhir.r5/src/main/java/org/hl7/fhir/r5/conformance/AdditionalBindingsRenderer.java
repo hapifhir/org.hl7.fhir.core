@@ -323,48 +323,48 @@ public class AdditionalBindingsRenderer {
     boolean r5 = context == null || context.getWorker() == null ? false : VersionUtilities.isR5Plus(context.getWorker().getVersion());
     switch (purpose) {
     case "maximum": 
-      td.ah(r5 ? "valueset-additional-binding-purpose.html#additional-binding-purpose-maximum" : corePath+"extension-elementdefinition-maxvalueset.html", "A required binding, for use when the binding strength is 'extensible' or 'preferred'").tx("Max Binding");
+      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-maximum" : corePath+"extension-elementdefinition-maxvalueset.html", "A required binding, for use when the binding strength is 'extensible' or 'preferred'").tx("Max Binding");
       break;
     case "minimum": 
-      td.ah(r5 ? "valueset-additional-binding-purpose.html#additional-binding-purpose-minimum" : corePath+"extension-elementdefinition-minvalueset.html", "The minimum allowable value set - any conformant system SHALL support all these codes").tx("Min Binding");
+      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-minimum" : corePath+"extension-elementdefinition-minvalueset.html", "The minimum allowable value set - any conformant system SHALL support all these codes").tx("Min Binding");
       break;
     case "required" :
-      td.ah(r5 ? "valueset-additional-binding-purpose.html#additional-binding-purpose-required" : corePath+"terminologies.html#strength", "Validators will check this binding (strength = required)").tx("Required Binding");
+      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-required" : corePath+"terminologies.html#strength", "Validators will check this binding (strength = required)").tx("Required Binding");
       break;
     case "extensible" :
-      td.ah(r5 ? "valueset-additional-binding-purpose.html#additional-binding-purpose-extensible" : corePath+"terminologies.html#strength", "Validators will check this binding (strength = extensible)").tx("Extensible Binding");
+      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-extensible" : corePath+"terminologies.html#strength", "Validators will check this binding (strength = extensible)").tx("Extensible Binding");
       break;
     case "current" :
       if (r5) {
-        td.ah(r5 ? "valueset-additional-binding-purpose.html#additional-binding-purpose-current" : corePath+"terminologies.html#strength", "New records are required to use this value set, but legacy records may use other codes").tx("Current Binding");
+        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-current" : corePath+"terminologies.html#strength", "New records are required to use this value set, but legacy records may use other codes").tx("Current Binding");
       } else {
         td.span(null, "New records are required to use this value set, but legacy records may use other codes").tx("Required");
       }
       break;
     case "preferred" :
       if (r5) {
-        td.ah(r5 ? "valueset-additional-binding-purpose.html#additional-binding-purpose-preferred" : corePath+"terminologies.html#strength", "This is the value set that is recommended (documentation should explain why)").tx("Preferred Binding");
+        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-preferred" : corePath+"terminologies.html#strength", "This is the value set that is recommended (documentation should explain why)").tx("Preferred Binding");
       } else {
         td.span(null, "This is the value set that is recommended (documentation should explain why)").tx("Recommended");
       }
       break;
     case "ui" :
       if (r5) {
-        td.ah(r5 ? "valueset-additional-binding-purpose.html#additional-binding-purpose-ui" : corePath+"terminologies.html#strength", "This value set is provided to user look up in a given context").tx("UI Binding");
+        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-ui" : corePath+"terminologies.html#strength", "This value set is provided to user look up in a given context").tx("UI Binding");
       } else {
         td.span(null, "This value set is provided to user look up in a given context").tx("UI");        
       }
       break;
     case "starter" :
       if (r5) {
-        td.ah(r5 ? "valueset-additional-binding-purpose.html#additional-binding-purpose-starter" : corePath+"terminologies.html#strength", "This value set is a good set of codes to start with when designing your system").tx("Starter Set");
+        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-starter" : corePath+"terminologies.html#strength", "This value set is a good set of codes to start with when designing your system").tx("Starter Set");
       } else {
         td.span(null, "This value set is a good set of codes to start with when designing your system").tx("Starter");        
       }
       break;
     case "component" :
       if (r5) {
-        td.ah(r5 ? "valueset-additional-binding-purpose.html#additional-binding-purpose-component" : corePath+"terminologies.html#strength", "This value set is a component of the base value set").tx("Component");
+        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-component" : corePath+"terminologies.html#strength", "This value set is a component of the base value set").tx("Component");
       } else {
         td.span(null, "This value set is a component of the base value set").tx("Component");        
       }

@@ -566,7 +566,7 @@ public class AdverseEvent extends DomainResource {
          */
         public AdverseEventSuspectEntityComponent setInstance(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for AdverseEvent.suspectEntity.instance[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for AdverseEvent.suspectEntity.instance[x]: "+value.fhirType());
           this.instance = value;
           return this;
         }
@@ -1055,7 +1055,7 @@ public class AdverseEvent extends DomainResource {
          */
         public AdverseEventContributingFactorComponent setItem(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
-            throw new Error("Not the right type for AdverseEvent.contributingFactor.item[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for AdverseEvent.contributingFactor.item[x]: "+value.fhirType());
           this.item = value;
           return this;
         }
@@ -1254,7 +1254,7 @@ public class AdverseEvent extends DomainResource {
          */
         public AdverseEventPreventiveActionComponent setItem(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
-            throw new Error("Not the right type for AdverseEvent.preventiveAction.item[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for AdverseEvent.preventiveAction.item[x]: "+value.fhirType());
           this.item = value;
           return this;
         }
@@ -1453,7 +1453,7 @@ public class AdverseEvent extends DomainResource {
          */
         public AdverseEventMitigatingActionComponent setItem(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
-            throw new Error("Not the right type for AdverseEvent.mitigatingAction.item[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for AdverseEvent.mitigatingAction.item[x]: "+value.fhirType());
           this.item = value;
           return this;
         }
@@ -1652,7 +1652,7 @@ public class AdverseEvent extends DomainResource {
          */
         public AdverseEventSupportingInfoComponent setItem(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
-            throw new Error("Not the right type for AdverseEvent.supportingInfo.item[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for AdverseEvent.supportingInfo.item[x]: "+value.fhirType());
           this.item = value;
           return this;
         }
@@ -2300,7 +2300,7 @@ public class AdverseEvent extends DomainResource {
      */
     public AdverseEvent setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
-        throw new Error("Not the right type for AdverseEvent.occurrence[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for AdverseEvent.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
       return this;
     }

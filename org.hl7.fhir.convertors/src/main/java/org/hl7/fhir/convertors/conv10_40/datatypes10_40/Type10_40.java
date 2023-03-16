@@ -133,7 +133,7 @@ public class Type10_40 {
     if (src instanceof org.hl7.fhir.dstu2.model.SimpleQuantity)
       return SimpleQuantity10_40.convertSimpleQuantity((org.hl7.fhir.dstu2.model.SimpleQuantity) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown type " + src.fhirType());
+      throw new FHIRException("The type " + src.fhirType()+" cannot be converted from R2 to R4");
     } else {
       return null;
     }
@@ -217,7 +217,7 @@ public class Type10_40 {
     if (src instanceof org.hl7.fhir.r4.model.SimpleQuantity)
       return SimpleQuantity10_40.convertSimpleQuantity((org.hl7.fhir.r4.model.SimpleQuantity) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("Unknown type " + src.fhirType());
+      throw new FHIRException("The type " + src.fhirType()+" cannot be converted from R4 to R2");
     } else {
       return null;
     }

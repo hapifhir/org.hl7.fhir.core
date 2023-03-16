@@ -640,8 +640,9 @@ public class RenderingContext {
     return this;
   }
   
-  public void setPkp(ProfileKnowledgeProvider pkp) {
+  public RenderingContext setPkp(ProfileKnowledgeProvider pkp) {
     this.pkp = pkp;
+    return this;
   }
   public ProfileKnowledgeProvider getPkp() {
     return pkp;

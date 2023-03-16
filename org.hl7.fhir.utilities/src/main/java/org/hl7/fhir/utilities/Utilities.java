@@ -613,39 +613,72 @@ public class Utilities {
     return s.toString();
   }
 
+  private static boolean isPathRoot(String pathString) {
+    boolean actual;
+    Path path = Path.of(pathString);
+    Path normalizedPath = path.normalize();
+    actual = normalizedPath.equals(path.getRoot());
+    return actual;
+  }
 
+  /**
+   * Composes a path string using by concatenating the passed arguments.
+   * Variables such as [tmp] and [user] are replaced.
+   *
+   * In order to prevent unintentional access to areas of the file system
+   * outside of the first entry, this method will throw exceptions in situations
+   * where the constructed path is at a higher level than the first entry, or
+   * where the first entry is null or empty.
+   *
+   * @param args
+   * @return
+   * @throws IOException
+   */
   public static String path(String... args) throws IOException {
+    if (args[0] == null || noString(args[0].trim())) {
+      throw new RuntimeException("First entry cannot be null or empty");
+    }
+
+    if (isPathRoot(args[0])) {
+      throw new RuntimeException("First entry cannot be root: " + args[0]);
+    }
+
+    String output = uncheckedPath(args);
+
+    if (!Path.of(output.toString()).normalize().startsWith(Path.of(replaceVariables(args[0])).normalize())) {
+     throw new RuntimeException("Computed path does not start with first element: " + String.join(", ", args));
+    }
+    return output.toString();
+  }
+
+  /**
+   * Composes a path string using by concatenating the passed arguments.
+   * Variables such as [tmp] and [user] are replaced.
+   *
+   * This method does not check for unintentional access to areas of the file
+   * system outside of the first entry. ONLY USE THIS METHOD IN CASES WHERE YOU
+   * ARE CERTAIN THE COMPOSED PATH IS NOT MALICIOUS.
+   *
+   * @param args
+   * @return
+   * @throws IOException
+   */
+  public static String uncheckedPath(String... args) {
     StringBuilder s = new StringBuilder();
-    boolean d = false;
+    boolean argIsNotEmptyOrNull = false;
+
     boolean first = true;
     for (String arg : args) {
       if (first && arg == null)
         continue;
       first = false;
-      if (!d)
-        d = !noString(arg);
+      if (!argIsNotEmptyOrNull)
+        argIsNotEmptyOrNull = !noString(arg);
       else if (!s.toString().endsWith(File.separator))
         s.append(File.separator);
       String a = arg;
       if (s.length() == 0) {
-        if ("[tmp]".equals(a)) {
-          if (hasCTempDir()) {
-            a = C_TEMP_DIR;
-          } else if (ToolGlobalSettings.hasTempPath()) {            
-            a = ToolGlobalSettings.getTempPath();
-          } else {
-            a = System.getProperty("java.io.tmpdir");
-          }
-        } else if ("[user]".equals(a)) {
-          a = System.getProperty("user.home");
-        } else if (a.startsWith("[") && a.endsWith("]")) {
-          String ev = System.getenv(a.replace("[", "").replace("]", ""));
-          if (ev != null) {
-            a = ev;
-          } else {
-            a = "null";
-          }
-        }
+        a = replaceVariables(a);
       }
       a = a.replace("\\", File.separator);
       a = a.replace("/", File.separator);
@@ -671,7 +704,32 @@ public class Utilities {
       } else
         s.append(a);
     }
+//    if (!Path.of(s.toString()).normalize().startsWith(Path.of(replaceVariables(args[0])).normalize())) {
+//     throw new RuntimeException("Computed path '"+s.toString()+"' normalised to '"+Path.of(s.toString()).normalize()+"' does not start with first element: " + String.join(", ", args));
+//    }
     return s.toString();
+  }
+
+  private static String replaceVariables(String a) {
+    if ("[tmp]".equals(a)) {
+      if (hasCTempDir()) {
+        return C_TEMP_DIR;
+      } else if (ToolGlobalSettings.hasTempPath()) {
+        return ToolGlobalSettings.getTempPath();
+      } else {
+        return System.getProperty("java.io.tmpdir");
+      }
+    } else if ("[user]".equals(a)) {
+      return System.getProperty("user.home");
+    } else if (a.startsWith("[") && a.endsWith("]")) {
+      String ev = System.getenv(a.replace("[", "").replace("]", ""));
+      if (ev != null) {
+        return ev;
+      } else {
+        return "null";
+      }
+    }
+    return a;
   }
 
   private static boolean hasCTempDir() {
@@ -1364,13 +1422,15 @@ public class Utilities {
       return false;
     }
     for (String l : list) {
-      if (s.startsWith(l)) {
-        return true;
+      if (l != null) {
+        if (s.startsWith(l)) {
+          return true;
+        }
       }
     }
     return false;
   }
-  
+
   public static boolean startsWithInList(String s, Collection<String> list) {
     if (s == null) {
       return false;
@@ -1921,6 +1981,28 @@ public class Utilities {
       return s1.equals(s2);
     }
   }
+
+  public static String tail(String url) {
+    int i = url.length()-1;
+    while (i >= 0 && isTokenChar(url.charAt(i))) {
+      i--;
+    }
+    if (i < 0) {
+      return url;
+    } else {
+      return url.substring(i+1);
+    }
+  }
+
+  public static List<String> strings(String... members) {
+    List<String> ret = new ArrayList<>();
+    for (String m : members) {
+      ret.add(m);
+    }
+    return ret;
+  }
+
+
 
 //public static boolean !isWhitespace(String s) {
 //boolean ok = true;

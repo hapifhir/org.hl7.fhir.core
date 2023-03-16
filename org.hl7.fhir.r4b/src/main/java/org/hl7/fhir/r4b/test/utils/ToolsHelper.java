@@ -146,61 +146,6 @@ public class ToolsHelper {
 		//    }
 	}
 
-	private Map<String, byte[]> getDefinitions(String definitions) throws IOException, FHIRException {
-		Map<String, byte[]> results = new HashMap<String, byte[]>();
-		readDefinitions(results, loadDefinitions(definitions));
-		return results;
-	}
-
-	private void readDefinitions(Map<String, byte[]> map, byte[] defn) throws IOException {
-		ZipInputStream zip = new ZipInputStream(new ByteArrayInputStream(defn));
-		ZipEntry ze;
-		while ((ze = zip.getNextEntry()) != null) {
-			if (!ze.getName().endsWith(".zip") && !ze.getName().endsWith(".jar") ) { // skip saxon .zip
-				String name = ze.getName();
-				InputStream in = zip;
-				ByteArrayOutputStream b = new ByteArrayOutputStream();
-				int n;
-				byte[] buf = new byte[1024];
-				while ((n = in.read(buf, 0, 1024)) > -1) {
-					b.write(buf, 0, n);
-				}        
-				map.put(name, b.toByteArray());
-			}
-			zip.closeEntry();
-		}
-		zip.close();    
-	}
-
-	private byte[] loadDefinitions(String definitions) throws FHIRException, IOException {
-		byte[] defn;
-		//    if (Utilities.noString(definitions)) {
-		//      defn = loadFromUrl(MASTER_SOURCE);
-		//    } else 
-		if (definitions.startsWith("https:") || definitions.startsWith("http:")) {
-			defn = loadFromUrl(definitions);
-		} else if (new File(definitions).exists()) {
-			defn = loadFromFile(definitions);      
-		} else
-			throw new FHIRException("Unable to find FHIR validation Pack (source = "+definitions+")");
-		return defn;
-	}
-
-	private byte[] loadFromUrl(String src) throws IOException {
-		URL url = new URL(src);
-		byte[] str = IOUtils.toByteArray(url.openStream());
-		return str;
-	}
-
-	private byte[] loadFromFile(String src) throws IOException {
-		FileInputStream in = new FileInputStream(src);
-		byte[] b = new byte[in.available()];
-		in.read(b);
-		in.close();
-		return b;
-	}
-
-
 	protected XmlPullParser loadXml(InputStream stream) throws XmlPullParserException, IOException {
 		BufferedInputStream input = new BufferedInputStream(stream);
 		XmlPullParserFactory factory = XmlPullParserFactory.newInstance(System.getProperty(XmlPullParserFactory.PROPERTY_NAME), null);

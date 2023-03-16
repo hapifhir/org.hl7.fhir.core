@@ -1755,7 +1755,7 @@ public class GenomicStudy extends DomainResource {
          */
         public GenomicStudyAnalysisInputComponent setGeneratedBy(DataType value) { 
           if (value != null && !(value instanceof Identifier || value instanceof Reference))
-            throw new Error("Not the right type for GenomicStudy.analysis.input.generatedBy[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for GenomicStudy.analysis.input.generatedBy[x]: "+value.fhirType());
           this.generatedBy = value;
           return this;
         }

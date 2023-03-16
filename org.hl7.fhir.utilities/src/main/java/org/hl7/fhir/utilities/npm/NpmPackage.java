@@ -548,17 +548,34 @@ public class NpmPackage {
   }
 
   public List<String> listResources(String... types) throws IOException {
+    return listResources(Utilities.strings(types));
+  }
+  
+  public List<String> listResources(List<String> types) throws IOException {
     List<String> res = new ArrayList<String>();
     NpmPackageFolder folder = folders.get("package");
-    for (String s : types) {
-      if (folder.types.containsKey(s))
-        res.addAll(folder.types.get(s));
+    if (types.size() == 0) {
+      for (String s : folder.types.keySet()) {
+        if (folder.types.containsKey(s)) {
+          res.addAll(folder.types.get(s));
+        }
+      }
+    } else {
+      for (String s : types) {
+        if (folder.types.containsKey(s)) {
+          res.addAll(folder.types.get(s));
+        }
+      }
     }
     Collections.sort(res);
     return res;
   }
 
   public List<PackageResourceInformation> listIndexedResources(String... types) throws IOException {
+    return listIndexedResources(Utilities.strings(types));
+  }
+  
+  public List<PackageResourceInformation> listIndexedResources(List<String> types) throws IOException {
     List<PackageResourceInformation> res = new ArrayList<PackageResourceInformation>();
     for (NpmPackageFolder folder : folders.values()) {
       if (folder.index != null) {

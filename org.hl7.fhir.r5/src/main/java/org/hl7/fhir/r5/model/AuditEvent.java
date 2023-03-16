@@ -1002,7 +1002,7 @@ public class AuditEvent extends DomainResource {
          */
         public AuditEventAgentComponent setNetwork(DataType value) { 
           if (value != null && !(value instanceof Reference || value instanceof UriType || value instanceof StringType))
-            throw new Error("Not the right type for AuditEvent.agent.network[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for AuditEvent.agent.network[x]: "+value.fhirType());
           this.network = value;
           return this;
         }
@@ -2341,7 +2341,7 @@ public class AuditEvent extends DomainResource {
          */
         public AuditEventEntityDetailComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Ratio || value instanceof TimeType || value instanceof DateTimeType || value instanceof Period || value instanceof Base64BinaryType))
-            throw new Error("Not the right type for AuditEvent.entity.detail.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for AuditEvent.entity.detail.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -2871,7 +2871,7 @@ public class AuditEvent extends DomainResource {
      */
     public AuditEvent setOccurred(DataType value) { 
       if (value != null && !(value instanceof Period || value instanceof DateTimeType))
-        throw new Error("Not the right type for AuditEvent.occurred[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for AuditEvent.occurred[x]: "+value.fhirType());
       this.occurred = value;
       return this;
     }

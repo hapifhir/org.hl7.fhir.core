@@ -3503,7 +3503,7 @@ public boolean hasTarget() {
          */
         public ElementDefinitionExampleComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Availability || value instanceof ExtendedContactDetail || value instanceof Dosage || value instanceof Meta))
-            throw new Error("Not the right type for ElementDefinition.example.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ElementDefinition.example.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -7758,7 +7758,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
      */
     public ElementDefinition setDefaultValue(DataType value) { 
       if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Availability || value instanceof ExtendedContactDetail || value instanceof Dosage || value instanceof Meta))
-        throw new Error("Not the right type for ElementDefinition.defaultValue[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ElementDefinition.defaultValue[x]: "+value.fhirType());
       this.defaultValue = value;
       return this;
     }
@@ -8687,7 +8687,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
      */
     public ElementDefinition setFixed(DataType value) { 
       if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Availability || value instanceof ExtendedContactDetail || value instanceof Dosage || value instanceof Meta))
-        throw new Error("Not the right type for ElementDefinition.fixed[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ElementDefinition.fixed[x]: "+value.fhirType());
       this.fixed = value;
       return this;
     }
@@ -10190,7 +10190,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
      */
     public ElementDefinition setPattern(DataType value) { 
       if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Availability || value instanceof ExtendedContactDetail || value instanceof Dosage || value instanceof Meta))
-        throw new Error("Not the right type for ElementDefinition.pattern[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ElementDefinition.pattern[x]: "+value.fhirType());
       this.pattern = value;
       return this;
     }
@@ -10414,7 +10414,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
      */
     public ElementDefinition setMinValue(DataType value) { 
       if (value != null && !(value instanceof DateType || value instanceof DateTimeType || value instanceof InstantType || value instanceof TimeType || value instanceof DecimalType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof PositiveIntType || value instanceof UnsignedIntType || value instanceof Quantity))
-        throw new Error("Not the right type for ElementDefinition.minValue[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ElementDefinition.minValue[x]: "+value.fhirType());
       this.minValue = value;
       return this;
     }
@@ -10585,7 +10585,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
      */
     public ElementDefinition setMaxValue(DataType value) { 
       if (value != null && !(value instanceof DateType || value instanceof DateTimeType || value instanceof InstantType || value instanceof TimeType || value instanceof DecimalType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof PositiveIntType || value instanceof UnsignedIntType || value instanceof Quantity))
-        throw new Error("Not the right type for ElementDefinition.maxValue[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ElementDefinition.maxValue[x]: "+value.fhirType());
       this.maxValue = value;
       return this;
     }

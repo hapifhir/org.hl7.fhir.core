@@ -609,7 +609,7 @@ public class Measure extends MetadataResource {
          */
         public MeasureGroupComponent setSubject(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for Measure.group.subject[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Measure.group.subject[x]: "+value.fhirType());
           this.subject = value;
           return this;
         }
@@ -3611,7 +3611,7 @@ public class Measure extends MetadataResource {
      */
     public Measure setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for Measure.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Measure.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }
@@ -3899,7 +3899,7 @@ public class Measure extends MetadataResource {
      */
     public Measure setSubject(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-        throw new Error("Not the right type for Measure.subject[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Measure.subject[x]: "+value.fhirType());
       this.subject = value;
       return this;
     }

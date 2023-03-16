@@ -1476,7 +1476,7 @@ public class InventoryItem extends DomainResource {
          */
         public InventoryItemCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof StringType || value instanceof IntegerType || value instanceof DecimalType || value instanceof BooleanType || value instanceof UrlType || value instanceof DateTimeType || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Annotation || value instanceof Address || value instanceof Duration || value instanceof CodeableConcept))
-            throw new Error("Not the right type for InventoryItem.characteristic.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for InventoryItem.characteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

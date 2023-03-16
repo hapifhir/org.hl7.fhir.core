@@ -109,6 +109,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
+import org.hl7.fhir.r5.terminologies.providers.CodeSystemProviderExtension;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -407,6 +408,10 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.NOSERVICE, allErrors);
+    } catch (CodeSystemProviderExtension e) {
+      // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
+      // that might fail too, but it might not, later.
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.INTERNAL_ERROR, allErrors);
     } catch (Exception e) {
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
@@ -414,11 +419,11 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     }
   }
   
-  public ValueSetExpansionOutcome expandInternal(ValueSet source, Parameters expParams) throws FHIRException, FileNotFoundException, ETooCostly, IOException {
+  public ValueSetExpansionOutcome expandInternal(ValueSet source, Parameters expParams) throws FHIRException, FileNotFoundException, ETooCostly, IOException, CodeSystemProviderExtension {
       return doExpand(source, expParams);
   }
 
-  public ValueSetExpansionOutcome doExpand(ValueSet source, Parameters expParams) throws FHIRException, ETooCostly, FileNotFoundException, IOException {
+  public ValueSetExpansionOutcome doExpand(ValueSet source, Parameters expParams) throws FHIRException, ETooCostly, FileNotFoundException, IOException, CodeSystemProviderExtension {
     if (expParams == null)
       expParams = makeDefaultExpansion();
     source.checkNoModifiers("ValueSet", "expanding");
@@ -474,7 +479,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
   }
 
   private void handleCompose(ValueSetComposeComponent compose, ValueSetExpansionComponent exp, Parameters expParams, String ctxt, List<Extension> extensions, ValueSet valueSet)
-      throws ETooCostly, FileNotFoundException, IOException, FHIRException {
+      throws ETooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
     compose.checkNoModifiers("ValueSet.compose", "expanding");
     // Exclude comes first because we build up a map of things to exclude
     for (ConceptSetComponent inc : compose.getExclude())
@@ -594,7 +599,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     }
   }
 
-  private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet) throws ETooCostly, FileNotFoundException, IOException, FHIRException {
+  private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet) throws ETooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
     inc.checkNoModifiers("Compose.include", "expanding");
     List<ValueSet> imports = new ArrayList<ValueSet>();
     for (UriType imp : inc.getValueSet()) {
@@ -618,7 +623,13 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     }
   }
 
-  private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps) throws FHIRException {
+  private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps) throws FHIRException, CodeSystemProviderExtension {
+    CodeSystemProvider csp = CodeSystemProvider.factory(inc.getSystem());
+    if (csp != null) {
+      csp.includeCodes(inc, heirarchical, exp, imports, expParams, extensions, noInactive, vsProps);
+      return;
+    }
+    
     ValueSetExpansionOutcome vso = context.expandVS(inc, heirarchical, noInactive);
     if (vso.getError() != null) {
       throw failTSE("Unable to expand imported value set: " + vso.getError());

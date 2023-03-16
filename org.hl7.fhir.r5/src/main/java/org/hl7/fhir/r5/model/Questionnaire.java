@@ -2612,7 +2612,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
          */
         public QuestionnaireItemEnableWhenComponent setAnswer(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof DecimalType || value instanceof IntegerType || value instanceof DateType || value instanceof DateTimeType || value instanceof TimeType || value instanceof StringType || value instanceof Coding || value instanceof Quantity || value instanceof Reference))
-            throw new Error("Not the right type for Questionnaire.item.enableWhen.answer[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Questionnaire.item.enableWhen.answer[x]: "+value.fhirType());
           this.answer = value;
           return this;
         }
@@ -2950,7 +2950,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
          */
         public QuestionnaireItemAnswerOptionComponent setValue(DataType value) { 
           if (value != null && !(value instanceof IntegerType || value instanceof DateType || value instanceof TimeType || value instanceof StringType || value instanceof Coding || value instanceof Reference))
-            throw new Error("Not the right type for Questionnaire.item.answerOption.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Questionnaire.item.answerOption.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -3379,7 +3379,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
          */
         public QuestionnaireItemInitialComponent setValue(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof DecimalType || value instanceof IntegerType || value instanceof DateType || value instanceof DateTimeType || value instanceof TimeType || value instanceof StringType || value instanceof UriType || value instanceof Attachment || value instanceof Coding || value instanceof Quantity || value instanceof Reference))
-            throw new Error("Not the right type for Questionnaire.item.initial.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for Questionnaire.item.initial.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -3942,7 +3942,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      */
     public Questionnaire setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for Questionnaire.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Questionnaire.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }

@@ -1234,8 +1234,11 @@ public class StructureDefinition extends CanonicalResource {
 // added from java-adornments.txt:
 
   public ElementDefinition getElementByPath(String path) {
+    if (path == null) {
+      return null;
+    }
     for (ElementDefinition ed : getElement()) {
-      if (path.equals(ed.getPath())) {
+      if (path.equals(ed.getPath()) || (path+"[x]").equals(ed.getPath())) {
         return ed;
       }
     }
@@ -1866,7 +1869,7 @@ public class StructureDefinition extends CanonicalResource {
      */
     public StructureDefinition setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for StructureDefinition.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for StructureDefinition.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }

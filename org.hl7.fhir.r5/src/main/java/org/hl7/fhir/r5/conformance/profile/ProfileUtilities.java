@@ -3906,5 +3906,13 @@ public class ProfileUtilities extends TranslatingUtilities {
     this.allowUnknownProfile = allowUnknownProfile;
   }
 
+  public static boolean isSimpleExtension(StructureDefinition sd) {
+    if (!isExtensionDefinition(sd)) {
+      return false;
+    }
+    ElementDefinition value = sd.getSnapshot().getElementByPath("Extension.value");
+    return value != null && !value.isProhibited();
+  }
+
   
 }

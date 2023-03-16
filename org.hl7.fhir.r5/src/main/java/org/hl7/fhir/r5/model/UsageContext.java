@@ -184,7 +184,7 @@ public class UsageContext extends DataType implements ICompositeType {
      */
     public UsageContext setValue(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range || value instanceof Reference))
-        throw new Error("Not the right type for UsageContext.value[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for UsageContext.value[x]: "+value.fhirType());
       this.value = value;
       return this;
     }

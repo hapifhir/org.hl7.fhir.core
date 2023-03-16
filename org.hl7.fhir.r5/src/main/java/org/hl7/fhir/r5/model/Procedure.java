@@ -1396,7 +1396,7 @@ public class Procedure extends DomainResource {
      */
     public Procedure setOccurrence(DataType value) { 
       if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof StringType || value instanceof Age || value instanceof Range || value instanceof Timing))
-        throw new Error("Not the right type for Procedure.occurrence[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Procedure.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
       return this;
     }
@@ -1520,7 +1520,7 @@ public class Procedure extends DomainResource {
      */
     public Procedure setReported(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof Reference))
-        throw new Error("Not the right type for Procedure.reported[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Procedure.reported[x]: "+value.fhirType());
       this.reported = value;
       return this;
     }

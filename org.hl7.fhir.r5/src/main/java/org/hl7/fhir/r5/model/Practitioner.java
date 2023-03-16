@@ -670,7 +670,8 @@ public class Practitioner extends DomainResource {
     protected DataType deceased;
 
     /**
-     * Address(es) of the practitioner that are not role specific (typically home address). Work addresses are not typically entered in this property as they are usually role dependent.
+     * Address(es) of the practitioner that are not role specific (typically home address). 
+Work addresses are not typically entered in this property as they are usually role dependent.
      */
     @Child(name = "address", type = {Address.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Address(es) of the practitioner that are not role specific (typically home address)", formalDefinition="Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent." )
@@ -684,14 +685,18 @@ public class Practitioner extends DomainResource {
     protected List<Attachment> photo;
 
     /**
-     * The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.For example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.
+     * The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.
+
+For example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.
      */
     @Child(name = "qualification", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Qualifications, certifications, accreditations, licenses, training, etc. pertaining to the provision of care", formalDefinition="The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.\r\rFor example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality." )
     protected List<PractitionerQualificationComponent> qualification;
 
     /**
-     * A language which may be used to communicate with the practitioner, often for correspondence/administrative purposes.The `PractitionerRole.communication` property should be used for publishing the languages that a practitioner is able to communicate with patients (on a per Organization/Role basis).
+     * A language which may be used to communicate with the practitioner, often for correspondence/administrative purposes.
+
+The `PractitionerRole.communication` property should be used for publishing the languages that a practitioner is able to communicate with patients (on a per Organization/Role basis).
      */
     @Child(name = "communication", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A language which may be used to communicate with the practitioner", formalDefinition="A language which may be used to communicate with the practitioner, often for correspondence/administrative purposes.\r\rThe `PractitionerRole.communication` property should be used for publishing the languages that a practitioner is able to communicate with patients (on a per Organization/Role basis)." )
@@ -1049,7 +1054,7 @@ public class Practitioner extends DomainResource {
       return this.deceased != null && !this.deceased.isEmpty();
     }
 
-    /**
+    /**throw new FHIRException("Not the right type for
      * @param value {@link #deceased} (Indicates if the practitioner is deceased or not.)
      */
     public Practitioner setDeceased(DataType value) { 
@@ -1060,7 +1065,8 @@ public class Practitioner extends DomainResource {
     }
 
     /**
-     * @return {@link #address} (Address(es) of the practitioner that are not role specific (typically home address). Work addresses are not typically entered in this property as they are usually role dependent.)
+     * @return {@link #address} (Address(es) of the practitioner that are not role specific (typically home address). 
+Work addresses are not typically entered in this property as they are usually role dependent.)
      */
     public List<Address> getAddress() { 
       if (this.address == null)
@@ -1166,7 +1172,9 @@ public class Practitioner extends DomainResource {
     }
 
     /**
-     * @return {@link #qualification} (The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.For example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.)
+     * @return {@link #qualification} (The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.
+
+For example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.)
      */
     public List<PractitionerQualificationComponent> getQualification() { 
       if (this.qualification == null)
@@ -1219,7 +1227,9 @@ public class Practitioner extends DomainResource {
     }
 
     /**
-     * @return {@link #communication} (A language which may be used to communicate with the practitioner, often for correspondence/administrative purposes.The `PractitionerRole.communication` property should be used for publishing the languages that a practitioner is able to communicate with patients (on a per Organization/Role basis).)
+     * @return {@link #communication} (A language which may be used to communicate with the practitioner, often for correspondence/administrative purposes.
+
+The `PractitionerRole.communication` property should be used for publishing the languages that a practitioner is able to communicate with patients (on a per Organization/Role basis).)
      */
     public List<PractitionerCommunicationComponent> getCommunication() { 
       if (this.communication == null)

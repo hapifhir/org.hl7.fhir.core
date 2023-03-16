@@ -196,7 +196,7 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
      */
     public VirtualServiceDetail setAddress(DataType value) { 
       if (value != null && !(value instanceof UrlType || value instanceof StringType || value instanceof ContactPoint || value instanceof ExtendedContactDetail))
-        throw new Error("Not the right type for VirtualServiceDetail.address[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for VirtualServiceDetail.address[x]: "+value.fhirType());
       this.address = value;
       return this;
     }

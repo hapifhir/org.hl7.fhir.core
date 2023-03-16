@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MergedList;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.SourceLocation;
@@ -2346,7 +2347,7 @@ public class FHIRPathEngine {
     return makeBoolean(!res);
   }
 
-  private final static String[] FHIR_TYPES_STRING = new String[] {"string", "uri", "code", "oid", "id", "uuid", "sid", "markdown", "base64Binary", "canonical", "url"};
+  private final static String[] FHIR_TYPES_STRING = new String[] {"string", "uri", "code", "oid", "id", "uuid", "sid", "markdown", "base64Binary", "canonical", "url", "xhtml"};
 
   private List<Base> opLessThan(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
@@ -4173,6 +4174,10 @@ public class FHIRPathEngine {
         result.add(new StringType(Utilities.escapeXml(cnt)));        
       } else if ("json".equals(param)) {
         result.add(new StringType(Utilities.escapeJson(cnt)));        
+      } else if ("url".equals(param)) {
+        result.add(new StringType(Utilities.URLEncode(cnt)));        
+      } else if ("md".equals(param)) {
+        result.add(new StringType(MarkDownProcessor.makeStringSafeAsMarkdown(cnt)));        
       }
     }
 
@@ -4190,6 +4195,10 @@ public class FHIRPathEngine {
         result.add(new StringType(Utilities.unescapeXml(cnt)));        
       } else if ("json".equals(param)) {
         result.add(new StringType(Utilities.unescapeJson(cnt)));        
+      } else if ("url".equals(param)) {
+        result.add(new StringType(Utilities.URLDecode(cnt)));        
+      } else if ("md".equals(param)) {
+        result.add(new StringType(MarkDownProcessor.makeMarkdownForString(cnt)));        
       }
     }
 
@@ -4222,9 +4231,14 @@ public class FHIRPathEngine {
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
-
+    String param2 = param;
+    if (exp.getParameters().size() == 2) {
+      nl = execute(context, focus, exp.getParameters().get(1), true);
+      param2 = nl.get(0).primitiveValue();
+    }
+    
     List<Base> result = new ArrayList<Base>();
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(param);
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(param, param2);
     for (Base i : focus) {
       b.append(i.primitiveValue());    
     }
@@ -5027,10 +5041,11 @@ public class FHIRPathEngine {
       if (s != null) {
         Base res = null;
         if (s.startsWith("#")) {
+          String t = s.substring(1);
           Property p = context.rootResource.getChildByName("contained");
           if (p != null) {
             for (Base c : p.getValues()) {
-              if (chompHash(s).equals(chompHash(c.getIdBase()))) {
+              if (t.equals(c.getIdBase())) {
                 res = c;
                 break;
               }
@@ -5050,17 +5065,6 @@ public class FHIRPathEngine {
     }
 
     return result;
-  }
-
-  /**
-   * Strips a leading hashmark (#) if present at the start of a string
-   */
-  private String chompHash(String theId) {
-    String retVal = theId;
-    while (retVal.startsWith("#")) {
-      retVal = retVal.substring(1);
-    }
-    return retVal;
   }
 
   private List<Base> funcExtension(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
@@ -6045,7 +6049,12 @@ public class FHIRPathEngine {
   }
 
   private boolean isAbstractType(List<TypeRefComponent> list) {
-    return list.size() != 1 ? true : Utilities.existsInList(list.get(0).getCode(), "Element", "BackboneElement", "Resource", "DomainResource");
+    if (list.size() != 1) {
+      return false;
+    } else {
+      StructureDefinition sd = worker.fetchTypeDefinition(list.get(0).getCode());
+      return sd != null && sd.getAbstract();
+    }
   }
 
   private boolean hasType(ElementDefinition ed, String s) {

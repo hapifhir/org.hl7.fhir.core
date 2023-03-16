@@ -1860,7 +1860,7 @@ public class MedicinalProductDefinition extends DomainResource {
          */
         public MedicinalProductDefinitionCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof MarkdownType || value instanceof Quantity || value instanceof IntegerType || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
-            throw new Error("Not the right type for MedicinalProductDefinition.characteristic.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MedicinalProductDefinition.characteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }

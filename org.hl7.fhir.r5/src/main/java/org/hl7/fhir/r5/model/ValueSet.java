@@ -3045,7 +3045,7 @@ public class ValueSet extends MetadataResource {
          */
         public ValueSetExpansionParameterComponent setValue(DataType value) { 
           if (value != null && !(value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType || value instanceof UriType || value instanceof CodeType || value instanceof DateTimeType))
-            throw new Error("Not the right type for ValueSet.expansion.parameter.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ValueSet.expansion.parameter.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -4431,7 +4431,7 @@ public class ValueSet extends MetadataResource {
          */
         public ConceptPropertyComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeType || value instanceof Coding || value instanceof StringType || value instanceof IntegerType || value instanceof BooleanType || value instanceof DateTimeType || value instanceof DecimalType))
-            throw new Error("Not the right type for ValueSet.expansion.contains.property.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ValueSet.expansion.contains.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -4869,7 +4869,7 @@ public class ValueSet extends MetadataResource {
          */
         public ConceptSubPropertyComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeType || value instanceof Coding || value instanceof StringType || value instanceof IntegerType || value instanceof BooleanType || value instanceof DateTimeType || value instanceof DecimalType))
-            throw new Error("Not the right type for ValueSet.expansion.contains.property.subProperty.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ValueSet.expansion.contains.property.subProperty.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -5714,7 +5714,7 @@ public class ValueSet extends MetadataResource {
      */
     public ValueSet setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for ValueSet.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ValueSet.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }

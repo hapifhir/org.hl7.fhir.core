@@ -827,21 +827,26 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     
     // ok, first we try to expand locally
     ValueSetExpanderSimple vse = constructValueSetExpanderSimple();
+    res = null;
     try {
       res = vse.expand(vs, p);
-      allErrors.addAll(vse.getAllErrors());
-      if (res.getValueset() != null) {
-        if (!res.getValueset().hasUrl()) {
-          throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET));
-        }
-        txCache.cacheExpansion(cacheToken, res, TerminologyCache.TRANSIENT);
-        return res;
-      }
     } catch (Exception e) {
       allErrors.addAll(vse.getAllErrors());
       e.printStackTrace();
+      res = new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN);
     }
-    
+    allErrors.addAll(vse.getAllErrors());
+    if (res.getValueset() != null) {
+      if (!res.getValueset().hasUrl()) {
+        throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET));
+      }
+      txCache.cacheExpansion(cacheToken, res, TerminologyCache.TRANSIENT);
+      return res;
+    }
+    if (res.getErrorClass() == TerminologyServiceErrorClass.INTERNAL_ERROR) { // this class is created specifically to say: don't consult the server
+      return new ValueSetExpansionOutcome(res.getError(), res.getErrorClass());
+    }
+
     // if that failed, we try to expand on the server
     if (addDependentResources(p, vs)) {
       p.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
@@ -2148,6 +2153,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } else {
       return fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+typeName);
     }
+  }
+
+  @Override
+  public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
+    List<StructureDefinition> res = new ArrayList<>();
+    structures.listAll(res);
+    res.removeIf(sd -> !sd.getType().equals(typeName));
+    return res;
   }
 
   public boolean isTlogging() {

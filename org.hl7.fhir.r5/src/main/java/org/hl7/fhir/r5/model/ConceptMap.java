@@ -3100,7 +3100,7 @@ public class ConceptMap extends MetadataResource {
          */
         public MappingPropertyComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Coding || value instanceof StringType || value instanceof IntegerType || value instanceof BooleanType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof CodeType))
-            throw new Error("Not the right type for ConceptMap.group.element.target.property.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ConceptMap.group.element.target.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -3441,7 +3441,7 @@ public class ConceptMap extends MetadataResource {
          */
         public OtherElementComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeType || value instanceof Coding || value instanceof StringType || value instanceof BooleanType || value instanceof Quantity))
-            throw new Error("Not the right type for ConceptMap.group.element.target.dependsOn.value[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for ConceptMap.group.element.target.dependsOn.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -4640,7 +4640,7 @@ public class ConceptMap extends MetadataResource {
      */
     public ConceptMap setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for ConceptMap.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ConceptMap.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }
@@ -5878,7 +5878,7 @@ public class ConceptMap extends MetadataResource {
      */
     public ConceptMap setSourceScope(DataType value) { 
       if (value != null && !(value instanceof UriType || value instanceof CanonicalType))
-        throw new Error("Not the right type for ConceptMap.sourceScope[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ConceptMap.sourceScope[x]: "+value.fhirType());
       this.sourceScope = value;
       return this;
     }
@@ -5929,7 +5929,7 @@ public class ConceptMap extends MetadataResource {
      */
     public ConceptMap setTargetScope(DataType value) { 
       if (value != null && !(value instanceof UriType || value instanceof CanonicalType))
-        throw new Error("Not the right type for ConceptMap.targetScope[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ConceptMap.targetScope[x]: "+value.fhirType());
       this.targetScope = value;
       return this;
     }

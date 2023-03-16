@@ -1344,7 +1344,7 @@ public class MessageDefinition extends CanonicalResource {
      */
     public MessageDefinition setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for MessageDefinition.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for MessageDefinition.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }
@@ -2203,7 +2203,7 @@ public class MessageDefinition extends CanonicalResource {
      */
     public MessageDefinition setEvent(DataType value) { 
       if (value != null && !(value instanceof Coding || value instanceof UriType))
-        throw new Error("Not the right type for MessageDefinition.event[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for MessageDefinition.event[x]: "+value.fhirType());
       this.event = value;
       return this;
     }

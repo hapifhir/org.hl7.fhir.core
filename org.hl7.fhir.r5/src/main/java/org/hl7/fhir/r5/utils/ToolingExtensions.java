@@ -221,7 +221,9 @@ public class ToolingExtensions {
   public static final String EXT_DATE_FORMAT = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-format";
   public static final String EXT_ID_EXPECTATION = "http://hl7.org/fhir/tools/StructureDefinition/id-expectation";
   public static final String EXT_JSON_PRIMITIVE_CHOICE = "http://hl7.org/fhir/tools/StructureDefinition/json-primitive-choice";
-  
+  public static final String EXT_SUMMARY = "http://hl7.org/fhir/tools/StructureDefinition/profile-summary";
+  public static final String EXT_BINDING_DEFINITION = "http://hl7.org/fhir/tools/StructureDefinition/binding-definition";
+
 
   // unregistered? - don't know what these are used for 
   public static final String EXT_MAPPING_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-prefix";
@@ -240,6 +242,7 @@ public class ToolingExtensions {
   public static final String EXT_IGDEP_COMMENT = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment";
   public static final String EXT_XPATH_CONSTRAINT = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.constraint.xpath";
   public static final String EXT_OBLIGATION = "http://hl7.org/fhir/tools/StructureDefinition/obligation";
+  public static final String EXT_NO_BINDING = "http://hl7.org/fhir/tools/StructureDefinition/no-binding";
   ;
   
   // specific extension helpers

@@ -250,7 +250,7 @@ public class MessageHeader extends DomainResource {
          */
         public MessageDestinationComponent setEndpoint(DataType value) { 
           if (value != null && !(value instanceof UrlType || value instanceof Reference))
-            throw new Error("Not the right type for MessageHeader.destination.endpoint[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MessageHeader.destination.endpoint[x]: "+value.fhirType());
           this.endpoint = value;
           return this;
         }
@@ -611,7 +611,7 @@ public class MessageHeader extends DomainResource {
          */
         public MessageSourceComponent setEndpoint(DataType value) { 
           if (value != null && !(value instanceof UrlType || value instanceof Reference))
-            throw new Error("Not the right type for MessageHeader.source.endpoint[x]: "+value.fhirType());
+            throw new FHIRException("Not the right type for MessageHeader.source.endpoint[x]: "+value.fhirType());
           this.endpoint = value;
           return this;
         }
@@ -1384,7 +1384,7 @@ public class MessageHeader extends DomainResource {
      */
     public MessageHeader setEvent(DataType value) { 
       if (value != null && !(value instanceof Coding || value instanceof CanonicalType))
-        throw new Error("Not the right type for MessageHeader.event[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for MessageHeader.event[x]: "+value.fhirType());
       this.event = value;
       return this;
     }

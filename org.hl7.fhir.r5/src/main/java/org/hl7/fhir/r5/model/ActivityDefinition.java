@@ -1582,7 +1582,7 @@ public class ActivityDefinition extends MetadataResource {
      */
     public ActivityDefinition setVersionAlgorithm(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Coding))
-        throw new Error("Not the right type for ActivityDefinition.versionAlgorithm[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ActivityDefinition.versionAlgorithm[x]: "+value.fhirType());
       this.versionAlgorithm = value;
       return this;
     }
@@ -1885,7 +1885,7 @@ public class ActivityDefinition extends MetadataResource {
      */
     public ActivityDefinition setSubject(DataType value) { 
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference || value instanceof CanonicalType))
-        throw new Error("Not the right type for ActivityDefinition.subject[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ActivityDefinition.subject[x]: "+value.fhirType());
       this.subject = value;
       return this;
     }
@@ -3234,7 +3234,7 @@ public class ActivityDefinition extends MetadataResource {
      */
     public ActivityDefinition setTiming(DataType value) { 
       if (value != null && !(value instanceof Timing || value instanceof Age || value instanceof Range || value instanceof Duration))
-        throw new Error("Not the right type for ActivityDefinition.timing[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ActivityDefinition.timing[x]: "+value.fhirType());
       this.timing = value;
       return this;
     }
@@ -3285,7 +3285,7 @@ public class ActivityDefinition extends MetadataResource {
      */
     public ActivityDefinition setAsNeeded(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof CodeableConcept))
-        throw new Error("Not the right type for ActivityDefinition.asNeeded[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ActivityDefinition.asNeeded[x]: "+value.fhirType());
       this.asNeeded = value;
       return this;
     }
@@ -3413,7 +3413,7 @@ public class ActivityDefinition extends MetadataResource {
      */
     public ActivityDefinition setProduct(DataType value) { 
       if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
-        throw new Error("Not the right type for ActivityDefinition.product[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for ActivityDefinition.product[x]: "+value.fhirType());
       this.product = value;
       return this;
     }

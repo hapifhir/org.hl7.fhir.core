@@ -35,11 +35,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -103,13 +105,13 @@ public class UtilitiesXTests {
     if (Utilities.noString(version))
       return null;
     if (version.startsWith("1.0"))
-      return new R2ToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5());
+      return new R2ToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5());
     if (version.startsWith("1.4"))
-      return new R2016MayToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5()); // special case
+      return new R2016MayToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5()); // special case
     if (version.startsWith("3.0"))
-      return new R3ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5());
+      return new R3ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5());
     if (version.startsWith("4.0"))
-      return new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5(), version);
+      return new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5(), version);
     return null;
   }
 
@@ -478,7 +480,7 @@ public class UtilitiesXTests {
 
   public static boolean findTestResource(String... paths) throws IOException { 
     if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+      String n = Utilities.path(getUserDirFhirTestCases(), Utilities.path(paths));
       return new File(n).exists();
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
@@ -498,7 +500,7 @@ public class UtilitiesXTests {
 
   public static String loadTestResource(String... paths) throws IOException {
     if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+      String n = Utilities.path(getUserDirFhirTestCases(), Utilities.path(paths));
       // ok, we'll resolve this locally
       return TextFile.fileToString(new File(n));
     } else {
@@ -515,9 +517,14 @@ public class UtilitiesXTests {
     }
   }
 
+  @Nonnull
+  private static String getUserDirFhirTestCases() {
+    return Path.of(System.getProperty("user.dir"), "..", "..", "fhir-test-cases").normalize().toString();
+  }
+
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
     if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+      String n = Utilities.path(getUserDirFhirTestCases(), Utilities.path(paths));
       return new FileInputStream(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));

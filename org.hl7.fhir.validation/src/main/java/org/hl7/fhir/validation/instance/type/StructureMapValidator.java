@@ -33,6 +33,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.structuremap.ResolvedGroup;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -173,6 +174,8 @@ public class StructureMapValidator extends BaseValidator {
       if (ed != null) {
         if (!ed.getPath().contains(".")) {
           return ed.getPath();
+        } else if (isAbstractType(ed.getType())) {
+          return sd.getUrl()+"#"+ed.getPath();
         } else if (ed.getType().size() == 1) {
           return ed.getType().get(0).getWorkingCode();
         }
@@ -305,6 +308,16 @@ public class StructureMapValidator extends BaseValidator {
 
   }
   
+  public boolean isAbstractType(List<TypeRefComponent> list) {
+      if (list.size() != 1) {
+        return false;
+      } else {
+        StructureDefinition sd = context.fetchTypeDefinition(list.get(0).getCode());
+        return sd != null && sd.getAbstract();
+      }
+
+  }
+
   public boolean validateStructureMap(List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
     List<Element> imports = src.getChildrenByName("import");
@@ -314,6 +327,7 @@ public class StructureMapValidator extends BaseValidator {
       cc++;
     }
     
+    List<String> grpNames = new ArrayList<>();
     List<Element> groups = src.getChildrenByName("group");
     // we iterate the groups repeatedly, validating them if they have stated types or found types, until nothing happens
     boolean fired = false;
@@ -325,7 +339,7 @@ public class StructureMapValidator extends BaseValidator {
           if (hasInputTypes(group) || group.hasUserData("structuremap.parameters")) {
             group.setUserData("structuremap.validated", true);
             fired = true;
-            ok = validateGroup(errors, src, group, stack.push(group, cc, null, null)) && ok;
+            ok = validateGroup(errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
           }
         }
         cc++;
@@ -336,7 +350,7 @@ public class StructureMapValidator extends BaseValidator {
     for (Element group : groups) {
       if (!group.hasUserData("structuremap.validated")) {
         hint(errors, "2023-03-01", IssueType.INFORMATIONAL, group.line(), group.col(), stack.push(group, cc, null, null).getLiteralPath(), ok, I18nConstants.SM_ORPHAN_GROUP, group.getChildValue("name"));
-        ok = validateGroup(errors, src, group, stack.push(group, cc, null, null)) && ok;
+        ok = validateGroup(errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
       }
       cc++;
     }            
@@ -369,13 +383,16 @@ public class StructureMapValidator extends BaseValidator {
     return true;
   }
 
-  private boolean validateGroup(List<ValidationMessage> errors, Element src, Element group, NodeStack stack) {
+  private boolean validateGroup(List<ValidationMessage> errors, Element src, Element group, NodeStack stack, List<String> grpNames) {
     String name = group.getChildValue("name");
     boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, group.line(), group.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name);
+    if (!rule(errors, "2023-03-01", IssueType.INVALID, group.line(), group.col(), stack.getLiteralPath(), !grpNames.contains(name), I18nConstants.SM_GROUP_NAME_DUPLICATE, name)) {
+      grpNames.add(name);
+    }
     
     Element extend = group.getNamedChild("extends");
     if (extend != null) {
-      StructureMapGroupComponent grp = resolveGroup(extend.primitiveValue(), src);
+      ResolvedGroup grp = resolveGroup(extend.primitiveValue(), src);
       if (rule(errors, "2023-03-01", IssueType.NOTSUPPORTED, extend.line(), extend.col(), stack.push(extend, -1, null, null).getLiteralPath(), grp != null, I18nConstants.SM_RULEGROUP_NOT_FOUND, extend.primitiveValue())) {
         // check inputs 
       } else {
@@ -406,7 +423,7 @@ public class StructureMapValidator extends BaseValidator {
     return ok;
   }
 
-  private StructureMapGroupComponent resolveGroup(String grpName, Element src) {
+  private ResolvedGroup resolveGroup(String grpName, Element src) {
     if (grpName == null) {
       return null;
     }
@@ -414,13 +431,13 @@ public class StructureMapValidator extends BaseValidator {
     for (Element group : groups) {
       String name = group.getChildValue("name");
       if (grpName.equals(name)) {
-        return makeGroupComponent(group);
-      }
+        return new ResolvedGroup(null, makeGroupComponent(group));
+      } 
     }  
     for (StructureMap map : imports) {
       for (StructureMapGroupComponent grp : map.getGroup()) {
         if (grpName.equals(grp.getName())) {
-          return grp;
+          return new ResolvedGroup(map, grp);
         }
       }
     }
@@ -724,7 +741,7 @@ public class StructureMapValidator extends BaseValidator {
                   String exp = params.get(0).getChildValue("value");
                   if (rule(errors, "2023-03-01", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), exp != null, I18nConstants.SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE, "0", params.size())) {
                     try {
-                      TypeDetails td = fpe.check(variables, v.getSd().getType(), v.getEd().getPath(), fpe.parse(exp));
+                      TypeDetails td = fpe.check(variables, v.getSd().getUrl(), v.getEd().getPath(), fpe.parse(exp));
                       if (td.getTypes().size() == 1) {
                         type = td.getType();
                       }
@@ -976,7 +993,9 @@ public class StructureMapValidator extends BaseValidator {
 
   private void getElementDefinitionChildrenFromTypes(List<ElementDefinitionSource> result, StructureDefinition sd, ElementDefinition ed, String type, String element) {
     for (TypeRefComponent td : ed.getType()) {
-      if (type == null | td.getWorkingCode().equals(type)) {
+      String tn = td.getWorkingCode();
+      StructureDefinition sdt = context.fetchTypeDefinition(tn);
+      if (type == null || tn.equals(type) || (sdt != null && sdt.getType().equals(type))) {
         StructureDefinition tsd = context.fetchTypeDefinition(td.getWorkingCode());
         if (tsd != null) {
           for (ElementDefinition t : tsd.getSnapshot().getElement()) {
@@ -1027,20 +1046,22 @@ public class StructureMapValidator extends BaseValidator {
         }      
       }
     } else {
-      StructureMapGroupComponent grp = resolveGroup(name, src);
+      ResolvedGroup grp = resolveGroup(name, src);
       if (rule(errors, "2023-03-01", IssueType.NOTFOUND, dependent.line(), dependent.col(), stack.getLiteralPath(), grp != null, I18nConstants.SM_RULEGROUP_NOT_FOUND, name)) {
         List<Element> params = dependent.getChildren("parameter");
-        if (rule(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), params.size() == grp.getInput().size(), I18nConstants.SM_RULEGROUP_NOT_FOUND, params.size(), grp.getInput().size())) {
+        if (rule(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), params.size() == grp.getTargetGroup().getInput().size(), I18nConstants.SM_RULEGROUP_NOT_FOUND, params.size(), grp.getTargetGroup().getInput().size())) {
           VariableSet lvars = new VariableSet();
           int cc = 0;
           for (Element param : params) {
             NodeStack pstack = stack.push(param, cc, null, null);
-            StructureMapGroupInputComponent input = grp.getInput().get(cc);
+            StructureMapGroupInputComponent input = grp.getTargetGroup().getInput().get(cc);
+            String iType = resolveType(grp, input, src);
             String pname = input.getName();
             VariableDefn v = getParameter(errors, param, pstack, variables, input.getMode());
             if (v != null) {
-              if (rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), v.mode.equals(input.getMode().toCode()), I18nConstants.SM_DEPENDENT_PARAM_MODE_MISMATCH, param.getChildValue("name"), v.mode, input.getMode().toCode()) &&
-                rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), typesMatch(v, input.getType()), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH, param.getChildValue("name"), v, input.getType())) {
+              if (rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), v.mode.equals(input.getMode().toCode()), I18nConstants.SM_DEPENDENT_PARAM_MODE_MISMATCH, param.getChildValue("name"), v.mode, input.getMode().toCode(), grp.getTargetGroup().getName()) &&
+                rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), typesMatch(v, iType), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH, 
+                    pname, v.summary(), input.getType(), grp.getTargetGroup().getName(), input.getType(), grp.getTargetMap() == null ? "$this" : grp.getTargetMap().getVersionedUrl())) {
                 lvars.add(pname, v);  
               } else {
                 ok = false;
@@ -1050,11 +1071,11 @@ public class StructureMapValidator extends BaseValidator {
             }
             cc++;
           }
-          if (ok && grp.hasUserData("element.source")) {
-            Element g = (Element) grp.getUserData("element.source");
+          if (ok && grp.getTargetGroup().hasUserData("element.source")) {
+            Element g = (Element) grp.getTargetGroup().getUserData("element.source");
             if (g.hasUserData("structuremap.parameters")) {
               VariableSet pvars = (VariableSet) g.getUserData("structuremap.parameters");
-              rule(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), pvars.matches(lvars), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE, grp.getName(), pvars.summary(), lvars.summary());
+              rule(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), pvars.matches(lvars), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE, grp.getTargetGroup().getName(), pvars.summary(), lvars.summary());
             } else {
               g.setUserData("structuremap.parameters", lvars);
             }
@@ -1065,6 +1086,25 @@ public class StructureMapValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  private String resolveType(ResolvedGroup grp, StructureMapGroupInputComponent input, Element map) {
+    if (grp.getTargetMap() == null) {
+      List<Element> structures = map.getChildrenByName("structure");
+      for (Element structure : structures) {
+        String alias = structure.getChildValue("alias");
+        if (alias != null && alias.equals(input.getType())) {
+          return structure.getChildValue("url");
+        }
+      }      
+    } else {
+      for (StructureMapStructureComponent struc : grp.getTargetMap().getStructure()) {
+        if (struc.hasAlias() && struc.getAlias().equals(input.getType())) {
+          return struc.getUrl();
+        }
+      }
+    }
+    return input.getType();
   }
 
   private StructureMapGroupComponent findDefaultGroup(Element src, String srcType, String tgtType) {    
@@ -1126,9 +1166,16 @@ public class StructureMapValidator extends BaseValidator {
   }
 
   private boolean typesMatch(VariableDefn v, String type) {
-    if (type == null) {
+    if (type == null || !v.hasTypeInfo()) {
+      return true;
+    } else if (v.getSd().getUrl().equals(type) || v.getSd().getType().equals(type)) {
       return true;
     } else {
+      for (TypeRefComponent tr : v.getEd().getType()) {
+        if (type.equals(tr.getWorkingCode()) || type.equals("http://hl7.org/fhir/StructureDefinition/"+tr.getWorkingCode())) {
+          return true;
+        }
+      }
       return false;
     }
   }
