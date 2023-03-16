@@ -1,11 +1,14 @@
 package org.hl7.fhir.validation;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import org.hl7.fhir.convertors.loaders.loaderR5.R4BToR5Loader;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -72,6 +75,7 @@ import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
@@ -79,6 +83,7 @@ import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.Params;
+import org.hl7.fhir.validation.special.R4R5MapTester;
 import org.hl7.fhir.validation.testexecutor.TestExecutor;
 import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
 
@@ -132,10 +137,25 @@ public class ValidatorCli {
       }
     } else if (Params.hasParam(args, Params.TEST)) {
       parseTestParamsAndExecute(args);
-    }
-    else {
+    } else if (Params.hasParam(args, Params.SPECIAL)) {
+      executeSpecial(args);
+    } else {
       Display.printCliArgumentsAndInfo(args);
       doValidation(tt, tts, cliContext);
+    }
+  }
+
+  private static void executeSpecial(String[] args) throws JsonException, IOException {
+    String specialMode = Params.getParam(args, Params.SPECIAL);
+    if ("r4r5tests".equals(specialMode)) {
+      final String target = Params.getParam(args, Params.TARGET);
+      final String source = Params.getParam(args, Params.SOURCE);
+      final String filter = Params.getParam(args, Params.FILTER);
+      if (new File(target).exists()) {
+        new R4R5MapTester().testMaps(target, source, filter);
+      }   
+    } else {
+      System.out.println("Unknown SpecialMode "+specialMode);
     }
   }
 
