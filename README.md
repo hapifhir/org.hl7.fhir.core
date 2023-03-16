@@ -74,6 +74,11 @@ _The source contains cached terminology server responses for testing. If the exp
 this cache should be cleaned and rebuilt with the above so that subsequent `mvn test` calls will have the most current 
 responses cached._
 
+To just build validator_cli locally:
+```
+mvn package -Dmaven.test.skip=true --projects org.hl7.fhir.validation.cli --no-transfer-progress
+cp org.hl7.fhir.validation.cli/target/org.hl7.fhir.validation.cli*-SNAPSHOT.jar ./validator_cli.jar
+```
 
 ## Releases
 
