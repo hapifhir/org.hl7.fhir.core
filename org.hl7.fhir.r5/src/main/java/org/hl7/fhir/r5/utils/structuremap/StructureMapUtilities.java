@@ -1719,8 +1719,13 @@ public class StructureMapUtilities {
     Base v = null;
     if (tgt.hasTransform()) {
       v = runTransform(rulePath, context, map, group, tgt, vars, dest, tgt.getElement(), srcVar, atRoot);
-      if (v != null && dest != null)
-        v = dest.setProperty(tgt.getElement().hashCode(), tgt.getElement(), v); // reset v because some implementations may have to rewrite v when setting the value
+      if (v != null && dest != null) {
+        try {
+          v = dest.setProperty(tgt.getElement().hashCode(), tgt.getElement(), v); // reset v because some implementations may have to rewrite v when setting the value
+        } catch (Exception e) {
+          throw new FHIRException("Error setting "+tgt.getElement()+" on "+dest.fhirType()+" for rule "+rulePath+" to value "+v.toString()+": "+e.getMessage(), e);
+        }
+      }
     } else if (dest != null) {
       if (tgt.hasListMode(StructureMapTargetListMode.SHARE)) {
         v = sharedVars.get(VariableMode.SHARED, tgt.getListRuleId());
