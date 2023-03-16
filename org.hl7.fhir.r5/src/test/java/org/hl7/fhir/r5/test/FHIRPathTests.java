@@ -11,6 +11,9 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
@@ -204,7 +207,12 @@ public class FHIRPathTests {
     
     if (node != null) {
       try {
-        outcome = fp.evaluate(res, node);
+        if ("element".equals(test.getAttribute("mode"))) {
+          List<NamedElement> e = Manager.parse(fp.getWorker(), TestingUtilities.loadTestResourceStream("r5", input), input.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML);                        
+          outcome = fp.evaluate(e.get(0).getElement(), node);
+        } else {
+          outcome = fp.evaluate(res, node);
+        }
         Assertions.assertTrue(fail == TestResultType.OK, String.format("Expected exception didn't occur executing %s", expression));
       } catch (Exception e) {
         System.out.println("Execution Error: "+e.getMessage());
