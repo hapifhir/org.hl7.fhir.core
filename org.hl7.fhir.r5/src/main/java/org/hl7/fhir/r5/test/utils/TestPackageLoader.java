@@ -16,9 +16,9 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 
 public class TestPackageLoader implements IContextResourceLoader {
 
-  private String[] types;
+  private List<String> types;
 
-  public TestPackageLoader(String[] types) {
+  public TestPackageLoader(List<String> types) {
     this.types = types;
   }
 
@@ -33,7 +33,7 @@ public class TestPackageLoader implements IContextResourceLoader {
   }
 
   @Override
-  public String[] getTypes() {
+  public List<String> getTypes() {
     return types;
   }
 
