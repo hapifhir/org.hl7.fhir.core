@@ -19,13 +19,13 @@ public class FTPClient {
   private final org.apache.commons.net.ftp.FTPClient clientImpl;
 
   @Getter
-  private long createRemotePathIfNotExistsMillis;
+  private long createRemotePathIfNotExistsNanos;
 
   @Getter
-  private long storeFileTimeMillis;
+  private long storeFileTimeNanos;
 
   @Getter
-  private long deleteFileTimeMillis;
+  private long deleteFileTimeNanos;
 
   @Getter
   private final String server;
@@ -123,9 +123,9 @@ public class FTPClient {
   }
 
   private void resetTimers() {
-    this.createRemotePathIfNotExistsMillis = 0;
-    this.storeFileTimeMillis = 0;
-    this.deleteFileTimeMillis = 0;
+    this.createRemotePathIfNotExistsNanos = 0;
+    this.storeFileTimeNanos = 0;
+    this.deleteFileTimeNanos = 0;
   }
 
   /**
@@ -136,9 +136,9 @@ public class FTPClient {
   public void delete(String path) throws IOException {
     String resolvedPath = resolveRemotePath(path);
     logger.debug("Deleting remote file: " + resolvedPath);
-    long startTime = System.currentTimeMillis();
+    long startTime = System.nanoTime();
     clientImpl.deleteFile(resolvedPath);
-    this.deleteFileTimeMillis += System.currentTimeMillis() - startTime;
+    this.deleteFileTimeNanos += System.nanoTime() - startTime;
     throwExceptionForNegativeCompletion("Error deleting file.", false);
     logger.debug("Remote file deleted: " + resolvedPath);
   }
@@ -149,7 +149,7 @@ public class FTPClient {
    * @throws IOException
    */
   protected void createRemotePathIfNotExists(String filePath) throws IOException {
-    long startTime = System.currentTimeMillis();
+    long startTime = System.nanoTime();
     String[] subPath = filePath.split(remoteSeparator);
     try {
     for (int i = 0 ; i < subPath.length - 1; i++){
@@ -160,7 +160,9 @@ public class FTPClient {
       if (!exists) {
         logger.debug("Remote directory does not exist: " + clientImpl.printWorkingDirectory() + remoteSeparator + subPath[i]);
         clientImpl.makeDirectory(subPath[i]);
+        throwExceptionForNegativeCompletion("Creating directory:", true);
         clientImpl.changeWorkingDirectory(subPath[i]);
+        throwExceptionForNegativeCompletion("Changing to directory:", true);
         logger.debug("Made remote directory: " + clientImpl.printWorkingDirectory());
       }
     }} catch (IOException e) {
@@ -168,7 +170,7 @@ public class FTPClient {
     } finally {
       clientImpl.changeWorkingDirectory(this.resolvedPath);
     }
-    this.createRemotePathIfNotExistsMillis += System.currentTimeMillis() - startTime;
+    this.createRemotePathIfNotExistsNanos += System.nanoTime() - startTime;
   }
 
   protected boolean remotePathExists(String path) throws IOException {
@@ -224,13 +226,13 @@ public class FTPClient {
   }
 
   private void attemptUpload(String source, String resolvedPath) throws IOException {
-    final long startTime = System.currentTimeMillis();
+    final long startTime = System.nanoTime();
     FileInputStream localStream = new FileInputStream(source);
     clientImpl.setFileType(FTP.BINARY_FILE_TYPE);
     clientImpl.enterLocalPassiveMode();
     clientImpl.storeFile(resolvedPath, localStream);
     localStream.close();
-    this.storeFileTimeMillis += System.currentTimeMillis() - startTime;
+    this.storeFileTimeNanos += System.nanoTime() - startTime;
   }
 
   private FTPReplyCodeAndString getFTPReplyCodeAndString() {
