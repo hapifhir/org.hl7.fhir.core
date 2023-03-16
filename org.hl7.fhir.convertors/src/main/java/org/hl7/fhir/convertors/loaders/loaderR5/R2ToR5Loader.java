@@ -59,7 +59,7 @@ public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
 
   private final BaseAdvisor_10_50 advisor = new BaseAdvisor_10_50();
 
-  public R2ToR5Loader(String[] types, ILoaderKnowledgeProviderR5 lkp) {
+  public R2ToR5Loader(List<String> types, ILoaderKnowledgeProviderR5 lkp) {
     super(types, lkp);
   }
 
