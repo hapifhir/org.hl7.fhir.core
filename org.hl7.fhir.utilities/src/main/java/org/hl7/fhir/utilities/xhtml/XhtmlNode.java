@@ -508,13 +508,11 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
     try {
       XhtmlDocument fragment = new XhtmlParser().parse(val, "div");
-      XhtmlNode root = fragment.getChildNodes().get(0);
+      // Skip the <? .. ?> declaration if one was present
+      XhtmlNodeList nodes = fragment.getChildNodes();
+      XhtmlNode root = nodes.get((nodes.size() > 0 && nodes.get(0) != null && nodes.get(0).getNodeType() == NodeType.Instruction)  ? 1 : 0);
       this.attributes = root.attributes;
       this.childNodes = root.childNodes;
-      // Strip the <? .. ?> declaration if one was present
-      if (childNodes.size() > 0 && childNodes.get(0) != null && childNodes.get(0).getNodeType() == NodeType.Instruction) {
-        childNodes.remove(0);
-      }
       this.content = root.getContent();
       this.name = root.getName();
       this.nodeType= root.getNodeType();
