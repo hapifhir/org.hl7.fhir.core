@@ -249,10 +249,12 @@ public class Property {
 	 * @param E.g. "integer"
 	 */
 	public boolean isPrimitive(String code) {
-	  return TypesUtilities.isPrimitive(code);
-	 // was this... but this can be very inefficient compared to hard coding the list
-//		StructureDefinition sd = context.fetchTypeDefinition(code);
-//      return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
+	  if (Utilities.isAbsoluteUrl(code)) {
+	    StructureDefinition sd = context.fetchTypeDefinition(code);
+	    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
+	  } else {
+	    return TypesUtilities.isPrimitive(code);
+	  }
 	}
 
 	public boolean isPrimitive() {
