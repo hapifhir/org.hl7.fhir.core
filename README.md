@@ -76,7 +76,7 @@ responses cached._
 
 To build only the validator_cli jar locally:
 ```
-mvn package -Dmaven.test.skip=true --projects org.hl7.fhir.validation.cli --no-transfer-progress
+mvn clean package -Dmaven.test.skip=true --projects org.hl7.fhir.validation.cli --no-transfer-progress
 cp org.hl7.fhir.validation.cli/target/org.hl7.fhir.validation.cli*-SNAPSHOT.jar ./validator_cli.jar
 ```
 
