@@ -135,12 +135,12 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
       back++;
     }
 
-    public void elements(int elementCountBefore) {
-      elements++;
+    public void elements(int i) {
+      elements = elements+i;
     }
 
     public void lost(int i) {
-      lostElements++;
+      lostElements = lostElements + i;
     }
 
     public int elementsCount() {

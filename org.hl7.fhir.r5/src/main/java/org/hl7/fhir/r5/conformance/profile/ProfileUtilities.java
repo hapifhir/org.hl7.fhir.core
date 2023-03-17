@@ -130,6 +130,13 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  */
 public class ProfileUtilities extends TranslatingUtilities {
 
+  public enum MappingMergeModeOption {
+    DUPLICATE, // if there's more than one mapping for the same URI, just keep them all
+    IGNORE, // if there's more than one, keep the first 
+    OVERWRITE, // if there's opre than, keep the last 
+    APPEND, // if there's more than one, append them with ';' 
+  }
+
   public enum AllowUnknownProfile {
     NONE, // exception if there's any unknown profiles (the default)
     NON_EXTNEIONS, // don't raise an exception except on Extension (because more is going on there
@@ -280,6 +287,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private Set<String> masterSourceFileNames;
   private Map<ElementDefinition, SourcedChildDefinitions> childMapCache = new HashMap<>();
   private AllowUnknownProfile allowUnknownProfile = AllowUnknownProfile.ALL_TYPES;
+  private MappingMergeModeOption mappingMergeMode = MappingMergeModeOption.APPEND;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
@@ -2263,25 +2271,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
 
       if (derived.hasMapping()) {
-        // todo: mappings are not cumulative - one replaces another
-        if (!Base.compareDeep(derived.getMapping(), base.getMapping(), false)) {
-          for (ElementDefinitionMappingComponent s : derived.getMapping()) {
-            boolean found = false;
-            for (ElementDefinitionMappingComponent d : base.getMapping()) {
-              found = found || (d.getIdentity().equals(s.getIdentity()) && d.getMap().equals(s.getMap()));
-            }
-            if (!found) {
-              base.getMapping().add(s);
-            }
-          }
-        }
-        else if (trimDifferential) {
-          derived.getMapping().clear();
-        } else { 
-          for (ElementDefinitionMappingComponent t : derived.getMapping()) {
-            t.setUserData(UD_DERIVATION_EQUALS, true);
-          }
-        }
+        List<ElementDefinitionMappingComponent> list = new ArrayList<>();
+        list.addAll(base.getMapping());
+        base.getMapping().clear();
+        addMappings(base.getMapping(), list);
+        addMappings(base.getMapping(), derived.getMapping());
       }
       for (ElementDefinitionMappingComponent m : base.getMapping()) {
         if (m.hasMap()) {
@@ -2329,6 +2323,50 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     if (dest.hasPattern()) {
       checkTypeOk(dest, dest.getPattern().fhirType(), srcSD, "pattern");
+    }
+  }
+
+  private void addMappings(List<ElementDefinitionMappingComponent> destination, List<ElementDefinitionMappingComponent> source) {
+    for (ElementDefinitionMappingComponent s : source) {
+      boolean found = false;
+      for (ElementDefinitionMappingComponent d : destination) {
+        if (compareMaps(s, d)) {
+          found = true;
+          d.setUserData(UD_DERIVATION_EQUALS, true);
+          break;
+        }
+      }
+      if (!found) {
+        destination.add(s);
+      }
+    }
+  }
+
+  private boolean compareMaps(ElementDefinitionMappingComponent s, ElementDefinitionMappingComponent d) {
+    if (d.getIdentity().equals(s.getIdentity()) && d.getMap().equals(s.getMap())) {
+      return true;
+    }
+    if (VersionUtilities.isR5Plus(context.getVersion())) {
+      if (d.getIdentity().equals(s.getIdentity())) {
+        switch (mappingMergeMode) {
+        case APPEND:
+          d.setMap(d.getMap()+";"+s.getMap());
+          return true;
+        case DUPLICATE:
+          return false;
+        case IGNORE:
+          d.setMap(s.getMap());
+          return true;
+        case OVERWRITE:
+          return true;
+        default:
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
