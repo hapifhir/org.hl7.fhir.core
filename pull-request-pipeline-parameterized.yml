@@ -24,7 +24,7 @@ jobs:
             inputs:
               mavenPomFile: 'pom.xml'
               options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
-              mavenOptions: '-Xmx3072m'
+              mavenOptions: '-Xmx4096m'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
@@ -35,7 +35,7 @@ jobs:
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
-              mavenOptions: '-Xmx3072m'
+              mavenOptions: '-Xmx4096m'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'

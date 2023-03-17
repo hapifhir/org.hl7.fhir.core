@@ -90,6 +90,7 @@ steps:
       jdkVersionOption: '1.11'
       jdkArchitectureOption: 'x64'
       options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -DdeployToSonatype'
+      mavenOptions: '-Xmx4096m'
       publishJUnitResults: false
 
   # Deploy the SNAPSHOT artifact to GitHub packages.
@@ -103,4 +104,5 @@ steps:
       jdkVersionOption: '1.11'
       jdkArchitectureOption: 'x64'
       options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToGitHub'
+      mavenOptions: '-Xmx4096m'
       publishJUnitResults: false
