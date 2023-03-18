@@ -2350,7 +2350,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (d.getIdentity().equals(s.getIdentity())) {
         switch (mappingMergeMode) {
         case APPEND:
-          d.setMap(d.getMap()+";"+s.getMap());
+          if (!Utilities.splitStrings(d.getMap(), "\\,").contains(s.getMap())) {
+            d.setMap(d.getMap()+","+s.getMap());
+          }
           return true;
         case DUPLICATE:
           return false;
