@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
@@ -15,6 +17,15 @@ public class FTPClient {
   private static final Logger logger = LoggerFactory.getLogger(FTPClient.class);
 
   private final org.apache.commons.net.ftp.FTPClient clientImpl;
+
+  @Getter
+  private long createRemotePathIfNotExistsNanos;
+
+  @Getter
+  private long storeFileTimeNanos;
+
+  @Getter
+  private long deleteFileTimeNanos;
 
   @Getter
   private final String server;
@@ -34,6 +45,20 @@ public class FTPClient {
   private final int port;
 
   private final String remoteSeparator;
+
+  @AllArgsConstructor(access = AccessLevel.PROTECTED)
+  private class FTPReplyCodeAndString {
+    @Getter
+    private final int replyCode;
+
+    @Getter
+    private final String replyString;
+
+    public String toString()
+    {
+      return "Reply code: " + replyCode + " Message: " + replyString;
+    }
+  }
 
   /**
    * Connect to an FTP server
@@ -74,25 +99,37 @@ public class FTPClient {
    */
   public void connect() throws IOException {
     if (port != -1) {
+      logger.debug("Connecting to : " + server + ":" + port);
       clientImpl.connect(server, port);
+      logger.debug("Connected");
     }
     else {
+      logger.debug("Connecting to : " + server);
       clientImpl.connect(server);
+      logger.debug("Connected");
     }
 
     clientImpl.login(user, password);
 
-    checkForPositiveCompletionAndLogErrors("FTP server could not connect.", true);
+    throwExceptionForNegativeCompletion("FTP server could not connect.", true);
+
+    resetTimers();
 
     logger.debug("Initial Working directory: " + clientImpl.printWorkingDirectory());
 
     clientImpl.changeWorkingDirectory(path);
 
-    checkForPositiveCompletionAndLogErrors("FTP server could not establish default working directory", true);
+    throwExceptionForNegativeCompletion("FTP server could not establish default working directory", true);
 
     resolvedPath = clientImpl.printWorkingDirectory();
 
     logger.debug("Resolved working directory: " + resolvedPath);
+  }
+
+  private void resetTimers() {
+    this.createRemotePathIfNotExistsNanos = 0;
+    this.storeFileTimeNanos = 0;
+    this.deleteFileTimeNanos = 0;
   }
 
   /**
@@ -103,9 +140,11 @@ public class FTPClient {
   public void delete(String path) throws IOException {
     String resolvedPath = resolveRemotePath(path);
     logger.debug("Deleting remote file: " + resolvedPath);
+    long startTime = System.nanoTime();
     clientImpl.deleteFile(resolvedPath);
-    checkForPositiveCompletionAndLogErrors("Error deleting file.", false);
-    logger.debug("Remote file deleted: " + resolvedPath);
+    this.deleteFileTimeNanos += System.nanoTime() - startTime;
+    throwExceptionForNegativeCompletion("Error deleting file.", false);
+    logger.debug("Deleted remote file: " + resolvedPath);
   }
 
   /**
@@ -114,6 +153,7 @@ public class FTPClient {
    * @throws IOException
    */
   protected void createRemotePathIfNotExists(String filePath) throws IOException {
+    long startTime = System.nanoTime();
     String[] subPath = filePath.split(remoteSeparator);
     try {
     for (int i = 0 ; i < subPath.length - 1; i++){
@@ -122,16 +162,24 @@ public class FTPClient {
       }
       boolean exists = clientImpl.changeWorkingDirectory(subPath[i]);
       if (!exists) {
-        logger.debug("Remote directory does not exist: " + clientImpl.printWorkingDirectory() + remoteSeparator + subPath[i]);
+        logger.debug("Creating non-existent directory: " + clientImpl.printWorkingDirectory() + remoteSeparator + subPath[i] + " Creating");
         clientImpl.makeDirectory(subPath[i]);
+        throwExceptionForNegativeCompletion("Creating directory:", true);
+        logger.debug("Created directory: " + subPath[i]);
+
+        logger.debug("Changing to created directory: " + subPath[i]);
         clientImpl.changeWorkingDirectory(subPath[i]);
-        logger.debug("Made remote directory: " + clientImpl.printWorkingDirectory());
+        throwExceptionForNegativeCompletion("Changing to directory:", true);
+        logger.debug("Changed to directory: " + subPath[i]);
       }
     }} catch (IOException e) {
       throw new IOException("Error creating remote path: " + filePath, e);
     } finally {
+      logger.debug("Changing to original directory: " + this.resolvedPath);
       clientImpl.changeWorkingDirectory(this.resolvedPath);
+      logger.debug("Changed to original directory: " + this.resolvedPath);
     }
+    this.createRemotePathIfNotExistsNanos += System.nanoTime() - startTime;
   }
 
   protected boolean remotePathExists(String path) throws IOException {
@@ -159,32 +207,66 @@ public class FTPClient {
   public void upload(String source, String path) throws IOException {
     String resolvedPath = resolveRemotePath(path);
     logger.debug("Uploading file to remote path: " + resolvedPath);
-    createRemotePathIfNotExists(path);
 
-    FileInputStream localStream = new FileInputStream(source);
-    clientImpl.setFileType(FTP.BINARY_FILE_TYPE);
-    clientImpl.enterLocalPassiveMode();
-    clientImpl.storeFile( resolvedPath, localStream);
-    localStream.close();
 
-    checkForPositiveCompletionAndLogErrors("Error uploading file.", false);
-    logger.debug("Remote file uploaded: " + resolvedPath);
-  }
+    attemptUpload(source, resolvedPath);
 
-  private void checkForPositiveCompletionAndLogErrors(String localErrorMessage, boolean disconnectOnError) throws IOException {
-    int reply = clientImpl.getReplyCode();
-
-    if (FTPReply.isPositiveCompletion(reply)) {
+    FTPReplyCodeAndString reply = getFTPReplyCodeAndString();
+    if (FTPReply.isPositiveCompletion(reply.replyCode)) {
+      logger.debug("Uploaded file: " + resolvedPath);
+      return;
+    } else if (possibleDirectoryNotExistsCode(reply)) {
+      logger.debug("Uploading failed with reply: " + reply);
+      createRemotePathIfNotExists(resolvedPath);
+      attemptUpload(source, resolvedPath);
+      throwExceptionForNegativeCompletion("Error uploading file (second attempt).", false);
+      logger.debug("Uploaded file after path creation: " + resolvedPath);
       return;
     }
 
-    String remoteErrorMessage = clientImpl.getReplyString();
+    throwExceptionForNegativeCompletion(reply,"Error uploading file.", false);
+    logger.debug("Remote file uploaded: " + resolvedPath);
+  }
+
+
+  private boolean possibleDirectoryNotExistsCode(FTPReplyCodeAndString reply) {
+    /*
+    Note: This code may be 550 on some servers (IIS) and 553 on others (mockftpserver).
+     */
+    return reply.replyCode == 550 || reply.replyCode == 553;
+  }
+
+  private void attemptUpload(String source, String resolvedPath) throws IOException {
+    final long startTime = System.nanoTime();
+    FileInputStream localStream = new FileInputStream(source);
+    clientImpl.setFileType(FTP.BINARY_FILE_TYPE);
+    clientImpl.enterLocalPassiveMode();
+    clientImpl.storeFile(resolvedPath, localStream);
+    localStream.close();
+    this.storeFileTimeNanos += System.nanoTime() - startTime;
+  }
+
+  private FTPReplyCodeAndString getFTPReplyCodeAndString() {
+    final int replyCode = clientImpl.getReplyCode();
+    final String replyString = clientImpl.getReplyString();
+
+    return new FTPReplyCodeAndString(replyCode, replyString);
+  }
+
+  private void throwExceptionForNegativeCompletion(String localErrorMessage, boolean disconnectOnError) throws IOException {
+    FTPReplyCodeAndString reply = getFTPReplyCodeAndString();
+    throwExceptionForNegativeCompletion(reply, localErrorMessage, disconnectOnError);
+  }
+
+  private void throwExceptionForNegativeCompletion(FTPReplyCodeAndString reply, String localErrorMessage, boolean disconnectOnError) throws IOException {
+    if (FTPReply.isPositiveCompletion(reply.replyCode)) {
+      return;
+    }
+
     if (disconnectOnError) {
       clientImpl.disconnect();
     }
-    throw new IOException(localErrorMessage + " Reply code: " + reply + " Message: " + remoteErrorMessage);
-
-
+    throw new IOException(localErrorMessage + " " + reply);
   }
 
   public void disconnect() throws IOException {
@@ -199,7 +281,6 @@ public class FTPClient {
     ftp.delete("testing/test.xml");
     ftp.disconnect();
   }
-
   private static String getNamedParam(String[] args, String param) {
     boolean found = false;
     for (String a : args) {
