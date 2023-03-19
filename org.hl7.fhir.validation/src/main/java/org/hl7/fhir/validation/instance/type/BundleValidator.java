@@ -81,11 +81,11 @@ public class BundleValidator extends BaseValidator {
       }
       if (type.equals(MESSAGE)) {
         Element resource = firstEntry.getNamedChild(RESOURCE);
-        String id = resource.getNamedChildValue(ID);
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), resource != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE)) {
+          String id = resource.getNamedChildValue(ID);
           ok = validateMessage(errors, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id) && ok;
+          ok = checkAllInterlinked(errors, entries, stack, bundle, true) && ok;
         }
-        ok = checkAllInterlinked(errors, entries, stack, bundle, true) && ok;
       }
       if (type.equals(SEARCHSET)) {
         checkSearchSet(errors, bundle, entries, stack);
@@ -600,7 +600,9 @@ public class BundleValidator extends BaseValidator {
     }
 
     Set<EntrySummary> visited = new HashSet<>();
-    visitLinked(visited, entryList.get(0));
+    if (entryList.size() > 0) {
+      visitLinked(visited, entryList.get(0));
+    }
     visitBundleLinks(visited, entryList, bundle);
     boolean foundRevLinks;
     do {

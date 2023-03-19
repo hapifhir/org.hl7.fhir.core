@@ -68,6 +68,8 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
     private int validated;
     private int error;
     private int back;
+    private int elements;
+    private int lostElements;
     
     public void example() {
       total++;
@@ -132,6 +134,22 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
     public void back() {
       back++;
     }
+
+    public void elements(int i) {
+      elements = elements+i;
+    }
+
+    public void lost(int i) {
+      lostElements = lostElements + i;
+    }
+
+    public int elementsCount() {
+      return elements;
+    }
+
+    public int lostCount() {
+      return lostElements;
+    }
   }
 
   private boolean saveProcess = true;
@@ -143,6 +161,8 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
 
   private InstanceValidator validator;
 
+  private StringBuilder log;
+
   public static void main(String[] args) throws JsonException, IOException {
     
     // arg[0] is the location of the fhir-extensions repo
@@ -150,6 +170,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
   }
 
   public void testMaps(String src, String maps, String filter) throws JsonException, IOException {
+    log = new StringBuilder();
     log("Load Test Outcomes");
     JsonObject json = JsonParser.parseObjectFromFile(Utilities.path(src, "input", "_data", "conversions.json"));
     log("Load R5");
@@ -200,14 +221,17 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
         log("  "+rn);
         JsonObject o = json.getJsonObject(rn);
         StructureDefinition sd = context.fetchTypeDefinition(rn);
-        List<StructureMap> mapSrc = utils.getMapsForUrl(allMaps, sd.getUrl(), StructureMapInputMode.SOURCE);
-        List<StructureMap> mapTgt = utils.getMapsForUrl(allMaps, sd.getUrl(), StructureMapInputMode.TARGET);
-        changed = checkMaps(sd, o.getJsonObject("r4"), "r4", "http://hl7.org/fhir/4.0", mapSrc, mapTgt, r4Examples) || changed;
-        changed = checkMaps(sd, o.getJsonObject("r4b"), "r4b", "http://hl7.org/fhir/4.3", mapSrc, mapTgt, r4bExamples) || changed;
-        JsonParser.compose(json, new FileOutputStream(Utilities.path(src, "input", "_data", "conversions.json")), true);
+        if (sd != null) {
+          List<StructureMap> mapSrc = utils.getMapsForUrl(allMaps, sd.getUrl(), StructureMapInputMode.SOURCE);
+          List<StructureMap> mapTgt = utils.getMapsForUrl(allMaps, sd.getUrl(), StructureMapInputMode.TARGET);
+          changed = checkMaps(sd, o.getJsonObject("r4"), "r4", "http://hl7.org/fhir/4.0", mapSrc, mapTgt, r4Examples) || changed;
+          changed = checkMaps(sd, o.getJsonObject("r4b"), "r4b", "http://hl7.org/fhir/4.3", mapSrc, mapTgt, r4bExamples) || changed;
+          JsonParser.compose(json, new FileOutputStream(Utilities.path(src, "input", "_data", "conversions.json")), true);
+        }
         System.out.println("   .. done");
       }
     }
+    TextFile.stringToFile(log.toString(), Utilities.path(src, "input", "_data", "validation.log"));
     log("Done!");
 //    load R4
 //    load R4B
@@ -301,11 +325,12 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
   private void testRoundTrips(StructureDefinition sd, JsonObject json, ResolvedGroup tgtG, ResolvedGroup srcG, StructureDefinition tsd, NpmPackage examples, String code) throws IOException {
     Stats stats = new Stats();
     for (String s : examples.listResources(tsd.getType())) {
-      log("  Test "+examples.id()+"::"+s);
+      log("  Test "+examples.id()+"::"+s, false);
       try {
-        testRoundTrip(json, sd, tsd, tgtG, srcG, stats, examples.load("package", s), code);
+        log("  "+testRoundTrip(json, sd, tsd, tgtG, srcG, stats, examples.load("package", s), code)+"%");
       } catch (Exception e) {
         log("error: "+e.getMessage());
+        e.printStackTrace();
         stats.error("Error: "+e.getMessage());
       }
     }
@@ -317,15 +342,22 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
     json.set("r5InError", stats.errorCount());
     json.remove("r5validatedOK");
     json.set("convertToR4OK", stats.backCount());
+    json.set("elementsConverted", stats.elementsCount());
+    if (stats.elementsCount() > 0) {
+      json.set("elementsLost", (stats.lostCount() * 100) / stats.elementsCount());
+    } else {
+      json.set("elementsLost", 0);
+    }
     if (stats.ok()) {
       json.set("testColor", "#d4ffdf");
     }
   }
 
-  private void testRoundTrip(JsonObject json, StructureDefinition sd, StructureDefinition tsd, ResolvedGroup tgtG, ResolvedGroup srcG, Stats stats, InputStream stream, String code) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+  private int testRoundTrip(JsonObject json, StructureDefinition sd, StructureDefinition tsd, ResolvedGroup tgtG, ResolvedGroup srcG, Stats stats, InputStream stream, String code) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
     stats.example();
     Element r4 = new org.hl7.fhir.r5.elementmodel.JsonParser(context).setLogical(tsd).parseSingle(stream);
     stats.parsed();
+    int elementCountBefore = r4.countDescendents()+1;
     String id = r4.getIdBase();
     json.remove(id);
     checkSave(id+"."+code, "loaded", r4);
@@ -347,18 +379,24 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
       boolean valid = true;
       for (ValidationMessage vm : r5validationErrors) {
         if (vm.isError()) {
-//          json.forceObject(id).forceArray("r5-errors").add(vm.summary());
+          log.append(vm.summary());
+          log.append("\r\n");
           valid = false;
         }
       }
+      if (valid) {
+        log.append("All OK\r\n");
+      }
+      log.append("\r\n");
       stats.valid(valid);
     } catch (Exception e) {
       json.forceObject(id).set("validation-error", e.getMessage());
       throw e;
     }
     
+    Element rt4 = null;
     try {
-      Element rt4 = Manager.build(context, tsd);
+      rt4 = Manager.build(context, tsd);
       utils.transform(context, r5, srcG.getTargetMap(), rt4);
       stats.back();
       checkSave(id+"."+code, "returned", r4);
@@ -366,6 +404,10 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
       json.forceObject(id).set("return-error", e.getMessage());
       throw e;
     }   
+    int elementCountAfter = rt4.countDescendents()+1;
+    stats.elements(elementCountBefore);
+    stats.lost(elementCountBefore - elementCountAfter);
+    return (elementCountAfter * 100) / elementCountBefore;
   }
 
   private void checkSave(String id, String state, Element e) throws FHIRException, FileNotFoundException, IOException {
@@ -381,7 +423,15 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
   }
   
   private void log(String msg) {
-    System.out.println(msg);
+    log(msg, true);
+  }
+  private void log(String msg, boolean ln) {
+    log.append(msg+"\r\n");
+    if (ln) {
+      System.out.println(msg);
+    } else {
+      System.out.print(msg+" ");
+    }
   }
 
   @Override
