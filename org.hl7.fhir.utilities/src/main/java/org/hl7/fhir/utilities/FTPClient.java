@@ -115,15 +115,20 @@ public class FTPClient {
 
     resetTimers();
 
-    logger.debug("Initial Working directory: " + clientImpl.printWorkingDirectory());
+    clientImpl.setFileType(FTP.BINARY_FILE_TYPE);
+    clientImpl.enterLocalPassiveMode();
+
+    logger.debug("Setting initial working directory: " + clientImpl.printWorkingDirectory());
 
     clientImpl.changeWorkingDirectory(path);
 
     throwExceptionForNegativeCompletion("FTP server could not establish default working directory", true);
+    logger.debug("Set initial working directory.");
 
+    logger.debug("Resolving remote resolved path.");
     resolvedPath = clientImpl.printWorkingDirectory();
 
-    logger.debug("Resolved working directory: " + resolvedPath);
+    logger.debug("Resolved remote resolved path: " + resolvedPath);
   }
 
   private void resetTimers() {
@@ -239,8 +244,6 @@ public class FTPClient {
   private void attemptUpload(String source, String resolvedPath) throws IOException {
     final long startTime = System.nanoTime();
     FileInputStream localStream = new FileInputStream(source);
-    clientImpl.setFileType(FTP.BINARY_FILE_TYPE);
-    clientImpl.enterLocalPassiveMode();
     clientImpl.storeFile(resolvedPath, localStream);
     localStream.close();
     this.storeFileTimeNanos += System.nanoTime() - startTime;

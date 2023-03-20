@@ -30,8 +30,11 @@ public class FTPClientTest implements ResourceLoaderTests {
   public static final String DUMMY_FILE_TO_DELETE = "dummyFileToDelete";
 
   public static final String DUMMY_FILE_TO_UPLOAD = "dummyFileToUpload";
+
+  public static final String DUMMY_FILE_TO_UPLOAD_2 = "dummyFileToUpload2";
   public static final int FAKE_FTP_PORT = 8022;
   public static final String DUMMY_FILE_CONTENT = "Dummy file content\nMore content\n";
+  public static final String DUMMY_FILE_CONTENT_2 = "Dummy file content 2\nMore content\n";
   public static final String LOCALHOST = "localhost";
 
 
@@ -48,26 +51,31 @@ public class FTPClientTest implements ResourceLoaderTests {
 
 
   Path dummyFileToUploadPath;
+
+  Path dummyFileToUploadPath2;
   Path dummyUploadedFilePath;
+  Path dummyUploadedFilePath2;
 
   String dummyFileContent;
 
+  String dummyFileContent2;
+
   @BeforeEach
   public void setup() throws IOException {
-    setupDummyFileToUpload();
+    setupDummyFilesToUpload();
     setupFakeFtpDirectory();
     setupFakeFtpServer();
   }
 
-  private void setupDummyFileToUpload() throws IOException {
-    dummyFileContent = createDummyFileContent();
+  private void setupDummyFilesToUpload() throws IOException {
+    dummyFileContent = DUMMY_FILE_CONTENT;
+    dummyFileContent2 = DUMMY_FILE_CONTENT;
 
     dummyFileToUploadPath = Files.createTempFile("dummyFtpFileToUpload", "dummy");
     Files.write(dummyFileToUploadPath, DUMMY_FILE_CONTENT.getBytes(StandardCharsets.UTF_8));
-  }
 
-  private String createDummyFileContent() {
-    return DUMMY_FILE_CONTENT;
+    dummyFileToUploadPath2 = Files.createTempFile("dummyFtpFileToUpload2", "dummy");
+    Files.write(dummyFileToUploadPath2, DUMMY_FILE_CONTENT_2.getBytes(StandardCharsets.UTF_8));
   }
 
   public void setupFakeFtpServer() throws IOException {
@@ -101,6 +109,7 @@ public class FTPClientTest implements ResourceLoaderTests {
 
     dummyFileToDeletePath = Files.createFile(relativePath2.resolve(DUMMY_FILE_TO_DELETE));
     dummyUploadedFilePath = relativePath2.resolve(DUMMY_FILE_TO_UPLOAD);
+    dummyUploadedFilePath2 = relativePath2.resolve(DUMMY_FILE_TO_UPLOAD_2);
   }
 
   @AfterEach
@@ -175,21 +184,43 @@ public class FTPClientTest implements ResourceLoaderTests {
 
     client.upload(dummyFileToUploadPath.toFile().getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD);
 
-    assertUploadedFileCorrect(uploadFilePath);
+    assertUploadedFileCorrect(uploadFilePath, DUMMY_FILE_CONTENT);
 
     assertTrue(client.getDeleteFileTimeNanos() == 0);
     assertTrue(client.getStoreFileTimeNanos() > 0);
     assertTrue(client.getCreateRemotePathIfNotExistsNanos() == 0);
   }
 
-  private void assertUploadedFileCorrect(String uploadedFilePath) throws IOException {
+  @Test
+  public void testMultiUpload() throws IOException  {
+    FTPClient client = connectToFTPClient();
+
+    String uploadFilePath = dummyUploadedFilePath.toFile().getAbsolutePath();
+    assertFalse(fakeFtpServer.getFileSystem().exists(uploadFilePath));
+
+    String uploadFilePath2 = dummyUploadedFilePath2.toFile().getAbsolutePath();
+    assertFalse(fakeFtpServer.getFileSystem().exists(uploadFilePath));
+
+    client.upload(dummyFileToUploadPath.toFile().getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD);
+
+    client.upload(dummyFileToUploadPath2.toFile().getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD_2);
+
+    assertUploadedFileCorrect(uploadFilePath, DUMMY_FILE_CONTENT);
+    assertUploadedFileCorrect(uploadFilePath2, DUMMY_FILE_CONTENT_2);
+
+    assertTrue(client.getDeleteFileTimeNanos() == 0);
+    assertTrue(client.getStoreFileTimeNanos() > 0);
+    assertTrue(client.getCreateRemotePathIfNotExistsNanos() == 0);
+  }
+
+  private void assertUploadedFileCorrect(String uploadedFilePath, String expectedFileContent) throws IOException {
     assertTrue(fakeFtpServer.getFileSystem().exists(uploadedFilePath));
     FileEntry fileEntry = (FileEntry)fakeFtpServer.getFileSystem().getEntry(uploadedFilePath);
     assertNotNull(fileEntry);
     InputStream inputStream = fileEntry.createInputStream();
     byte[] bytes = IOUtils.toByteArray(inputStream);
     String actualContent = new String(bytes, StandardCharsets.UTF_8);
-    assertEquals(DUMMY_FILE_CONTENT,actualContent);
+    assertEquals(expectedFileContent,actualContent);
   }
 
   @Test
@@ -237,7 +268,7 @@ public class FTPClientTest implements ResourceLoaderTests {
     assertTrue(fakeFtpServer.getFileSystem().exists(newPath1.toFile().getAbsolutePath()));
     assertTrue(fakeFtpServer.getFileSystem().exists(newPath2.toFile().getAbsolutePath()));
 
-    assertUploadedFileCorrect(uploadFilePath.toFile().getAbsolutePath());
+    assertUploadedFileCorrect(uploadFilePath.toFile().getAbsolutePath(), DUMMY_FILE_CONTENT);
 
     assertTrue(client.getDeleteFileTimeNanos() == 0);
     assertTrue(client.getStoreFileTimeNanos() > 0);
