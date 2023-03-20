@@ -837,4 +837,8 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     }
     return this;
   }
+
+  public boolean isError() {
+    return level == IssueSeverity.ERROR || level == IssueSeverity.FATAL;
+  }
 }

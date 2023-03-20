@@ -1132,7 +1132,7 @@ public class Utilities {
     if (ref != null && ref.contains(":")) {
       String scheme = ref.substring(0, ref.indexOf(":"));
       String details = ref.substring(ref.indexOf(":")+1);
-      return (existsInList(scheme, "http", "https", "urn") || (isToken(scheme) && scheme.equals(scheme.toLowerCase())) || Utilities.startsWithInList(ref, "urn:iso:", "urn:iso-iec:", "urn:iso-cie:", "urn:iso-astm:", "urn:iso-ieee:", "urn:iec:"))
+      return (existsInList(scheme, "http", "https", "urn", "file:") || (isToken(scheme) && scheme.equals(scheme.toLowerCase())) || Utilities.startsWithInList(ref, "urn:iso:", "urn:iso-iec:", "urn:iso-cie:", "urn:iso-astm:", "urn:iso-ieee:", "urn:iec:"))
           && details != null && details.length() > 0 && !details.contains(" "); // rfc5141
     }
     return false; 
@@ -1940,6 +1940,36 @@ public class Utilities {
     } else {
       return url.substring(i+1);
     }
+  }
+
+  public static List<String> strings(String... members) {
+    List<String> ret = new ArrayList<>();
+    for (String m : members) {
+      ret.add(m);
+    }
+    return ret;
+  }
+
+  public static List<String> splitStrings(String src, String regex) {
+    List<String> ret = new ArrayList<>();
+    for (String m : src.split(regex)) {
+      ret.add(m);
+    }
+    return ret;
+  }
+
+  public static String stripPara(String p) {
+    if (noString(p)) {
+      return "";
+    }
+    p = p.trim();
+    if (p.startsWith("<p>")) {
+      p = p.substring(3);
+    }
+    if (p.endsWith("</p>")) {
+      p = p.substring(0, p.length()-4);
+    }
+    return p;
   }
 
 

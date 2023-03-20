@@ -707,13 +707,17 @@ public class ResourceFactory extends Factory {
         case -330210563: return new RelatedArtifact();
         case 1824308900: return new SampledData();
         case -1217415016: return new Signature();
-        case -1789797270: return new Timing();
+        case -1789797270: return new Timing(); 
         case 770498827: return new TriggerDefinition();
         case 1071332590: return new UsageContext();
         case 1218149947: return new VirtualServiceDetail();
 
       default:
-        throw new FHIRException("Unknown Resource or Type Name '"+name+"'");
+        if (name.equals("xhtml")) {
+          return new XhtmlType();
+        } else {
+          throw new FHIRException("Unknown Resource or Type Name '"+name+"'");
+        }
     }
   }
 
