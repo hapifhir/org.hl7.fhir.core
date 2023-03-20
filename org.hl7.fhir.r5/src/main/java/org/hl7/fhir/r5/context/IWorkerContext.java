@@ -77,6 +77,7 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -338,6 +339,23 @@ public interface IWorkerContext {
      * @return
      */
     String patchUrl(String url, String resourceType);
+    
+    /** 
+     * set this to false (default is true) if you don't want profiles loaded
+     * @param value
+     * @return
+     */
+    IContextResourceLoader setLoadProfiles(boolean value);
+    
+    /**
+     * Called during the loading process - the loader can decide which resources to load. 
+     * At this point, only the .index.json is being read 
+     *  
+     * @param pi
+     * @param pri
+     * @return
+     */
+    boolean wantLoad(NpmPackage pi, PackageResourceInformation pri);
   }
 
   /**
