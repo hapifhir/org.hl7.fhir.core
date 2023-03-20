@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
 public class TestPackageLoader implements IContextResourceLoader {
 
@@ -60,6 +61,16 @@ public class TestPackageLoader implements IContextResourceLoader {
   @Override
   public String patchUrl(String url, String resourceType) {
     return url;
+  }
+
+  @Override
+  public IContextResourceLoader setLoadProfiles(boolean value) {
+    return this;
+  }
+
+  @Override
+  public boolean wantLoad(NpmPackage pi, PackageResourceInformation pri) {
+    return true;
   }
 
 }

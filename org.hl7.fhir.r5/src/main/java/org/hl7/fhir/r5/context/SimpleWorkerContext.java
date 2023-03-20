@@ -492,7 +492,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         types = Utilities.strings("StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem", "Measures" );
       }
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
-        if (!pri.getFilename().contains("ig-r4")) {
+        if (!pri.getFilename().contains("ig-r4") && (loader == null || loader.wantLoad(pi, pri))) {
           try {
             registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageInformation(pi));
             t++;
