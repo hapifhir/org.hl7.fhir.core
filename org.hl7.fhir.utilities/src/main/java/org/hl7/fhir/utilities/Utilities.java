@@ -1543,10 +1543,13 @@ public class Utilities {
       ZipEntry zipEntry = zis.getNextEntry();
       while (zipEntry != null) {
         boolean isDirectory = false;
-        if (zipEntry.getName().endsWith("/") || zipEntry.getName().endsWith("\\")) {
+        
+        String n = makeOSSafe(zipEntry.getName());
+      
+        if (n.endsWith(File.separator)) {
           isDirectory = true;
         }
-        Path newPath = zipSlipProtect(zipEntry, target);
+        Path newPath = zipSlipProtect(n, target);
         if (isDirectory) {
           Files.createDirectories(newPath);
         } else {
@@ -1563,19 +1566,23 @@ public class Utilities {
     }
   }
 
-  public static Path zipSlipProtect(ZipEntry zipEntry, Path targetDir)
+  public static String makeOSSafe(String name) {
+    return name.replace("\\", File.separator).replace("/", File.separator);
+  }
+
+  public static Path zipSlipProtect(String zipName, Path targetDir)
       throws IOException {
 
     // test zip slip vulnerability
     // Path targetDirResolved = targetDir.resolve("../../" + zipEntry.getName());
 
-    Path targetDirResolved = targetDir.resolve(zipEntry.getName());
+    Path targetDirResolved = targetDir.resolve(zipName);
 
     // make sure normalized file still has targetDir as its prefix
     // else throws exception
     Path normalizePath = targetDirResolved.normalize();
     if (!normalizePath.startsWith(targetDir)) {
-      throw new IOException("Bad zip entry: " + zipEntry.getName());
+      throw new IOException("Bad zip entry: " + zipName);
     }
 
     return normalizePath;
@@ -1920,7 +1927,7 @@ public class Utilities {
       if (ignoreList == null || !ignoreList.contains(f.getAbsolutePath())) {
         if (f.isDirectory()) {
           addAllFiles(res, root, f, ignoreList);
-        } else {
+        } else if (!f.getName().equals(".DS_Store")) {
           res.add(getRelativePath(root, f.getAbsolutePath()));
         }
       }
