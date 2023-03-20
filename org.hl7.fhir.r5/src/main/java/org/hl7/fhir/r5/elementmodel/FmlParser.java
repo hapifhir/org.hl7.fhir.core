@@ -394,7 +394,7 @@ public class FmlParser extends ParserBase {
         if (rule.getChildrenByName("source").size() != 1 || !rule.getChildrenByName("source").get(0).hasChild("element"))
           throw lexer.error("Complex rules must have an explicit name");
         if (rule.getChildrenByName("source").get(0).hasChild("type"))
-          rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element") + rule.getChildrenByName("source").get(0).getNamedChildValue("type"));
+          rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element") + Utilities.capitalize(rule.getChildrenByName("source").get(0).getNamedChildValue("type")));
         else
           rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element"));
       }
