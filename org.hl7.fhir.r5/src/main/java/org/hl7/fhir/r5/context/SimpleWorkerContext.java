@@ -423,16 +423,16 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return loadFromPackageInt(pi, loader, loader == null ? defaultTypesToLoad() : loader.getTypes());
   }
   
-  public static String[] defaultTypesToLoad() {
+  public static List<String> defaultTypesToLoad() {
     // there's no penalty for listing resources that don't exist, so we just all the relevant possibilities for all versions 
-    return new String[] {"CodeSystem", "ValueSet", "ConceptMap", "NamingSystem",
+    return Utilities.strings("CodeSystem", "ValueSet", "ConceptMap", "NamingSystem",
                          "StructureDefinition", "StructureMap", 
                          "SearchParameter", "OperationDefinition", "CapabilityStatement", "Conformance",
-                         "Questionnaire", "ImplementationGuide", "Measure" };
+                         "Questionnaire", "ImplementationGuide", "Measure" );
   }
 
   @Override
-  public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String[] types) throws IOException, FHIRException {
+  public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, List<String> types) throws IOException, FHIRException {
     return loadFromPackageInt(pi, loader, types);
   }
  
@@ -457,7 +457,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
 
-  public int loadFromPackageInt(NpmPackage pi, IContextResourceLoader loader, String... types) throws IOException, FHIRException {
+  public int loadFromPackageInt(NpmPackage pi, IContextResourceLoader loader, List<String> types) throws IOException, FHIRException {
     int t = 0;
     if (progress) {
       System.out.println("Load Package "+pi.name()+"#"+pi.version());
@@ -471,13 +471,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       packageTracker.packageLoaded(pi.id(), pi.version());
     }
     
-    if ((types == null || types.length == 0) &&  loader != null) {
+    if ((types == null || types.size() == 0) &&  loader != null) {
       types = loader.getTypes();
     }
     if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad() || !allowLazyLoading) {
       // can't lazy load R2 because of valueset/codesystem implementation
-      if (types.length == 0) {
-        types = new String[] { "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" };
+      if (types == null || types.size() == 0) {
+        types = Utilities.strings("StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" );
       }
       for (String s : pi.listResources(types)) {
         try {
@@ -488,8 +488,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         }      
       }
     } else {
-      if (types.length == 0) {
-        types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem", "Measures" };
+      if (types == null || types.size() == 0) {
+        types = Utilities.strings("StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem", "Measures" );
       }
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
         if (!pri.getFilename().contains("ig-r4")) {

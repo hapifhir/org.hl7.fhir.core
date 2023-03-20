@@ -133,11 +133,17 @@ public class FTPClientTest implements ResourceLoaderTests {
 
     client.delete( RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_DELETE);
     assertFalse(fakeFtpServer.getFileSystem().exists(deleteFilePath));
+
+    assertTrue(client.getDeleteFileTimeNanos() > 0);
+    assertTrue(client.getStoreFileTimeNanos() == 0);
+    assertTrue(client.getCreateRemotePathIfNotExistsNanos() == 0);
  }
 
-  private static FTPClient connectToFTPClient() throws IOException {
+  private  FTPClient connectToFTPClient() throws IOException {
     FTPClient client = new FTPClient(LOCALHOST, FAKE_FTP_PORT,  RELATIVE_PATH_1, DUMMY_USER, DUMMY_PASSWORD);
     client.connect();
+
+    assertAllMillisFieldsAreZero(client);
     return client;
   }
 
@@ -152,6 +158,10 @@ public class FTPClientTest implements ResourceLoaderTests {
     client.delete( RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_DELETE);
     assertFalse(fakeFtpServer.getFileSystem().exists(deleteFilePath));
     client.disconnect();
+
+    assertTrue(client.getDeleteFileTimeNanos() > 0);
+    assertTrue(client.getStoreFileTimeNanos() == 0);
+    assertTrue(client.getCreateRemotePathIfNotExistsNanos() == 0);
  }
 
 
@@ -166,6 +176,10 @@ public class FTPClientTest implements ResourceLoaderTests {
     client.upload(dummyFileToUploadPath.toFile().getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD);
 
     assertUploadedFileCorrect(uploadFilePath);
+
+    assertTrue(client.getDeleteFileTimeNanos() == 0);
+    assertTrue(client.getStoreFileTimeNanos() > 0);
+    assertTrue(client.getCreateRemotePathIfNotExistsNanos() == 0);
   }
 
   private void assertUploadedFileCorrect(String uploadedFilePath) throws IOException {
@@ -193,10 +207,20 @@ public class FTPClientTest implements ResourceLoaderTests {
     assertTrue(fakeFtpServer.getFileSystem().exists(newPath1.toFile().getAbsolutePath()));
     assertTrue(fakeFtpServer.getFileSystem().exists(newPath2.toFile().getAbsolutePath()));
 
+    assertTrue(client.getDeleteFileTimeNanos() == 0);
+    assertTrue(client.getStoreFileTimeNanos() == 0);
+    assertTrue(client.getCreateRemotePathIfNotExistsNanos() > 0);
+  }
+
+  private void assertAllMillisFieldsAreZero(FTPClient client) {
+    assertTrue(client.getDeleteFileTimeNanos() == 0);
+    assertTrue(client.getStoreFileTimeNanos() == 0);
+    assertTrue(client.getCreateRemotePathIfNotExistsNanos() == 0);
   }
 
   @Test
   public void testUploadWherePathDoesntExist() throws IOException {
+
     Path newPath1 = relativePath2.resolve("newPath1");
     Path newPath2 = newPath1.resolve("newPath2");
 
@@ -214,5 +238,9 @@ public class FTPClientTest implements ResourceLoaderTests {
     assertTrue(fakeFtpServer.getFileSystem().exists(newPath2.toFile().getAbsolutePath()));
 
     assertUploadedFileCorrect(uploadFilePath.toFile().getAbsolutePath());
+
+    assertTrue(client.getDeleteFileTimeNanos() == 0);
+    assertTrue(client.getStoreFileTimeNanos() > 0);
+    assertTrue(client.getCreateRemotePathIfNotExistsNanos() > 0);
   }
 }

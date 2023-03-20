@@ -83,6 +83,10 @@ public class Params {
   public static final String TEST_MODULES = "-test-modules";
 
   public static final String TEST_NAME_FILTER = "-test-classname-filter";
+  public static final String SPECIAL = "-special";
+  public static final String TARGET = "-target";
+  public static final String SOURCE = "-source";
+  public static final String FILTER = "-filter";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.

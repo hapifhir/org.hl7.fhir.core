@@ -215,7 +215,7 @@ public class NarrativeGenerationTests {
     context = TestingUtilities.getSharedWorkerContext("5.0.0");
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true);
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
-    context.loadFromPackage(ips,  new TestPackageLoader(new String[] { "StructureDefinition", "ValueSet" }));
+    context.loadFromPackage(ips,  new TestPackageLoader(Utilities.strings("StructureDefinition", "ValueSet" )));
   }
 
   @ParameterizedTest(name = "{index}: file {0}")

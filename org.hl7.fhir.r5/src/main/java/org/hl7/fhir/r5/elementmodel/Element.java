@@ -77,7 +77,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 public class Element extends Base {
 
   public enum SpecialElement {
-		CONTAINED, BUNDLE_ENTRY, BUNDLE_OUTCOME, PARAMETER, LOGICAL;
+		CONTAINED, BUNDLE_ENTRY, BUNDLE_OUTCOME, BUNDLE_ISSUES, PARAMETER, LOGICAL;
 
     public static SpecialElement fromProperty(Property property) {
       if (property.getStructure().getType().equals("Parameters"))
@@ -86,6 +86,8 @@ public class Element extends Base {
         return BUNDLE_ENTRY;
       if (property.getStructure().getType().equals("Bundle") && property.getName().equals("outcome"))
         return BUNDLE_OUTCOME;
+      if (property.getStructure().getType().equals("Bundle") && property.getName().equals("issues"))
+        return BUNDLE_ISSUES;
       if (property.getName().equals("contained")) 
         return CONTAINED;
       if (property.getStructure().getKind() == StructureDefinitionKind.LOGICAL)
@@ -97,6 +99,7 @@ public class Element extends Base {
       switch (this) {
       case BUNDLE_ENTRY: return "entry";
       case BUNDLE_OUTCOME: return "outcome";
+      case BUNDLE_ISSUES: return "issues";
       case CONTAINED: return "contained";
       case PARAMETER: return "parameter";
       case LOGICAL: return "logical";
