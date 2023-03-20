@@ -199,6 +199,11 @@ public class StructureMapValidator extends BaseValidator {
       return sd.getUrl().equals(other.sd.getUrl()) && ed.getPath().equals(other.ed.getPath()) && Utilities.stringsEqual(type, other.type);
     }
 
+    @Override
+    public String toString() {
+      return summary();
+    }
+
   }
 
   public class VariableSet {
@@ -623,11 +628,17 @@ public class StructureMapValidator extends BaseValidator {
           } else {
             ok = false;
           }
+          // check condition
+          // check check
         }
-        // check condition
-        // check check
+      } else {
+        String variable = source.getChildValue("variable");
+        if (variable != null) {
+          variables.add(variable, v.getMode()); // may overwrite
+
+        }      
       }
-    }
+    } 
     return ok;
   }
 
@@ -873,20 +884,34 @@ public class StructureMapValidator extends BaseValidator {
     // under some special conditions, we can infer what the type will be:
     //  * there's a nominated default variable 
     //  * that variable has as single type
-    //  * there's a create with no param
+    //  * there's a create/copy with no param
     //  * there's a single dependent rule with name = StructureMapUtilities.DEF_GROUP_NAME
-    //  * there's a default type group for the type of the source type
+    //  * there's a default type group for the type of the source type 
     // otherwise, we can't know the target type. 
     
     if (ruleInfo.getDefVariable() != null && Utilities.existsInList(transform, "create", "copy") && params.isEmpty()) {
       VariableDefn v = variables.getVariable(ruleInfo.getDefVariable(), SOURCE);
       if (v != null && v.getEd() != null  && (v.getEd().getType().size() == 1 || v.getType() != null)) {
         List<Element> dependents = rule.getChildrenByName("dependent");
+        String type = v.getType() != null ? getTypeFromDefn(v.getEd(), v.getType()) : v.getEd().getTypeFirstRep().getWorkingCode();
         if (dependents.size() == 1 && StructureMapUtilities.DEF_GROUP_NAME.equals(dependents.get(0).getChildValue("name"))) {
-          String type = v.getType() != null ? getTypeFromDefn(v.getEd(), v.getType()) : v.getEd().getTypeFirstRep().getWorkingCode();
           // now, we look for a default group.
           // todo: look in this source
           // now look through the inputs
+          for (StructureMap map : imports) {
+            for (StructureMapGroupComponent grp : map.getGroup()) {
+              if (grp.getTypeMode() != StructureMapGroupTypeMode.NULL && grp.getInput().size() == 2) {
+                String grpType = getTypeForGroupInput(map, grp, grp.getInput().get(0));
+                if (sameTypes(type, grpType)) {
+                  String tgtType = getTypeForGroupInput(map, grp, grp.getInput().get(1));
+                  if (tgtType != null) {
+                    return tgtType;
+                  }
+                }
+              }
+            }
+          }
+        } else if (dependents.size() == 0) {
           for (StructureMap map : imports) {
             for (StructureMapGroupComponent grp : map.getGroup()) {
               if (grp.getTypeMode() == StructureMapGroupTypeMode.TYPEANDTYPES && grp.getInput().size() == 2) {
@@ -900,6 +925,7 @@ public class StructureMapValidator extends BaseValidator {
               }
             }
           }
+          
         }
       }
     }
