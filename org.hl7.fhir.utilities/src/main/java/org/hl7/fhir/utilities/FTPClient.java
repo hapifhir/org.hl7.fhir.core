@@ -131,6 +131,14 @@ public class FTPClient {
     logger.debug("Resolved remote resolved path: " + resolvedPath);
   }
 
+  public void setBufferSize(int bufferSize) {
+    clientImpl.setBufferSize(bufferSize);
+  }
+
+  public int getBufferSize() {
+    return clientImpl.getBufferSize();
+  }
+
   private void resetTimers() {
     this.createRemotePathIfNotExistsNanos = 0;
     this.storeFileTimeNanos = 0;
@@ -212,7 +220,6 @@ public class FTPClient {
   public void upload(String source, String path) throws IOException {
     String resolvedPath = resolveRemotePath(path);
     logger.debug("Uploading file to remote path: " + resolvedPath);
-
 
     attemptUpload(source, resolvedPath);
 

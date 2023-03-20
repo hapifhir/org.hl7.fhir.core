@@ -150,6 +150,7 @@ public class FTPClientTest implements ResourceLoaderTests {
 
   private  FTPClient connectToFTPClient() throws IOException {
     FTPClient client = new FTPClient(LOCALHOST, FAKE_FTP_PORT,  RELATIVE_PATH_1, DUMMY_USER, DUMMY_PASSWORD);
+    client.setBufferSize(16000);
     client.connect();
 
     assertAllMillisFieldsAreZero(client);
