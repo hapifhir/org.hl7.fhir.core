@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
 import com.google.gson.JsonSyntaxException;
 
@@ -40,6 +41,7 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
   @Getter @Setter protected boolean killPrimitives;
   @Getter protected List<String> types = new ArrayList<>();
   protected ILoaderKnowledgeProviderR5 lkp;
+  private boolean loadProfiles = true;
 
   public BaseLoaderR5(List<String> types, ILoaderKnowledgeProviderR5 lkp) {
     super();
@@ -169,6 +171,12 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
         String url = URL_BASE+versionString()+"/StructureDefinition/"+code;
         ToolingExtensions.setUrlExtension(tr, ToolingExtensions.EXT_FHIR_TYPE, url);
       }
+      for (CanonicalType c : tr.getProfile()) {
+        c.setValue(patchUrl(c.getValue(), "StructureDefinition"));
+      }
+      for (CanonicalType c : tr.getTargetProfile()) {
+        c.setValue(patchUrl(c.getValue(), "StructureDefinition"));
+      }
     }
     if (ed.hasBinding()) {
       ed.getBinding().setValueSet(patchUrl(ed.getBinding().getValueSet(), "ValueSet"));
@@ -178,4 +186,20 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
     }
   }
 
+  public IContextResourceLoader setLoadProfiles(boolean value) {
+    loadProfiles = value;
+    return this;
+  }
+  
+  public boolean wantLoad(NpmPackage pi, PackageResourceInformation pri) {
+    if (pri.getResourceType().equals("StructureDefinition")) {
+      if (loadProfiles) {
+        return true;
+      } else {
+        return pi.isCore() && Utilities.tail(pri.getUrl()).equals(pri.getStatedType());
+      }
+    } else {
+      return true;
+    }
+  }
 }
