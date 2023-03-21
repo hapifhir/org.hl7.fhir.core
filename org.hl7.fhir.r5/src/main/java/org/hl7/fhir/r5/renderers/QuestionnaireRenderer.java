@@ -72,7 +72,11 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+q.getId(), context.getRules() == GenerationRules.IG_PUBLISHER);    
     model.setAlternating(true);
-    model.setDocoImg(context.getLink(KnownLinkType.SPEC) +"help16.png");
+    if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
+      model.setDocoImg(HierarchicalTableGenerator.help16AsData());    
+    } else {
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png"));
+    }
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "LinkId"), translate("sd.hint", "The linkId for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Text"), translate("sd.hint", "Text for the item"), null, 0));
@@ -446,7 +450,11 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+q.getId(), true);    
     model.setAlternating(true);
-    model.setDocoImg(context.getLink(KnownLinkType.SPEC) +"help16.png");
+    if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
+      model.setDocoImg(HierarchicalTableGenerator.help16AsData());    
+    } else {
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png"));
+    }
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "LinkId"), translate("sd.hint", "The linkId for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Description & Constraints"), translate("sd.hint", "Additional information about the item"), null, 0));
