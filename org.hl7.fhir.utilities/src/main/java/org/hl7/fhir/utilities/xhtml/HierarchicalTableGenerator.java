@@ -924,7 +924,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
 
   public static String help16AsData() throws IOException {
     ClassLoader classLoader = HierarchicalTableGenerator.class.getClassLoader();
-    InputStream help = classLoader.getResourceAsStream("help16.PNG");
+    InputStream help = classLoader.getResourceAsStream("help16.png");
     StringBuilder b = new StringBuilder();
     b.append("data:image/png;base64,");
     byte[] bytes = TextFile.streamToBytes(help);
