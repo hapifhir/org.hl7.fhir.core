@@ -1216,7 +1216,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (isTxCaching && cacheId != null && vs.getUrl() != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+(vs.hasVersion() ? "|"+vs.getVersion() : "")));        
       } else if (options.getVsAsUrl()){
-        pin.addParameter().setName("url").setValue(new StringType(vs.getUrl()));
+        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()));
       } else {
         pin.addParameter().setName("valueSet").setResource(vs);
         if (vs.getUrl() != null) {
