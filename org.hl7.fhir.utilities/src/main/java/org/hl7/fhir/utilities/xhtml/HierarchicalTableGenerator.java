@@ -66,6 +66,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,9 +83,9 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TranslatingUtilities;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableGenerationMode;
 
 
 public class HierarchicalTableGenerator extends TranslatingUtilities {
@@ -634,13 +635,17 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     checkSetup();
   }
 
-  public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating, String id, boolean isActive, TableGenerationMode mode) {
+  public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating, String id, boolean isActive, TableGenerationMode mode) throws IOException {
     this.mode = mode;
     
     TableModel model = new TableModel(id, isActive);
     
     model.setAlternating(alternating);
-    model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+    if (mode == TableGenerationMode.XML) {
+      model.setDocoImg(help16AsData());     
+    } else {
+      model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+    }
     model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Flags"), translate("sd.hint", "Information about the use of the element"), null, 0));
@@ -653,11 +658,15 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     return model;
   }
 
-  public TableModel initComparisonTable(String prefix, String id) {
+  public TableModel initComparisonTable(String prefix, String id) throws IOException {
     TableModel model = new TableModel(id, true);
     
     model.setAlternating(true);
-    model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+    if (mode == TableGenerationMode.XML) {
+      model.setDocoImg(help16AsData()); // #FIXME      
+    } else {
+      model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+    }
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));    
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Flags"), translate("sd.hint", "Information about the use of the element - Left Structure"), null, 0).setStyle("border-left: 1px grey solid"));
@@ -913,7 +922,16 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return corePrefix+filename;
   }
 
-
+  public static String help16AsData() throws IOException {
+    ClassLoader classLoader = HierarchicalTableGenerator.class.getClassLoader();
+    InputStream help = classLoader.getResourceAsStream("help16.png");
+    StringBuilder b = new StringBuilder();
+    b.append("data:image/png;base64,");
+    byte[] bytes = TextFile.streamToBytes(help);
+    b.append(new String(Base64.encodeBase64(bytes)));
+    return b.toString();
+  }
+  
   private void checkModel(TableModel model) throws FHIRException  {
     check(!model.getTitles().isEmpty(), "Must have titles");
     int tc = 0;

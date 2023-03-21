@@ -461,7 +461,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
     if (n.equals(s) || n.equals("\"" + s + "\""))
       return true;
     if (source.get(0).hasType()) {
-      s = source.get(0).getElement() + "-" + source.get(0).getType();
+      s = source.get(0).getElement() + Utilities.capitalize(source.get(0).getType());
       return n.equals(s) || n.equals("\"" + s + "\"");
     }
     return false;

@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -63,7 +64,11 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+qr.getId(), false);    
     model.setAlternating(true);
-    model.setDocoImg(context.getLink(KnownLinkType.SPEC) +"help16.png");
+    if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
+      model.setDocoImg(HierarchicalTableGenerator.help16AsData());   
+    } else {
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png"));
+    }
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "LinkId"), translate("sd.hint", "The linkId for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Text"), translate("sd.hint", "Text for the item"), null, 0));
@@ -86,7 +91,11 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+q.getId(), true);    
     model.setAlternating(true);
-    model.setDocoImg(context.getLink(KnownLinkType.SPEC) +"help16.png");
+    if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
+      model.setDocoImg(HierarchicalTableGenerator.help16AsData());      
+    } else {
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png"));
+    }
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "LinkId"), translate("sd.hint", "The linkId for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Text"), translate("sd.hint", "Text for the item"), null, 0));
