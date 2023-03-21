@@ -187,7 +187,11 @@ public class XhtmlGenerator {
           out.write(" ");
         if (adorner != null) {
           XhtmlGeneratorAdornerState attrState = adorner.getAttributeMarkup(this, newstate, node, node.getAttributes().item(i).getNodeName(), node.getAttributes().item(i).getTextContent());
-          out.write(node.getAttributes().item(i).getNodeName()+"=\"<span class=\"xmlattrvalue\">"+attrState.getPrefix()+escapeHtml(Utilities.escapeXml(node.getAttributes().item(i).getTextContent()), level)+attrState.getSuffix()+"</span>\"");
+          if (attrState.getAltText() != null) {
+            out.write(node.getAttributes().item(i).getNodeName()+"=\"<span class=\"xmlattrvalue\">"+attrState.getPrefix()+escapeHtml(Utilities.escapeXml(attrState.getAltText()), level)+attrState.getSuffix()+"</span>\"");
+          } else {
+            out.write(node.getAttributes().item(i).getNodeName()+"=\"<span class=\"xmlattrvalue\">"+attrState.getPrefix()+escapeHtml(Utilities.escapeXml(node.getAttributes().item(i).getTextContent()), level)+attrState.getSuffix()+"</span>\"");
+          }
         } else
           out.write(node.getAttributes().item(i).getNodeName()+"=\"<span class=\"xmlattrvalue\">"+escapeHtml(Utilities.escapeXml(node.getAttributes().item(i).getTextContent()), level)+"</span>\"");
       }
