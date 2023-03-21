@@ -516,11 +516,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
   }
 
-  public TableModel initCustomTable(HierarchicalTableGenerator gen, String prefix, boolean isLogical, boolean alternating, String id, boolean isActive, List<Column> columns) {
+  public TableModel initCustomTable(HierarchicalTableGenerator gen, String prefix, boolean isLogical, boolean alternating, String id, boolean isActive, List<Column> columns) throws IOException {
     TableModel model = gen.new TableModel(id, isActive);
     
     model.setAlternating(alternating);
-    model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+    if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
+      model.setDocoImg(HierarchicalTableGenerator.help16AsData());       
+    } else {
+      model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+    }
     model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
     for (Column col : columns) {
@@ -2586,10 +2590,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
 
-  private TableModel initSpanningTable(HierarchicalTableGenerator gen, String prefix, boolean isLogical, String id) {
+  private TableModel initSpanningTable(HierarchicalTableGenerator gen, String prefix, boolean isLogical, String id) throws IOException {
     TableModel model = gen.new TableModel(id, true);
     
-    model.setDocoImg(prefix+"help16.png");
+    if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
+      model.setDocoImg(HierarchicalTableGenerator.help16AsData());     
+    } else {
+      model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+    }
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table")); // todo: change to graph definition
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Property", "A profiled resource", null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Card.", "Minimum and Maximum # of times the the element can appear in the instance", null, 0));
