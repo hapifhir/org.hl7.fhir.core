@@ -2281,13 +2281,13 @@ public class ProfileUtilities extends TranslatingUtilities {
             t.setUserData(UD_DERIVATION_EQUALS, true);
       }
 
+      List<ElementDefinitionMappingComponent> list = new ArrayList<>();
+      list.addAll(base.getMapping());
+      base.getMapping().clear();
+      addMappings(base.getMapping(), list);
       if (derived.hasMapping()) {
-        List<ElementDefinitionMappingComponent> list = new ArrayList<>();
-        list.addAll(base.getMapping());
-        base.getMapping().clear();
-        addMappings(base.getMapping(), list);
         addMappings(base.getMapping(), derived.getMapping());
-      }
+      } 
       for (ElementDefinitionMappingComponent m : base.getMapping()) {
         if (m.hasMap()) {
           m.setMap(m.getMap().trim());
