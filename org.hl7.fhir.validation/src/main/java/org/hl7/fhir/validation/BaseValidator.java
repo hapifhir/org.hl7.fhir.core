@@ -155,6 +155,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected List<ValidationMessage> messagesToRemove = new ArrayList<>();
   private ValidationLevel level = ValidationLevel.HINTS;
   protected Coding jurisdiction;
+  protected boolean allowExamples;
 
   public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
     super();
@@ -1230,5 +1231,18 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected boolean isHL7(Element cr) {
     String url = cr.getChildValue("url");
     return url != null && url.contains("hl7");
+  }
+
+  public boolean isAllowExamples() {
+    return this.allowExamples;
+  }
+
+  public void setAllowExamples(boolean value) {
+    this.allowExamples = value;
+  }
+
+  protected boolean isExampleUrl(String url) {
+    return Utilities.containsInList(url, "example.org", "acme.com", "acme.org");
+    
   }
 }
