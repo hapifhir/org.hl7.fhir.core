@@ -127,7 +127,7 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     if (killPrimitives) {
       throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
-    if (r5 instanceof StructureDefinition && VersionUtilities.isR4BVer(version)) {
+    if (r5 instanceof StructureDefinition && VersionUtilities.isR4Ver(version)) {
       r5 = new StructureDefinitionHacker(version).fixSD((StructureDefinition) r5);
     }
     if (patchUrls) {

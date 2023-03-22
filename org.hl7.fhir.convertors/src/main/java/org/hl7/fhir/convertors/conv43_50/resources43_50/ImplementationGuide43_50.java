@@ -2344,7 +2344,7 @@ public class ImplementationGuide43_50 {
         tgt.addParameter(convertImplementationGuideDefinitionParameterComponent(t));
       else {
         org.hl7.fhir.r4b.model.Extension e = new org.hl7.fhir.r4b.model.Extension(EXT_IG_DEFINITION_PARAMETER);
-        org.hl7.fhir.r4b.model.Extension eCode = new org.hl7.fhir.r4b.model.Extension("code", new org.hl7.fhir.r4b.model.StringType(t.getCode().getCode()));
+        org.hl7.fhir.r4b.model.Extension eCode = new org.hl7.fhir.r4b.model.Extension("code", new org.hl7.fhir.r4b.model.CodeType(t.getCode().getCode()));
         org.hl7.fhir.r4b.model.Extension eValue = new org.hl7.fhir.r4b.model.Extension("value", new org.hl7.fhir.r4b.model.StringType(t.getValue()));
         e.addExtension(eCode);
         e.addExtension(eValue);

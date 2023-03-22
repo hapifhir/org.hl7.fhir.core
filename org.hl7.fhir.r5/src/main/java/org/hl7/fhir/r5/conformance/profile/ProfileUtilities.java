@@ -661,10 +661,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                 System.out.println("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
             }
           }
-          if (exception)
-            throw new DefinitionException(msg);
-          else
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, msg, ValidationMessage.IssueSeverity.ERROR));
+          handleError(url, msg);
         }
         // hack around a problem in R4 definitions (somewhere?)
         for (ElementDefinition ed : derived.getSnapshot().getElement()) {
@@ -712,14 +709,20 @@ public class ProfileUtilities extends TranslatingUtilities {
                 if (ed.getPath().equals("Bundle.entry.response.outcome")) {
                   wt = "OperationOutcome";
                 }
-                if (!sd.getType().equals(wt)) {
-                  boolean ok = isCompatibleType(wt, sd);
+                String tt = sd.getType();
+                boolean elementProfile = u.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT);
+                if (elementProfile) {
+                  ElementDefinition edt = sd.getSnapshot().getElementById(u.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT));
+                  if (edt == null) {
+                    handleError(url, "The profile "+u.getValue()+" has type "+sd.getType()+" which is not consistent with the stated type "+wt);
+                  } else {
+                    tt = edt.typeSummary();
+                  }
+                }
+                if (!tt.equals(wt)) {
+                  boolean ok = !elementProfile && isCompatibleType(wt, sd);
                   if (!ok) {
-                    String smsg = "The profile "+u.getValue()+" has type "+sd.getType()+" which is not consistent with the stated type "+wt;
-                    if (exception)
-                      throw new DefinitionException(smsg);
-                    else
-                      messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), smsg, IssueSeverity.ERROR));
+                    handleError(url, "The profile "+u.getValue()+" has type "+sd.getType()+" which is not consistent with the stated type "+wt);
                   }
                 }
               }
@@ -736,6 +739,13 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.clearUserData("profileutils.snapshot.generating");
       snapshotStack.remove(derived.getUrl());
     }
+  }
+
+  private void handleError(String url, String msg) {
+    if (exception)
+      throw new DefinitionException(msg);
+    else
+      messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, msg, ValidationMessage.IssueSeverity.ERROR));
   }
 
 
@@ -1973,7 +1983,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       base.getAlias().addAll(e.getAlias());
       base.getMapping().clear();
       base.getMapping().addAll(e.getMapping());
-    } else if (source.getType().size() == 1 && source.getTypeFirstRep().hasProfile()) {
+    } else if (source.getType().size() == 1 && source.getTypeFirstRep().hasProfile() && !source.getTypeFirstRep().getProfile().get(0).hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT)) {
+      // todo: should we change down the profile_element if there's one?
       String type = source.getTypeFirstRep().getWorkingCode();
       if ("Extension".equals(type)) {
         System.out.println("Can't find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");          
@@ -2270,13 +2281,13 @@ public class ProfileUtilities extends TranslatingUtilities {
             t.setUserData(UD_DERIVATION_EQUALS, true);
       }
 
+      List<ElementDefinitionMappingComponent> list = new ArrayList<>();
+      list.addAll(base.getMapping());
+      base.getMapping().clear();
+      addMappings(base.getMapping(), list);
       if (derived.hasMapping()) {
-        List<ElementDefinitionMappingComponent> list = new ArrayList<>();
-        list.addAll(base.getMapping());
-        base.getMapping().clear();
-        addMappings(base.getMapping(), list);
         addMappings(base.getMapping(), derived.getMapping());
-      }
+      } 
       for (ElementDefinitionMappingComponent m : base.getMapping()) {
         if (m.hasMap()) {
           m.setMap(m.getMap().trim());
