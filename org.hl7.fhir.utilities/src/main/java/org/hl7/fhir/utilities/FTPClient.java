@@ -44,6 +44,7 @@ public class FTPClient {
   @Getter
   private final int port;
 
+  @Getter
   private final String remoteSeparator;
 
   @AllArgsConstructor(access = AccessLevel.PROTECTED)
