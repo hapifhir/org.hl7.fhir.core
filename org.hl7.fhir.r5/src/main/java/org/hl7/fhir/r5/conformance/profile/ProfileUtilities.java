@@ -1984,6 +1984,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       base.getMapping().clear();
       base.getMapping().addAll(e.getMapping());
     } else if (source.getType().size() == 1 && source.getTypeFirstRep().hasProfile() && !source.getTypeFirstRep().getProfile().get(0).hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT)) {
+      // todo: should we change down the profile_element if there's one?
       String type = source.getTypeFirstRep().getWorkingCode();
       if ("Extension".equals(type)) {
         System.out.println("Can't find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");          
@@ -2280,13 +2281,13 @@ public class ProfileUtilities extends TranslatingUtilities {
             t.setUserData(UD_DERIVATION_EQUALS, true);
       }
 
+      List<ElementDefinitionMappingComponent> list = new ArrayList<>();
+      list.addAll(base.getMapping());
+      base.getMapping().clear();
+      addMappings(base.getMapping(), list);
       if (derived.hasMapping()) {
-        List<ElementDefinitionMappingComponent> list = new ArrayList<>();
-        list.addAll(base.getMapping());
-        base.getMapping().clear();
-        addMappings(base.getMapping(), list);
         addMappings(base.getMapping(), derived.getMapping());
-      }
+      } 
       for (ElementDefinitionMappingComponent m : base.getMapping()) {
         if (m.hasMap()) {
           m.setMap(m.getMap().trim());

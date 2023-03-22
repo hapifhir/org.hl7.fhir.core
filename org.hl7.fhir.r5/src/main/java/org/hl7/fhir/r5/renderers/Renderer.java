@@ -3,10 +3,12 @@ package org.hl7.fhir.r5.renderers;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.TranslatingUtilities;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -76,7 +78,7 @@ public class Renderer extends TranslatingUtilities {
   public void genStandardsStatus(XhtmlNode td, StandardsStatus ss) {
     if (ss != null) {
       td.tx(" ");
-      XhtmlNode a = td.ah("versions.html#std-process", "Standards Status = "+ss.toDisplay());
+      XhtmlNode a = td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "versions.html#std-process"), "Standards Status = "+ss.toDisplay());
       a.style("padding-left: 3px; padding-right: 3px; border: 1px grey solid; font-weight: bold; color: black; background-color: "+ss.getColor());
       a.tx(ss.getAbbrev());
     }
