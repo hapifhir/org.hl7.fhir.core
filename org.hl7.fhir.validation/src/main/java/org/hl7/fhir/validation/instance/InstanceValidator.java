@@ -471,7 +471,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private IValidationProfileUsageTracker tracker;
   private ValidatorHostServices validatorServices;
   private boolean assumeValidRestReferences;
-  private boolean allowExamples;
   private boolean securityChecks;
   private ProfileUtilities profileUtilities;
   private boolean crumbTrails;
@@ -584,14 +583,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setAssumeValidRestReferences(boolean value) {
     this.assumeValidRestReferences = value;
-  }
-
-  public boolean isAllowExamples() {
-    return this.allowExamples;
-  }
-
-  public void setAllowExamples(boolean value) {
-    this.allowExamples = value;
   }
 
   public boolean isAllowComments() {
@@ -5043,7 +5034,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("StructureMap")) {
       return new StructureMapValidator(context, timeTracker, fpe, xverManager,profileUtilities, jurisdiction).validateStructureMap(errors, element, stack);
     } else if (element.getType().equals("ValueSet")) {
-      return new ValueSetValidator(context, timeTracker, this, xverManager, jurisdiction).validateValueSet(errors, element, stack);
+      return new ValueSetValidator(context, timeTracker, this, xverManager, jurisdiction, allowExamples).validateValueSet(errors, element, stack);
     } else {
       return true;
     }

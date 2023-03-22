@@ -957,6 +957,15 @@ public class Utilities {
     return false;
   }
 
+  public static boolean containsInList(String value, String... array) {
+    if (value == null)
+      return false;
+    for (String s : array)
+      if (value.contains(s))
+        return true;
+    return false;
+  }
+
   public static boolean existsInList(String value, String... array) {
     if (value == null)
       return false;
@@ -1991,7 +2000,7 @@ public class Utilities {
 
   public static String tail(String url) {
     int i = url.length()-1;
-    while (i >= 0 && isTokenChar(url.charAt(i))) {
+    while (i >= 0 && (isTokenChar(url.charAt(i)) || isDigit(url.charAt(i))) ) {
       i--;
     }
     if (i < 0) {
