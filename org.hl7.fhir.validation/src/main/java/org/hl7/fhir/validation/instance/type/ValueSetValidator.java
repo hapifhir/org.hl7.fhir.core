@@ -43,13 +43,13 @@ public class ValueSetValidator extends BaseValidator {
 
   private InstanceValidator parent;
 
-  public ValueSetValidator(IWorkerContext context, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction) {
+  public ValueSetValidator(IWorkerContext context, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction, boolean allowExamples) {
     super(context, xverManager);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
     this.parent = parent;
     this.jurisdiction = jurisdiction;
-
+    this.allowExamples = allowExamples;
   }
   
   public boolean validateValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
@@ -190,7 +190,15 @@ public class ValueSetValidator extends BaseValidator {
     if (version == null) {
       ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null), null);
       if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
-        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING, system, vv.getMessage());                      
+        if (isExampleUrl(system)) {
+          if (isAllowExamples()) {
+            hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_EXAMPLE_SYSTEM_HINT, system);
+          } else {
+            rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_EXAMPLE_SYSTEM_ERROR, system);
+          }
+        } else {
+          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING, system, vv.getMessage());
+        }
         return false;
       } else {
         boolean ok = vv.isOk();
