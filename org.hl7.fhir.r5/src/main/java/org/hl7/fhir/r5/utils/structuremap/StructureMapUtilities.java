@@ -1000,7 +1000,7 @@ public class StructureMapUtilities {
         if (rule.getSource().size() != 1 || !rule.getSourceFirstRep().hasElement() && exceptionsForChecks )
           throw lexer.error("Complex rules must have an explicit name");
         if (rule.getSourceFirstRep().hasType())
-          rule.setName(rule.getSourceFirstRep().getElement() + "-" + rule.getSourceFirstRep().getType());
+          rule.setName(rule.getSourceFirstRep().getElement() + Utilities.capitalize(rule.getSourceFirstRep().getType()));
         else
           rule.setName(rule.getSourceFirstRep().getElement());
       }

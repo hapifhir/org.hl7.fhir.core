@@ -1154,7 +1154,7 @@ public boolean prependLinks() {
 
 @Override
 public String getLinkForUrl(String corePath, String s) {
-  throw new NotImplementedError();
+  return null;
 }
   
 
