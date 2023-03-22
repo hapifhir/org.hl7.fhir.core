@@ -1984,6 +1984,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       base.getMapping().clear();
       base.getMapping().addAll(e.getMapping());
     } else if (source.getType().size() == 1 && source.getTypeFirstRep().hasProfile() && !source.getTypeFirstRep().getProfile().get(0).hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT)) {
+      // todo: should we change down the profile_element if there's one?
       String type = source.getTypeFirstRep().getWorkingCode();
       if ("Extension".equals(type)) {
         System.out.println("Can't find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");          
