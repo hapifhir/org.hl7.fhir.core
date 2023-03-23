@@ -2,7 +2,7 @@ package org.hl7.fhir.validation.tests;
 
 import java.io.File;
 
-import org.hl7.fhir.r4.test.utils.TestingUtilities;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.ValidatorCli;
 import org.junit.jupiter.api.Disabled;
@@ -13,6 +13,8 @@ public class TransformationTests {
 
   @Test
   public void testCCDA() throws Exception {
+    TestingUtilities.injectCorePackageLoader();
+
     String mappings = Utilities.path(TestingUtilities.home(), "tests", "transform-examples", "ccda");
     String input = Utilities.path(TestingUtilities.home(), "tests", "transform-examples", "ccda.xml");
     String output = Utilities.path("[tmp]", "cda-bundle.txt");
