@@ -137,6 +137,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
+    TestingUtilities.injectCorePackageLoader();
+
     CacheVerificationLogger logger = new CacheVerificationLogger();
     long setup = System.nanoTime();
 
