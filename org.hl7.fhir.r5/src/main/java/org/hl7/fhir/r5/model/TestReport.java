@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4116,6 +4116,26 @@ public class TestReport extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESULT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESULT);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The current status of the test report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestReport.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="TestReport.status", description="The current status of the test report", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The current status of the test report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestReport.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
  /**
    * Search parameter: <b>tester</b>

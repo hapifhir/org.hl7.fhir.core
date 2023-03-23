@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 
 import org.hl7.fhir.instance.model.api.*;
@@ -52,6 +52,7 @@ public class Enumerations {
 //   BindingStrength: Indication of the degree of conformance expectations associated with a binding.[ElementDefinition, OperationDefinition]
 //   CapabilityStatementKind: How a capability statement is intended to be used.[CapabilityStatement, TerminologyCapabilities]
 //   ClaimProcessingCodes: This value set includes Claim Processing Outcome codes.[ClaimResponse, ExplanationOfBenefit]
+//   CodeSystemContentMode: The extent of the content of the code system (the concepts and codes it defines) are represented in a code system resource.[CodeSystem, TerminologyCapabilities]
 //   CommonLanguages: This value set includes common codes from BCP-47 (see http://tools.ietf.org/html/bcp47)[InventoryItem, TerminologyCapabilities]
 //   CompartmentType: Which type a compartment definition describes.[CompartmentDefinition, GraphDefinition]
 //   CompositionStatus: The workflow/clinical status of the composition.[Composition, DocumentReference]
@@ -69,7 +70,7 @@ public class Enumerations {
 //   FHIRVersion: All published FHIR Versions.[CapabilityStatement, ImplementationGuide, StructureDefinition]
 //   FilterOperator: The kind of operation to perform as a part of a property based filter.[CodeSystem, ValueSet]
 //   FinancialResourceStatusCodes: This value set includes Status codes.[Claim, ClaimResponse, Coverage, CoverageEligibilityRequest, CoverageEligibilityResponse, EnrollmentRequest, EnrollmentResponse, PaymentNotice, PaymentReconciliation, VisionPrescription]
-//   ListMode: The processing mode that applies to this list.[Composition, EvidenceReport, List]
+//   ListMode: The processing mode that applies to this list.[EvidenceReport, List]
 //   MeasureImprovementNotation: Observation values that indicate what change in a measurement value or score is indicative of an improvement in the measured item or scored issue.[Measure, MeasureReport]
 //   MimeTypes: This value set includes all possible codes from BCP-13 (see http://tools.ietf.org/html/bcp13)[Attachment, Binary, CapabilityStatement, ElementDefinition, Endpoint, Signature, Subscription, TestScript]
 //   ObservationStatus: Codes providing the status of an observation.[Observation, RiskAssessment]
@@ -77,7 +78,7 @@ public class Enumerations {
 //   PublicationStatus: The lifecycle status of an artifact.[ActivityDefinition, ActorDefinition, AdministrableProductDefinition, CanonicalResource, CapabilityStatement, ChargeItemDefinition, Citation, CodeSystem, CompartmentDefinition, ConceptMap, ConditionDefinition, EventDefinition, Evidence, EvidenceReport, EvidenceVariable, ExampleScenario, GraphDefinition, ImplementationGuide, Ingredient, InsurancePlan, Library, ManufacturedItemDefinition, Measure, MessageDefinition, MetadataResource, NamingSystem, ObservationDefinition, OperationDefinition, PlanDefinition, Questionnaire, RelatedArtifact, Requirements, ResearchStudy, ResearchSubject, SearchParameter, SpecimenDefinition, StructureDefinition, StructureMap, SubscriptionTopic, TerminologyCapabilities, TestPlan, TestScript, ValueSet]
 //   QuantityComparator: How the Quantity should be understood and represented.[Age, Count, Distance, Duration, Quantity]
 //   RequestIntent: Codes indicating the degree of authority/intentionality associated with a request.[ActivityDefinition, CommunicationRequest, DeviceRequest, NutritionOrder, RequestOrchestration, ServiceRequest]
-//   RequestPriority: Identifies the level of importance to be assigned to actioning the request.[ActivityDefinition, Communication, CommunicationRequest, DeviceRequest, MedicationRequest, PlanDefinition, RequestOrchestration, ServiceRequest, SupplyRequest, Task, Transport]
+//   RequestPriority: Identifies the level of importance to be assigned to actioning the request.[ActivityDefinition, Communication, CommunicationRequest, DeviceRequest, MedicationRequest, NutritionOrder, PlanDefinition, RequestOrchestration, ServiceRequest, SupplyRequest, Task, Transport]
 //   RequestStatus: Codes identifying the lifecycle stage of a request.[CarePlan, CommunicationRequest, DeviceRequest, NutritionOrder, RequestOrchestration, ServiceRequest]
 //   ResourceTypeEnum: Concrete FHIR Resource Types[CapabilityStatement, CompartmentDefinition, ImplementationGuide, MessageDefinition, Questionnaire]
 //   SearchComparator: What Search Comparator Codes are supported in search.[SearchParameter, Subscription, SubscriptionTopic]
@@ -1803,6 +1804,153 @@ public class Enumerations {
       return "?";
       }
     public String toSystem(ClaimProcessingCodes code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum CodeSystemContentMode {
+        /**
+         * None of the concepts defined by the code system are included in the code system resource.
+         */
+        NOTPRESENT, 
+        /**
+         * A subset of the valid externally defined concepts are included in the code system resource. There is no specific purpose or documented intent other than for illustrative purposes.
+         */
+        EXAMPLE, 
+        /**
+         * A subset of the code system concepts are included in the code system resource. This is a curated subset released for a specific purpose under the governance of the code system steward, and that the intent, bounds and consequences of the fragmentation are clearly defined in the fragment or the code system documentation. Fragments are also known as partitions.
+         */
+        FRAGMENT, 
+        /**
+         * All the concepts defined by the code system are included in the code system resource.
+         */
+        COMPLETE, 
+        /**
+         * The resource doesn't define any new concepts; it just provides additional designations and properties to another code system.
+         */
+        SUPPLEMENT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static CodeSystemContentMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("not-present".equals(codeString))
+          return NOTPRESENT;
+        if ("example".equals(codeString))
+          return EXAMPLE;
+        if ("fragment".equals(codeString))
+          return FRAGMENT;
+        if ("complete".equals(codeString))
+          return COMPLETE;
+        if ("supplement".equals(codeString))
+          return SUPPLEMENT;
+        throw new FHIRException("Unknown CodeSystemContentMode code '"+codeString+"'");
+        }
+        public static boolean isValidCode(String codeString) {
+            if (codeString == null || "".equals(codeString))
+                return false;
+          return Utilities.existsInList(codeString, "not-present", "example", "fragment", "complete", "supplement");
+        }
+        public String toCode() {
+          switch (this) {
+            case NOTPRESENT: return "not-present";
+            case EXAMPLE: return "example";
+            case FRAGMENT: return "fragment";
+            case COMPLETE: return "complete";
+            case SUPPLEMENT: return "supplement";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case NOTPRESENT: return "http://hl7.org/fhir/codesystem-content-mode";
+            case EXAMPLE: return "http://hl7.org/fhir/codesystem-content-mode";
+            case FRAGMENT: return "http://hl7.org/fhir/codesystem-content-mode";
+            case COMPLETE: return "http://hl7.org/fhir/codesystem-content-mode";
+            case SUPPLEMENT: return "http://hl7.org/fhir/codesystem-content-mode";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NOTPRESENT: return "None of the concepts defined by the code system are included in the code system resource.";
+            case EXAMPLE: return "A subset of the valid externally defined concepts are included in the code system resource. There is no specific purpose or documented intent other than for illustrative purposes.";
+            case FRAGMENT: return "A subset of the code system concepts are included in the code system resource. This is a curated subset released for a specific purpose under the governance of the code system steward, and that the intent, bounds and consequences of the fragmentation are clearly defined in the fragment or the code system documentation. Fragments are also known as partitions.";
+            case COMPLETE: return "All the concepts defined by the code system are included in the code system resource.";
+            case SUPPLEMENT: return "The resource doesn't define any new concepts; it just provides additional designations and properties to another code system.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NOTPRESENT: return "Not Present";
+            case EXAMPLE: return "Example";
+            case FRAGMENT: return "Fragment";
+            case COMPLETE: return "Complete";
+            case SUPPLEMENT: return "Supplement";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class CodeSystemContentModeEnumFactory implements EnumFactory<CodeSystemContentMode> {
+    public CodeSystemContentMode fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("not-present".equals(codeString))
+          return CodeSystemContentMode.NOTPRESENT;
+        if ("example".equals(codeString))
+          return CodeSystemContentMode.EXAMPLE;
+        if ("fragment".equals(codeString))
+          return CodeSystemContentMode.FRAGMENT;
+        if ("complete".equals(codeString))
+          return CodeSystemContentMode.COMPLETE;
+        if ("supplement".equals(codeString))
+          return CodeSystemContentMode.SUPPLEMENT;
+        throw new IllegalArgumentException("Unknown CodeSystemContentMode code '"+codeString+"'");
+        }
+
+        public Enumeration<CodeSystemContentMode> fromType(PrimitiveType<?> code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.NULL, code);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.NULL, code);
+        if ("not-present".equals(codeString))
+          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.NOTPRESENT, code);
+        if ("example".equals(codeString))
+          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.EXAMPLE, code);
+        if ("fragment".equals(codeString))
+          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.FRAGMENT, code);
+        if ("complete".equals(codeString))
+          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.COMPLETE, code);
+        if ("supplement".equals(codeString))
+          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.SUPPLEMENT, code);
+        throw new FHIRException("Unknown CodeSystemContentMode code '"+codeString+"'");
+        }
+    public String toCode(CodeSystemContentMode code) {
+      if (code == CodeSystemContentMode.NOTPRESENT)
+        return "not-present";
+      if (code == CodeSystemContentMode.EXAMPLE)
+        return "example";
+      if (code == CodeSystemContentMode.FRAGMENT)
+        return "fragment";
+      if (code == CodeSystemContentMode.COMPLETE)
+        return "complete";
+      if (code == CodeSystemContentMode.SUPPLEMENT)
+        return "supplement";
+      return "?";
+      }
+    public String toSystem(CodeSystemContentMode code) {
       return code.getSystem();
       }
     }
@@ -7929,10 +8077,6 @@ The ISO21090-codedString may be used to provide a coded representation of the co
          */
         MARKETINGSTATUS, 
         /**
-         * Population Type: A populatioof people with some set of grouping criteria.
-         */
-        POPULATION, 
-        /**
          * ProductShelfLife Type: The shelf-life and storage information for a medicinal product item or container can be described using this class.
          */
         PRODUCTSHELFLIFE, 
@@ -8329,7 +8473,7 @@ The ISO21090-codedString may be used to provide a coded representation of the co
          */
         COVERAGEELIGIBILITYRESPONSE, 
         /**
-         * Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, etc.
+         * Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, gaps in care, etc.
          */
         DETECTEDISSUE, 
         /**
@@ -8429,7 +8573,7 @@ The ISO21090-codedString may be used to provide a coded representation of the co
          */
         FORMULARYITEM, 
         /**
-         * A Genomic Study is a set of analysis performed to analyze and generate genomic data.
+         * A set of analyses performed to analyze and generate genomic data.
          */
         GENOMICSTUDY, 
         /**
@@ -8779,7 +8923,7 @@ The primary difference between a medicationstatement and a medicationadministrat
          */
         TERMINOLOGYCAPABILITIES, 
         /**
-         * A report of inventory or stock items.
+         * A plan for executing testing on an artifact or specifications
          */
         TESTPLAN, 
         /**
@@ -8841,8 +8985,6 @@ The primary difference between a medicationstatement and a medicationadministrat
           return ELEMENTDEFINITION;
         if ("MarketingStatus".equals(codeString))
           return MARKETINGSTATUS;
-        if ("Population".equals(codeString))
-          return POPULATION;
         if ("ProductShelfLife".equals(codeString))
           return PRODUCTSHELFLIFE;
         if ("Timing".equals(codeString))
@@ -9286,7 +9428,7 @@ The primary difference between a medicationstatement and a medicationadministrat
         public static boolean isValidCode(String codeString) {
             if (codeString == null || "".equals(codeString))
                 return false;
-          return Utilities.existsInList(codeString, "Base", "Element", "BackboneElement", "DataType", "Address", "Annotation", "Attachment", "Availability", "BackboneType", "Dosage", "ElementDefinition", "MarketingStatus", "Population", "ProductShelfLife", "Timing", "CodeableConcept", "CodeableReference", "Coding", "ContactDetail", "ContactPoint", "Contributor", "DataRequirement", "Expression", "ExtendedContactDetail", "Extension", "HumanName", "Identifier", "Meta", "MonetaryComponent", "Money", "Narrative", "ParameterDefinition", "Period", "PrimitiveType", "base64Binary", "boolean", "date", "dateTime", "decimal", "instant", "integer", "positiveInt", "unsignedInt", "integer64", "string", "code", "id", "markdown", "time", "uri", "canonical", "oid", "url", "uuid", "Quantity", "Age", "Count", "Distance", "Duration", "Range", "Ratio", "RatioRange", "Reference", "RelatedArtifact", "SampledData", "Signature", "TriggerDefinition", "UsageContext", "VirtualServiceDetail", "xhtml", "Resource", "Binary", "Bundle", "DomainResource", "Account", "ActivityDefinition", "ActorDefinition", "AdministrableProductDefinition", "AdverseEvent", "AllergyIntolerance", "Appointment", "AppointmentResponse", "ArtifactAssessment", "AuditEvent", "Basic", "BiologicallyDerivedProduct", "BiologicallyDerivedProductDispense", "BodyStructure", "CanonicalResource", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "ChargeItemDefinition", "Citation", "Claim", "ClaimResponse", "ClinicalImpression", "ClinicalUseDefinition", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition", "ConditionDefinition", "Consent", "Contract", "Coverage", "CoverageEligibilityRequest", "CoverageEligibilityResponse", "DetectedIssue", "Device", "DeviceAssociation", "DeviceDefinition", "DeviceDispense", "DeviceMetric", "DeviceRequest", "DeviceUsage", "DiagnosticReport", "DocumentReference", "Encounter", "EncounterHistory", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "FormularyItem", "GenomicStudy", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingSelection", "ImagingStudy", "Immunization", "ImmunizationEvaluation", "ImmunizationRecommendation", "ImplementationGuide", "Ingredient", "InsurancePlan", "InventoryItem", "InventoryReport", "Invoice", "Library", "Linkage", "List", "Location", "ManufacturedItemDefinition", "Measure", "MeasureReport", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationKnowledge", "MedicationRequest", "MedicationStatement", "MedicinalProductDefinition", "MessageDefinition", "MessageHeader", "MetadataResource", "MolecularSequence", "NamingSystem", "NutritionIntake", "NutritionOrder", "NutritionProduct", "Observation", "ObservationDefinition", "OperationDefinition", "OperationOutcome", "Organization", "OrganizationAffiliation", "PackagedProductDefinition", "Patient", "PaymentNotice", "PaymentReconciliation", "Permission", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "Provenance", "Questionnaire", "QuestionnaireResponse", "RegulatedAuthorization", "RelatedPerson", "RequestOrchestration", "Requirements", "ResearchStudy", "ResearchSubject", "RiskAssessment", "Schedule", "SearchParameter", "ServiceRequest", "Slot", "Specimen", "SpecimenDefinition", "StructureDefinition", "StructureMap", "Subscription", "SubscriptionStatus", "SubscriptionTopic", "Substance", "SubstanceDefinition", "SubstanceNucleicAcid", "SubstancePolymer", "SubstanceProtein", "SubstanceReferenceInformation", "SubstanceSourceMaterial", "SupplyDelivery", "SupplyRequest", "Task", "TerminologyCapabilities", "TestPlan", "TestReport", "TestScript", "Transport", "ValueSet", "VerificationResult", "VisionPrescription", "Parameters");
+          return Utilities.existsInList(codeString, "Base", "Element", "BackboneElement", "DataType", "Address", "Annotation", "Attachment", "Availability", "BackboneType", "Dosage", "ElementDefinition", "MarketingStatus", "ProductShelfLife", "Timing", "CodeableConcept", "CodeableReference", "Coding", "ContactDetail", "ContactPoint", "Contributor", "DataRequirement", "Expression", "ExtendedContactDetail", "Extension", "HumanName", "Identifier", "Meta", "MonetaryComponent", "Money", "Narrative", "ParameterDefinition", "Period", "PrimitiveType", "base64Binary", "boolean", "date", "dateTime", "decimal", "instant", "integer", "positiveInt", "unsignedInt", "integer64", "string", "code", "id", "markdown", "time", "uri", "canonical", "oid", "url", "uuid", "Quantity", "Age", "Count", "Distance", "Duration", "Range", "Ratio", "RatioRange", "Reference", "RelatedArtifact", "SampledData", "Signature", "TriggerDefinition", "UsageContext", "VirtualServiceDetail", "xhtml", "Resource", "Binary", "Bundle", "DomainResource", "Account", "ActivityDefinition", "ActorDefinition", "AdministrableProductDefinition", "AdverseEvent", "AllergyIntolerance", "Appointment", "AppointmentResponse", "ArtifactAssessment", "AuditEvent", "Basic", "BiologicallyDerivedProduct", "BiologicallyDerivedProductDispense", "BodyStructure", "CanonicalResource", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "ChargeItemDefinition", "Citation", "Claim", "ClaimResponse", "ClinicalImpression", "ClinicalUseDefinition", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition", "ConditionDefinition", "Consent", "Contract", "Coverage", "CoverageEligibilityRequest", "CoverageEligibilityResponse", "DetectedIssue", "Device", "DeviceAssociation", "DeviceDefinition", "DeviceDispense", "DeviceMetric", "DeviceRequest", "DeviceUsage", "DiagnosticReport", "DocumentReference", "Encounter", "EncounterHistory", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "FormularyItem", "GenomicStudy", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingSelection", "ImagingStudy", "Immunization", "ImmunizationEvaluation", "ImmunizationRecommendation", "ImplementationGuide", "Ingredient", "InsurancePlan", "InventoryItem", "InventoryReport", "Invoice", "Library", "Linkage", "List", "Location", "ManufacturedItemDefinition", "Measure", "MeasureReport", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationKnowledge", "MedicationRequest", "MedicationStatement", "MedicinalProductDefinition", "MessageDefinition", "MessageHeader", "MetadataResource", "MolecularSequence", "NamingSystem", "NutritionIntake", "NutritionOrder", "NutritionProduct", "Observation", "ObservationDefinition", "OperationDefinition", "OperationOutcome", "Organization", "OrganizationAffiliation", "PackagedProductDefinition", "Patient", "PaymentNotice", "PaymentReconciliation", "Permission", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "Provenance", "Questionnaire", "QuestionnaireResponse", "RegulatedAuthorization", "RelatedPerson", "RequestOrchestration", "Requirements", "ResearchStudy", "ResearchSubject", "RiskAssessment", "Schedule", "SearchParameter", "ServiceRequest", "Slot", "Specimen", "SpecimenDefinition", "StructureDefinition", "StructureMap", "Subscription", "SubscriptionStatus", "SubscriptionTopic", "Substance", "SubstanceDefinition", "SubstanceNucleicAcid", "SubstancePolymer", "SubstanceProtein", "SubstanceReferenceInformation", "SubstanceSourceMaterial", "SupplyDelivery", "SupplyRequest", "Task", "TerminologyCapabilities", "TestPlan", "TestReport", "TestScript", "Transport", "ValueSet", "VerificationResult", "VisionPrescription", "Parameters");
         }
         public String toCode() {
           switch (this) {
@@ -9302,7 +9444,6 @@ The primary difference between a medicationstatement and a medicationadministrat
             case DOSAGE: return "Dosage";
             case ELEMENTDEFINITION: return "ElementDefinition";
             case MARKETINGSTATUS: return "MarketingStatus";
-            case POPULATION: return "Population";
             case PRODUCTSHELFLIFE: return "ProductShelfLife";
             case TIMING: return "Timing";
             case CODEABLECONCEPT: return "CodeableConcept";
@@ -9540,7 +9681,6 @@ The primary difference between a medicationstatement and a medicationadministrat
             case DOSAGE: return "http://hl7.org/fhir/fhir-types";
             case ELEMENTDEFINITION: return "http://hl7.org/fhir/fhir-types";
             case MARKETINGSTATUS: return "http://hl7.org/fhir/fhir-types";
-            case POPULATION: return "http://hl7.org/fhir/fhir-types";
             case PRODUCTSHELFLIFE: return "http://hl7.org/fhir/fhir-types";
             case TIMING: return "http://hl7.org/fhir/fhir-types";
             case CODEABLECONCEPT: return "http://hl7.org/fhir/fhir-types";
@@ -9778,7 +9918,6 @@ The primary difference between a medicationstatement and a medicationadministrat
             case DOSAGE: return "Dosage Type: Indicates how the medication is/was taken or should be taken by the patient.";
             case ELEMENTDEFINITION: return "ElementDefinition Type: Captures constraints on each element within the resource, profile, or extension.";
             case MARKETINGSTATUS: return "MarketingStatus Type: The marketing status describes the date when a medicinal product is actually put on the market or the date as of which it is no longer available.";
-            case POPULATION: return "Population Type: A populatioof people with some set of grouping criteria.";
             case PRODUCTSHELFLIFE: return "ProductShelfLife Type: The shelf-life and storage information for a medicinal product item or container can be described using this class.";
             case TIMING: return "Timing Type: Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.";
             case CODEABLECONCEPT: return "CodeableConcept Type: A concept that may be defined by a formal reference to a terminology or ontology or may be provided by text.";
@@ -9878,7 +10017,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case COVERAGE: return "Financial instrument which may be used to reimburse or pay for health care products and services. Includes both insurance and self-payment.";
             case COVERAGEELIGIBILITYREQUEST: return "The CoverageEligibilityRequest provides patient and insurance coverage information to an insurer for them to respond, in the form of an CoverageEligibilityResponse, with information regarding whether the stated coverage is valid and in-force and optionally to provide the insurance details of the policy.";
             case COVERAGEELIGIBILITYRESPONSE: return "This resource provides eligibility and plan details from the processing of an CoverageEligibilityRequest resource.";
-            case DETECTEDISSUE: return "Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, etc.";
+            case DETECTEDISSUE: return "Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, gaps in care, etc.";
             case DEVICE: return "This resource describes the properties (regulated, has real time clock, etc.), adminstrative (manufacturer name, model number, serial number, firmware, etc.), and type (knee replacement, blood pressure cuff, MRI, etc.) of a physical unit (these values do not change much within a given module, for example the serail number, manufacturer name, and model number). An actual unit may consist of several modules in a distinct hierarchy and these are represented by multiple Device resources and bound through the 'parent' element.";
             case DEVICEASSOCIATION: return "A record of association of a device.";
             case DEVICEDEFINITION: return "This is a specialized resource that defines the characteristics and capabilities of a device.";
@@ -9903,7 +10042,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case FAMILYMEMBERHISTORY: return "Significant health conditions for a person related to the patient relevant in the context of care for the patient.";
             case FLAG: return "Prospective warnings of potential issues when providing care to the patient.";
             case FORMULARYITEM: return "This resource describes a product or service that is available through a program and includes the conditions and constraints of availability.  All of the information in this resource is specific to the inclusion of the item in the formulary and is not inherent to the item itself.";
-            case GENOMICSTUDY: return "A Genomic Study is a set of analysis performed to analyze and generate genomic data.";
+            case GENOMICSTUDY: return "A set of analyses performed to analyze and generate genomic data.";
             case GOAL: return "Describes the intended objective(s) for a patient, group or organization care, for example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.";
             case GRAPHDEFINITION: return "A formal computable definition of a graph of resources - that is, a coherent set of resources that form a graph by following references. The Graph Definition resource defines a set and makes rules about the set.";
             case GROUP: return "Represents a defined collection of entities that may be discussed or acted upon collectively but which are not expected to act collectively, and are not formally or legally recognized; i.e. a collection of entities that isn't an Organization.";
@@ -9990,7 +10129,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SUPPLYREQUEST: return "A record of a non-patient specific request for a medication, substance, device, certain types of biologically derived product, and nutrition product used in the healthcare setting.";
             case TASK: return "A task to be performed.";
             case TERMINOLOGYCAPABILITIES: return "A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
-            case TESTPLAN: return "A report of inventory or stock items.";
+            case TESTPLAN: return "A plan for executing testing on an artifact or specifications";
             case TESTREPORT: return "A summary of information based on the results of executing a TestScript.";
             case TESTSCRIPT: return "A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.";
             case TRANSPORT: return "Record of transport.";
@@ -10016,7 +10155,6 @@ The primary difference between a medicationstatement and a medicationadministrat
             case DOSAGE: return "Dosage";
             case ELEMENTDEFINITION: return "ElementDefinition";
             case MARKETINGSTATUS: return "MarketingStatus";
-            case POPULATION: return "Population";
             case PRODUCTSHELFLIFE: return "ProductShelfLife";
             case TIMING: return "Timing";
             case CODEABLECONCEPT: return "CodeableConcept";
@@ -10271,8 +10409,6 @@ The primary difference between a medicationstatement and a medicationadministrat
           return FHIRTypes.ELEMENTDEFINITION;
         if ("MarketingStatus".equals(codeString))
           return FHIRTypes.MARKETINGSTATUS;
-        if ("Population".equals(codeString))
-          return FHIRTypes.POPULATION;
         if ("ProductShelfLife".equals(codeString))
           return FHIRTypes.PRODUCTSHELFLIFE;
         if ("Timing".equals(codeString))
@@ -10746,8 +10882,6 @@ The primary difference between a medicationstatement and a medicationadministrat
           return new Enumeration<FHIRTypes>(this, FHIRTypes.ELEMENTDEFINITION, code);
         if ("MarketingStatus".equals(codeString))
           return new Enumeration<FHIRTypes>(this, FHIRTypes.MARKETINGSTATUS, code);
-        if ("Population".equals(codeString))
-          return new Enumeration<FHIRTypes>(this, FHIRTypes.POPULATION, code);
         if ("ProductShelfLife".equals(codeString))
           return new Enumeration<FHIRTypes>(this, FHIRTypes.PRODUCTSHELFLIFE, code);
         if ("Timing".equals(codeString))
@@ -11213,8 +11347,6 @@ The primary difference between a medicationstatement and a medicationadministrat
         return "ElementDefinition";
       if (code == FHIRTypes.MARKETINGSTATUS)
         return "MarketingStatus";
-      if (code == FHIRTypes.POPULATION)
-        return "Population";
       if (code == FHIRTypes.PRODUCTSHELFLIFE)
         return "ProductShelfLife";
       if (code == FHIRTypes.TIMING)
@@ -14562,7 +14694,7 @@ The primary difference between a medicationstatement and a medicationadministrat
          */
         COVERAGEELIGIBILITYRESPONSE, 
         /**
-         * Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, etc.
+         * Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, gaps in care, etc.
          */
         DETECTEDISSUE, 
         /**
@@ -14662,7 +14794,7 @@ The primary difference between a medicationstatement and a medicationadministrat
          */
         FORMULARYITEM, 
         /**
-         * A Genomic Study is a set of analysis performed to analyze and generate genomic data.
+         * A set of analyses performed to analyze and generate genomic data.
          */
         GENOMICSTUDY, 
         /**
@@ -15012,7 +15144,7 @@ The primary difference between a medicationstatement and a medicationadministrat
          */
         TERMINOLOGYCAPABILITIES, 
         /**
-         * A report of inventory or stock items.
+         * A plan for executing testing on an artifact or specifications
          */
         TESTPLAN, 
         /**
@@ -15738,7 +15870,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case COVERAGE: return "Financial instrument which may be used to reimburse or pay for health care products and services. Includes both insurance and self-payment.";
             case COVERAGEELIGIBILITYREQUEST: return "The CoverageEligibilityRequest provides patient and insurance coverage information to an insurer for them to respond, in the form of an CoverageEligibilityResponse, with information regarding whether the stated coverage is valid and in-force and optionally to provide the insurance details of the policy.";
             case COVERAGEELIGIBILITYRESPONSE: return "This resource provides eligibility and plan details from the processing of an CoverageEligibilityRequest resource.";
-            case DETECTEDISSUE: return "Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, etc.";
+            case DETECTEDISSUE: return "Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, gaps in care, etc.";
             case DEVICE: return "This resource describes the properties (regulated, has real time clock, etc.), adminstrative (manufacturer name, model number, serial number, firmware, etc.), and type (knee replacement, blood pressure cuff, MRI, etc.) of a physical unit (these values do not change much within a given module, for example the serail number, manufacturer name, and model number). An actual unit may consist of several modules in a distinct hierarchy and these are represented by multiple Device resources and bound through the 'parent' element.";
             case DEVICEASSOCIATION: return "A record of association of a device.";
             case DEVICEDEFINITION: return "This is a specialized resource that defines the characteristics and capabilities of a device.";
@@ -15763,7 +15895,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case FAMILYMEMBERHISTORY: return "Significant health conditions for a person related to the patient relevant in the context of care for the patient.";
             case FLAG: return "Prospective warnings of potential issues when providing care to the patient.";
             case FORMULARYITEM: return "This resource describes a product or service that is available through a program and includes the conditions and constraints of availability.  All of the information in this resource is specific to the inclusion of the item in the formulary and is not inherent to the item itself.";
-            case GENOMICSTUDY: return "A Genomic Study is a set of analysis performed to analyze and generate genomic data.";
+            case GENOMICSTUDY: return "A set of analyses performed to analyze and generate genomic data.";
             case GOAL: return "Describes the intended objective(s) for a patient, group or organization care, for example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.";
             case GRAPHDEFINITION: return "A formal computable definition of a graph of resources - that is, a coherent set of resources that form a graph by following references. The Graph Definition resource defines a set and makes rules about the set.";
             case GROUP: return "Represents a defined collection of entities that may be discussed or acted upon collectively but which are not expected to act collectively, and are not formally or legally recognized; i.e. a collection of entities that isn't an Organization.";
@@ -15850,7 +15982,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SUPPLYREQUEST: return "A record of a non-patient specific request for a medication, substance, device, certain types of biologically derived product, and nutrition product used in the healthcare setting.";
             case TASK: return "A task to be performed.";
             case TERMINOLOGYCAPABILITIES: return "A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
-            case TESTPLAN: return "A report of inventory or stock items.";
+            case TESTPLAN: return "A plan for executing testing on an artifact or specifications";
             case TESTREPORT: return "A summary of information based on the results of executing a TestScript.";
             case TESTSCRIPT: return "A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.";
             case TRANSPORT: return "Record of transport.";
@@ -18154,7 +18286,7 @@ The primary difference between a medicationstatement and a medicationadministrat
          */
         COVERAGEELIGIBILITYRESPONSE, 
         /**
-         * Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, etc.
+         * Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, gaps in care, etc.
          */
         DETECTEDISSUE, 
         /**
@@ -18258,7 +18390,7 @@ The primary difference between a medicationstatement and a medicationadministrat
          */
         FORMULARYITEM, 
         /**
-         * A Genomic Study is a set of analysis performed to analyze and generate genomic data.
+         * A set of analyses performed to analyze and generate genomic data.
          */
         GENOMICSTUDY, 
         /**
@@ -18616,7 +18748,7 @@ The primary difference between a medicationstatement and a medicationadministrat
          */
         TERMINOLOGYCAPABILITIES, 
         /**
-         * A report of inventory or stock items.
+         * A plan for executing testing on an artifact or specifications
          */
         TESTPLAN, 
         /**
@@ -19687,7 +19819,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case COVERAGE: return "Financial instrument which may be used to reimburse or pay for health care products and services. Includes both insurance and self-payment.";
             case COVERAGEELIGIBILITYREQUEST: return "The CoverageEligibilityRequest provides patient and insurance coverage information to an insurer for them to respond, in the form of an CoverageEligibilityResponse, with information regarding whether the stated coverage is valid and in-force and optionally to provide the insurance details of the policy.";
             case COVERAGEELIGIBILITYRESPONSE: return "This resource provides eligibility and plan details from the processing of an CoverageEligibilityRequest resource.";
-            case DETECTEDISSUE: return "Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, etc.";
+            case DETECTEDISSUE: return "Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, gaps in care, etc.";
             case DEVICE: return "This resource describes the properties (regulated, has real time clock, etc.), adminstrative (manufacturer name, model number, serial number, firmware, etc.), and type (knee replacement, blood pressure cuff, MRI, etc.) of a physical unit (these values do not change much within a given module, for example the serail number, manufacturer name, and model number). An actual unit may consist of several modules in a distinct hierarchy and these are represented by multiple Device resources and bound through the 'parent' element.";
             case DEVICEASSOCIATION: return "A record of association of a device.";
             case DEVICEDEFINITION: return "This is a specialized resource that defines the characteristics and capabilities of a device.";
@@ -19713,7 +19845,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case FAMILYMEMBERHISTORY: return "Significant health conditions for a person related to the patient relevant in the context of care for the patient.";
             case FLAG: return "Prospective warnings of potential issues when providing care to the patient.";
             case FORMULARYITEM: return "This resource describes a product or service that is available through a program and includes the conditions and constraints of availability.  All of the information in this resource is specific to the inclusion of the item in the formulary and is not inherent to the item itself.";
-            case GENOMICSTUDY: return "A Genomic Study is a set of analysis performed to analyze and generate genomic data.";
+            case GENOMICSTUDY: return "A set of analyses performed to analyze and generate genomic data.";
             case GOAL: return "Describes the intended objective(s) for a patient, group or organization care, for example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.";
             case GRAPHDEFINITION: return "A formal computable definition of a graph of resources - that is, a coherent set of resources that form a graph by following references. The Graph Definition resource defines a set and makes rules about the set.";
             case GROUP: return "Represents a defined collection of entities that may be discussed or acted upon collectively but which are not expected to act collectively, and are not formally or legally recognized; i.e. a collection of entities that isn't an Organization.";
@@ -19802,7 +19934,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SUPPLYREQUEST: return "A record of a non-patient specific request for a medication, substance, device, certain types of biologically derived product, and nutrition product used in the healthcare setting.";
             case TASK: return "A task to be performed.";
             case TERMINOLOGYCAPABILITIES: return "A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
-            case TESTPLAN: return "A report of inventory or stock items.";
+            case TESTPLAN: return "A plan for executing testing on an artifact or specifications";
             case TESTREPORT: return "A summary of information based on the results of executing a TestScript.";
             case TESTSCRIPT: return "A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.";
             case TRANSPORT: return "Record of transport.";

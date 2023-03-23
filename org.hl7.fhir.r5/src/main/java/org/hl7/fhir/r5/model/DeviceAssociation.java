@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -376,6 +376,7 @@ public class DeviceAssociation extends DomainResource {
      */
     @Child(name = "statusReason", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The reasons given for the current association status", formalDefinition="The reasons given for the current association status." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/deviceassociation-status-reason")
     protected List<CodeableConcept> statusReason;
 
     /**
@@ -1089,17 +1090,17 @@ public class DeviceAssociation extends DomainResource {
    * <p>
    * Description: <b>The identity of a patient for whom to list associations</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceAssociation.subject</b><br>
+   * Path: <b>DeviceAssociation.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="DeviceAssociation.subject", description="The identity of a patient for whom to list associations", type="reference", target={Device.class, Group.class, Patient.class, Practitioner.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="patient", path="DeviceAssociation.subject.where(resolve() is Patient)", description="The identity of a patient for whom to list associations", type="reference", target={Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
    * <p>
    * Description: <b>The identity of a patient for whom to list associations</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceAssociation.subject</b><br>
+   * Path: <b>DeviceAssociation.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
@@ -1135,17 +1136,17 @@ public class DeviceAssociation extends DomainResource {
    * <p>
    * Description: <b>The identity of a patient for whom to list associations</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceAssociation.subject</b><br>
+   * Path: <b>DeviceAssociation.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="DeviceAssociation.subject", description="The identity of a patient for whom to list associations", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Device.class, Group.class, Patient.class, Practitioner.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="subject", path="DeviceAssociation.subject.where(resolve() is Patient)", description="The identity of a patient for whom to list associations", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
    * <p>
    * Description: <b>The identity of a patient for whom to list associations</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceAssociation.subject</b><br>
+   * Path: <b>DeviceAssociation.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);

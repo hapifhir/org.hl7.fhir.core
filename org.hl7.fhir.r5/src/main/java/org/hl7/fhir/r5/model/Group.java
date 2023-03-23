@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1071,10 +1071,10 @@ public class Group extends DomainResource {
   }
 
     /**
-     * A unique business identifier for this group.
+     * Business identifiers assigned to this participant by one of the applications involved.  These identifiers remain constant as the resource is updated and propagates from server to server.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Unique id", formalDefinition="A unique business identifier for this group." )
+    @Description(shortDefinition="Business Identifier for this Group", formalDefinition="Business identifiers assigned to this participant by one of the applications involved.  These identifiers remain constant as the resource is updated and propagates from server to server." )
     protected List<Identifier> identifier;
 
     /**
@@ -1171,7 +1171,7 @@ public class Group extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (A unique business identifier for this group.)
+     * @return {@link #identifier} (Business identifiers assigned to this participant by one of the applications involved.  These identifiers remain constant as the resource is updated and propagates from server to server.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -1669,7 +1669,7 @@ public class Group extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "A unique business identifier for this group.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this participant by one of the applications involved.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("active", "boolean", "Indicates whether the record for the group is available for use or is merely being retained for historical purposes.", 0, 1, active));
         children.add(new Property("type", "code", "Identifies the broad classification of the kind of resources the group includes.", 0, 1, type));
         children.add(new Property("membership", "code", "Basis for membership in the Group:\n\n* 'definitional': The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.\n* 'enumerated': The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.", 0, 1, membership));
@@ -1685,7 +1685,7 @@ public class Group extends DomainResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A unique business identifier for this group.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this participant by one of the applications involved.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -1422950650: /*active*/  return new Property("active", "boolean", "Indicates whether the record for the group is available for use or is merely being retained for historical purposes.", 0, 1, active);
         case 3575610: /*type*/  return new Property("type", "code", "Identifies the broad classification of the kind of resources the group includes.", 0, 1, type);
         case -1340241962: /*membership*/  return new Property("membership", "code", "Basis for membership in the Group:\n\n* 'definitional': The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.\n* 'enumerated': The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.", 0, 1, membership);

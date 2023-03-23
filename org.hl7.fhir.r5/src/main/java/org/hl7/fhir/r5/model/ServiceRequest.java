@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,17 +65,25 @@ public class ServiceRequest extends DomainResource {
         /**
          * The parameter details for the service being requested.
          */
-        @Child(name = "parameter", type = {}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "parameter", type = {}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="The parameter details for the service being requested", formalDefinition="The parameter details for the service being requested." )
-        protected ServiceRequestOrderDetailParameterComponent parameter;
+        protected List<ServiceRequestOrderDetailParameterComponent> parameter;
 
-        private static final long serialVersionUID = -906173757L;
+        private static final long serialVersionUID = -404214439L;
 
     /**
      * Constructor
      */
       public ServiceRequestOrderDetailComponent() {
         super();
+      }
+
+        /**
+     * Constructor
+     */
+      public ServiceRequestOrderDetailComponent(ServiceRequestOrderDetailParameterComponent parameter) {
+        super();
+        this.addParameter(parameter);
       }
 
         /**
@@ -105,38 +113,67 @@ public class ServiceRequest extends DomainResource {
         /**
          * @return {@link #parameter} (The parameter details for the service being requested.)
          */
-        public ServiceRequestOrderDetailParameterComponent getParameter() { 
+        public List<ServiceRequestOrderDetailParameterComponent> getParameter() { 
           if (this.parameter == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ServiceRequestOrderDetailComponent.parameter");
-            else if (Configuration.doAutoCreate())
-              this.parameter = new ServiceRequestOrderDetailParameterComponent(); // cc
+            this.parameter = new ArrayList<ServiceRequestOrderDetailParameterComponent>();
           return this.parameter;
         }
 
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ServiceRequestOrderDetailComponent setParameter(List<ServiceRequestOrderDetailParameterComponent> theParameter) { 
+          this.parameter = theParameter;
+          return this;
+        }
+
         public boolean hasParameter() { 
-          return this.parameter != null && !this.parameter.isEmpty();
+          if (this.parameter == null)
+            return false;
+          for (ServiceRequestOrderDetailParameterComponent item : this.parameter)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public ServiceRequestOrderDetailParameterComponent addParameter() { //3
+          ServiceRequestOrderDetailParameterComponent t = new ServiceRequestOrderDetailParameterComponent();
+          if (this.parameter == null)
+            this.parameter = new ArrayList<ServiceRequestOrderDetailParameterComponent>();
+          this.parameter.add(t);
+          return t;
+        }
+
+        public ServiceRequestOrderDetailComponent addParameter(ServiceRequestOrderDetailParameterComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.parameter == null)
+            this.parameter = new ArrayList<ServiceRequestOrderDetailParameterComponent>();
+          this.parameter.add(t);
+          return this;
         }
 
         /**
-         * @param value {@link #parameter} (The parameter details for the service being requested.)
+         * @return The first repetition of repeating field {@link #parameter}, creating it if it does not already exist {3}
          */
-        public ServiceRequestOrderDetailComponent setParameter(ServiceRequestOrderDetailParameterComponent value) { 
-          this.parameter = value;
-          return this;
+        public ServiceRequestOrderDetailParameterComponent getParameterFirstRep() { 
+          if (getParameter().isEmpty()) {
+            addParameter();
+          }
+          return getParameter().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("parameterFocus", "CodeableReference(Device|DeviceDefinition|DeviceRequest|SupplyRequest|Medication|MedicationRequest|BiologicallyDerivedProduct|Substance)", "Indicates the context of the order details by reference.", 0, 1, parameterFocus));
-          children.add(new Property("parameter", "", "The parameter details for the service being requested.", 0, 1, parameter));
+          children.add(new Property("parameter", "", "The parameter details for the service being requested.", 0, java.lang.Integer.MAX_VALUE, parameter));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 1110086319: /*parameterFocus*/  return new Property("parameterFocus", "CodeableReference(Device|DeviceDefinition|DeviceRequest|SupplyRequest|Medication|MedicationRequest|BiologicallyDerivedProduct|Substance)", "Indicates the context of the order details by reference.", 0, 1, parameterFocus);
-          case 1954460585: /*parameter*/  return new Property("parameter", "", "The parameter details for the service being requested.", 0, 1, parameter);
+          case 1954460585: /*parameter*/  return new Property("parameter", "", "The parameter details for the service being requested.", 0, java.lang.Integer.MAX_VALUE, parameter);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -146,7 +183,7 @@ public class ServiceRequest extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 1110086319: /*parameterFocus*/ return this.parameterFocus == null ? new Base[0] : new Base[] {this.parameterFocus}; // CodeableReference
-        case 1954460585: /*parameter*/ return this.parameter == null ? new Base[0] : new Base[] {this.parameter}; // ServiceRequestOrderDetailParameterComponent
+        case 1954460585: /*parameter*/ return this.parameter == null ? new Base[0] : this.parameter.toArray(new Base[this.parameter.size()]); // ServiceRequestOrderDetailParameterComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -159,7 +196,7 @@ public class ServiceRequest extends DomainResource {
           this.parameterFocus = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case 1954460585: // parameter
-          this.parameter = (ServiceRequestOrderDetailParameterComponent) value; // ServiceRequestOrderDetailParameterComponent
+          this.getParameter().add((ServiceRequestOrderDetailParameterComponent) value); // ServiceRequestOrderDetailParameterComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -171,7 +208,7 @@ public class ServiceRequest extends DomainResource {
         if (name.equals("parameterFocus")) {
           this.parameterFocus = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("parameter")) {
-          this.parameter = (ServiceRequestOrderDetailParameterComponent) value; // ServiceRequestOrderDetailParameterComponent
+          this.getParameter().add((ServiceRequestOrderDetailParameterComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -181,7 +218,7 @@ public class ServiceRequest extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 1110086319:  return getParameterFocus();
-        case 1954460585:  return getParameter();
+        case 1954460585:  return addParameter(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -204,8 +241,7 @@ public class ServiceRequest extends DomainResource {
           return this.parameterFocus;
         }
         else if (name.equals("parameter")) {
-          this.parameter = new ServiceRequestOrderDetailParameterComponent();
-          return this.parameter;
+          return addParameter();
         }
         else
           return super.addChild(name);
@@ -220,7 +256,11 @@ public class ServiceRequest extends DomainResource {
       public void copyValues(ServiceRequestOrderDetailComponent dst) {
         super.copyValues(dst);
         dst.parameterFocus = parameterFocus == null ? null : parameterFocus.copy();
-        dst.parameter = parameter == null ? null : parameter.copy();
+        if (parameter != null) {
+          dst.parameter = new ArrayList<ServiceRequestOrderDetailParameterComponent>();
+          for (ServiceRequestOrderDetailParameterComponent i : parameter)
+            dst.parameter.add(i.copy());
+        };
       }
 
       @Override
@@ -259,16 +299,17 @@ public class ServiceRequest extends DomainResource {
     @Block()
     public static class ServiceRequestOrderDetailParameterComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The detail of the order being requested.
+         * A value representing the additional detail or instructions for the order (e.g., catheter insertion, body elevation, descriptive device configuration and/or setting instructions).
          */
-        @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The detail of the order being requested", formalDefinition="The detail of the order being requested." )
+        @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The detail of the order being requested", formalDefinition="A value representing the additional detail or instructions for the order (e.g., catheter insertion, body elevation, descriptive device configuration and/or setting instructions)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/servicerequest-orderdetail-parameter-code")
         protected CodeableConcept code;
 
         /**
          * Indicates a value for the order detail.
          */
-        @Child(name = "value", type = {Quantity.class, Ratio.class, Range.class, BooleanType.class, CodeableConcept.class, StringType.class, Period.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {Quantity.class, Ratio.class, Range.class, BooleanType.class, CodeableConcept.class, StringType.class, Period.class}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The value for the order detail", formalDefinition="Indicates a value for the order detail." )
         protected DataType value;
 
@@ -284,13 +325,14 @@ public class ServiceRequest extends DomainResource {
     /**
      * Constructor
      */
-      public ServiceRequestOrderDetailParameterComponent(CodeableConcept code) {
+      public ServiceRequestOrderDetailParameterComponent(CodeableConcept code, DataType value) {
         super();
         this.setCode(code);
+        this.setValue(value);
       }
 
         /**
-         * @return {@link #code} (The detail of the order being requested.)
+         * @return {@link #code} (A value representing the additional detail or instructions for the order (e.g., catheter insertion, body elevation, descriptive device configuration and/or setting instructions).)
          */
         public CodeableConcept getCode() { 
           if (this.code == null)
@@ -306,7 +348,7 @@ public class ServiceRequest extends DomainResource {
         }
 
         /**
-         * @param value {@link #code} (The detail of the order being requested.)
+         * @param value {@link #code} (A value representing the additional detail or instructions for the order (e.g., catheter insertion, body elevation, descriptive device configuration and/or setting instructions).)
          */
         public ServiceRequestOrderDetailParameterComponent setCode(CodeableConcept value) { 
           this.code = value;
@@ -441,14 +483,14 @@ public class ServiceRequest extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("code", "CodeableConcept", "The detail of the order being requested.", 0, 1, code));
+          children.add(new Property("code", "CodeableConcept", "A value representing the additional detail or instructions for the order (e.g., catheter insertion, body elevation, descriptive device configuration and/or setting instructions).", 0, 1, code));
           children.add(new Property("value[x]", "Quantity|Ratio|Range|boolean|CodeableConcept|string|Period", "Indicates a value for the order detail.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The detail of the order being requested.", 0, 1, code);
+          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A value representing the additional detail or instructions for the order (e.g., catheter insertion, body elevation, descriptive device configuration and/or setting instructions).", 0, 1, code);
           case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|Ratio|Range|boolean|CodeableConcept|string|Period", "Indicates a value for the order detail.", 0, 1, value);
           case 111972721: /*value*/  return new Property("value[x]", "Quantity|Ratio|Range|boolean|CodeableConcept|string|Period", "Indicates a value for the order detail.", 0, 1, value);
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Indicates a value for the order detail.", 0, 1, value);

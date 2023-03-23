@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -337,28 +337,21 @@ public class Composition extends DomainResource {
     @Block()
     public static class CompositionEventComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a "History and Physical Report" in which the procedure being documented is necessarily a "History and Physical" act.
-         */
-        @Child(name = "code", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Code(s) that apply to the event being documented", formalDefinition="This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a \"History and Physical Report\" in which the procedure being documented is necessarily a \"History and Physical\" act." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-ActCode")
-        protected List<CodeableConcept> code;
-
-        /**
          * The period of time covered by the documentation. There is no assertion that the documentation is a complete representation for this period, only that it documents events during this time.
          */
-        @Child(name = "period", type = {Period.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "period", type = {Period.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The period covered by the documentation", formalDefinition="The period of time covered by the documentation. There is no assertion that the documentation is a complete representation for this period, only that it documents events during this time." )
         protected Period period;
 
         /**
-         * The description and/or reference of the event(s) being documented. For example, this could be used to document such a colonoscopy or an appendectomy.
+         * Represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a "History and Physical Report" in which case the procedure being documented is necessarily a "History and Physical" act. The events may be included as a code or as a reference to an other resource.
          */
-        @Child(name = "detail", type = {Reference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The event(s) being documented", formalDefinition="The description and/or reference of the event(s) being documented. For example, this could be used to document such a colonoscopy or an appendectomy." )
-        protected List<Reference> detail;
+        @Child(name = "detail", type = {CodeableReference.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="The event(s) being documented, as code(s), reference(s), or both", formalDefinition="Represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a \"History and Physical Report\" in which case the procedure being documented is necessarily a \"History and Physical\" act. The events may be included as a code or as a reference to an other resource." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-ActCode")
+        protected List<CodeableReference> detail;
 
-        private static final long serialVersionUID = 1593079240L;
+        private static final long serialVersionUID = -2108044093L;
 
     /**
      * Constructor
@@ -366,59 +359,6 @@ public class Composition extends DomainResource {
       public CompositionEventComponent() {
         super();
       }
-
-        /**
-         * @return {@link #code} (This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a "History and Physical Report" in which the procedure being documented is necessarily a "History and Physical" act.)
-         */
-        public List<CodeableConcept> getCode() { 
-          if (this.code == null)
-            this.code = new ArrayList<CodeableConcept>();
-          return this.code;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public CompositionEventComponent setCode(List<CodeableConcept> theCode) { 
-          this.code = theCode;
-          return this;
-        }
-
-        public boolean hasCode() { 
-          if (this.code == null)
-            return false;
-          for (CodeableConcept item : this.code)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addCode() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.code == null)
-            this.code = new ArrayList<CodeableConcept>();
-          this.code.add(t);
-          return t;
-        }
-
-        public CompositionEventComponent addCode(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.code == null)
-            this.code = new ArrayList<CodeableConcept>();
-          this.code.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getCodeFirstRep() { 
-          if (getCode().isEmpty()) {
-            addCode();
-          }
-          return getCode().get(0);
-        }
 
         /**
          * @return {@link #period} (The period of time covered by the documentation. There is no assertion that the documentation is a complete representation for this period, only that it documents events during this time.)
@@ -445,18 +385,18 @@ public class Composition extends DomainResource {
         }
 
         /**
-         * @return {@link #detail} (The description and/or reference of the event(s) being documented. For example, this could be used to document such a colonoscopy or an appendectomy.)
+         * @return {@link #detail} (Represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a "History and Physical Report" in which case the procedure being documented is necessarily a "History and Physical" act. The events may be included as a code or as a reference to an other resource.)
          */
-        public List<Reference> getDetail() { 
+        public List<CodeableReference> getDetail() { 
           if (this.detail == null)
-            this.detail = new ArrayList<Reference>();
+            this.detail = new ArrayList<CodeableReference>();
           return this.detail;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CompositionEventComponent setDetail(List<Reference> theDetail) { 
+        public CompositionEventComponent setDetail(List<CodeableReference> theDetail) { 
           this.detail = theDetail;
           return this;
         }
@@ -464,25 +404,25 @@ public class Composition extends DomainResource {
         public boolean hasDetail() { 
           if (this.detail == null)
             return false;
-          for (Reference item : this.detail)
+          for (CodeableReference item : this.detail)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public Reference addDetail() { //3
-          Reference t = new Reference();
+        public CodeableReference addDetail() { //3
+          CodeableReference t = new CodeableReference();
           if (this.detail == null)
-            this.detail = new ArrayList<Reference>();
+            this.detail = new ArrayList<CodeableReference>();
           this.detail.add(t);
           return t;
         }
 
-        public CompositionEventComponent addDetail(Reference t) { //3
+        public CompositionEventComponent addDetail(CodeableReference t) { //3
           if (t == null)
             return this;
           if (this.detail == null)
-            this.detail = new ArrayList<Reference>();
+            this.detail = new ArrayList<CodeableReference>();
           this.detail.add(t);
           return this;
         }
@@ -490,7 +430,7 @@ public class Composition extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #detail}, creating it if it does not already exist {3}
          */
-        public Reference getDetailFirstRep() { 
+        public CodeableReference getDetailFirstRep() { 
           if (getDetail().isEmpty()) {
             addDetail();
           }
@@ -499,17 +439,15 @@ public class Composition extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("code", "CodeableConcept", "This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a \"History and Physical Report\" in which the procedure being documented is necessarily a \"History and Physical\" act.", 0, java.lang.Integer.MAX_VALUE, code));
           children.add(new Property("period", "Period", "The period of time covered by the documentation. There is no assertion that the documentation is a complete representation for this period, only that it documents events during this time.", 0, 1, period));
-          children.add(new Property("detail", "Reference(Any)", "The description and/or reference of the event(s) being documented. For example, this could be used to document such a colonoscopy or an appendectomy.", 0, java.lang.Integer.MAX_VALUE, detail));
+          children.add(new Property("detail", "CodeableReference(Any)", "Represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a \"History and Physical Report\" in which case the procedure being documented is necessarily a \"History and Physical\" act. The events may be included as a code or as a reference to an other resource.", 0, java.lang.Integer.MAX_VALUE, detail));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a \"History and Physical Report\" in which the procedure being documented is necessarily a \"History and Physical\" act.", 0, java.lang.Integer.MAX_VALUE, code);
           case -991726143: /*period*/  return new Property("period", "Period", "The period of time covered by the documentation. There is no assertion that the documentation is a complete representation for this period, only that it documents events during this time.", 0, 1, period);
-          case -1335224239: /*detail*/  return new Property("detail", "Reference(Any)", "The description and/or reference of the event(s) being documented. For example, this could be used to document such a colonoscopy or an appendectomy.", 0, java.lang.Integer.MAX_VALUE, detail);
+          case -1335224239: /*detail*/  return new Property("detail", "CodeableReference(Any)", "Represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a \"History and Physical Report\" in which case the procedure being documented is necessarily a \"History and Physical\" act. The events may be included as a code or as a reference to an other resource.", 0, java.lang.Integer.MAX_VALUE, detail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -518,9 +456,8 @@ public class Composition extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : this.code.toArray(new Base[this.code.size()]); // CodeableConcept
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
-        case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : this.detail.toArray(new Base[this.detail.size()]); // Reference
+        case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : this.detail.toArray(new Base[this.detail.size()]); // CodeableReference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -529,14 +466,11 @@ public class Composition extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 3059181: // code
-          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
         case -991726143: // period
           this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -1335224239: // detail
-          this.getDetail().add(TypeConvertor.castToReference(value)); // Reference
+          this.getDetail().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -545,12 +479,10 @@ public class Composition extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("code")) {
-          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("period")) {
+        if (name.equals("period")) {
           this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("detail")) {
-          this.getDetail().add(TypeConvertor.castToReference(value));
+          this.getDetail().add(TypeConvertor.castToCodeableReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -559,7 +491,6 @@ public class Composition extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return addCode(); 
         case -991726143:  return getPeriod();
         case -1335224239:  return addDetail(); 
         default: return super.makeProperty(hash, name);
@@ -570,9 +501,8 @@ public class Composition extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -991726143: /*period*/ return new String[] {"Period"};
-        case -1335224239: /*detail*/ return new String[] {"Reference"};
+        case -1335224239: /*detail*/ return new String[] {"CodeableReference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -580,10 +510,7 @@ public class Composition extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("code")) {
-          return addCode();
-        }
-        else if (name.equals("period")) {
+        if (name.equals("period")) {
           this.period = new Period();
           return this.period;
         }
@@ -602,15 +529,10 @@ public class Composition extends DomainResource {
 
       public void copyValues(CompositionEventComponent dst) {
         super.copyValues(dst);
-        if (code != null) {
-          dst.code = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : code)
-            dst.code.add(i.copy());
-        };
         dst.period = period == null ? null : period.copy();
         if (detail != null) {
-          dst.detail = new ArrayList<Reference>();
-          for (Reference i : detail)
+          dst.detail = new ArrayList<CodeableReference>();
+          for (CodeableReference i : detail)
             dst.detail.add(i.copy());
         };
       }
@@ -622,8 +544,7 @@ public class Composition extends DomainResource {
         if (!(other_ instanceof CompositionEventComponent))
           return false;
         CompositionEventComponent o = (CompositionEventComponent) other_;
-        return compareDeep(code, o.code, true) && compareDeep(period, o.period, true) && compareDeep(detail, o.detail, true)
-          ;
+        return compareDeep(period, o.period, true) && compareDeep(detail, o.detail, true);
       }
 
       @Override
@@ -637,7 +558,7 @@ public class Composition extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, period, detail);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(period, detail);
       }
 
   public String fhirType() {
@@ -686,17 +607,9 @@ public class Composition extends DomainResource {
         protected Narrative text;
 
         /**
-         * How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted.
-         */
-        @Child(name = "mode", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="working | snapshot | changes", formalDefinition="How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/list-mode")
-        protected Enumeration<ListMode> mode;
-
-        /**
          * Specifies the order applied to the items in the section entries.
          */
-        @Child(name = "orderedBy", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "orderedBy", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Order of section entries", formalDefinition="Specifies the order applied to the items in the section entries." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/list-order")
         protected CodeableConcept orderedBy;
@@ -704,14 +617,14 @@ public class Composition extends DomainResource {
         /**
          * A reference to the actual resource from which the narrative in the section is derived.
          */
-        @Child(name = "entry", type = {Reference.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "entry", type = {Reference.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="A reference to data that supports this section", formalDefinition="A reference to the actual resource from which the narrative in the section is derived." )
         protected List<Reference> entry;
 
         /**
          * If the section is empty, why the list is empty. An empty section typically has some text explaining the empty reason.
          */
-        @Child(name = "emptyReason", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "emptyReason", type = {CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Why the section is empty", formalDefinition="If the section is empty, why the list is empty. An empty section typically has some text explaining the empty reason." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/list-empty-reason")
         protected CodeableConcept emptyReason;
@@ -719,11 +632,11 @@ public class Composition extends DomainResource {
         /**
          * A nested sub-section within this section.
          */
-        @Child(name = "section", type = {SectionComponent.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "section", type = {SectionComponent.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Nested Section", formalDefinition="A nested sub-section within this section." )
         protected List<SectionComponent> section;
 
-        private static final long serialVersionUID = 911563193L;
+        private static final long serialVersionUID = 902802086L;
 
     /**
      * Constructor
@@ -907,55 +820,6 @@ public class Composition extends DomainResource {
         }
 
         /**
-         * @return {@link #mode} (How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
-         */
-        public Enumeration<ListMode> getModeElement() { 
-          if (this.mode == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SectionComponent.mode");
-            else if (Configuration.doAutoCreate())
-              this.mode = new Enumeration<ListMode>(new ListModeEnumFactory()); // bb
-          return this.mode;
-        }
-
-        public boolean hasModeElement() { 
-          return this.mode != null && !this.mode.isEmpty();
-        }
-
-        public boolean hasMode() { 
-          return this.mode != null && !this.mode.isEmpty();
-        }
-
-        /**
-         * @param value {@link #mode} (How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
-         */
-        public SectionComponent setModeElement(Enumeration<ListMode> value) { 
-          this.mode = value;
-          return this;
-        }
-
-        /**
-         * @return How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted.
-         */
-        public ListMode getMode() { 
-          return this.mode == null ? null : this.mode.getValue();
-        }
-
-        /**
-         * @param value How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted.
-         */
-        public SectionComponent setMode(ListMode value) { 
-          if (value == null)
-            this.mode = null;
-          else {
-            if (this.mode == null)
-              this.mode = new Enumeration<ListMode>(new ListModeEnumFactory());
-            this.mode.setValue(value);
-          }
-          return this;
-        }
-
-        /**
          * @return {@link #orderedBy} (Specifies the order applied to the items in the section entries.)
          */
         public CodeableConcept getOrderedBy() { 
@@ -1116,7 +980,6 @@ public class Composition extends DomainResource {
           children.add(new Property("author", "Reference(Practitioner|PractitionerRole|Device|Patient|RelatedPerson|Organization)", "Identifies who is responsible for the information in this section, not necessarily who typed it in.", 0, java.lang.Integer.MAX_VALUE, author));
           children.add(new Property("focus", "Reference(Any)", "The actual focus of the section when it is not the subject of the composition, but instead represents something or someone associated with the subject such as (for a patient subject) a spouse, parent, fetus, or donor. If not focus is specified, the focus is assumed to be focus of the parent section, or, for a section in the Composition itself, the subject of the composition. Sections with a focus SHALL only include resources where the logical subject (patient, subject, focus, etc.) matches the section focus, or the resources have no logical subject (few resources).", 0, 1, focus));
           children.add(new Property("text", "Narrative", "A human-readable narrative that contains the attested content of the section, used to represent the content of the resource to a human. The narrative need not encode all the structured data, but is required to contain sufficient detail to make it \"clinically safe\" for a human to just read the narrative.", 0, 1, text));
-          children.add(new Property("mode", "code", "How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted.", 0, 1, mode));
           children.add(new Property("orderedBy", "CodeableConcept", "Specifies the order applied to the items in the section entries.", 0, 1, orderedBy));
           children.add(new Property("entry", "Reference(Any)", "A reference to the actual resource from which the narrative in the section is derived.", 0, java.lang.Integer.MAX_VALUE, entry));
           children.add(new Property("emptyReason", "CodeableConcept", "If the section is empty, why the list is empty. An empty section typically has some text explaining the empty reason.", 0, 1, emptyReason));
@@ -1131,7 +994,6 @@ public class Composition extends DomainResource {
           case -1406328437: /*author*/  return new Property("author", "Reference(Practitioner|PractitionerRole|Device|Patient|RelatedPerson|Organization)", "Identifies who is responsible for the information in this section, not necessarily who typed it in.", 0, java.lang.Integer.MAX_VALUE, author);
           case 97604824: /*focus*/  return new Property("focus", "Reference(Any)", "The actual focus of the section when it is not the subject of the composition, but instead represents something or someone associated with the subject such as (for a patient subject) a spouse, parent, fetus, or donor. If not focus is specified, the focus is assumed to be focus of the parent section, or, for a section in the Composition itself, the subject of the composition. Sections with a focus SHALL only include resources where the logical subject (patient, subject, focus, etc.) matches the section focus, or the resources have no logical subject (few resources).", 0, 1, focus);
           case 3556653: /*text*/  return new Property("text", "Narrative", "A human-readable narrative that contains the attested content of the section, used to represent the content of the resource to a human. The narrative need not encode all the structured data, but is required to contain sufficient detail to make it \"clinically safe\" for a human to just read the narrative.", 0, 1, text);
-          case 3357091: /*mode*/  return new Property("mode", "code", "How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted.", 0, 1, mode);
           case -391079516: /*orderedBy*/  return new Property("orderedBy", "CodeableConcept", "Specifies the order applied to the items in the section entries.", 0, 1, orderedBy);
           case 96667762: /*entry*/  return new Property("entry", "Reference(Any)", "A reference to the actual resource from which the narrative in the section is derived.", 0, java.lang.Integer.MAX_VALUE, entry);
           case 1140135409: /*emptyReason*/  return new Property("emptyReason", "CodeableConcept", "If the section is empty, why the list is empty. An empty section typically has some text explaining the empty reason.", 0, 1, emptyReason);
@@ -1149,7 +1011,6 @@ public class Composition extends DomainResource {
         case -1406328437: /*author*/ return this.author == null ? new Base[0] : this.author.toArray(new Base[this.author.size()]); // Reference
         case 97604824: /*focus*/ return this.focus == null ? new Base[0] : new Base[] {this.focus}; // Reference
         case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // Narrative
-        case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // Enumeration<ListMode>
         case -391079516: /*orderedBy*/ return this.orderedBy == null ? new Base[0] : new Base[] {this.orderedBy}; // CodeableConcept
         case 96667762: /*entry*/ return this.entry == null ? new Base[0] : this.entry.toArray(new Base[this.entry.size()]); // Reference
         case 1140135409: /*emptyReason*/ return this.emptyReason == null ? new Base[0] : new Base[] {this.emptyReason}; // CodeableConcept
@@ -1176,10 +1037,6 @@ public class Composition extends DomainResource {
           return value;
         case 3556653: // text
           this.text = TypeConvertor.castToNarrative(value); // Narrative
-          return value;
-        case 3357091: // mode
-          value = new ListModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.mode = (Enumeration) value; // Enumeration<ListMode>
           return value;
         case -391079516: // orderedBy
           this.orderedBy = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1210,9 +1067,6 @@ public class Composition extends DomainResource {
           this.focus = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("text")) {
           this.text = TypeConvertor.castToNarrative(value); // Narrative
-        } else if (name.equals("mode")) {
-          value = new ListModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.mode = (Enumeration) value; // Enumeration<ListMode>
         } else if (name.equals("orderedBy")) {
           this.orderedBy = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("entry")) {
@@ -1234,7 +1088,6 @@ public class Composition extends DomainResource {
         case -1406328437:  return addAuthor(); 
         case 97604824:  return getFocus();
         case 3556653:  return getText();
-        case 3357091:  return getModeElement();
         case -391079516:  return getOrderedBy();
         case 96667762:  return addEntry(); 
         case 1140135409:  return getEmptyReason();
@@ -1252,7 +1105,6 @@ public class Composition extends DomainResource {
         case -1406328437: /*author*/ return new String[] {"Reference"};
         case 97604824: /*focus*/ return new String[] {"Reference"};
         case 3556653: /*text*/ return new String[] {"Narrative"};
-        case 3357091: /*mode*/ return new String[] {"code"};
         case -391079516: /*orderedBy*/ return new String[] {"CodeableConcept"};
         case 96667762: /*entry*/ return new String[] {"Reference"};
         case 1140135409: /*emptyReason*/ return new String[] {"CodeableConcept"};
@@ -1281,9 +1133,6 @@ public class Composition extends DomainResource {
         else if (name.equals("text")) {
           this.text = new Narrative();
           return this.text;
-        }
-        else if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Composition.section.mode");
         }
         else if (name.equals("orderedBy")) {
           this.orderedBy = new CodeableConcept();
@@ -1320,7 +1169,6 @@ public class Composition extends DomainResource {
         };
         dst.focus = focus == null ? null : focus.copy();
         dst.text = text == null ? null : text.copy();
-        dst.mode = mode == null ? null : mode.copy();
         dst.orderedBy = orderedBy == null ? null : orderedBy.copy();
         if (entry != null) {
           dst.entry = new ArrayList<Reference>();
@@ -1343,9 +1191,9 @@ public class Composition extends DomainResource {
           return false;
         SectionComponent o = (SectionComponent) other_;
         return compareDeep(title, o.title, true) && compareDeep(code, o.code, true) && compareDeep(author, o.author, true)
-           && compareDeep(focus, o.focus, true) && compareDeep(text, o.text, true) && compareDeep(mode, o.mode, true)
-           && compareDeep(orderedBy, o.orderedBy, true) && compareDeep(entry, o.entry, true) && compareDeep(emptyReason, o.emptyReason, true)
-           && compareDeep(section, o.section, true);
+           && compareDeep(focus, o.focus, true) && compareDeep(text, o.text, true) && compareDeep(orderedBy, o.orderedBy, true)
+           && compareDeep(entry, o.entry, true) && compareDeep(emptyReason, o.emptyReason, true) && compareDeep(section, o.section, true)
+          ;
       }
 
       @Override
@@ -1355,12 +1203,12 @@ public class Composition extends DomainResource {
         if (!(other_ instanceof SectionComponent))
           return false;
         SectionComponent o = (SectionComponent) other_;
-        return compareValues(title, o.title, true) && compareValues(mode, o.mode, true);
+        return compareValues(title, o.title, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(title, code, author, focus
-          , text, mode, orderedBy, entry, emptyReason, section);
+          , text, orderedBy, entry, emptyReason, section);
       }
 
   public String fhirType() {
@@ -2910,26 +2758,6 @@ public class Composition extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
 
  /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>Code(s) that apply to the event being documented</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.event.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="Composition.event.code", description="Code(s) that apply to the event being documented", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>Code(s) that apply to the event being documented</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.event.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
    * Search parameter: <b>entry</b>
    * <p>
    * Description: <b>A reference to data that supports this section</b><br>
@@ -2954,6 +2782,52 @@ public class Composition extends DomainResource {
    * the path value of "<b>Composition:entry</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ENTRY = new ca.uhn.fhir.model.api.Include("Composition:entry").toLocked();
+
+ /**
+   * Search parameter: <b>event-code</b>
+   * <p>
+   * Description: <b>Main clinical acts documented as codes</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Composition.event.detail.concept</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="event-code", path="Composition.event.detail.concept", description="Main clinical acts documented as codes", type="token" )
+  public static final String SP_EVENT_CODE = "event-code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>event-code</b>
+   * <p>
+   * Description: <b>Main clinical acts documented as codes</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Composition.event.detail.concept</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EVENT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EVENT_CODE);
+
+ /**
+   * Search parameter: <b>event-reference</b>
+   * <p>
+   * Description: <b>Main clinical acts documented as references</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.event.detail.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="event-reference", path="Composition.event.detail.reference", description="Main clinical acts documented as references", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BiologicallyDerivedProductDispense.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceAssociation.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentReference.class, Encounter.class, EncounterHistory.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryItem.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationStatement.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Parameters.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestPlan.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_EVENT_REFERENCE = "event-reference";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>event-reference</b>
+   * <p>
+   * Description: <b>Main clinical acts documented as references</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.event.detail.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam EVENT_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_EVENT_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Composition:event-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_EVENT_REFERENCE = new ca.uhn.fhir.model.api.Include("Composition:event-reference").toLocked();
 
  /**
    * Search parameter: <b>period</b>
@@ -3194,7 +3068,7 @@ public class Composition extends DomainResource {
 * [List](list.html): When the list was prepared
 * [MeasureReport](measurereport.html): The date of the measure report
 * [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication
-* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Observation](observation.html): Clinically relevant time/time-period for observation
 * [Procedure](procedure.html): When the procedure occurred or is occurring
 * [ResearchSubject](researchsubject.html): Start and end of participation
 * [RiskAssessment](riskassessment.html): When was assessment made?
@@ -3204,7 +3078,7 @@ public class Composition extends DomainResource {
    * Path: <b>AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AdverseEvent](adverseevent.html): When the event occurred\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [Appointment](appointment.html): Appointment date/time.\r\n* [AuditEvent](auditevent.html): Time when the event was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [DocumentReference](documentreference.html): When this document reference was created\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [ImmunizationEvaluation](immunizationevaluation.html): Date the evaluation was generated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Date recommendation(s) created\r\n* [Invoice](invoice.html): Invoice date / posting date\r\n* [List](list.html): When the list was prepared\r\n* [MeasureReport](measurereport.html): The date of the measure report\r\n* [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [ResearchSubject](researchsubject.html): Start and end of participation\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AdverseEvent](adverseevent.html): When the event occurred\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [Appointment](appointment.html): Appointment date/time.\r\n* [AuditEvent](auditevent.html): Time when the event was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [DocumentReference](documentreference.html): When this document reference was created\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [ImmunizationEvaluation](immunizationevaluation.html): Date the evaluation was generated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Date recommendation(s) created\r\n* [Invoice](invoice.html): Invoice date / posting date\r\n* [List](list.html): When the list was prepared\r\n* [MeasureReport](measurereport.html): The date of the measure report\r\n* [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication\r\n* [Observation](observation.html): Clinically relevant time/time-period for observation\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [ResearchSubject](researchsubject.html): Start and end of participation\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -3233,7 +3107,7 @@ public class Composition extends DomainResource {
 * [List](list.html): When the list was prepared
 * [MeasureReport](measurereport.html): The date of the measure report
 * [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication
-* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Observation](observation.html): Clinically relevant time/time-period for observation
 * [Procedure](procedure.html): When the procedure occurred or is occurring
 * [ResearchSubject](researchsubject.html): Start and end of participation
 * [RiskAssessment](riskassessment.html): When was assessment made?

@@ -39,11 +39,7 @@ public class Observation30_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference30_50.convertReference(t));
 
     if (src.hasValue()) {
-      if (src.hasValueMarkdownType()) {
-        tgt.setValue(String30_50.convertMarkdownToString(src.getValueMarkdownType()));
-      } else {
-        tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
-      }
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     }
     
     if (src.hasDataAbsentReason())
@@ -97,12 +93,9 @@ public class Observation30_50 {
       tgt.addPerformer(Reference30_50.convertReference(t));
 
     if (src.hasValue()) {
-      if (src.hasValueStringType()) {
-        tgt.setValue(String30_50.convertStringToMarkdown(src.getValueStringType()));
-      } else {
-        tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
-      }
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     }
+
     
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept30_50.convertCodeableConcept(src.getDataAbsentReason()));

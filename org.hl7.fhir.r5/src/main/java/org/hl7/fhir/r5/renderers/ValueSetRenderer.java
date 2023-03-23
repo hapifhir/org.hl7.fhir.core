@@ -835,7 +835,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private void addCodeToTable(boolean isAbstract, String system, String code, String display, XhtmlNode td) {
     CodeSystem e = getContext().getWorker().fetchCodeSystem(system);
-    if (e == null || (e.getContent() != org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.COMPLETE && e.getContent() != org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.FRAGMENT)) {
+    if (e == null || (e.getContent() != org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode.COMPLETE && e.getContent() != org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode.FRAGMENT)) {
       if (isAbstract)
         td.i().setAttribute("title", ABSTRACT_CODE_HINT).addText(code);
       else if ("http://snomed.info/sct".equals(system)) {

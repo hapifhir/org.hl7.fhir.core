@@ -75,7 +75,7 @@ public class ServiceRequest40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConceptToCodeableReference(src.getCode()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOrderDetail())
-      tgt.addOrderDetail().getParameter().setValue(CodeableConcept40_50.convertCodeableConcept(t));
+      tgt.addOrderDetail().addParameter().setValue(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasQuantity())
       tgt.setQuantity(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getQuantity()));
     if (src.hasSubject())
@@ -143,8 +143,8 @@ public class ServiceRequest40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableReferenceToCodeableConcept(src.getCode()));
     for (ServiceRequestOrderDetailComponent t : src.getOrderDetail()) {
-      if (t.getParameter().hasValueCodeableConcept()) {
-       tgt.addOrderDetail(CodeableConcept40_50.convertCodeableConcept(t.getParameter().getValueCodeableConcept()));
+      if (t.getParameterFirstRep().hasValueCodeableConcept()) {
+       tgt.addOrderDetail(CodeableConcept40_50.convertCodeableConcept(t.getParameterFirstRep().getValueCodeableConcept()));
       }
     }
     if (src.hasQuantity())

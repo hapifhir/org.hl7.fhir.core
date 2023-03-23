@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4564,10 +4564,10 @@ public class Bundle extends Resource implements IBaseBundle {
     protected UnsignedIntType total;
 
     /**
-     * A series of links that provide context to this bundle. The behavior of navigation link types (next/prev/first/last) are well defined for searchset and history Bundles but are not currently defined for other types. Implementers who choose to use such link relationships for other bundle types will need to negotiate behavior with their interoperability partners.
+     * A series of links that provide context to this bundle.
      */
     @Child(name = "link", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Links related to this Bundle", formalDefinition="A series of links that provide context to this bundle. The behavior of navigation link types (next/prev/first/last) are well defined for searchset and history Bundles but are not currently defined for other types. Implementers who choose to use such link relationships for other bundle types will need to negotiate behavior with their interoperability partners." )
+    @Description(shortDefinition="Links related to this Bundle", formalDefinition="A series of links that provide context to this bundle." )
     protected List<BundleLinkComponent> link;
 
     /**
@@ -4772,7 +4772,7 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     /**
-     * @return {@link #link} (A series of links that provide context to this bundle. The behavior of navigation link types (next/prev/first/last) are well defined for searchset and history Bundles but are not currently defined for other types. Implementers who choose to use such link relationships for other bundle types will need to negotiate behavior with their interoperability partners.)
+     * @return {@link #link} (A series of links that provide context to this bundle.)
      */
     public List<BundleLinkComponent> getLink() { 
       if (this.link == null)
@@ -4926,7 +4926,7 @@ public class Bundle extends Resource implements IBaseBundle {
         children.add(new Property("type", "code", "Indicates the purpose of this bundle - how it is intended to be used.", 0, 1, type));
         children.add(new Property("timestamp", "instant", "The date/time that the bundle was assembled - i.e. when the resources were placed in the bundle.", 0, 1, timestamp));
         children.add(new Property("total", "unsignedInt", "If a set of search matches, this is the (potentially estimated) total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.", 0, 1, total));
-        children.add(new Property("link", "", "A series of links that provide context to this bundle. The behavior of navigation link types (next/prev/first/last) are well defined for searchset and history Bundles but are not currently defined for other types. Implementers who choose to use such link relationships for other bundle types will need to negotiate behavior with their interoperability partners.", 0, java.lang.Integer.MAX_VALUE, link));
+        children.add(new Property("link", "", "A series of links that provide context to this bundle.", 0, java.lang.Integer.MAX_VALUE, link));
         children.add(new Property("entry", "", "An entry in a bundle resource - will either contain a resource or information about a resource (transactions and history only).", 0, java.lang.Integer.MAX_VALUE, entry));
         children.add(new Property("signature", "Signature", "Digital Signature - base64 encoded. XML-DSig or a JWS.", 0, 1, signature));
         children.add(new Property("issues", "Resource", "Captures issues and warnings that relate to the construction of the Bundle and the content within it.", 0, 1, issues));
@@ -4939,7 +4939,7 @@ public class Bundle extends Resource implements IBaseBundle {
         case 3575610: /*type*/  return new Property("type", "code", "Indicates the purpose of this bundle - how it is intended to be used.", 0, 1, type);
         case 55126294: /*timestamp*/  return new Property("timestamp", "instant", "The date/time that the bundle was assembled - i.e. when the resources were placed in the bundle.", 0, 1, timestamp);
         case 110549828: /*total*/  return new Property("total", "unsignedInt", "If a set of search matches, this is the (potentially estimated) total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.", 0, 1, total);
-        case 3321850: /*link*/  return new Property("link", "", "A series of links that provide context to this bundle. The behavior of navigation link types (next/prev/first/last) are well defined for searchset and history Bundles but are not currently defined for other types. Implementers who choose to use such link relationships for other bundle types will need to negotiate behavior with their interoperability partners.", 0, java.lang.Integer.MAX_VALUE, link);
+        case 3321850: /*link*/  return new Property("link", "", "A series of links that provide context to this bundle.", 0, java.lang.Integer.MAX_VALUE, link);
         case 96667762: /*entry*/  return new Property("entry", "", "An entry in a bundle resource - will either contain a resource or information about a resource (transactions and history only).", 0, java.lang.Integer.MAX_VALUE, entry);
         case 1073584312: /*signature*/  return new Property("signature", "Signature", "Digital Signature - base64 encoded. XML-DSig or a JWS.", 0, 1, signature);
         case -1179159878: /*issues*/  return new Property("issues", "Resource", "Captures issues and warnings that relate to the construction of the Bundle and the content within it.", 0, 1, issues);

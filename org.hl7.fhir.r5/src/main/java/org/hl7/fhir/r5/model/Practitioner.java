@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1054,12 +1054,12 @@ The `PractitionerRole.communication` property should be used for publishing the 
       return this.deceased != null && !this.deceased.isEmpty();
     }
 
-    /**throw new FHIRException("Not the right type for
+    /**
      * @param value {@link #deceased} (Indicates if the practitioner is deceased or not.)
      */
     public Practitioner setDeceased(DataType value) { 
       if (value != null && !(value instanceof BooleanType || value instanceof DateTimeType))
-        throw new Error("Not the right type for Practitioner.deceased[x]: "+value.fhirType());
+        throw new FHIRException("Not the right type for Practitioner.deceased[x]: "+value.fhirType());
       this.deceased = value;
       return this;
     }
