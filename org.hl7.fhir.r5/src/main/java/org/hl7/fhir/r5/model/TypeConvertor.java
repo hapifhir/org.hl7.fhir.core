@@ -339,18 +339,6 @@ public class TypeConvertor {
       throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a CodeableConcept");
   }
   
-  public static Population castToPopulation(Base b) throws FHIRException {
-    if (b == null) {
-      return null;
-    }
-
-    if (b instanceof Population)
-      return (Population) b;
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Population");
-  }
-  
-  
   public static Coding castToCoding(Base b) throws FHIRException {
     if (b == null) {
       return null;

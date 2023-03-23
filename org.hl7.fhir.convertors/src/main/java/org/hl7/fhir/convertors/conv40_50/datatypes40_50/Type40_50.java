@@ -57,7 +57,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Meta40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Narrative40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.MarketingStatus40_50;
-import org.hl7.fhir.convertors.conv40_50.resources40_50.Population40_50;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.ProdCharacteristic40_50;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.ProductShelfLife40_50;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.SubstanceAmount40_50;
@@ -151,8 +150,6 @@ public class Type40_50 {
       return ParameterDefinition40_50.convertParameterDefinition((org.hl7.fhir.r4.model.ParameterDefinition) src);
     if (src instanceof org.hl7.fhir.r4.model.Period)
       return Period40_50.convertPeriod((org.hl7.fhir.r4.model.Period) src);
-    if (src instanceof org.hl7.fhir.r4.model.Population)
-      return Population40_50.convertPopulation((org.hl7.fhir.r4.model.Population) src);
     if (src instanceof org.hl7.fhir.r4.model.ProdCharacteristic)
       return ProdCharacteristic40_50.convertProdCharacteristic((org.hl7.fhir.r4.model.ProdCharacteristic) src);
     if (src instanceof org.hl7.fhir.r4.model.ProductShelfLife)
@@ -272,8 +269,6 @@ public class Type40_50 {
       return ParameterDefinition40_50.convertParameterDefinition((org.hl7.fhir.r5.model.ParameterDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.Period)
       return Period40_50.convertPeriod((org.hl7.fhir.r5.model.Period) src);
-    if (src instanceof org.hl7.fhir.r5.model.Population)
-      return Population40_50.convertPopulation((org.hl7.fhir.r5.model.Population) src);
     if (src instanceof org.hl7.fhir.r5.model.ProdCharacteristic)
       return ProdCharacteristic40_50.convertProdCharacteristic((org.hl7.fhir.r5.model.ProdCharacteristic) src);
     if (src instanceof org.hl7.fhir.r5.model.ProductShelfLife)
