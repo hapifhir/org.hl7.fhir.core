@@ -16,8 +16,8 @@ public class ObservationUtilities {
     if (def.hasMethod()) {
       obs.setMethod(def.getMethod());
     }
-    if (def.hasPermittedDataType(ObservationDataType.QUANTITY) && def.getQuantitativeDetails().hasUnit() && def.getQuantitativeDetails().getUnit().hasCoding("http://unitsofmeasure.org")) {
-      obs.getValueQuantity().setSystem("http://unitsofmeasure.org").setCode(def.getQuantitativeDetails().getUnit().getCode("http://unitsofmeasure.org"));
+    if (def.hasPermittedDataType(ObservationDataType.QUANTITY) && def.getPermittedUnit().size() == 1 && def.getPermittedUnitFirstRep().getSystem().equals("http://unitsofmeasure.org")) {
+      obs.getValueQuantity().setSystem("http://unitsofmeasure.org").setCode(def.getPermittedUnitFirstRep().getCode());
     }
     // todo: set up reference ranges 
     return obs;

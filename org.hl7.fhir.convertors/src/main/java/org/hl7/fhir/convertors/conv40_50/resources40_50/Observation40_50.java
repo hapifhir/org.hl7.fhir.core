@@ -68,12 +68,9 @@ public class Observation40_50 {
       tgt.setIssuedElement(Instant40_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference40_50.convertReference(t));
     if (src.hasValue()) {
-      if (src.hasValueStringType()) {
-        tgt.setValue(String40_50.convertStringToMarkdown(src.getValueStringType()));
-      } else {
-        tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
-      }
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     }
+
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept40_50.convertCodeableConcept(src.getDataAbsentReason()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getInterpretation())
@@ -123,11 +120,7 @@ public class Observation40_50 {
       tgt.setIssuedElement(Instant40_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference40_50.convertReference(t));
     if (src.hasValue()) {
-      if (src.hasValueMarkdownType()) {
-        tgt.setValue(String40_50.convertMarkdownToString(src.getValueMarkdownType()));
-      } else {
-        tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
-      }
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     }
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept40_50.convertCodeableConcept(src.getDataAbsentReason()));
@@ -274,11 +267,7 @@ public class Observation40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue()) {
-      if (src.hasValueStringType()) {
-        tgt.setValue(String40_50.convertStringToMarkdown(src.getValueStringType()));
-      } else {
-        tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
-      }
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     }
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept40_50.convertCodeableConcept(src.getDataAbsentReason()));
@@ -297,11 +286,7 @@ public class Observation40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue()) {
-      if (src.hasValueMarkdownType()) {
-        tgt.setValue(String40_50.convertMarkdownToString(src.getValueMarkdownType()));
-      } else {
-        tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
-      }
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     }
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept40_50.convertCodeableConcept(src.getDataAbsentReason()));

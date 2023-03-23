@@ -14,6 +14,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestOrderDetailComponent;
+import org.hl7.fhir.r5.model.ServiceRequest.ServiceRequestOrderDetailParameterComponent;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -74,7 +75,7 @@ public class ServiceRequest43_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept43_50.convertCodeableConceptToCodeableReference(src.getCode()));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getOrderDetail())
-      tgt.addOrderDetail().getParameter().setValue(CodeableConcept43_50.convertCodeableConcept(t));
+      tgt.addOrderDetail().addParameter().setValue(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasQuantity())
       tgt.setQuantity(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getQuantity()));
     if (src.hasSubject())
@@ -142,8 +143,10 @@ public class ServiceRequest43_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept43_50.convertCodeableReferenceToCodeableConcept(src.getCode()));
     for (ServiceRequestOrderDetailComponent t : src.getOrderDetail()) {
-      if (t.getParameter().hasValueCodeableConcept()) {
-       tgt.addOrderDetail(CodeableConcept43_50.convertCodeableConcept(t.getParameter().getValueCodeableConcept()));
+      for (ServiceRequestOrderDetailParameterComponent t1 : t.getParameter()) {
+        if (t1.hasValueCodeableConcept()) {
+          tgt.addOrderDetail(CodeableConcept43_50.convertCodeableConcept(t1.getValueCodeableConcept()));
+        }
       }
     }
     if (src.hasQuantity())

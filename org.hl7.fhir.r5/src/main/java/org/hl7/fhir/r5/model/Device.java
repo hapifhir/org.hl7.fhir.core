@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1862,10 +1862,10 @@ public class Device extends DomainResource {
         protected CodeableConcept type;
 
         /**
-         * The value of the property specified by the associated [property.type] code.
+         * The value of the property specified by the associated property.type code.
          */
         @Child(name = "value", type = {Quantity.class, CodeableConcept.class, StringType.class, BooleanType.class, IntegerType.class, Range.class, Attachment.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Value of the property", formalDefinition="The value of the property specified by the associated [property.type] code." )
+        @Description(shortDefinition="Value of the property", formalDefinition="The value of the property specified by the associated property.type code." )
         protected DataType value;
 
         private static final long serialVersionUID = -1659186716L;
@@ -1911,14 +1911,14 @@ public class Device extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (The value of the property specified by the associated [property.type] code.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public DataType getValue() { 
           return this.value;
         }
 
         /**
-         * @return {@link #value} (The value of the property specified by the associated [property.type] code.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public Quantity getValueQuantity() throws FHIRException { 
           if (this.value == null)
@@ -1933,7 +1933,7 @@ public class Device extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (The value of the property specified by the associated [property.type] code.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public CodeableConcept getValueCodeableConcept() throws FHIRException { 
           if (this.value == null)
@@ -1948,7 +1948,7 @@ public class Device extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (The value of the property specified by the associated [property.type] code.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public StringType getValueStringType() throws FHIRException { 
           if (this.value == null)
@@ -1963,7 +1963,7 @@ public class Device extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (The value of the property specified by the associated [property.type] code.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public BooleanType getValueBooleanType() throws FHIRException { 
           if (this.value == null)
@@ -1978,7 +1978,7 @@ public class Device extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (The value of the property specified by the associated [property.type] code.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public IntegerType getValueIntegerType() throws FHIRException { 
           if (this.value == null)
@@ -1993,7 +1993,7 @@ public class Device extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (The value of the property specified by the associated [property.type] code.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public Range getValueRange() throws FHIRException { 
           if (this.value == null)
@@ -2008,7 +2008,7 @@ public class Device extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (The value of the property specified by the associated [property.type] code.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public Attachment getValueAttachment() throws FHIRException { 
           if (this.value == null)
@@ -2027,7 +2027,7 @@ public class Device extends DomainResource {
         }
 
         /**
-         * @param value {@link #value} (The value of the property specified by the associated [property.type] code.)
+         * @param value {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public DevicePropertyComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Attachment))
@@ -2039,22 +2039,22 @@ public class Device extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Code that specifies the property, such as resolution, color, size, being represented.", 0, 1, type));
-          children.add(new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "The value of the property specified by the associated [property.type] code.", 0, 1, value));
+          children.add(new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "The value of the property specified by the associated property.type code.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Code that specifies the property, such as resolution, color, size, being represented.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "The value of the property specified by the associated [property.type] code.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "The value of the property specified by the associated [property.type] code.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The value of the property specified by the associated [property.type] code.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The value of the property specified by the associated [property.type] code.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The value of the property specified by the associated [property.type] code.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the property specified by the associated [property.type] code.", 0, 1, value);
-          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The value of the property specified by the associated [property.type] code.", 0, 1, value);
-          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The value of the property specified by the associated [property.type] code.", 0, 1, value);
-          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "The value of the property specified by the associated [property.type] code.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "The value of the property specified by the associated property.type code.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -2399,10 +2399,10 @@ public class Device extends DomainResource {
     protected List<Reference> endpoint;
 
     /**
-     * The linked device acting as a communication/data collector, translator or controller for the current device (e.g., mobile phone application that relays a blood pressure device's data).
+     * The linked device acting as a communication controller, data collector, translator, or concentrator for the current device (e.g., mobile phone application that relays a blood pressure device's data).
      */
     @Child(name = "gateway", type = {CodeableReference.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Linked device acting as a communication/data collector, translator or controller", formalDefinition="The linked device acting as a communication/data collector, translator or controller for the current device (e.g., mobile phone application that relays a blood pressure device's data)." )
+    @Description(shortDefinition="Linked device acting as a communication/data collector, translator or controller", formalDefinition="The linked device acting as a communication controller, data collector, translator, or concentrator for the current device (e.g., mobile phone application that relays a blood pressure device's data)." )
     protected List<CodeableReference> gateway;
 
     /**
@@ -3649,7 +3649,7 @@ public class Device extends DomainResource {
     }
 
     /**
-     * @return {@link #gateway} (The linked device acting as a communication/data collector, translator or controller for the current device (e.g., mobile phone application that relays a blood pressure device's data).)
+     * @return {@link #gateway} (The linked device acting as a communication controller, data collector, translator, or concentrator for the current device (e.g., mobile phone application that relays a blood pressure device's data).)
      */
     public List<CodeableReference> getGateway() { 
       if (this.gateway == null)
@@ -3861,7 +3861,7 @@ public class Device extends DomainResource {
         children.add(new Property("location", "Reference(Location)", "The place where the device can be found.", 0, 1, location));
         children.add(new Property("url", "uri", "A network address on which the device may be contacted directly.", 0, 1, url));
         children.add(new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services provided by the device defined at this resource.", 0, java.lang.Integer.MAX_VALUE, endpoint));
-        children.add(new Property("gateway", "CodeableReference(Device)", "The linked device acting as a communication/data collector, translator or controller for the current device (e.g., mobile phone application that relays a blood pressure device's data).", 0, java.lang.Integer.MAX_VALUE, gateway));
+        children.add(new Property("gateway", "CodeableReference(Device)", "The linked device acting as a communication controller, data collector, translator, or concentrator for the current device (e.g., mobile phone application that relays a blood pressure device's data).", 0, java.lang.Integer.MAX_VALUE, gateway));
         children.add(new Property("note", "Annotation", "Descriptive information, usage information or implantation information that is not captured in an existing element.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("safety", "CodeableConcept", "Provides additional safety characteristics about a medical device.  For example devices containing latex.", 0, java.lang.Integer.MAX_VALUE, safety));
         children.add(new Property("parent", "Reference(Device)", "The higher level or encompassing device that this device is a logical part of.", 0, 1, parent));
@@ -3898,7 +3898,7 @@ public class Device extends DomainResource {
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The place where the device can be found.", 0, 1, location);
         case 116079: /*url*/  return new Property("url", "uri", "A network address on which the device may be contacted directly.", 0, 1, url);
         case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services provided by the device defined at this resource.", 0, java.lang.Integer.MAX_VALUE, endpoint);
-        case -189118908: /*gateway*/  return new Property("gateway", "CodeableReference(Device)", "The linked device acting as a communication/data collector, translator or controller for the current device (e.g., mobile phone application that relays a blood pressure device's data).", 0, java.lang.Integer.MAX_VALUE, gateway);
+        case -189118908: /*gateway*/  return new Property("gateway", "CodeableReference(Device)", "The linked device acting as a communication controller, data collector, translator, or concentrator for the current device (e.g., mobile phone application that relays a blood pressure device's data).", 0, java.lang.Integer.MAX_VALUE, gateway);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Descriptive information, usage information or implantation information that is not captured in an existing element.", 0, java.lang.Integer.MAX_VALUE, note);
         case -909893934: /*safety*/  return new Property("safety", "CodeableConcept", "Provides additional safety characteristics about a medical device.  For example devices containing latex.", 0, java.lang.Integer.MAX_VALUE, safety);
         case -995424086: /*parent*/  return new Property("parent", "Reference(Device)", "The higher level or encompassing device that this device is a logical part of.", 0, 1, parent);

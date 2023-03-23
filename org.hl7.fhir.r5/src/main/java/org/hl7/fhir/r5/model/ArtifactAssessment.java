@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -395,6 +395,10 @@ public class ArtifactAssessment extends DomainResource {
          */
         PUBLISHED, 
         /**
+         * The assessment was entered in error
+         */
+        ENTEREDINERROR, 
+        /**
          * added to help the parsers with the generic types
          */
         NULL;
@@ -419,6 +423,8 @@ public class ArtifactAssessment extends DomainResource {
           return APPLIED;
         if ("published".equals(codeString))
           return PUBLISHED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -435,6 +441,7 @@ public class ArtifactAssessment extends DomainResource {
             case DUPLICATE: return "duplicate";
             case APPLIED: return "applied";
             case PUBLISHED: return "published";
+            case ENTEREDINERROR: return "entered-in-error";
             case NULL: return null;
             default: return "?";
           }
@@ -450,6 +457,7 @@ public class ArtifactAssessment extends DomainResource {
             case DUPLICATE: return "http://hl7.org/fhir/artifactassessment-workflow-status";
             case APPLIED: return "http://hl7.org/fhir/artifactassessment-workflow-status";
             case PUBLISHED: return "http://hl7.org/fhir/artifactassessment-workflow-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/artifactassessment-workflow-status";
             case NULL: return null;
             default: return "?";
           }
@@ -465,6 +473,7 @@ public class ArtifactAssessment extends DomainResource {
             case DUPLICATE: return "The comment is a duplicate of another comment already received";
             case APPLIED: return "The comment is resolved and any necessary changes have been applied";
             case PUBLISHED: return "The necessary changes to the artifact have been published in a new version of the artifact";
+            case ENTEREDINERROR: return "The assessment was entered in error";
             case NULL: return null;
             default: return "?";
           }
@@ -480,6 +489,7 @@ public class ArtifactAssessment extends DomainResource {
             case DUPLICATE: return "Duplicate";
             case APPLIED: return "Applied";
             case PUBLISHED: return "Published";
+            case ENTEREDINERROR: return "Entered in Error";
             case NULL: return null;
             default: return "?";
           }
@@ -509,6 +519,8 @@ public class ArtifactAssessment extends DomainResource {
           return ArtifactAssessmentWorkflowStatus.APPLIED;
         if ("published".equals(codeString))
           return ArtifactAssessmentWorkflowStatus.PUBLISHED;
+        if ("entered-in-error".equals(codeString))
+          return ArtifactAssessmentWorkflowStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ArtifactAssessmentWorkflowStatus code '"+codeString+"'");
         }
         public Enumeration<ArtifactAssessmentWorkflowStatus> fromType(PrimitiveType<?> code) throws FHIRException {
@@ -537,6 +549,8 @@ public class ArtifactAssessment extends DomainResource {
           return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.APPLIED, code);
         if ("published".equals(codeString))
           return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.PUBLISHED, code);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown ArtifactAssessmentWorkflowStatus code '"+codeString+"'");
         }
     public String toCode(ArtifactAssessmentWorkflowStatus code) {
@@ -558,6 +572,8 @@ public class ArtifactAssessment extends DomainResource {
         return "applied";
       if (code == ArtifactAssessmentWorkflowStatus.PUBLISHED)
         return "published";
+      if (code == ArtifactAssessmentWorkflowStatus.ENTEREDINERROR)
+        return "entered-in-error";
       return "?";
       }
     public String toSystem(ArtifactAssessmentWorkflowStatus code) {
@@ -1416,7 +1432,7 @@ public class ArtifactAssessment extends DomainResource {
      * Indicates the workflow status of the comment or change request.
      */
     @Child(name = "workflowStatus", type = {CodeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="submitted | triaged | waiting-for-input | resolved-no-change | resolved-change-required | deferred | duplicate | applied | published", formalDefinition="Indicates the workflow status of the comment or change request." )
+    @Description(shortDefinition="submitted | triaged | waiting-for-input | resolved-no-change | resolved-change-required | deferred | duplicate | applied | published | entered-in-error", formalDefinition="Indicates the workflow status of the comment or change request." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/artifactassessment-workflow-status")
     protected Enumeration<ArtifactAssessmentWorkflowStatus> workflowStatus;
 
@@ -2333,6 +2349,26 @@ public class ArtifactAssessment extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The artifact assessment identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ArtifactAssessment.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="ArtifactAssessment.identifier", description="The artifact assessment identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The artifact assessment identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ArtifactAssessment.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
 
 }

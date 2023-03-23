@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -566,11 +566,11 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
     /**
      * Specific instructions for use.
      */
-    @Child(name = "usageInstruction", type = {CodeableConcept.class}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "usageInstruction", type = {StringType.class}, order=15, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Specific instructions for use", formalDefinition="Specific instructions for use." )
-    protected CodeableConcept usageInstruction;
+    protected StringType usageInstruction;
 
-    private static final long serialVersionUID = -2100833172L;
+    private static final long serialVersionUID = -109945994L;
 
   /**
    * Constructor
@@ -1166,15 +1166,19 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
     }
 
     /**
-     * @return {@link #usageInstruction} (Specific instructions for use.)
+     * @return {@link #usageInstruction} (Specific instructions for use.). This is the underlying object with id, value and extensions. The accessor "getUsageInstruction" gives direct access to the value
      */
-    public CodeableConcept getUsageInstruction() { 
+    public StringType getUsageInstructionElement() { 
       if (this.usageInstruction == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create BiologicallyDerivedProductDispense.usageInstruction");
         else if (Configuration.doAutoCreate())
-          this.usageInstruction = new CodeableConcept(); // cc
+          this.usageInstruction = new StringType(); // bb
       return this.usageInstruction;
+    }
+
+    public boolean hasUsageInstructionElement() { 
+      return this.usageInstruction != null && !this.usageInstruction.isEmpty();
     }
 
     public boolean hasUsageInstruction() { 
@@ -1182,10 +1186,31 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
     }
 
     /**
-     * @param value {@link #usageInstruction} (Specific instructions for use.)
+     * @param value {@link #usageInstruction} (Specific instructions for use.). This is the underlying object with id, value and extensions. The accessor "getUsageInstruction" gives direct access to the value
      */
-    public BiologicallyDerivedProductDispense setUsageInstruction(CodeableConcept value) { 
+    public BiologicallyDerivedProductDispense setUsageInstructionElement(StringType value) { 
       this.usageInstruction = value;
+      return this;
+    }
+
+    /**
+     * @return Specific instructions for use.
+     */
+    public String getUsageInstruction() { 
+      return this.usageInstruction == null ? null : this.usageInstruction.getValue();
+    }
+
+    /**
+     * @param value Specific instructions for use.
+     */
+    public BiologicallyDerivedProductDispense setUsageInstruction(String value) { 
+      if (Utilities.noString(value))
+        this.usageInstruction = null;
+      else {
+        if (this.usageInstruction == null)
+          this.usageInstruction = new StringType();
+        this.usageInstruction.setValue(value);
+      }
       return this;
     }
 
@@ -1206,7 +1231,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         children.add(new Property("whenHandedOver", "dateTime", "When the product was dispatched for clinical use.", 0, 1, whenHandedOver));
         children.add(new Property("destination", "Reference(Location)", "Link to a resource identifying the physical location that the product was dispatched to.", 0, 1, destination));
         children.add(new Property("note", "Annotation", "Additional notes.", 0, java.lang.Integer.MAX_VALUE, note));
-        children.add(new Property("usageInstruction", "CodeableConcept", "Specific instructions for use.", 0, 1, usageInstruction));
+        children.add(new Property("usageInstruction", "string", "Specific instructions for use.", 0, 1, usageInstruction));
       }
 
       @Override
@@ -1227,7 +1252,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         case -940241380: /*whenHandedOver*/  return new Property("whenHandedOver", "dateTime", "When the product was dispatched for clinical use.", 0, 1, whenHandedOver);
         case -1429847026: /*destination*/  return new Property("destination", "Reference(Location)", "Link to a resource identifying the physical location that the product was dispatched to.", 0, 1, destination);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Additional notes.", 0, java.lang.Integer.MAX_VALUE, note);
-        case 2138372141: /*usageInstruction*/  return new Property("usageInstruction", "CodeableConcept", "Specific instructions for use.", 0, 1, usageInstruction);
+        case 2138372141: /*usageInstruction*/  return new Property("usageInstruction", "string", "Specific instructions for use.", 0, 1, usageInstruction);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -1251,7 +1276,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         case -940241380: /*whenHandedOver*/ return this.whenHandedOver == null ? new Base[0] : new Base[] {this.whenHandedOver}; // DateTimeType
         case -1429847026: /*destination*/ return this.destination == null ? new Base[0] : new Base[] {this.destination}; // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-        case 2138372141: /*usageInstruction*/ return this.usageInstruction == null ? new Base[0] : new Base[] {this.usageInstruction}; // CodeableConcept
+        case 2138372141: /*usageInstruction*/ return this.usageInstruction == null ? new Base[0] : new Base[] {this.usageInstruction}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1307,7 +1332,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 2138372141: // usageInstruction
-          this.usageInstruction = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.usageInstruction = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1348,7 +1373,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("usageInstruction")) {
-          this.usageInstruction = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.usageInstruction = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1372,7 +1397,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         case -940241380:  return getWhenHandedOverElement();
         case -1429847026:  return getDestination();
         case 3387378:  return addNote(); 
-        case 2138372141:  return getUsageInstruction();
+        case 2138372141:  return getUsageInstructionElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1396,7 +1421,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         case -940241380: /*whenHandedOver*/ return new String[] {"dateTime"};
         case -1429847026: /*destination*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
-        case 2138372141: /*usageInstruction*/ return new String[] {"CodeableConcept"};
+        case 2138372141: /*usageInstruction*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1457,8 +1482,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
           return addNote();
         }
         else if (name.equals("usageInstruction")) {
-          this.usageInstruction = new CodeableConcept();
-          return this.usageInstruction;
+          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProductDispense.usageInstruction");
         }
         else
           return super.addChild(name);
@@ -1543,7 +1567,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
           return false;
         BiologicallyDerivedProductDispense o = (BiologicallyDerivedProductDispense) other_;
         return compareValues(status, o.status, true) && compareValues(preparedDate, o.preparedDate, true) && compareValues(whenHandedOver, o.whenHandedOver, true)
-          ;
+           && compareValues(usageInstruction, o.usageInstruction, true);
       }
 
       public boolean isEmpty() {

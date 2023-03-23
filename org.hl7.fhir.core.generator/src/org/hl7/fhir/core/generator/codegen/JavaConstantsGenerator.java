@@ -36,7 +36,7 @@ public class JavaConstantsGenerator extends JavaBaseGenerator {
     template = template.replace("{{rt}}", rt.toString());
     template = template.replace("{{version}}", version);
     template = template.replace("{{version-mm}}", VersionUtilities.getMajMin(version));
-    template = template.replace("{{version-base}}", version.substring(0, version.indexOf("-")));
+    template = template.replace("{{version-base}}", version.contains("-") ? version.substring(0, version.indexOf("-")) : version) ;
     template = template.replace("{{date}}", genDate);
 
     write(template);

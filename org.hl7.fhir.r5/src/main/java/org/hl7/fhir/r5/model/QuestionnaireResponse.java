@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1157,24 +1157,24 @@ public class QuestionnaireResponse extends DomainResource {
   }
 
     /**
-     * A business identifier assigned to a particular completed (or partially completed) questionnaire.
+     * Business identifiers assigned to this questionnaire response by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Unique id for this set of answers", formalDefinition="A business identifier assigned to a particular completed (or partially completed) questionnaire." )
+    @Description(shortDefinition="Business identifier for this set of answers", formalDefinition="Business identifiers assigned to this questionnaire response by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server." )
     protected List<Identifier> identifier;
 
     /**
-     * The order, proposal or plan that is fulfilled in whole or in part by this QuestionnaireResponse.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.
+     * A plan, proposal or order that is fulfilled in whole or in part by this questionnaire response.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.
      */
     @Child(name = "basedOn", type = {CarePlan.class, ServiceRequest.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Request fulfilled by this QuestionnaireResponse", formalDefinition="The order, proposal or plan that is fulfilled in whole or in part by this QuestionnaireResponse.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression." )
+    @Description(shortDefinition="Request fulfilled by this QuestionnaireResponse", formalDefinition="A plan, proposal or order that is fulfilled in whole or in part by this questionnaire response.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression." )
     protected List<Reference> basedOn;
 
     /**
      * A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of.
      */
     @Child(name = "partOf", type = {Observation.class, Procedure.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Part of this action", formalDefinition="A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of." )
+    @Description(shortDefinition="Part of referenced event", formalDefinition="A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of." )
     protected List<Reference> partOf;
 
     /**
@@ -1185,10 +1185,10 @@ public class QuestionnaireResponse extends DomainResource {
     protected CanonicalType questionnaire;
 
     /**
-     * The position of the questionnaire response within its overall lifecycle.
+     * The current state of the questionnaire response.
      */
     @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="in-progress | completed | amended | entered-in-error | stopped", formalDefinition="The position of the questionnaire response within its overall lifecycle." )
+    @Description(shortDefinition="in-progress | completed | amended | entered-in-error | stopped", formalDefinition="The current state of the questionnaire response." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/questionnaire-answers-status")
     protected Enumeration<QuestionnaireResponseStatus> status;
 
@@ -1203,7 +1203,7 @@ public class QuestionnaireResponse extends DomainResource {
      * The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Encounter created as part of", formalDefinition="The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated." )
+    @Description(shortDefinition="Encounter the questionnaire response is part of", formalDefinition="The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated." )
     protected Reference encounter;
 
     /**
@@ -1253,7 +1253,7 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (A business identifier assigned to a particular completed (or partially completed) questionnaire.)
+     * @return {@link #identifier} (Business identifiers assigned to this questionnaire response by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -1306,7 +1306,7 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #basedOn} (The order, proposal or plan that is fulfilled in whole or in part by this QuestionnaireResponse.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.)
+     * @return {@link #basedOn} (A plan, proposal or order that is fulfilled in whole or in part by this questionnaire response.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.)
      */
     public List<Reference> getBasedOn() { 
       if (this.basedOn == null)
@@ -1457,7 +1457,7 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (The position of the questionnaire response within its overall lifecycle.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (The current state of the questionnaire response.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<QuestionnaireResponseStatus> getStatusElement() { 
       if (this.status == null)
@@ -1477,7 +1477,7 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @param value {@link #status} (The position of the questionnaire response within its overall lifecycle.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (The current state of the questionnaire response.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public QuestionnaireResponse setStatusElement(Enumeration<QuestionnaireResponseStatus> value) { 
       this.status = value;
@@ -1485,14 +1485,14 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @return The position of the questionnaire response within its overall lifecycle.
+     * @return The current state of the questionnaire response.
      */
     public QuestionnaireResponseStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value The position of the questionnaire response within its overall lifecycle.
+     * @param value The current state of the questionnaire response.
      */
     public QuestionnaireResponse setStatus(QuestionnaireResponseStatus value) { 
         if (this.status == null)
@@ -1701,11 +1701,11 @@ public class QuestionnaireResponse extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "A business identifier assigned to a particular completed (or partially completed) questionnaire.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("basedOn", "Reference(CarePlan|ServiceRequest)", "The order, proposal or plan that is fulfilled in whole or in part by this QuestionnaireResponse.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.", 0, java.lang.Integer.MAX_VALUE, basedOn));
+        children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this questionnaire response by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("basedOn", "Reference(CarePlan|ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this questionnaire response.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.", 0, java.lang.Integer.MAX_VALUE, basedOn));
         children.add(new Property("partOf", "Reference(Observation|Procedure)", "A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of.", 0, java.lang.Integer.MAX_VALUE, partOf));
         children.add(new Property("questionnaire", "canonical(Questionnaire)", "The Questionnaire that defines and organizes the questions for which answers are being provided.", 0, 1, questionnaire));
-        children.add(new Property("status", "code", "The position of the questionnaire response within its overall lifecycle.", 0, 1, status));
+        children.add(new Property("status", "code", "The current state of the questionnaire response.", 0, 1, status));
         children.add(new Property("subject", "Reference(Any)", "The subject of the questionnaire response.  This could be a patient, organization, practitioner, device, etc.  This is who/what the answers apply to, but is not necessarily the source of information.", 0, 1, subject));
         children.add(new Property("encounter", "Reference(Encounter)", "The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated.", 0, 1, encounter));
         children.add(new Property("authored", "dateTime", "The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status.", 0, 1, authored));
@@ -1717,11 +1717,11 @@ public class QuestionnaireResponse extends DomainResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A business identifier assigned to a particular completed (or partially completed) questionnaire.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(CarePlan|ServiceRequest)", "The order, proposal or plan that is fulfilled in whole or in part by this QuestionnaireResponse.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.", 0, java.lang.Integer.MAX_VALUE, basedOn);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this questionnaire response by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(CarePlan|ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this questionnaire response.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.", 0, java.lang.Integer.MAX_VALUE, basedOn);
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(Observation|Procedure)", "A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of.", 0, java.lang.Integer.MAX_VALUE, partOf);
         case -1017049693: /*questionnaire*/  return new Property("questionnaire", "canonical(Questionnaire)", "The Questionnaire that defines and organizes the questions for which answers are being provided.", 0, 1, questionnaire);
-        case -892481550: /*status*/  return new Property("status", "code", "The position of the questionnaire response within its overall lifecycle.", 0, 1, status);
+        case -892481550: /*status*/  return new Property("status", "code", "The current state of the questionnaire response.", 0, 1, status);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Any)", "The subject of the questionnaire response.  This could be a patient, organization, practitioner, device, etc.  This is who/what the answers apply to, but is not necessarily the source of information.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated.", 0, 1, encounter);
         case 1433073514: /*authored*/  return new Property("authored", "dateTime", "The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status.", 0, 1, authored);

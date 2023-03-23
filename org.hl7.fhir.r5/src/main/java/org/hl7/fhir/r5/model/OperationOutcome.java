@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -292,6 +292,10 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
          */
         CONFLICT, 
         /**
+         * Some search filters might not have applied on all results.  Data may have been included that does not meet all of the filters listed in the `self` `Bundle.link`.
+         */
+        LIMITEDFILTER, 
+        /**
          * Transient processing issues. The system receiving the message may be able to resubmit the same content once an underlying issue is resolved.
          */
         TRANSIENT, 
@@ -380,6 +384,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return BUSINESSRULE;
         if ("conflict".equals(codeString))
           return CONFLICT;
+        if ("limited-filter".equals(codeString))
+          return LIMITEDFILTER;
         if ("transient".equals(codeString))
           return TRANSIENT;
         if ("lock-error".equals(codeString))
@@ -428,6 +434,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case TOOCOSTLY: return "too-costly";
             case BUSINESSRULE: return "business-rule";
             case CONFLICT: return "conflict";
+            case LIMITEDFILTER: return "limited-filter";
             case TRANSIENT: return "transient";
             case LOCKERROR: return "lock-error";
             case NOSTORE: return "no-store";
@@ -466,6 +473,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case TOOCOSTLY: return "http://hl7.org/fhir/issue-type";
             case BUSINESSRULE: return "http://hl7.org/fhir/issue-type";
             case CONFLICT: return "http://hl7.org/fhir/issue-type";
+            case LIMITEDFILTER: return "http://hl7.org/fhir/issue-type";
             case TRANSIENT: return "http://hl7.org/fhir/issue-type";
             case LOCKERROR: return "http://hl7.org/fhir/issue-type";
             case NOSTORE: return "http://hl7.org/fhir/issue-type";
@@ -504,6 +512,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case TOOCOSTLY: return "The operation was stopped to protect server resources; e.g. a request for a value set expansion on all of SNOMED CT.";
             case BUSINESSRULE: return "The content/operation failed to pass some business rule and so could not proceed.";
             case CONFLICT: return "Content could not be accepted because of an edit conflict (i.e. version aware updates). (In a pure RESTful environment, this would be an HTTP 409 error, but this code may be used where the conflict is discovered further into the application architecture.).";
+            case LIMITEDFILTER: return "Some search filters might not have applied on all results.  Data may have been included that does not meet all of the filters listed in the `self` `Bundle.link`.";
             case TRANSIENT: return "Transient processing issues. The system receiving the message may be able to resubmit the same content once an underlying issue is resolved.";
             case LOCKERROR: return "A resource/record locking failure (usually in an underlying database).";
             case NOSTORE: return "The persistent store is unavailable; e.g. the database is down for maintenance or similar action, and the interaction or operation cannot be processed.";
@@ -542,6 +551,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case TOOCOSTLY: return "Operation Too Costly";
             case BUSINESSRULE: return "Business Rule Violation";
             case CONFLICT: return "Edit Version Conflict";
+            case LIMITEDFILTER: return "Limited Filter Application";
             case TRANSIENT: return "Transient Issue";
             case LOCKERROR: return "Lock Error";
             case NOSTORE: return "No Store Available";
@@ -608,6 +618,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return IssueType.BUSINESSRULE;
         if ("conflict".equals(codeString))
           return IssueType.CONFLICT;
+        if ("limited-filter".equals(codeString))
+          return IssueType.LIMITEDFILTER;
         if ("transient".equals(codeString))
           return IssueType.TRANSIENT;
         if ("lock-error".equals(codeString))
@@ -682,6 +694,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return new Enumeration<IssueType>(this, IssueType.BUSINESSRULE, code);
         if ("conflict".equals(codeString))
           return new Enumeration<IssueType>(this, IssueType.CONFLICT, code);
+        if ("limited-filter".equals(codeString))
+          return new Enumeration<IssueType>(this, IssueType.LIMITEDFILTER, code);
         if ("transient".equals(codeString))
           return new Enumeration<IssueType>(this, IssueType.TRANSIENT, code);
         if ("lock-error".equals(codeString))
@@ -749,6 +763,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
         return "business-rule";
       if (code == IssueType.CONFLICT)
         return "conflict";
+      if (code == IssueType.LIMITEDFILTER)
+        return "limited-filter";
       if (code == IssueType.TRANSIENT)
         return "transient";
       if (code == IssueType.LOCKERROR)
@@ -1363,6 +1379,7 @@ public  boolean isInformationorLess() {
   default: return false;
 }
 }  
+
 // end addition
   }
 
@@ -1566,6 +1583,11 @@ public  boolean isInformationorLess() {
     return ResourceType.OperationOutcome;
    }
 
+// Manual code (from Configuration.txt):
+  public boolean supportsCopyright() {
+    return true;
+  }
+
   
   public boolean isSuccess() {
     for (OperationOutcomeIssueComponent iss : getIssue()) {
@@ -1579,6 +1601,7 @@ public  boolean isInformationorLess() {
     return false;
   }
 
+// end addition
 
 }
 

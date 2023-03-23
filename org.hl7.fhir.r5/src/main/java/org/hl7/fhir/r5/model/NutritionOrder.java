@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3595,7 +3595,7 @@ public class NutritionOrder extends DomainResource {
     @Child(name = "priority", type = {CodeType.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Indicates how quickly the Nutrition Order should be addressed with respect to other        requests." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
-    protected CodeType priority;
+    protected Enumeration<RequestPriority> priority;
 
     /**
      * The person or set of individuals who needs the nutrition order for an oral diet, nutritional supplement and/or enteral or formula feeding.
@@ -3697,7 +3697,7 @@ public class NutritionOrder extends DomainResource {
     @Description(shortDefinition="Comments", formalDefinition="Comments made about the nutrition order by the requester, performer, subject or other participants." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 1678430922L;
+    private static final long serialVersionUID = -659986813L;
 
   /**
    * Constructor
@@ -4123,12 +4123,12 @@ public class NutritionOrder extends DomainResource {
     /**
      * @return {@link #priority} (Indicates how quickly the Nutrition Order should be addressed with respect to other        requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
-    public CodeType getPriorityElement() { 
+    public Enumeration<RequestPriority> getPriorityElement() { 
       if (this.priority == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create NutritionOrder.priority");
         else if (Configuration.doAutoCreate())
-          this.priority = new CodeType(); // bb
+          this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory()); // bb
       return this.priority;
     }
 
@@ -4143,7 +4143,7 @@ public class NutritionOrder extends DomainResource {
     /**
      * @param value {@link #priority} (Indicates how quickly the Nutrition Order should be addressed with respect to other        requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
-    public NutritionOrder setPriorityElement(CodeType value) { 
+    public NutritionOrder setPriorityElement(Enumeration<RequestPriority> value) { 
       this.priority = value;
       return this;
     }
@@ -4151,19 +4151,19 @@ public class NutritionOrder extends DomainResource {
     /**
      * @return Indicates how quickly the Nutrition Order should be addressed with respect to other        requests.
      */
-    public String getPriority() { 
+    public RequestPriority getPriority() { 
       return this.priority == null ? null : this.priority.getValue();
     }
 
     /**
      * @param value Indicates how quickly the Nutrition Order should be addressed with respect to other        requests.
      */
-    public NutritionOrder setPriority(String value) { 
-      if (Utilities.noString(value))
+    public NutritionOrder setPriority(RequestPriority value) { 
+      if (value == null)
         this.priority = null;
       else {
         if (this.priority == null)
-          this.priority = new CodeType();
+          this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory());
         this.priority.setValue(value);
       }
       return this;
@@ -4819,7 +4819,7 @@ public class NutritionOrder extends DomainResource {
         case -445338488: /*groupIdentifier*/ return this.groupIdentifier == null ? new Base[0] : new Base[] {this.groupIdentifier}; // Identifier
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<RequestStatus>
         case -1183762788: /*intent*/ return this.intent == null ? new Base[0] : new Base[] {this.intent}; // Enumeration<RequestIntent>
-        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // CodeType
+        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
         case -1248768647: /*supportingInformation*/ return this.supportingInformation == null ? new Base[0] : this.supportingInformation.toArray(new Base[this.supportingInformation.size()]); // Reference
@@ -4869,7 +4869,8 @@ public class NutritionOrder extends DomainResource {
           this.intent = (Enumeration) value; // Enumeration<RequestIntent>
           return value;
         case -1165461084: // priority
-          this.priority = TypeConvertor.castToCode(value); // CodeType
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case -1867885268: // subject
           this.subject = TypeConvertor.castToReference(value); // Reference
@@ -4939,7 +4940,8 @@ public class NutritionOrder extends DomainResource {
           value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<RequestIntent>
         } else if (name.equals("priority")) {
-          this.priority = TypeConvertor.castToCode(value); // CodeType
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
         } else if (name.equals("subject")) {
           this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {

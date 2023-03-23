@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3210,10 +3210,10 @@ public class MeasureReport extends DomainResource {
     protected Reference subject;
 
     /**
-     * The date this measure report was generated.
+     * The date this measure was calculated.
      */
     @Child(name = "date", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="When the report was generated", formalDefinition="The date this measure report was generated." )
+    @Description(shortDefinition="When the measure was calculated", formalDefinition="The date this measure was calculated." )
     protected DateTimeType date;
 
     /**
@@ -3256,7 +3256,7 @@ public class MeasureReport extends DomainResource {
      */
     @Child(name = "scoring", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="What scoring method (e.g. proportion, ratio, continuous-variable)", formalDefinition="Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented. It is expected to be the same as the scoring element on the referenced Measure." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-scoring")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/measure-scoring")
     protected CodeableConcept scoring;
 
     /**
@@ -3282,10 +3282,10 @@ public class MeasureReport extends DomainResource {
     protected List<Reference> supplementalData;
 
     /**
-     * A reference to a Resource that was used in the calculation of this measure.
+     * Evaluated resources are used to capture what data was involved in the calculation of a measure. This usage is only allowed for individual reports to ensure that the size of the MeasureReport resource is bounded.
      */
     @Child(name = "evaluatedResource", type = {Reference.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="What data was used to calculate the measure score", formalDefinition="A reference to a Resource that was used in the calculation of this measure." )
+    @Description(shortDefinition="What data was used to calculate the measure score", formalDefinition="Evaluated resources are used to capture what data was involved in the calculation of a measure. This usage is only allowed for individual reports to ensure that the size of the MeasureReport resource is bounded." )
     protected List<Reference> evaluatedResource;
 
     private static final long serialVersionUID = 962133374L;
@@ -3573,7 +3573,7 @@ public class MeasureReport extends DomainResource {
     }
 
     /**
-     * @return {@link #date} (The date this measure report was generated.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @return {@link #date} (The date this measure was calculated.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public DateTimeType getDateElement() { 
       if (this.date == null)
@@ -3593,7 +3593,7 @@ public class MeasureReport extends DomainResource {
     }
 
     /**
-     * @param value {@link #date} (The date this measure report was generated.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @param value {@link #date} (The date this measure was calculated.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public MeasureReport setDateElement(DateTimeType value) { 
       this.date = value;
@@ -3601,14 +3601,14 @@ public class MeasureReport extends DomainResource {
     }
 
     /**
-     * @return The date this measure report was generated.
+     * @return The date this measure was calculated.
      */
     public Date getDate() { 
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
-     * @param value The date this measure report was generated.
+     * @param value The date this measure was calculated.
      */
     public MeasureReport setDate(Date value) { 
       if (value == null)
@@ -3896,7 +3896,7 @@ public class MeasureReport extends DomainResource {
     }
 
     /**
-     * @return {@link #evaluatedResource} (A reference to a Resource that was used in the calculation of this measure.)
+     * @return {@link #evaluatedResource} (Evaluated resources are used to capture what data was involved in the calculation of a measure. This usage is only allowed for individual reports to ensure that the size of the MeasureReport resource is bounded.)
      */
     public List<Reference> getEvaluatedResource() { 
       if (this.evaluatedResource == null)
@@ -3956,7 +3956,7 @@ public class MeasureReport extends DomainResource {
         children.add(new Property("dataUpdateType", "code", "Indicates whether the data submitted in a data-exchange report represents a snapshot or incremental update. A snapshot update replaces all previously submitted data for the receiver, whereas an incremental update represents only updated and/or changed data and should be applied as a differential update to the existing submitted data for the receiver.", 0, 1, dataUpdateType));
         children.add(new Property("measure", "canonical(Measure)", "A reference to the Measure that was calculated to produce this report.", 0, 1, measure));
         children.add(new Property("subject", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "Optional subject identifying the individual or individuals the report is for.", 0, 1, subject));
-        children.add(new Property("date", "dateTime", "The date this measure report was generated.", 0, 1, date));
+        children.add(new Property("date", "dateTime", "The date this measure was calculated.", 0, 1, date));
         children.add(new Property("reporter", "Reference(Practitioner|PractitionerRole|Organization|Group)", "The individual or organization that is reporting the data.", 0, 1, reporter));
         children.add(new Property("reportingVendor", "Reference(Organization)", "A reference to the vendor who queried the data, calculated results and/or generated the report. The ‘reporting vendor’ is intended to represent the submitting entity when it is not the same as the reporting entity. This extension is used when the Receiver is interested in getting vendor information in the report.", 0, 1, reportingVendor));
         children.add(new Property("location", "Reference(Location)", "A reference to the location for which the data is being reported.", 0, 1, location));
@@ -3966,7 +3966,7 @@ public class MeasureReport extends DomainResource {
         children.add(new Property("improvementNotation", "CodeableConcept", "Whether improvement in the measure is noted by an increase or decrease in the measure score.", 0, 1, improvementNotation));
         children.add(new Property("group", "", "The results of the calculation, one for each population group in the measure.", 0, java.lang.Integer.MAX_VALUE, group));
         children.add(new Property("supplementalData", "Reference(Any)", "A reference to a Resource that represents additional information collected for the report. If the value of the supplemental data is not a Resource (i.e. evaluating the supplementalData expression for this case in the measure results in a value that is not a FHIR Resource), it is reported as a reference to a contained Observation resource.", 0, java.lang.Integer.MAX_VALUE, supplementalData));
-        children.add(new Property("evaluatedResource", "Reference(Any)", "A reference to a Resource that was used in the calculation of this measure.", 0, java.lang.Integer.MAX_VALUE, evaluatedResource));
+        children.add(new Property("evaluatedResource", "Reference(Any)", "Evaluated resources are used to capture what data was involved in the calculation of a measure. This usage is only allowed for individual reports to ensure that the size of the MeasureReport resource is bounded.", 0, java.lang.Integer.MAX_VALUE, evaluatedResource));
       }
 
       @Override
@@ -3978,7 +3978,7 @@ public class MeasureReport extends DomainResource {
         case -425890067: /*dataUpdateType*/  return new Property("dataUpdateType", "code", "Indicates whether the data submitted in a data-exchange report represents a snapshot or incremental update. A snapshot update replaces all previously submitted data for the receiver, whereas an incremental update represents only updated and/or changed data and should be applied as a differential update to the existing submitted data for the receiver.", 0, 1, dataUpdateType);
         case 938321246: /*measure*/  return new Property("measure", "canonical(Measure)", "A reference to the Measure that was calculated to produce this report.", 0, 1, measure);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "Optional subject identifying the individual or individuals the report is for.", 0, 1, subject);
-        case 3076014: /*date*/  return new Property("date", "dateTime", "The date this measure report was generated.", 0, 1, date);
+        case 3076014: /*date*/  return new Property("date", "dateTime", "The date this measure was calculated.", 0, 1, date);
         case -427039519: /*reporter*/  return new Property("reporter", "Reference(Practitioner|PractitionerRole|Organization|Group)", "The individual or organization that is reporting the data.", 0, 1, reporter);
         case 581336342: /*reportingVendor*/  return new Property("reportingVendor", "Reference(Organization)", "A reference to the vendor who queried the data, calculated results and/or generated the report. The ‘reporting vendor’ is intended to represent the submitting entity when it is not the same as the reporting entity. This extension is used when the Receiver is interested in getting vendor information in the report.", 0, 1, reportingVendor);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "A reference to the location for which the data is being reported.", 0, 1, location);
@@ -3988,7 +3988,7 @@ public class MeasureReport extends DomainResource {
         case -2085456136: /*improvementNotation*/  return new Property("improvementNotation", "CodeableConcept", "Whether improvement in the measure is noted by an increase or decrease in the measure score.", 0, 1, improvementNotation);
         case 98629247: /*group*/  return new Property("group", "", "The results of the calculation, one for each population group in the measure.", 0, java.lang.Integer.MAX_VALUE, group);
         case 1447496814: /*supplementalData*/  return new Property("supplementalData", "Reference(Any)", "A reference to a Resource that represents additional information collected for the report. If the value of the supplemental data is not a Resource (i.e. evaluating the supplementalData expression for this case in the measure results in a value that is not a FHIR Resource), it is reported as a reference to a contained Observation resource.", 0, java.lang.Integer.MAX_VALUE, supplementalData);
-        case -1056771047: /*evaluatedResource*/  return new Property("evaluatedResource", "Reference(Any)", "A reference to a Resource that was used in the calculation of this measure.", 0, java.lang.Integer.MAX_VALUE, evaluatedResource);
+        case -1056771047: /*evaluatedResource*/  return new Property("evaluatedResource", "Reference(Any)", "Evaluated resources are used to capture what data was involved in the calculation of a measure. This usage is only allowed for individual reports to ensure that the size of the MeasureReport resource is bounded.", 0, java.lang.Integer.MAX_VALUE, evaluatedResource);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -4529,7 +4529,7 @@ public class MeasureReport extends DomainResource {
 * [List](list.html): When the list was prepared
 * [MeasureReport](measurereport.html): The date of the measure report
 * [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication
-* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Observation](observation.html): Clinically relevant time/time-period for observation
 * [Procedure](procedure.html): When the procedure occurred or is occurring
 * [ResearchSubject](researchsubject.html): Start and end of participation
 * [RiskAssessment](riskassessment.html): When was assessment made?
@@ -4539,7 +4539,7 @@ public class MeasureReport extends DomainResource {
    * Path: <b>AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AdverseEvent](adverseevent.html): When the event occurred\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [Appointment](appointment.html): Appointment date/time.\r\n* [AuditEvent](auditevent.html): Time when the event was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [DocumentReference](documentreference.html): When this document reference was created\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [ImmunizationEvaluation](immunizationevaluation.html): Date the evaluation was generated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Date recommendation(s) created\r\n* [Invoice](invoice.html): Invoice date / posting date\r\n* [List](list.html): When the list was prepared\r\n* [MeasureReport](measurereport.html): The date of the measure report\r\n* [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [ResearchSubject](researchsubject.html): Start and end of participation\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AdverseEvent](adverseevent.html): When the event occurred\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [Appointment](appointment.html): Appointment date/time.\r\n* [AuditEvent](auditevent.html): Time when the event was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [DocumentReference](documentreference.html): When this document reference was created\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [ImmunizationEvaluation](immunizationevaluation.html): Date the evaluation was generated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Date recommendation(s) created\r\n* [Invoice](invoice.html): Invoice date / posting date\r\n* [List](list.html): When the list was prepared\r\n* [MeasureReport](measurereport.html): The date of the measure report\r\n* [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication\r\n* [Observation](observation.html): Clinically relevant time/time-period for observation\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [ResearchSubject](researchsubject.html): Start and end of participation\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -4568,7 +4568,7 @@ public class MeasureReport extends DomainResource {
 * [List](list.html): When the list was prepared
 * [MeasureReport](measurereport.html): The date of the measure report
 * [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication
-* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Observation](observation.html): Clinically relevant time/time-period for observation
 * [Procedure](procedure.html): When the procedure occurred or is occurring
 * [ResearchSubject](researchsubject.html): Start and end of participation
 * [RiskAssessment](riskassessment.html): When was assessment made?
