@@ -208,6 +208,9 @@ public class Analyser {
     if (ok) {
       if (cd.getValueSet() != null) {
         ValueSet vs = definitions.getValuesets().get(cd.getValueSet()); 
+        if (vs.hasName() && vs.getName().contains("ColorCodesOrRGB")) {
+          return false;
+        }
         if (vs != null && vs.hasCompose() && vs.getCompose().getInclude().size() == 1) {
           ConceptSetComponent inc = vs.getCompose().getIncludeFirstRep();
           if (inc.hasSystem() && !inc.hasFilter() && !inc.hasConcept() && !(inc.getSystem().startsWith("http://hl7.org/fhir") || inc.getSystem().startsWith("http://terminology.hl7.org")))

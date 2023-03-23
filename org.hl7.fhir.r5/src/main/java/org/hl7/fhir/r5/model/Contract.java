@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1187,10 +1187,10 @@ public class Contract extends DomainResource {
         protected StringType text;
 
         /**
-         * Security labels that protect the handling of information about the term and its elements, which may be specifically identified..
+         * Security labels that protect the handling of information about the term and its elements, which may be specifically identified.
          */
         @Child(name = "securityLabel", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Protection for the Term", formalDefinition="Security labels that protect the handling of information about the term and its elements, which may be specifically identified.." )
+        @Description(shortDefinition="Protection for the Term", formalDefinition="Security labels that protect the handling of information about the term and its elements, which may be specifically identified." )
         protected List<SecurityLabelComponent> securityLabel;
 
         /**
@@ -1484,7 +1484,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #securityLabel} (Security labels that protect the handling of information about the term and its elements, which may be specifically identified..)
+         * @return {@link #securityLabel} (Security labels that protect the handling of information about the term and its elements, which may be specifically identified.)
          */
         public List<SecurityLabelComponent> getSecurityLabel() { 
           if (this.securityLabel == null)
@@ -1728,7 +1728,7 @@ public class Contract extends DomainResource {
           children.add(new Property("type", "CodeableConcept", "A legal clause or condition contained within a contract that requires one or both parties to perform a particular requirement by some specified time or prevents one or both parties from performing a particular requirement by some specified time.", 0, 1, type));
           children.add(new Property("subType", "CodeableConcept", "A specialized legal clause or condition based on overarching contract type.", 0, 1, subType));
           children.add(new Property("text", "string", "Statement of a provision in a policy or a contract.", 0, 1, text));
-          children.add(new Property("securityLabel", "", "Security labels that protect the handling of information about the term and its elements, which may be specifically identified..", 0, java.lang.Integer.MAX_VALUE, securityLabel));
+          children.add(new Property("securityLabel", "", "Security labels that protect the handling of information about the term and its elements, which may be specifically identified.", 0, java.lang.Integer.MAX_VALUE, securityLabel));
           children.add(new Property("offer", "", "The matter of concern in the context of this provision of the agrement.", 0, 1, offer));
           children.add(new Property("asset", "", "Contract Term Asset List.", 0, java.lang.Integer.MAX_VALUE, asset));
           children.add(new Property("action", "", "An actor taking a role in an activity for which it can be assigned some degree of responsibility for the activity taking place.", 0, java.lang.Integer.MAX_VALUE, action));
@@ -1748,7 +1748,7 @@ public class Contract extends DomainResource {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A legal clause or condition contained within a contract that requires one or both parties to perform a particular requirement by some specified time or prevents one or both parties from performing a particular requirement by some specified time.", 0, 1, type);
           case -1868521062: /*subType*/  return new Property("subType", "CodeableConcept", "A specialized legal clause or condition based on overarching contract type.", 0, 1, subType);
           case 3556653: /*text*/  return new Property("text", "string", "Statement of a provision in a policy or a contract.", 0, 1, text);
-          case -722296940: /*securityLabel*/  return new Property("securityLabel", "", "Security labels that protect the handling of information about the term and its elements, which may be specifically identified..", 0, java.lang.Integer.MAX_VALUE, securityLabel);
+          case -722296940: /*securityLabel*/  return new Property("securityLabel", "", "Security labels that protect the handling of information about the term and its elements, which may be specifically identified.", 0, java.lang.Integer.MAX_VALUE, securityLabel);
           case 105650780: /*offer*/  return new Property("offer", "", "The matter of concern in the context of this provision of the agrement.", 0, 1, offer);
           case 93121264: /*asset*/  return new Property("asset", "", "Contract Term Asset List.", 0, java.lang.Integer.MAX_VALUE, asset);
           case -1422950858: /*action*/  return new Property("action", "", "An actor taking a role in an activity for which it can be assigned some degree of responsibility for the activity taking place.", 0, java.lang.Integer.MAX_VALUE, action);
@@ -2030,26 +2030,26 @@ public class Contract extends DomainResource {
         protected List<UnsignedIntType> number;
 
         /**
-         * Security label privacy tag that species the level of confidentiality protection required for this term and/or term elements.
+         * Security label privacy tag that specifies the level of confidentiality protection required for this term and/or term elements.
          */
         @Child(name = "classification", type = {Coding.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Confidentiality Protection", formalDefinition="Security label privacy tag that species the level of confidentiality protection required for this term and/or term elements." )
+        @Description(shortDefinition="Confidentiality Protection", formalDefinition="Security label privacy tag that specifies the level of confidentiality protection required for this term and/or term elements." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contract-security-classification")
         protected Coding classification;
 
         /**
-         * Security label privacy tag that species the applicable privacy and security policies governing this term and/or term elements.
+         * Security label privacy tag that specifies the applicable privacy and security policies governing this term and/or term elements.
          */
         @Child(name = "category", type = {Coding.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Applicable Policy", formalDefinition="Security label privacy tag that species the applicable privacy and security policies governing this term and/or term elements." )
+        @Description(shortDefinition="Applicable Policy", formalDefinition="Security label privacy tag that specifies the applicable privacy and security policies governing this term and/or term elements." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contract-security-category")
         protected List<Coding> category;
 
         /**
-         * Security label privacy tag that species the manner in which term and/or term elements are to be protected.
+         * Security label privacy tag that specifies the manner in which term and/or term elements are to be protected.
          */
         @Child(name = "control", type = {Coding.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Handling Instructions", formalDefinition="Security label privacy tag that species the manner in which term and/or term elements are to be protected." )
+        @Description(shortDefinition="Handling Instructions", formalDefinition="Security label privacy tag that specifies the manner in which term and/or term elements are to be protected." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contract-security-control")
         protected List<Coding> control;
 
@@ -2132,7 +2132,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #classification} (Security label privacy tag that species the level of confidentiality protection required for this term and/or term elements.)
+         * @return {@link #classification} (Security label privacy tag that specifies the level of confidentiality protection required for this term and/or term elements.)
          */
         public Coding getClassification() { 
           if (this.classification == null)
@@ -2148,7 +2148,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @param value {@link #classification} (Security label privacy tag that species the level of confidentiality protection required for this term and/or term elements.)
+         * @param value {@link #classification} (Security label privacy tag that specifies the level of confidentiality protection required for this term and/or term elements.)
          */
         public SecurityLabelComponent setClassification(Coding value) { 
           this.classification = value;
@@ -2156,7 +2156,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #category} (Security label privacy tag that species the applicable privacy and security policies governing this term and/or term elements.)
+         * @return {@link #category} (Security label privacy tag that specifies the applicable privacy and security policies governing this term and/or term elements.)
          */
         public List<Coding> getCategory() { 
           if (this.category == null)
@@ -2209,7 +2209,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #control} (Security label privacy tag that species the manner in which term and/or term elements are to be protected.)
+         * @return {@link #control} (Security label privacy tag that specifies the manner in which term and/or term elements are to be protected.)
          */
         public List<Coding> getControl() { 
           if (this.control == null)
@@ -2264,18 +2264,18 @@ public class Contract extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("number", "unsignedInt", "Number used to link this term or term element to the applicable Security Label.", 0, java.lang.Integer.MAX_VALUE, number));
-          children.add(new Property("classification", "Coding", "Security label privacy tag that species the level of confidentiality protection required for this term and/or term elements.", 0, 1, classification));
-          children.add(new Property("category", "Coding", "Security label privacy tag that species the applicable privacy and security policies governing this term and/or term elements.", 0, java.lang.Integer.MAX_VALUE, category));
-          children.add(new Property("control", "Coding", "Security label privacy tag that species the manner in which term and/or term elements are to be protected.", 0, java.lang.Integer.MAX_VALUE, control));
+          children.add(new Property("classification", "Coding", "Security label privacy tag that specifies the level of confidentiality protection required for this term and/or term elements.", 0, 1, classification));
+          children.add(new Property("category", "Coding", "Security label privacy tag that specifies the applicable privacy and security policies governing this term and/or term elements.", 0, java.lang.Integer.MAX_VALUE, category));
+          children.add(new Property("control", "Coding", "Security label privacy tag that specifies the manner in which term and/or term elements are to be protected.", 0, java.lang.Integer.MAX_VALUE, control));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1034364087: /*number*/  return new Property("number", "unsignedInt", "Number used to link this term or term element to the applicable Security Label.", 0, java.lang.Integer.MAX_VALUE, number);
-          case 382350310: /*classification*/  return new Property("classification", "Coding", "Security label privacy tag that species the level of confidentiality protection required for this term and/or term elements.", 0, 1, classification);
-          case 50511102: /*category*/  return new Property("category", "Coding", "Security label privacy tag that species the applicable privacy and security policies governing this term and/or term elements.", 0, java.lang.Integer.MAX_VALUE, category);
-          case 951543133: /*control*/  return new Property("control", "Coding", "Security label privacy tag that species the manner in which term and/or term elements are to be protected.", 0, java.lang.Integer.MAX_VALUE, control);
+          case 382350310: /*classification*/  return new Property("classification", "Coding", "Security label privacy tag that specifies the level of confidentiality protection required for this term and/or term elements.", 0, 1, classification);
+          case 50511102: /*category*/  return new Property("category", "Coding", "Security label privacy tag that specifies the applicable privacy and security policies governing this term and/or term elements.", 0, java.lang.Integer.MAX_VALUE, category);
+          case 951543133: /*control*/  return new Property("control", "Coding", "Security label privacy tag that specifies the manner in which term and/or term elements are to be protected.", 0, java.lang.Integer.MAX_VALUE, control);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -3485,10 +3485,10 @@ public class Contract extends DomainResource {
     @Block()
     public static class AnswerComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.
+         * Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.
          */
         @Child(name = "value", type = {BooleanType.class, DecimalType.class, IntegerType.class, DateType.class, DateTimeType.class, TimeType.class, StringType.class, UriType.class, Attachment.class, Coding.class, Quantity.class, Reference.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The actual answer response", formalDefinition="Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research." )
+        @Description(shortDefinition="The actual answer response", formalDefinition="Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research." )
         protected DataType value;
 
         private static final long serialVersionUID = -1135414639L;
@@ -3509,14 +3509,14 @@ public class Contract extends DomainResource {
       }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public DataType getValue() { 
           return this.value;
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public BooleanType getValueBooleanType() throws FHIRException { 
           if (this.value == null)
@@ -3531,7 +3531,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public DecimalType getValueDecimalType() throws FHIRException { 
           if (this.value == null)
@@ -3546,7 +3546,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public IntegerType getValueIntegerType() throws FHIRException { 
           if (this.value == null)
@@ -3561,7 +3561,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public DateType getValueDateType() throws FHIRException { 
           if (this.value == null)
@@ -3576,7 +3576,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public DateTimeType getValueDateTimeType() throws FHIRException { 
           if (this.value == null)
@@ -3591,7 +3591,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public TimeType getValueTimeType() throws FHIRException { 
           if (this.value == null)
@@ -3606,7 +3606,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public StringType getValueStringType() throws FHIRException { 
           if (this.value == null)
@@ -3621,7 +3621,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public UriType getValueUriType() throws FHIRException { 
           if (this.value == null)
@@ -3636,7 +3636,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public Attachment getValueAttachment() throws FHIRException { 
           if (this.value == null)
@@ -3651,7 +3651,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public Coding getValueCoding() throws FHIRException { 
           if (this.value == null)
@@ -3666,7 +3666,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public Quantity getValueQuantity() throws FHIRException { 
           if (this.value == null)
@@ -3681,7 +3681,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @return {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public Reference getValueReference() throws FHIRException { 
           if (this.value == null)
@@ -3700,7 +3700,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @param value {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.)
+         * @param value {@link #value} (Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.)
          */
         public AnswerComponent setValue(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof DecimalType || value instanceof IntegerType || value instanceof DateType || value instanceof DateTimeType || value instanceof TimeType || value instanceof StringType || value instanceof UriType || value instanceof Attachment || value instanceof Coding || value instanceof Quantity || value instanceof Reference))
@@ -3711,26 +3711,26 @@ public class Contract extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value));
+          children.add(new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -766192449: /*valueDate*/  return new Property("value[x]", "date", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -765708322: /*valueTime*/  return new Property("value[x]", "time", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -1410172357: /*valueUri*/  return new Property("value[x]", "uri", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -766192449: /*valueDate*/  return new Property("value[x]", "date", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -765708322: /*valueTime*/  return new Property("value[x]", "time", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -1410172357: /*valueUri*/  return new Property("value[x]", "uri", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warranty duration, or whether biospecimen may be used for further research.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -3929,10 +3929,10 @@ public class Contract extends DomainResource {
         protected List<AssetContextComponent> context;
 
         /**
-         * Description of the quality and completeness of the asset that imay be a factor in its valuation.
+         * Description of the quality and completeness of the asset that may be a factor in its valuation.
          */
         @Child(name = "condition", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Quality desctiption of asset", formalDefinition="Description of the quality and completeness of the asset that imay be a factor in its valuation." )
+        @Description(shortDefinition="Quality desctiption of asset", formalDefinition="Description of the quality and completeness of the asset that may be a factor in its valuation." )
         protected StringType condition;
 
         /**
@@ -4262,7 +4262,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #condition} (Description of the quality and completeness of the asset that imay be a factor in its valuation.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
+         * @return {@link #condition} (Description of the quality and completeness of the asset that may be a factor in its valuation.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
          */
         public StringType getConditionElement() { 
           if (this.condition == null)
@@ -4282,7 +4282,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @param value {@link #condition} (Description of the quality and completeness of the asset that imay be a factor in its valuation.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
+         * @param value {@link #condition} (Description of the quality and completeness of the asset that may be a factor in its valuation.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
          */
         public ContractAssetComponent setConditionElement(StringType value) { 
           this.condition = value;
@@ -4290,14 +4290,14 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return Description of the quality and completeness of the asset that imay be a factor in its valuation.
+         * @return Description of the quality and completeness of the asset that may be a factor in its valuation.
          */
         public String getCondition() { 
           return this.condition == null ? null : this.condition.getValue();
         }
 
         /**
-         * @param value Description of the quality and completeness of the asset that imay be a factor in its valuation.
+         * @param value Description of the quality and completeness of the asset that may be a factor in its valuation.
          */
         public ContractAssetComponent setCondition(String value) { 
           if (Utilities.noString(value))
@@ -4754,7 +4754,7 @@ public class Contract extends DomainResource {
           children.add(new Property("subtype", "CodeableConcept", "May be a subtype or part of an offered asset.", 0, java.lang.Integer.MAX_VALUE, subtype));
           children.add(new Property("relationship", "Coding", "Specifies the applicability of the term to an asset resource instance, and instances it refers to orinstances that refer to it, and/or are owned by the offeree.", 0, 1, relationship));
           children.add(new Property("context", "", "Circumstance of the asset.", 0, java.lang.Integer.MAX_VALUE, context));
-          children.add(new Property("condition", "string", "Description of the quality and completeness of the asset that imay be a factor in its valuation.", 0, 1, condition));
+          children.add(new Property("condition", "string", "Description of the quality and completeness of the asset that may be a factor in its valuation.", 0, 1, condition));
           children.add(new Property("periodType", "CodeableConcept", "Type of Asset availability for use or ownership.", 0, java.lang.Integer.MAX_VALUE, periodType));
           children.add(new Property("period", "Period", "Asset relevant contractual time period.", 0, java.lang.Integer.MAX_VALUE, period));
           children.add(new Property("usePeriod", "Period", "Time period of asset use.", 0, java.lang.Integer.MAX_VALUE, usePeriod));
@@ -4774,7 +4774,7 @@ public class Contract extends DomainResource {
           case -1867567750: /*subtype*/  return new Property("subtype", "CodeableConcept", "May be a subtype or part of an offered asset.", 0, java.lang.Integer.MAX_VALUE, subtype);
           case -261851592: /*relationship*/  return new Property("relationship", "Coding", "Specifies the applicability of the term to an asset resource instance, and instances it refers to orinstances that refer to it, and/or are owned by the offeree.", 0, 1, relationship);
           case 951530927: /*context*/  return new Property("context", "", "Circumstance of the asset.", 0, java.lang.Integer.MAX_VALUE, context);
-          case -861311717: /*condition*/  return new Property("condition", "string", "Description of the quality and completeness of the asset that imay be a factor in its valuation.", 0, 1, condition);
+          case -861311717: /*condition*/  return new Property("condition", "string", "Description of the quality and completeness of the asset that may be a factor in its valuation.", 0, 1, condition);
           case 384348315: /*periodType*/  return new Property("periodType", "CodeableConcept", "Type of Asset availability for use or ownership.", 0, java.lang.Integer.MAX_VALUE, periodType);
           case -991726143: /*period*/  return new Property("period", "Period", "Asset relevant contractual time period.", 0, java.lang.Integer.MAX_VALUE, period);
           case -628382168: /*usePeriod*/  return new Property("usePeriod", "Period", "Time period of asset use.", 0, java.lang.Integer.MAX_VALUE, usePeriod);
@@ -9178,17 +9178,17 @@ public class Contract extends DomainResource {
     protected StringType name;
 
     /**
-     * A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.
+     * A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.
      */
     @Child(name = "title", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Human Friendly name", formalDefinition="A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content." )
+    @Description(shortDefinition="Human Friendly name", formalDefinition="A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state." )
     protected StringType title;
 
     /**
-     * An explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.
+     * A more detailed or qualifying explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.
      */
     @Child(name = "subtitle", type = {StringType.class}, order=17, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Subordinate Friendly name", formalDefinition="An explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content." )
+    @Description(shortDefinition="Subordinate Friendly name", formalDefinition="A more detailed or qualifying explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state." )
     protected StringType subtitle;
 
     /**
@@ -9258,10 +9258,10 @@ public class Contract extends DomainResource {
     protected List<Reference> supportingInfo;
 
     /**
-     * Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).
+     * Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provenance.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).
      */
     @Child(name = "relevantHistory", type = {Provenance.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Key event in Contract History", formalDefinition="Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity))." )
+    @Description(shortDefinition="Key event in Contract History", formalDefinition="Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provenance.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity))." )
     protected List<Reference> relevantHistory;
 
     /**
@@ -9988,7 +9988,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return {@link #title} (A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     * @return {@link #title} (A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
      */
     public StringType getTitleElement() { 
       if (this.title == null)
@@ -10008,7 +10008,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @param value {@link #title} (A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     * @param value {@link #title} (A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
      */
     public Contract setTitleElement(StringType value) { 
       this.title = value;
@@ -10016,14 +10016,14 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.
+     * @return A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.
      */
     public String getTitle() { 
       return this.title == null ? null : this.title.getValue();
     }
 
     /**
-     * @param value A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.
+     * @param value A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.
      */
     public Contract setTitle(String value) { 
       if (Utilities.noString(value))
@@ -10037,7 +10037,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return {@link #subtitle} (An explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.). This is the underlying object with id, value and extensions. The accessor "getSubtitle" gives direct access to the value
+     * @return {@link #subtitle} (A more detailed or qualifying explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.). This is the underlying object with id, value and extensions. The accessor "getSubtitle" gives direct access to the value
      */
     public StringType getSubtitleElement() { 
       if (this.subtitle == null)
@@ -10057,7 +10057,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @param value {@link #subtitle} (An explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.). This is the underlying object with id, value and extensions. The accessor "getSubtitle" gives direct access to the value
+     * @param value {@link #subtitle} (A more detailed or qualifying explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.). This is the underlying object with id, value and extensions. The accessor "getSubtitle" gives direct access to the value
      */
     public Contract setSubtitleElement(StringType value) { 
       this.subtitle = value;
@@ -10065,14 +10065,14 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return An explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.
+     * @return A more detailed or qualifying explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.
      */
     public String getSubtitle() { 
       return this.subtitle == null ? null : this.subtitle.getValue();
     }
 
     /**
-     * @param value An explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.
+     * @param value A more detailed or qualifying explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.
      */
     public Contract setSubtitle(String value) { 
       if (Utilities.noString(value))
@@ -10453,7 +10453,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return {@link #relevantHistory} (Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).)
+     * @return {@link #relevantHistory} (Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provenance.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).)
      */
     public List<Reference> getRelevantHistory() { 
       if (this.relevantHistory == null)
@@ -10786,8 +10786,8 @@ public class Contract extends DomainResource {
         children.add(new Property("domain", "Reference(Location)", "Recognized governance framework or system operating with a circumscribed scope in accordance with specified principles, policies, processes or procedures for managing rights, actions, or behaviors of parties or principals relative to resources.", 0, java.lang.Integer.MAX_VALUE, domain));
         children.add(new Property("site", "Reference(Location)", "Sites in which the contract is complied with,  exercised, or in force.", 0, java.lang.Integer.MAX_VALUE, site));
         children.add(new Property("name", "string", "A natural language name identifying this Contract definition, derivative, or instance in any legal state. Provides additional information about its content. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
-        children.add(new Property("title", "string", "A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.", 0, 1, title));
-        children.add(new Property("subtitle", "string", "An explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.", 0, 1, subtitle));
+        children.add(new Property("title", "string", "A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.", 0, 1, title));
+        children.add(new Property("subtitle", "string", "A more detailed or qualifying explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.", 0, 1, subtitle));
         children.add(new Property("alias", "string", "Alternative representation of the title for this Contract definition, derivative, or instance in any legal state., e.g., a domain specific contract number related to legislation.", 0, java.lang.Integer.MAX_VALUE, alias));
         children.add(new Property("author", "Reference(Patient|Practitioner|PractitionerRole|Organization)", "The individual or organization that authored the Contract definition, derivative, or instance in any legal state.", 0, 1, author));
         children.add(new Property("scope", "CodeableConcept", "A selector of legal concerns for this Contract definition, derivative, or instance in any legal state.", 0, 1, scope));
@@ -10797,7 +10797,7 @@ public class Contract extends DomainResource {
         children.add(new Property("contentDefinition", "", "Precusory content developed with a focus and intent of supporting the formation a Contract instance, which may be associated with and transformable into a Contract.", 0, 1, contentDefinition));
         children.add(new Property("term", "", "One or more Contract Provisions, which may be related and conveyed as a group, and may contain nested groups.", 0, java.lang.Integer.MAX_VALUE, term));
         children.add(new Property("supportingInfo", "Reference(Any)", "Information that may be needed by/relevant to the performer in their execution of this term action.", 0, java.lang.Integer.MAX_VALUE, supportingInfo));
-        children.add(new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).", 0, java.lang.Integer.MAX_VALUE, relevantHistory));
+        children.add(new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provenance.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).", 0, java.lang.Integer.MAX_VALUE, relevantHistory));
         children.add(new Property("signer", "", "Parties with legal standing in the Contract, including the principal parties, the grantor(s) and grantee(s), which are any person or organization bound by the contract, and any ancillary parties, which facilitate the execution of the contract such as a notary or witness.", 0, java.lang.Integer.MAX_VALUE, signer));
         children.add(new Property("friendly", "", "The \"patient friendly language\" versionof the Contract in whole or in parts. \"Patient friendly language\" means the representation of the Contract and Contract Provisions in a manner that is readily accessible and understandable by a layperson in accordance with best practices for communication styles that ensure that those agreeing to or signing the Contract understand the roles, actions, obligations, responsibilities, and implication of the agreement.", 0, java.lang.Integer.MAX_VALUE, friendly));
         children.add(new Property("legal", "", "List of Legal expressions or representations of this Contract.", 0, java.lang.Integer.MAX_VALUE, legal));
@@ -10824,8 +10824,8 @@ public class Contract extends DomainResource {
         case -1326197564: /*domain*/  return new Property("domain", "Reference(Location)", "Recognized governance framework or system operating with a circumscribed scope in accordance with specified principles, policies, processes or procedures for managing rights, actions, or behaviors of parties or principals relative to resources.", 0, java.lang.Integer.MAX_VALUE, domain);
         case 3530567: /*site*/  return new Property("site", "Reference(Location)", "Sites in which the contract is complied with,  exercised, or in force.", 0, java.lang.Integer.MAX_VALUE, site);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying this Contract definition, derivative, or instance in any legal state. Provides additional information about its content. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
-        case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.", 0, 1, title);
-        case -2060497896: /*subtitle*/  return new Property("subtitle", "string", "An explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.t giving additional information about its content.", 0, 1, subtitle);
+        case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for this Contract definition, derivative, or instance in any legal state.", 0, 1, title);
+        case -2060497896: /*subtitle*/  return new Property("subtitle", "string", "A more detailed or qualifying explanatory or alternate user-friendly title for this Contract definition, derivative, or instance in any legal state.", 0, 1, subtitle);
         case 92902992: /*alias*/  return new Property("alias", "string", "Alternative representation of the title for this Contract definition, derivative, or instance in any legal state., e.g., a domain specific contract number related to legislation.", 0, java.lang.Integer.MAX_VALUE, alias);
         case -1406328437: /*author*/  return new Property("author", "Reference(Patient|Practitioner|PractitionerRole|Organization)", "The individual or organization that authored the Contract definition, derivative, or instance in any legal state.", 0, 1, author);
         case 109264468: /*scope*/  return new Property("scope", "CodeableConcept", "A selector of legal concerns for this Contract definition, derivative, or instance in any legal state.", 0, 1, scope);
@@ -10838,7 +10838,7 @@ public class Contract extends DomainResource {
         case 247055020: /*contentDefinition*/  return new Property("contentDefinition", "", "Precusory content developed with a focus and intent of supporting the formation a Contract instance, which may be associated with and transformable into a Contract.", 0, 1, contentDefinition);
         case 3556460: /*term*/  return new Property("term", "", "One or more Contract Provisions, which may be related and conveyed as a group, and may contain nested groups.", 0, java.lang.Integer.MAX_VALUE, term);
         case 1922406657: /*supportingInfo*/  return new Property("supportingInfo", "Reference(Any)", "Information that may be needed by/relevant to the performer in their execution of this term action.", 0, java.lang.Integer.MAX_VALUE, supportingInfo);
-        case 1538891575: /*relevantHistory*/  return new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).", 0, java.lang.Integer.MAX_VALUE, relevantHistory);
+        case 1538891575: /*relevantHistory*/  return new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provenance.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).", 0, java.lang.Integer.MAX_VALUE, relevantHistory);
         case -902467798: /*signer*/  return new Property("signer", "", "Parties with legal standing in the Contract, including the principal parties, the grantor(s) and grantee(s), which are any person or organization bound by the contract, and any ancillary parties, which facilitate the execution of the contract such as a notary or witness.", 0, java.lang.Integer.MAX_VALUE, signer);
         case -1423054677: /*friendly*/  return new Property("friendly", "", "The \"patient friendly language\" versionof the Contract in whole or in parts. \"Patient friendly language\" means the representation of the Contract and Contract Provisions in a manner that is readily accessible and understandable by a layperson in accordance with best practices for communication styles that ensure that those agreeing to or signing the Contract understand the roles, actions, obligations, responsibilities, and implication of the agreement.", 0, java.lang.Integer.MAX_VALUE, friendly);
         case 102851257: /*legal*/  return new Property("legal", "", "List of Legal expressions or representations of this Contract.", 0, java.lang.Integer.MAX_VALUE, legal);

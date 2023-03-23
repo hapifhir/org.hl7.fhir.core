@@ -219,35 +219,35 @@ public class CodeSystem43_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode> convertCodeSystemContentMode(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CodeSystem.CodeSystemContentMode> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode> convertCodeSystemContentMode(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CodeSystem.CodeSystemContentMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentModeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.CodeSystemContentModeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case NOTPRESENT:
-        tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.NOTPRESENT);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode.NOTPRESENT);
         break;
       case EXAMPLE:
-        tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.EXAMPLE);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode.EXAMPLE);
         break;
       case FRAGMENT:
-        tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.FRAGMENT);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode.FRAGMENT);
         break;
       case COMPLETE:
-        tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.COMPLETE);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode.COMPLETE);
         break;
       case SUPPLEMENT:
-        tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.SUPPLEMENT);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode.SUPPLEMENT);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CodeSystem.CodeSystemContentMode> convertCodeSystemContentMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode> src) throws FHIRException {
+  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CodeSystem.CodeSystemContentMode> convertCodeSystemContentMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CodeSystem.CodeSystemContentMode> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.CodeSystem.CodeSystemContentModeEnumFactory());

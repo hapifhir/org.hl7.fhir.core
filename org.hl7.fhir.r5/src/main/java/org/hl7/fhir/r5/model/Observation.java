@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -981,7 +981,7 @@ Reflex | Repeat | Re-run.
         /**
          * The information determined as a result of making the observation, if the information has a simple value.
          */
-        @Child(name = "value", type = {Quantity.class, CodeableConcept.class, MarkdownType.class, BooleanType.class, IntegerType.class, Range.class, Ratio.class, SampledData.class, TimeType.class, DateTimeType.class, Period.class, Attachment.class, MolecularSequence.class, CanonicalType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "value", type = {Quantity.class, CodeableConcept.class, StringType.class, BooleanType.class, IntegerType.class, Range.class, Ratio.class, SampledData.class, TimeType.class, DateTimeType.class, Period.class, Attachment.class, MolecularSequence.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Actual component result", formalDefinition="The information determined as a result of making the observation, if the information has a simple value." )
         protected DataType value;
 
@@ -1089,16 +1089,16 @@ Reflex | Repeat | Re-run.
         /**
          * @return {@link #value} (The information determined as a result of making the observation, if the information has a simple value.)
          */
-        public MarkdownType getValueMarkdownType() throws FHIRException { 
+        public StringType getValueStringType() throws FHIRException { 
           if (this.value == null)
-            this.value = new MarkdownType();
-          if (!(this.value instanceof MarkdownType))
-            throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (MarkdownType) this.value;
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
         }
 
-        public boolean hasValueMarkdownType() { 
-          return this != null && this.value instanceof MarkdownType;
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
         }
 
         /**
@@ -1251,21 +1251,6 @@ Reflex | Repeat | Re-run.
           return this != null && this.value instanceof Reference;
         }
 
-        /**
-         * @return {@link #value} (The information determined as a result of making the observation, if the information has a simple value.)
-         */
-        public CanonicalType getValueCanonicalType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new CanonicalType();
-          if (!(this.value instanceof CanonicalType))
-            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (CanonicalType) this.value;
-        }
-
-        public boolean hasValueCanonicalType() { 
-          return this != null && this.value instanceof CanonicalType;
-        }
-
         public boolean hasValue() { 
           return this.value != null && !this.value.isEmpty();
         }
@@ -1274,7 +1259,7 @@ Reflex | Repeat | Re-run.
          * @param value {@link #value} (The information determined as a result of making the observation, if the information has a simple value.)
          */
         public ObservationComponentComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof MarkdownType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Ratio || value instanceof SampledData || value instanceof TimeType || value instanceof DateTimeType || value instanceof Period || value instanceof Attachment || value instanceof Reference || value instanceof CanonicalType))
+          if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Ratio || value instanceof SampledData || value instanceof TimeType || value instanceof DateTimeType || value instanceof Period || value instanceof Attachment || value instanceof Reference))
             throw new FHIRException("Not the right type for Observation.component.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -1413,7 +1398,7 @@ Reflex | Repeat | Re-run.
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "Describes what was observed. Sometimes this is called the observation \"code\".", 0, 1, code));
-          children.add(new Property("value[x]", "Quantity|CodeableConcept|markdown|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)|canonical", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value));
+          children.add(new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value));
           children.add(new Property("dataAbsentReason", "CodeableConcept", "Provides a reason why the expected value in the element Observation.component.value[x] is missing.", 0, 1, dataAbsentReason));
           children.add(new Property("interpretation", "CodeableConcept", "A categorical assessment of an observation value.  For example, high, low, normal.", 0, java.lang.Integer.MAX_VALUE, interpretation));
           children.add(new Property("referenceRange", "@Observation.referenceRange", "Guidance on how to interpret the value by comparison to a normal or recommended range.", 0, java.lang.Integer.MAX_VALUE, referenceRange));
@@ -1423,11 +1408,11 @@ Reflex | Repeat | Re-run.
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Describes what was observed. Sometimes this is called the observation \"code\".", 0, 1, code);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|CodeableConcept|markdown|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)|canonical", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "Quantity|CodeableConcept|markdown|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)|canonical", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
           case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
-          case -497880704: /*valueMarkdown*/  return new Property("value[x]", "markdown", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
           case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
           case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
@@ -1438,7 +1423,6 @@ Reflex | Repeat | Re-run.
           case -1524344174: /*valuePeriod*/  return new Property("value[x]", "Period", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
           case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
           case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference(MolecularSequence)", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
-          case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
           case 1034315687: /*dataAbsentReason*/  return new Property("dataAbsentReason", "CodeableConcept", "Provides a reason why the expected value in the element Observation.component.value[x] is missing.", 0, 1, dataAbsentReason);
           case -297950712: /*interpretation*/  return new Property("interpretation", "CodeableConcept", "A categorical assessment of an observation value.  For example, high, low, normal.", 0, java.lang.Integer.MAX_VALUE, interpretation);
           case -1912545102: /*referenceRange*/  return new Property("referenceRange", "@Observation.referenceRange", "Guidance on how to interpret the value by comparison to a normal or recommended range.", 0, java.lang.Integer.MAX_VALUE, referenceRange);
@@ -1518,7 +1502,7 @@ Reflex | Repeat | Re-run.
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"Quantity", "CodeableConcept", "markdown", "boolean", "integer", "Range", "Ratio", "SampledData", "time", "dateTime", "Period", "Attachment", "Reference", "canonical"};
+        case 111972721: /*value*/ return new String[] {"Quantity", "CodeableConcept", "string", "boolean", "integer", "Range", "Ratio", "SampledData", "time", "dateTime", "Period", "Attachment", "Reference"};
         case 1034315687: /*dataAbsentReason*/ return new String[] {"CodeableConcept"};
         case -297950712: /*interpretation*/ return new String[] {"CodeableConcept"};
         case -1912545102: /*referenceRange*/ return new String[] {"@Observation.referenceRange"};
@@ -1541,8 +1525,8 @@ Reflex | Repeat | Re-run.
           this.value = new CodeableConcept();
           return this.value;
         }
-        else if (name.equals("valueMarkdown")) {
-          this.value = new MarkdownType();
+        else if (name.equals("valueString")) {
+          this.value = new StringType();
           return this.value;
         }
         else if (name.equals("valueBoolean")) {
@@ -1583,10 +1567,6 @@ Reflex | Repeat | Re-run.
         }
         else if (name.equals("valueReference")) {
           this.value = new Reference();
-          return this.value;
-        }
-        else if (name.equals("valueCanonical")) {
-          this.value = new CanonicalType();
           return this.value;
         }
         else if (name.equals("dataAbsentReason")) {
@@ -1764,7 +1744,7 @@ Reflex | Repeat | Re-run.
     /**
      * The information determined as a result of making the observation, if the information has a simple value.
      */
-    @Child(name = "value", type = {Quantity.class, CodeableConcept.class, MarkdownType.class, BooleanType.class, IntegerType.class, Range.class, Ratio.class, SampledData.class, TimeType.class, DateTimeType.class, Period.class, Attachment.class, MolecularSequence.class, CanonicalType.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "value", type = {Quantity.class, CodeableConcept.class, StringType.class, BooleanType.class, IntegerType.class, Range.class, Ratio.class, SampledData.class, TimeType.class, DateTimeType.class, Period.class, Attachment.class, MolecularSequence.class}, order=14, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Actual result", formalDefinition="The information determined as a result of making the observation, if the information has a simple value." )
     protected DataType value;
 
@@ -1822,10 +1802,10 @@ Reflex | Repeat | Re-run.
     protected Reference specimen;
 
     /**
-     * The device used to generate the observation data.
+     * A reference to the device that generates the measurements or the device settings for the device.
      */
     @Child(name = "device", type = {Device.class, DeviceMetric.class}, order=22, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="(Measurement) Device", formalDefinition="The device used to generate the observation data." )
+    @Description(shortDefinition="A reference to the device that generates the measurements or the device settings for the device", formalDefinition="A reference to the device that generates the measurements or the device settings for the device." )
     protected Reference device;
 
     /**
@@ -2583,16 +2563,16 @@ Reflex | Repeat | Re-run.
     /**
      * @return {@link #value} (The information determined as a result of making the observation, if the information has a simple value.)
      */
-    public MarkdownType getValueMarkdownType() throws FHIRException { 
+    public StringType getValueStringType() throws FHIRException { 
       if (this.value == null)
-        this.value = new MarkdownType();
-      if (!(this.value instanceof MarkdownType))
-        throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.value.getClass().getName()+" was encountered");
-      return (MarkdownType) this.value;
+        this.value = new StringType();
+      if (!(this.value instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+      return (StringType) this.value;
     }
 
-    public boolean hasValueMarkdownType() { 
-      return this != null && this.value instanceof MarkdownType;
+    public boolean hasValueStringType() { 
+      return this != null && this.value instanceof StringType;
     }
 
     /**
@@ -2745,21 +2725,6 @@ Reflex | Repeat | Re-run.
       return this != null && this.value instanceof Reference;
     }
 
-    /**
-     * @return {@link #value} (The information determined as a result of making the observation, if the information has a simple value.)
-     */
-    public CanonicalType getValueCanonicalType() throws FHIRException { 
-      if (this.value == null)
-        this.value = new CanonicalType();
-      if (!(this.value instanceof CanonicalType))
-        throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.value.getClass().getName()+" was encountered");
-      return (CanonicalType) this.value;
-    }
-
-    public boolean hasValueCanonicalType() { 
-      return this != null && this.value instanceof CanonicalType;
-    }
-
     public boolean hasValue() { 
       return this.value != null && !this.value.isEmpty();
     }
@@ -2768,7 +2733,7 @@ Reflex | Repeat | Re-run.
      * @param value {@link #value} (The information determined as a result of making the observation, if the information has a simple value.)
      */
     public Observation setValue(DataType value) { 
-      if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Ratio || value instanceof SampledData || value instanceof TimeType || value instanceof DateTimeType || value instanceof Period || value instanceof Attachment || value instanceof Reference || value instanceof CanonicalType))
+      if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Ratio || value instanceof SampledData || value instanceof TimeType || value instanceof DateTimeType || value instanceof Period || value instanceof Attachment || value instanceof Reference))
         throw new FHIRException("Not the right type for Observation.value[x]: "+value.fhirType());
       this.value = value;
       return this;
@@ -3001,7 +2966,7 @@ Reflex | Repeat | Re-run.
     }
 
     /**
-     * @return {@link #device} (The device used to generate the observation data.)
+     * @return {@link #device} (A reference to the device that generates the measurements or the device settings for the device.)
      */
     public Reference getDevice() { 
       if (this.device == null)
@@ -3017,7 +2982,7 @@ Reflex | Repeat | Re-run.
     }
 
     /**
-     * @param value {@link #device} (The device used to generate the observation data.)
+     * @param value {@link #device} (A reference to the device that generates the measurements or the device settings for the device.)
      */
     public Observation setDevice(Reference value) { 
       this.device = value;
@@ -3252,7 +3217,7 @@ Reflex | Repeat | Re-run.
         children.add(new Property("effective[x]", "dateTime|Period|Timing|instant", "The time or time-period the observed value is asserted as being true. For biological subjects - e.g. human patients - this is usually called the \"physiologically relevant time\". This is usually either the time of the procedure or of specimen collection, but very often the source of the date/time is not known, only the date/time itself.", 0, 1, effective));
         children.add(new Property("issued", "instant", "The date and time this version of the observation was made available to providers, typically after the results have been reviewed and verified.", 0, 1, issued));
         children.add(new Property("performer", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|Patient|RelatedPerson)", "Who was responsible for asserting the observed value as \"true\".", 0, java.lang.Integer.MAX_VALUE, performer));
-        children.add(new Property("value[x]", "Quantity|CodeableConcept|markdown|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)|canonical", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value));
+        children.add(new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value));
         children.add(new Property("dataAbsentReason", "CodeableConcept", "Provides a reason why the expected value in the element Observation.value[x] is missing.", 0, 1, dataAbsentReason));
         children.add(new Property("interpretation", "CodeableConcept", "A categorical assessment of an observation value.  For example, high, low, normal.", 0, java.lang.Integer.MAX_VALUE, interpretation));
         children.add(new Property("note", "Annotation", "Comments about the observation or the results.", 0, java.lang.Integer.MAX_VALUE, note));
@@ -3260,7 +3225,7 @@ Reflex | Repeat | Re-run.
         children.add(new Property("bodyStructure", "Reference(BodyStructure)", "Indicates the body structure on the subject's body where the observation was made (i.e. the target site).", 0, 1, bodyStructure));
         children.add(new Property("method", "CodeableConcept", "Indicates the mechanism used to perform the observation.", 0, 1, method));
         children.add(new Property("specimen", "Reference(Specimen|Group)", "The specimen that was used when this observation was made.", 0, 1, specimen));
-        children.add(new Property("device", "Reference(Device|DeviceMetric)", "The device used to generate the observation data.", 0, 1, device));
+        children.add(new Property("device", "Reference(Device|DeviceMetric)", "A reference to the device that generates the measurements or the device settings for the device.", 0, 1, device));
         children.add(new Property("referenceRange", "", "Guidance on how to interpret the value by comparison to a normal or recommended range.  Multiple reference ranges are interpreted as an \"OR\".   In other words, to represent two distinct target populations, two `referenceRange` elements would be used.", 0, java.lang.Integer.MAX_VALUE, referenceRange));
         children.add(new Property("hasMember", "Reference(Observation|QuestionnaireResponse|MolecularSequence)", "This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.", 0, java.lang.Integer.MAX_VALUE, hasMember));
         children.add(new Property("derivedFrom", "Reference(DocumentReference|ImagingStudy|ImagingSelection|QuestionnaireResponse|Observation|MolecularSequence|GenomicStudy)", "The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.", 0, java.lang.Integer.MAX_VALUE, derivedFrom));
@@ -3292,11 +3257,11 @@ Reflex | Repeat | Re-run.
         case -1295730118: /*effectiveInstant*/  return new Property("effective[x]", "instant", "The time or time-period the observed value is asserted as being true. For biological subjects - e.g. human patients - this is usually called the \"physiologically relevant time\". This is usually either the time of the procedure or of specimen collection, but very often the source of the date/time is not known, only the date/time itself.", 0, 1, effective);
         case -1179159893: /*issued*/  return new Property("issued", "instant", "The date and time this version of the observation was made available to providers, typically after the results have been reviewed and verified.", 0, 1, issued);
         case 481140686: /*performer*/  return new Property("performer", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|Patient|RelatedPerson)", "Who was responsible for asserting the observed value as \"true\".", 0, java.lang.Integer.MAX_VALUE, performer);
-        case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|CodeableConcept|markdown|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)|canonical", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
-        case 111972721: /*value*/  return new Property("value[x]", "Quantity|CodeableConcept|markdown|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)|canonical", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
+        case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
+        case 111972721: /*value*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Ratio|SampledData|time|dateTime|Period|Attachment|Reference(MolecularSequence)", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
         case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
         case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
-        case -497880704: /*valueMarkdown*/  return new Property("value[x]", "markdown", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
+        case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
         case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
         case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
         case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
@@ -3307,7 +3272,6 @@ Reflex | Repeat | Re-run.
         case -1524344174: /*valuePeriod*/  return new Property("value[x]", "Period", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
         case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
         case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference(MolecularSequence)", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
-        case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "The information determined as a result of making the observation, if the information has a simple value.", 0, 1, value);
         case 1034315687: /*dataAbsentReason*/  return new Property("dataAbsentReason", "CodeableConcept", "Provides a reason why the expected value in the element Observation.value[x] is missing.", 0, 1, dataAbsentReason);
         case -297950712: /*interpretation*/  return new Property("interpretation", "CodeableConcept", "A categorical assessment of an observation value.  For example, high, low, normal.", 0, java.lang.Integer.MAX_VALUE, interpretation);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Comments about the observation or the results.", 0, java.lang.Integer.MAX_VALUE, note);
@@ -3315,7 +3279,7 @@ Reflex | Repeat | Re-run.
         case -1001731599: /*bodyStructure*/  return new Property("bodyStructure", "Reference(BodyStructure)", "Indicates the body structure on the subject's body where the observation was made (i.e. the target site).", 0, 1, bodyStructure);
         case -1077554975: /*method*/  return new Property("method", "CodeableConcept", "Indicates the mechanism used to perform the observation.", 0, 1, method);
         case -2132868344: /*specimen*/  return new Property("specimen", "Reference(Specimen|Group)", "The specimen that was used when this observation was made.", 0, 1, specimen);
-        case -1335157162: /*device*/  return new Property("device", "Reference(Device|DeviceMetric)", "The device used to generate the observation data.", 0, 1, device);
+        case -1335157162: /*device*/  return new Property("device", "Reference(Device|DeviceMetric)", "A reference to the device that generates the measurements or the device settings for the device.", 0, 1, device);
         case -1912545102: /*referenceRange*/  return new Property("referenceRange", "", "Guidance on how to interpret the value by comparison to a normal or recommended range.  Multiple reference ranges are interpreted as an \"OR\".   In other words, to represent two distinct target populations, two `referenceRange` elements would be used.", 0, java.lang.Integer.MAX_VALUE, referenceRange);
         case -458019372: /*hasMember*/  return new Property("hasMember", "Reference(Observation|QuestionnaireResponse|MolecularSequence)", "This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.", 0, java.lang.Integer.MAX_VALUE, hasMember);
         case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "Reference(DocumentReference|ImagingStudy|ImagingSelection|QuestionnaireResponse|Observation|MolecularSequence|GenomicStudy)", "The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.", 0, java.lang.Integer.MAX_VALUE, derivedFrom);
@@ -3567,7 +3531,7 @@ Reflex | Repeat | Re-run.
         case -1468651097: /*effective*/ return new String[] {"dateTime", "Period", "Timing", "instant"};
         case -1179159893: /*issued*/ return new String[] {"instant"};
         case 481140686: /*performer*/ return new String[] {"Reference"};
-        case 111972721: /*value*/ return new String[] {"Quantity", "CodeableConcept", "markdown", "boolean", "integer", "Range", "Ratio", "SampledData", "time", "dateTime", "Period", "Attachment", "Reference", "canonical"};
+        case 111972721: /*value*/ return new String[] {"Quantity", "CodeableConcept", "string", "boolean", "integer", "Range", "Ratio", "SampledData", "time", "dateTime", "Period", "Attachment", "Reference"};
         case 1034315687: /*dataAbsentReason*/ return new String[] {"CodeableConcept"};
         case -297950712: /*interpretation*/ return new String[] {"CodeableConcept"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
@@ -3658,8 +3622,8 @@ Reflex | Repeat | Re-run.
           this.value = new CodeableConcept();
           return this.value;
         }
-        else if (name.equals("valueMarkdown")) {
-          this.value = new MarkdownType();
+        else if (name.equals("valueString")) {
+          this.value = new StringType();
           return this.value;
         }
         else if (name.equals("valueBoolean")) {
@@ -3700,10 +3664,6 @@ Reflex | Repeat | Re-run.
         }
         else if (name.equals("valueReference")) {
           this.value = new Reference();
-          return this.value;
-        }
-        else if (name.equals("valueCanonical")) {
-          this.value = new CanonicalType();
           return this.value;
         }
         else if (name.equals("dataAbsentReason")) {
@@ -4773,7 +4733,7 @@ Reflex | Repeat | Re-run.
 * [List](list.html): When the list was prepared
 * [MeasureReport](measurereport.html): The date of the measure report
 * [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication
-* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Observation](observation.html): Clinically relevant time/time-period for observation
 * [Procedure](procedure.html): When the procedure occurred or is occurring
 * [ResearchSubject](researchsubject.html): Start and end of participation
 * [RiskAssessment](riskassessment.html): When was assessment made?
@@ -4783,7 +4743,7 @@ Reflex | Repeat | Re-run.
    * Path: <b>AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AdverseEvent](adverseevent.html): When the event occurred\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [Appointment](appointment.html): Appointment date/time.\r\n* [AuditEvent](auditevent.html): Time when the event was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [DocumentReference](documentreference.html): When this document reference was created\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [ImmunizationEvaluation](immunizationevaluation.html): Date the evaluation was generated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Date recommendation(s) created\r\n* [Invoice](invoice.html): Invoice date / posting date\r\n* [List](list.html): When the list was prepared\r\n* [MeasureReport](measurereport.html): The date of the measure report\r\n* [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [ResearchSubject](researchsubject.html): Start and end of participation\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AdverseEvent](adverseevent.html): When the event occurred\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [Appointment](appointment.html): Appointment date/time.\r\n* [AuditEvent](auditevent.html): Time when the event was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [DocumentReference](documentreference.html): When this document reference was created\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [ImmunizationEvaluation](immunizationevaluation.html): Date the evaluation was generated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Date recommendation(s) created\r\n* [Invoice](invoice.html): Invoice date / posting date\r\n* [List](list.html): When the list was prepared\r\n* [MeasureReport](measurereport.html): The date of the measure report\r\n* [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication\r\n* [Observation](observation.html): Clinically relevant time/time-period for observation\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [ResearchSubject](researchsubject.html): Start and end of participation\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -4812,7 +4772,7 @@ Reflex | Repeat | Re-run.
 * [List](list.html): When the list was prepared
 * [MeasureReport](measurereport.html): The date of the measure report
 * [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication
-* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Observation](observation.html): Clinically relevant time/time-period for observation
 * [Procedure](procedure.html): When the procedure occurred or is occurring
 * [ResearchSubject](researchsubject.html): Start and end of participation
 * [RiskAssessment](riskassessment.html): When was assessment made?

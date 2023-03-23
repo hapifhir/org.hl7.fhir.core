@@ -70,11 +70,7 @@ public class Observation43_50 {
       tgt.setIssuedElement(Instant43_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r4b.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference43_50.convertReference(t));
     if (src.hasValue()) {
-      if (src.hasValueStringType()) {
-        tgt.setValue(String43_50.convertStringToMarkdown(src.getValueStringType()));
-      } else {
-        tgt.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getValue()));
-      }
+      tgt.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getValue()));
     }
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept43_50.convertCodeableConcept(src.getDataAbsentReason()));
@@ -125,11 +121,7 @@ public class Observation43_50 {
       tgt.setIssuedElement(Instant43_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference43_50.convertReference(t));
     if (src.hasValue()) {
-      if (src.hasValueMarkdownType()) {
-        tgt.setValue(String43_50.convertMarkdownToString(src.getValueMarkdownType()));
-      } else {
-        tgt.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getValue()));
-      }
+      tgt.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getValue()));
     }
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept43_50.convertCodeableConcept(src.getDataAbsentReason()));

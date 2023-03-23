@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -608,9 +608,9 @@ public class DeviceDispense extends DomainResource {
     /**
      * The full representation of the instructions.
      */
-    @Child(name = "usageInstruction", type = {StringType.class}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "usageInstruction", type = {MarkdownType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Full representation of the usage instructions", formalDefinition="The full representation of the instructions." )
-    protected StringType usageInstruction;
+    protected MarkdownType usageInstruction;
 
     /**
      * A summary of the events of interest that have occurred, such as when the dispense was verified.
@@ -619,7 +619,7 @@ public class DeviceDispense extends DomainResource {
     @Description(shortDefinition="A list of relevant lifecycle events", formalDefinition="A summary of the events of interest that have occurred, such as when the dispense was verified." )
     protected List<Reference> eventHistory;
 
-    private static final long serialVersionUID = -2046629635L;
+    private static final long serialVersionUID = 1740231007L;
 
   /**
    * Constructor
@@ -1371,12 +1371,12 @@ public class DeviceDispense extends DomainResource {
     /**
      * @return {@link #usageInstruction} (The full representation of the instructions.). This is the underlying object with id, value and extensions. The accessor "getUsageInstruction" gives direct access to the value
      */
-    public StringType getUsageInstructionElement() { 
+    public MarkdownType getUsageInstructionElement() { 
       if (this.usageInstruction == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceDispense.usageInstruction");
         else if (Configuration.doAutoCreate())
-          this.usageInstruction = new StringType(); // bb
+          this.usageInstruction = new MarkdownType(); // bb
       return this.usageInstruction;
     }
 
@@ -1391,7 +1391,7 @@ public class DeviceDispense extends DomainResource {
     /**
      * @param value {@link #usageInstruction} (The full representation of the instructions.). This is the underlying object with id, value and extensions. The accessor "getUsageInstruction" gives direct access to the value
      */
-    public DeviceDispense setUsageInstructionElement(StringType value) { 
+    public DeviceDispense setUsageInstructionElement(MarkdownType value) { 
       this.usageInstruction = value;
       return this;
     }
@@ -1411,7 +1411,7 @@ public class DeviceDispense extends DomainResource {
         this.usageInstruction = null;
       else {
         if (this.usageInstruction == null)
-          this.usageInstruction = new StringType();
+          this.usageInstruction = new MarkdownType();
         this.usageInstruction.setValue(value);
       }
       return this;
@@ -1491,7 +1491,7 @@ public class DeviceDispense extends DomainResource {
         children.add(new Property("whenHandedOver", "dateTime", "The time the dispensed product was made available to the patient or their representative.", 0, 1, whenHandedOver));
         children.add(new Property("destination", "Reference(Location)", "Identification of the facility/location where the device was /should be shipped to, as part of the dispense process.", 0, 1, destination));
         children.add(new Property("note", "Annotation", "Extra information about the dispense that could not be conveyed in the other attributes.", 0, java.lang.Integer.MAX_VALUE, note));
-        children.add(new Property("usageInstruction", "string", "The full representation of the instructions.", 0, 1, usageInstruction));
+        children.add(new Property("usageInstruction", "markdown", "The full representation of the instructions.", 0, 1, usageInstruction));
         children.add(new Property("eventHistory", "Reference(Provenance)", "A summary of the events of interest that have occurred, such as when the dispense was verified.", 0, java.lang.Integer.MAX_VALUE, eventHistory));
       }
 
@@ -1517,7 +1517,7 @@ public class DeviceDispense extends DomainResource {
         case -940241380: /*whenHandedOver*/  return new Property("whenHandedOver", "dateTime", "The time the dispensed product was made available to the patient or their representative.", 0, 1, whenHandedOver);
         case -1429847026: /*destination*/  return new Property("destination", "Reference(Location)", "Identification of the facility/location where the device was /should be shipped to, as part of the dispense process.", 0, 1, destination);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Extra information about the dispense that could not be conveyed in the other attributes.", 0, java.lang.Integer.MAX_VALUE, note);
-        case 2138372141: /*usageInstruction*/  return new Property("usageInstruction", "string", "The full representation of the instructions.", 0, 1, usageInstruction);
+        case 2138372141: /*usageInstruction*/  return new Property("usageInstruction", "markdown", "The full representation of the instructions.", 0, 1, usageInstruction);
         case 1835190426: /*eventHistory*/  return new Property("eventHistory", "Reference(Provenance)", "A summary of the events of interest that have occurred, such as when the dispense was verified.", 0, java.lang.Integer.MAX_VALUE, eventHistory);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1546,7 +1546,7 @@ public class DeviceDispense extends DomainResource {
         case -940241380: /*whenHandedOver*/ return this.whenHandedOver == null ? new Base[0] : new Base[] {this.whenHandedOver}; // DateTimeType
         case -1429847026: /*destination*/ return this.destination == null ? new Base[0] : new Base[] {this.destination}; // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-        case 2138372141: /*usageInstruction*/ return this.usageInstruction == null ? new Base[0] : new Base[] {this.usageInstruction}; // StringType
+        case 2138372141: /*usageInstruction*/ return this.usageInstruction == null ? new Base[0] : new Base[] {this.usageInstruction}; // MarkdownType
         case 1835190426: /*eventHistory*/ return this.eventHistory == null ? new Base[0] : this.eventHistory.toArray(new Base[this.eventHistory.size()]); // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1615,7 +1615,7 @@ public class DeviceDispense extends DomainResource {
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case 2138372141: // usageInstruction
-          this.usageInstruction = TypeConvertor.castToString(value); // StringType
+          this.usageInstruction = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 1835190426: // eventHistory
           this.getEventHistory().add(TypeConvertor.castToReference(value)); // Reference
@@ -1667,7 +1667,7 @@ public class DeviceDispense extends DomainResource {
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("usageInstruction")) {
-          this.usageInstruction = TypeConvertor.castToString(value); // StringType
+          this.usageInstruction = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("eventHistory")) {
           this.getEventHistory().add(TypeConvertor.castToReference(value));
         } else
@@ -1726,7 +1726,7 @@ public class DeviceDispense extends DomainResource {
         case -940241380: /*whenHandedOver*/ return new String[] {"dateTime"};
         case -1429847026: /*destination*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
-        case 2138372141: /*usageInstruction*/ return new String[] {"string"};
+        case 2138372141: /*usageInstruction*/ return new String[] {"markdown"};
         case 1835190426: /*eventHistory*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }

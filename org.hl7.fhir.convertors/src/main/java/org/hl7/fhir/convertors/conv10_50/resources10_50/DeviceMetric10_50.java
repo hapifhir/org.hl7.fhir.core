@@ -244,76 +244,48 @@ public class DeviceMetric10_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor> convertDeviceMetricColor(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.CodeType convertDeviceMetricColor(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColorEnumFactory());
+    org.hl7.fhir.r5.model.CodeType tgt = new org.hl7.fhir.r5.model.CodeType();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case BLACK:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor.BLACK);
-        break;
-      case RED:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor.RED);
-        break;
-      case GREEN:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor.GREEN);
-        break;
-      case YELLOW:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor.YELLOW);
-        break;
-      case BLUE:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor.BLUE);
-        break;
-      case MAGENTA:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor.MAGENTA);
-        break;
-      case CYAN:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor.CYAN);
-        break;
-      case WHITE:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor.WHITE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor.NULL);
-        break;
-    }
+    tgt.setValue(src.asStringValue());
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor> convertDeviceMetricColor(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricColor> src) throws FHIRException {
+  static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor> convertDeviceMetricColor(org.hl7.fhir.r5.model.CodeType src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColorEnumFactory());
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     switch (src.getValue()) {
-      case BLACK:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.BLACK);
-        break;
-      case RED:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.RED);
-        break;
-      case GREEN:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.GREEN);
-        break;
-      case YELLOW:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.YELLOW);
-        break;
-      case BLUE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.BLUE);
-        break;
-      case MAGENTA:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.MAGENTA);
-        break;
-      case CYAN:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.CYAN);
-        break;
-      case WHITE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.WHITE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.NULL);
-        break;
+    case "black":
+      tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.BLACK);
+      break;
+    case "red":
+      tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.RED);
+      break;
+    case "green":
+      tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.GREEN);
+      break;
+    case "yellow":
+      tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.YELLOW);
+      break;
+    case "blue":
+      tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.BLUE);
+      break;
+    case "magenta":
+      tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.MAGENTA);
+      break;
+    case "cyan":
+      tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.CYAN);
+      break;
+    case "white":
+      tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.WHITE);
+      break;
+    default:
+      tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.NULL);
+      break;
     }
     return tgt;
   }

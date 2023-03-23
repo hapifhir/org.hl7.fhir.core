@@ -463,9 +463,9 @@ public class NpmPackage {
 
   private void checkIndexed(String desc) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
-      if (folder.index == null) {
+      if (folder.index == null || folder.index.forceArray("files").size() == 0) {
         indexFolder(desc, folder);
-      }
+      } 
     }
   }
 

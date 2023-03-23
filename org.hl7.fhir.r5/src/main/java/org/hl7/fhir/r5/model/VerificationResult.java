@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +53,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
 @ResourceDef(name="VerificationResult", profile="http://hl7.org/fhir/StructureDefinition/VerificationResult")
 public class VerificationResult extends DomainResource {
 
-    public enum Status {
+    public enum VerificationResultStatus {
         /**
          * ***TODO***
          */
@@ -79,10 +79,14 @@ public class VerificationResult extends DomainResource {
          */
         REVALFAIL, 
         /**
+         * The VerificationResult record was created erroneously and is not appropriated for use.
+         */
+        ENTEREDINERROR, 
+        /**
          * added to help the parsers with the generic types
          */
         NULL;
-        public static Status fromCode(String codeString) throws FHIRException {
+        public static VerificationResultStatus fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("attested".equals(codeString))
@@ -97,10 +101,12 @@ public class VerificationResult extends DomainResource {
           return VALFAIL;
         if ("reval-fail".equals(codeString))
           return REVALFAIL;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown Status code '"+codeString+"'");
+          throw new FHIRException("Unknown VerificationResultStatus code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -110,6 +116,7 @@ public class VerificationResult extends DomainResource {
             case REQREVALID: return "req-revalid";
             case VALFAIL: return "val-fail";
             case REVALFAIL: return "reval-fail";
+            case ENTEREDINERROR: return "entered-in-error";
             case NULL: return null;
             default: return "?";
           }
@@ -122,6 +129,7 @@ public class VerificationResult extends DomainResource {
             case REQREVALID: return "http://hl7.org/fhir/CodeSystem/verificationresult-status";
             case VALFAIL: return "http://hl7.org/fhir/CodeSystem/verificationresult-status";
             case REVALFAIL: return "http://hl7.org/fhir/CodeSystem/verificationresult-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/CodeSystem/verificationresult-status";
             case NULL: return null;
             default: return "?";
           }
@@ -134,6 +142,7 @@ public class VerificationResult extends DomainResource {
             case REQREVALID: return "***TODO***";
             case VALFAIL: return "***TODO***";
             case REVALFAIL: return "***TODO***";
+            case ENTEREDINERROR: return "The VerificationResult record was created erroneously and is not appropriated for use.";
             case NULL: return null;
             default: return "?";
           }
@@ -146,69 +155,76 @@ public class VerificationResult extends DomainResource {
             case REQREVALID: return "Requires revalidation";
             case VALFAIL: return "Validation failed";
             case REVALFAIL: return "Re-Validation failed";
+            case ENTEREDINERROR: return "Entered in Error";
             case NULL: return null;
             default: return "?";
           }
         }
     }
 
-  public static class StatusEnumFactory implements EnumFactory<Status> {
-    public Status fromCode(String codeString) throws IllegalArgumentException {
+  public static class VerificationResultStatusEnumFactory implements EnumFactory<VerificationResultStatus> {
+    public VerificationResultStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("attested".equals(codeString))
-          return Status.ATTESTED;
+          return VerificationResultStatus.ATTESTED;
         if ("validated".equals(codeString))
-          return Status.VALIDATED;
+          return VerificationResultStatus.VALIDATED;
         if ("in-process".equals(codeString))
-          return Status.INPROCESS;
+          return VerificationResultStatus.INPROCESS;
         if ("req-revalid".equals(codeString))
-          return Status.REQREVALID;
+          return VerificationResultStatus.REQREVALID;
         if ("val-fail".equals(codeString))
-          return Status.VALFAIL;
+          return VerificationResultStatus.VALFAIL;
         if ("reval-fail".equals(codeString))
-          return Status.REVALFAIL;
-        throw new IllegalArgumentException("Unknown Status code '"+codeString+"'");
+          return VerificationResultStatus.REVALFAIL;
+        if ("entered-in-error".equals(codeString))
+          return VerificationResultStatus.ENTEREDINERROR;
+        throw new IllegalArgumentException("Unknown VerificationResultStatus code '"+codeString+"'");
         }
-        public Enumeration<Status> fromType(PrimitiveType<?> code) throws FHIRException {
+        public Enumeration<VerificationResultStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<Status>(this, Status.NULL, code);
+            return new Enumeration<VerificationResultStatus>(this, VerificationResultStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return new Enumeration<Status>(this, Status.NULL, code);
+            return new Enumeration<VerificationResultStatus>(this, VerificationResultStatus.NULL, code);
         if ("attested".equals(codeString))
-          return new Enumeration<Status>(this, Status.ATTESTED, code);
+          return new Enumeration<VerificationResultStatus>(this, VerificationResultStatus.ATTESTED, code);
         if ("validated".equals(codeString))
-          return new Enumeration<Status>(this, Status.VALIDATED, code);
+          return new Enumeration<VerificationResultStatus>(this, VerificationResultStatus.VALIDATED, code);
         if ("in-process".equals(codeString))
-          return new Enumeration<Status>(this, Status.INPROCESS, code);
+          return new Enumeration<VerificationResultStatus>(this, VerificationResultStatus.INPROCESS, code);
         if ("req-revalid".equals(codeString))
-          return new Enumeration<Status>(this, Status.REQREVALID, code);
+          return new Enumeration<VerificationResultStatus>(this, VerificationResultStatus.REQREVALID, code);
         if ("val-fail".equals(codeString))
-          return new Enumeration<Status>(this, Status.VALFAIL, code);
+          return new Enumeration<VerificationResultStatus>(this, VerificationResultStatus.VALFAIL, code);
         if ("reval-fail".equals(codeString))
-          return new Enumeration<Status>(this, Status.REVALFAIL, code);
-        throw new FHIRException("Unknown Status code '"+codeString+"'");
+          return new Enumeration<VerificationResultStatus>(this, VerificationResultStatus.REVALFAIL, code);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<VerificationResultStatus>(this, VerificationResultStatus.ENTEREDINERROR, code);
+        throw new FHIRException("Unknown VerificationResultStatus code '"+codeString+"'");
         }
-    public String toCode(Status code) {
-      if (code == Status.ATTESTED)
+    public String toCode(VerificationResultStatus code) {
+      if (code == VerificationResultStatus.ATTESTED)
         return "attested";
-      if (code == Status.VALIDATED)
+      if (code == VerificationResultStatus.VALIDATED)
         return "validated";
-      if (code == Status.INPROCESS)
+      if (code == VerificationResultStatus.INPROCESS)
         return "in-process";
-      if (code == Status.REQREVALID)
+      if (code == VerificationResultStatus.REQREVALID)
         return "req-revalid";
-      if (code == Status.VALFAIL)
+      if (code == VerificationResultStatus.VALFAIL)
         return "val-fail";
-      if (code == Status.REVALFAIL)
+      if (code == VerificationResultStatus.REVALFAIL)
         return "reval-fail";
+      if (code == VerificationResultStatus.ENTEREDINERROR)
+        return "entered-in-error";
       return "?";
       }
-    public String toSystem(Status code) {
+    public String toSystem(VerificationResultStatus code) {
       return code.getSystem();
       }
     }
@@ -822,14 +838,14 @@ public class VerificationResult extends DomainResource {
          * Signed assertion by the proxy entity indicating that they have the right to submit attested information on behalf of the attestation source.
          */
         @Child(name = "proxySignature", type = {Signature.class}, order=7, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Proxy signature", formalDefinition="Signed assertion by the proxy entity indicating that they have the right to submit attested information on behalf of the attestation source." )
+        @Description(shortDefinition="Proxy signature (digital or image)", formalDefinition="Signed assertion by the proxy entity indicating that they have the right to submit attested information on behalf of the attestation source." )
         protected Signature proxySignature;
 
         /**
          * Signed assertion by the attestation source that they have attested to the information.
          */
         @Child(name = "sourceSignature", type = {Signature.class}, order=8, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Attester signature", formalDefinition="Signed assertion by the attestation source that they have attested to the information." )
+        @Description(shortDefinition="Attester signature (digital or image)", formalDefinition="Signed assertion by the attestation source that they have attested to the information." )
         protected Signature sourceSignature;
 
         private static final long serialVersionUID = -1110142980L;
@@ -1349,7 +1365,7 @@ public class VerificationResult extends DomainResource {
          * Signed assertion by the validator that they have validated the information.
          */
         @Child(name = "attestationSignature", type = {Signature.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Validator signature", formalDefinition="Signed assertion by the validator that they have validated the information." )
+        @Description(shortDefinition="Validator signature (digital or image)", formalDefinition="Signed assertion by the validator that they have validated the information." )
         protected Signature attestationSignature;
 
         private static final long serialVersionUID = 335952370L;
@@ -1636,9 +1652,9 @@ public class VerificationResult extends DomainResource {
      * The validation status of the target (attested; validated; in process; requires revalidation; validation failed; revalidation failed).
      */
     @Child(name = "status", type = {CodeType.class}, order=3, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="attested | validated | in-process | req-revalid | val-fail | reval-fail", formalDefinition="The validation status of the target (attested; validated; in process; requires revalidation; validation failed; revalidation failed)." )
+    @Description(shortDefinition="attested | validated | in-process | req-revalid | val-fail | reval-fail | entered-in-error", formalDefinition="The validation status of the target (attested; validated; in process; requires revalidation; validation failed; revalidation failed)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/verificationresult-status")
-    protected Enumeration<Status> status;
+    protected Enumeration<VerificationResultStatus> status;
 
     /**
      * When the validation status was updated.
@@ -1713,7 +1729,7 @@ public class VerificationResult extends DomainResource {
     @Description(shortDefinition="Information about the entity validating information", formalDefinition="Information about the entity validating information." )
     protected List<VerificationResultValidatorComponent> validator;
 
-    private static final long serialVersionUID = 1344259254L;
+    private static final long serialVersionUID = -612905810L;
 
   /**
    * Constructor
@@ -1725,7 +1741,7 @@ public class VerificationResult extends DomainResource {
   /**
    * Constructor
    */
-    public VerificationResult(Status status) {
+    public VerificationResult(VerificationResultStatus status) {
       super();
       this.setStatus(status);
     }
@@ -1871,12 +1887,12 @@ public class VerificationResult extends DomainResource {
     /**
      * @return {@link #status} (The validation status of the target (attested; validated; in process; requires revalidation; validation failed; revalidation failed).). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<Status> getStatusElement() { 
+    public Enumeration<VerificationResultStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create VerificationResult.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<Status>(new StatusEnumFactory()); // bb
+          this.status = new Enumeration<VerificationResultStatus>(new VerificationResultStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -1891,7 +1907,7 @@ public class VerificationResult extends DomainResource {
     /**
      * @param value {@link #status} (The validation status of the target (attested; validated; in process; requires revalidation; validation failed; revalidation failed).). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public VerificationResult setStatusElement(Enumeration<Status> value) { 
+    public VerificationResult setStatusElement(Enumeration<VerificationResultStatus> value) { 
       this.status = value;
       return this;
     }
@@ -1899,16 +1915,16 @@ public class VerificationResult extends DomainResource {
     /**
      * @return The validation status of the target (attested; validated; in process; requires revalidation; validation failed; revalidation failed).
      */
-    public Status getStatus() { 
+    public VerificationResultStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value The validation status of the target (attested; validated; in process; requires revalidation; validation failed; revalidation failed).
      */
-    public VerificationResult setStatus(Status value) { 
+    public VerificationResult setStatus(VerificationResultStatus value) { 
         if (this.status == null)
-          this.status = new Enumeration<Status>(new StatusEnumFactory());
+          this.status = new Enumeration<VerificationResultStatus>(new VerificationResultStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -2361,7 +2377,7 @@ public class VerificationResult extends DomainResource {
         case -880905839: /*target*/ return this.target == null ? new Base[0] : this.target.toArray(new Base[this.target.size()]); // Reference
         case 308958310: /*targetLocation*/ return this.targetLocation == null ? new Base[0] : this.targetLocation.toArray(new Base[this.targetLocation.size()]); // StringType
         case 3377302: /*need*/ return this.need == null ? new Base[0] : new Base[] {this.need}; // CodeableConcept
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<Status>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<VerificationResultStatus>
         case 247524032: /*statusDate*/ return this.statusDate == null ? new Base[0] : new Base[] {this.statusDate}; // DateTimeType
         case -279681197: /*validationType*/ return this.validationType == null ? new Base[0] : new Base[] {this.validationType}; // CodeableConcept
         case 797680566: /*validationProcess*/ return this.validationProcess == null ? new Base[0] : this.validationProcess.toArray(new Base[this.validationProcess.size()]); // CodeableConcept
@@ -2390,8 +2406,8 @@ public class VerificationResult extends DomainResource {
           this.need = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -892481550: // status
-          value = new StatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<Status>
+          value = new VerificationResultStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<VerificationResultStatus>
           return value;
         case 247524032: // statusDate
           this.statusDate = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -2437,8 +2453,8 @@ public class VerificationResult extends DomainResource {
         } else if (name.equals("need")) {
           this.need = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("status")) {
-          value = new StatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<Status>
+          value = new VerificationResultStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<VerificationResultStatus>
         } else if (name.equals("statusDate")) {
           this.statusDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("validationType")) {
@@ -2812,6 +2828,26 @@ public class VerificationResult extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam STATUS_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_STATUS_DATE);
 
  /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>Select validation information with the specified status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>VerificationResult.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="VerificationResult.status", description="Select validation information with the specified status", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>Select validation information with the specified status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>VerificationResult.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
    * Search parameter: <b>target</b>
    * <p>
    * Description: <b>A resource that was validated</b><br>
@@ -2836,26 +2872,6 @@ public class VerificationResult extends DomainResource {
    * the path value of "<b>VerificationResult:target</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_TARGET = new ca.uhn.fhir.model.api.Include("VerificationResult:target").toLocked();
-
- /**
-   * Search parameter: <b>validation-status</b>
-   * <p>
-   * Description: <b>Select validation information with the specified status</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>VerificationResult.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="validation-status", path="VerificationResult.status", description="Select validation information with the specified status", type="token" )
-  public static final String SP_VALIDATION_STATUS = "validation-status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>validation-status</b>
-   * <p>
-   * Description: <b>Select validation information with the specified status</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>VerificationResult.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VALIDATION_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VALIDATION_STATUS);
 
  /**
    * Search parameter: <b>validator-organization</b>

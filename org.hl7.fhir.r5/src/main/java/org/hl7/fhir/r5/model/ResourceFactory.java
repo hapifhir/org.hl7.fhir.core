@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 
   
@@ -457,8 +457,6 @@ public class ResourceFactory extends Factory {
             return new ParameterDefinition();
         if ("Period".equals(name))
             return new Period();
-        if ("Population".equals(name))
-            return new Population();
         if ("ProductShelfLife".equals(name))
             return new ProductShelfLife();
         if ("Quantity".equals(name))
@@ -697,7 +695,6 @@ public class ResourceFactory extends Factory {
         case -540546990: return new Narrative();
         case 671337916: return new ParameterDefinition();
         case -1907858975: return new Period();
-        case -30093459: return new Population();
         case 1209602103: return new ProductShelfLife();
         case -1220360021: return new Quantity();
         case 78727453: return new Range();

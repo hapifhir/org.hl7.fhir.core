@@ -38,11 +38,7 @@ public class Observation10_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference10_50.convertReference(t));
 
     if (src.hasValue()) {
-      if (src.hasValueMarkdownType()) {
-        tgt.setValue(String10_50.convertMarkdownToString(src.getValueMarkdownType()));
-      } else {
-        tgt.setValue(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getValue()));
-      }
+      tgt.setValue(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getValue()));
     }
     
     if (src.hasDataAbsentReason())
@@ -95,11 +91,7 @@ public class Observation10_50 {
       tgt.addPerformer(Reference10_50.convertReference(t));
 
     if (src.hasValue()) {
-      if (src.hasValueStringType()) {
-        tgt.setValue(String10_50.convertStringToMarkdown(src.getValueStringType()));
-      } else {
-        tgt.setValue(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getValue()));
-      }
+      tgt.setValue(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getValue()));
     }
     
     if (src.hasDataAbsentReason())

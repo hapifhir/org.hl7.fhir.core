@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,6 +66,10 @@ public class DiagnosticReport extends DomainResource {
          * Verified early results are available, but not all results are final.
          */
         PRELIMINARY, 
+        /**
+         * Prior to being final, the report has been modified.  This includes any change in the results, diagnosis, narrative text, or other content of a non-finalized (e.g., preliminary) report that has been issued.
+         */
+        MODIFIED, 
         /**
          * The report is complete and verified by an authorized person.
          */
@@ -107,6 +111,8 @@ public class DiagnosticReport extends DomainResource {
           return PARTIAL;
         if ("preliminary".equals(codeString))
           return PRELIMINARY;
+        if ("modified".equals(codeString))
+          return MODIFIED;
         if ("final".equals(codeString))
           return FINAL;
         if ("amended".equals(codeString))
@@ -131,6 +137,7 @@ public class DiagnosticReport extends DomainResource {
             case REGISTERED: return "registered";
             case PARTIAL: return "partial";
             case PRELIMINARY: return "preliminary";
+            case MODIFIED: return "modified";
             case FINAL: return "final";
             case AMENDED: return "amended";
             case CORRECTED: return "corrected";
@@ -147,6 +154,7 @@ public class DiagnosticReport extends DomainResource {
             case REGISTERED: return "http://hl7.org/fhir/diagnostic-report-status";
             case PARTIAL: return "http://hl7.org/fhir/diagnostic-report-status";
             case PRELIMINARY: return "http://hl7.org/fhir/diagnostic-report-status";
+            case MODIFIED: return "http://hl7.org/fhir/diagnostic-report-status";
             case FINAL: return "http://hl7.org/fhir/diagnostic-report-status";
             case AMENDED: return "http://hl7.org/fhir/diagnostic-report-status";
             case CORRECTED: return "http://hl7.org/fhir/diagnostic-report-status";
@@ -163,6 +171,7 @@ public class DiagnosticReport extends DomainResource {
             case REGISTERED: return "The existence of the report is registered, but there is nothing yet available.";
             case PARTIAL: return "This is a partial (e.g. initial, interim or preliminary) report: data in the report may be incomplete or unverified.";
             case PRELIMINARY: return "Verified early results are available, but not all results are final.";
+            case MODIFIED: return "Prior to being final, the report has been modified.  This includes any change in the results, diagnosis, narrative text, or other content of a non-finalized (e.g., preliminary) report that has been issued.";
             case FINAL: return "The report is complete and verified by an authorized person.";
             case AMENDED: return "Subsequent to being final, the report has been modified.  This includes any change in the results, diagnosis, narrative text, or other content of a report that has been issued.";
             case CORRECTED: return "Subsequent to being final, the report has been modified to correct an error in the report or referenced results.";
@@ -179,6 +188,7 @@ public class DiagnosticReport extends DomainResource {
             case REGISTERED: return "Registered";
             case PARTIAL: return "Partial";
             case PRELIMINARY: return "Preliminary";
+            case MODIFIED: return "Modified";
             case FINAL: return "Final";
             case AMENDED: return "Amended";
             case CORRECTED: return "Corrected";
@@ -203,6 +213,8 @@ public class DiagnosticReport extends DomainResource {
           return DiagnosticReportStatus.PARTIAL;
         if ("preliminary".equals(codeString))
           return DiagnosticReportStatus.PRELIMINARY;
+        if ("modified".equals(codeString))
+          return DiagnosticReportStatus.MODIFIED;
         if ("final".equals(codeString))
           return DiagnosticReportStatus.FINAL;
         if ("amended".equals(codeString))
@@ -233,6 +245,8 @@ public class DiagnosticReport extends DomainResource {
           return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.PARTIAL, code);
         if ("preliminary".equals(codeString))
           return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.PRELIMINARY, code);
+        if ("modified".equals(codeString))
+          return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.MODIFIED, code);
         if ("final".equals(codeString))
           return new Enumeration<DiagnosticReportStatus>(this, DiagnosticReportStatus.FINAL, code);
         if ("amended".equals(codeString))
@@ -256,6 +270,8 @@ public class DiagnosticReport extends DomainResource {
         return "partial";
       if (code == DiagnosticReportStatus.PRELIMINARY)
         return "preliminary";
+      if (code == DiagnosticReportStatus.MODIFIED)
+        return "modified";
       if (code == DiagnosticReportStatus.FINAL)
         return "final";
       if (code == DiagnosticReportStatus.AMENDED)
@@ -739,7 +755,7 @@ public class DiagnosticReport extends DomainResource {
      * The status of the diagnostic report.
      */
     @Child(name = "status", type = {CodeType.class}, order=2, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="registered | partial | preliminary | final +", formalDefinition="The status of the diagnostic report." )
+    @Description(shortDefinition="registered | partial | preliminary | modified | final | amended | corrected | appended | cancelled | entered-in-error | unknown", formalDefinition="The status of the diagnostic report." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/diagnostic-report-status")
     protected Enumeration<DiagnosticReportStatus> status;
 
@@ -2730,7 +2746,7 @@ public class DiagnosticReport extends DomainResource {
 * [List](list.html): When the list was prepared
 * [MeasureReport](measurereport.html): The date of the measure report
 * [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication
-* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Observation](observation.html): Clinically relevant time/time-period for observation
 * [Procedure](procedure.html): When the procedure occurred or is occurring
 * [ResearchSubject](researchsubject.html): Start and end of participation
 * [RiskAssessment](riskassessment.html): When was assessment made?
@@ -2740,7 +2756,7 @@ public class DiagnosticReport extends DomainResource {
    * Path: <b>AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AdverseEvent](adverseevent.html): When the event occurred\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [Appointment](appointment.html): Appointment date/time.\r\n* [AuditEvent](auditevent.html): Time when the event was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [DocumentReference](documentreference.html): When this document reference was created\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [ImmunizationEvaluation](immunizationevaluation.html): Date the evaluation was generated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Date recommendation(s) created\r\n* [Invoice](invoice.html): Invoice date / posting date\r\n* [List](list.html): When the list was prepared\r\n* [MeasureReport](measurereport.html): The date of the measure report\r\n* [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [ResearchSubject](researchsubject.html): Start and end of participation\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AdverseEvent](adverseevent.html): When the event occurred\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [Appointment](appointment.html): Appointment date/time.\r\n* [AuditEvent](auditevent.html): Time when the event was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [DocumentReference](documentreference.html): When this document reference was created\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [ImmunizationEvaluation](immunizationevaluation.html): Date the evaluation was generated\r\n* [ImmunizationRecommendation](immunizationrecommendation.html): Date recommendation(s) created\r\n* [Invoice](invoice.html): Invoice date / posting date\r\n* [List](list.html): When the list was prepared\r\n* [MeasureReport](measurereport.html): The date of the measure report\r\n* [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication\r\n* [Observation](observation.html): Clinically relevant time/time-period for observation\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [ResearchSubject](researchsubject.html): Start and end of participation\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -2769,7 +2785,7 @@ public class DiagnosticReport extends DomainResource {
 * [List](list.html): When the list was prepared
 * [MeasureReport](measurereport.html): The date of the measure report
 * [NutritionIntake](nutritionintake.html): Date when patient was taking (or not taking) the medication
-* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Observation](observation.html): Clinically relevant time/time-period for observation
 * [Procedure](procedure.html): When the procedure occurred or is occurring
 * [ResearchSubject](researchsubject.html): Start and end of participation
 * [RiskAssessment](riskassessment.html): When was assessment made?
