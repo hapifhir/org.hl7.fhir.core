@@ -9,19 +9,18 @@
     <property name="charset" value="UTF-8"/>
     <property name="fileExtensions" value="java, properties, xml, js, json"/>
     <module name="TreeWalker">
-        <!--
-        <module name="TodoComment">-->
+        <module name="TodoComment">
             <!-- The (?i) below means Case Insensitive -->
-        <!--<property name="format" value="(?i)FIXME"/>
--->
-  <module name="RegexpSinglelineJava">
-      <property name="format" value="org\.jetbrains\.annotations\.NotNull"/>
-  </module>
-  <module name="RegexpSinglelineJava">
-      <property name="format" value="org\.jetbrains\.annotations\.Nullable"/>
-  </module>
-  <module name="RegexpSinglelineJava">
-      <property name="format" value="org\.jetbrains\.annotations\.\*"/>
-  </module>
-</module>
+            <property name="format" value="(?i)DO_NOT_RELEASE"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="org\.jetbrains\.annotations\.NotNull"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="org\.jetbrains\.annotations\.Nullable"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="org\.jetbrains\.annotations\.\*"/>
+        </module>
+    </module>
 </module>
