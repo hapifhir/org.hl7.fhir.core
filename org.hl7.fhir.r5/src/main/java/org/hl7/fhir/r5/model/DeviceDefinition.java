@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3606,18 +3606,18 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     @Block()
     public static class DeviceDefinitionPropertyComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Code that specifies the property.
+         * Code that specifies the property such as a resolution or color being represented.
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Code that specifies the property", formalDefinition="Code that specifies the property." )
+        @Description(shortDefinition="Code that specifies the property being represented", formalDefinition="Code that specifies the property such as a resolution or color being represented." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-property-type")
         protected CodeableConcept type;
 
         /**
-         * Property value - the data type depends on the property type.
+         * The value of the property specified by the associated property.type code.
          */
         @Child(name = "value", type = {Quantity.class, CodeableConcept.class, StringType.class, BooleanType.class, IntegerType.class, Range.class, Attachment.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Property value - as a code or quantity", formalDefinition="Property value - the data type depends on the property type." )
+        @Description(shortDefinition="Value of the property", formalDefinition="The value of the property specified by the associated property.type code." )
         protected DataType value;
 
         private static final long serialVersionUID = -1659186716L;
@@ -3639,7 +3639,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
       }
 
         /**
-         * @return {@link #type} (Code that specifies the property.)
+         * @return {@link #type} (Code that specifies the property such as a resolution or color being represented.)
          */
         public CodeableConcept getType() { 
           if (this.type == null)
@@ -3655,7 +3655,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         /**
-         * @param value {@link #type} (Code that specifies the property.)
+         * @param value {@link #type} (Code that specifies the property such as a resolution or color being represented.)
          */
         public DeviceDefinitionPropertyComponent setType(CodeableConcept value) { 
           this.type = value;
@@ -3663,14 +3663,14 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         /**
-         * @return {@link #value} (Property value - the data type depends on the property type.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public DataType getValue() { 
           return this.value;
         }
 
         /**
-         * @return {@link #value} (Property value - the data type depends on the property type.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public Quantity getValueQuantity() throws FHIRException { 
           if (this.value == null)
@@ -3685,7 +3685,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         /**
-         * @return {@link #value} (Property value - the data type depends on the property type.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public CodeableConcept getValueCodeableConcept() throws FHIRException { 
           if (this.value == null)
@@ -3700,7 +3700,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         /**
-         * @return {@link #value} (Property value - the data type depends on the property type.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public StringType getValueStringType() throws FHIRException { 
           if (this.value == null)
@@ -3715,7 +3715,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         /**
-         * @return {@link #value} (Property value - the data type depends on the property type.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public BooleanType getValueBooleanType() throws FHIRException { 
           if (this.value == null)
@@ -3730,7 +3730,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         /**
-         * @return {@link #value} (Property value - the data type depends on the property type.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public IntegerType getValueIntegerType() throws FHIRException { 
           if (this.value == null)
@@ -3745,7 +3745,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         /**
-         * @return {@link #value} (Property value - the data type depends on the property type.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public Range getValueRange() throws FHIRException { 
           if (this.value == null)
@@ -3760,7 +3760,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         /**
-         * @return {@link #value} (Property value - the data type depends on the property type.)
+         * @return {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public Attachment getValueAttachment() throws FHIRException { 
           if (this.value == null)
@@ -3779,7 +3779,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         /**
-         * @param value {@link #value} (Property value - the data type depends on the property type.)
+         * @param value {@link #value} (The value of the property specified by the associated property.type code.)
          */
         public DeviceDefinitionPropertyComponent setValue(DataType value) { 
           if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Attachment))
@@ -3790,23 +3790,23 @@ RegisteredName | UserFriendlyName | PatientReportedName.
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "Code that specifies the property.", 0, 1, type));
-          children.add(new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "Property value - the data type depends on the property type.", 0, 1, value));
+          children.add(new Property("type", "CodeableConcept", "Code that specifies the property such as a resolution or color being represented.", 0, 1, type));
+          children.add(new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "The value of the property specified by the associated property.type code.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Code that specifies the property.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "Property value - the data type depends on the property type.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "Property value - the data type depends on the property type.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Property value - the data type depends on the property type.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Property value - the data type depends on the property type.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Property value - the data type depends on the property type.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Property value - the data type depends on the property type.", 0, 1, value);
-          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "Property value - the data type depends on the property type.", 0, 1, value);
-          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "Property value - the data type depends on the property type.", 0, 1, value);
-          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Property value - the data type depends on the property type.", 0, 1, value);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Code that specifies the property such as a resolution or color being represented.", 0, 1, type);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The value of the property specified by the associated property.type code.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "The value of the property specified by the associated property.type code.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -5858,10 +5858,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     protected List<CodeableConcept> languageCode;
 
     /**
-     * The potential, valid configuration settings of a device, e.g., regulation status, time properties.
+     * Static or essentially fixed characteristics or features of this kind of device that are otherwise not captured in more specific attributes, e.g., time or timing attributes, resolution, accuracy, and physical attributes.
      */
     @Child(name = "property", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="The potential, valid configuration settings of a device, e.g., regulation status, time properties", formalDefinition="The potential, valid configuration settings of a device, e.g., regulation status, time properties." )
+    @Description(shortDefinition="Inherent, essentially fixed, characteristics of this kind of device, e.g., time properties, size, etc", formalDefinition="Static or essentially fixed characteristics or features of this kind of device that are otherwise not captured in more specific attributes, e.g., time or timing attributes, resolution, accuracy, and physical attributes." )
     protected List<DeviceDefinitionPropertyComponent> property;
 
     /**
@@ -6745,7 +6745,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     }
 
     /**
-     * @return {@link #property} (The potential, valid configuration settings of a device, e.g., regulation status, time properties.)
+     * @return {@link #property} (Static or essentially fixed characteristics or features of this kind of device that are otherwise not captured in more specific attributes, e.g., time or timing attributes, resolution, accuracy, and physical attributes.)
      */
     public List<DeviceDefinitionPropertyComponent> getProperty() { 
       if (this.property == null)
@@ -7213,7 +7213,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         children.add(new Property("safety", "CodeableConcept", "Safety characteristics of the device.", 0, java.lang.Integer.MAX_VALUE, safety));
         children.add(new Property("shelfLifeStorage", "ProductShelfLife", "Shelf Life and storage information.", 0, java.lang.Integer.MAX_VALUE, shelfLifeStorage));
         children.add(new Property("languageCode", "CodeableConcept", "Language code for the human-readable text strings produced by the device (all supported).", 0, java.lang.Integer.MAX_VALUE, languageCode));
-        children.add(new Property("property", "", "The potential, valid configuration settings of a device, e.g., regulation status, time properties.", 0, java.lang.Integer.MAX_VALUE, property));
+        children.add(new Property("property", "", "Static or essentially fixed characteristics or features of this kind of device that are otherwise not captured in more specific attributes, e.g., time or timing attributes, resolution, accuracy, and physical attributes.", 0, java.lang.Integer.MAX_VALUE, property));
         children.add(new Property("owner", "Reference(Organization)", "An organization that is responsible for the provision and ongoing maintenance of the device.", 0, 1, owner));
         children.add(new Property("contact", "ContactPoint", "Contact details for an organization or a particular human that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("link", "", "An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device.", 0, java.lang.Integer.MAX_VALUE, link));
@@ -7244,7 +7244,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -909893934: /*safety*/  return new Property("safety", "CodeableConcept", "Safety characteristics of the device.", 0, java.lang.Integer.MAX_VALUE, safety);
         case 172049237: /*shelfLifeStorage*/  return new Property("shelfLifeStorage", "ProductShelfLife", "Shelf Life and storage information.", 0, java.lang.Integer.MAX_VALUE, shelfLifeStorage);
         case -2092349083: /*languageCode*/  return new Property("languageCode", "CodeableConcept", "Language code for the human-readable text strings produced by the device (all supported).", 0, java.lang.Integer.MAX_VALUE, languageCode);
-        case -993141291: /*property*/  return new Property("property", "", "The potential, valid configuration settings of a device, e.g., regulation status, time properties.", 0, java.lang.Integer.MAX_VALUE, property);
+        case -993141291: /*property*/  return new Property("property", "", "Static or essentially fixed characteristics or features of this kind of device that are otherwise not captured in more specific attributes, e.g., time or timing attributes, resolution, accuracy, and physical attributes.", 0, java.lang.Integer.MAX_VALUE, property);
         case 106164915: /*owner*/  return new Property("owner", "Reference(Organization)", "An organization that is responsible for the provision and ongoing maintenance of the device.", 0, 1, owner);
         case 951526432: /*contact*/  return new Property("contact", "ContactPoint", "Contact details for an organization or a particular human that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, contact);
         case 3321850: /*link*/  return new Property("link", "", "An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device.", 0, java.lang.Integer.MAX_VALUE, link);

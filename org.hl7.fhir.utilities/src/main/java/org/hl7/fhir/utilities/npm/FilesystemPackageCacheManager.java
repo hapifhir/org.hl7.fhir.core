@@ -379,8 +379,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());
       }
     }
-    if (version == null)
+    if (version == null) {
       version = npm.version();
+    }
 
     String v = version;
     return new CacheLock(id + "#" + version).doWithLock(() -> {

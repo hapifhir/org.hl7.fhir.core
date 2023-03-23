@@ -3,7 +3,9 @@ package org.hl7.fhir.convertors.conv43_50.resources43_50;
 import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Coding43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Decimal43_50;
@@ -62,8 +64,11 @@ public class ObservationDefinition43_50 {
       tgt.setMethod(CodeableConcept43_50.convertCodeableConcept(src.getMethod()));
     if (src.hasPreferredReportName())
       tgt.setPreferredReportNameElement(String43_50.convertString(src.getPreferredReportNameElement()));
-    if (src.hasQuantitativeDetails())
-      tgt.setQuantitativeDetails(convertObservationDefinitionQuantitativeDetailsComponent(src.getQuantitativeDetails()));
+    if (src.hasQuantitativeDetails()) {
+      for (org.hl7.fhir.r4b.model.Coding c : src.getQuantitativeDetails().getUnit().getCoding()) {
+        tgt.addPermittedUnit(Coding43_50.convertCoding(c));
+      }
+    }
 //        for (org.hl7.fhir.r4b.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
 //        if (src.hasValidCodedValueSet())
 //            tgt.setValidCodedValueSet(convertReference(src.getValidCodedValueSet()));
@@ -96,8 +101,9 @@ public class ObservationDefinition43_50 {
       tgt.setMethod(CodeableConcept43_50.convertCodeableConcept(src.getMethod()));
     if (src.hasPreferredReportName())
       tgt.setPreferredReportNameElement(String43_50.convertString(src.getPreferredReportNameElement()));
-    if (src.hasQuantitativeDetails())
-      tgt.setQuantitativeDetails(convertObservationDefinitionQuantitativeDetailsComponent(src.getQuantitativeDetails()));
+    for (org.hl7.fhir.r5.model.Coding c : src.getPermittedUnit()) {
+      tgt.getQuantitativeDetails().getUnit().addCoding(Coding43_50.convertCoding(c));
+    }
 //        for (org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
 //        if (src.hasValidCodedValueSet())
 //            tgt.setValidCodedValueSet(convertReference(src.getValidCodedValueSet()));
@@ -202,37 +208,6 @@ public class ObservationDefinition43_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent convertObservationDefinitionQuantitativeDetailsComponent(org.hl7.fhir.r4b.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent tgt = new org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasCustomaryUnit())
-      tgt.setCustomaryUnit(CodeableConcept43_50.convertCodeableConcept(src.getCustomaryUnit()));
-    if (src.hasUnit())
-      tgt.setUnit(CodeableConcept43_50.convertCodeableConcept(src.getUnit()));
-    if (src.hasConversionFactor())
-      tgt.setConversionFactorElement(Decimal43_50.convertDecimal(src.getConversionFactorElement()));
-    if (src.hasDecimalPrecision())
-      tgt.setDecimalPrecisionElement(Integer43_50.convertInteger(src.getDecimalPrecisionElement()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4b.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent convertObservationDefinitionQuantitativeDetailsComponent(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4b.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent tgt = new org.hl7.fhir.r4b.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasCustomaryUnit())
-      tgt.setCustomaryUnit(CodeableConcept43_50.convertCodeableConcept(src.getCustomaryUnit()));
-    if (src.hasUnit())
-      tgt.setUnit(CodeableConcept43_50.convertCodeableConcept(src.getUnit()));
-    if (src.hasConversionFactor())
-      tgt.setConversionFactorElement(Decimal43_50.convertDecimal(src.getConversionFactorElement()));
-    if (src.hasDecimalPrecision())
-      tgt.setDecimalPrecisionElement(Integer43_50.convertInteger(src.getDecimalPrecisionElement()));
-    return tgt;
-  }
 
 //    public static org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent convertObservationDefinitionQualifiedIntervalComponent(org.hl7.fhir.r4b.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent src) throws FHIRException {
 //        if (src == null)

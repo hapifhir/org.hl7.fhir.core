@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,25 +48,25 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * A report of inventory or stock items.
+ * A plan for executing testing on an artifact or specifications
  */
 @ResourceDef(name="TestPlan", profile="http://hl7.org/fhir/StructureDefinition/TestPlan")
-public class TestPlan extends DomainResource {
+public class TestPlan extends CanonicalResource {
 
     @Block()
-    public static class TestPlanDependenciesComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class TestPlanDependencyComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Description of the criteria.
+         * A textual description of the criterium - what is needed for the dependency to be considered met.
          */
-        @Child(name = "description", type = {MarkdownType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Description of the criteria", formalDefinition="Description of the criteria." )
+        @Child(name = "description", type = {MarkdownType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Description of the dependency criterium", formalDefinition="A textual description of the criterium - what is needed for the dependency to be considered met." )
         protected MarkdownType description;
 
         /**
-         * Link to predecessor test plans.
+         * Predecessor test plans - those that are expected to be successfully performed as a dependency for the execution of this test plan.
          */
-        @Child(name = "predecessor", type = {Reference.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Link to predecessor test plans", formalDefinition="Link to predecessor test plans." )
+        @Child(name = "predecessor", type = {Reference.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Link to predecessor test plans", formalDefinition="Predecessor test plans - those that are expected to be successfully performed as a dependency for the execution of this test plan." )
         protected Reference predecessor;
 
         private static final long serialVersionUID = 1630757943L;
@@ -74,17 +74,17 @@ public class TestPlan extends DomainResource {
     /**
      * Constructor
      */
-      public TestPlanDependenciesComponent() {
+      public TestPlanDependencyComponent() {
         super();
       }
 
         /**
-         * @return {@link #description} (Description of the criteria.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @return {@link #description} (A textual description of the criterium - what is needed for the dependency to be considered met.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
          */
         public MarkdownType getDescriptionElement() { 
           if (this.description == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TestPlanDependenciesComponent.description");
+              throw new Error("Attempt to auto-create TestPlanDependencyComponent.description");
             else if (Configuration.doAutoCreate())
               this.description = new MarkdownType(); // bb
           return this.description;
@@ -99,24 +99,24 @@ public class TestPlan extends DomainResource {
         }
 
         /**
-         * @param value {@link #description} (Description of the criteria.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @param value {@link #description} (A textual description of the criterium - what is needed for the dependency to be considered met.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
          */
-        public TestPlanDependenciesComponent setDescriptionElement(MarkdownType value) { 
+        public TestPlanDependencyComponent setDescriptionElement(MarkdownType value) { 
           this.description = value;
           return this;
         }
 
         /**
-         * @return Description of the criteria.
+         * @return A textual description of the criterium - what is needed for the dependency to be considered met.
          */
         public String getDescription() { 
           return this.description == null ? null : this.description.getValue();
         }
 
         /**
-         * @param value Description of the criteria.
+         * @param value A textual description of the criterium - what is needed for the dependency to be considered met.
          */
-        public TestPlanDependenciesComponent setDescription(String value) { 
+        public TestPlanDependencyComponent setDescription(String value) { 
           if (Utilities.noString(value))
             this.description = null;
           else {
@@ -128,12 +128,12 @@ public class TestPlan extends DomainResource {
         }
 
         /**
-         * @return {@link #predecessor} (Link to predecessor test plans.)
+         * @return {@link #predecessor} (Predecessor test plans - those that are expected to be successfully performed as a dependency for the execution of this test plan.)
          */
         public Reference getPredecessor() { 
           if (this.predecessor == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TestPlanDependenciesComponent.predecessor");
+              throw new Error("Attempt to auto-create TestPlanDependencyComponent.predecessor");
             else if (Configuration.doAutoCreate())
               this.predecessor = new Reference(); // cc
           return this.predecessor;
@@ -144,24 +144,24 @@ public class TestPlan extends DomainResource {
         }
 
         /**
-         * @param value {@link #predecessor} (Link to predecessor test plans.)
+         * @param value {@link #predecessor} (Predecessor test plans - those that are expected to be successfully performed as a dependency for the execution of this test plan.)
          */
-        public TestPlanDependenciesComponent setPredecessor(Reference value) { 
+        public TestPlanDependencyComponent setPredecessor(Reference value) { 
           this.predecessor = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("description", "markdown", "Description of the criteria.", 0, 1, description));
-          children.add(new Property("predecessor", "Reference", "Link to predecessor test plans.", 0, 1, predecessor));
+          children.add(new Property("description", "markdown", "A textual description of the criterium - what is needed for the dependency to be considered met.", 0, 1, description));
+          children.add(new Property("predecessor", "Reference", "Predecessor test plans - those that are expected to be successfully performed as a dependency for the execution of this test plan.", 0, 1, predecessor));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1724546052: /*description*/  return new Property("description", "markdown", "Description of the criteria.", 0, 1, description);
-          case -1925032183: /*predecessor*/  return new Property("predecessor", "Reference", "Link to predecessor test plans.", 0, 1, predecessor);
+          case -1724546052: /*description*/  return new Property("description", "markdown", "A textual description of the criterium - what is needed for the dependency to be considered met.", 0, 1, description);
+          case -1925032183: /*predecessor*/  return new Property("predecessor", "Reference", "Predecessor test plans - those that are expected to be successfully performed as a dependency for the execution of this test plan.", 0, 1, predecessor);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -225,7 +225,7 @@ public class TestPlan extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.dependencies.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.dependency.description");
         }
         else if (name.equals("predecessor")) {
           this.predecessor = new Reference();
@@ -235,13 +235,13 @@ public class TestPlan extends DomainResource {
           return super.addChild(name);
       }
 
-      public TestPlanDependenciesComponent copy() {
-        TestPlanDependenciesComponent dst = new TestPlanDependenciesComponent();
+      public TestPlanDependencyComponent copy() {
+        TestPlanDependencyComponent dst = new TestPlanDependencyComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(TestPlanDependenciesComponent dst) {
+      public void copyValues(TestPlanDependencyComponent dst) {
         super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.predecessor = predecessor == null ? null : predecessor.copy();
@@ -251,9 +251,9 @@ public class TestPlan extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof TestPlanDependenciesComponent))
+        if (!(other_ instanceof TestPlanDependencyComponent))
           return false;
-        TestPlanDependenciesComponent o = (TestPlanDependenciesComponent) other_;
+        TestPlanDependencyComponent o = (TestPlanDependencyComponent) other_;
         return compareDeep(description, o.description, true) && compareDeep(predecessor, o.predecessor, true)
           ;
       }
@@ -262,9 +262,9 @@ public class TestPlan extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof TestPlanDependenciesComponent))
+        if (!(other_ instanceof TestPlanDependencyComponent))
           return false;
-        TestPlanDependenciesComponent o = (TestPlanDependenciesComponent) other_;
+        TestPlanDependencyComponent o = (TestPlanDependencyComponent) other_;
         return compareValues(description, o.description, true);
       }
 
@@ -273,7 +273,7 @@ public class TestPlan extends DomainResource {
       }
 
   public String fhirType() {
-    return "TestPlan.dependencies";
+    return "TestPlan.dependency";
 
   }
 
@@ -282,48 +282,48 @@ public class TestPlan extends DomainResource {
     @Block()
     public static class TestPlanTestCaseComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Sequence of testing.
+         * Sequence of test case - an ordinal number that indicates the order for the present test case in the test plan.
          */
-        @Child(name = "sequence", type = {IntegerType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Sequence of testing", formalDefinition="Sequence of testing." )
+        @Child(name = "sequence", type = {IntegerType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Sequence of test case in the test plan", formalDefinition="Sequence of test case - an ordinal number that indicates the order for the present test case in the test plan." )
         protected IntegerType sequence;
 
         /**
-         * Specific test scope for one test case.
+         * The scope or artifact covered by the case, when the individual test case is associated with a testable artifact.
          */
-        @Child(name = "scope", type = {Reference.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Specific test scope for one test case", formalDefinition="Specific test scope for one test case." )
+        @Child(name = "scope", type = {Reference.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="The scope or artifact covered by the case", formalDefinition="The scope or artifact covered by the case, when the individual test case is associated with a testable artifact." )
         protected List<Reference> scope;
 
         /**
          * The required criteria to execute the test case - e.g. preconditions, previous tests.
          */
-        @Child(name = "dependencies", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The required criteria to execute the test case - e.g. preconditions, previous tests", formalDefinition="The required criteria to execute the test case - e.g. preconditions, previous tests." )
-        protected List<TestPlanTestCaseDependenciesComponent> dependencies;
+        @Child(name = "dependency", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Required criteria to execute the test case", formalDefinition="The required criteria to execute the test case - e.g. preconditions, previous tests." )
+        protected List<TestCaseDependencyComponent> dependency;
 
         /**
          * The actual test to be executed.
          */
-        @Child(name = "testRun", type = {Reference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "testRun", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="The actual test to be executed", formalDefinition="The actual test to be executed." )
-        protected List<Reference> testRun;
+        protected List<TestPlanTestCaseTestRunComponent> testRun;
 
         /**
          * The test data used in the test case.
          */
-        @Child(name = "testData", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "testData", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="The test data used in the test case", formalDefinition="The test data used in the test case." )
         protected List<TestPlanTestCaseTestDataComponent> testData;
 
         /**
-         * The test assertions.
+         * The test assertions - the expectations of test results from the execution of the test case.
          */
-        @Child(name = "assertions", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The test assertions", formalDefinition="The test assertions." )
-        protected List<TestPlanTestCaseAssertionsComponent> assertions;
+        @Child(name = "assertion", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Test assertions or expectations", formalDefinition="The test assertions - the expectations of test results from the execution of the test case." )
+        protected List<TestPlanTestCaseAssertionComponent> assertion;
 
-        private static final long serialVersionUID = -1444786592L;
+        private static final long serialVersionUID = 1605296611L;
 
     /**
      * Constructor
@@ -333,7 +333,7 @@ public class TestPlan extends DomainResource {
       }
 
         /**
-         * @return {@link #sequence} (Sequence of testing.). This is the underlying object with id, value and extensions. The accessor "getSequence" gives direct access to the value
+         * @return {@link #sequence} (Sequence of test case - an ordinal number that indicates the order for the present test case in the test plan.). This is the underlying object with id, value and extensions. The accessor "getSequence" gives direct access to the value
          */
         public IntegerType getSequenceElement() { 
           if (this.sequence == null)
@@ -353,7 +353,7 @@ public class TestPlan extends DomainResource {
         }
 
         /**
-         * @param value {@link #sequence} (Sequence of testing.). This is the underlying object with id, value and extensions. The accessor "getSequence" gives direct access to the value
+         * @param value {@link #sequence} (Sequence of test case - an ordinal number that indicates the order for the present test case in the test plan.). This is the underlying object with id, value and extensions. The accessor "getSequence" gives direct access to the value
          */
         public TestPlanTestCaseComponent setSequenceElement(IntegerType value) { 
           this.sequence = value;
@@ -361,14 +361,14 @@ public class TestPlan extends DomainResource {
         }
 
         /**
-         * @return Sequence of testing.
+         * @return Sequence of test case - an ordinal number that indicates the order for the present test case in the test plan.
          */
         public int getSequence() { 
           return this.sequence == null || this.sequence.isEmpty() ? 0 : this.sequence.getValue();
         }
 
         /**
-         * @param value Sequence of testing.
+         * @param value Sequence of test case - an ordinal number that indicates the order for the present test case in the test plan.
          */
         public TestPlanTestCaseComponent setSequence(int value) { 
             if (this.sequence == null)
@@ -378,7 +378,7 @@ public class TestPlan extends DomainResource {
         }
 
         /**
-         * @return {@link #scope} (Specific test scope for one test case.)
+         * @return {@link #scope} (The scope or artifact covered by the case, when the individual test case is associated with a testable artifact.)
          */
         public List<Reference> getScope() { 
           if (this.scope == null)
@@ -431,71 +431,71 @@ public class TestPlan extends DomainResource {
         }
 
         /**
-         * @return {@link #dependencies} (The required criteria to execute the test case - e.g. preconditions, previous tests.)
+         * @return {@link #dependency} (The required criteria to execute the test case - e.g. preconditions, previous tests.)
          */
-        public List<TestPlanTestCaseDependenciesComponent> getDependencies() { 
-          if (this.dependencies == null)
-            this.dependencies = new ArrayList<TestPlanTestCaseDependenciesComponent>();
-          return this.dependencies;
+        public List<TestCaseDependencyComponent> getDependency() { 
+          if (this.dependency == null)
+            this.dependency = new ArrayList<TestCaseDependencyComponent>();
+          return this.dependency;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TestPlanTestCaseComponent setDependencies(List<TestPlanTestCaseDependenciesComponent> theDependencies) { 
-          this.dependencies = theDependencies;
+        public TestPlanTestCaseComponent setDependency(List<TestCaseDependencyComponent> theDependency) { 
+          this.dependency = theDependency;
           return this;
         }
 
-        public boolean hasDependencies() { 
-          if (this.dependencies == null)
+        public boolean hasDependency() { 
+          if (this.dependency == null)
             return false;
-          for (TestPlanTestCaseDependenciesComponent item : this.dependencies)
+          for (TestCaseDependencyComponent item : this.dependency)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public TestPlanTestCaseDependenciesComponent addDependencies() { //3
-          TestPlanTestCaseDependenciesComponent t = new TestPlanTestCaseDependenciesComponent();
-          if (this.dependencies == null)
-            this.dependencies = new ArrayList<TestPlanTestCaseDependenciesComponent>();
-          this.dependencies.add(t);
+        public TestCaseDependencyComponent addDependency() { //3
+          TestCaseDependencyComponent t = new TestCaseDependencyComponent();
+          if (this.dependency == null)
+            this.dependency = new ArrayList<TestCaseDependencyComponent>();
+          this.dependency.add(t);
           return t;
         }
 
-        public TestPlanTestCaseComponent addDependencies(TestPlanTestCaseDependenciesComponent t) { //3
+        public TestPlanTestCaseComponent addDependency(TestCaseDependencyComponent t) { //3
           if (t == null)
             return this;
-          if (this.dependencies == null)
-            this.dependencies = new ArrayList<TestPlanTestCaseDependenciesComponent>();
-          this.dependencies.add(t);
+          if (this.dependency == null)
+            this.dependency = new ArrayList<TestCaseDependencyComponent>();
+          this.dependency.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #dependencies}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #dependency}, creating it if it does not already exist {3}
          */
-        public TestPlanTestCaseDependenciesComponent getDependenciesFirstRep() { 
-          if (getDependencies().isEmpty()) {
-            addDependencies();
+        public TestCaseDependencyComponent getDependencyFirstRep() { 
+          if (getDependency().isEmpty()) {
+            addDependency();
           }
-          return getDependencies().get(0);
+          return getDependency().get(0);
         }
 
         /**
          * @return {@link #testRun} (The actual test to be executed.)
          */
-        public List<Reference> getTestRun() { 
+        public List<TestPlanTestCaseTestRunComponent> getTestRun() { 
           if (this.testRun == null)
-            this.testRun = new ArrayList<Reference>();
+            this.testRun = new ArrayList<TestPlanTestCaseTestRunComponent>();
           return this.testRun;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TestPlanTestCaseComponent setTestRun(List<Reference> theTestRun) { 
+        public TestPlanTestCaseComponent setTestRun(List<TestPlanTestCaseTestRunComponent> theTestRun) { 
           this.testRun = theTestRun;
           return this;
         }
@@ -503,25 +503,25 @@ public class TestPlan extends DomainResource {
         public boolean hasTestRun() { 
           if (this.testRun == null)
             return false;
-          for (Reference item : this.testRun)
+          for (TestPlanTestCaseTestRunComponent item : this.testRun)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public Reference addTestRun() { //3
-          Reference t = new Reference();
+        public TestPlanTestCaseTestRunComponent addTestRun() { //3
+          TestPlanTestCaseTestRunComponent t = new TestPlanTestCaseTestRunComponent();
           if (this.testRun == null)
-            this.testRun = new ArrayList<Reference>();
+            this.testRun = new ArrayList<TestPlanTestCaseTestRunComponent>();
           this.testRun.add(t);
           return t;
         }
 
-        public TestPlanTestCaseComponent addTestRun(Reference t) { //3
+        public TestPlanTestCaseComponent addTestRun(TestPlanTestCaseTestRunComponent t) { //3
           if (t == null)
             return this;
           if (this.testRun == null)
-            this.testRun = new ArrayList<Reference>();
+            this.testRun = new ArrayList<TestPlanTestCaseTestRunComponent>();
           this.testRun.add(t);
           return this;
         }
@@ -529,7 +529,7 @@ public class TestPlan extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #testRun}, creating it if it does not already exist {3}
          */
-        public Reference getTestRunFirstRep() { 
+        public TestPlanTestCaseTestRunComponent getTestRunFirstRep() { 
           if (getTestRun().isEmpty()) {
             addTestRun();
           }
@@ -590,77 +590,77 @@ public class TestPlan extends DomainResource {
         }
 
         /**
-         * @return {@link #assertions} (The test assertions.)
+         * @return {@link #assertion} (The test assertions - the expectations of test results from the execution of the test case.)
          */
-        public List<TestPlanTestCaseAssertionsComponent> getAssertions() { 
-          if (this.assertions == null)
-            this.assertions = new ArrayList<TestPlanTestCaseAssertionsComponent>();
-          return this.assertions;
+        public List<TestPlanTestCaseAssertionComponent> getAssertion() { 
+          if (this.assertion == null)
+            this.assertion = new ArrayList<TestPlanTestCaseAssertionComponent>();
+          return this.assertion;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TestPlanTestCaseComponent setAssertions(List<TestPlanTestCaseAssertionsComponent> theAssertions) { 
-          this.assertions = theAssertions;
+        public TestPlanTestCaseComponent setAssertion(List<TestPlanTestCaseAssertionComponent> theAssertion) { 
+          this.assertion = theAssertion;
           return this;
         }
 
-        public boolean hasAssertions() { 
-          if (this.assertions == null)
+        public boolean hasAssertion() { 
+          if (this.assertion == null)
             return false;
-          for (TestPlanTestCaseAssertionsComponent item : this.assertions)
+          for (TestPlanTestCaseAssertionComponent item : this.assertion)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public TestPlanTestCaseAssertionsComponent addAssertions() { //3
-          TestPlanTestCaseAssertionsComponent t = new TestPlanTestCaseAssertionsComponent();
-          if (this.assertions == null)
-            this.assertions = new ArrayList<TestPlanTestCaseAssertionsComponent>();
-          this.assertions.add(t);
+        public TestPlanTestCaseAssertionComponent addAssertion() { //3
+          TestPlanTestCaseAssertionComponent t = new TestPlanTestCaseAssertionComponent();
+          if (this.assertion == null)
+            this.assertion = new ArrayList<TestPlanTestCaseAssertionComponent>();
+          this.assertion.add(t);
           return t;
         }
 
-        public TestPlanTestCaseComponent addAssertions(TestPlanTestCaseAssertionsComponent t) { //3
+        public TestPlanTestCaseComponent addAssertion(TestPlanTestCaseAssertionComponent t) { //3
           if (t == null)
             return this;
-          if (this.assertions == null)
-            this.assertions = new ArrayList<TestPlanTestCaseAssertionsComponent>();
-          this.assertions.add(t);
+          if (this.assertion == null)
+            this.assertion = new ArrayList<TestPlanTestCaseAssertionComponent>();
+          this.assertion.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #assertions}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #assertion}, creating it if it does not already exist {3}
          */
-        public TestPlanTestCaseAssertionsComponent getAssertionsFirstRep() { 
-          if (getAssertions().isEmpty()) {
-            addAssertions();
+        public TestPlanTestCaseAssertionComponent getAssertionFirstRep() { 
+          if (getAssertion().isEmpty()) {
+            addAssertion();
           }
-          return getAssertions().get(0);
+          return getAssertion().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("sequence", "integer", "Sequence of testing.", 0, 1, sequence));
-          children.add(new Property("scope", "Reference", "Specific test scope for one test case.", 0, java.lang.Integer.MAX_VALUE, scope));
-          children.add(new Property("dependencies", "", "The required criteria to execute the test case - e.g. preconditions, previous tests.", 0, java.lang.Integer.MAX_VALUE, dependencies));
-          children.add(new Property("testRun", "Reference", "The actual test to be executed.", 0, java.lang.Integer.MAX_VALUE, testRun));
+          children.add(new Property("sequence", "integer", "Sequence of test case - an ordinal number that indicates the order for the present test case in the test plan.", 0, 1, sequence));
+          children.add(new Property("scope", "Reference", "The scope or artifact covered by the case, when the individual test case is associated with a testable artifact.", 0, java.lang.Integer.MAX_VALUE, scope));
+          children.add(new Property("dependency", "", "The required criteria to execute the test case - e.g. preconditions, previous tests.", 0, java.lang.Integer.MAX_VALUE, dependency));
+          children.add(new Property("testRun", "", "The actual test to be executed.", 0, java.lang.Integer.MAX_VALUE, testRun));
           children.add(new Property("testData", "", "The test data used in the test case.", 0, java.lang.Integer.MAX_VALUE, testData));
-          children.add(new Property("assertions", "", "The test assertions.", 0, java.lang.Integer.MAX_VALUE, assertions));
+          children.add(new Property("assertion", "", "The test assertions - the expectations of test results from the execution of the test case.", 0, java.lang.Integer.MAX_VALUE, assertion));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 1349547969: /*sequence*/  return new Property("sequence", "integer", "Sequence of testing.", 0, 1, sequence);
-          case 109264468: /*scope*/  return new Property("scope", "Reference", "Specific test scope for one test case.", 0, java.lang.Integer.MAX_VALUE, scope);
-          case 503774505: /*dependencies*/  return new Property("dependencies", "", "The required criteria to execute the test case - e.g. preconditions, previous tests.", 0, java.lang.Integer.MAX_VALUE, dependencies);
-          case -1422467943: /*testRun*/  return new Property("testRun", "Reference", "The actual test to be executed.", 0, java.lang.Integer.MAX_VALUE, testRun);
+          case 1349547969: /*sequence*/  return new Property("sequence", "integer", "Sequence of test case - an ordinal number that indicates the order for the present test case in the test plan.", 0, 1, sequence);
+          case 109264468: /*scope*/  return new Property("scope", "Reference", "The scope or artifact covered by the case, when the individual test case is associated with a testable artifact.", 0, java.lang.Integer.MAX_VALUE, scope);
+          case -26291381: /*dependency*/  return new Property("dependency", "", "The required criteria to execute the test case - e.g. preconditions, previous tests.", 0, java.lang.Integer.MAX_VALUE, dependency);
+          case -1422467943: /*testRun*/  return new Property("testRun", "", "The actual test to be executed.", 0, java.lang.Integer.MAX_VALUE, testRun);
           case -1147269284: /*testData*/  return new Property("testData", "", "The test data used in the test case.", 0, java.lang.Integer.MAX_VALUE, testData);
-          case 2091567537: /*assertions*/  return new Property("assertions", "", "The test assertions.", 0, java.lang.Integer.MAX_VALUE, assertions);
+          case 1314395906: /*assertion*/  return new Property("assertion", "", "The test assertions - the expectations of test results from the execution of the test case.", 0, java.lang.Integer.MAX_VALUE, assertion);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -671,10 +671,10 @@ public class TestPlan extends DomainResource {
         switch (hash) {
         case 1349547969: /*sequence*/ return this.sequence == null ? new Base[0] : new Base[] {this.sequence}; // IntegerType
         case 109264468: /*scope*/ return this.scope == null ? new Base[0] : this.scope.toArray(new Base[this.scope.size()]); // Reference
-        case 503774505: /*dependencies*/ return this.dependencies == null ? new Base[0] : this.dependencies.toArray(new Base[this.dependencies.size()]); // TestPlanTestCaseDependenciesComponent
-        case -1422467943: /*testRun*/ return this.testRun == null ? new Base[0] : this.testRun.toArray(new Base[this.testRun.size()]); // Reference
+        case -26291381: /*dependency*/ return this.dependency == null ? new Base[0] : this.dependency.toArray(new Base[this.dependency.size()]); // TestCaseDependencyComponent
+        case -1422467943: /*testRun*/ return this.testRun == null ? new Base[0] : this.testRun.toArray(new Base[this.testRun.size()]); // TestPlanTestCaseTestRunComponent
         case -1147269284: /*testData*/ return this.testData == null ? new Base[0] : this.testData.toArray(new Base[this.testData.size()]); // TestPlanTestCaseTestDataComponent
-        case 2091567537: /*assertions*/ return this.assertions == null ? new Base[0] : this.assertions.toArray(new Base[this.assertions.size()]); // TestPlanTestCaseAssertionsComponent
+        case 1314395906: /*assertion*/ return this.assertion == null ? new Base[0] : this.assertion.toArray(new Base[this.assertion.size()]); // TestPlanTestCaseAssertionComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -689,17 +689,17 @@ public class TestPlan extends DomainResource {
         case 109264468: // scope
           this.getScope().add(TypeConvertor.castToReference(value)); // Reference
           return value;
-        case 503774505: // dependencies
-          this.getDependencies().add((TestPlanTestCaseDependenciesComponent) value); // TestPlanTestCaseDependenciesComponent
+        case -26291381: // dependency
+          this.getDependency().add((TestCaseDependencyComponent) value); // TestCaseDependencyComponent
           return value;
         case -1422467943: // testRun
-          this.getTestRun().add(TypeConvertor.castToReference(value)); // Reference
+          this.getTestRun().add((TestPlanTestCaseTestRunComponent) value); // TestPlanTestCaseTestRunComponent
           return value;
         case -1147269284: // testData
           this.getTestData().add((TestPlanTestCaseTestDataComponent) value); // TestPlanTestCaseTestDataComponent
           return value;
-        case 2091567537: // assertions
-          this.getAssertions().add((TestPlanTestCaseAssertionsComponent) value); // TestPlanTestCaseAssertionsComponent
+        case 1314395906: // assertion
+          this.getAssertion().add((TestPlanTestCaseAssertionComponent) value); // TestPlanTestCaseAssertionComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -712,14 +712,14 @@ public class TestPlan extends DomainResource {
           this.sequence = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("scope")) {
           this.getScope().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("dependencies")) {
-          this.getDependencies().add((TestPlanTestCaseDependenciesComponent) value);
+        } else if (name.equals("dependency")) {
+          this.getDependency().add((TestCaseDependencyComponent) value);
         } else if (name.equals("testRun")) {
-          this.getTestRun().add(TypeConvertor.castToReference(value));
+          this.getTestRun().add((TestPlanTestCaseTestRunComponent) value);
         } else if (name.equals("testData")) {
           this.getTestData().add((TestPlanTestCaseTestDataComponent) value);
-        } else if (name.equals("assertions")) {
-          this.getAssertions().add((TestPlanTestCaseAssertionsComponent) value);
+        } else if (name.equals("assertion")) {
+          this.getAssertion().add((TestPlanTestCaseAssertionComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -730,10 +730,10 @@ public class TestPlan extends DomainResource {
         switch (hash) {
         case 1349547969:  return getSequenceElement();
         case 109264468:  return addScope(); 
-        case 503774505:  return addDependencies(); 
+        case -26291381:  return addDependency(); 
         case -1422467943:  return addTestRun(); 
         case -1147269284:  return addTestData(); 
-        case 2091567537:  return addAssertions(); 
+        case 1314395906:  return addAssertion(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -744,10 +744,10 @@ public class TestPlan extends DomainResource {
         switch (hash) {
         case 1349547969: /*sequence*/ return new String[] {"integer"};
         case 109264468: /*scope*/ return new String[] {"Reference"};
-        case 503774505: /*dependencies*/ return new String[] {};
-        case -1422467943: /*testRun*/ return new String[] {"Reference"};
+        case -26291381: /*dependency*/ return new String[] {};
+        case -1422467943: /*testRun*/ return new String[] {};
         case -1147269284: /*testData*/ return new String[] {};
-        case 2091567537: /*assertions*/ return new String[] {};
+        case 1314395906: /*assertion*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -761,8 +761,8 @@ public class TestPlan extends DomainResource {
         else if (name.equals("scope")) {
           return addScope();
         }
-        else if (name.equals("dependencies")) {
-          return addDependencies();
+        else if (name.equals("dependency")) {
+          return addDependency();
         }
         else if (name.equals("testRun")) {
           return addTestRun();
@@ -770,8 +770,8 @@ public class TestPlan extends DomainResource {
         else if (name.equals("testData")) {
           return addTestData();
         }
-        else if (name.equals("assertions")) {
-          return addAssertions();
+        else if (name.equals("assertion")) {
+          return addAssertion();
         }
         else
           return super.addChild(name);
@@ -791,14 +791,14 @@ public class TestPlan extends DomainResource {
           for (Reference i : scope)
             dst.scope.add(i.copy());
         };
-        if (dependencies != null) {
-          dst.dependencies = new ArrayList<TestPlanTestCaseDependenciesComponent>();
-          for (TestPlanTestCaseDependenciesComponent i : dependencies)
-            dst.dependencies.add(i.copy());
+        if (dependency != null) {
+          dst.dependency = new ArrayList<TestCaseDependencyComponent>();
+          for (TestCaseDependencyComponent i : dependency)
+            dst.dependency.add(i.copy());
         };
         if (testRun != null) {
-          dst.testRun = new ArrayList<Reference>();
-          for (Reference i : testRun)
+          dst.testRun = new ArrayList<TestPlanTestCaseTestRunComponent>();
+          for (TestPlanTestCaseTestRunComponent i : testRun)
             dst.testRun.add(i.copy());
         };
         if (testData != null) {
@@ -806,10 +806,10 @@ public class TestPlan extends DomainResource {
           for (TestPlanTestCaseTestDataComponent i : testData)
             dst.testData.add(i.copy());
         };
-        if (assertions != null) {
-          dst.assertions = new ArrayList<TestPlanTestCaseAssertionsComponent>();
-          for (TestPlanTestCaseAssertionsComponent i : assertions)
-            dst.assertions.add(i.copy());
+        if (assertion != null) {
+          dst.assertion = new ArrayList<TestPlanTestCaseAssertionComponent>();
+          for (TestPlanTestCaseAssertionComponent i : assertion)
+            dst.assertion.add(i.copy());
         };
       }
 
@@ -820,8 +820,8 @@ public class TestPlan extends DomainResource {
         if (!(other_ instanceof TestPlanTestCaseComponent))
           return false;
         TestPlanTestCaseComponent o = (TestPlanTestCaseComponent) other_;
-        return compareDeep(sequence, o.sequence, true) && compareDeep(scope, o.scope, true) && compareDeep(dependencies, o.dependencies, true)
-           && compareDeep(testRun, o.testRun, true) && compareDeep(testData, o.testData, true) && compareDeep(assertions, o.assertions, true)
+        return compareDeep(sequence, o.sequence, true) && compareDeep(scope, o.scope, true) && compareDeep(dependency, o.dependency, true)
+           && compareDeep(testRun, o.testRun, true) && compareDeep(testData, o.testData, true) && compareDeep(assertion, o.assertion, true)
           ;
       }
 
@@ -836,8 +836,8 @@ public class TestPlan extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, scope, dependencies
-          , testRun, testData, assertions);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, scope, dependency
+          , testRun, testData, assertion);
       }
 
   public String fhirType() {
@@ -848,18 +848,18 @@ public class TestPlan extends DomainResource {
   }
 
     @Block()
-    public static class TestPlanTestCaseDependenciesComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class TestCaseDependencyComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Description of the criteria.
          */
-        @Child(name = "description", type = {MarkdownType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "description", type = {MarkdownType.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Description of the criteria", formalDefinition="Description of the criteria." )
         protected MarkdownType description;
 
         /**
          * Link to predecessor test plans.
          */
-        @Child(name = "predecessor", type = {Reference.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "predecessor", type = {Reference.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Link to predecessor test plans", formalDefinition="Link to predecessor test plans." )
         protected Reference predecessor;
 
@@ -868,7 +868,7 @@ public class TestPlan extends DomainResource {
     /**
      * Constructor
      */
-      public TestPlanTestCaseDependenciesComponent() {
+      public TestCaseDependencyComponent() {
         super();
       }
 
@@ -878,7 +878,7 @@ public class TestPlan extends DomainResource {
         public MarkdownType getDescriptionElement() { 
           if (this.description == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TestPlanTestCaseDependenciesComponent.description");
+              throw new Error("Attempt to auto-create TestCaseDependencyComponent.description");
             else if (Configuration.doAutoCreate())
               this.description = new MarkdownType(); // bb
           return this.description;
@@ -895,7 +895,7 @@ public class TestPlan extends DomainResource {
         /**
          * @param value {@link #description} (Description of the criteria.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
          */
-        public TestPlanTestCaseDependenciesComponent setDescriptionElement(MarkdownType value) { 
+        public TestCaseDependencyComponent setDescriptionElement(MarkdownType value) { 
           this.description = value;
           return this;
         }
@@ -910,7 +910,7 @@ public class TestPlan extends DomainResource {
         /**
          * @param value Description of the criteria.
          */
-        public TestPlanTestCaseDependenciesComponent setDescription(String value) { 
+        public TestCaseDependencyComponent setDescription(String value) { 
           if (Utilities.noString(value))
             this.description = null;
           else {
@@ -927,7 +927,7 @@ public class TestPlan extends DomainResource {
         public Reference getPredecessor() { 
           if (this.predecessor == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TestPlanTestCaseDependenciesComponent.predecessor");
+              throw new Error("Attempt to auto-create TestCaseDependencyComponent.predecessor");
             else if (Configuration.doAutoCreate())
               this.predecessor = new Reference(); // cc
           return this.predecessor;
@@ -940,7 +940,7 @@ public class TestPlan extends DomainResource {
         /**
          * @param value {@link #predecessor} (Link to predecessor test plans.)
          */
-        public TestPlanTestCaseDependenciesComponent setPredecessor(Reference value) { 
+        public TestCaseDependencyComponent setPredecessor(Reference value) { 
           this.predecessor = value;
           return this;
         }
@@ -1019,7 +1019,7 @@ public class TestPlan extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.testCase.dependencies.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.testCase.dependency.description");
         }
         else if (name.equals("predecessor")) {
           this.predecessor = new Reference();
@@ -1029,13 +1029,13 @@ public class TestPlan extends DomainResource {
           return super.addChild(name);
       }
 
-      public TestPlanTestCaseDependenciesComponent copy() {
-        TestPlanTestCaseDependenciesComponent dst = new TestPlanTestCaseDependenciesComponent();
+      public TestCaseDependencyComponent copy() {
+        TestCaseDependencyComponent dst = new TestCaseDependencyComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(TestPlanTestCaseDependenciesComponent dst) {
+      public void copyValues(TestCaseDependencyComponent dst) {
         super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.predecessor = predecessor == null ? null : predecessor.copy();
@@ -1045,9 +1045,9 @@ public class TestPlan extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof TestPlanTestCaseDependenciesComponent))
+        if (!(other_ instanceof TestCaseDependencyComponent))
           return false;
-        TestPlanTestCaseDependenciesComponent o = (TestPlanTestCaseDependenciesComponent) other_;
+        TestCaseDependencyComponent o = (TestCaseDependencyComponent) other_;
         return compareDeep(description, o.description, true) && compareDeep(predecessor, o.predecessor, true)
           ;
       }
@@ -1056,9 +1056,9 @@ public class TestPlan extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof TestPlanTestCaseDependenciesComponent))
+        if (!(other_ instanceof TestCaseDependencyComponent))
           return false;
-        TestPlanTestCaseDependenciesComponent o = (TestPlanTestCaseDependenciesComponent) other_;
+        TestCaseDependencyComponent o = (TestCaseDependencyComponent) other_;
         return compareValues(description, o.description, true);
       }
 
@@ -1067,7 +1067,468 @@ public class TestPlan extends DomainResource {
       }
 
   public String fhirType() {
-    return "TestPlan.testCase.dependencies";
+    return "TestPlan.testCase.dependency";
+
+  }
+
+  }
+
+    @Block()
+    public static class TestPlanTestCaseTestRunComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The narrative description of the tests.
+         */
+        @Child(name = "narrative", type = {MarkdownType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The narrative description of the tests", formalDefinition="The narrative description of the tests." )
+        protected MarkdownType narrative;
+
+        /**
+         * The test cases in a structured language e.g. gherkin, Postman, or FHIR TestScript.
+         */
+        @Child(name = "script", type = {}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The test cases in a structured language e.g. gherkin, Postman, or FHIR TestScript", formalDefinition="The test cases in a structured language e.g. gherkin, Postman, or FHIR TestScript." )
+        protected TestPlanTestCaseTestRunScriptComponent script;
+
+        private static final long serialVersionUID = -763780736L;
+
+    /**
+     * Constructor
+     */
+      public TestPlanTestCaseTestRunComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #narrative} (The narrative description of the tests.). This is the underlying object with id, value and extensions. The accessor "getNarrative" gives direct access to the value
+         */
+        public MarkdownType getNarrativeElement() { 
+          if (this.narrative == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create TestPlanTestCaseTestRunComponent.narrative");
+            else if (Configuration.doAutoCreate())
+              this.narrative = new MarkdownType(); // bb
+          return this.narrative;
+        }
+
+        public boolean hasNarrativeElement() { 
+          return this.narrative != null && !this.narrative.isEmpty();
+        }
+
+        public boolean hasNarrative() { 
+          return this.narrative != null && !this.narrative.isEmpty();
+        }
+
+        /**
+         * @param value {@link #narrative} (The narrative description of the tests.). This is the underlying object with id, value and extensions. The accessor "getNarrative" gives direct access to the value
+         */
+        public TestPlanTestCaseTestRunComponent setNarrativeElement(MarkdownType value) { 
+          this.narrative = value;
+          return this;
+        }
+
+        /**
+         * @return The narrative description of the tests.
+         */
+        public String getNarrative() { 
+          return this.narrative == null ? null : this.narrative.getValue();
+        }
+
+        /**
+         * @param value The narrative description of the tests.
+         */
+        public TestPlanTestCaseTestRunComponent setNarrative(String value) { 
+          if (Utilities.noString(value))
+            this.narrative = null;
+          else {
+            if (this.narrative == null)
+              this.narrative = new MarkdownType();
+            this.narrative.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #script} (The test cases in a structured language e.g. gherkin, Postman, or FHIR TestScript.)
+         */
+        public TestPlanTestCaseTestRunScriptComponent getScript() { 
+          if (this.script == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create TestPlanTestCaseTestRunComponent.script");
+            else if (Configuration.doAutoCreate())
+              this.script = new TestPlanTestCaseTestRunScriptComponent(); // cc
+          return this.script;
+        }
+
+        public boolean hasScript() { 
+          return this.script != null && !this.script.isEmpty();
+        }
+
+        /**
+         * @param value {@link #script} (The test cases in a structured language e.g. gherkin, Postman, or FHIR TestScript.)
+         */
+        public TestPlanTestCaseTestRunComponent setScript(TestPlanTestCaseTestRunScriptComponent value) { 
+          this.script = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("narrative", "markdown", "The narrative description of the tests.", 0, 1, narrative));
+          children.add(new Property("script", "", "The test cases in a structured language e.g. gherkin, Postman, or FHIR TestScript.", 0, 1, script));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 1750452338: /*narrative*/  return new Property("narrative", "markdown", "The narrative description of the tests.", 0, 1, narrative);
+          case -907685685: /*script*/  return new Property("script", "", "The test cases in a structured language e.g. gherkin, Postman, or FHIR TestScript.", 0, 1, script);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 1750452338: /*narrative*/ return this.narrative == null ? new Base[0] : new Base[] {this.narrative}; // MarkdownType
+        case -907685685: /*script*/ return this.script == null ? new Base[0] : new Base[] {this.script}; // TestPlanTestCaseTestRunScriptComponent
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 1750452338: // narrative
+          this.narrative = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case -907685685: // script
+          this.script = (TestPlanTestCaseTestRunScriptComponent) value; // TestPlanTestCaseTestRunScriptComponent
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("narrative")) {
+          this.narrative = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("script")) {
+          this.script = (TestPlanTestCaseTestRunScriptComponent) value; // TestPlanTestCaseTestRunScriptComponent
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1750452338:  return getNarrativeElement();
+        case -907685685:  return getScript();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1750452338: /*narrative*/ return new String[] {"markdown"};
+        case -907685685: /*script*/ return new String[] {};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("narrative")) {
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.testCase.testRun.narrative");
+        }
+        else if (name.equals("script")) {
+          this.script = new TestPlanTestCaseTestRunScriptComponent();
+          return this.script;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public TestPlanTestCaseTestRunComponent copy() {
+        TestPlanTestCaseTestRunComponent dst = new TestPlanTestCaseTestRunComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestPlanTestCaseTestRunComponent dst) {
+        super.copyValues(dst);
+        dst.narrative = narrative == null ? null : narrative.copy();
+        dst.script = script == null ? null : script.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof TestPlanTestCaseTestRunComponent))
+          return false;
+        TestPlanTestCaseTestRunComponent o = (TestPlanTestCaseTestRunComponent) other_;
+        return compareDeep(narrative, o.narrative, true) && compareDeep(script, o.script, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof TestPlanTestCaseTestRunComponent))
+          return false;
+        TestPlanTestCaseTestRunComponent o = (TestPlanTestCaseTestRunComponent) other_;
+        return compareValues(narrative, o.narrative, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(narrative, script);
+      }
+
+  public String fhirType() {
+    return "TestPlan.testCase.testRun";
+
+  }
+
+  }
+
+    @Block()
+    public static class TestPlanTestCaseTestRunScriptComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The language for the test cases e.g. 'gherkin', 'testscript'.
+         */
+        @Child(name = "language", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The language for the test cases e.g. 'gherkin', 'testscript'", formalDefinition="The language for the test cases e.g. 'gherkin', 'testscript'." )
+        protected CodeableConcept language;
+
+        /**
+         * The actual content of the cases - references to TestScripts or externally defined content.
+         */
+        @Child(name = "source", type = {StringType.class, Reference.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The actual content of the cases - references to TestScripts or externally defined content", formalDefinition="The actual content of the cases - references to TestScripts or externally defined content." )
+        protected DataType source;
+
+        private static final long serialVersionUID = 1308596610L;
+
+    /**
+     * Constructor
+     */
+      public TestPlanTestCaseTestRunScriptComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #language} (The language for the test cases e.g. 'gherkin', 'testscript'.)
+         */
+        public CodeableConcept getLanguage() { 
+          if (this.language == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create TestPlanTestCaseTestRunScriptComponent.language");
+            else if (Configuration.doAutoCreate())
+              this.language = new CodeableConcept(); // cc
+          return this.language;
+        }
+
+        public boolean hasLanguage() { 
+          return this.language != null && !this.language.isEmpty();
+        }
+
+        /**
+         * @param value {@link #language} (The language for the test cases e.g. 'gherkin', 'testscript'.)
+         */
+        public TestPlanTestCaseTestRunScriptComponent setLanguage(CodeableConcept value) { 
+          this.language = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #source} (The actual content of the cases - references to TestScripts or externally defined content.)
+         */
+        public DataType getSource() { 
+          return this.source;
+        }
+
+        /**
+         * @return {@link #source} (The actual content of the cases - references to TestScripts or externally defined content.)
+         */
+        public StringType getSourceStringType() throws FHIRException { 
+          if (this.source == null)
+            this.source = new StringType();
+          if (!(this.source instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.source.getClass().getName()+" was encountered");
+          return (StringType) this.source;
+        }
+
+        public boolean hasSourceStringType() { 
+          return this != null && this.source instanceof StringType;
+        }
+
+        /**
+         * @return {@link #source} (The actual content of the cases - references to TestScripts or externally defined content.)
+         */
+        public Reference getSourceReference() throws FHIRException { 
+          if (this.source == null)
+            this.source = new Reference();
+          if (!(this.source instanceof Reference))
+            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.source.getClass().getName()+" was encountered");
+          return (Reference) this.source;
+        }
+
+        public boolean hasSourceReference() { 
+          return this != null && this.source instanceof Reference;
+        }
+
+        public boolean hasSource() { 
+          return this.source != null && !this.source.isEmpty();
+        }
+
+        /**
+         * @param value {@link #source} (The actual content of the cases - references to TestScripts or externally defined content.)
+         */
+        public TestPlanTestCaseTestRunScriptComponent setSource(DataType value) { 
+          if (value != null && !(value instanceof StringType || value instanceof Reference))
+            throw new FHIRException("Not the right type for TestPlan.testCase.testRun.script.source[x]: "+value.fhirType());
+          this.source = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("language", "CodeableConcept", "The language for the test cases e.g. 'gherkin', 'testscript'.", 0, 1, language));
+          children.add(new Property("source[x]", "string|Reference", "The actual content of the cases - references to TestScripts or externally defined content.", 0, 1, source));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "The language for the test cases e.g. 'gherkin', 'testscript'.", 0, 1, language);
+          case -1698413947: /*source[x]*/  return new Property("source[x]", "string|Reference", "The actual content of the cases - references to TestScripts or externally defined content.", 0, 1, source);
+          case -896505829: /*source*/  return new Property("source[x]", "string|Reference", "The actual content of the cases - references to TestScripts or externally defined content.", 0, 1, source);
+          case 1327821836: /*sourceString*/  return new Property("source[x]", "string", "The actual content of the cases - references to TestScripts or externally defined content.", 0, 1, source);
+          case -244259472: /*sourceReference*/  return new Property("source[x]", "Reference", "The actual content of the cases - references to TestScripts or externally defined content.", 0, 1, source);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // CodeableConcept
+        case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // DataType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -1613589672: // language
+          this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -896505829: // source
+          this.source = TypeConvertor.castToType(value); // DataType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("language")) {
+          this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("source[x]")) {
+          this.source = TypeConvertor.castToType(value); // DataType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1613589672:  return getLanguage();
+        case -1698413947:  return getSource();
+        case -896505829:  return getSource();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1613589672: /*language*/ return new String[] {"CodeableConcept"};
+        case -896505829: /*source*/ return new String[] {"string", "Reference"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("language")) {
+          this.language = new CodeableConcept();
+          return this.language;
+        }
+        else if (name.equals("sourceString")) {
+          this.source = new StringType();
+          return this.source;
+        }
+        else if (name.equals("sourceReference")) {
+          this.source = new Reference();
+          return this.source;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public TestPlanTestCaseTestRunScriptComponent copy() {
+        TestPlanTestCaseTestRunScriptComponent dst = new TestPlanTestCaseTestRunScriptComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestPlanTestCaseTestRunScriptComponent dst) {
+        super.copyValues(dst);
+        dst.language = language == null ? null : language.copy();
+        dst.source = source == null ? null : source.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof TestPlanTestCaseTestRunScriptComponent))
+          return false;
+        TestPlanTestCaseTestRunScriptComponent o = (TestPlanTestCaseTestRunScriptComponent) other_;
+        return compareDeep(language, o.language, true) && compareDeep(source, o.source, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof TestPlanTestCaseTestRunScriptComponent))
+          return false;
+        TestPlanTestCaseTestRunScriptComponent o = (TestPlanTestCaseTestRunScriptComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(language, source);
+      }
+
+  public String fhirType() {
+    return "TestPlan.testCase.testRun.script";
 
   }
 
@@ -1078,21 +1539,21 @@ public class TestPlan extends DomainResource {
         /**
          * The type of test data description, e.g. 'synthea'.
          */
-        @Child(name = "type", type = {Coding.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "type", type = {Coding.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The type of test data description, e.g. 'synthea'", formalDefinition="The type of test data description, e.g. 'synthea'." )
         protected Coding type;
 
         /**
          * The actual test resources when they exist.
          */
-        @Child(name = "content", type = {Reference.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "content", type = {Reference.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The actual test resources when they exist", formalDefinition="The actual test resources when they exist." )
         protected Reference content;
 
         /**
          * Pointer to a definition of test resources - narrative or structured e.g. synthetic data generation, etc.
          */
-        @Child(name = "source", type = {StringType.class, Reference.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "source", type = {StringType.class, Reference.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Pointer to a definition of test resources - narrative or structured e.g. synthetic data generation, etc", formalDefinition="Pointer to a definition of test resources - narrative or structured e.g. synthetic data generation, etc." )
         protected DataType source;
 
@@ -1365,26 +1826,26 @@ public class TestPlan extends DomainResource {
   }
 
     @Block()
-    public static class TestPlanTestCaseAssertionsComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class TestPlanTestCaseAssertionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The test assertion type.
+         * The test assertion type - this can be used to group assertions as 'required' or 'optional', or can be used for other classification of the assertion.
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The test assertion type", formalDefinition="The test assertion type." )
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Assertion type - for example 'informative' or 'required' ", formalDefinition="The test assertion type - this can be used to group assertions as 'required' or 'optional', or can be used for other classification of the assertion." )
         protected List<CodeableConcept> type;
 
         /**
-         * The focus or object of the assertion.
+         * The focus or object of the assertion i.e. a resource.
          */
-        @Child(name = "object", type = {CodeableReference.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The focus or object of the assertion", formalDefinition="The focus or object of the assertion." )
+        @Child(name = "object", type = {CodeableReference.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="The focus or object of the assertion", formalDefinition="The focus or object of the assertion i.e. a resource." )
         protected List<CodeableReference> object;
 
         /**
-         * The test assertions.
+         * The test assertion - the expected outcome from the test case execution.
          */
-        @Child(name = "result", type = {CodeableReference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The test assertions", formalDefinition="The test assertions." )
+        @Child(name = "result", type = {CodeableReference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="The actual result assertion", formalDefinition="The test assertion - the expected outcome from the test case execution." )
         protected List<CodeableReference> result;
 
         private static final long serialVersionUID = 481177705L;
@@ -1392,12 +1853,12 @@ public class TestPlan extends DomainResource {
     /**
      * Constructor
      */
-      public TestPlanTestCaseAssertionsComponent() {
+      public TestPlanTestCaseAssertionComponent() {
         super();
       }
 
         /**
-         * @return {@link #type} (The test assertion type.)
+         * @return {@link #type} (The test assertion type - this can be used to group assertions as 'required' or 'optional', or can be used for other classification of the assertion.)
          */
         public List<CodeableConcept> getType() { 
           if (this.type == null)
@@ -1408,7 +1869,7 @@ public class TestPlan extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TestPlanTestCaseAssertionsComponent setType(List<CodeableConcept> theType) { 
+        public TestPlanTestCaseAssertionComponent setType(List<CodeableConcept> theType) { 
           this.type = theType;
           return this;
         }
@@ -1430,7 +1891,7 @@ public class TestPlan extends DomainResource {
           return t;
         }
 
-        public TestPlanTestCaseAssertionsComponent addType(CodeableConcept t) { //3
+        public TestPlanTestCaseAssertionComponent addType(CodeableConcept t) { //3
           if (t == null)
             return this;
           if (this.type == null)
@@ -1450,7 +1911,7 @@ public class TestPlan extends DomainResource {
         }
 
         /**
-         * @return {@link #object} (The focus or object of the assertion.)
+         * @return {@link #object} (The focus or object of the assertion i.e. a resource.)
          */
         public List<CodeableReference> getObject() { 
           if (this.object == null)
@@ -1461,7 +1922,7 @@ public class TestPlan extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TestPlanTestCaseAssertionsComponent setObject(List<CodeableReference> theObject) { 
+        public TestPlanTestCaseAssertionComponent setObject(List<CodeableReference> theObject) { 
           this.object = theObject;
           return this;
         }
@@ -1483,7 +1944,7 @@ public class TestPlan extends DomainResource {
           return t;
         }
 
-        public TestPlanTestCaseAssertionsComponent addObject(CodeableReference t) { //3
+        public TestPlanTestCaseAssertionComponent addObject(CodeableReference t) { //3
           if (t == null)
             return this;
           if (this.object == null)
@@ -1503,7 +1964,7 @@ public class TestPlan extends DomainResource {
         }
 
         /**
-         * @return {@link #result} (The test assertions.)
+         * @return {@link #result} (The test assertion - the expected outcome from the test case execution.)
          */
         public List<CodeableReference> getResult() { 
           if (this.result == null)
@@ -1514,7 +1975,7 @@ public class TestPlan extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TestPlanTestCaseAssertionsComponent setResult(List<CodeableReference> theResult) { 
+        public TestPlanTestCaseAssertionComponent setResult(List<CodeableReference> theResult) { 
           this.result = theResult;
           return this;
         }
@@ -1536,7 +1997,7 @@ public class TestPlan extends DomainResource {
           return t;
         }
 
-        public TestPlanTestCaseAssertionsComponent addResult(CodeableReference t) { //3
+        public TestPlanTestCaseAssertionComponent addResult(CodeableReference t) { //3
           if (t == null)
             return this;
           if (this.result == null)
@@ -1557,17 +2018,17 @@ public class TestPlan extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "The test assertion type.", 0, java.lang.Integer.MAX_VALUE, type));
-          children.add(new Property("object", "CodeableReference", "The focus or object of the assertion.", 0, java.lang.Integer.MAX_VALUE, object));
-          children.add(new Property("result", "CodeableReference", "The test assertions.", 0, java.lang.Integer.MAX_VALUE, result));
+          children.add(new Property("type", "CodeableConcept", "The test assertion type - this can be used to group assertions as 'required' or 'optional', or can be used for other classification of the assertion.", 0, java.lang.Integer.MAX_VALUE, type));
+          children.add(new Property("object", "CodeableReference", "The focus or object of the assertion i.e. a resource.", 0, java.lang.Integer.MAX_VALUE, object));
+          children.add(new Property("result", "CodeableReference", "The test assertion - the expected outcome from the test case execution.", 0, java.lang.Integer.MAX_VALUE, result));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The test assertion type.", 0, java.lang.Integer.MAX_VALUE, type);
-          case -1023368385: /*object*/  return new Property("object", "CodeableReference", "The focus or object of the assertion.", 0, java.lang.Integer.MAX_VALUE, object);
-          case -934426595: /*result*/  return new Property("result", "CodeableReference", "The test assertions.", 0, java.lang.Integer.MAX_VALUE, result);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The test assertion type - this can be used to group assertions as 'required' or 'optional', or can be used for other classification of the assertion.", 0, java.lang.Integer.MAX_VALUE, type);
+          case -1023368385: /*object*/  return new Property("object", "CodeableReference", "The focus or object of the assertion i.e. a resource.", 0, java.lang.Integer.MAX_VALUE, object);
+          case -934426595: /*result*/  return new Property("result", "CodeableReference", "The test assertion - the expected outcome from the test case execution.", 0, java.lang.Integer.MAX_VALUE, result);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1651,13 +2112,13 @@ public class TestPlan extends DomainResource {
           return super.addChild(name);
       }
 
-      public TestPlanTestCaseAssertionsComponent copy() {
-        TestPlanTestCaseAssertionsComponent dst = new TestPlanTestCaseAssertionsComponent();
+      public TestPlanTestCaseAssertionComponent copy() {
+        TestPlanTestCaseAssertionComponent dst = new TestPlanTestCaseAssertionComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(TestPlanTestCaseAssertionsComponent dst) {
+      public void copyValues(TestPlanTestCaseAssertionComponent dst) {
         super.copyValues(dst);
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
@@ -1680,9 +2141,9 @@ public class TestPlan extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof TestPlanTestCaseAssertionsComponent))
+        if (!(other_ instanceof TestPlanTestCaseAssertionComponent))
           return false;
-        TestPlanTestCaseAssertionsComponent o = (TestPlanTestCaseAssertionsComponent) other_;
+        TestPlanTestCaseAssertionComponent o = (TestPlanTestCaseAssertionComponent) other_;
         return compareDeep(type, o.type, true) && compareDeep(object, o.object, true) && compareDeep(result, o.result, true)
           ;
       }
@@ -1691,9 +2152,9 @@ public class TestPlan extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof TestPlanTestCaseAssertionsComponent))
+        if (!(other_ instanceof TestPlanTestCaseAssertionComponent))
           return false;
-        TestPlanTestCaseAssertionsComponent o = (TestPlanTestCaseAssertionsComponent) other_;
+        TestPlanTestCaseAssertionComponent o = (TestPlanTestCaseAssertionComponent) other_;
         return true;
       }
 
@@ -1702,147 +2163,178 @@ public class TestPlan extends DomainResource {
       }
 
   public String fhirType() {
-    return "TestPlan.testCase.assertions";
+    return "TestPlan.testCase.assertion";
 
   }
 
   }
 
     /**
-     * Canonical identifier URL.
+     * An absolute URI that is used to identify this test plan when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this test plan is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the test plan is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier URL", formalDefinition="Canonical identifier URL." )
+    @Description(shortDefinition="Canonical identifier for this test plan, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this test plan when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this test plan is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the test plan is stored on different servers." )
     protected UriType url;
 
     /**
-     * Business identifier for the Test Plan.
+     * A formal identifier that is used to identify this test plan when it is represented in other formats, or referenced in a specification, model, design or an instance.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Business identifier", formalDefinition="Business identifier for the Test Plan." )
+    @Description(shortDefinition="Business identifier identifier for the test plan", formalDefinition="A formal identifier that is used to identify this test plan when it is represented in other formats, or referenced in a specification, model, design or an instance." )
     protected List<Identifier> identifier;
 
     /**
-     * Version of the test plan.
+     * The identifier that is used to identify this version of the test plan when it is referenced in a specification, model, design or instance.  This is an arbitrary value managed by the test plan author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
      */
-    @Child(name = "version", type = {StringType.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Version", formalDefinition="Version of the test plan." )
-    protected List<StringType> version;
+    @Child(name = "version", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Business version of the test plan", formalDefinition="The identifier that is used to identify this version of the test plan when it is referenced in a specification, model, design or instance.  This is an arbitrary value managed by the test plan author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence." )
+    protected StringType version;
 
     /**
-     * Name.
+     * Indicates the mechanism used to compare versions to determine which is more current.
      */
-    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Name", formalDefinition="Name." )
-    protected List<StringType> name;
+    @Child(name = "versionAlgorithm", type = {StringType.class, Coding.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="How to compare versions", formalDefinition="Indicates the mechanism used to compare versions to determine which is more current." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/version-algorithm")
+    protected DataType versionAlgorithm;
 
     /**
-     * Human-readable title.
+     * A natural language name identifying the test plan. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
-    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Human-readable title", formalDefinition="Human-readable title." )
-    protected List<StringType> title;
+    @Child(name = "name", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this test plan (computer friendly)", formalDefinition="A natural language name identifying the test plan. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
+    protected StringType name;
 
     /**
-     * Status.
+     * A short, descriptive, user-friendly title for the test plan.
      */
-    @Child(name = "status", type = {CodeType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="Status." )
+    @Child(name = "title", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Name for this test plan (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the test plan." )
+    protected StringType title;
+
+    /**
+     * The status of this test plan. Enables tracking the life-cycle of the content.
+     */
+    @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this test plan. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
-    protected List<Enumeration<PublicationStatus>> status;
+    protected Enumeration<PublicationStatus> status;
 
     /**
-     * Date.
+     * A Boolean value to indicate that this test plan is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Date", formalDefinition="Date." )
-    protected List<DateTimeType> date;
+    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this test plan is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
+    protected BooleanType experimental;
 
     /**
-     * Publisher.
+     * The date (and optionally time) when the test plan was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test plan changes.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Publisher", formalDefinition="Publisher." )
-    protected List<StringType> publisher;
+    @Child(name = "date", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Date last changed", formalDefinition="The date (and optionally time) when the test plan was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test plan changes." )
+    protected DateTimeType date;
 
     /**
-     * Contact.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the test plan.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Contact", formalDefinition="Contact." )
+    @Child(name = "publisher", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the test plan." )
+    protected StringType publisher;
+
+    /**
+     * Contact details to assist a user in finding and communicating with the publisher.
+     */
+    @Child(name = "contact", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
-     * Description of the test plan.
+     * A free text natural language description of the test plan from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=9, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Description", formalDefinition="Description of the test plan." )
+    @Child(name = "description", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Natural language description of the test plan", formalDefinition="A free text natural language description of the test plan from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
-     * Jurisdiction.
+     * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate test plan instances.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Jurisdiction", formalDefinition="Jurisdiction." )
+    @Child(name = "useContext", type = {UsageContext.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate test plan instances." )
+    protected List<UsageContext> useContext;
+
+    /**
+     * A legal or geographic region in which the test plan is intended to be used.
+     */
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Intended jurisdiction where the test plan applies (if applicable)", formalDefinition="A legal or geographic region in which the test plan is intended to be used." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
 
     /**
-     * Purpose.
+     * Explanation of why this test plan is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Purpose", formalDefinition="Purpose." )
+    @Child(name = "purpose", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Why this test plan is defined", formalDefinition="Explanation of why this test plan is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
-     * Copyright.
+     * A copyright statement relating to the test plan and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the test plan. The short copyright declaration (e.g. (c) '2015+ xyz organization' should be sent in the copyrightLabel element.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=12, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Copyright", formalDefinition="Copyright." )
+    @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the test plan and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the test plan. The short copyright declaration (e.g. (c) '2015+ xyz organization' should be sent in the copyrightLabel element." )
     protected MarkdownType copyright;
+
+    /**
+     * A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    @Child(name = "copyrightLabel", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Copyright holder and year(s)", formalDefinition="A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved')." )
+    protected StringType copyrightLabel;
 
     /**
      * The category of the Test Plan - can be acceptance, unit, performance, etc.
      */
-    @Child(name = "category", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "category", type = {CodeableConcept.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The category of the Test Plan - can be acceptance, unit, performance", formalDefinition="The category of the Test Plan - can be acceptance, unit, performance, etc." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/testscript-scope-phase-codes")
     protected List<CodeableConcept> category;
 
     /**
      * What is being tested with this Test Plan - a conformance resource, or narrative criteria, or an external reference...
      */
-    @Child(name = "scope", type = {Reference.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "scope", type = {Reference.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What is being tested with this Test Plan - a conformance resource, or narrative criteria, or an external reference", formalDefinition="What is being tested with this Test Plan - a conformance resource, or narrative criteria, or an external reference..." )
     protected List<Reference> scope;
 
     /**
      * A description of test tools to be used in the test plan.
      */
-    @Child(name = "testTools", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "testTools", type = {MarkdownType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="A description of test tools to be used in the test plan - narrative for now", formalDefinition="A description of test tools to be used in the test plan." )
     protected MarkdownType testTools;
 
     /**
      * The required criteria to execute the test plan - e.g. preconditions, previous tests...
      */
-    @Child(name = "dependencies", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "dependency", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The required criteria to execute the test plan - e.g. preconditions, previous tests", formalDefinition="The required criteria to execute the test plan - e.g. preconditions, previous tests..." )
-    protected List<TestPlanDependenciesComponent> dependencies;
+    protected List<TestPlanDependencyComponent> dependency;
 
     /**
      * The threshold or criteria for the test plan to be considered successfully executed - narrative.
      */
-    @Child(name = "exitCriteria", type = {MarkdownType.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "exitCriteria", type = {MarkdownType.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The threshold or criteria for the test plan to be considered successfully executed - narrative", formalDefinition="The threshold or criteria for the test plan to be considered successfully executed - narrative." )
     protected MarkdownType exitCriteria;
 
     /**
-     * The test cases that are part of this plan.
+     * The individual test cases that are part of this plan, when they they are made explicit.
      */
-    @Child(name = "testCase", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The test cases that are part of this plan", formalDefinition="The test cases that are part of this plan." )
+    @Child(name = "testCase", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="The test cases that constitute this plan", formalDefinition="The individual test cases that are part of this plan, when they they are made explicit." )
     protected List<TestPlanTestCaseComponent> testCase;
 
-    private static final long serialVersionUID = -1697495171L;
+    private static final long serialVersionUID = 235546950L;
 
   /**
    * Constructor
@@ -1852,7 +2344,15 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return {@link #url} (Canonical identifier URL.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+   * Constructor
+   */
+    public TestPlan(PublicationStatus status) {
+      super();
+      this.setStatus(status);
+    }
+
+    /**
+     * @return {@link #url} (An absolute URI that is used to identify this test plan when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this test plan is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the test plan is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -1872,7 +2372,7 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @param value {@link #url} (Canonical identifier URL.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this test plan when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this test plan is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the test plan is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public TestPlan setUrlElement(UriType value) { 
       this.url = value;
@@ -1880,14 +2380,14 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return Canonical identifier URL.
+     * @return An absolute URI that is used to identify this test plan when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this test plan is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the test plan is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value Canonical identifier URL.
+     * @param value An absolute URI that is used to identify this test plan when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this test plan is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the test plan is stored on different servers.
      */
     public TestPlan setUrl(String value) { 
       if (Utilities.noString(value))
@@ -1901,7 +2401,7 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (Business identifier for the Test Plan.)
+     * @return {@link #identifier} (A formal identifier that is used to identify this test plan when it is represented in other formats, or referenced in a specification, model, design or an instance.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -1954,373 +2454,393 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return {@link #version} (Version of the test plan.)
+     * @return {@link #version} (The identifier that is used to identify this version of the test plan when it is referenced in a specification, model, design or instance.  This is an arbitrary value managed by the test plan author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
      */
-    public List<StringType> getVersion() { 
+    public StringType getVersionElement() { 
       if (this.version == null)
-        this.version = new ArrayList<StringType>();
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create TestPlan.version");
+        else if (Configuration.doAutoCreate())
+          this.version = new StringType(); // bb
       return this.version;
     }
 
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public TestPlan setVersion(List<StringType> theVersion) { 
-      this.version = theVersion;
-      return this;
+    public boolean hasVersionElement() { 
+      return this.version != null && !this.version.isEmpty();
     }
 
     public boolean hasVersion() { 
-      if (this.version == null)
-        return false;
-      for (StringType item : this.version)
-        if (!item.isEmpty())
-          return true;
-      return false;
+      return this.version != null && !this.version.isEmpty();
     }
 
     /**
-     * @return {@link #version} (Version of the test plan.)
+     * @param value {@link #version} (The identifier that is used to identify this version of the test plan when it is referenced in a specification, model, design or instance.  This is an arbitrary value managed by the test plan author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
      */
-    public StringType addVersionElement() {//2 
-      StringType t = new StringType();
-      if (this.version == null)
-        this.version = new ArrayList<StringType>();
-      this.version.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #version} (Version of the test plan.)
-     */
-    public TestPlan addVersion(String value) { //1
-      StringType t = new StringType();
-      t.setValue(value);
-      if (this.version == null)
-        this.version = new ArrayList<StringType>();
-      this.version.add(t);
+    public TestPlan setVersionElement(StringType value) { 
+      this.version = value;
       return this;
     }
 
     /**
-     * @param value {@link #version} (Version of the test plan.)
+     * @return The identifier that is used to identify this version of the test plan when it is referenced in a specification, model, design or instance.  This is an arbitrary value managed by the test plan author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
      */
-    public boolean hasVersion(String value) { 
-      if (this.version == null)
-        return false;
-      for (StringType v : this.version)
-        if (v.getValue().equals(value)) // string
-          return true;
-      return false;
+    public String getVersion() { 
+      return this.version == null ? null : this.version.getValue();
     }
 
     /**
-     * @return {@link #name} (Name.)
+     * @param value The identifier that is used to identify this version of the test plan when it is referenced in a specification, model, design or instance.  This is an arbitrary value managed by the test plan author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
      */
-    public List<StringType> getName() { 
+    public TestPlan setVersion(String value) { 
+      if (Utilities.noString(value))
+        this.version = null;
+      else {
+      if (this.version == null)
+          this.version = new StringType();
+        this.version.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      return this.versionAlgorithm;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new StringType();
+      if (!(this.versionAlgorithm instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (StringType) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmStringType() { 
+      return this != null && this.versionAlgorithm instanceof StringType;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new Coding();
+      if (!(this.versionAlgorithm instanceof Coding))
+        throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (Coding) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmCoding() { 
+      return this != null && this.versionAlgorithm instanceof Coding;
+    }
+
+    public boolean hasVersionAlgorithm() { 
+      return this.versionAlgorithm != null && !this.versionAlgorithm.isEmpty();
+    }
+
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public TestPlan setVersionAlgorithm(DataType value) { 
+      if (value != null && !(value instanceof StringType || value instanceof Coding))
+        throw new FHIRException("Not the right type for TestPlan.versionAlgorithm[x]: "+value.fhirType());
+      this.versionAlgorithm = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #name} (A natural language name identifying the test plan. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public StringType getNameElement() { 
       if (this.name == null)
-        this.name = new ArrayList<StringType>();
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create TestPlan.name");
+        else if (Configuration.doAutoCreate())
+          this.name = new StringType(); // bb
       return this.name;
     }
 
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public TestPlan setName(List<StringType> theName) { 
-      this.name = theName;
-      return this;
+    public boolean hasNameElement() { 
+      return this.name != null && !this.name.isEmpty();
     }
 
     public boolean hasName() { 
-      if (this.name == null)
-        return false;
-      for (StringType item : this.name)
-        if (!item.isEmpty())
-          return true;
-      return false;
+      return this.name != null && !this.name.isEmpty();
     }
 
     /**
-     * @return {@link #name} (Name.)
+     * @param value {@link #name} (A natural language name identifying the test plan. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
-    public StringType addNameElement() {//2 
-      StringType t = new StringType();
-      if (this.name == null)
-        this.name = new ArrayList<StringType>();
-      this.name.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #name} (Name.)
-     */
-    public TestPlan addName(String value) { //1
-      StringType t = new StringType();
-      t.setValue(value);
-      if (this.name == null)
-        this.name = new ArrayList<StringType>();
-      this.name.add(t);
+    public TestPlan setNameElement(StringType value) { 
+      this.name = value;
       return this;
     }
 
     /**
-     * @param value {@link #name} (Name.)
+     * @return A natural language name identifying the test plan. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
-    public boolean hasName(String value) { 
-      if (this.name == null)
-        return false;
-      for (StringType v : this.name)
-        if (v.getValue().equals(value)) // string
-          return true;
-      return false;
+    public String getName() { 
+      return this.name == null ? null : this.name.getValue();
     }
 
     /**
-     * @return {@link #title} (Human-readable title.)
+     * @param value A natural language name identifying the test plan. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
-    public List<StringType> getTitle() { 
+    public TestPlan setName(String value) { 
+      if (Utilities.noString(value))
+        this.name = null;
+      else {
+      if (this.name == null)
+          this.name = new StringType();
+        this.name.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #title} (A short, descriptive, user-friendly title for the test plan.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     */
+    public StringType getTitleElement() { 
       if (this.title == null)
-        this.title = new ArrayList<StringType>();
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create TestPlan.title");
+        else if (Configuration.doAutoCreate())
+          this.title = new StringType(); // bb
       return this.title;
     }
 
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public TestPlan setTitle(List<StringType> theTitle) { 
-      this.title = theTitle;
-      return this;
+    public boolean hasTitleElement() { 
+      return this.title != null && !this.title.isEmpty();
     }
 
     public boolean hasTitle() { 
-      if (this.title == null)
-        return false;
-      for (StringType item : this.title)
-        if (!item.isEmpty())
-          return true;
-      return false;
+      return this.title != null && !this.title.isEmpty();
     }
 
     /**
-     * @return {@link #title} (Human-readable title.)
+     * @param value {@link #title} (A short, descriptive, user-friendly title for the test plan.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
      */
-    public StringType addTitleElement() {//2 
-      StringType t = new StringType();
-      if (this.title == null)
-        this.title = new ArrayList<StringType>();
-      this.title.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #title} (Human-readable title.)
-     */
-    public TestPlan addTitle(String value) { //1
-      StringType t = new StringType();
-      t.setValue(value);
-      if (this.title == null)
-        this.title = new ArrayList<StringType>();
-      this.title.add(t);
+    public TestPlan setTitleElement(StringType value) { 
+      this.title = value;
       return this;
     }
 
     /**
-     * @param value {@link #title} (Human-readable title.)
+     * @return A short, descriptive, user-friendly title for the test plan.
      */
-    public boolean hasTitle(String value) { 
-      if (this.title == null)
-        return false;
-      for (StringType v : this.title)
-        if (v.getValue().equals(value)) // string
-          return true;
-      return false;
+    public String getTitle() { 
+      return this.title == null ? null : this.title.getValue();
     }
 
     /**
-     * @return {@link #status} (Status.)
+     * @param value A short, descriptive, user-friendly title for the test plan.
      */
-    public List<Enumeration<PublicationStatus>> getStatus() { 
+    public TestPlan setTitle(String value) { 
+      if (Utilities.noString(value))
+        this.title = null;
+      else {
+      if (this.title == null)
+          this.title = new StringType();
+        this.title.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #status} (The status of this test plan. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public Enumeration<PublicationStatus> getStatusElement() { 
       if (this.status == null)
-        this.status = new ArrayList<Enumeration<PublicationStatus>>();
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create TestPlan.status");
+        else if (Configuration.doAutoCreate())
+          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory()); // bb
       return this.status;
     }
 
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public TestPlan setStatus(List<Enumeration<PublicationStatus>> theStatus) { 
-      this.status = theStatus;
-      return this;
+    public boolean hasStatusElement() { 
+      return this.status != null && !this.status.isEmpty();
     }
 
     public boolean hasStatus() { 
-      if (this.status == null)
-        return false;
-      for (Enumeration<PublicationStatus> item : this.status)
-        if (!item.isEmpty())
-          return true;
-      return false;
+      return this.status != null && !this.status.isEmpty();
     }
 
     /**
-     * @return {@link #status} (Status.)
+     * @param value {@link #status} (The status of this test plan. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<PublicationStatus> addStatusElement() {//2 
-      Enumeration<PublicationStatus> t = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory());
-      if (this.status == null)
-        this.status = new ArrayList<Enumeration<PublicationStatus>>();
-      this.status.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #status} (Status.)
-     */
-    public TestPlan addStatus(PublicationStatus value) { //1
-      Enumeration<PublicationStatus> t = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory());
-      t.setValue(value);
-      if (this.status == null)
-        this.status = new ArrayList<Enumeration<PublicationStatus>>();
-      this.status.add(t);
+    public TestPlan setStatusElement(Enumeration<PublicationStatus> value) { 
+      this.status = value;
       return this;
     }
 
     /**
-     * @param value {@link #status} (Status.)
+     * @return The status of this test plan. Enables tracking the life-cycle of the content.
      */
-    public boolean hasStatus(PublicationStatus value) { 
-      if (this.status == null)
-        return false;
-      for (Enumeration<PublicationStatus> v : this.status)
-        if (v.getValue().equals(value)) // code
-          return true;
-      return false;
+    public PublicationStatus getStatus() { 
+      return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @return {@link #date} (Date.)
+     * @param value The status of this test plan. Enables tracking the life-cycle of the content.
      */
-    public List<DateTimeType> getDate() { 
+    public TestPlan setStatus(PublicationStatus value) { 
+      if (this.status == null)
+          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory());
+        this.status.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #experimental} (A Boolean value to indicate that this test plan is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
+     */
+    public BooleanType getExperimentalElement() { 
+      if (this.experimental == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create TestPlan.experimental");
+        else if (Configuration.doAutoCreate())
+          this.experimental = new BooleanType(); // bb
+      return this.experimental;
+    }
+
+    public boolean hasExperimentalElement() { 
+      return this.experimental != null && !this.experimental.isEmpty();
+    }
+
+    public boolean hasExperimental() { 
+      return this.experimental != null && !this.experimental.isEmpty();
+    }
+
+    /**
+     * @param value {@link #experimental} (A Boolean value to indicate that this test plan is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
+     */
+    public TestPlan setExperimentalElement(BooleanType value) { 
+      this.experimental = value;
+      return this;
+    }
+
+    /**
+     * @return A Boolean value to indicate that this test plan is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    public boolean getExperimental() { 
+      return this.experimental == null || this.experimental.isEmpty() ? false : this.experimental.getValue();
+    }
+
+    /**
+     * @param value A Boolean value to indicate that this test plan is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    public TestPlan setExperimental(boolean value) { 
+        if (this.experimental == null)
+          this.experimental = new BooleanType();
+        this.experimental.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #date} (The date (and optionally time) when the test plan was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test plan changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     */
+    public DateTimeType getDateElement() { 
       if (this.date == null)
-        this.date = new ArrayList<DateTimeType>();
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create TestPlan.date");
+        else if (Configuration.doAutoCreate())
+          this.date = new DateTimeType(); // bb
       return this.date;
     }
 
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public TestPlan setDate(List<DateTimeType> theDate) { 
-      this.date = theDate;
-      return this;
+    public boolean hasDateElement() { 
+      return this.date != null && !this.date.isEmpty();
     }
 
     public boolean hasDate() { 
-      if (this.date == null)
-        return false;
-      for (DateTimeType item : this.date)
-        if (!item.isEmpty())
-          return true;
-      return false;
+      return this.date != null && !this.date.isEmpty();
     }
 
     /**
-     * @return {@link #date} (Date.)
+     * @param value {@link #date} (The date (and optionally time) when the test plan was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test plan changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
-    public DateTimeType addDateElement() {//2 
-      DateTimeType t = new DateTimeType();
-      if (this.date == null)
-        this.date = new ArrayList<DateTimeType>();
-      this.date.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #date} (Date.)
-     */
-    public TestPlan addDate(Date value) { //1
-      DateTimeType t = new DateTimeType();
-      t.setValue(value);
-      if (this.date == null)
-        this.date = new ArrayList<DateTimeType>();
-      this.date.add(t);
+    public TestPlan setDateElement(DateTimeType value) { 
+      this.date = value;
       return this;
     }
 
     /**
-     * @param value {@link #date} (Date.)
+     * @return The date (and optionally time) when the test plan was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test plan changes.
      */
-    public boolean hasDate(Date value) { 
-      if (this.date == null)
-        return false;
-      for (DateTimeType v : this.date)
-        if (v.getValue().equals(value)) // dateTime
-          return true;
-      return false;
+    public Date getDate() { 
+      return this.date == null ? null : this.date.getValue();
     }
 
     /**
-     * @return {@link #publisher} (Publisher.)
+     * @param value The date (and optionally time) when the test plan was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test plan changes.
      */
-    public List<StringType> getPublisher() { 
+    public TestPlan setDate(Date value) { 
+      if (value == null)
+        this.date = null;
+      else {
+      if (this.date == null)
+          this.date = new DateTimeType();
+        this.date.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the test plan.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     */
+    public StringType getPublisherElement() { 
       if (this.publisher == null)
-        this.publisher = new ArrayList<StringType>();
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create TestPlan.publisher");
+        else if (Configuration.doAutoCreate())
+          this.publisher = new StringType(); // bb
       return this.publisher;
     }
 
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public TestPlan setPublisher(List<StringType> thePublisher) { 
-      this.publisher = thePublisher;
-      return this;
+    public boolean hasPublisherElement() { 
+      return this.publisher != null && !this.publisher.isEmpty();
     }
 
     public boolean hasPublisher() { 
-      if (this.publisher == null)
-        return false;
-      for (StringType item : this.publisher)
-        if (!item.isEmpty())
-          return true;
-      return false;
+      return this.publisher != null && !this.publisher.isEmpty();
     }
 
     /**
-     * @return {@link #publisher} (Publisher.)
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the test plan.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
-    public StringType addPublisherElement() {//2 
-      StringType t = new StringType();
-      if (this.publisher == null)
-        this.publisher = new ArrayList<StringType>();
-      this.publisher.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #publisher} (Publisher.)
-     */
-    public TestPlan addPublisher(String value) { //1
-      StringType t = new StringType();
-      t.setValue(value);
-      if (this.publisher == null)
-        this.publisher = new ArrayList<StringType>();
-      this.publisher.add(t);
+    public TestPlan setPublisherElement(StringType value) { 
+      this.publisher = value;
       return this;
     }
 
     /**
-     * @param value {@link #publisher} (Publisher.)
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the test plan.
      */
-    public boolean hasPublisher(String value) { 
-      if (this.publisher == null)
-        return false;
-      for (StringType v : this.publisher)
-        if (v.getValue().equals(value)) // string
-          return true;
-      return false;
+    public String getPublisher() { 
+      return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @return {@link #contact} (Contact.)
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the test plan.
+     */
+    public TestPlan setPublisher(String value) { 
+      if (Utilities.noString(value))
+        this.publisher = null;
+      else {
+      if (this.publisher == null)
+          this.publisher = new StringType();
+        this.publisher.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #contact} (Contact details to assist a user in finding and communicating with the publisher.)
      */
     public List<ContactDetail> getContact() { 
       if (this.contact == null)
@@ -2373,7 +2893,7 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return {@link #description} (Description of the test plan.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @return {@link #description} (A free text natural language description of the test plan from a consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public MarkdownType getDescriptionElement() { 
       if (this.description == null)
@@ -2393,7 +2913,7 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @param value {@link #description} (Description of the test plan.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @param value {@link #description} (A free text natural language description of the test plan from a consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public TestPlan setDescriptionElement(MarkdownType value) { 
       this.description = value;
@@ -2401,14 +2921,14 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return Description of the test plan.
+     * @return A free text natural language description of the test plan from a consumer's perspective.
      */
     public String getDescription() { 
       return this.description == null ? null : this.description.getValue();
     }
 
     /**
-     * @param value Description of the test plan.
+     * @param value A free text natural language description of the test plan from a consumer's perspective.
      */
     public TestPlan setDescription(String value) { 
       if (Utilities.noString(value))
@@ -2422,7 +2942,60 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return {@link #jurisdiction} (Jurisdiction.)
+     * @return {@link #useContext} (The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate test plan instances.)
+     */
+    public List<UsageContext> getUseContext() { 
+      if (this.useContext == null)
+        this.useContext = new ArrayList<UsageContext>();
+      return this.useContext;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public TestPlan setUseContext(List<UsageContext> theUseContext) { 
+      this.useContext = theUseContext;
+      return this;
+    }
+
+    public boolean hasUseContext() { 
+      if (this.useContext == null)
+        return false;
+      for (UsageContext item : this.useContext)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public UsageContext addUseContext() { //3
+      UsageContext t = new UsageContext();
+      if (this.useContext == null)
+        this.useContext = new ArrayList<UsageContext>();
+      this.useContext.add(t);
+      return t;
+    }
+
+    public TestPlan addUseContext(UsageContext t) { //3
+      if (t == null)
+        return this;
+      if (this.useContext == null)
+        this.useContext = new ArrayList<UsageContext>();
+      this.useContext.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist {3}
+     */
+    public UsageContext getUseContextFirstRep() { 
+      if (getUseContext().isEmpty()) {
+        addUseContext();
+      }
+      return getUseContext().get(0);
+    }
+
+    /**
+     * @return {@link #jurisdiction} (A legal or geographic region in which the test plan is intended to be used.)
      */
     public List<CodeableConcept> getJurisdiction() { 
       if (this.jurisdiction == null)
@@ -2475,7 +3048,7 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return {@link #purpose} (Purpose.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     * @return {@link #purpose} (Explanation of why this test plan is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
      */
     public MarkdownType getPurposeElement() { 
       if (this.purpose == null)
@@ -2495,7 +3068,7 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @param value {@link #purpose} (Purpose.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     * @param value {@link #purpose} (Explanation of why this test plan is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
      */
     public TestPlan setPurposeElement(MarkdownType value) { 
       this.purpose = value;
@@ -2503,14 +3076,14 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return Purpose.
+     * @return Explanation of why this test plan is needed and why it has been designed as it has.
      */
     public String getPurpose() { 
       return this.purpose == null ? null : this.purpose.getValue();
     }
 
     /**
-     * @param value Purpose.
+     * @param value Explanation of why this test plan is needed and why it has been designed as it has.
      */
     public TestPlan setPurpose(String value) { 
       if (Utilities.noString(value))
@@ -2524,7 +3097,7 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return {@link #copyright} (Copyright.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     * @return {@link #copyright} (A copyright statement relating to the test plan and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the test plan. The short copyright declaration (e.g. (c) '2015+ xyz organization' should be sent in the copyrightLabel element.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
      */
     public MarkdownType getCopyrightElement() { 
       if (this.copyright == null)
@@ -2544,7 +3117,7 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @param value {@link #copyright} (Copyright.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     * @param value {@link #copyright} (A copyright statement relating to the test plan and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the test plan. The short copyright declaration (e.g. (c) '2015+ xyz organization' should be sent in the copyrightLabel element.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
      */
     public TestPlan setCopyrightElement(MarkdownType value) { 
       this.copyright = value;
@@ -2552,14 +3125,14 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return Copyright.
+     * @return A copyright statement relating to the test plan and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the test plan. The short copyright declaration (e.g. (c) '2015+ xyz organization' should be sent in the copyrightLabel element.
      */
     public String getCopyright() { 
       return this.copyright == null ? null : this.copyright.getValue();
     }
 
     /**
-     * @param value Copyright.
+     * @param value A copyright statement relating to the test plan and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the test plan. The short copyright declaration (e.g. (c) '2015+ xyz organization' should be sent in the copyrightLabel element.
      */
     public TestPlan setCopyright(String value) { 
       if (Utilities.noString(value))
@@ -2568,6 +3141,55 @@ public class TestPlan extends DomainResource {
         if (this.copyright == null)
           this.copyright = new MarkdownType();
         this.copyright.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      if (this.copyrightLabel == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create TestPlan.copyrightLabel");
+        else if (Configuration.doAutoCreate())
+          this.copyrightLabel = new StringType(); // bb
+      return this.copyrightLabel;
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    public boolean hasCopyrightLabel() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public TestPlan setCopyrightLabelElement(StringType value) { 
+      this.copyrightLabel = value;
+      return this;
+    }
+
+    /**
+     * @return A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public String getCopyrightLabel() { 
+      return this.copyrightLabel == null ? null : this.copyrightLabel.getValue();
+    }
+
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public TestPlan setCopyrightLabel(String value) { 
+      if (Utilities.noString(value))
+        this.copyrightLabel = null;
+      else {
+        if (this.copyrightLabel == null)
+          this.copyrightLabel = new StringType();
+        this.copyrightLabel.setValue(value);
       }
       return this;
     }
@@ -2728,56 +3350,56 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return {@link #dependencies} (The required criteria to execute the test plan - e.g. preconditions, previous tests...)
+     * @return {@link #dependency} (The required criteria to execute the test plan - e.g. preconditions, previous tests...)
      */
-    public List<TestPlanDependenciesComponent> getDependencies() { 
-      if (this.dependencies == null)
-        this.dependencies = new ArrayList<TestPlanDependenciesComponent>();
-      return this.dependencies;
+    public List<TestPlanDependencyComponent> getDependency() { 
+      if (this.dependency == null)
+        this.dependency = new ArrayList<TestPlanDependencyComponent>();
+      return this.dependency;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public TestPlan setDependencies(List<TestPlanDependenciesComponent> theDependencies) { 
-      this.dependencies = theDependencies;
+    public TestPlan setDependency(List<TestPlanDependencyComponent> theDependency) { 
+      this.dependency = theDependency;
       return this;
     }
 
-    public boolean hasDependencies() { 
-      if (this.dependencies == null)
+    public boolean hasDependency() { 
+      if (this.dependency == null)
         return false;
-      for (TestPlanDependenciesComponent item : this.dependencies)
+      for (TestPlanDependencyComponent item : this.dependency)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public TestPlanDependenciesComponent addDependencies() { //3
-      TestPlanDependenciesComponent t = new TestPlanDependenciesComponent();
-      if (this.dependencies == null)
-        this.dependencies = new ArrayList<TestPlanDependenciesComponent>();
-      this.dependencies.add(t);
+    public TestPlanDependencyComponent addDependency() { //3
+      TestPlanDependencyComponent t = new TestPlanDependencyComponent();
+      if (this.dependency == null)
+        this.dependency = new ArrayList<TestPlanDependencyComponent>();
+      this.dependency.add(t);
       return t;
     }
 
-    public TestPlan addDependencies(TestPlanDependenciesComponent t) { //3
+    public TestPlan addDependency(TestPlanDependencyComponent t) { //3
       if (t == null)
         return this;
-      if (this.dependencies == null)
-        this.dependencies = new ArrayList<TestPlanDependenciesComponent>();
-      this.dependencies.add(t);
+      if (this.dependency == null)
+        this.dependency = new ArrayList<TestPlanDependencyComponent>();
+      this.dependency.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #dependencies}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #dependency}, creating it if it does not already exist {3}
      */
-    public TestPlanDependenciesComponent getDependenciesFirstRep() { 
-      if (getDependencies().isEmpty()) {
-        addDependencies();
+    public TestPlanDependencyComponent getDependencyFirstRep() { 
+      if (getDependency().isEmpty()) {
+        addDependency();
       }
-      return getDependencies().get(0);
+      return getDependency().get(0);
     }
 
     /**
@@ -2830,7 +3452,7 @@ public class TestPlan extends DomainResource {
     }
 
     /**
-     * @return {@link #testCase} (The test cases that are part of this plan.)
+     * @return {@link #testCase} (The individual test cases that are part of this plan, when they they are made explicit.)
      */
     public List<TestPlanTestCaseComponent> getTestCase() { 
       if (this.testCase == null)
@@ -2884,49 +3506,60 @@ public class TestPlan extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "Canonical identifier URL.", 0, 1, url));
-        children.add(new Property("identifier", "Identifier", "Business identifier for the Test Plan.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("version", "string", "Version of the test plan.", 0, java.lang.Integer.MAX_VALUE, version));
-        children.add(new Property("name", "string", "Name.", 0, java.lang.Integer.MAX_VALUE, name));
-        children.add(new Property("title", "string", "Human-readable title.", 0, java.lang.Integer.MAX_VALUE, title));
-        children.add(new Property("status", "code", "Status.", 0, java.lang.Integer.MAX_VALUE, status));
-        children.add(new Property("date", "dateTime", "Date.", 0, java.lang.Integer.MAX_VALUE, date));
-        children.add(new Property("publisher", "string", "Publisher.", 0, java.lang.Integer.MAX_VALUE, publisher));
-        children.add(new Property("contact", "ContactDetail", "Contact.", 0, java.lang.Integer.MAX_VALUE, contact));
-        children.add(new Property("description", "markdown", "Description of the test plan.", 0, 1, description));
-        children.add(new Property("jurisdiction", "CodeableConcept", "Jurisdiction.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
-        children.add(new Property("purpose", "markdown", "Purpose.", 0, 1, purpose));
-        children.add(new Property("copyright", "markdown", "Copyright.", 0, 1, copyright));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this test plan when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this test plan is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the test plan is stored on different servers.", 0, 1, url));
+        children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this test plan when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("version", "string", "The identifier that is used to identify this version of the test plan when it is referenced in a specification, model, design or instance.  This is an arbitrary value managed by the test plan author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
+        children.add(new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm));
+        children.add(new Property("name", "string", "A natural language name identifying the test plan. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
+        children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the test plan.", 0, 1, title));
+        children.add(new Property("status", "code", "The status of this test plan. Enables tracking the life-cycle of the content.", 0, 1, status));
+        children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this test plan is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
+        children.add(new Property("date", "dateTime", "The date (and optionally time) when the test plan was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test plan changes.", 0, 1, date));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the test plan.", 0, 1, publisher));
+        children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
+        children.add(new Property("description", "markdown", "A free text natural language description of the test plan from a consumer's perspective.", 0, 1, description));
+        children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate test plan instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
+        children.add(new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the test plan is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
+        children.add(new Property("purpose", "markdown", "Explanation of why this test plan is needed and why it has been designed as it has.", 0, 1, purpose));
+        children.add(new Property("copyright", "markdown", "A copyright statement relating to the test plan and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the test plan. The short copyright declaration (e.g. (c) '2015+ xyz organization' should be sent in the copyrightLabel element.", 0, 1, copyright));
+        children.add(new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel));
         children.add(new Property("category", "CodeableConcept", "The category of the Test Plan - can be acceptance, unit, performance, etc.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("scope", "Reference", "What is being tested with this Test Plan - a conformance resource, or narrative criteria, or an external reference...", 0, java.lang.Integer.MAX_VALUE, scope));
         children.add(new Property("testTools", "markdown", "A description of test tools to be used in the test plan.", 0, 1, testTools));
-        children.add(new Property("dependencies", "", "The required criteria to execute the test plan - e.g. preconditions, previous tests...", 0, java.lang.Integer.MAX_VALUE, dependencies));
+        children.add(new Property("dependency", "", "The required criteria to execute the test plan - e.g. preconditions, previous tests...", 0, java.lang.Integer.MAX_VALUE, dependency));
         children.add(new Property("exitCriteria", "markdown", "The threshold or criteria for the test plan to be considered successfully executed - narrative.", 0, 1, exitCriteria));
-        children.add(new Property("testCase", "", "The test cases that are part of this plan.", 0, java.lang.Integer.MAX_VALUE, testCase));
+        children.add(new Property("testCase", "", "The individual test cases that are part of this plan, when they they are made explicit.", 0, java.lang.Integer.MAX_VALUE, testCase));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "Canonical identifier URL.", 0, 1, url);
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier for the Test Plan.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case 351608024: /*version*/  return new Property("version", "string", "Version of the test plan.", 0, java.lang.Integer.MAX_VALUE, version);
-        case 3373707: /*name*/  return new Property("name", "string", "Name.", 0, java.lang.Integer.MAX_VALUE, name);
-        case 110371416: /*title*/  return new Property("title", "string", "Human-readable title.", 0, java.lang.Integer.MAX_VALUE, title);
-        case -892481550: /*status*/  return new Property("status", "code", "Status.", 0, java.lang.Integer.MAX_VALUE, status);
-        case 3076014: /*date*/  return new Property("date", "dateTime", "Date.", 0, java.lang.Integer.MAX_VALUE, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "Publisher.", 0, java.lang.Integer.MAX_VALUE, publisher);
-        case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact.", 0, java.lang.Integer.MAX_VALUE, contact);
-        case -1724546052: /*description*/  return new Property("description", "markdown", "Description of the test plan.", 0, 1, description);
-        case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "Jurisdiction.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
-        case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Purpose.", 0, 1, purpose);
-        case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "Copyright.", 0, 1, copyright);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this test plan when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this test plan is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the test plan is stored on different servers.", 0, 1, url);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this test plan when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the test plan when it is referenced in a specification, model, design or instance.  This is an arbitrary value managed by the test plan author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
+        case -115699031: /*versionAlgorithm[x]*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1508158071: /*versionAlgorithm*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1836908904: /*versionAlgorithmString*/  return new Property("versionAlgorithm[x]", "string", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1373807809: /*versionAlgorithmCoding*/  return new Property("versionAlgorithm[x]", "Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the test plan. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
+        case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the test plan.", 0, 1, title);
+        case -892481550: /*status*/  return new Property("status", "code", "The status of this test plan. Enables tracking the life-cycle of the content.", 0, 1, status);
+        case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this test plan is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
+        case 3076014: /*date*/  return new Property("date", "dateTime", "The date (and optionally time) when the test plan was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test plan changes.", 0, 1, date);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the test plan.", 0, 1, publisher);
+        case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
+        case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the test plan from a consumer's perspective.", 0, 1, description);
+        case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate test plan instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
+        case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the test plan is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
+        case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explanation of why this test plan is needed and why it has been designed as it has.", 0, 1, purpose);
+        case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the test plan and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the test plan. The short copyright declaration (e.g. (c) '2015+ xyz organization' should be sent in the copyrightLabel element.", 0, 1, copyright);
+        case 765157229: /*copyrightLabel*/  return new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "The category of the Test Plan - can be acceptance, unit, performance, etc.", 0, java.lang.Integer.MAX_VALUE, category);
         case 109264468: /*scope*/  return new Property("scope", "Reference", "What is being tested with this Test Plan - a conformance resource, or narrative criteria, or an external reference...", 0, java.lang.Integer.MAX_VALUE, scope);
         case -1190420375: /*testTools*/  return new Property("testTools", "markdown", "A description of test tools to be used in the test plan.", 0, 1, testTools);
-        case 503774505: /*dependencies*/  return new Property("dependencies", "", "The required criteria to execute the test plan - e.g. preconditions, previous tests...", 0, java.lang.Integer.MAX_VALUE, dependencies);
+        case -26291381: /*dependency*/  return new Property("dependency", "", "The required criteria to execute the test plan - e.g. preconditions, previous tests...", 0, java.lang.Integer.MAX_VALUE, dependency);
         case -1382023523: /*exitCriteria*/  return new Property("exitCriteria", "markdown", "The threshold or criteria for the test plan to be considered successfully executed - narrative.", 0, 1, exitCriteria);
-        case -1147299102: /*testCase*/  return new Property("testCase", "", "The test cases that are part of this plan.", 0, java.lang.Integer.MAX_VALUE, testCase);
+        case -1147299102: /*testCase*/  return new Property("testCase", "", "The individual test cases that are part of this plan, when they they are made explicit.", 0, java.lang.Integer.MAX_VALUE, testCase);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2937,21 +3570,25 @@ public class TestPlan extends DomainResource {
         switch (hash) {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case 351608024: /*version*/ return this.version == null ? new Base[0] : this.version.toArray(new Base[this.version.size()]); // StringType
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : this.name.toArray(new Base[this.name.size()]); // StringType
-        case 110371416: /*title*/ return this.title == null ? new Base[0] : this.title.toArray(new Base[this.title.size()]); // StringType
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : this.status.toArray(new Base[this.status.size()]); // Enumeration<PublicationStatus>
-        case 3076014: /*date*/ return this.date == null ? new Base[0] : this.date.toArray(new Base[this.date.size()]); // DateTimeType
-        case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : this.publisher.toArray(new Base[this.publisher.size()]); // StringType
+        case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case 1508158071: /*versionAlgorithm*/ return this.versionAlgorithm == null ? new Base[0] : new Base[] {this.versionAlgorithm}; // DataType
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
+        case -404562712: /*experimental*/ return this.experimental == null ? new Base[0] : new Base[] {this.experimental}; // BooleanType
+        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
+        case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // StringType
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactDetail
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
+        case -669707736: /*useContext*/ return this.useContext == null ? new Base[0] : this.useContext.toArray(new Base[this.useContext.size()]); // UsageContext
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // MarkdownType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
+        case 765157229: /*copyrightLabel*/ return this.copyrightLabel == null ? new Base[0] : new Base[] {this.copyrightLabel}; // StringType
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case 109264468: /*scope*/ return this.scope == null ? new Base[0] : this.scope.toArray(new Base[this.scope.size()]); // Reference
         case -1190420375: /*testTools*/ return this.testTools == null ? new Base[0] : new Base[] {this.testTools}; // MarkdownType
-        case 503774505: /*dependencies*/ return this.dependencies == null ? new Base[0] : this.dependencies.toArray(new Base[this.dependencies.size()]); // TestPlanDependenciesComponent
+        case -26291381: /*dependency*/ return this.dependency == null ? new Base[0] : this.dependency.toArray(new Base[this.dependency.size()]); // TestPlanDependencyComponent
         case -1382023523: /*exitCriteria*/ return this.exitCriteria == null ? new Base[0] : new Base[] {this.exitCriteria}; // MarkdownType
         case -1147299102: /*testCase*/ return this.testCase == null ? new Base[0] : this.testCase.toArray(new Base[this.testCase.size()]); // TestPlanTestCaseComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -2969,29 +3606,38 @@ public class TestPlan extends DomainResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
-          this.getVersion().add(TypeConvertor.castToString(value)); // StringType
+          this.version = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 1508158071: // versionAlgorithm
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
           return value;
         case 3373707: // name
-          this.getName().add(TypeConvertor.castToString(value)); // StringType
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
-          this.getTitle().add(TypeConvertor.castToString(value)); // StringType
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getStatus().add((Enumeration) value); // Enumeration<PublicationStatus>
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+          return value;
+        case -404562712: // experimental
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
-          this.getDate().add(TypeConvertor.castToDateTime(value)); // DateTimeType
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 1447404028: // publisher
-          this.getPublisher().add(TypeConvertor.castToString(value)); // StringType
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
         case 951526432: // contact
           this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1724546052: // description
           this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case -669707736: // useContext
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
         case -507075711: // jurisdiction
           this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -3002,6 +3648,9 @@ public class TestPlan extends DomainResource {
         case 1522889671: // copyright
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
+        case 765157229: // copyrightLabel
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
+          return value;
         case 50511102: // category
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
@@ -3011,8 +3660,8 @@ public class TestPlan extends DomainResource {
         case -1190420375: // testTools
           this.testTools = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
-        case 503774505: // dependencies
-          this.getDependencies().add((TestPlanDependenciesComponent) value); // TestPlanDependenciesComponent
+        case -26291381: // dependency
+          this.getDependency().add((TestPlanDependencyComponent) value); // TestPlanDependencyComponent
           return value;
         case -1382023523: // exitCriteria
           this.exitCriteria = TypeConvertor.castToMarkdown(value); // MarkdownType
@@ -3032,36 +3681,44 @@ public class TestPlan extends DomainResource {
         } else if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
-          this.getVersion().add(TypeConvertor.castToString(value));
+          this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("name")) {
-          this.getName().add(TypeConvertor.castToString(value));
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
-          this.getTitle().add(TypeConvertor.castToString(value));
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getStatus().add((Enumeration) value);
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
-          this.getDate().add(TypeConvertor.castToDateTime(value));
+          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
-          this.getPublisher().add(TypeConvertor.castToString(value));
+          this.publisher = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("contact")) {
           this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
           this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("useContext")) {
+          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
           this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
           this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("category")) {
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("scope")) {
           this.getScope().add(TypeConvertor.castToReference(value));
         } else if (name.equals("testTools")) {
           this.testTools = TypeConvertor.castToMarkdown(value); // MarkdownType
-        } else if (name.equals("dependencies")) {
-          this.getDependencies().add((TestPlanDependenciesComponent) value);
+        } else if (name.equals("dependency")) {
+          this.getDependency().add((TestPlanDependencyComponent) value);
         } else if (name.equals("exitCriteria")) {
           this.exitCriteria = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("testCase")) {
@@ -3076,21 +3733,26 @@ public class TestPlan extends DomainResource {
         switch (hash) {
         case 116079:  return getUrlElement();
         case -1618432855:  return addIdentifier(); 
-        case 351608024:  return addVersionElement();
-        case 3373707:  return addNameElement();
-        case 110371416:  return addTitleElement();
-        case -892481550:  return addStatusElement();
-        case 3076014:  return addDateElement();
-        case 1447404028:  return addPublisherElement();
+        case 351608024:  return getVersionElement();
+        case -115699031:  return getVersionAlgorithm();
+        case 1508158071:  return getVersionAlgorithm();
+        case 3373707:  return getNameElement();
+        case 110371416:  return getTitleElement();
+        case -892481550:  return getStatusElement();
+        case -404562712:  return getExperimentalElement();
+        case 3076014:  return getDateElement();
+        case 1447404028:  return getPublisherElement();
         case 951526432:  return addContact(); 
         case -1724546052:  return getDescriptionElement();
+        case -669707736:  return addUseContext(); 
         case -507075711:  return addJurisdiction(); 
         case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
+        case 765157229:  return getCopyrightLabelElement();
         case 50511102:  return addCategory(); 
         case 109264468:  return addScope(); 
         case -1190420375:  return getTestToolsElement();
-        case 503774505:  return addDependencies(); 
+        case -26291381:  return addDependency(); 
         case -1382023523:  return getExitCriteriaElement();
         case -1147299102:  return addTestCase(); 
         default: return super.makeProperty(hash, name);
@@ -3104,20 +3766,24 @@ public class TestPlan extends DomainResource {
         case 116079: /*url*/ return new String[] {"uri"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case 1508158071: /*versionAlgorithm*/ return new String[] {"string", "Coding"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"code"};
+        case -404562712: /*experimental*/ return new String[] {"boolean"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
         case 1447404028: /*publisher*/ return new String[] {"string"};
         case 951526432: /*contact*/ return new String[] {"ContactDetail"};
         case -1724546052: /*description*/ return new String[] {"markdown"};
+        case -669707736: /*useContext*/ return new String[] {"UsageContext"};
         case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
         case -220463842: /*purpose*/ return new String[] {"markdown"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
+        case 765157229: /*copyrightLabel*/ return new String[] {"string"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 109264468: /*scope*/ return new String[] {"Reference"};
         case -1190420375: /*testTools*/ return new String[] {"markdown"};
-        case 503774505: /*dependencies*/ return new String[] {};
+        case -26291381: /*dependency*/ return new String[] {};
         case -1382023523: /*exitCriteria*/ return new String[] {"markdown"};
         case -1147299102: /*testCase*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -3136,6 +3802,14 @@ public class TestPlan extends DomainResource {
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestPlan.version");
         }
+        else if (name.equals("versionAlgorithmString")) {
+          this.versionAlgorithm = new StringType();
+          return this.versionAlgorithm;
+        }
+        else if (name.equals("versionAlgorithmCoding")) {
+          this.versionAlgorithm = new Coding();
+          return this.versionAlgorithm;
+        }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestPlan.name");
         }
@@ -3144,6 +3818,9 @@ public class TestPlan extends DomainResource {
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestPlan.status");
+        }
+        else if (name.equals("experimental")) {
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.experimental");
         }
         else if (name.equals("date")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestPlan.date");
@@ -3157,6 +3834,9 @@ public class TestPlan extends DomainResource {
         else if (name.equals("description")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestPlan.description");
         }
+        else if (name.equals("useContext")) {
+          return addUseContext();
+        }
         else if (name.equals("jurisdiction")) {
           return addJurisdiction();
         }
@@ -3165,6 +3845,9 @@ public class TestPlan extends DomainResource {
         }
         else if (name.equals("copyright")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestPlan.copyright");
+        }
+        else if (name.equals("copyrightLabel")) {
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.copyrightLabel");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -3175,8 +3858,8 @@ public class TestPlan extends DomainResource {
         else if (name.equals("testTools")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestPlan.testTools");
         }
-        else if (name.equals("dependencies")) {
-          return addDependencies();
+        else if (name.equals("dependency")) {
+          return addDependency();
         }
         else if (name.equals("exitCriteria")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestPlan.exitCriteria");
@@ -3207,42 +3890,25 @@ public class TestPlan extends DomainResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
-        if (version != null) {
-          dst.version = new ArrayList<StringType>();
-          for (StringType i : version)
-            dst.version.add(i.copy());
-        };
-        if (name != null) {
-          dst.name = new ArrayList<StringType>();
-          for (StringType i : name)
-            dst.name.add(i.copy());
-        };
-        if (title != null) {
-          dst.title = new ArrayList<StringType>();
-          for (StringType i : title)
-            dst.title.add(i.copy());
-        };
-        if (status != null) {
-          dst.status = new ArrayList<Enumeration<PublicationStatus>>();
-          for (Enumeration<PublicationStatus> i : status)
-            dst.status.add(i.copy());
-        };
-        if (date != null) {
-          dst.date = new ArrayList<DateTimeType>();
-          for (DateTimeType i : date)
-            dst.date.add(i.copy());
-        };
-        if (publisher != null) {
-          dst.publisher = new ArrayList<StringType>();
-          for (StringType i : publisher)
-            dst.publisher.add(i.copy());
-        };
+        dst.version = version == null ? null : version.copy();
+        dst.versionAlgorithm = versionAlgorithm == null ? null : versionAlgorithm.copy();
+        dst.name = name == null ? null : name.copy();
+        dst.title = title == null ? null : title.copy();
+        dst.status = status == null ? null : status.copy();
+        dst.experimental = experimental == null ? null : experimental.copy();
+        dst.date = date == null ? null : date.copy();
+        dst.publisher = publisher == null ? null : publisher.copy();
         if (contact != null) {
           dst.contact = new ArrayList<ContactDetail>();
           for (ContactDetail i : contact)
             dst.contact.add(i.copy());
         };
         dst.description = description == null ? null : description.copy();
+        if (useContext != null) {
+          dst.useContext = new ArrayList<UsageContext>();
+          for (UsageContext i : useContext)
+            dst.useContext.add(i.copy());
+        };
         if (jurisdiction != null) {
           dst.jurisdiction = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : jurisdiction)
@@ -3250,6 +3916,7 @@ public class TestPlan extends DomainResource {
         };
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
+        dst.copyrightLabel = copyrightLabel == null ? null : copyrightLabel.copy();
         if (category != null) {
           dst.category = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : category)
@@ -3261,10 +3928,10 @@ public class TestPlan extends DomainResource {
             dst.scope.add(i.copy());
         };
         dst.testTools = testTools == null ? null : testTools.copy();
-        if (dependencies != null) {
-          dst.dependencies = new ArrayList<TestPlanDependenciesComponent>();
-          for (TestPlanDependenciesComponent i : dependencies)
-            dst.dependencies.add(i.copy());
+        if (dependency != null) {
+          dst.dependency = new ArrayList<TestPlanDependencyComponent>();
+          for (TestPlanDependencyComponent i : dependency)
+            dst.dependency.add(i.copy());
         };
         dst.exitCriteria = exitCriteria == null ? null : exitCriteria.copy();
         if (testCase != null) {
@@ -3286,12 +3953,14 @@ public class TestPlan extends DomainResource {
           return false;
         TestPlan o = (TestPlan) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
-           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(status, o.status, true)
-           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(description, o.description, true) && compareDeep(jurisdiction, o.jurisdiction, true)
-           && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true) && compareDeep(category, o.category, true)
-           && compareDeep(scope, o.scope, true) && compareDeep(testTools, o.testTools, true) && compareDeep(dependencies, o.dependencies, true)
-           && compareDeep(exitCriteria, o.exitCriteria, true) && compareDeep(testCase, o.testCase, true);
+           && compareDeep(versionAlgorithm, o.versionAlgorithm, true) && compareDeep(name, o.name, true) && compareDeep(title, o.title, true)
+           && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true)
+           && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true)
+           && compareDeep(useContext, o.useContext, true) && compareDeep(jurisdiction, o.jurisdiction, true)
+           && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true) && compareDeep(copyrightLabel, o.copyrightLabel, true)
+           && compareDeep(category, o.category, true) && compareDeep(scope, o.scope, true) && compareDeep(testTools, o.testTools, true)
+           && compareDeep(dependency, o.dependency, true) && compareDeep(exitCriteria, o.exitCriteria, true)
+           && compareDeep(testCase, o.testCase, true);
       }
 
       @Override
@@ -3302,23 +3971,328 @@ public class TestPlan extends DomainResource {
           return false;
         TestPlan o = (TestPlan) other_;
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
-           && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(date, o.date, true)
-           && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true)
-           && compareValues(copyright, o.copyright, true) && compareValues(testTools, o.testTools, true) && compareValues(exitCriteria, o.exitCriteria, true)
+           && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
+           && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
+           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(copyrightLabel, o.copyrightLabel, true)
+           && compareValues(testTools, o.testTools, true) && compareValues(exitCriteria, o.exitCriteria, true)
           ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , name, title, status, date, publisher, contact, description, jurisdiction, purpose
-          , copyright, category, scope, testTools, dependencies, exitCriteria, testCase
-          );
+          , versionAlgorithm, name, title, status, experimental, date, publisher, contact
+          , description, useContext, jurisdiction, purpose, copyright, copyrightLabel, category
+          , scope, testTools, dependency, exitCriteria, testCase);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.TestPlan;
    }
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
+* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
+* [Citation](citation.html): External identifier for the citation
+* [CodeSystem](codesystem.html): External identifier for the code system
+* [ConceptMap](conceptmap.html): External identifier for the concept map
+* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition
+* [EventDefinition](eventdefinition.html): External identifier for the event definition
+* [Evidence](evidence.html): External identifier for the evidence
+* [EvidenceReport](evidencereport.html): External identifier for the evidence report
+* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
+* [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [GraphDefinition](graphdefinition.html): External identifier for the graph definition
+* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide
+* [Library](library.html): External identifier for the library
+* [Measure](measure.html): External identifier for the measure
+* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
+* [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [NamingSystem](namingsystem.html): External identifier for the naming system
+* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [OperationDefinition](operationdefinition.html): External identifier for the search parameter
+* [PlanDefinition](plandefinition.html): External identifier for the plan definition
+* [Questionnaire](questionnaire.html): External identifier for the questionnaire
+* [Requirements](requirements.html): External identifier for the requirements
+* [SearchParameter](searchparameter.html): External identifier for the search parameter
+* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
+* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
+* [StructureMap](structuremap.html): External identifier for the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic
+* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
+* [TestPlan](testplan.html): An identifier for the test plan
+* [TestScript](testscript.html): External identifier for the test script
+* [ValueSet](valueset.html): External identifier for the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestPlan.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestPlan.identifier | TestScript.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition\r\n* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition\r\n* [Citation](citation.html): External identifier for the citation\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition\r\n* [EventDefinition](eventdefinition.html): External identifier for the event definition\r\n* [Evidence](evidence.html): External identifier for the evidence\r\n* [EvidenceReport](evidencereport.html): External identifier for the evidence report\r\n* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable\r\n* [ExampleScenario](examplescenario.html): External identifier for the example scenario\r\n* [GraphDefinition](graphdefinition.html): External identifier for the graph definition\r\n* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide\r\n* [Library](library.html): External identifier for the library\r\n* [Measure](measure.html): External identifier for the measure\r\n* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition\r\n* [OperationDefinition](operationdefinition.html): External identifier for the search parameter\r\n* [PlanDefinition](plandefinition.html): External identifier for the plan definition\r\n* [Questionnaire](questionnaire.html): External identifier for the questionnaire\r\n* [Requirements](requirements.html): External identifier for the requirements\r\n* [SearchParameter](searchparameter.html): External identifier for the search parameter\r\n* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [TestPlan](testplan.html): An identifier for the test plan\r\n* [TestScript](testscript.html): External identifier for the test script\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
+* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): External identifier for the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
+* [Citation](citation.html): External identifier for the citation
+* [CodeSystem](codesystem.html): External identifier for the code system
+* [ConceptMap](conceptmap.html): External identifier for the concept map
+* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition
+* [EventDefinition](eventdefinition.html): External identifier for the event definition
+* [Evidence](evidence.html): External identifier for the evidence
+* [EvidenceReport](evidencereport.html): External identifier for the evidence report
+* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
+* [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [GraphDefinition](graphdefinition.html): External identifier for the graph definition
+* [ImplementationGuide](implementationguide.html): External identifier for the implementation guide
+* [Library](library.html): External identifier for the library
+* [Measure](measure.html): External identifier for the measure
+* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
+* [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [NamingSystem](namingsystem.html): External identifier for the naming system
+* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [OperationDefinition](operationdefinition.html): External identifier for the search parameter
+* [PlanDefinition](plandefinition.html): External identifier for the plan definition
+* [Questionnaire](questionnaire.html): External identifier for the questionnaire
+* [Requirements](requirements.html): External identifier for the requirements
+* [SearchParameter](searchparameter.html): External identifier for the search parameter
+* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
+* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
+* [StructureMap](structuremap.html): External identifier for the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic
+* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
+* [TestPlan](testplan.html): An identifier for the test plan
+* [TestScript](testscript.html): External identifier for the test script
+* [ValueSet](valueset.html): External identifier for the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | CapabilityStatement.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | GraphDefinition.identifier | ImplementationGuide.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | OperationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SearchParameter.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestPlan.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The current status of the activity definition
+* [ActorDefinition](actordefinition.html): The current status of the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The current status of the charge item definition
+* [Citation](citation.html): The current status of the citation
+* [CodeSystem](codesystem.html): The current status of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition
+* [ConceptMap](conceptmap.html): The current status of the concept map
+* [ConditionDefinition](conditiondefinition.html): The current status of the condition definition
+* [EventDefinition](eventdefinition.html): The current status of the event definition
+* [Evidence](evidence.html): The current status of the evidence
+* [EvidenceReport](evidencereport.html): The current status of the evidence report
+* [EvidenceVariable](evidencevariable.html): The current status of the evidence variable
+* [ExampleScenario](examplescenario.html): The current status of the example scenario
+* [GraphDefinition](graphdefinition.html): The current status of the graph definition
+* [ImplementationGuide](implementationguide.html): The current status of the implementation guide
+* [Library](library.html): The current status of the library
+* [Measure](measure.html): The current status of the measure
+* [MedicationKnowledge](medicationknowledge.html): active | inactive | entered-in-error
+* [MessageDefinition](messagedefinition.html): The current status of the message definition
+* [NamingSystem](namingsystem.html): The current status of the naming system
+* [ObservationDefinition](observationdefinition.html): Publication status of the ObservationDefinition: draft, active, retired, unknown
+* [OperationDefinition](operationdefinition.html): The current status of the operation definition
+* [PlanDefinition](plandefinition.html): The current status of the plan definition
+* [Questionnaire](questionnaire.html): The current status of the questionnaire
+* [Requirements](requirements.html): The current status of the requirements
+* [SearchParameter](searchparameter.html): The current status of the search parameter
+* [SpecimenDefinition](specimendefinition.html): Publication status of the SpecimenDefinition: draft, active, retired, unknown
+* [StructureDefinition](structuredefinition.html): The current status of the structure definition
+* [StructureMap](structuremap.html): The current status of the structure map
+* [SubscriptionTopic](subscriptiontopic.html): draft | active | retired | unknown
+* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities
+* [TestPlan](testplan.html): The current status of the test plan
+* [TestScript](testscript.html): The current status of the test script
+* [ValueSet](valueset.html): The current status of the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.status | ActorDefinition.status | CapabilityStatement.status | ChargeItemDefinition.status | Citation.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | ConditionDefinition.status | EventDefinition.status | Evidence.status | EvidenceReport.status | EvidenceVariable.status | ExampleScenario.status | GraphDefinition.status | ImplementationGuide.status | Library.status | Measure.status | MedicationKnowledge.status | MessageDefinition.status | NamingSystem.status | ObservationDefinition.status | OperationDefinition.status | PlanDefinition.status | Questionnaire.status | Requirements.status | SearchParameter.status | SpecimenDefinition.status | StructureDefinition.status | StructureMap.status | SubscriptionTopic.status | TerminologyCapabilities.status | TestPlan.status | TestScript.status | ValueSet.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="ActivityDefinition.status | ActorDefinition.status | CapabilityStatement.status | ChargeItemDefinition.status | Citation.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | ConditionDefinition.status | EventDefinition.status | Evidence.status | EvidenceReport.status | EvidenceVariable.status | ExampleScenario.status | GraphDefinition.status | ImplementationGuide.status | Library.status | Measure.status | MedicationKnowledge.status | MessageDefinition.status | NamingSystem.status | ObservationDefinition.status | OperationDefinition.status | PlanDefinition.status | Questionnaire.status | Requirements.status | SearchParameter.status | SpecimenDefinition.status | StructureDefinition.status | StructureMap.status | SubscriptionTopic.status | TerminologyCapabilities.status | TestPlan.status | TestScript.status | ValueSet.status", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): The current status of the activity definition\r\n* [ActorDefinition](actordefinition.html): The current status of the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): The current status of the charge item definition\r\n* [Citation](citation.html): The current status of the citation\r\n* [CodeSystem](codesystem.html): The current status of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition\r\n* [ConceptMap](conceptmap.html): The current status of the concept map\r\n* [ConditionDefinition](conditiondefinition.html): The current status of the condition definition\r\n* [EventDefinition](eventdefinition.html): The current status of the event definition\r\n* [Evidence](evidence.html): The current status of the evidence\r\n* [EvidenceReport](evidencereport.html): The current status of the evidence report\r\n* [EvidenceVariable](evidencevariable.html): The current status of the evidence variable\r\n* [ExampleScenario](examplescenario.html): The current status of the example scenario\r\n* [GraphDefinition](graphdefinition.html): The current status of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The current status of the implementation guide\r\n* [Library](library.html): The current status of the library\r\n* [Measure](measure.html): The current status of the measure\r\n* [MedicationKnowledge](medicationknowledge.html): active | inactive | entered-in-error\r\n* [MessageDefinition](messagedefinition.html): The current status of the message definition\r\n* [NamingSystem](namingsystem.html): The current status of the naming system\r\n* [ObservationDefinition](observationdefinition.html): Publication status of the ObservationDefinition: draft, active, retired, unknown\r\n* [OperationDefinition](operationdefinition.html): The current status of the operation definition\r\n* [PlanDefinition](plandefinition.html): The current status of the plan definition\r\n* [Questionnaire](questionnaire.html): The current status of the questionnaire\r\n* [Requirements](requirements.html): The current status of the requirements\r\n* [SearchParameter](searchparameter.html): The current status of the search parameter\r\n* [SpecimenDefinition](specimendefinition.html): Publication status of the SpecimenDefinition: draft, active, retired, unknown\r\n* [StructureDefinition](structuredefinition.html): The current status of the structure definition\r\n* [StructureMap](structuremap.html): The current status of the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): draft | active | retired | unknown\r\n* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities\r\n* [TestPlan](testplan.html): The current status of the test plan\r\n* [TestScript](testscript.html): The current status of the test script\r\n* [ValueSet](valueset.html): The current status of the value set\r\n", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The current status of the activity definition
+* [ActorDefinition](actordefinition.html): The current status of the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The current status of the charge item definition
+* [Citation](citation.html): The current status of the citation
+* [CodeSystem](codesystem.html): The current status of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition
+* [ConceptMap](conceptmap.html): The current status of the concept map
+* [ConditionDefinition](conditiondefinition.html): The current status of the condition definition
+* [EventDefinition](eventdefinition.html): The current status of the event definition
+* [Evidence](evidence.html): The current status of the evidence
+* [EvidenceReport](evidencereport.html): The current status of the evidence report
+* [EvidenceVariable](evidencevariable.html): The current status of the evidence variable
+* [ExampleScenario](examplescenario.html): The current status of the example scenario
+* [GraphDefinition](graphdefinition.html): The current status of the graph definition
+* [ImplementationGuide](implementationguide.html): The current status of the implementation guide
+* [Library](library.html): The current status of the library
+* [Measure](measure.html): The current status of the measure
+* [MedicationKnowledge](medicationknowledge.html): active | inactive | entered-in-error
+* [MessageDefinition](messagedefinition.html): The current status of the message definition
+* [NamingSystem](namingsystem.html): The current status of the naming system
+* [ObservationDefinition](observationdefinition.html): Publication status of the ObservationDefinition: draft, active, retired, unknown
+* [OperationDefinition](operationdefinition.html): The current status of the operation definition
+* [PlanDefinition](plandefinition.html): The current status of the plan definition
+* [Questionnaire](questionnaire.html): The current status of the questionnaire
+* [Requirements](requirements.html): The current status of the requirements
+* [SearchParameter](searchparameter.html): The current status of the search parameter
+* [SpecimenDefinition](specimendefinition.html): Publication status of the SpecimenDefinition: draft, active, retired, unknown
+* [StructureDefinition](structuredefinition.html): The current status of the structure definition
+* [StructureMap](structuremap.html): The current status of the structure map
+* [SubscriptionTopic](subscriptiontopic.html): draft | active | retired | unknown
+* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities
+* [TestPlan](testplan.html): The current status of the test plan
+* [TestScript](testscript.html): The current status of the test script
+* [ValueSet](valueset.html): The current status of the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.status | ActorDefinition.status | CapabilityStatement.status | ChargeItemDefinition.status | Citation.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | ConditionDefinition.status | EventDefinition.status | Evidence.status | EvidenceReport.status | EvidenceVariable.status | ExampleScenario.status | GraphDefinition.status | ImplementationGuide.status | Library.status | Measure.status | MedicationKnowledge.status | MessageDefinition.status | NamingSystem.status | ObservationDefinition.status | OperationDefinition.status | PlanDefinition.status | Questionnaire.status | Requirements.status | SearchParameter.status | SpecimenDefinition.status | StructureDefinition.status | StructureMap.status | SubscriptionTopic.status | TerminologyCapabilities.status | TestPlan.status | TestScript.status | ValueSet.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The uri that identifies the activity definition
+* [ActorDefinition](actordefinition.html): The uri that identifies the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The uri that identifies the charge item definition
+* [Citation](citation.html): The uri that identifies the citation
+* [CodeSystem](codesystem.html): The uri that identifies the code system
+* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
+* [ConditionDefinition](conditiondefinition.html): The uri that identifies the condition definition
+* [EventDefinition](eventdefinition.html): The uri that identifies the event definition
+* [Evidence](evidence.html): The uri that identifies the evidence
+* [EvidenceReport](evidencereport.html): The uri that identifies the evidence report
+* [EvidenceVariable](evidencevariable.html): The uri that identifies the evidence variable
+* [ExampleScenario](examplescenario.html): The uri that identifies the example scenario
+* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
+* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
+* [Library](library.html): The uri that identifies the library
+* [Measure](measure.html): The uri that identifies the measure
+* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
+* [NamingSystem](namingsystem.html): The uri that identifies the naming system
+* [ObservationDefinition](observationdefinition.html): The uri that identifies the observation definition
+* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition
+* [PlanDefinition](plandefinition.html): The uri that identifies the plan definition
+* [Questionnaire](questionnaire.html): The uri that identifies the questionnaire
+* [Requirements](requirements.html): The uri that identifies the requirements
+* [SearchParameter](searchparameter.html): The uri that identifies the search parameter
+* [SpecimenDefinition](specimendefinition.html): The uri that identifies the specimen definition
+* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition
+* [StructureMap](structuremap.html): The uri that identifies the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Logical canonical URL to reference this SubscriptionTopic (globally unique)
+* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities
+* [TestPlan](testplan.html): The uri that identifies the test plan
+* [TestScript](testscript.html): The uri that identifies the test script
+* [ValueSet](valueset.html): The uri that identifies the value set
+</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ActivityDefinition.url | ActorDefinition.url | CapabilityStatement.url | ChargeItemDefinition.url | Citation.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | ConditionDefinition.url | EventDefinition.url | Evidence.url | EvidenceReport.url | EvidenceVariable.url | ExampleScenario.url | GraphDefinition.url | ImplementationGuide.url | Library.url | Measure.url | MessageDefinition.url | NamingSystem.url | ObservationDefinition.url | OperationDefinition.url | PlanDefinition.url | Questionnaire.url | Requirements.url | SearchParameter.url | SpecimenDefinition.url | StructureDefinition.url | StructureMap.url | SubscriptionTopic.url | TerminologyCapabilities.url | TestPlan.url | TestScript.url | ValueSet.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="ActivityDefinition.url | ActorDefinition.url | CapabilityStatement.url | ChargeItemDefinition.url | Citation.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | ConditionDefinition.url | EventDefinition.url | Evidence.url | EvidenceReport.url | EvidenceVariable.url | ExampleScenario.url | GraphDefinition.url | ImplementationGuide.url | Library.url | Measure.url | MessageDefinition.url | NamingSystem.url | ObservationDefinition.url | OperationDefinition.url | PlanDefinition.url | Questionnaire.url | Requirements.url | SearchParameter.url | SpecimenDefinition.url | StructureDefinition.url | StructureMap.url | SubscriptionTopic.url | TerminologyCapabilities.url | TestPlan.url | TestScript.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): The uri that identifies the activity definition\r\n* [ActorDefinition](actordefinition.html): The uri that identifies the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): The uri that identifies the charge item definition\r\n* [Citation](citation.html): The uri that identifies the citation\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The URI that identifies the concept map\r\n* [ConditionDefinition](conditiondefinition.html): The uri that identifies the condition definition\r\n* [EventDefinition](eventdefinition.html): The uri that identifies the event definition\r\n* [Evidence](evidence.html): The uri that identifies the evidence\r\n* [EvidenceReport](evidencereport.html): The uri that identifies the evidence report\r\n* [EvidenceVariable](evidencevariable.html): The uri that identifies the evidence variable\r\n* [ExampleScenario](examplescenario.html): The uri that identifies the example scenario\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [Library](library.html): The uri that identifies the library\r\n* [Measure](measure.html): The uri that identifies the measure\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [ObservationDefinition](observationdefinition.html): The uri that identifies the observation definition\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [PlanDefinition](plandefinition.html): The uri that identifies the plan definition\r\n* [Questionnaire](questionnaire.html): The uri that identifies the questionnaire\r\n* [Requirements](requirements.html): The uri that identifies the requirements\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [SpecimenDefinition](specimendefinition.html): The uri that identifies the specimen definition\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Logical canonical URL to reference this SubscriptionTopic (globally unique)\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [TestPlan](testplan.html): The uri that identifies the test plan\r\n* [TestScript](testscript.html): The uri that identifies the test script\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The uri that identifies the activity definition
+* [ActorDefinition](actordefinition.html): The uri that identifies the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The uri that identifies the charge item definition
+* [Citation](citation.html): The uri that identifies the citation
+* [CodeSystem](codesystem.html): The uri that identifies the code system
+* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
+* [ConditionDefinition](conditiondefinition.html): The uri that identifies the condition definition
+* [EventDefinition](eventdefinition.html): The uri that identifies the event definition
+* [Evidence](evidence.html): The uri that identifies the evidence
+* [EvidenceReport](evidencereport.html): The uri that identifies the evidence report
+* [EvidenceVariable](evidencevariable.html): The uri that identifies the evidence variable
+* [ExampleScenario](examplescenario.html): The uri that identifies the example scenario
+* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
+* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
+* [Library](library.html): The uri that identifies the library
+* [Measure](measure.html): The uri that identifies the measure
+* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
+* [NamingSystem](namingsystem.html): The uri that identifies the naming system
+* [ObservationDefinition](observationdefinition.html): The uri that identifies the observation definition
+* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition
+* [PlanDefinition](plandefinition.html): The uri that identifies the plan definition
+* [Questionnaire](questionnaire.html): The uri that identifies the questionnaire
+* [Requirements](requirements.html): The uri that identifies the requirements
+* [SearchParameter](searchparameter.html): The uri that identifies the search parameter
+* [SpecimenDefinition](specimendefinition.html): The uri that identifies the specimen definition
+* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition
+* [StructureMap](structuremap.html): The uri that identifies the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Logical canonical URL to reference this SubscriptionTopic (globally unique)
+* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities
+* [TestPlan](testplan.html): The uri that identifies the test plan
+* [TestScript](testscript.html): The uri that identifies the test script
+* [ValueSet](valueset.html): The uri that identifies the value set
+</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ActivityDefinition.url | ActorDefinition.url | CapabilityStatement.url | ChargeItemDefinition.url | Citation.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | ConditionDefinition.url | EventDefinition.url | Evidence.url | EvidenceReport.url | EvidenceVariable.url | ExampleScenario.url | GraphDefinition.url | ImplementationGuide.url | Library.url | Measure.url | MessageDefinition.url | NamingSystem.url | ObservationDefinition.url | OperationDefinition.url | PlanDefinition.url | Questionnaire.url | Requirements.url | SearchParameter.url | SpecimenDefinition.url | StructureDefinition.url | StructureMap.url | SubscriptionTopic.url | TerminologyCapabilities.url | TestPlan.url | TestScript.url | ValueSet.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
+ /**
+   * Search parameter: <b>scope</b>
+   * <p>
+   * Description: <b>The scope that is to be tested with this test plan</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>TestPlan.scope</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="scope", path="TestPlan.scope", description="The scope that is to be tested with this test plan", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BiologicallyDerivedProductDispense.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceAssociation.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentReference.class, Encounter.class, EncounterHistory.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryItem.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationStatement.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Parameters.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestPlan.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_SCOPE = "scope";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>scope</b>
+   * <p>
+   * Description: <b>The scope that is to be tested with this test plan</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>TestPlan.scope</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SCOPE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SCOPE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>TestPlan:scope</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SCOPE = new ca.uhn.fhir.model.api.Include("TestPlan:scope").toLocked();
 
 
 }

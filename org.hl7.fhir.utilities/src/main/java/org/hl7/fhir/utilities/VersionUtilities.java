@@ -530,6 +530,7 @@ public class VersionUtilities {
       res.add("StructureMap");
       res.add("SubscriptionTopic");
       res.add("TerminologyCapabilities");
+      res.add("TestPlan");
       res.add("TestScript");
       res.add("ValueSet");
     }

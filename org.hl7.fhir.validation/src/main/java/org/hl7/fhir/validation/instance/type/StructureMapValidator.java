@@ -960,6 +960,9 @@ public class StructureMapValidator extends BaseValidator {
       return null;
     }
     String type = input.getType();
+    if (type == null) {
+      return null;
+    }
     StructureMapModelMode mode = input.getMode() == StructureMapInputMode.SOURCE ? StructureMapModelMode.SOURCE : StructureMapModelMode.TARGET;
     for (StructureMapStructureComponent st : map.getStructure()) {
       if (type.equals(st.getAlias()) && mode == st.getMode()) {

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,7 +55,7 @@ public class UsageContext extends DataType implements ICompositeType {
      */
     @Child(name = "code", type = {Coding.class}, order=0, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Type of context being specified", formalDefinition="A code that identifies the type of context being specified by this usage context." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/usage-context-type")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/usage-context-type")
     protected Coding code;
 
     /**

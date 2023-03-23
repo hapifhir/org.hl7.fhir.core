@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1401,7 +1401,7 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * The party who generated the payment.
      */
-    @Child(name = "paymentIssuer", type = {Organization.class, Patient.class, Person.class, RelatedPerson.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "paymentIssuer", type = {Organization.class, Patient.class, RelatedPerson.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Party generating payment", formalDefinition="The party who generated the payment." )
     protected Reference paymentIssuer;
 
@@ -2625,7 +2625,7 @@ public class PaymentReconciliation extends DomainResource {
         children.add(new Property("created", "dateTime", "The date when the resource was created.", 0, 1, created));
         children.add(new Property("enterer", "Reference(Practitioner|PractitionerRole|Organization)", "Payment enterer if not the actual payment issuer.", 0, 1, enterer));
         children.add(new Property("issuerType", "CodeableConcept", "The type of the source such as patient or insurance.", 0, 1, issuerType));
-        children.add(new Property("paymentIssuer", "Reference(Organization|Patient|Person|RelatedPerson)", "The party who generated the payment.", 0, 1, paymentIssuer));
+        children.add(new Property("paymentIssuer", "Reference(Organization|Patient|RelatedPerson)", "The party who generated the payment.", 0, 1, paymentIssuer));
         children.add(new Property("request", "Reference(Task)", "Original request resource reference.", 0, 1, request));
         children.add(new Property("requestor", "Reference(Practitioner|PractitionerRole|Organization)", "The practitioner who is responsible for the services rendered to the patient.", 0, 1, requestor));
         children.add(new Property("outcome", "code", "The outcome of a request for a reconciliation.", 0, 1, outcome));
@@ -2659,7 +2659,7 @@ public class PaymentReconciliation extends DomainResource {
         case 1028554472: /*created*/  return new Property("created", "dateTime", "The date when the resource was created.", 0, 1, created);
         case -1591951995: /*enterer*/  return new Property("enterer", "Reference(Practitioner|PractitionerRole|Organization)", "Payment enterer if not the actual payment issuer.", 0, 1, enterer);
         case 1459974547: /*issuerType*/  return new Property("issuerType", "CodeableConcept", "The type of the source such as patient or insurance.", 0, 1, issuerType);
-        case 1144026207: /*paymentIssuer*/  return new Property("paymentIssuer", "Reference(Organization|Patient|Person|RelatedPerson)", "The party who generated the payment.", 0, 1, paymentIssuer);
+        case 1144026207: /*paymentIssuer*/  return new Property("paymentIssuer", "Reference(Organization|Patient|RelatedPerson)", "The party who generated the payment.", 0, 1, paymentIssuer);
         case 1095692943: /*request*/  return new Property("request", "Reference(Task)", "Original request resource reference.", 0, 1, request);
         case 693934258: /*requestor*/  return new Property("requestor", "Reference(Practitioner|PractitionerRole|Organization)", "The practitioner who is responsible for the services rendered to the patient.", 0, 1, requestor);
         case -1106507950: /*outcome*/  return new Property("outcome", "code", "The outcome of a request for a reconciliation.", 0, 1, outcome);
@@ -3316,7 +3316,7 @@ public class PaymentReconciliation extends DomainResource {
    * Path: <b>PaymentReconciliation.paymentIssuer</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="payment-issuer", path="PaymentReconciliation.paymentIssuer", description="The organization which generated this resource", type="reference", target={Organization.class, Patient.class, Person.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="payment-issuer", path="PaymentReconciliation.paymentIssuer", description="The organization which generated this resource", type="reference", target={Organization.class, Patient.class, RelatedPerson.class } )
   public static final String SP_PAYMENT_ISSUER = "payment-issuer";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>payment-issuer</b>

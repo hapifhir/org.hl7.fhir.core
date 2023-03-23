@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Mar 1, 2023 15:32+1100 for FHIR v5.0.0-draft-final
+// Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -311,15 +311,15 @@ public class DeviceMetric extends DomainResource {
 
     public enum DeviceMetricCategory {
         /**
-         * DeviceObservations generated for this DeviceMetric are measured.
+         * Observations generated for this DeviceMetric are measured.
          */
         MEASUREMENT, 
         /**
-         * DeviceObservations generated for this DeviceMetric is a setting that will influence the behavior of the Device.
+         * Observations generated for this DeviceMetric is a setting that will influence the behavior of the Device.
          */
         SETTING, 
         /**
-         * DeviceObservations generated for this DeviceMetric are calculated.
+         * Observations generated for this DeviceMetric are calculated.
          */
         CALCULATION, 
         /**
@@ -368,9 +368,9 @@ public class DeviceMetric extends DomainResource {
         }
         public String getDefinition() {
           switch (this) {
-            case MEASUREMENT: return "DeviceObservations generated for this DeviceMetric are measured.";
-            case SETTING: return "DeviceObservations generated for this DeviceMetric is a setting that will influence the behavior of the Device.";
-            case CALCULATION: return "DeviceObservations generated for this DeviceMetric are calculated.";
+            case MEASUREMENT: return "Observations generated for this DeviceMetric are measured.";
+            case SETTING: return "Observations generated for this DeviceMetric is a setting that will influence the behavior of the Device.";
+            case CALCULATION: return "Observations generated for this DeviceMetric are calculated.";
             case UNSPECIFIED: return "The category of this DeviceMetric is unspecified.";
             case NULL: return null;
             default: return "?";
@@ -437,201 +437,9 @@ public class DeviceMetric extends DomainResource {
       }
     }
 
-    public enum DeviceMetricColor {
-        /**
-         * Color for representation - black.
-         */
-        BLACK, 
-        /**
-         * Color for representation - red.
-         */
-        RED, 
-        /**
-         * Color for representation - green.
-         */
-        GREEN, 
-        /**
-         * Color for representation - yellow.
-         */
-        YELLOW, 
-        /**
-         * Color for representation - blue.
-         */
-        BLUE, 
-        /**
-         * Color for representation - magenta.
-         */
-        MAGENTA, 
-        /**
-         * Color for representation - cyan.
-         */
-        CYAN, 
-        /**
-         * Color for representation - white.
-         */
-        WHITE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DeviceMetricColor fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("black".equals(codeString))
-          return BLACK;
-        if ("red".equals(codeString))
-          return RED;
-        if ("green".equals(codeString))
-          return GREEN;
-        if ("yellow".equals(codeString))
-          return YELLOW;
-        if ("blue".equals(codeString))
-          return BLUE;
-        if ("magenta".equals(codeString))
-          return MAGENTA;
-        if ("cyan".equals(codeString))
-          return CYAN;
-        if ("white".equals(codeString))
-          return WHITE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DeviceMetricColor code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case BLACK: return "black";
-            case RED: return "red";
-            case GREEN: return "green";
-            case YELLOW: return "yellow";
-            case BLUE: return "blue";
-            case MAGENTA: return "magenta";
-            case CYAN: return "cyan";
-            case WHITE: return "white";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case BLACK: return "http://hl7.org/fhir/metric-color";
-            case RED: return "http://hl7.org/fhir/metric-color";
-            case GREEN: return "http://hl7.org/fhir/metric-color";
-            case YELLOW: return "http://hl7.org/fhir/metric-color";
-            case BLUE: return "http://hl7.org/fhir/metric-color";
-            case MAGENTA: return "http://hl7.org/fhir/metric-color";
-            case CYAN: return "http://hl7.org/fhir/metric-color";
-            case WHITE: return "http://hl7.org/fhir/metric-color";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case BLACK: return "Color for representation - black.";
-            case RED: return "Color for representation - red.";
-            case GREEN: return "Color for representation - green.";
-            case YELLOW: return "Color for representation - yellow.";
-            case BLUE: return "Color for representation - blue.";
-            case MAGENTA: return "Color for representation - magenta.";
-            case CYAN: return "Color for representation - cyan.";
-            case WHITE: return "Color for representation - white.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case BLACK: return "Color Black";
-            case RED: return "Color Red";
-            case GREEN: return "Color Green";
-            case YELLOW: return "Color Yellow";
-            case BLUE: return "Color Blue";
-            case MAGENTA: return "Color Magenta";
-            case CYAN: return "Color Cyan";
-            case WHITE: return "Color White";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DeviceMetricColorEnumFactory implements EnumFactory<DeviceMetricColor> {
-    public DeviceMetricColor fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("black".equals(codeString))
-          return DeviceMetricColor.BLACK;
-        if ("red".equals(codeString))
-          return DeviceMetricColor.RED;
-        if ("green".equals(codeString))
-          return DeviceMetricColor.GREEN;
-        if ("yellow".equals(codeString))
-          return DeviceMetricColor.YELLOW;
-        if ("blue".equals(codeString))
-          return DeviceMetricColor.BLUE;
-        if ("magenta".equals(codeString))
-          return DeviceMetricColor.MAGENTA;
-        if ("cyan".equals(codeString))
-          return DeviceMetricColor.CYAN;
-        if ("white".equals(codeString))
-          return DeviceMetricColor.WHITE;
-        throw new IllegalArgumentException("Unknown DeviceMetricColor code '"+codeString+"'");
-        }
-        public Enumeration<DeviceMetricColor> fromType(PrimitiveType<?> code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DeviceMetricColor>(this, DeviceMetricColor.NULL, code);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return new Enumeration<DeviceMetricColor>(this, DeviceMetricColor.NULL, code);
-        if ("black".equals(codeString))
-          return new Enumeration<DeviceMetricColor>(this, DeviceMetricColor.BLACK, code);
-        if ("red".equals(codeString))
-          return new Enumeration<DeviceMetricColor>(this, DeviceMetricColor.RED, code);
-        if ("green".equals(codeString))
-          return new Enumeration<DeviceMetricColor>(this, DeviceMetricColor.GREEN, code);
-        if ("yellow".equals(codeString))
-          return new Enumeration<DeviceMetricColor>(this, DeviceMetricColor.YELLOW, code);
-        if ("blue".equals(codeString))
-          return new Enumeration<DeviceMetricColor>(this, DeviceMetricColor.BLUE, code);
-        if ("magenta".equals(codeString))
-          return new Enumeration<DeviceMetricColor>(this, DeviceMetricColor.MAGENTA, code);
-        if ("cyan".equals(codeString))
-          return new Enumeration<DeviceMetricColor>(this, DeviceMetricColor.CYAN, code);
-        if ("white".equals(codeString))
-          return new Enumeration<DeviceMetricColor>(this, DeviceMetricColor.WHITE, code);
-        throw new FHIRException("Unknown DeviceMetricColor code '"+codeString+"'");
-        }
-    public String toCode(DeviceMetricColor code) {
-      if (code == DeviceMetricColor.BLACK)
-        return "black";
-      if (code == DeviceMetricColor.RED)
-        return "red";
-      if (code == DeviceMetricColor.GREEN)
-        return "green";
-      if (code == DeviceMetricColor.YELLOW)
-        return "yellow";
-      if (code == DeviceMetricColor.BLUE)
-        return "blue";
-      if (code == DeviceMetricColor.MAGENTA)
-        return "magenta";
-      if (code == DeviceMetricColor.CYAN)
-        return "cyan";
-      if (code == DeviceMetricColor.WHITE)
-        return "white";
-      return "?";
-      }
-    public String toSystem(DeviceMetricColor code) {
-      return code.getSystem();
-      }
-    }
-
     public enum DeviceMetricOperationalStatus {
         /**
-         * The DeviceMetric is operating and will generate DeviceObservations.
+         * The DeviceMetric is operating and will generate Observations.
          */
         ON, 
         /**
@@ -639,7 +447,7 @@ public class DeviceMetric extends DomainResource {
          */
         OFF, 
         /**
-         * The DeviceMetric is operating, but will not generate any DeviceObservations.
+         * The DeviceMetric is operating, but will not generate any Observations.
          */
         STANDBY, 
         /**
@@ -688,9 +496,9 @@ public class DeviceMetric extends DomainResource {
         }
         public String getDefinition() {
           switch (this) {
-            case ON: return "The DeviceMetric is operating and will generate DeviceObservations.";
+            case ON: return "The DeviceMetric is operating and will generate Observations.";
             case OFF: return "The DeviceMetric is not operating.";
-            case STANDBY: return "The DeviceMetric is operating, but will not generate any DeviceObservations.";
+            case STANDBY: return "The DeviceMetric is operating, but will not generate any Observations.";
             case ENTEREDINERROR: return "The DeviceMetric was entered in error.";
             case NULL: return null;
             default: return "?";
@@ -762,7 +570,7 @@ public class DeviceMetric extends DomainResource {
         /**
          * Describes the type of the calibration method.
          */
-        @Child(name = "type", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "type", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="unspecified | offset | gain | two-point", formalDefinition="Describes the type of the calibration method." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/metric-calibration-type")
         protected Enumeration<DeviceMetricCalibrationType> type;
@@ -770,7 +578,7 @@ public class DeviceMetric extends DomainResource {
         /**
          * Describes the state of the calibration.
          */
-        @Child(name = "state", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "state", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="not-calibrated | calibration-required | calibrated | unspecified", formalDefinition="Describes the state of the calibration." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/metric-calibration-state")
         protected Enumeration<DeviceMetricCalibrationState> state;
@@ -778,7 +586,7 @@ public class DeviceMetric extends DomainResource {
         /**
          * Describes the time last calibration has been performed.
          */
-        @Child(name = "time", type = {InstantType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "time", type = {InstantType.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Describes the time last calibration has been performed", formalDefinition="Describes the time last calibration has been performed." )
         protected InstantType time;
 
@@ -1085,10 +893,10 @@ public class DeviceMetric extends DomainResource {
   }
 
     /**
-     * Unique instance identifiers assigned to a device by the device or gateway software, manufacturers, other organizations or owners. For example: handle ID.
+     * Instance identifiers assigned to a device, by the device or gateway software, manufacturers, other organizations or owners. For example, handle ID.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Instance identifier", formalDefinition="Unique instance identifiers assigned to a device by the device or gateway software, manufacturers, other organizations or owners. For example: handle ID." )
+    @Description(shortDefinition="Instance identifier", formalDefinition="Instance identifiers assigned to a device, by the device or gateway software, manufacturers, other organizations or owners. For example, handle ID." )
     protected List<Identifier> identifier;
 
     /**
@@ -1104,7 +912,7 @@ public class DeviceMetric extends DomainResource {
      */
     @Child(name = "unit", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Unit of Measure for the Metric", formalDefinition="Describes the unit that an observed value determined for this metric will have. For example: Percent, Seconds, etc." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/devicemetric-type")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ucum-units")
     protected CodeableConcept unit;
 
     /**
@@ -1123,12 +931,12 @@ public class DeviceMetric extends DomainResource {
     protected Enumeration<DeviceMetricOperationalStatus> operationalStatus;
 
     /**
-     * Describes the color representation for the metric. This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth for example; the parameters are displayed in different characteristic colors, such as HR-blue, BP-green, and PR and SpO2- magenta.
+     * The preferred color associated with the metric (e.g., display color). This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth; the metrics are displayed in different characteristic colors, such as HR in blue, BP in green, and PR and SpO2 in magenta.
      */
-    @Child(name = "color", type = {CodeType.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="black | red | green | yellow | blue | magenta | cyan | white", formalDefinition="Describes the color representation for the metric. This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth for example; the parameters are displayed in different characteristic colors, such as HR-blue, BP-green, and PR and SpO2- magenta." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/metric-color")
-    protected Enumeration<DeviceMetricColor> color;
+    @Child(name = "color", type = {CodeType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Color name (from CSS4) or #RRGGBB code", formalDefinition="The preferred color associated with the metric (e.g., display color). This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth; the metrics are displayed in different characteristic colors, such as HR in blue, BP in green, and PR and SpO2 in magenta." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/color-codes")
+    protected CodeType color;
 
     /**
      * Indicates the category of the observation generation process. A DeviceMetric can be for example a setting, measurement, or calculation.
@@ -1141,18 +949,18 @@ public class DeviceMetric extends DomainResource {
     /**
      * The frequency at which the metric is taken or recorded. Devices measure metrics at a wide range of frequencies; for example, an ECG might sample measurements in the millisecond range, while an NIBP might trigger only once an hour. Less often, the measurementFrequency may be based on a unit other than time, such as distance (e.g. for a measuring wheel). The update period may be different than the measurement frequency, if the device does not update the published observed value with the same frequency as it was measured.
      */
-    @Child(name = "measurementFrequency", type = {Quantity.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "measurementFrequency", type = {Quantity.class}, order=7, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Indicates how often the metric is taken or recorded", formalDefinition="The frequency at which the metric is taken or recorded. Devices measure metrics at a wide range of frequencies; for example, an ECG might sample measurements in the millisecond range, while an NIBP might trigger only once an hour. Less often, the measurementFrequency may be based on a unit other than time, such as distance (e.g. for a measuring wheel). The update period may be different than the measurement frequency, if the device does not update the published observed value with the same frequency as it was measured." )
     protected Quantity measurementFrequency;
 
     /**
      * Describes the calibrations that have been performed or that are required to be performed.
      */
-    @Child(name = "calibration", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "calibration", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Describes the calibrations that have been performed or that are required to be performed", formalDefinition="Describes the calibrations that have been performed or that are required to be performed." )
     protected List<DeviceMetricCalibrationComponent> calibration;
 
-    private static final long serialVersionUID = 1434853344L;
+    private static final long serialVersionUID = 2109169775L;
 
   /**
    * Constructor
@@ -1172,7 +980,7 @@ public class DeviceMetric extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (Unique instance identifiers assigned to a device by the device or gateway software, manufacturers, other organizations or owners. For example: handle ID.)
+     * @return {@link #identifier} (Instance identifiers assigned to a device, by the device or gateway software, manufacturers, other organizations or owners. For example, handle ID.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -1346,14 +1154,14 @@ public class DeviceMetric extends DomainResource {
     }
 
     /**
-     * @return {@link #color} (Describes the color representation for the metric. This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth for example; the parameters are displayed in different characteristic colors, such as HR-blue, BP-green, and PR and SpO2- magenta.). This is the underlying object with id, value and extensions. The accessor "getColor" gives direct access to the value
+     * @return {@link #color} (The preferred color associated with the metric (e.g., display color). This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth; the metrics are displayed in different characteristic colors, such as HR in blue, BP in green, and PR and SpO2 in magenta.). This is the underlying object with id, value and extensions. The accessor "getColor" gives direct access to the value
      */
-    public Enumeration<DeviceMetricColor> getColorElement() { 
+    public CodeType getColorElement() { 
       if (this.color == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceMetric.color");
         else if (Configuration.doAutoCreate())
-          this.color = new Enumeration<DeviceMetricColor>(new DeviceMetricColorEnumFactory()); // bb
+          this.color = new CodeType(); // bb
       return this.color;
     }
 
@@ -1366,29 +1174,29 @@ public class DeviceMetric extends DomainResource {
     }
 
     /**
-     * @param value {@link #color} (Describes the color representation for the metric. This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth for example; the parameters are displayed in different characteristic colors, such as HR-blue, BP-green, and PR and SpO2- magenta.). This is the underlying object with id, value and extensions. The accessor "getColor" gives direct access to the value
+     * @param value {@link #color} (The preferred color associated with the metric (e.g., display color). This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth; the metrics are displayed in different characteristic colors, such as HR in blue, BP in green, and PR and SpO2 in magenta.). This is the underlying object with id, value and extensions. The accessor "getColor" gives direct access to the value
      */
-    public DeviceMetric setColorElement(Enumeration<DeviceMetricColor> value) { 
+    public DeviceMetric setColorElement(CodeType value) { 
       this.color = value;
       return this;
     }
 
     /**
-     * @return Describes the color representation for the metric. This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth for example; the parameters are displayed in different characteristic colors, such as HR-blue, BP-green, and PR and SpO2- magenta.
+     * @return The preferred color associated with the metric (e.g., display color). This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth; the metrics are displayed in different characteristic colors, such as HR in blue, BP in green, and PR and SpO2 in magenta.
      */
-    public DeviceMetricColor getColor() { 
+    public String getColor() { 
       return this.color == null ? null : this.color.getValue();
     }
 
     /**
-     * @param value Describes the color representation for the metric. This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth for example; the parameters are displayed in different characteristic colors, such as HR-blue, BP-green, and PR and SpO2- magenta.
+     * @param value The preferred color associated with the metric (e.g., display color). This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth; the metrics are displayed in different characteristic colors, such as HR in blue, BP in green, and PR and SpO2 in magenta.
      */
-    public DeviceMetric setColor(DeviceMetricColor value) { 
-      if (value == null)
+    public DeviceMetric setColor(String value) { 
+      if (Utilities.noString(value))
         this.color = null;
       else {
         if (this.color == null)
-          this.color = new Enumeration<DeviceMetricColor>(new DeviceMetricColorEnumFactory());
+          this.color = new CodeType();
         this.color.setValue(value);
       }
       return this;
@@ -1518,12 +1326,12 @@ public class DeviceMetric extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by the device or gateway software, manufacturers, other organizations or owners. For example: handle ID.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("identifier", "Identifier", "Instance identifiers assigned to a device, by the device or gateway software, manufacturers, other organizations or owners. For example, handle ID.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("type", "CodeableConcept", "Describes the type of the metric. For example: Heart Rate, PEEP Setting, etc.", 0, 1, type));
         children.add(new Property("unit", "CodeableConcept", "Describes the unit that an observed value determined for this metric will have. For example: Percent, Seconds, etc.", 0, 1, unit));
         children.add(new Property("device", "Reference(Device)", "Describes the link to the Device.  This is also known as a channel device.", 0, 1, device));
         children.add(new Property("operationalStatus", "code", "Indicates current operational state of the device. For example: On, Off, Standby, etc.", 0, 1, operationalStatus));
-        children.add(new Property("color", "code", "Describes the color representation for the metric. This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth for example; the parameters are displayed in different characteristic colors, such as HR-blue, BP-green, and PR and SpO2- magenta.", 0, 1, color));
+        children.add(new Property("color", "code", "The preferred color associated with the metric (e.g., display color). This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth; the metrics are displayed in different characteristic colors, such as HR in blue, BP in green, and PR and SpO2 in magenta.", 0, 1, color));
         children.add(new Property("category", "code", "Indicates the category of the observation generation process. A DeviceMetric can be for example a setting, measurement, or calculation.", 0, 1, category));
         children.add(new Property("measurementFrequency", "Quantity", "The frequency at which the metric is taken or recorded. Devices measure metrics at a wide range of frequencies; for example, an ECG might sample measurements in the millisecond range, while an NIBP might trigger only once an hour. Less often, the measurementFrequency may be based on a unit other than time, such as distance (e.g. for a measuring wheel). The update period may be different than the measurement frequency, if the device does not update the published observed value with the same frequency as it was measured.", 0, 1, measurementFrequency));
         children.add(new Property("calibration", "", "Describes the calibrations that have been performed or that are required to be performed.", 0, java.lang.Integer.MAX_VALUE, calibration));
@@ -1532,12 +1340,12 @@ public class DeviceMetric extends DomainResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by the device or gateway software, manufacturers, other organizations or owners. For example: handle ID.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Instance identifiers assigned to a device, by the device or gateway software, manufacturers, other organizations or owners. For example, handle ID.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Describes the type of the metric. For example: Heart Rate, PEEP Setting, etc.", 0, 1, type);
         case 3594628: /*unit*/  return new Property("unit", "CodeableConcept", "Describes the unit that an observed value determined for this metric will have. For example: Percent, Seconds, etc.", 0, 1, unit);
         case -1335157162: /*device*/  return new Property("device", "Reference(Device)", "Describes the link to the Device.  This is also known as a channel device.", 0, 1, device);
         case -2103166364: /*operationalStatus*/  return new Property("operationalStatus", "code", "Indicates current operational state of the device. For example: On, Off, Standby, etc.", 0, 1, operationalStatus);
-        case 94842723: /*color*/  return new Property("color", "code", "Describes the color representation for the metric. This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth for example; the parameters are displayed in different characteristic colors, such as HR-blue, BP-green, and PR and SpO2- magenta.", 0, 1, color);
+        case 94842723: /*color*/  return new Property("color", "code", "The preferred color associated with the metric (e.g., display color). This is often used to aid clinicians to track and identify parameter types by color. In practice, consider a Patient Monitor that has ECG/HR and Pleth; the metrics are displayed in different characteristic colors, such as HR in blue, BP in green, and PR and SpO2 in magenta.", 0, 1, color);
         case 50511102: /*category*/  return new Property("category", "code", "Indicates the category of the observation generation process. A DeviceMetric can be for example a setting, measurement, or calculation.", 0, 1, category);
         case 1766341888: /*measurementFrequency*/  return new Property("measurementFrequency", "Quantity", "The frequency at which the metric is taken or recorded. Devices measure metrics at a wide range of frequencies; for example, an ECG might sample measurements in the millisecond range, while an NIBP might trigger only once an hour. Less often, the measurementFrequency may be based on a unit other than time, such as distance (e.g. for a measuring wheel). The update period may be different than the measurement frequency, if the device does not update the published observed value with the same frequency as it was measured.", 0, 1, measurementFrequency);
         case 1421318634: /*calibration*/  return new Property("calibration", "", "Describes the calibrations that have been performed or that are required to be performed.", 0, java.lang.Integer.MAX_VALUE, calibration);
@@ -1554,7 +1362,7 @@ public class DeviceMetric extends DomainResource {
         case 3594628: /*unit*/ return this.unit == null ? new Base[0] : new Base[] {this.unit}; // CodeableConcept
         case -1335157162: /*device*/ return this.device == null ? new Base[0] : new Base[] {this.device}; // Reference
         case -2103166364: /*operationalStatus*/ return this.operationalStatus == null ? new Base[0] : new Base[] {this.operationalStatus}; // Enumeration<DeviceMetricOperationalStatus>
-        case 94842723: /*color*/ return this.color == null ? new Base[0] : new Base[] {this.color}; // Enumeration<DeviceMetricColor>
+        case 94842723: /*color*/ return this.color == null ? new Base[0] : new Base[] {this.color}; // CodeType
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // Enumeration<DeviceMetricCategory>
         case 1766341888: /*measurementFrequency*/ return this.measurementFrequency == null ? new Base[0] : new Base[] {this.measurementFrequency}; // Quantity
         case 1421318634: /*calibration*/ return this.calibration == null ? new Base[0] : this.calibration.toArray(new Base[this.calibration.size()]); // DeviceMetricCalibrationComponent
@@ -1583,8 +1391,7 @@ public class DeviceMetric extends DomainResource {
           this.operationalStatus = (Enumeration) value; // Enumeration<DeviceMetricOperationalStatus>
           return value;
         case 94842723: // color
-          value = new DeviceMetricColorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.color = (Enumeration) value; // Enumeration<DeviceMetricColor>
+          this.color = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 50511102: // category
           value = new DeviceMetricCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -1615,8 +1422,7 @@ public class DeviceMetric extends DomainResource {
           value = new DeviceMetricOperationalStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.operationalStatus = (Enumeration) value; // Enumeration<DeviceMetricOperationalStatus>
         } else if (name.equals("color")) {
-          value = new DeviceMetricColorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.color = (Enumeration) value; // Enumeration<DeviceMetricColor>
+          this.color = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("category")) {
           value = new DeviceMetricCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.category = (Enumeration) value; // Enumeration<DeviceMetricCategory>

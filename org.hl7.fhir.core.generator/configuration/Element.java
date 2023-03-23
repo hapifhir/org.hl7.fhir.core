@@ -114,16 +114,16 @@
     * 
     * @param theUrl The URL. Must not be blank or null.
     */
-  public String getExtensionString(String theUrl) throws FHIRException {
-    List<Extension> ext = getExtensionsByUrl(theUrl); 
-    if (ext.isEmpty()) 
-      return null; 
-    if (ext.size() > 1) 
-      throw new FHIRException("Multiple matching extensions found");
-    if (!ext.get(0).getValue().isPrimitive())
-      throw new FHIRException("Extension could not be converted to a string");
-    return ext.get(0).getValue().primitiveValue();
-  }
+   public String getExtensionString(String theUrl) throws FHIRException {
+     List<Extension> ext = getExtensionsByUrl(theUrl); 
+     if (ext.isEmpty()) 
+       return null; 
+     if (ext.size() > 1) 
+       throw new FHIRException("Multiple matching extensions found for extension '"+theUrl+"'");
+     if (!ext.get(0).getValue().isPrimitive())
+       throw new FHIRException("Extension '"+theUrl+"' could not be converted to a string");
+     return ext.get(0).getValue().primitiveValue();
+   }
 
 
   public StandardsStatus getStandardsStatus() {
