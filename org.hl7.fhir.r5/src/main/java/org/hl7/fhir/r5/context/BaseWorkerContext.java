@@ -1375,7 +1375,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public boolean isNoTerminologyServer() {
-    return noTerminologyServer;
+    return noTerminologyServer || txClient == null;
   }
 
   public void setNoTerminologyServer(boolean noTerminologyServer) {

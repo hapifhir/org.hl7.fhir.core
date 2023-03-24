@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ExpressionNode;
@@ -165,7 +166,10 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       String tc = type.getChildValue("code");
       if (type.hasExtension(ToolingExtensions.EXT_FHIR_TYPE)) {
-        tc = type.getExtensionValue(ToolingExtensions.EXT_FHIR_TYPE).primitiveValue();
+        Base tcv = type.getExtensionValue(ToolingExtensions.EXT_FHIR_TYPE);
+        if (tcv != null) {
+          tc = tcv.primitiveValue();
+        }
       }
       if (Utilities.noString(tc) && type.hasChild("code")) {
         if (VersionUtilities.isR4Plus(context.getVersion())) {
