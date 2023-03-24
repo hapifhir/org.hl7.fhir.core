@@ -14,6 +14,14 @@
   }
 
 
+  private String webPath;
+  public String getWebPath() {
+    return webPath;
+  }
+  public void setWebPath(String webPath) {
+    this.webPath = webPath;
+  }
+  
   // when possible, the source package is considered when performing reference resolution. 
   
   private PackageInformation sourcePackage;

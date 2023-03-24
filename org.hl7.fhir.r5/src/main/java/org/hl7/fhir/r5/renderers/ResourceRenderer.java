@@ -155,16 +155,16 @@ public abstract class ResourceRenderer extends DataRenderer {
     } else {
       CanonicalResource cr = (CanonicalResource) target;
       if (url.contains("|")) {
-        if (target.hasUserData("path")) {
-          x.ah(target.getUserString("path")).tx(cr.present()+" (version "+cr.getVersion()+")");
+        if (target.hasWebPath()) {
+          x.ah(target.getWebPath()).tx(cr.present()+" (version "+cr.getVersion()+")");
         } else {
           url = url.substring(0, url.indexOf("|"));
           x.code().tx(url);
           x.tx(": "+cr.present()+" (version "+cr.getVersion()+")");          
         }
       } else {
-        if (target.hasUserData("path")) {
-          x.ah(target.getUserString("path")).tx(cr.present());
+        if (target.hasWebPath()) {
+          x.ah(target.getWebPath()).tx(cr.present());
         } else {
           x.code().tx(url);
           x.tx(" ("+cr.present()+")");          
@@ -432,14 +432,14 @@ public abstract class ResourceRenderer extends DataRenderer {
    protected void renderCommitteeLink(XhtmlNode x, CanonicalResource cr) {
      String code = ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_WORKGROUP);
      CodeSystem cs = context.getWorker().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group");
-     if (cs == null || !cs.hasUserData("path"))
+     if (cs == null || !cs.hasWebPath())
        x.tx(code);
      else {
        ConceptDefinitionComponent cd = CodeSystemUtilities.findCode(cs.getConcept(), code);
        if (cd == null) {
          x.tx(code);
        } else {
-         x.ah(cs.getUserString("path")+"#"+cs.getId()+"-"+cd.getCode()).tx(cd.getDisplay());
+         x.ah(cs.getWebPath()+"#"+cs.getId()+"-"+cd.getCode()).tx(cd.getDisplay());
        }
      }
    }

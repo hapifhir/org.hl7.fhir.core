@@ -154,7 +154,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         if (p == null)
           p = getContext().getWorker().fetchResource(StructureDefinition.class, link);
         if (p != null) {
-          url = p.getUserString("path");
+          url = p.getWebPath();
           if (url == null)
             url = p.getUserString("filename");
         } else
@@ -778,9 +778,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.ah(uri.getValue()).addText(uri.getValue().substring(7));
       } else {
         Resource target = context.getContext().fetchResource(Resource.class, uri.getValue(), src);
-        if (target != null && target.hasUserData("path")) {
+        if (target != null && target.hasWebPath()) {
           String title = target instanceof CanonicalResource ? ((CanonicalResource) target).present() : uri.getValue();
-          x.ah(target.getUserString("path")).addText(title);
+          x.ah(target.getWebPath()).addText(title);
         } else if (uri.getValue().contains("|")) {
           x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
         } else if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("ftp:")) {
@@ -926,8 +926,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
         url = url + "|"+version;
       }
       CodeSystem cs = context.getWorker().fetchCodeSystem(url);
-      if (cs != null && cs.hasUserData("path")) {
-        return cs.getUserString("path");
+      if (cs != null && cs.hasWebPath()) {
+        return cs.getWebPath();
       }
       return null;
     }
@@ -960,11 +960,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
       }
     } else {
       CodeSystem cs = context.getWorker().fetchCodeSystem(system, version);
-      if (cs != null && cs.hasUserData("path")) {
+      if (cs != null && cs.hasWebPath()) {
         if (!Utilities.noString(code)) {
-          return cs.getUserString("path")+"#"+cs.getId()+"-"+Utilities.nmtokenize(code);
+          return cs.getWebPath()+"#"+cs.getId()+"-"+Utilities.nmtokenize(code);
         } else {
-          return cs.getUserString("path");
+          return cs.getWebPath();
         }
       }
     }  
@@ -991,7 +991,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }
     
     CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
-    systemLink = cs != null ? cs.getUserString("path") : null;
+    systemLink = cs != null ? cs.getWebPath() : null;
     systemName = cs != null ? cs.present() : describeSystem(c.getSystem());
     link = getLinkForCode(c.getSystem(), c.getVersion(), c.getCode());
 
@@ -1506,8 +1506,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     td.b().tx("Type");
     td.tx(": ");
     StructureDefinition sd = context.getWorker().fetchTypeDefinition(dr.getType().toCode());
-    if (sd != null && sd.hasUserData("path")) {
-      td.ah(sd.getUserString("path")).tx(dr.getType().toCode());
+    if (sd != null && sd.hasWebPath()) {
+      td.ah(sd.getWebPath()).tx(dr.getType().toCode());
     } else {
       td.tx(dr.getType().toCode());
     }
@@ -1517,8 +1517,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
       for (CanonicalType p : dr.getProfile()) {
         if (first) first = false; else td.tx(" | ");
         sd = context.getWorker().fetchResource(StructureDefinition.class, p.getValue());
-        if (sd != null && sd.hasUserData("path")) {
-          td.ah(sd.getUserString("path")).tx(sd.present());
+        if (sd != null && sd.hasWebPath()) {
+          td.ah(sd.getWebPath()).tx(sd.present());
         } else {
             td.tx(p.asStringValue());
         }

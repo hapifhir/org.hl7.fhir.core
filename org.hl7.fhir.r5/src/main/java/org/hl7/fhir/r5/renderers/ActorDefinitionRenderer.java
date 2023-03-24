@@ -52,7 +52,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       td = tr.td().colspan("2");
       CapabilityStatement cs = context.getWorker().fetchResource(CapabilityStatement.class, acd.getCapabilities(), acd);
       if (cs != null) {
-        td.ah(cs.getUserString("path")).tx(cs.present());
+        td.ah(cs.getWebPath()).tx(cs.present());
       } else {
         render(td, acd.getCapabilitiesElement());
       }      
@@ -65,7 +65,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
         if (first) first = false; else x.br();
         ActorDefinition df = context.getWorker().fetchResource(ActorDefinition.class, t.getValue(), acd);
         if (df != null) {
-          td.ah(df.getUserString("path")).tx(df.present());
+          td.ah(df.getWebPath()).tx(df.present());
         } else {
           render(td, t);
         }      

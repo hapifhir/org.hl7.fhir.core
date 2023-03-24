@@ -683,7 +683,7 @@ public class Element extends Base {
 	    decorations = new ArrayList<>();
 	    setUserData("fhir.decorations", decorations);
 	  }
-	  decorations.add(new ElementDecoration(DecorationType.TYPE, profile.getUserString("path"), definition.getPath()));
+	  decorations.add(new ElementDecoration(DecorationType.TYPE, profile.getWebPath(), definition.getPath()));
 	  if (definition.getId() != null && tail(definition.getId()).contains(":")) {
 	    String[] details = tail(definition.getId()).split(":");
 	    decorations.add(new ElementDecoration(DecorationType.SLICE, null, details[1]));
@@ -1410,5 +1410,18 @@ public class Element extends Base {
     }
   }
   
-  
+
+  private String webPath;
+  public boolean hasWebPath() {
+    return webPath != null;
+  }
+  public String getWebPath() {
+    return webPath;
+  }
+  public void setWebPath(String webPath) {
+    if (webPath != null && webPath.startsWith("file:")) {
+      System.out.println("!"); // FIXME
+    }
+    this.webPath = webPath;
+  }
 }

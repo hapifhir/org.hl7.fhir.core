@@ -244,7 +244,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     }
     StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, src);
     if (sd != null) {
-      String url = sd.getUserString("path");
+      String url = sd.getWebPath();
       if (url != null) {
         defn.getPieces().add(gen.new Piece(url+"#"+path, path, null));          
       } else {
@@ -265,7 +265,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     }
     StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, src);
     if (sd != null) {
-      String url = sd.getUserString("path");
+      String url = sd.getWebPath();
       if (url != null) {
         x.ah(url+"#"+path).tx(path);          
       } else {
@@ -476,14 +476,14 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //        if (vs == null) {
 //          ans.tx(i.getAnswerValueSet());                    
 //        } else {
-//          ans.ah(vs.getUserString("path")).tx(vs.present());                              
+//          ans.ah(vs.getWebPath()).tx(vs.present());                              
 //        }
 //      } else {
 //        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet());
-//        if (vs == null  || !vs.hasUserData("path")) {
+//        if (vs == null  || !vs.hasWebPath()) {
 //          ans.tx(i.getAnswerValueSet());                    
 //        } else {
-//          ans.ah(vs.getUserString("path")).tx(vs.present());                              
+//          ans.ah(vs.getWebPath()).tx(vs.present());                              
 //        }             
 //      }
 //    }
@@ -785,8 +785,8 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //  }
 //
 //  private void defn(XhtmlNode tbl, String name, String url, Resource res) throws UnsupportedEncodingException, IOException {
-//    if (res != null && res.hasUserData("path")) {
-//      defn(tbl, "Definition", RendererFactory.factory(res, context).display(res), res.getUserString("path"));
+//    if (res != null && res.hasWebPath()) {
+//      defn(tbl, "Definition", RendererFactory.factory(res, context).display(res), res.getWebPath());
 //    } else if (Utilities.isAbsoluteUrl(url)) {
 //      defn(tbl, "Definition", url, url);
 //    } {

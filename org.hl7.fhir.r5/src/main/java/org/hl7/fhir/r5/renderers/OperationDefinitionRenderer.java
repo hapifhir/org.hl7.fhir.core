@@ -61,7 +61,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       if (sd == null) {
         p.pre().tx(opd.getInputProfile());        
       } else {
-        p.ah(sd.getUserString("path")).tx(sd.present());                 
+        p.ah(sd.getWebPath()).tx(sd.present());                 
       }      
     }
     if (opd.hasOutputProfile()) {
@@ -71,7 +71,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       if (sd == null) {
         p.pre().tx(opd.getOutputProfile());        
       } else {
-        p.ah(sd.getUserString("path")).tx(sd.present());                 
+        p.ah(sd.getWebPath()).tx(sd.present());                 
       }      
     }
     x.para().tx("Parameters");
@@ -134,10 +134,10 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
         if (sdt == null)
           td.tx(p.hasType() ? p.getType().toCode() : "");
         else
-          td.ah(sdt.getUserString("path")).tx(s);         
+          td.ah(sdt.getWebPath()).tx(s);         
       }
     } else
-      td.ah(sd.getUserString("path")).tx(p.hasType() ? p.getType().toCode() : "");
+      td.ah(sd.getWebPath()).tx(p.hasType() ? p.getType().toCode() : "");
     if (p.hasSearchType()) {
       td.br();
       td.tx("(");

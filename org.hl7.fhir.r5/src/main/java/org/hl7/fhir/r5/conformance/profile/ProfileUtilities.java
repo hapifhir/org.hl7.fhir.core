@@ -1254,9 +1254,9 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   protected String getWebUrl(StructureDefinition dt, String webUrl) {
-    if (dt.hasUserData("path")) {
+    if (dt.hasWebPath()) {
       // this is a hack, but it works for now, since we don't have deep folders
-      String url = dt.getUserString("path");
+      String url = dt.getWebPath();
       int i = url.lastIndexOf("/");
       if (i < 1) {
         return defWebRoot;
@@ -3815,7 +3815,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     base.setKind(StructureDefinitionKind.COMPLEXTYPE); 
     base.setAbstract(true); 
     base.setType("Base");
-    base.setUserData("path", "http://build.fhir.org/types.html#Base");
+    base.setWebPath("http://build.fhir.org/types.html#Base");
     ElementDefinition e = base.getSnapshot().getElementFirstRep();
     e.setId("Base");
     e.setPath("Base"); 
@@ -3963,6 +3963,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     ElementDefinition value = sd.getSnapshot().getElementByPath("Extension.value");
     return value != null && !value.isProhibited();
+  }
+
+  public static boolean isModifierExtension(StructureDefinition sd) {
+    ElementDefinition defn = sd.getSnapshot().getElementByPath("Extension");
+    return defn.getIsModifier();
   }
 
   

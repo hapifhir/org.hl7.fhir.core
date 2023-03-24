@@ -95,8 +95,8 @@ public class NarrativeGenerationTests {
     public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
       ValueSet vs = context.fetchResource(ValueSet.class, url);
       if (vs != null) {
-        if (vs.hasUserData("path")) {
-          return new BindingResolution(vs.present(), vs.getUserString("path"));
+        if (vs.hasWebPath()) {
+          return new BindingResolution(vs.present(), vs.getWebPath());
         } else {
           return new BindingResolution(vs.present(), "valueset-"+vs.getIdBase()+".html");
         }

@@ -673,8 +673,8 @@ public class CodeSystemUtilities {
       return new SystemReference("RxNorm", "http://www.nlm.nih.gov/research/umls/rxnorm");
     } else if (ctxt != null) {
       CodeSystem cs = ctxt.fetchCodeSystem(system);
-      if (cs != null && cs.hasUserData("path")) {
-        return new SystemReference(cs.present(), cs.getUserString("path"), Utilities.isAbsoluteUrl(cs.getUserString("path")));
+      if (cs != null && cs.hasWebPath()) {
+        return new SystemReference(cs.present(), cs.getWebPath(), Utilities.isAbsoluteUrl(cs.getWebPath()));
       } else if (cs != null) {
         return new SystemReference(cs.present(), null);
       }

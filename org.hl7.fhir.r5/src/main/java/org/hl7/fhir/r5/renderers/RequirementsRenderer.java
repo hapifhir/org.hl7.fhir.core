@@ -47,7 +47,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         if (acd == null) {
           p.code(req.getActor().get(0).getValue());
         } else {
-          p.ah(acd.getUserString("path")).tx(acd.present());
+          p.ah(acd.getWebPath()).tx(acd.present());
         }
       } else {
         x.para().tx("These requirements apply to the following actors:");
@@ -57,7 +57,7 @@ public class RequirementsRenderer extends ResourceRenderer {
           if (acd == null) {
             ul.li().code(a.getValue());
           } else {
-            ul.li().ah(acd.getUserString("path")).tx(acd.present());
+            ul.li().ah(acd.getWebPath()).tx(acd.present());
           }
         }
       }
@@ -70,7 +70,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         if (reqd == null) {
           p.code(req.getDerivedFrom().get(0).getValue());
         } else {
-          p.ah(reqd.getUserString("path")).tx(reqd.present());
+          p.ah(reqd.getWebPath()).tx(reqd.present());
         }
       } else {
         x.para().tx("These requirements are derived from the following requirements:");
@@ -80,7 +80,7 @@ public class RequirementsRenderer extends ResourceRenderer {
           if (reqd == null) {
             ul.li().code(a.getValue());
           } else {
-            ul.li().ah(reqd.getUserString("path")).tx(reqd.present());
+            ul.li().ah(reqd.getWebPath()).tx(reqd.present());
           }
         }
       }
@@ -100,7 +100,7 @@ public class RequirementsRenderer extends ResourceRenderer {
       for (Enumeration<ConformanceExpectation> t : stmt.getConformance()) {
         if (first) first = false; else td.tx(", ");
         if (cs != null) {
-          td.ah(cs.getUserString("path")+"#conformance-expectation-"+t.asStringValue()).tx(t.asStringValue().toUpperCase());          
+          td.ah(cs.getWebPath()+"#conformance-expectation-"+t.asStringValue()).tx(t.asStringValue().toUpperCase());          
         } else {
           td.tx(t.asStringValue().toUpperCase());
         }
@@ -120,9 +120,9 @@ public class RequirementsRenderer extends ResourceRenderer {
           if (reqr != null) {
             RequirementsStatementComponent stmtr = reqr.findStatement(key);
             if (stmtr != null) {
-              li.ah(reqr.getUserString("path")+"#"+key).tx(reqr.present() + " # " +(stmt.hasLabel() ? stmt.getLabel() : stmt.getKey()));
+              li.ah(reqr.getWebPath()+"#"+key).tx(reqr.present() + " # " +(stmt.hasLabel() ? stmt.getLabel() : stmt.getKey()));
             } else {
-              li.ah(reqr.getUserString("path")+"#"+key).tx(reqr.present()+" # "+key);              
+              li.ah(reqr.getWebPath()+"#"+key).tx(reqr.present()+" # "+key);              
             }
           } else {
             li.code(stmt.getDerivedFrom());

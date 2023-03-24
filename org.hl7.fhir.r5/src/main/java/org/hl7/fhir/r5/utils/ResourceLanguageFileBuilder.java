@@ -54,7 +54,7 @@ public class ResourceLanguageFileBuilder {
       }
     }
     
-    file.start(path, path, res.getUserString("path"), source, target);
+    file.start(path, path, res.getWebPath(), source, target);
   
     for (Property p : res.children()) {
       process(p, id, path);      

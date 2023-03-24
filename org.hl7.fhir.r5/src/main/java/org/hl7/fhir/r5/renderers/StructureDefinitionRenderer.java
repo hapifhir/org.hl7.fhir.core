@@ -493,7 +493,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (actor == null) {
           columns.add(new Column(col, tail(col), "Obligations that apply to the undefined actor "+col, col));          
         } else {
-          columns.add(new Column(col, actor.getName(), "Obligations that apply to the actor "+actor.present(), actor.getUserString("path")));                    
+          columns.add(new Column(col, actor.getName(), "Obligations that apply to the actor "+actor.present(), actor.getWebPath()));                    
         }
       }
     }
@@ -1160,7 +1160,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             boolean first = true;
             for (StructureDefinition sd : children) {
               if (first) first = false; else c.addPiece(gen.new Piece(null, ", ", null));
-              c.addPiece(gen.new Piece(sd.getUserString("path"), sd.getTypeName(), null));
+              c.addPiece(gen.new Piece(sd.getWebPath(), sd.getTypeName(), null));
             }
           }
         }
@@ -1184,7 +1184,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           String ref2 = null;
           String fixedUrl = null;
           if (ed != null) {
-            String p = ed.getUserString("path");
+            String p = ed.getWebPath();
             if (p != null) {
               ref = p.startsWith("http:") || context.getRules() == GenerationRules.IG_PUBLISHER ? p : Utilities.pathURL(corePath, p);
             }             
@@ -1195,7 +1195,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               else {
                 StructureDefinition ed2 = context.getWorker().fetchResource(StructureDefinition.class, fixedUrl);
                 if (ed2 != null) {
-                  String p2 = ed2.getUserString("path");
+                  String p2 = ed2.getWebPath();
                   if (p2 != null) {
                     ref2 = p2.startsWith("http:") || context.getRules() == GenerationRules.IG_PUBLISHER ? p2 : Utilities.pathURL(corePath, p2);
                   }                              
@@ -1333,7 +1333,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.getPieces().add(gen.new Piece(null, type, null));          
               c.getPieces().add(gen.new Piece("</code>"));          
             } else {
-              c.getPieces().add(gen.new Piece(sd.getUserString("path"), sd.getTypeName(), null));          
+              c.getPieces().add(gen.new Piece(sd.getWebPath(), sd.getTypeName(), null));          
             }
           }
         }
@@ -1478,7 +1478,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), tail(ed.getElement().getPath()), ed.getElement().getPath()));
         } else {
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "See ", ed.getElement().getPath()), null));
-          c.getPieces().add(gen.new Piece(pfx(corePath, ed.getSource().getUserString("path"))+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getTypeName()+")", ed.getElement().getPath()));
+          c.getPieces().add(gen.new Piece(pfx(corePath, ed.getSource().getWebPath())+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getTypeName()+")", ed.getElement().getPath()));
         }
       }
       return c;
@@ -1488,8 +1488,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (root) { // we'll use base instead of types then
         StructureDefinition bsd = profile == null ? null : context.getWorker().fetchResource(StructureDefinition.class, profile.getBaseDefinition(), profile);
         if (bsd != null) {
-          if (bsd.hasUserData("path")) {
-            c.getPieces().add(gen.new Piece(Utilities.isAbsoluteUrl(bsd.getUserString("path")) ? bsd.getUserString("path") : imagePath +bsd.getUserString("path"), bsd.getName(), null));
+          if (bsd.hasWebPath()) {
+            c.getPieces().add(gen.new Piece(Utilities.isAbsoluteUrl(bsd.getWebPath()) ? bsd.getWebPath() : imagePath +bsd.getWebPath(), bsd.getName(), null));
           } else {
             c.getPieces().add(gen.new Piece(null, bsd.getName(), null));
           }
@@ -1625,7 +1625,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, u, src);
       if (sd != null) {
         String disp = sd.hasTitle() ? sd.getTitle() : sd.getName();
-        c.addPiece(checkForNoChange(t, gen.new Piece(checkPrepend(corePath, sd.getUserString("path")), disp, null)));
+        c.addPiece(checkForNoChange(t, gen.new Piece(checkPrepend(corePath, sd.getWebPath()), disp, null)));
       } else {
         String rn = u.substring(40);
         c.addPiece(checkForNoChange(t, gen.new Piece(context.getPkp().getLinkFor(corePath, rn), rn, null)));
@@ -2050,7 +2050,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (ed.getSource() == profile) {
             c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), "See "+ed.getElement().getPath(), null));
           } else {
-            c.getPieces().add(gen.new Piece(ed.getSource().getUserData("path")+"#"+ed.getElement().getPath(), "See "+ed.getSource().getTypeName()+"."+ed.getElement().getPath(), null));
+            c.getPieces().add(gen.new Piece(ed.getSource().getWebPath()+"#"+ed.getElement().getPath(), "See "+ed.getSource().getTypeName()+"."+ed.getElement().getPath(), null));
           }          
         }
       }
@@ -2064,7 +2064,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           StructureDefinition ed = context.getWorker().fetchResource(StructureDefinition.class, url, profile);
           String ref = null;
           if (ed != null) {
-            String p = ed.getUserString("path");
+            String p = ed.getWebPath();
             if (p != null) {
               ref = p.startsWith("http:") || context.getRules() == GenerationRules.IG_PUBLISHER ? p : Utilities.pathURL(corePath, p);
             }
@@ -2392,7 +2392,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 if (psd == null)
                   typeCell.addPiece(gen.new Piece(null, "?gen-e2?", null));
                 else
-                  typeCell.addPiece(gen.new Piece(psd.getUserString("path"), psd.getName(), psd.present()));
+                  typeCell.addPiece(gen.new Piece(psd.getWebPath(), psd.getName(), psd.present()));
                 if (!mustSupportMode && isMustSupport(pt) && element.getMustSupport()) {
                   typeCell.addPiece(gen.new Piece(null, " ", null));
                   typeCell.addStyledText(translate("sd.table", "This profile must be supported"), "S", "white", "red", null, false);
@@ -2520,11 +2520,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     SpanEntry res = new SpanEntry();
     res.setName(name);
     res.setCardinality(cardinality);
-    res.setProfileLink(profile.getUserString("path"));
+    res.setProfileLink(profile.getWebPath());
     res.setResType(profile.getTypeName());
     StructureDefinition base = context.getWorker().fetchResource(StructureDefinition.class, res.getResType());
     if (base != null)
-      res.setResLink(base.getUserString("path"));
+      res.setResLink(base.getWebPath());
     res.setId(profile.getId());
     res.setProfile(profile.getDerivation() == TypeDerivationRule.CONSTRAINT);
     StringBuilder b = new StringBuilder();
@@ -2730,7 +2730,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         b.append("</code>");
       } else {
         b.append("<a href=\"");
-        b.append(sd.getUserString("path"));
+        b.append(sd.getWebPath());
         b.append("\">");
         b.append(Utilities.escapeXml(sd.getTypeName()));        
         b.append("</a>");

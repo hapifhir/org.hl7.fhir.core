@@ -68,8 +68,8 @@ public class ResourceComparer {
       if (Utilities.noString(t)) {
         t = cr.getId();
       }
-      if (cr.hasUserData("path")) {
-        String p = cr.getUserString("path");
+      if (cr.hasWebPath()) {
+        String p = cr.getWebPath();
         return "<td><a href=\""+(Utilities.isAbsoluteUrl(p) ? "" : "../")+p+"\">"+Utilities.escapeXml(t)+"</td>";
       } else 
         return "<td>"+Utilities.escapeXml(t)+"</td>";

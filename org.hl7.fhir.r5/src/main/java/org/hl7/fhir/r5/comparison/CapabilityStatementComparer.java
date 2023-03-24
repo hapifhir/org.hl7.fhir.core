@@ -911,9 +911,9 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     PrimitiveType right = t.hasRight() ? (PrimitiveType) t.getRight() : null;
     CanonicalResource crL = left == null ? null : (CanonicalResource) session.getContextLeft().fetchResource(Resource.class, left.primitiveValue());
     CanonicalResource crR = right == null ? null : (CanonicalResource) session.getContextRight().fetchResource(Resource.class, right.primitiveValue());
-    String refL = crL != null && crL.hasUserData("path") ? crL.getUserString("path") : null;
+    String refL = crL != null && crL.hasWebPath() ? crL.getWebPath() : null;
     String dispL = crL != null && refL != null ? crL.present() : left == null ? "" : left.primitiveValue(); 
-    String refR = crR != null && crR.hasUserData("path") ? crR.getUserString("path") : null;
+    String refR = crR != null && crR.hasWebPath() ? crR.getWebPath() : null;
     String dispR = crR != null && refR != null ? crR.present() : right == null ? "" : right.primitiveValue(); 
     r.getCells().add(style(gen.new Cell(null, refL, dispL, null, null), left != null ? left.primitiveValue() : null, right != null ? right.primitiveValue() : null, true));
     r.getCells().add(gen.new Cell(null, null, "", null, null));
