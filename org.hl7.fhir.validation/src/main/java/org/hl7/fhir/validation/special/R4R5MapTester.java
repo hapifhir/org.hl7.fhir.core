@@ -113,7 +113,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
 
     public String summary() {
       if (errors.size() == 0) {
-        return "All OK";
+        return "All OK (~"+(elements == 0 ? "n/a" : ((lostElements * 100) / elements))+"% lost in "+total+" examples)";
       } else {
         return String.join(", ", errors);
       }
