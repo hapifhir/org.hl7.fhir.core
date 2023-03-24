@@ -3,6 +3,8 @@ package org.hl7.fhir.validation.cli.services;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
@@ -39,6 +41,7 @@ class ValidationServiceTest {
 
   @Test
   void validateSources() throws Exception {
+    TestingUtilities.injectCorePackageLoader();
     SessionCache sessionCache = Mockito.spy(new SessionCache());
     ValidationService myService = new ValidationService(sessionCache);
 
