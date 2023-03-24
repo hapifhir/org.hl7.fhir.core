@@ -165,7 +165,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
     }
   }
 
-  public class InputStreamWithSrc {
+  public static class InputStreamWithSrc {
 
     public InputStream stream;
     public String url;
