@@ -9,6 +9,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -44,6 +45,7 @@ public class FTPClient {
   @Getter
   private final int port;
 
+  @Getter
   private final String remoteSeparator;
 
   @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -209,7 +211,7 @@ public class FTPClient {
     if (path.startsWith(remoteSeparator)) {
       throw new IllegalArgumentException("Absolute remote path is not permitted. Path: " + path);
     }
-    return String.join(remoteSeparator, path);
+    return String.join(remoteSeparator, path.replace(File.separator, remoteSeparator));
   }
 
   /**
