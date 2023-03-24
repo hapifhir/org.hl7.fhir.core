@@ -2,6 +2,7 @@ package org.hl7.fhir.core.generator.analysis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.core.generator.codegen.Configuration;
 import org.hl7.fhir.core.generator.engine.Definitions;
@@ -34,10 +35,10 @@ public class Analyser {
     this.version = version;
   }
 
-  public Analysis analyse(StructureDefinition sd) throws Exception {
+  public Analysis analyse(StructureDefinition sd, Map<String, AnalysisElementInfo> elementInfo) throws Exception {
     Analysis res = new Analysis(definitions, sd);
 
-          if (VersionUtilities.isR4BVer(version)) {
+    if (VersionUtilities.isR4BVer(version)) {
       res.setAncestor(definitions.getStructures().get(getR4bAncestor(sd)));
     } else {
       res.setAncestor(definitions.getStructures().get(sd.getBaseDefinition()));
@@ -79,7 +80,8 @@ public class Analyser {
         String nnn = er.getUserString("java.type");
         e.setUserData("java.type", nnn);
         e.setUserData("java.type.info", er.getUserData("java.type.info"));
-      }
+      } 
+      elementInfo.put(e.getPath(), new AnalysisElementInfo(res.getClassName(), e.getUserString("java.type")));
     }
     return res;
   }

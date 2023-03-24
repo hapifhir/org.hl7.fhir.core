@@ -6,10 +6,15 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.core.generator.analysis.Analyser;
 import org.hl7.fhir.core.generator.analysis.Analysis;
+import org.hl7.fhir.core.generator.analysis.AnalysisElementInfo;
 import org.hl7.fhir.core.generator.codegen.Configuration;
 import org.hl7.fhir.core.generator.codegen.JavaConstantsGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaEnumerationsGenerator;
@@ -19,8 +24,14 @@ import org.hl7.fhir.core.generator.codegen.JavaParserRdfGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaParserXmlGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaResourceGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaTypeGenerator;
+import org.hl7.fhir.core.generator.codegen.extensions.JavaExtensionsGenerator;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
@@ -53,6 +64,8 @@ public class JavaCoreGenerator {
 
   private void generate(String version, String src, String dest) throws Exception {
     long start = System.currentTimeMillis();
+    Map<String, AnalysisElementInfo> elementInfo = new HashMap<>();
+    Set<String> genClassList = new HashSet<>();
     
     String ap = Utilities.path(src);
     System.out.println("Load Configuration from "+ap);
@@ -94,37 +107,43 @@ public class JavaCoreGenerator {
     
     if (VersionUtilities.isR4BVer(version)) {
       StructureDefinition sd = master.getStructures().get("http://hl7.org/fhir/StructureDefinition/Element");
-      genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);      
+      genClassList.add(genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd, elementInfo));      
     }
+    for (StructureDefinition sd : master.getStructures().getList()) {
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
+        genClassList.add(Utilities.capitalize(sd.getType())+"Type");
+      }
+    }
+
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
-          genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);
+          genClassList.add(genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd, elementInfo));
         }
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
-          genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);
+          genClassList.add(genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd, elementInfo));
         }
       }
     }
     if (VersionUtilities.isR4BVer(version)) {
       StructureDefinition sd = master.getStructures().get("http://hl7.org/fhir/StructureDefinition/Resource");
-      genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);      
+      genClassList.add(genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd, elementInfo));      
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.RESOURCE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
-          genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);
+          genClassList.add(genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd, elementInfo));
         }
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.RESOURCE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
-          genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);
+          genClassList.add(genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd, elementInfo));
         }
       }
     }
@@ -143,18 +162,50 @@ public class JavaCoreGenerator {
     System.out.println(" .. RdfParser");
     rgen.generate();
     rgen.close();
+    Map<String, StructureDefinition> extensions = new HashMap<>();
+    for (StructureDefinition sd : master.getStructures().getList()) {
+      if (ProfileUtilities.isExtensionDefinition(sd)) {
+        sd.setUserData("source", "core");
+        extensions.put(sd.getUrl(), sd);
+      }
+    }
+    loadPackageforExtensions(pcm, master, extensions, "hl7.fhir.uv.extensions", "");
+    loadPackageforExtensions(pcm, master, extensions, "hl7.terminology.r5", "tx");
+    loadPackageforExtensions(pcm, master, extensions, "hl7.fhir.uv.tools#current", "tools");
+    JavaExtensionsGenerator exgen = new JavaExtensionsGenerator(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", jid, "extensions"), master, config, date, npm.version(), jid, elementInfo, genClassList);
+    exgen.generate(extensions);
     System.out.println("Done ("+Long.toString(System.currentTimeMillis()-start)+"ms)");   
     
   }
 
-  public void genClass(String version, String dest, String date, Configuration config, String jid, NpmPackage npm, Definitions master,
-      JavaParserJsonGenerator jgen, JavaParserXmlGenerator xgen, JavaParserRdfGenerator rgen, StructureDefinition sd)
+  private void loadPackageforExtensions(FilesystemPackageCacheManager pcm, Definitions master,
+      Map<String, StructureDefinition> extensions, String id, String source) throws IOException {
+    NpmPackage npm;
+    npm = pcm.loadPackage(id);
+    for (String p : npm.listResources("StructureDefinition", "ValueSet", "CodeSystem")) {
+      CanonicalResource cr = (CanonicalResource) new JsonParser().parse(npm.load(p));
+      cr.setUserData("source", source);
+      if (cr instanceof StructureDefinition) {
+        StructureDefinition sd = (StructureDefinition) cr;
+        if (ProfileUtilities.isExtensionDefinition(sd)) {
+          extensions.put(sd.getUrl(), sd);
+        }
+      } else if (cr instanceof ValueSet) {
+        master.getValuesets().see((ValueSet) cr, null);
+      } else if (cr instanceof CodeSystem) {
+        master.getCodeSystems().see((CodeSystem) cr, null);
+      }
+    }
+  }
+
+  public String genClass(String version, String dest, String date, Configuration config, String jid, NpmPackage npm, Definitions master,
+      JavaParserJsonGenerator jgen, JavaParserXmlGenerator xgen, JavaParserRdfGenerator rgen, StructureDefinition sd, Map<String, AnalysisElementInfo> elementInfo)
       throws Exception, IOException, UnsupportedEncodingException, FileNotFoundException {
     String name = javaName(sd.getName());
 
     System.out.println(" .. "+name);
     Analyser jca = new Analyser(master, config, version);
-    Analysis analysis = jca.analyse(sd);
+    Analysis analysis = jca.analyse(sd, elementInfo);
     
     String fn = Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", jid, "model", name+".java");
     JavaResourceGenerator gen = new JavaResourceGenerator(new FileOutputStream(fn), master, config, date, npm.version(), jid);
@@ -163,6 +214,7 @@ public class JavaCoreGenerator {
     jgen.seeClass(analysis);
     xgen.seeClass(analysis);
     rgen.seeClass(analysis);
+    return name;
   }
 
   @SuppressWarnings("unchecked")
