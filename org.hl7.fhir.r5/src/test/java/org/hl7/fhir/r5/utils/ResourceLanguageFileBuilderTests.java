@@ -18,7 +18,7 @@ public class ResourceLanguageFileBuilderTests {
 //  @Test
   public void testXLIFFGeneration() throws FHIRFormatError, IOException {
     Resource res = new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "structuredefinition-language.json"));
-    res.setUserData("path", "test.resource.xml");
+    res.setWebPath("test.resource.xml");
     ResourceLanguageFileBuilder lang = new ResourceLanguageFileBuilder();
     IWorkerContext ctxt = TestingUtilities.getSharedWorkerContext();
     ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "languages", "StructureDefinition-ed-translatable.json")));

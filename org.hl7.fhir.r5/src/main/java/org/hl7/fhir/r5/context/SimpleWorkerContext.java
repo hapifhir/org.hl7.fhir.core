@@ -368,7 +368,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	      if (filter == null || filter.isOkToLoad(e.getResource())) {
 	        String path = loader != null ? loader.getResourcePath(e.getResource()) : null;
 	        if (path != null) {
-	          e.getResource().setUserData("path", path);
+	          e.getResource().setWebPath(path);
 	        }
 		      cacheResource(e.getResource());
 	      }
@@ -377,7 +377,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		  if (filter == null || filter.isOkToLoad(f)) {
         String path = loader != null ? loader.getResourcePath(f) : null;
         if (path != null) {
-          f.setUserData("path", path);
+          f.setWebPath(path);
         }
 		    cacheResource(f);
 		  }
@@ -406,7 +406,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         if (filter == null || filter.isOkToLoad(e.getResource())) {
           String path = loader != null ? loader.getResourcePath(e.getResource()) : null;
           if (path != null) {
-            e.getResource().setUserData("path", path);
+            e.getResource().setWebPath(path);
           }
           cacheResourceFromPackage(e.getResource(), pi);
         }

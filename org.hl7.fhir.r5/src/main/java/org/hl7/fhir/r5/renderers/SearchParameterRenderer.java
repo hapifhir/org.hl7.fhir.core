@@ -59,9 +59,9 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     XhtmlNode td = tr.td();
     for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getBase()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
-      if (sd != null && sd.hasUserData("path")) {
+      if (sd != null && sd.hasWebPath()) {
         td.sep(", ");
-        td.ah(sd.getUserString("path")).tx(t.getCode());
+        td.ah(sd.getWebPath()).tx(t.getCode());
       } else {
         td.sep(", ");
         td.tx(t.getCode());
@@ -88,9 +88,9 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       } else {
         for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getTarget()) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
-          if (sd != null && sd.hasUserData("path")) {
+          if (sd != null && sd.hasWebPath()) {
             td.sep(", ");
-            td.ah(sd.getUserString("path")).tx(t.getCode());
+            td.ah(sd.getWebPath()).tx(t.getCode());
           } else {
             td.sep(", ");
             td.tx(t.getCode());
@@ -146,8 +146,8 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
         SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), spd);
-        if (tsp != null && tsp.hasUserData("path")) {
-          tr.td().ah(tsp.getUserString("path")).tx(tsp.present());          
+        if (tsp != null && tsp.hasWebPath()) {
+          tr.td().ah(tsp.getWebPath()).tx(tsp.present());          
         } else {
           tr.td().tx(t.getDefinition());
         }

@@ -61,7 +61,7 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
       r.setUserData("webroot", "");      
     }
     if (path != null) {
-      r.setUserData("path", path);
+      r.setWebPath(path);
     }
   }
 

@@ -108,7 +108,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         }
         if (re != null) {
           ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue(), cm) : null;
-          res.add(new UsedConceptMap(re, vst == null ? cm.getUserString("path") : vst.getUserString("path"), cm));
+          res.add(new UsedConceptMap(re, vst == null ? cm.getWebPath() : vst.getWebPath(), cm));
         }
       }
     }
@@ -427,8 +427,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
     CodeSystem cs = getContext().getWorker().fetchCodeSystem(url);
     if (cs == null) {
       x.code(url);
-    } else if (cs.hasUserData("path")) {
-      x.ah(cs.getUserString("path")).tx(cs.present());
+    } else if (cs.hasWebPath()) {
+      x.ah(cs.getWebPath()).tx(cs.present());
     } else {
       x.code(url);
       x.tx(" ("+cs.present()+")");
@@ -495,8 +495,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
     } else {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v, source);
       if (cr != null) {
-        if (cr.hasUserData("path")) {
-          x.ah(cr.getUserString("path")).tx(cr.present()+" v"+v+" ("+cr.fhirType()+")");          
+        if (cr.hasWebPath()) {
+          x.ah(cr.getWebPath()).tx(cr.present()+" v"+v+" ("+cr.fhirType()+")");          
         } else {
           x.tx(describeSystem(u)+" v"+v+" ("+cr.fhirType()+")");
         }
@@ -685,7 +685,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     String ref = (String) cs.getUserData("filename");
     if (ref == null)
-      ref = (String) cs.getUserData("path");
+      ref = (String) cs.getWebPath();
     if (ref == null)
       return "?ngen-14?.html";
     if (!ref.contains(".html"))
@@ -776,7 +776,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       td = tr.td();
       if (cs != null) {
         String defn = CodeSystemUtilities.getCodeDefinition(cs, c.getCode());
-        addMarkdown(td, defn, cs.getUserString("path"));
+        addMarkdown(td, defn, cs.getWebPath());
       }
     }
     for (String n  : Utilities.sorted(properties.keySet())) {

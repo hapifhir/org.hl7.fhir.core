@@ -168,7 +168,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     
     if (context.hasResource(CanonicalResource.class, url)) {
       CanonicalResource  cr = context.fetchResource(CanonicalResource.class, url);
-      return cr.getUserString("path");
+      return cr.getWebPath();
     }
     return null;
   }
@@ -282,7 +282,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       }
       pu.setDebug(false);
       for (String err : errors)
-        msgs.add(new ValidationMessage(Source.ProfileValidator, IssueType.EXCEPTION, p.getUserString("path"), "Error sorting Differential: "+err, ValidationMessage.IssueSeverity.ERROR));
+        msgs.add(new ValidationMessage(Source.ProfileValidator, IssueType.EXCEPTION, p.getWebPath(), "Error sorting Differential: "+err, ValidationMessage.IssueSeverity.ERROR));
       pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString("webroot"), p.getName());
       for (ValidationMessage msg : msgs) {
         if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL)

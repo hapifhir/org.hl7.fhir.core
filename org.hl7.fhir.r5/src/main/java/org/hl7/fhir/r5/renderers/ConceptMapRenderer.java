@@ -92,7 +92,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     CodeSystem cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship");
     if (cs == null)
       cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence");
-    String eqpath = cs == null ? null : cs.getUserString("path");
+    String eqpath = cs == null ? null : cs.getWebPath();
 
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
       String src = grp.getSource();
@@ -432,7 +432,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (cs == null)
       td.tx(url);
     else
-      td.ah(context.fixReference(cs.getUserString("path"))).attribute("title", url).tx(cs.present());
+      td.ah(context.fixReference(cs.getWebPath())).attribute("title", url).tx(cs.present());
   }
 
   private void addUnmapped(XhtmlNode tbl, ConceptMapGroupComponent grp) {

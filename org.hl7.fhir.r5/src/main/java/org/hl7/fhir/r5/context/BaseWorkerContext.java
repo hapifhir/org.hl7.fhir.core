@@ -2188,63 +2188,63 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     if (codeSystems.has(url)) {
-      return codeSystems.get(url).getUserString("path");
+      return codeSystems.get(url).getWebPath();
     }
 
     if (valueSets.has(url)) {
-      return valueSets.get(url).getUserString("path");
+      return valueSets.get(url).getWebPath();
     }
 
     if (maps.has(url)) {
-      return maps.get(url).getUserString("path");
+      return maps.get(url).getWebPath();
     }
     
     if (transforms.has(url)) {
-      return transforms.get(url).getUserString("path");
+      return transforms.get(url).getWebPath();
     }
     
     if (actors.has(url)) {
-      return actors.get(url).getUserString("path");
+      return actors.get(url).getWebPath();
     }
     
     if (requirements.has(url)) {
-      return requirements.get(url).getUserString("path");
+      return requirements.get(url).getWebPath();
     }
     
     if (structures.has(url)) {
-      return structures.get(url).getUserString("path");
+      return structures.get(url).getWebPath();
     }
     
     if (guides.has(url)) {
-      return guides.get(url).getUserString("path");
+      return guides.get(url).getWebPath();
     }
     
     if (capstmts.has(url)) {
-      return capstmts.get(url).getUserString("path");
+      return capstmts.get(url).getWebPath();
     }
     
     if (measures.has(url)) {
-      return measures.get(url).getUserString("path");
+      return measures.get(url).getWebPath();
     }
 
     if (libraries.has(url)) {
-      return libraries.get(url).getUserString("path");
+      return libraries.get(url).getWebPath();
     }
 
     if (searchParameters.has(url)) {
-      return searchParameters.get(url).getUserString("path");
+      return searchParameters.get(url).getWebPath();
     }
         
     if (questionnaires.has(url)) {
-      return questionnaires.get(url).getUserString("path");
+      return questionnaires.get(url).getWebPath();
     }
 
     if (operations.has(url)) {
-      return operations.get(url).getUserString("path");
+      return operations.get(url).getWebPath();
     }
     
     if (plans.has(url)) {
-      return plans.get(url).getUserString("path");
+      return plans.get(url).getWebPath();
     }
 
     if (url.equals("http://loinc.org")) {

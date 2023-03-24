@@ -157,8 +157,8 @@ public class StructureMapRenderer extends TerminologyRenderer {
         x.tx(""+prefix);
         x.color(COLOR_SYNTAX).tx(" = \"");
         CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getSource());
-        if (cs != null && cs.hasUserData("path")) {
-          x.ah(cs.getUserString("path"), cs.present()).tx(cg.getSource());
+        if (cs != null && cs.hasWebPath()) {
+          x.ah(cs.getWebPath(), cs.present()).tx(cg.getSource());
         } else {
           x.tx(cg.getSource());
         }
@@ -171,8 +171,8 @@ public class StructureMapRenderer extends TerminologyRenderer {
         x.tx(""+prefix);
         x.color(COLOR_SYNTAX).tx(" = \"");
         CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getTarget());
-        if (cs != null && cs.hasUserData("path")) {
-          x.ah(cs.getUserString("path"), cs.present()).tx(cg.getTarget());
+        if (cs != null && cs.hasWebPath()) {
+          x.ah(cs.getWebPath(), cs.present()).tx(cg.getTarget());
         } else {
           x.tx(""+cg.getTarget());
         }
@@ -259,8 +259,8 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.b().tx("uses");
       x.color(COLOR_SYNTAX).tx(" \"");
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, s.getUrl());
-      if (sd != null && sd.hasUserData("path")) {
-        x.ah(sd.getUserString("path"), sd.present()).tx(s.getUrl());
+      if (sd != null && sd.hasWebPath()) {
+        x.ah(sd.getWebPath(), sd.present()).tx(s.getUrl());
       } else {
         x.tx(s.getUrl());
       }
@@ -285,7 +285,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.color(COLOR_SYNTAX).tx(" \"");
       StructureMap m = context.getContext().fetchResource(StructureMap.class, s.getValue());
       if (m != null) {
-        x.ah(m.getUserString("path"), m.present()).tx(s.getValue());
+        x.ah(m.getWebPath(), m.present()).tx(s.getValue());
       } else {
         x.tx(s.getValue());
       }

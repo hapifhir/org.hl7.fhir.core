@@ -52,7 +52,7 @@ public class R5ExtensionsLoader {
     public T getResource() throws FHIRFormatError, FileNotFoundException, IOException {
       if (resource == null) {
         CanonicalResource r = (CanonicalResource) json.parse(source.load(info));
-        r.setUserData("path", Utilities.pathURL(source.getWebLocation(), r.fhirType().toLowerCase()+ "-"+r.getId().toLowerCase()+".html"));
+        r.setWebPath(Utilities.pathURL(source.getWebLocation(), r.fhirType().toLowerCase()+ "-"+r.getId().toLowerCase()+".html"));
         resource = (T) r;
       }
       return resource;
@@ -112,7 +112,7 @@ public class R5ExtensionsLoader {
         if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
           if (survivesStrippingTypes(sd, context, typeNames)) {
             count++;
-            sd.setUserData("path", Utilities.pathURL(pckExt.getWebLocation(), "extension-"+sd.getId().toLowerCase()+".html"));
+            sd.setWebPath(Utilities.pathURL(pckExt.getWebLocation(), "extension-"+sd.getId().toLowerCase()+".html"));
             registerTerminologies(sd);
             context.cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
           }
@@ -126,7 +126,7 @@ public class R5ExtensionsLoader {
       StructureDefinition sd = lsd.getResource();
       if (Utilities.existsInList(sd.getType(), types)) {
         count++;
-        sd.setUserData("path", Utilities.pathURL(lsd.source.getWebLocation(), sd.getId().toLowerCase()+".html"));
+        sd.setWebPath(Utilities.pathURL(lsd.source.getWebLocation(), sd.getId().toLowerCase()+".html"));
         registerTerminologies(sd);
         context.cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
       }

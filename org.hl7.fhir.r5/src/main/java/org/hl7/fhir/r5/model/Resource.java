@@ -430,9 +430,24 @@ public abstract class Resource extends BaseResource implements IAnyResource {
     return hasLanguage() ? getLanguage() : defValue;
   }
 
-
+  private String webPath;
+  public boolean hasWebPath() {
+    return webPath != null;
+  }
+  public String getWebPath() {
+    return webPath;
+  }
+  public void setWebPath(String webPath) {
+    if (webPath != null && webPath.startsWith("file:")) {
+      System.out.println("!"); // FIXME
+    }
+    this.webPath = webPath;
+  }
+  
   // when possible, the source package is considered when performing reference resolution. 
   
+
+
   private PackageInformation sourcePackage;
 
   public boolean hasSourcePackage() {

@@ -138,7 +138,7 @@ public class UTGVersionSorter {
           Resource r = new XmlParser().parse(new FileInputStream(f));
           if (r instanceof CanonicalResource) {
             CanonicalResource cr = (CanonicalResource) r;
-            cr.setUserData("path", f.getAbsolutePath());
+            cr.setWebPath(f.getAbsolutePath());
             if (cr.hasVersion() && cr.getVersion().startsWith("4.") && !Utilities.existsInList(cr.getId(), "v3-DataOperation", "v3-KnowledgeSubjectObservationValue")) {
               list.add(new CanonicalResourceAnalysis(cr, f.getAbsolutePath()));
             }

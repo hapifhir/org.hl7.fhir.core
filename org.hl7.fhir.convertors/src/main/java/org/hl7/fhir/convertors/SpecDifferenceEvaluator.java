@@ -784,10 +784,10 @@ public class SpecDifferenceEvaluator {
       li.code().tx("none");
     } else {
       ValueSet vs = context.fetchResource(ValueSet.class, ref);
-      if (vs == null || !vs.hasUserData("path")) {
+      if (vs == null || !vs.hasWebPath()) {
         li.code().tx(ref);
       } else {
-        li.ah(vs.getUserString("path")).tx(vs.present());
+        li.ah(vs.getWebPath()).tx(vs.present());
       }
     }
   }
@@ -833,12 +833,12 @@ public class SpecDifferenceEvaluator {
 
   private void describeReference(XhtmlNode li, String ref) {
     Resource res = context.fetchResource(Resource.class, ref);
-    if (res != null && res.hasUserData("path")) {
+    if (res != null && res.hasWebPath()) {
       if (res instanceof CanonicalResource) {
         CanonicalResource cr = (CanonicalResource) res;
-        li.ah(res.getUserString("path")).tx(cr.present());
+        li.ah(res.getWebPath()).tx(cr.present());
       } else {
-        li.ah(res.getUserString("path")).tx(ref);
+        li.ah(res.getWebPath()).tx(ref);
       }
     } else {
       li.code().tx(ref);

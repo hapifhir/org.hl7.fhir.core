@@ -172,7 +172,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       else
         addHtml = false;
       if (Utilities.noString(ref)) {
-        ref = (String) cs.getUserData("path");
+        ref = (String) cs.getWebPath();
         if (ref != null) {
           addHtml = false;
         }
@@ -289,7 +289,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     if (vs == null)
       vs = getContext().getWorker().fetchResource(Questionnaire.class, value, source);
     if (vs != null) {
-      String ref = (String) vs.getUserData("path");
+      String ref = (String) vs.getWebPath();
 
       ref = context.fixReference(ref);
       XhtmlNode a = li.ah(ref == null ? "?ngen-11?" : ref.replace("\\", "/"));
@@ -297,7 +297,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     } else {
       CodeSystem cs = getContext().getWorker().fetchCodeSystem(value);
       if (cs != null) {
-        String ref = (String) cs.getUserData("path");
+        String ref = (String) cs.getWebPath();
         ref = context.fixReference(ref);
         XhtmlNode a = li.ah(ref == null ? "?ngen-12?" : ref.replace("\\", "/"));
         a.addText(value);
