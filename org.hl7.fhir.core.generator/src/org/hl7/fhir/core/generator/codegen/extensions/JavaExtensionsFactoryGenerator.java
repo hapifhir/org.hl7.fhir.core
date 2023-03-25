@@ -101,23 +101,23 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
     ElementDefinition edValue = sd.getSnapshot().getElementByPath("Extension.value[x]");
     List<TypeTuple> types = analyseTypes(edValue);
     if (types.size() > 5) {
-      src.append("  public Extension make"+name+"(DataType value) {\r\n");
+      src.append("  public static Extension make"+name+"(DataType value) {\r\n");
       src.append("    return new Extension(ExtensionConstants.EXT_"+constName+").setValue(value);\r\n");
       src.append("  }\r\n");
       src.append("\r\n");
       for (String ctxt : Utilities.sorted(contexts)) {
-        src.append("  public "+ctxt+" "+verb+name+"("+ctxt+" context, DataType value) {\r\n");
+        src.append("  public static "+ctxt+" "+verb+name+"("+ctxt+" context, DataType value) {\r\n");
         src.append("    ExtensionsUtils."+verb+"Extension(context, ExtensionConstants.EXT_"+constName+", value);\r\n");
         src.append("    return context;\r\n");
         src.append("  }\r\n");
         src.append("\r\n");
         if (repeats) {
-          src.append("  public List<DataType> get"+name+"List("+ctxt+" context) {\r\n");
+          src.append("  public static List<DataType> get"+name+"List("+ctxt+" context) {\r\n");
           src.append("    return ExtensionsUtils.getExtensionList(DataType.class, context, ExtensionConstants.EXT_"+constName+");\r\n");
           src.append("  }\r\n");
           src.append("\r\n");
         } else {
-          src.append("  public DataType get"+name+"("+ctxt+" context) {\r\n");
+          src.append("  public static DataType get"+name+"("+ctxt+" context) {\r\n");
           src.append("    return ExtensionsUtils.getExtension(DataType.class, context, ExtensionConstants.EXT_"+constName+");\r\n");
           src.append("  }\r\n");
           src.append("\r\n");
@@ -126,7 +126,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
     } else {      
       for (TypeTuple t : types) {
         String sfx = typeCount(t.getJavaType(), types) > 1 ? Utilities.capitalize(t.getFhirType()) : "";
-        src.append("  public Extension make"+name+sfx+"("+t.getJavaType()+" value) {\r\n");
+        src.append("  public static Extension make"+name+sfx+"("+t.getJavaType()+" value) {\r\n");
         src.append("    return new Extension(ExtensionConstants.EXT_"+constName+").setValue("+(t.adapt("value"))+");\r\n");
         src.append("  }\r\n");
         src.append("\r\n");
@@ -135,7 +135,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
         Set<String> td = new HashSet<>();
         for (TypeTuple t : types) {
           String sfx = typeCount(t.getJavaType(), types) > 1 ? Utilities.capitalize(t.getFhirType()) : "";
-          src.append("  public "+ctxt+" "+verb+name+sfx+"("+ctxt+" context, "+t.getJavaType()+" value) {\r\n");
+          src.append("  public static "+ctxt+" "+verb+name+sfx+"("+ctxt+" context, "+t.getJavaType()+" value) {\r\n");
           src.append("    ExtensionsUtils."+verb+"Extension(context, ExtensionConstants.EXT_"+constName+", "+(t.adapt("value"))+");\r\n");
           src.append("    return context;\r\n");
           src.append("  }\r\n");
@@ -144,7 +144,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
           if (!td.contains(sfx)) {
             td.add(sfx);
             if (repeats) {
-              src.append("  public List<"+t.getJavaRType()+"> get"+name+sfx+"List("+ctxt+" context) {\r\n");
+              src.append("  public static List<"+t.getJavaRType()+"> get"+name+sfx+"List("+ctxt+" context) {\r\n");
               if (t.getFhirType() == null) {
                 src.append("    return ExtensionsUtils.getExtensionList("+t.getJavaType()+".class, context, ExtensionConstants.EXT_"+constName+");\r\n");                
               } else {
@@ -153,7 +153,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
               src.append("  }\r\n");
               src.append("\r\n");
             } else {
-              src.append("  public "+t.getJavaRType()+" get"+name+sfx+"("+ctxt+" context) {\r\n");
+              src.append("  public static "+t.getJavaRType()+" get"+name+sfx+"("+ctxt+" context) {\r\n");
               if (t.getFhirType() == null) {
                 src.append("    return ExtensionsUtils.getExtension("+t.getJavaType()+".class, context, ExtensionConstants.EXT_"+constName+");\r\n");
               } else {
