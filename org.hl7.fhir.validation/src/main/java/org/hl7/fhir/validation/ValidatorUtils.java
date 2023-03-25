@@ -11,6 +11,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.hl7.fhir.convertors.loaders.loaderR5.BaseLoaderR5;
+import org.hl7.fhir.convertors.loaders.loaderR5.ILoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.R2016MayToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R2ToR5Loader;
@@ -47,27 +49,31 @@ public class ValidatorUtils {
     }
   }
 
-  public static IWorkerContext.IContextResourceLoader loaderForVersion(String version) {
+  public static BaseLoaderR5 loaderForVersion(String version) {
+    return loaderForVersion(version, new NullLoaderKnowledgeProviderR5());
+  }
+  
+  public static BaseLoaderR5 loaderForVersion(String version, ILoaderKnowledgeProviderR5 loader) {
     if (Utilities.noString(version)) {
       return null;
     }
     if (VersionUtilities.isR2Ver(version)) { 
-      return new R2ToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5());
+      return new R2ToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     } 
     if (VersionUtilities.isR2BVer(version)) {
-      return new R2016MayToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5()); // special case
+      return new R2016MayToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader); // special case
     }
     if (VersionUtilities.isR3Ver(version)) {
-      return new R3ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5());
+      return new R3ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     }
     if (VersionUtilities.isR4Ver(version)) {
-      return new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5(), version);
+      return new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
     }
     if (VersionUtilities.isR4BVer(version)) {
-      return new R4BToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5(), version);
+      return new R4BToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
     }
     if (VersionUtilities.isR5Ver(version)) {
-      return new R5ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5());
+      return new R5ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     }
     return null;
   }

@@ -323,7 +323,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
     x.color(COLOR_SYNTAX).tx(")");
     if (g.hasExtends()) {
       x.b().tx(" extends ");
-      x.tx(g.getExtends());
+      String ref = resolveRuleReference(g.getExtendsElement());
+      if (ref != null) {
+        x.ah(ref).tx(g.getExtends()); 
+      } else {
+        x.tx(g.getExtends());
+      }
     }
 
     if (g.hasTypeMode()) {
@@ -345,6 +350,10 @@ public class StructureMapRenderer extends TerminologyRenderer {
       renderMultilineDoco(x, g.getFormatCommentsPost(), 0, scanVariables(g, null));
     }
     x.color(COLOR_SYNTAX).tx("}\r\n\r\n");
+  }
+
+  private String resolveRuleReference(IdType idType) {
+    return null;
   }
 
   private void renderRule(XhtmlNode x, StructureMapGroupComponent g, StructureMapGroupRuleComponent r, int indent) {
@@ -396,7 +405,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
         x.tx(" ");
       x.color(COLOR_SYNTAX).tx("}");
     } else {
-      if (r.hasDependent()) {
+      if (r.hasDependent() && !canBeAbbreviated) {
         x.b().tx(" then ");
         boolean first = true;
         for (StructureMapGroupRuleDependentComponent rd : r.getDependent()) {
@@ -404,7 +413,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
             first = false;
           else
             x.color(COLOR_SYNTAX).tx(", ");
-          x.tx(rd.getName());
+          String ref = resolveRuleReference(rd.getNameElement());
+          if (ref != null) {
+            x.ah(ref).tx(rd.getName());
+          } else {
+            x.tx(rd.getName());
+          }
           x.color(COLOR_SYNTAX).tx("(");
           boolean ifirst = true;
           for (StructureMapGroupRuleTargetParameterComponent rdp : rd.getParameter()) {
@@ -481,7 +495,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
     return
       (r.getSource().size() == 1 && r.getSourceFirstRep().hasElement() && r.getSourceFirstRep().hasVariable()) &&
         (r.getTarget().size() == 1 && r.getTargetFirstRep().hasVariable() && (r.getTargetFirstRep().getTransform() == null || r.getTargetFirstRep().getTransform() == StructureMapTransform.CREATE) && r.getTargetFirstRep().getParameter().size() == 0) &&
-        (r.getDependent().size() == 0) && (r.getRule().size() == 0);
+        (r.getDependent().size() == 0 || (r.getDependent().size() == 1 && StructureMapUtilities.DEF_GROUP_NAME.equals(r.getDependentFirstRep().getName()))) && (r.getRule().size() == 0);
   }
   
   private void renderSource(XhtmlNode x,StructureMapGroupRuleSourceComponent rs, boolean abbreviate) {
