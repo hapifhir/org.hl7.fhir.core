@@ -613,26 +613,15 @@ public class Utilities {
     return s.toString();
   }
 
-  private static boolean isPathRoot(String pathString) {
-    boolean actual;
-    Path path = Path.of(pathString);
-    Path normalizedPath = path.normalize();
-    actual = normalizedPath.equals(path.getRoot());
-    return actual;
-  }
-
   /**
    * Composes a path string using by concatenating the passed arguments.
-   * Variables such as [tmp] and [user] are replaced.
    *
-   * In order to prevent unintentional access to areas of the file system
-   * outside of the first entry, this method will throw exceptions in situations
-   * where the constructed path is at a higher level than the first entry, or
-   * where the first entry is null or empty.
+   * This method enables all checks for unintended path locations.
    *
    * @param args
    * @return
    * @throws IOException
+   * @see PathBuilder#buildPath(String...)
    */
   public static String path(String... args) throws IOException {
     return PathBuilder.getPathBuilder().buildPath(args);
@@ -640,7 +629,6 @@ public class Utilities {
 
   /**
    * Composes a path string using by concatenating the passed arguments.
-   * Variables such as [tmp] and [user] are replaced.
    *
    * This method does not check for unintentional access to areas of the file
    * system outside of the first entry. ONLY USE THIS METHOD IN CASES WHERE YOU
@@ -649,7 +637,10 @@ public class Utilities {
    * @param args
    * @return
    * @throws IOException
+   *
+   * @see PathBuilder#buildPath(String...)
    */
+  @Deprecated
   public static String uncheckedPath(String... args) {
     return PathBuilder.getPathBuilder()
       .withRequireNonRootFirstEntry(false)
@@ -658,35 +649,6 @@ public class Utilities {
       .buildPath(args);
   }
 
-  private static String replaceVariables(String a) {
-    if ("[tmp]".equals(a)) {
-      if (hasCTempDir()) {
-        return C_TEMP_DIR;
-      } else if (ToolGlobalSettings.hasTempPath()) {
-        return ToolGlobalSettings.getTempPath();
-      } else {
-        return System.getProperty("java.io.tmpdir");
-      }
-    } else if ("[user]".equals(a)) {
-      return System.getProperty("user.home");
-    } else if (a.startsWith("[") && a.endsWith("]")) {
-      String ev = System.getenv(a.replace("[", "").replace("]", ""));
-      if (ev != null) {
-        return ev;
-      } else {
-        return "null";
-      }
-    }
-    return a;
-  }
-
-  private static boolean hasCTempDir() {
-    if (!System.getProperty("os.name").toLowerCase().contains("win")) {
-      return false;
-    }
-    File tmp = new File(C_TEMP_DIR);
-    return tmp.exists() && tmp.isDirectory() && tmp.canWrite();
-  }
 
   public static String pathURL(String... args) {
     StringBuilder s = new StringBuilder();
