@@ -698,5 +698,15 @@ public class CodeSystemUtilities {
     }
     return list;
   }
+
+  public static boolean checkDisplay(CodeSystem cs, ConceptDefinitionComponent cd, String display) {
+    List<String> displays = getDisplays(cs, cd);
+    for (String s : displays) {
+      if (s.equalsIgnoreCase(display)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
