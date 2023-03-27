@@ -11,22 +11,75 @@ import java.nio.file.Paths;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PathBuilder {
 
+  /**
+   * By default, the normalized built path must be a child of the first entry of the buildPath arguments. If a
+   * different parent is desired, this can be set via <code>withRequiredTarget</code>
+   */
   @With
   private final String requiredTarget;
 
+  /**
+   * By default, the first entry of the buildPath argument cannot be null or an empty string. Setting this to false will
+   * disable this check.
+   */
   @With
   private final boolean requireNonNullNonEmptyFirstEntry;
 
+  /**
+   * By default, the first entry of the buildPath argument cannot be a root directory (<code>"/", "C:\", etc. </code>. Setting this to false will disable this check.
+   */
   @With
   private final boolean requireNonRootFirstEntry;
 
+  /**
+   * By default, the normalized built path must be a child of the first entry of the buildPath arguments. Setting this
+   * to false will disable this check.
+   */
   @With
   private final boolean requirePathIsChildOfTarget;
 
+  /**
+   * Returns an instance of PathBuilder with all checks enabled (recommended).
+   *
+   * @return
+   */
   public static PathBuilder getPathBuilder() {
     return new PathBuilder(null, true, true, true);
   }
 
+  /**
+   * <p>Builds a path from the passed argument strings. This path will be compatible with the local filesystem.
+   * </p>
+   *
+   * <p>
+   * If the args contain variables enclosed in square brackets (<code>[ ]</code>), they will be replaced with values in
+   * the built path. There are several built-in variables available, listed below. Any text between square brackets that
+   * does not match these will be replaced by a matching System environment variable if one is available.
+   * </p>
+   *
+   * <p>
+   * Built-in variables include:
+   * <ul>
+   *  <li><i>[tmp]</i> An available temp directory (Java Temp directory, <code>c:\\temp, $TMPDIR, %TEMP%</code>, etc.) </li>
+   *  <li><i>[user]</i> The OS user directory (~, user.home, etc) </li>
+   * </ul>
+   * </p>
+   *
+   * <p>
+   * This method will run several checks by default to ensure that the built path does not point to unintended areas of
+   * the filesystem. If these checks are violated, a RuntimeException will be thrown. If needed in special cases, the
+   * behavior of these checks can be modified via the linked fluent constructor methods below.
+   * </p>
+   *
+   * @param args entries with which to construct the filesystem path
+   * @throws RuntimeException
+   * @return a local filesystem path
+   *
+   * @see this#withRequiredTarget(String)
+   * @see this#withRequireNonNullNonEmptyFirstEntry(boolean)
+   * @see this#withRequireNonRootFirstEntry(boolean)
+   * @see this#withRequirePathIsChildOfTarget(boolean)
+   */
   public String buildPath(String... args) {
 
     checkNonNullNonEmptyFirstEntry(args);
