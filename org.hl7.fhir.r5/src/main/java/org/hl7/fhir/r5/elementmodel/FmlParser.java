@@ -108,9 +108,17 @@ public class FmlParser extends ParserBase {
         parseGroup(result, lexer);
       }
     } catch (FHIRLexerException e) {
-      logError("2023-02-24", e.getLocation().getLine(), e.getLocation().getColumn(), "??", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+      if (policy == ValidationPolicy.NONE) {
+        throw e;
+      } else {
+        logError("2023-02-24", e.getLocation().getLine(), e.getLocation().getColumn(), "??", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+      }
     } catch (Exception e) {
-      logError("2023-02-24", -1, -1, "?", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+      if (policy == ValidationPolicy.NONE) {
+        throw e;
+      } else {
+        logError("2023-02-24", -1, -1, "?", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+      }
     }
     result.setIgnorePropertyOrder(true);
     return result;
