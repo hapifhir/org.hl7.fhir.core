@@ -35,7 +35,6 @@ import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.IPackageProvider;
 import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
 import org.slf4j.Logger;
@@ -133,14 +132,15 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private IPackageProvider initPackageProvider() {
-    String className = new UtilitiesProperties().getIPackageProviderClassName();
+    String className = new UtilitiesPropertiesImpl().getIPackageProviderClassName();
     if (className == null) {
       return null;
     }
     Class<IPackageProvider> clazz = null;
     try {
       clazz = (Class<IPackageProvider>) Class.forName(className);
-      IPackageProvider date = clazz.getDeclaredConstructor().newInstance();
+      IPackageProvider packageProvider = clazz.getDeclaredConstructor().newInstance();
+      return packageProvider;
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);
     } catch (InstantiationException e) {
@@ -152,8 +152,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     } catch (InvocationTargetException e) {
       throw new RuntimeException(e);
     }
-
-    return null;
   }
 
   public FilesystemPackageCacheManager(boolean userMode) throws IOException {
