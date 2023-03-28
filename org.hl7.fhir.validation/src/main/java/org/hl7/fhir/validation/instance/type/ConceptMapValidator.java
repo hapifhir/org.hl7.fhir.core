@@ -157,8 +157,7 @@ public class ConceptMapValidator  extends BaseValidator {
       if (warningOrError(srcCS.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), stack.push(code, -1, null, null).getLiteralPath(), cd != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_CODE_INVALID, c, srcCS.getVersionedUrl())) {
         Element display = src.getNamedChild("display");
         if (display != null) {
-          List<String> displays = CodeSystemUtilities.getDisplays(srcCS, cd);
-          ok = rule(errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), stack.push(code, -1, null, null).getLiteralPath(), displays.contains(display.getValue()), I18nConstants.CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID, display.getValue(), displays) && ok;
+          warning(errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), stack.push(code, -1, null, null).getLiteralPath(), CodeSystemUtilities.checkDisplay(srcCS, cd, display.getValue()), I18nConstants.CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID, display.getValue(), CodeSystemUtilities.getDisplays(srcCS, cd));
         }
       } else {
         ok = false;
@@ -183,9 +182,8 @@ public class ConceptMapValidator  extends BaseValidator {
       ConceptDefinitionComponent cd = CodeSystemUtilities.getCode(tgtCS, c);
       if (warningOrError(tgtCS.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), stack.push(code, -1, null, null).getLiteralPath(), cd != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_CODE_INVALID, c, tgtCS.getVersionedUrl())) {
         Element display = tgt.getNamedChild("display");
-        if (display != null) {
-          List<String> displays = CodeSystemUtilities.getDisplays(tgtCS, cd);
-          ok = rule(errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), stack.push(code, -1, null, null).getLiteralPath(), displays.contains(display.getValue()), I18nConstants.CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID, display.getValue(), displays) && ok;
+        if (display != null) {          
+          warning(errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), stack.push(code, -1, null, null).getLiteralPath(), CodeSystemUtilities.checkDisplay(tgtCS, cd, display.getValue()), I18nConstants.CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID, display.getValue(), CodeSystemUtilities.getDisplays(tgtCS, cd));
         }
       } else {
         ok = false;

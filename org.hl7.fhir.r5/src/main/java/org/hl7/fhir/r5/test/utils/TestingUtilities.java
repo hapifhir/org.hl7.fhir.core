@@ -93,7 +93,7 @@ public class TestingUtilities extends BaseTestingUtilities {
         fcontext.loadFromPackage(utg, new TestPackageLoader(Utilities.strings("CodeSystem", "ValueSet")));
       } 
       if (!fcontext.hasPackage("hl7.fhir.uv.extensions", null)) {
-        NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", "current");
+        NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", "1.0.0");
         System.out.println("Loading Extensions: "+ext.name()+"#"+ext.version());
         fcontext.loadFromPackage(ext, new TestPackageLoader(Utilities.strings("CodeSystem", "ValueSet", "StructureDefinition")));
       } 
