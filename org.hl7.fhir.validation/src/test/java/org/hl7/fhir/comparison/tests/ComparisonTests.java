@@ -101,7 +101,7 @@ public class ComparisonTests {
   @ParameterizedTest(name = "{index}: id {0}")
   @MethodSource("data")
   public void test(String name, JsonObject content) throws Exception {
-    TestingUtilities.injectCorePackageLoader();
+
     this.content = content;
 
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())

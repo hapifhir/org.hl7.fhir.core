@@ -14,7 +14,6 @@ public class TestUtilities {
   public static boolean silent = false;
 
   public static ValidationEngine getValidationEngine(java.lang.String src, java.lang.String txServer, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, java.lang.String vString) throws Exception {
-    TestingUtilities.injectCorePackageLoader();
 
    final ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder()
       .withCanRunWithoutTerminologyServer(canRunWithoutTerminologyServer)
@@ -33,7 +32,7 @@ public class TestUtilities {
   }
 
   public static ValidationEngine getValidationEngine(java.lang.String src, java.lang.String txServer, FhirPublication version, java.lang.String vString) throws Exception {
-    TestingUtilities.injectCorePackageLoader();
+
     final ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder()
       .withVersion(vString)
       .withUserAgent(TestConstants.USER_AGENT)

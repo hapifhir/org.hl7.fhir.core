@@ -171,9 +171,4 @@ public class TestingUtilities extends BaseTestingUtilities {
     throw new Error("FHIR US directory not configured");
   }
 
-  public static void injectCorePackageLoader() {
-    FilesystemPackageCacheManager.setPackageProvider(new TestingUtilities.PackageProvider());    
-  }
-
-
 }

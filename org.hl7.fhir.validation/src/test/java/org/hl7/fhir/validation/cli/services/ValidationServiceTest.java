@@ -41,7 +41,7 @@ class ValidationServiceTest {
 
   @Test
   void validateSources() throws Exception {
-    TestingUtilities.injectCorePackageLoader();
+
     SessionCache sessionCache = Mockito.spy(new SessionCache());
     ValidationService myService = new ValidationService(sessionCache);
 
