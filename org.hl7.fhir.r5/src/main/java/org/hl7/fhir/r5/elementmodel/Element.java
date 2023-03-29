@@ -57,6 +57,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
 import org.hl7.fhir.utilities.SourceLocation;
@@ -1423,5 +1424,31 @@ public class Element extends Base {
       System.out.println("!"); // FIXME
     }
     this.webPath = webPath;
+  }
+
+  public String getTranslation(String lang) {
+    for (Element e : getChildren()) {
+      if (e.fhirType().equals("Extension")) {
+        String url = e.getNamedChildValue("url");
+        if (ToolingExtensions.EXT_TRANSLATION.equals(url)) {
+          String l = null;
+          String v = null;
+          for (Element g : e.getChildren()) {
+            if (g.fhirType().equals("Extension")) {
+              String u = g.getNamedChildValue("url");
+              if ("lang".equals(u)) {
+                l = g.getNamedChildValue("value");
+              } else if ("value".equals(u)) {
+                v = g.getNamedChildValue("value");
+              }
+            }
+          }
+          if (lang.equals(l)) {
+            return v;
+          }
+        }
+      }
+    }
+    return null;
   }
 }
