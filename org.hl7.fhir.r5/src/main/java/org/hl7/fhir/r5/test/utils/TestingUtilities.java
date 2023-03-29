@@ -97,7 +97,6 @@ public class TestingUtilities extends BaseTestingUtilities {
         System.out.println("Loading Extensions: "+ext.name()+"#"+ext.version());
         fcontext.loadFromPackage(ext, new TestPackageLoader(Utilities.strings("CodeSystem", "ValueSet", "StructureDefinition")));
       } 
-      R5Hacker.fixR5BrokenResources(fcontext);
       return fcontext;
     } catch (Exception e) {
       e.printStackTrace();
