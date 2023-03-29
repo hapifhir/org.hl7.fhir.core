@@ -11,7 +11,9 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -21,6 +23,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
+import org.hl7.fhir.validation.tests.ValidationTests.TestSorter;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
@@ -93,6 +96,15 @@ import com.google.gson.JsonObject;
 @RunWith(Parameterized.class)
 public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher, IValidationPolicyAdvisor {
 
+  public class TestSorter implements Comparator<Object> {
+
+    @Override
+    public int compare(Object o1, Object o2) {
+      return 0;
+    }
+
+  }
+
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
   private static final boolean BUILD_NEW = false;
   private static final boolean CLONE = true;
@@ -105,7 +117,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     manifest = (JsonObject) new com.google.gson.JsonParser().parse(contents);
     for (JsonElement e : manifest.getAsJsonArray("test-cases")) {
       JsonObject o = (JsonObject) e;
-      examples.put(JsonUtilities.str(o, "name"), o);
+      String name = JsonUtilities.str(o, "name");
+      String version =  JsonUtilities.str(o, "version");
+      if (version == null) {
+        version = "5.0.0";
+      }
+      examples.put(VersionUtilities.getNameForVersion(version)+"."+name, o);
     }
 
     List<String> names = new ArrayList<String>(examples.size());
@@ -124,10 +141,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private String version;
   private String name;
   
-  private static Map<String, ValidationEngine> ve = new HashMap<>();
 
-
-  private static ValidationEngine vCurr;
+  private static ValidationEngine currentEngine;
+  private ValidationEngine vCurr;
+  private static String currentVersion;
   private static IgLoader igLoader;
 
   public ValidationTests(String name, JsonObject content) {
@@ -137,7 +154,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   @AfterAll
   public void cleanup() {
-    ve = null;
+    currentEngine = null;
     vCurr = null;
     igLoader = null;
     manifest = null;
@@ -165,29 +182,13 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
 
     version = VersionUtilities.getMajMin(version);
-    if (!ve.containsKey(version)) {
-      if (version.startsWith("5.0"))
-        ve.put(version, TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R5, true, "5.0.0"));
-      else if (version.startsWith("4.3"))
-        ve.put(version, TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R4B, true, "4.3.0"));
-      else if (version.startsWith("4.0"))
-        ve.put(version, TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R4, true, "4.0.1"));
-      else if (version.startsWith("3.0"))
-        ve.put(version, TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", ValidationEngineTests.DEF_TX, txLog, FhirPublication.STU3, true, "3.0.2"));
-      else if (version.startsWith("1.4"))
-        ve.put(version, TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.DSTU2016May, true, "1.4.0"));
-      else if (version.startsWith("1.0"))
-        ve.put(version, TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", ValidationEngineTests.DEF_TX, txLog, FhirPublication.DSTU2, true, "1.0.2"));
-      else
-        throw new Exception("unknown version " + version);
+    if (!version.equals(currentVersion)) {
+      currentEngine = buildVersionEngine(version, txLog);
+      currentVersion = version;
     }
-    vCurr = CLONE ? new ValidationEngine(ve.get(version)) : ve.get(version);
+    vCurr = CLONE ? new ValidationEngine(currentEngine) : currentEngine;
     vCurr.getContext().getTxClient().setLogger(logger);
     igLoader = new IgLoader(vCurr.getPcm(), vCurr.getContext(), vCurr.getVersion(), true);
-//    if (TestingUtilities.fcontexts == null) {
-//      TestingUtilities.fcontexts = new HashMap<>();
-//    }
-//    TestingUtilities.fcontexts.put(version, vCurr.getContext());
 
     if (content.has("close-up")) {
       cleanup();
@@ -386,6 +387,18 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     logger.verifyHasNoRequests();
   }
 
+
+  private ValidationEngine buildVersionEngine(String ver, String txLog) throws Exception {
+    switch (ver) {
+    case "1.0": return TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", ValidationEngineTests.DEF_TX, txLog, FhirPublication.DSTU2, true, "1.0.2");
+    case "1.4": return TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.DSTU2016May, true, "1.4.0"); 
+    case "3.0": return TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", ValidationEngineTests.DEF_TX, txLog, FhirPublication.STU3, true, "3.0.2");
+    case "4.0": return TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R4, true, "4.0.1");
+    case "4.3": return TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R4B, true, "4.3.0");
+    case "5.0": return TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R5, true, "5.0.0");
+    }
+    throw new Exception("unknown version " + version);    
+  }
 
   private FhirFormat determineFormat(JsonObject config, byte[] cnt) throws IOException {
     String name = JsonUtilities.str(config, "file");
