@@ -1651,14 +1651,21 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       if (webUrl != null) {
         // also, must touch up the markdown
-        if (element.hasDefinition())
+        if (element.hasDefinition()) {
           element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
-        if (element.hasComment())
+        }
+        if (element.hasComment()) {
           element.setComment(processRelativeUrls(element.getComment(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
-        if (element.hasRequirements())
+        }
+        if (element.hasRequirements()) {
           element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
-        if (element.hasMeaningWhenMissing())
+        }
+        if (element.hasMeaningWhenMissing()) {
           element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
+        }
+        if (element.hasBinding() && element.getBinding().hasDescription()) {
+          element.getBinding().setDescription(processRelativeUrls(element.getBinding().getDescription(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
+        }
       }
     }
     return element;
@@ -2335,6 +2342,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (dest.hasPattern()) {
       checkTypeOk(dest, dest.getPattern().fhirType(), srcSD, "pattern");
     }
+    //updateURLs(url, webUrl, dest);
   }
 
   private void addMappings(List<ElementDefinitionMappingComponent> destination, List<ElementDefinitionMappingComponent> source) {
