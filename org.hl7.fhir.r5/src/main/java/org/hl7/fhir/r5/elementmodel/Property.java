@@ -598,5 +598,10 @@ public class Property {
     return definition.hasExtension(ToolingExtensions.EXT_JSON_NAME);
   }
 
+
+  public boolean isTranslatable() {
+    return ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_TRANSLATABLE);
+  }
+
   
 }
