@@ -708,5 +708,17 @@ public class CodeSystemUtilities {
     }
     return false;
   }
+
+  public static int countCodes(CodeSystem cs) {
+    return countCodes(cs.getConcept());
+  }
+
+  private static int countCodes(List<ConceptDefinitionComponent> concept) {
+    int t = concept.size();
+    for (ConceptDefinitionComponent cd : concept) {
+      t = t + (cd.hasConcept() ?  countCodes(cd.getConcept()) : 0);
+    }
+    return t;
+  }
 }
 

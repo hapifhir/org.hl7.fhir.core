@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
@@ -138,23 +139,29 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
   }
 
+  private String sentenceForContent(CodeSystemContentMode mode) {
+    switch (mode) {
+    case COMPLETE: return "This code system <param name='cs'/> defines the following code<if test='code-count != 1'>s</if>:";
+    case EXAMPLE: return "This code system <param name='cs'/> provides some example code<if test='code-count != 1'>s</if>:";
+    case FRAGMENT: return "This code system <param name='cs'/> provides a fragment that includes following code<if test='code-count != 1'>s</if>:";
+    case NOTPRESENT: return "This code system <param name='cs'/> defines codes, but no codes are represented here";
+    case SUPPLEMENT: return "This code system <param name='cs'/> defines properties on the following code<if test='code-count != 1'>s</if>:";
+    }
+    throw new FHIRException("Unknown CodeSystemContentMode mode");
+  }
+  
   private boolean generateCodeSystemContent(XhtmlNode x, CodeSystem cs, boolean hasExtensions, List<UsedConceptMap> maps, boolean props) throws FHIRFormatError, DefinitionException, IOException {
     if (props) {
       x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Concepts", getContext().getLang()));
     }
     XhtmlNode p = x.para();
-    p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system "));
-    p.code().tx(cs.getUrl());
-    if (cs.getContent() == CodeSystemContentMode.COMPLETE)
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines the following codes")+":");
-    else if (cs.getContent() == CodeSystemContentMode.EXAMPLE)
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines some example codes")+":");
-    else if (cs.getContent() == CodeSystemContentMode.FRAGMENT )
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines many codes, of which the following are a subset")+":");
-    else if (cs.getContent() == CodeSystemContentMode.NOTPRESENT ) {
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines many codes, but they are not represented here"));
+    p.param("cs").code().tx(cs.getUrl());
+    p.paramValue("code-count", CodeSystemUtilities.countCodes(cs));
+    p.sentenceForParams(sentenceForContent(cs.getContent()));
+    if (cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
       return false;
     }
+    
     XhtmlNode t = x.table( "codes");
     boolean definitions = false;
     boolean commentS = false;
@@ -198,7 +205,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (langs.size() > 0) {
       Collections.sort(langs);
       x.para().b().tx("Additional Language Displays");
-      t = x.table( "codes");
+      t = x.table("codes");
       XhtmlNode tr = t.tr();
       tr.td().b().tx("Code");
       for (String lang : langs)
