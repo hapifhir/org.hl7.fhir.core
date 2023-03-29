@@ -13,18 +13,20 @@ import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer;
+import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
+import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerSession;
 
 public class ResourceLanguageFileBuilder {
 
   
-  private LanguageFileProducer file;
+  private LanguageFileProducer lp;
   private String source;
   private String target;
   private IWorkerContext context;
   StructureDefinition profile = null;
 
-  public void prepare(LanguageFileProducer file, IWorkerContext context, String source, String target) {
-    this.file = file;
+  public void prepare(LanguageFileProducer lp, IWorkerContext context, String source, String target) {
+    this.lp = lp;
     this.source = source;
     this.target = target;
     this.context = context;
@@ -53,17 +55,19 @@ public class ResourceLanguageFileBuilder {
         throw new FHIRException("profile");
       }
     }
-    
-    file.start(path, path, res.getWebPath(), source, target);
+
+    LanguageProducerSession session = lp.startSession(path,source);
+    LanguageProducerLanguageSession langSession = session.forLang(target);
   
     for (Property p : res.children()) {
-      process(p, id, path);      
+      process(langSession, p, id, path);      
     }
     
-    file.finish();
+    langSession.finish();
+    session.finish();
   }
   
-  private void process(Property p, String id, String path) throws IOException {
+  private void process(LanguageProducerLanguageSession sess, Property p, String id, String path) throws IOException {
     if (p.hasValues()) {
       int i = 0;
       for (Base b : p.getValues()) {
@@ -71,10 +75,10 @@ public class ResourceLanguageFileBuilder {
         String ppath = path+"."+p.getName()+(p.isList() ? "["+i+"]" : "");
         i++;
         if (isTranslatable(p, b, pid)) {
-          file.makeEntry(ppath, null, null, b.primitiveValue(), getTranslation(b, target));
+          sess.entry(ppath, b.primitiveValue(), getTranslation(b, target));
         }
         for (Property pp : b.children()) {
-          process(pp, pid, ppath);      
+          process(sess, pp, pid, ppath);      
         }
       }
     }  
