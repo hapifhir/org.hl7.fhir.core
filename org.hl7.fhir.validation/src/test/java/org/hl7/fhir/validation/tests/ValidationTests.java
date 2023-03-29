@@ -78,6 +78,7 @@ import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -134,6 +135,15 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     this.content = content;
   }
 
+  @AfterAll
+  public void cleanup() {
+    ve = null;
+    vCurr = null;
+    igLoader = null;
+    manifest = null;
+    System.gc();
+  }
+  
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
@@ -178,6 +188,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 //    }
 //    TestingUtilities.fcontexts.put(version, vCurr.getContext());
 
+    if (content.has("close-up")) {
+      cleanup();
+      Assertions.assertTrue(true);
+      return;
+    }
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
 

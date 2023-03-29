@@ -598,7 +598,7 @@ public class VersionUtilities {
     case "3.0" : return "http://hl7.org/fhir/STU3";
     case "4.0" : return "http://hl7.org/fhir/R4";
     case "4.3" : return "http://hl7.org/fhir/R4B";
-    case "5.0" : return "http://hl7.org/fhir/5.0.0-snapshot3";
+    case "5.0" : return "http://hl7.org/fhir/R5";
     default:
       return "http://hl7.org/fhir";
     }

@@ -108,7 +108,7 @@ public class SnapShotGenerationXTests {
       sort = "true".equals(test.getAttribute("sort"));
       fail = "true".equals(test.getAttribute("fail"));
       newSliceProcessing = !"false".equals(test.getAttribute("new-slice-processing"));
-      debug = "true".equals(test.getAttribute("debug"));
+      debug = false; // "true".equals(test.getAttribute("debug"));
 
       id = test.getAttribute("id");
       include = test.getAttribute("include");
@@ -327,7 +327,7 @@ public class SnapShotGenerationXTests {
 
     @Override
     public boolean log(String argument, List<Base> focus) {
-      System.out.println(argument + ": " + fp.convertToString(focus));
+//      System.out.println(argument + ": " + fp.convertToString(focus));
       return true;
     }
 

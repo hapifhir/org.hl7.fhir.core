@@ -14,12 +14,12 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>5.6.116-SNAPSHOT</version>
+    <version>5.6.118-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <hapi_fhir_version>6.2.1</hapi_fhir_version>
-        <validator_test_case_version>1.2.24</validator_test_case_version>
+        <validator_test_case_version>1.2.26-SNAPSHOT</validator_test_case_version>
         <junit_jupiter_version>5.7.1</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
         <maven_surefire_version>3.0.0-M5</maven_surefire_version>
@@ -453,7 +453,7 @@
                         <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
                          Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
                         -->
-                            <argLine>${argLine} -Xmx5120m</argLine>
+                            <argLine>${argLine} -Xmx5632m</argLine>
                             <systemPropertyVariables>
                                 <java.locale.providers>COMPAT</java.locale.providers>
                             </systemPropertyVariables>
