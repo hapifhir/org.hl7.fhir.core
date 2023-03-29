@@ -138,6 +138,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   @AfterAll
   public void cleanup() {
     ve = null;
+    vCurr = null;
+    igLoader = null;
+    manifest = null;
+    System.gc();
   }
   
   @SuppressWarnings("deprecation")
@@ -185,6 +189,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 //    }
 //    TestingUtilities.fcontexts.put(version, vCurr.getContext());
 
+    if (content.has("close-up")) {
+      cleanup();
+      Assertions.assertTrue(true);
+      return;
+    }
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
 
