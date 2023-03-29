@@ -1,11 +1,11 @@
 package org.hl7.fhir.utilities.i18n;
 
-import com.ibm.icu.text.PluralRules;
-
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import com.ibm.icu.text.PluralRules;
 
 
 /**
