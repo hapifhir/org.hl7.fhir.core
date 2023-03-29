@@ -415,14 +415,14 @@ public class Turtle {
 		writer.close();
 	}
 
-  public String asHtml() throws Exception {
+  public String asHtml(boolean prism) throws Exception {
     StringBuilder b = new StringBuilder();
-    b.append("<pre class=\"rdf\" style=\"white-space: pre; overflow: hidden\"><code class=\"language-turtle\">\r\n");
+    b.append("<pre class=\"rdf\" style=\"white-space: pre; overflow: hidden\">"+(prism ? "<code class=\"language-turtle\">" : "")+"\r\n");
     commitPrefixes(b);
     for (Section s : sections) {
       commitSection(b, s);
     }
-    b.append("</code></pre>\r\n");
+    b.append((prism ? "</code>" : "")+"</pre>\r\n");
     b.append("\r\n");
     return b.toString();
   }
