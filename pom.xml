@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>5.6.117-SNAPSHOT</version>
+    <version>5.6.118-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -453,7 +453,7 @@
                         <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
                          Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
                         -->
-                            <argLine>${argLine} -Xmx4096m</argLine>
+                            <argLine>${argLine} -Xmx5632m</argLine>
                             <systemPropertyVariables>
                                 <java.locale.providers>COMPAT</java.locale.providers>
                             </systemPropertyVariables>
