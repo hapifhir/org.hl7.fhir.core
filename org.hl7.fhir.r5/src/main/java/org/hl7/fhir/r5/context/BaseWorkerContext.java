@@ -338,9 +338,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
   
 
-  public void registerResourceFromPackage(CanonicalResourceProxy r, PackageInformation packageInfo) throws FHIRException {
-    PackageHackerR5.fixLoadedResource(r, packageInfo);
-    
+  public void registerResourceFromPackage(CanonicalResourceProxy r, PackageInformation packageInfo) throws FHIRException {    
     synchronized (lock) {
       if (packageInfo != null) {
         packages.put(packageInfo.getVID(), packageInfo);
