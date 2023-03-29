@@ -563,6 +563,15 @@ public class XMLUtil {
     child.setAttribute("value", text);    
   }
 
+  public static Element addTextTag(Document doc, Element element, String name, String text, int indent) {
+    Node node = doc.createTextNode("\n"+Utilities.padLeft("", ' ', indent));
+    element.appendChild(node);
+    Element child = doc.createElement(name);
+    element.appendChild(child);
+    child.appendChild(doc.createTextNode(text));
+    return child;
+  }
+
   public static void saveToFile(Element root, OutputStream stream) throws TransformerException {
     Transformer transformer = TransformerFactory.newInstance().newTransformer();
     Result output = new StreamResult(stream);
