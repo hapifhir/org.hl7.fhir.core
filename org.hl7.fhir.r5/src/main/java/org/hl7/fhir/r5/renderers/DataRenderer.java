@@ -146,8 +146,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
         String left = text.substring(0, text.indexOf("[[["));
         String link = text.substring(text.indexOf("[[[")+3, text.indexOf("]]]"));
         String right = text.substring(text.indexOf("]]]")+3);
+        String path = null;
         String url = link;
         String[] parts = link.split("\\#");
+        if (parts[0].contains(".")) {
+          path = parts[0];
+          parts[0] = parts[0].substring(0, parts[0].indexOf("."));
+        }
         StructureDefinition p = getContext().getWorker().fetchResource(StructureDefinition.class, parts[0]);
         if (p == null)
           p = getContext().getWorker().fetchTypeDefinition(parts[0]);
@@ -160,7 +165,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         } else
           throw new DefinitionException("Unable to resolve markdown link "+link);
   
-        text = left+"["+link+"]("+url+")"+right;
+        text = left+"["+link+"]("+url+(path == null ? "" : "#"+path)+")"+right;
       }
   
       // 2. markdown
