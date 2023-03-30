@@ -1,8 +1,28 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+
 
 public abstract class LanguageFileProducer {
+
+  public class Translations {
+    private String id;
+    private Map<String, String> translations = new HashMap<>();
+    protected Translations(String id) {
+      super();
+      this.id = id;
+    }
+    public String getId() {
+      return id;
+    }
+    public Map<String, String> getTranslations() {
+      return translations;
+    }
+    
+  }
 
   public abstract class LanguageProducerLanguageSession {
 
@@ -58,4 +78,5 @@ public abstract class LanguageFileProducer {
   public abstract LanguageProducerSession startSession(String id, String baseLang) throws IOException;
   public abstract void finish();
 
+  public abstract List<Translations> loadTranslations(String id);
 }
