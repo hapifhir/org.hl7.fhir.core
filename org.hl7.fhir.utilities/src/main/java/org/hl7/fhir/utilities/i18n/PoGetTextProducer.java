@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -80,6 +81,13 @@ public class PoGetTextProducer extends LanguageFileProducer {
       ln("");
     }
 
+  }
+
+
+  @Override
+  public List<Translations> loadTranslations(String id) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 
