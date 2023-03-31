@@ -178,7 +178,7 @@ public class PackageVisitor {
                 processor.processResource(pid+"#current", npm, fv, type, s, TextFile.streamToBytes(npm.load("package", s)));
               } catch (Exception e) {
                 System.out.println("####### Error loading "+pid+"#current["+fv+"]/"+type+" ####### "+e.getMessage());
-                e.printStackTrace();
+//                e.printStackTrace();
               }
             }
           }
