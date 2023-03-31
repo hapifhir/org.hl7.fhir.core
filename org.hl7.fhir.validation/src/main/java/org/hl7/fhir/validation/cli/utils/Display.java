@@ -40,9 +40,6 @@ public class Display {
   final static String[][] PLACEHOLDERS = {
     { getMoustacheString("XML_AND_JSON_FHIR_VERSIONS"), "1.0, 1.4, 3.0, 4.0," + Constants.VERSION_MM },
     { getMoustacheString("TURTLE_FHIR_VERSIONS"), "3.0, 4.0, " + Constants.VERSION_MM },
-    { getMoustacheString("FHIR_MAJOR_VERSIONS"), "1.0|1.4|3.0|" + VersionUtilities.CURRENT_VERSION},
-    { getMoustacheString("FHIR_MINOR_VERSIONS"), "1.0.2|1.4.0|3.0.2|4.0.1|" + VersionUtilities.CURRENT_FULL_VERSION },
-    { getMoustacheString("FHIR_CURRENT_VERSION"), VersionUtilities.CURRENT_VERSION},
   };
 
   final static String replacePlaceholders(final String input, final String[][] placeholders) {

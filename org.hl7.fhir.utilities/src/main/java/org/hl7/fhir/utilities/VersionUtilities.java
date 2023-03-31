@@ -54,12 +54,6 @@ public class VersionUtilities {
       return url;
     }
   }
-
-  public static final String CURRENT_VERSION = "5.0";
-  public static final String CURRENT_FULL_VERSION = "5.0.0";
-
-  public static final String CURRENT_DEFAULT_VERSION = "4.0";
-  public static final String CURRENT_DEFAULT_FULL_VERSION = "4.0.1";
   
   public static String packageForVersion(String v) {
     if (isR2Ver(v)) {
@@ -83,15 +77,14 @@ public class VersionUtilities {
       return "hl7.fhir.r5.core";
     }
     
+    if (isR6Ver(v)) {
+      return "hl7.fhir.r6.core";
+    }
+    
     if ("current".equals(v)) {
       return "hl7.fhir.r5.core";
     }
-    if (v != null && v.startsWith(CURRENT_VERSION)) {
-      return "hl7.fhir.r5.core";
-    }
-    if (Utilities.existsInList(v, "4.4.0", "4.5.0")) {
-      return "hl7.fhir.r5.core";
-    }
+    
     return null;
   }
 
@@ -111,8 +104,8 @@ public class VersionUtilities {
     if (isR5Ver(v)) {
       return "5.0.0";
     }
-    if (v != null && v.startsWith(CURRENT_VERSION)) {
-      return "current";
+    if (isR6Ver(v)) {
+      return "6.0.0";
     }
     return v;
   }
@@ -130,8 +123,11 @@ public class VersionUtilities {
     if (isR4Ver(v)) {
       return "4.0";
     }
-    if (v != null && v.startsWith(CURRENT_VERSION)) {
-      return "current";
+    if (isR5Ver(v)) {
+      return "5.0";
+    }
+    if (isR6Ver(v)) {
+      return "6.0";
     }
     return v;
   }
@@ -140,15 +136,19 @@ public class VersionUtilities {
     if (version.contains("-")) {
       version = version.substring(0, version.indexOf("-"));
     }
-    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", "4.3.0", "5.0.0", CURRENT_FULL_VERSION);
+    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", "4.3.0", "5.0.0", "6.0.0");
   }
 
   public static String listSupportedVersions() {
-    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, 5.0, " + CURRENT_FULL_VERSION;
+    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, 5.0, 6.0";
+  }
+
+  public static boolean isR6Ver(String ver) {
+    return ver != null && (ver.startsWith("6.0"));
   }
 
   public static boolean isR5Ver(String ver) {
-    return ver != null && (ver.startsWith("5.0") || ver.startsWith(CURRENT_VERSION) || ver.equals("current"));
+    return ver != null && (ver.startsWith("5.0"));
   }
 
   public static boolean isR4BVer(String ver) {
@@ -197,24 +197,20 @@ public class VersionUtilities {
     if (s.contains("#")) {
       s = s.substring(0, s.indexOf("#"));
     }
-    return Utilities.existsInList(s, "hl7.fhir.core","hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core", "hl7.fhir.r4b.core", "hl7.fhir.r5.core");
+    return Utilities.existsInList(s, "hl7.fhir.core","hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core", "hl7.fhir.r4b.core", "hl7.fhir.r5.core", "hl7.fhir.r6.core");
   }
 
   public static String getMajMin(String version) {
     if (version == null)
       return null;
     
-    if ("current".equals(version)) {
-      return CURRENT_VERSION;
-    }
-
     if (Utilities.charCount(version, '.') == 1) {
       String[] p = version.split("\\.");
       return p[0]+"."+p[1];
     } else if (Utilities.charCount(version, '.') == 2) {
       String[] p = version.split("\\.");
       return p[0]+"."+p[1];
-    } else if (Utilities.existsInList(version, "R2", "R2B", "R3", "R4", "R4B", "R5")) {
+    } else if (Utilities.existsInList(version, "R2", "R2B", "R3", "R4", "R4B", "R5", "R6")) {
       switch (version) {
       case "R2": return "1.0";
       case "R2B": return "1.4";
@@ -222,6 +218,7 @@ public class VersionUtilities {
       case "R4": return "4.0";
       case "R4B": return "4.3";
       case "R5": return "5.0";
+      case "R6": return "6.0";
       }
     }  
     return null;
@@ -376,6 +373,9 @@ public class VersionUtilities {
     if ("r5".equals(version)) {
       return "5.0.0";
     }
+    if ("r6".equals(version)) {
+      return "6.0.0-cibuild";
+    }
     throw new FHIRException("Unknown version "+version);
   }
 
@@ -386,7 +386,7 @@ public class VersionUtilities {
     String v = url.substring(20, 24);
     if (v.endsWith("/")) {
       v = v.substring(0, v.length()-1);
-      if (Utilities.existsInList(v, "1.0", "1.4", "3.0", "4.0", "5.0", CURRENT_VERSION)) {
+      if (Utilities.existsInList(v, "1.0", "1.4", "3.0", "4.0", "5.0", "6.0")) {
         return new VersionURLInfo(v, "http://hl7.org/fhir/"+url.substring(24));
       }
     }
@@ -497,7 +497,7 @@ public class VersionUtilities {
       res.add("ValueSet");
     }
 
-    if (isR5Ver(version) || "current".equals(version)) {
+    if (isR5Ver(version) || isR6Ver(version)) {
       res.add("ActorDefinition");
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
@@ -555,9 +555,6 @@ public class VersionUtilities {
     if (version == null) {
       return false;
     }
-    if (version.startsWith(CURRENT_VERSION) || version.equals("current")) {
-      return true;
-    }
     String v = getMajMin(version);
     return v.compareTo("4.5") >= 0; 
   }
@@ -599,6 +596,7 @@ public class VersionUtilities {
     case "4.0" : return "http://hl7.org/fhir/R4";
     case "4.3" : return "http://hl7.org/fhir/R4B";
     case "5.0" : return "http://hl7.org/fhir/R5";
+    case "6.0" : return "http://hl7.org/fhir/R6";
     default:
       return "http://hl7.org/fhir";
     }
@@ -612,6 +610,7 @@ public class VersionUtilities {
     case "4.0" : return "R4";
     case "4.3" : return "R4B";
     case "5.0" : return "R5";
+    case "6.0" : return "R6";
     default:
       return "R?";
     }
@@ -619,6 +618,10 @@ public class VersionUtilities {
 
   public static boolean isR5Plus(String version) {
     return version != null && (version.startsWith("5.") || version.startsWith("6.") || "current".equals(version));
+  }
+
+  public static boolean isR6Plus(String version) {
+    return version != null && version.startsWith("6.");
   }
 
 
