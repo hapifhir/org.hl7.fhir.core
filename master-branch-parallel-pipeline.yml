@@ -17,7 +17,7 @@ jobs:
           path: $(MAVEN_CACHE_FOLDER)
       - template: cache-target-directory-task.yml
         parameters:
-          targetModule: convertors
+          targetModule: org.hl7.fhir.convertors
       - task: Bash@3
         inputs:
           targetType: 'inline'
