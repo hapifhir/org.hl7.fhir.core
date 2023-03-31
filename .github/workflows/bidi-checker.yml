@@ -23,6 +23,6 @@ jobs:
       # Run the check for bidi characters.
       - name: Check for bidi characters
         id: bidi_check
-        uses: HL7/bidi-checker-action@v1.8
+        uses: HL7/bidi-checker-action@v1.9
       - name: Get the output time
         run: echo "The time was ${{ steps.bidi_check.outputs.time }}"
