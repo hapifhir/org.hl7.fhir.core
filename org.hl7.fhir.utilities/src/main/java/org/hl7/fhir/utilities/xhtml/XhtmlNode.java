@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.xhtml;
 
+import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /*
@@ -36,8 +37,11 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -51,6 +55,20 @@ import ca.uhn.fhir.model.primitive.XhtmlDt;
 @ca.uhn.fhir.model.api.annotation.DatatypeDef(name="xhtml")
 public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   private static final long serialVersionUID = -4362547161441436492L;
+  private static final Set<String> ALLOWED_ATTRIBUTES = Set.of("title", "style", "class", "id", "lang", "xml:lang", "dir", "accesskey", "tabindex",
+    // tables
+    "span", "width", "align", "valign", "char", "charoff", "abbr", "axis", "headers", "scope", "rowspan", "colspan");
+  private static final Set<String> ALLOWED_QUALIFIED_ATTRIBUTES = Set.of("div.xmlns", "blockquote.cite", "q.cite",
+    "a.charset", "a.type", "a.name", "a.href", "a.hreflang", "a.rel", "a.rev", "a.shape", "a.coords", "img.border", "img.src",
+    "img.alt", "img.longdesc", "img.height", "img.width", "img.usemap", "img.ismap", "map.name", "area.shape",
+    "area.coords", "area.href", "area.nohref", "area.alt", "table.summary", "table.width", "table.border",
+    "table.frame", "table.rules", "table.cellspacing", "table.cellpadding", "pre.space", "td.nowrap");
+  private static final Set<String> ALLOWED_TAGS = Set.of("p", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "a", "span", "b", "em", "i", "strong",
+    "small", "big", "tt", "dfn", "q", "var", "abbr", "acronym", "cite", "blockquote", "hr", "address", "bdo", "kbd", "sub", "sup",
+    "ul", "ol", "li", "dl", "dt", "dd", "pre", "table", "caption", "colgroup", "col", "thead", "tr", "tfoot", "tbody", "th", "td",
+    "code", "samp", "img", "map", "area");
+  private static final Set<String> BANNED_TAGS_IN_LINK = Set.of("a");
+  private static final Set<String> BANNED_TAGS_IN_PARAGRAPH = Set.of("div", "blockquote", "table", "ol", "ul", "p");
 
 
   public static class Location implements Serializable {
@@ -159,34 +177,28 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public void validate(List<String> errors, String path, boolean inResource, boolean inPara, boolean inLink) {
     if (nodeType == NodeType.Element || nodeType == NodeType.Document) {
       path = Utilities.noString(path) ? name : path+"/"+name;
+      String nameLc = defaultString(name).toLowerCase(Locale.US);
+
       if (inResource) {
-        if (!Utilities.existsInList(name, "p", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "a", "span", "b", "em", "i", "strong",
-            "small", "big", "tt", "small", "dfn", "q", "var", "abbr", "acronym", "cite", "blockquote", "hr", "address", "bdo", "kbd", "q", "sub", "sup",
-            "ul", "ol", "li", "dl", "dt", "dd", "pre", "table", "caption", "colgroup", "col", "thead", "tr", "tfoot", "tbody", "th", "td",
-            "code", "samp", "img", "map", "area")) {
+        if (!ALLOWED_TAGS.contains(nameLc)) {
           errors.add("Error at "+path+": Found "+name+" in a resource");          
         }      
         if (hasAttributes()) {
           for (String an : attributes.keySet()) {
-            boolean ok = an.startsWith("xmlns") || Utilities.existsInList(an,
-                "title", "style", "class", "ID", "lang", "xml:lang", "dir", "accesskey", "tabindex",
-                // tables
-                "span", "width", "align", "valign", "char", "charoff", "abbr", "axis", "headers", "scope", "rowspan", "colspan") ||
-                Utilities.existsInList(name + "." + an, "a.href", "a.name", "img.src", "img.border", "div.xmlns", "blockquote.cite", "q.cite",
-                    "a.charset", "a.type", "a.name", "a.href", "a.hreflang", "a.rel", "a.rev", "a.shape", "a.coords", "img.src",
-                    "img.alt", "img.longdesc", "img.height", "img.width", "img.usemap", "img.ismap", "map.name", "area.shape",
-                    "area.coords", "area.href", "area.nohref", "area.alt", "table.summary", "table.width", "table.border",
-                    "table.frame", "table.rules", "table.cellspacing", "table.cellpadding", "pre.space", "td.nowrap"
-                    );
-            if (!ok)
-              errors.add("Error at "+path+": Found attribute "+name+"."+an+" in a resource");          
+            String attributeLc = an.toLowerCase(Locale.US);
+            boolean ok = an.startsWith("xmlns") ||
+              ALLOWED_ATTRIBUTES.contains(attributeLc) ||
+              ALLOWED_QUALIFIED_ATTRIBUTES.contains(nameLc + "." + attributeLc);
+            if (!ok) {
+              errors.add("Error at " + path + ": Found attribute " + name + "." + an + " in a resource");
+            }
           }
         }
       }
-      if (inPara && Utilities.existsInList(name, "div",  "blockquote", "table", "ol", "ul", "p")) {
+      if (inPara && BANNED_TAGS_IN_PARAGRAPH.contains(nameLc)) {
         errors.add("Error at "+path+": Found "+name+" inside an html paragraph");
       }
-      if (inLink && Utilities.existsInList(name, "a")) {
+      if (inLink && BANNED_TAGS_IN_LINK.contains(nameLc)) {
         errors.add("Error at "+path+": Found an <a> inside an <a> paragraph");
       }
 
