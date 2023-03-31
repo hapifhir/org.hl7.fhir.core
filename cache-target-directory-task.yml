@@ -3,6 +3,7 @@ parameters:
   displayName: 'Target module in project'
   type: string
 
+steps:
 - task: Cache@2
   inputs:
     key: maven | $(Build.BuildId) | targets | ${{ parameters.targetModule }}
