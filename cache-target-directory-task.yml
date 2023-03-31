@@ -6,5 +6,5 @@ parameters:
 steps:
 - task: Cache@2
   inputs:
-    key: maven | $(Build.BuildId) | targets | ${{ parameters.targetModule }}
+    key: maven | $(Build.BuildId) | targets | "${{ parameters.targetModule }}"
     path: $(System.DefaultWorkingDirectory)/${{ parameters.targetModule }}/target/
