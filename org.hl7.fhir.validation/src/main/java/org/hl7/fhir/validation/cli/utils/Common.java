@@ -13,7 +13,7 @@ public class Common {
   public static String getVersion(String[] args) {
     String v = Params.getParam(args, "-version");
     if (v == null) {
-      v = "current";
+      v = "5.0";
       for (int i = 0; i < args.length; i++) {
         if ("-ig".equals(args[i])) {
           if (i + 1 == args.length)
@@ -24,16 +24,20 @@ public class Common {
           }
         }
       }
-    } else if ("1.0".equals(v)) {
+    } else if (VersionUtilities.isR2Ver(v)) {
       v = "1.0";
-    } else if ("1.4".equals(v)) {
+    } else if (VersionUtilities.isR2BVer(v)) {
       v = "1.4";
-    } else if ("3.0".equals(v)) {
+    } else if (VersionUtilities.isR3Ver(v)) {
       v = "3.0";
-    } else if ("4.0".equals(v)) {
+    } else if (VersionUtilities.isR4Ver(v)) {
       v = "4.0";
-    } else if (v.startsWith(Constants.VERSION)) {
-      v = "current";
+    } else if (VersionUtilities.isR4BVer(v)) {
+      v = "4.3";
+    } else if (VersionUtilities.isR5Ver(v)) {
+      v = "5.0";
+    } else if (VersionUtilities.isR6Ver(v)) {
+      v = "6.0";
     }
     return v;
   }
@@ -49,7 +53,7 @@ public class Common {
    */
   public static String getVersionFromIGName(String defaultValue, String igFileName) {
     if (igFileName.equals("hl7.fhir.core")) {
-      defaultValue = "current";
+      defaultValue = "5.0";
     } else if (igFileName.startsWith("hl7.fhir.core#")) {
       defaultValue = VersionUtilities.getCurrentPackageVersion(igFileName.substring(14));
     } else if (igFileName.startsWith("hl7.fhir.r2.core#") || igFileName.equals("hl7.fhir.r2.core")) {
@@ -61,7 +65,9 @@ public class Common {
     } else if (igFileName.startsWith("hl7.fhir.r4.core#") || igFileName.equals("hl7.fhir.r4.core")) {
       defaultValue = "4.0";
     } else if (igFileName.startsWith("hl7.fhir.r5.core#") || igFileName.equals("hl7.fhir.r5.core")) {
-      defaultValue = "current";
+      defaultValue = "5.0";
+    } else if (igFileName.startsWith("hl7.fhir.r6.core#") || igFileName.equals("hl7.fhir.r6.core")) {
+      defaultValue = "6.0";
     }
     return defaultValue;
   }

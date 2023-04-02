@@ -71,13 +71,13 @@ public class PoGetTextProducer extends LanguageFileProducer {
     }
 
     @Override
-    public void entry(String id, String src, String dst) {
-      ln("#: "+id);
+    public void entry(TextUnit unit) {
+      ln("#: "+unit.getContext());
       //    if (context != null) {
       //      ln("#. "+context);
       //    }
-      ln("msgid \""+src+"\"");
-      ln("msgstr \""+dst+"\"");
+      ln("msgid \""+unit.getSrcText()+"\"");
+      ln("msgstr \""+unit.getTgtText()+"\"");
       ln("");
     }
 
@@ -85,8 +85,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
 
 
   @Override
-  public List<Translations> loadTranslations(String id) {
-    // TODO Auto-generated method stub
+  public List<TextUnit> loadTranslations(String baseLang, String tgtLang) {
     return null;
   }
 
