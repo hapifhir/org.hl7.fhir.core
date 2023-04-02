@@ -15,6 +15,8 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerSession;
+import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
+
 
 public class ResourceLanguageFileBuilder {
 
@@ -75,7 +77,7 @@ public class ResourceLanguageFileBuilder {
         String ppath = path+"."+p.getName()+(p.isList() ? "["+i+"]" : "");
         i++;
         if (isTranslatable(p, b, pid)) {
-          sess.entry(ppath, b.primitiveValue(), getTranslation(b, target));
+          sess.entry(new TextUnit(ppath, b.primitiveValue(), getTranslation(b, target)));
         }
         for (Property pp : b.children()) {
           process(sess, pp, pid, ppath);      

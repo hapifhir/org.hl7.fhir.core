@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
 
 public class XLIFFProducer extends LanguageFileProducer {
 
@@ -35,16 +36,16 @@ public class XLIFFProducer extends LanguageFileProducer {
     }
 
     @Override
-    public void entry(String id, String src, String dst) {
+    public void entry(TextUnit unit) {
       i++;
-      ln("      <trans-unit id=\""+id+"\" resname=\""+this.id+"\">");
+      ln("      <trans-unit id=\""+id+"\" resname=\""+unit.getContext()+"\">");
 //      if (context != null) {
 //        ln("        <notes>");
 //        ln("          <note id=\"n"+i+"\">"+Utilities.escapeXml(context)+"</note>");
 //        ln("        </notes>");
 //      }
-      ln("        <source>"+Utilities.escapeXml(src)+"</source>");
-      ln("        <target>"+Utilities.escapeXml(dst)+"</target>");
+      ln("        <source>"+Utilities.escapeXml(unit.getSrcText())+"</source>");
+      ln("        <target>"+Utilities.escapeXml(unit.getTgtText())+"</target>");
       ln("      </trans-unit>");
     }
 
@@ -82,10 +83,10 @@ public class XLIFFProducer extends LanguageFileProducer {
   public void finish() {
     // nothing
   }
-
+  
   @Override
-  public List<Translations> loadTranslations(String id) {
-    // TODO Auto-generated method stub
+  public List<TextUnit> loadTranslations(String baseLang, String tgtLang) {
     return null;
   }
+
 }

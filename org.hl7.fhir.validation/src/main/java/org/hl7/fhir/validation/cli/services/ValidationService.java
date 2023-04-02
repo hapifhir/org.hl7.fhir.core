@@ -107,7 +107,7 @@ public class ValidationService {
   public VersionSourceInformation scanForVersions(CliContext cliContext) throws Exception {
     VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
-      new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION),
+      new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER),
       new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing(),
       null);
     for (String src : cliContext.getIgs()) {
@@ -454,7 +454,7 @@ public class ValidationService {
 
   public String determineVersion(CliContext cliContext, String sessionId) throws Exception {
     if (cliContext.getMode() != EngineMode.VALIDATION) {
-      return "current";
+      return "5.0";
     }
     System.out.println("Scanning for versions (no -version parameter):");
     VersionSourceInformation versions = scanForVersions(cliContext);
