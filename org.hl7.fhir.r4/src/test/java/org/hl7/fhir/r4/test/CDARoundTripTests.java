@@ -30,7 +30,7 @@ public class CDARoundTripTests {
   @BeforeAll
   public void setUp() throws Exception {
     context = new SimpleWorkerContext();
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
     context.loadFromPackage(pcm.loadPackage("hl7.fhir.core", "current"), null, "StructureDefinition");
     context.loadFromPackage(pcm.loadPackage("hl7.fhir.cda", "current"), null, "StructureDefinition");
   }

@@ -81,7 +81,7 @@ public class TestingUtilities {
 	  if (fcontext == null) {
 	    FilesystemPackageCacheManager pcm;
 	    try {
-	      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+	      pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
 	      fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
 	      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.resourceNameToFile("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());
