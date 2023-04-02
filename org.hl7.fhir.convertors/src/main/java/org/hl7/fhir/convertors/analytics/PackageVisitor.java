@@ -109,7 +109,7 @@ public class PackageVisitor {
   public void visitPackages() throws IOException, ParserConfigurationException, SAXException {
     System.out.println("Finding packages");
     pc = new PackageClient(PackageServer.primaryServer());
-    pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
     
     Map<String, String> cpidMap = getAllCIPackages();
     Set<String> cpidSet = new HashSet<>();

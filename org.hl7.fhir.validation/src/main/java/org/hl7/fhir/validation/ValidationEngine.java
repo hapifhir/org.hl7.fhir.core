@@ -973,7 +973,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public FilesystemPackageCacheManager getPcm() throws IOException {
     if (pcm == null) {
       //System.out.println("Creating Package manager?");
-      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+      pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
     }
     return pcm;
   }

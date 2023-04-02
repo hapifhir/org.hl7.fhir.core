@@ -21,7 +21,7 @@ public class PackageValidator {
   }
 
   private void execute() throws IOException {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
     
     PackageClient pc = new PackageClient(PackageServer.primaryServer());
     for (PackageInfo t : pc.search(null, null, null, false)) {
