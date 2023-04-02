@@ -102,6 +102,9 @@ public interface ValueSetExpander {
       if (!allErrors.contains(error)) {
         allErrors.add(error);
       }
+      if (!errList.contains(error)) {
+        errList.add(error);
+      }
     }
     
     public ValueSet getValueset() {

@@ -820,7 +820,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return res;
       }
     }
-    p.setParameter("includeDefinition", false);
+    
     p.setParameter("excludeNested", !hierarchical);
     if (incompleteOk) {
       p.setParameter("incomplete-ok", true);      
@@ -872,7 +872,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
-      res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors).setTxLink(txLog == null ? null : txLog.getLastId());
+      res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors).setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;

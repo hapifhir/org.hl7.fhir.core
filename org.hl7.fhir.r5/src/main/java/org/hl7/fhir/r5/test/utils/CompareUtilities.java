@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.test.utils;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.ToolGlobalSettings;
@@ -181,7 +182,7 @@ public class CompareUtilities extends BaseTestingUtilities {
       String diff = null;
       if (System.getProperty("os.name").contains("Linux"))
         diff = Utilities.path("/", "usr", "bin", "meld");
-      else {
+      else if (System.getenv("ProgramFiles(X86)") != null) {
         if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"), "\\WinMergeU.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
         else if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"), "\\Meld.exe", null))
@@ -271,7 +272,7 @@ public class CompareUtilities extends BaseTestingUtilities {
         String actualJsonString = actualJsonPrimitive.getAsString();
         String expectedJsonString = expectedJsonPrimitive.getAsString();
         if (!(actualJsonString.contains("<div") && expectedJsonString.contains("<div")))
-          if (!actualJsonString.equals(expectedJsonString))
+          if (!matches(actualJsonString, expectedJsonString))
             if (!sameBytes(unBase64(actualJsonString), unBase64(expectedJsonString)))
               return createNotEqualMessage("string property values differ at " + path, expectedJsonString, actualJsonString);
       } else if (actualJsonPrimitive.isNumber() && expectedJsonPrimitive.isNumber()) {
@@ -299,6 +300,20 @@ public class CompareUtilities extends BaseTestingUtilities {
     } else
       return "unhandled property " + actualJsonElement.getClass().getName();
     return null;
+  }
+
+  private static boolean matches(String actualJsonString, String expectedJsonString) {
+    if (expectedJsonString.startsWith("$") && expectedJsonString.endsWith("$")) {
+      switch (expectedJsonString) {
+      case "$$" : return true;
+      case "$instant$": return actualJsonString.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]{1,9})?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))");
+      case "$uuid$": return actualJsonString.matches("urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+      default: 
+        throw new Error("Unhandled template: "+expectedJsonString);
+      }
+    } else {
+      return actualJsonString.equals(expectedJsonString);
+    }
   }
 
   public static String checkTextIsSame(String expected, String actual) throws JsonSyntaxException, FileNotFoundException, IOException {
@@ -349,4 +364,5 @@ public class CompareUtilities extends BaseTestingUtilities {
       return createNotEqualMessage("Strings differ in length but match to the end of the shortest.", Integer.toString(expectedString.length()), Integer.toString(actualString.length()));
     return null;
   }
+
 }

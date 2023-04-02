@@ -1810,5 +1810,15 @@ public boolean getParameterBool(String name) {
 }
 // end addition
 
+public String getParameterString(String name) {
+  for (ParametersParameterComponent p : getParameter()) {
+    if (p.getName().equals(name)) {
+      if (p.getValue() instanceof PrimitiveType)
+        return ((PrimitiveType) p.getValue()).primitiveValue();
+    }
+  }
+  return null;
+}
+
 }
 
