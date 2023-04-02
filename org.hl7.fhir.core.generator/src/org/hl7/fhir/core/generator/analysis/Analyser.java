@@ -210,7 +210,7 @@ public class Analyser {
     if (ok) {
       if (cd.getValueSet() != null) {
         ValueSet vs = definitions.getValuesets().get(cd.getValueSet()); 
-        if (vs.hasName() && vs.getName().contains("ColorCodesOrRGB")) {
+        if (vs != null && vs.hasName() && vs.getName().contains("ColorCodesOrRGB")) {
           return false;
         }
         if (vs != null && vs.hasCompose() && vs.getCompose().getInclude().size() == 1) {
