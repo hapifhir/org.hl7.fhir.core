@@ -20,7 +20,7 @@
     <properties>
         <hapi_fhir_version>6.2.1</hapi_fhir_version>
         <validator_test_case_version>1.2.26-SNAPSHOT</validator_test_case_version>
-        <junit_jupiter_version>5.7.1</junit_jupiter_version>
+        <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
         <maven_surefire_version>3.0.0-M5</maven_surefire_version>
         <maven_clean_version>3.1.0</maven_clean_version>
@@ -146,16 +146,11 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
                 <version>${junit_jupiter_version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.vintage</groupId>
-                <artifactId>junit-vintage-engine</artifactId>
-                <version>${junit_jupiter_version}</version>
-                <scope>test</scope>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>net.bytebuddy</groupId>
