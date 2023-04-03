@@ -1,8 +1,3 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
 trigger: none
 
 pool:
@@ -20,10 +15,9 @@ jobs:
         inputs:
           key: maven | $(Build.BuildId) | artifacts
           path: $(MAVEN_CACHE_FOLDER)
-      - task: Cache@2
-        inputs:
-          key: maven | $(Build.BuildId) | targets
-          path: $(System.DefaultWorkingDirectory)/org.hl7.fhir.convertors/target/**, $(System.DefaultWorkingDirectory)/org.hl7.fhir.utilities/target/**
+      - template: cache-target-directory-task.yml
+        parameters:
+          targetModule: org.hl7.fhir.convertors
       - task: Bash@3
         inputs:
           targetType: 'inline'
