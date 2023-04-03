@@ -57,6 +57,7 @@ import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.IntegerType;
@@ -64,6 +65,7 @@ import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -246,7 +248,7 @@ public class CodeSystemUtilities {
     throw new Error("Unknown property type "+value.getClass().getName());
   }
 
-  private static void defineProperty(CodeSystem cs, String code, PropertyType pt) {
+  private static String defineProperty(CodeSystem cs, String code, PropertyType pt) {
     String url = "http://hl7.org/fhir/concept-properties#"+code;
     for (PropertyComponent p : cs.getProperty()) {
       if (p.getCode().equals(code)) {
@@ -256,11 +258,11 @@ public class CodeSystemUtilities {
         if (!p.getType().equals(pt)) {
           throw new Error("Type mismatch for code "+code+" type = "+p.getType()+" vs "+pt);
         }
-        return;
+        return code;
       }
     }
     cs.addProperty().setCode(code).setUri(url).setType(pt).setUri(url);
-  
+    return code;
   }
 
   public static void defineNotSelectableProperty(CodeSystem cs) {
@@ -719,6 +721,102 @@ public class CodeSystemUtilities {
       t = t + (cd.hasConcept() ?  countCodes(cd.getConcept()) : 0);
     }
     return t;
+  }
+
+  public static CodeSystem mergeSupplements(CodeSystem cs, List<CodeSystem> supplements) {
+    CodeSystem ret = cs.copy();
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (CodeSystem sup : supplements) {
+      b.append(sup.getVersionedUrl());      
+    }
+    ret.setUserData("supplements.installed", b.toString());
+
+    for (ConceptDefinitionComponent t : ret.getConcept()) {
+      mergeSupplements(ret, t, supplements);
+    }
+    return ret;
+  }
+
+  private static void mergeSupplements(CodeSystem ret, ConceptDefinitionComponent fdef, List<CodeSystem> supplements) {
+    for (CodeSystem cs : supplements) {
+      ConceptDefinitionComponent def = CodeSystemUtilities.findCode(cs.getConcept(), fdef.getCode());
+      if (def != null) {
+        for (Extension ext : def.getExtension()) {
+          fdef.addExtension(ext.copy());
+        }
+        for (ConceptDefinitionDesignationComponent d : def.getDesignation()) {
+          fdef.addDesignation(d.copy());
+        }
+        for (ConceptPropertyComponent p : def.getProperty()) {
+          PropertyComponent pd = CodeSystemUtilities.getPropertyDefinition(cs, p);
+          String code;
+          if (pd != null) {
+            code = defineProperty(ret, pd, propertyTypeForType(p.getValue()));
+          } else {
+            code = defineProperty(ret, p.getCode(), propertyTypeForType(p.getValue()));
+          }
+          fdef.addProperty().setCode(code).setValue(p.getValue());
+        }
+      }
+      for (ConceptDefinitionComponent t : fdef.getConcept()) {
+        mergeSupplements(ret, t, supplements);
+      }      
+    }
+  }
+
+  private static PropertyType propertyTypeForType(DataType value) {
+    if (value == null) {
+      return PropertyType.NULL;
+    }
+    if (value instanceof CodeType) {
+      return PropertyType.CODE;
+    }
+    if (value instanceof CodeType) {
+      return PropertyType.CODING;
+    }
+    if (value instanceof CodeType) {
+      return PropertyType.STRING;
+    }
+    if (value instanceof CodeType) {
+      return PropertyType.INTEGER;
+    }
+    if (value instanceof CodeType) {
+      return PropertyType.BOOLEAN;
+    }
+    if (value instanceof CodeType) {
+      return PropertyType.DATETIME;
+    }
+    if (value instanceof CodeType) {
+      return PropertyType.DECIMAL;
+    }
+    throw new FHIRException("Unsupported property value for a CodeSystem Property: "+value.fhirType());
+  }
+
+  private static String defineProperty(CodeSystem cs, PropertyComponent pd, PropertyType pt) {
+    for (PropertyComponent p : cs.getProperty()) {
+      if (p.getCode().equals(pd.getCode())) {
+        if (!p.getUri().equals(pd.getUri())) {
+          throw new Error("URI mismatch for code "+pd.getCode()+" url = "+p.getUri()+" vs "+pd.getUri());
+        }
+        if (!p.getType().equals(pt)) {
+          throw new Error("Type mismatch for code "+pd.getCode()+" type = "+p.getType().toCode()+" vs "+pt.toCode());
+        }
+        return pd.getCode();
+      }
+    }
+    cs.addProperty().setCode(pd.getCode()).setUri(pd.getUri()).setType(pt);
+    return pd.getCode();
+
+  }
+
+
+  private static PropertyComponent getPropertyDefinition(CodeSystem cs, ConceptPropertyComponent p) {
+    for (PropertyComponent t : cs.getProperty()) {
+      if (t.getCode().equals(p.getCode())) {
+        return t;
+      }
+    }
+    return null;
   }
 }
 

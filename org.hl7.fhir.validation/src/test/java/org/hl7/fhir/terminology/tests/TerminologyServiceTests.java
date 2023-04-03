@@ -22,6 +22,10 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Constants;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
@@ -103,7 +107,7 @@ public class TerminologyServiceTests {
   @Test
   public void test() throws Exception {
     if (baseEngine == null) {
-      baseEngine = TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", ValidationEngineTests.DEF_TX, null, FhirPublication.R5, true, "5.0.0");
+      baseEngine = TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", null, null, FhirPublication.R5, true, "5.0.0");
     }
     ValidationEngine engine = new ValidationEngine(this.baseEngine);
     for (String s : setup.suite.forceArray("setup").asStrings()) {
@@ -149,7 +153,45 @@ public class TerminologyServiceTests {
         Assertions.assertTrue(diff == null, diff);
       }
     } else {
-      Assertions.fail("expand error not done yet");
+      OperationOutcome oo = new OperationOutcome();
+      OperationOutcomeIssueComponent e = new OperationOutcomeIssueComponent();
+      e.setSeverity(IssueSeverity.ERROR);
+      switch (vse.getErrorClass()) {
+      case BLOCKED_BY_OPTIONS:
+        e.setCode(IssueType.FORBIDDEN);
+        break;
+      case BUSINESS_RULE:
+        e.setCode(IssueType.BUSINESSRULE);
+        break;
+      case CODESYSTEM_UNSUPPORTED:
+        e.setCode(IssueType.INVALID);
+        break;
+      case INTERNAL_ERROR:
+        e.setCode(IssueType.EXCEPTION);
+        break;
+      case NOSERVICE:
+        e.setCode(IssueType.CONFLICT);
+        break;
+      case SERVER_ERROR:
+        e.setCode(IssueType.EXCEPTION);
+        break;
+      case UNKNOWN:
+        e.setCode(IssueType.UNKNOWN);
+        break;
+      case VALUESET_UNSUPPORTED:
+        e.setCode(IssueType.NOTSUPPORTED);
+        break;
+      }
+      e.getDetails().setText(vse.getError());
+      oo.addIssue(e);
+      
+      String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      String diff = CompareUtilities.checkJsonSrcIsSame(resp, ooj);
+      if (diff != null) {
+        Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+        TextFile.stringToFile(ooj, fp);        
+      }
+      Assertions.assertTrue(diff == null, diff);
     }
   }
 
