@@ -2604,6 +2604,9 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (isLikelySourceURLReference(url, resourceNames, baseFilenames, localFilenames)) {
               b.append("](");
               b.append(basePath);
+              if (!basePath.endsWith("/")) {
+                b.append("/");
+              }
               i = i + 1;
             } else {
               b.append("](");

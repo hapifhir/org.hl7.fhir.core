@@ -74,7 +74,7 @@ public class TestingUtilities extends BaseTestingUtilities {
   static public Map<String, IWorkerContext> fcontexts;
 
   public static IWorkerContext context() {
-    return context("4.0.1");
+    return context("4.3.0");
   }
 
   public static IWorkerContext context(String version) {
