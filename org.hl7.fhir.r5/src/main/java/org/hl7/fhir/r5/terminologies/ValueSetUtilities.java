@@ -42,6 +42,8 @@ import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Identifier;
@@ -52,6 +54,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
@@ -326,6 +329,55 @@ public class ValueSetUtilities {
       }
     }
     return false;
+  }
+
+  public static void addProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, String value) {
+    if (value != null) {
+      addProperty(vs, ctxt, url, code, new StringType(value));
+    }
+  }
+
+  public static void addProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, Integer value) {
+    if (value != null) {
+      addProperty(vs, ctxt, url, code, new IntegerType(value));
+    }
+  }
+
+  public static void addProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, DataType value) {
+    code = defineProperty(vs, url, code);
+    org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent p = getProperty(ctxt.getProperty(),  code);
+    if (p != null)
+      p.setValue(value);
+    else
+      ctxt.addProperty().setCode(code).setValue(value);    
+
+  }
+
+  private static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent getProperty(List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> list, String code) {
+    for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent t : list) {
+      if (code.equals(t.getCode())) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+  private static String defineProperty(ValueSet vs, String url, String code) {
+    for (ValueSetExpansionPropertyComponent p : vs.getExpansion().getProperty()) {
+      if (p.hasUri() && p.getUri().equals(url)) {
+        return p.getCode();
+      }
+    }
+    for (ValueSetExpansionPropertyComponent p : vs.getExpansion().getProperty()) {
+      if (p.hasCode() && p.getCode().equals(code)) {
+        p.setUri(url);
+        return code;
+      }
+    }
+    ValueSetExpansionPropertyComponent p = vs.getExpansion().addProperty();
+    p.setUri(url);
+    p.setCode(code);
+    return code;  
   }
 
 

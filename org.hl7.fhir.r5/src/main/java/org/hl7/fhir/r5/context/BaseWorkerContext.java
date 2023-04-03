@@ -657,6 +657,30 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     return cs;
   } 
+  
+  @Override
+  public CodeSystem fetchSupplementedCodeSystem(String system) {
+    CodeSystem cs = fetchCodeSystem(system);
+    if (cs != null) {
+      List<CodeSystem> supplements = codeSystems.getSupplements(cs);
+      if (supplements.size() > 0) {
+        cs = CodeSystemUtilities.mergeSupplements(cs, supplements);
+      }
+    }
+    return cs;
+  }
+
+  @Override
+  public CodeSystem fetchSupplementedCodeSystem(String system, String version) {
+    CodeSystem cs = fetchCodeSystem(system, version);
+    if (cs != null) {
+      List<CodeSystem> supplements = codeSystems.getSupplements(cs);
+      if (supplements.size() > 0) {
+        cs = CodeSystemUtilities.mergeSupplements(cs, supplements);
+      }
+    }
+    return cs;
+  }
 
   @Override
   public boolean supportsSystem(String system) throws TerminologyServiceException {
@@ -846,7 +870,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       txCache.cacheExpansion(cacheToken, res, TerminologyCache.TRANSIENT);
       return res;
     }
-    if (res.getErrorClass() == TerminologyServiceErrorClass.INTERNAL_ERROR) { // this class is created specifically to say: don't consult the server
+    if (res.getErrorClass() == TerminologyServiceErrorClass.INTERNAL_ERROR || isNoTerminologyServer()) { // this class is created specifically to say: don't consult the server
       return new ValueSetExpansionOutcome(res.getError(), res.getErrorClass());
     }
 
