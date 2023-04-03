@@ -52,9 +52,9 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
 
-public class R5ToR5Loader extends BaseLoaderR5 {
+public class R6ToR5Loader extends BaseLoaderR5 {
 
-  public R5ToR5Loader(List<String> types, ILoaderKnowledgeProviderR5 lkp) {
+  public R6ToR5Loader(List<String> types, ILoaderKnowledgeProviderR5 lkp) {
     super(types, lkp);
   }
 

@@ -59,7 +59,7 @@ public class LoadIgTests {
       hl7Validator.prepare();
       IgLoader igLoader = new IgLoader(hl7Validator.getPcm(), hl7Validator.getContext(), hl7Validator.getVersion(), true);
 
-      byte[] b = TextFile.streamToBytes(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", "t34-expected.xml")); // yes the choice of R5 is deliberate here - it's the same content as R4.
+      byte[] b = TextFile.streamToBytes(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", "t34-expected.xml")); // yes the choice of R5 is deliberate here - it's the same content as R4.
       for (int i = 0; i < DO_TIMES; i++) {
         System.gc();
         

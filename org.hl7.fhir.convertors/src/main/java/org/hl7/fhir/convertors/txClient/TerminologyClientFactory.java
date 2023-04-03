@@ -51,7 +51,7 @@ public class TerminologyClientFactory {
     if (VersionUtilities.isR4BVer(v)) {
       return new TerminologyClientR4(checkEndsWith("/r4", url), userAgent);
     }
-    if (VersionUtilities.isR5Ver(v)) {
+    if (VersionUtilities.isR5Plus(v)) {
       return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent); // r4 for now, since the terminology is currently the same      
     }
     throw new Error("The version " + v + " is not currently supported");

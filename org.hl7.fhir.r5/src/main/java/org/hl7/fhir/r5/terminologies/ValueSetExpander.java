@@ -41,7 +41,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 
 public interface ValueSetExpander {
   public enum TerminologyServiceErrorClass {
-    UNKNOWN, NOSERVICE, SERVER_ERROR, VALUESET_UNSUPPORTED, CODESYSTEM_UNSUPPORTED, BLOCKED_BY_OPTIONS, INTERNAL_ERROR;
+    UNKNOWN, NOSERVICE, SERVER_ERROR, VALUESET_UNSUPPORTED, CODESYSTEM_UNSUPPORTED, BLOCKED_BY_OPTIONS, INTERNAL_ERROR, BUSINESS_RULE;
 
     public boolean isInfrastructure() {
       return this == NOSERVICE || this == SERVER_ERROR || this == VALUESET_UNSUPPORTED;
@@ -101,6 +101,9 @@ public interface ValueSetExpander {
       this.allErrors.addAll(errList);
       if (!allErrors.contains(error)) {
         allErrors.add(error);
+      }
+      if (!errList.contains(error)) {
+        errList.add(error);
       }
     }
     

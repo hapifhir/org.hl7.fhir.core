@@ -517,7 +517,7 @@ public class CorePackageVersionConvertor {
     if (VersionUtilities.isR3Ver(fhirVersion)) {
       if (VersionUtilities.isR4Ver(versionTarget) || VersionUtilities.isR4BVer(versionTarget)) {
         return new ContentConverter3to4(fhirVersion);
-      } else if (VersionUtilities.isR5Ver(versionTarget)) {
+      } else if (VersionUtilities.isR5Plus(versionTarget)) {
         return new ContentConverter3to5(fhirVersion);
       } else if (VersionUtilities.isR2Ver(versionTarget)) {
         return new ContentConverter3to2(fhirVersion);
@@ -527,7 +527,7 @@ public class CorePackageVersionConvertor {
     } else if (VersionUtilities.isR2Ver(fhirVersion)) {
       if (VersionUtilities.isR4Ver(versionTarget) || VersionUtilities.isR4BVer(versionTarget)) {
         return new ContentConverter2to4(fhirVersion);
-      } else if (VersionUtilities.isR5Ver(versionTarget)) {
+      } else if (VersionUtilities.isR5Plus(versionTarget)) {
         return new ContentConverter2to5(fhirVersion);
       } else if (VersionUtilities.isR3Ver(versionTarget)) {
         return new ContentConverter2to3(fhirVersion);
@@ -535,7 +535,7 @@ public class CorePackageVersionConvertor {
     } else if (VersionUtilities.isR2BVer(fhirVersion)) {
       if (VersionUtilities.isR4Ver(versionTarget) || VersionUtilities.isR4BVer(versionTarget)) {
         return new ContentConverter2Bto4(fhirVersion);
-      } else if (VersionUtilities.isR5Ver(versionTarget)) {
+      } else if (VersionUtilities.isR5Plus(versionTarget)) {
         return new ContentConverter2Bto5(fhirVersion);
       } else if (VersionUtilities.isR3Ver(versionTarget)) {
         return new ContentConverter2Bto3(fhirVersion);
@@ -543,7 +543,7 @@ public class CorePackageVersionConvertor {
     } else if (VersionUtilities.isR4Ver(fhirVersion)) {
       if (VersionUtilities.isR3Ver(versionTarget)) {
         return new ContentConverter4to3(fhirVersion);
-      } else if (VersionUtilities.isR5Ver(versionTarget)) {
+      } else if (VersionUtilities.isR5Plus(versionTarget)) {
         return new ContentConverter4to5(fhirVersion);
       } else if (VersionUtilities.isR2Ver(versionTarget)) {
         return new ContentConverter4to2(fhirVersion);
@@ -555,7 +555,7 @@ public class CorePackageVersionConvertor {
     } else if (VersionUtilities.isR4BVer(fhirVersion)) {
       if (VersionUtilities.isR3Ver(versionTarget)) {
         return new ContentConverter4to3(fhirVersion);
-      } else if (VersionUtilities.isR5Ver(versionTarget)) {
+      } else if (VersionUtilities.isR5Plus(versionTarget)) {
         return new ContentConverter4to5(fhirVersion);
       } else if (VersionUtilities.isR4Ver(versionTarget)) {
         return new ContentConverter4to4(fhirVersion);
@@ -564,7 +564,7 @@ public class CorePackageVersionConvertor {
       } else if (VersionUtilities.isR2BVer(versionTarget)) {
         return new ContentConverter4to2B(fhirVersion);
       }
-    } else     if (VersionUtilities.isR5Ver(fhirVersion)) {
+    } else     if (VersionUtilities.isR5Plus(fhirVersion)) {
       if (VersionUtilities.isR4Ver(versionTarget) || VersionUtilities.isR4BVer(versionTarget)) {
         return new ContentConverter5to4(fhirVersion);
       } else if (VersionUtilities.isR3Ver(versionTarget)) {

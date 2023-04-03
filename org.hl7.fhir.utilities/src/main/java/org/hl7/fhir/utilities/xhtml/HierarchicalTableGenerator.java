@@ -968,7 +968,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     for (Cell c : r.getCells()) {
       tc = tc + c.span;
     }
-    check(tc == size, "All rows must have the same number of columns as the titles  ("+Integer.toString(size)+") but row "+path+" doesn't - it has "+tc+" ("+r.getCells().get(0).text()+"): "+r.getCells());
+    check(tc == size, "All rows must have the same number of columns as the titles  ("+Integer.toString(size)+") but row "+path+" doesn't - it has "+tc+" ("+(r.getCells().size() > 0 ? "??" : r.getCells().get(0).text())+"): "+r.getCells());
     int i = 0;
     for (Row c : r.getSubRows()) {
       check(c, "rows", size, path, i, r.getSubRows().size());

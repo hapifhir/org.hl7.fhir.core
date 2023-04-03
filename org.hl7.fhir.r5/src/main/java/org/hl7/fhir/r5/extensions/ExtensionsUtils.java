@@ -12,6 +12,9 @@ import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.Property;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.utilities.Utilities;
 
 public class ExtensionsUtils {
 
@@ -275,4 +278,103 @@ public class ExtensionsUtils {
     return result; 
   }
   
+  public static boolean stripExtensions(Element element, String... exceptions) {
+    return stripExtensions(element, Utilities.strings(exceptions));
+  }
+  
+  public static boolean stripExtensions(Element element, List<String> exceptions) {
+    boolean res = element.getExtension().removeIf(ex -> !exceptions.contains(ex.getUrl()));
+    if (element instanceof BackboneElement) {
+      res = ((BackboneElement) element).getModifierExtension().removeIf(ex -> !exceptions.contains(ex.getUrl())) || res;      
+    }
+    if (element instanceof BackboneElement) {
+      res = ((BackboneElement) element).getModifierExtension().removeIf(ex -> !exceptions.contains(ex.getUrl())) || res;      
+    }
+    for (Property p : element.children()) {
+      for (Base v : p.getValues()) {
+        if (v instanceof Element) {
+          res = stripExtensions((Element) v, exceptions) || res;
+        } else if (v instanceof Element) {
+          res = stripExtensions((Resource) v, exceptions) || res;
+        }
+      }
+    }
+    return res;
+  }
+
+  public static boolean stripExtensions(Resource resource, String... exceptions) {
+    return stripExtensions(resource, Utilities.strings(exceptions));
+  }
+  
+  public static boolean stripExtensions(Resource resource, List<String> exceptions) {
+    boolean res = false;
+    if (resource instanceof DomainResource) {
+      res = ((DomainResource) resource).getExtension().removeIf(ex -> !exceptions.contains(ex.getUrl())) ||
+            ((DomainResource) resource).getModifierExtension().removeIf(ex -> !exceptions.contains(ex.getUrl()));      
+    }
+    for (Property p : resource.children()) {
+      for (Base v : p.getValues()) {
+        if (v instanceof Element) {
+          res = stripExtensions((Element) v, exceptions) || res;
+        } else if (v instanceof Element) {
+          res = stripExtensions((Resource) v, exceptions) || res;
+        }
+      }
+    }
+    return res;
+  }
+
+  public static void copyExtensions(List<Extension> source, List<Extension> dest, String... urls) {
+    if (source != null && dest != null) {
+      for (Extension ex : source) {
+        if (Utilities.existsInList(ex.getUrl(), urls)) {
+          dest.add(ex.copy());
+        }
+      }
+    }
+  }
+
+
+
+  public static DataType getExtensionValue(List<Extension> extensions, String url) {
+    for (Extension ex : extensions) {
+      if (ex.getUrl().equals(url)) {
+        return ex.getValue();
+      }
+    }
+    return null;
+  }
+  
+
+  public static String getExtensionString(List<Extension> extensions, String url) {
+    for (Extension ex : extensions) {
+      if (ex.getUrl().equals(url)) {
+        return ex.getValue().primitiveValue();
+      }
+    }
+    return null;
+  }
+  
+
+
+  public static Integer getExtensionInteger(List<Extension> extensions, String url) {
+    for (Extension ex : extensions) {
+      if (ex.getUrl().equals(url) && ex.hasValueIntegerType()) {
+        return ex.getValueIntegerType().getValue();
+      }
+    }
+    return null;
+  }
+  
+  public static boolean hasExtension(List<Extension> extensions, String url) {
+    if (extensions == null) {
+      return false;
+    }
+    for (Extension ex : extensions) {
+      if (ex.getUrl().equals(url)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

@@ -13,7 +13,8 @@ public enum FhirPublication {
   STU3,
   R4,
   R4B,
-  R5;
+  R5,
+  R6;
 
   public static FhirPublication fromCode(String v) {
     if (VersionUtilities.isR2Ver(v))
@@ -28,6 +29,8 @@ public enum FhirPublication {
       return FhirPublication.R4B;
     if (VersionUtilities.isR5Ver(v))
       return FhirPublication.R5; 
+    if (VersionUtilities.isR6Ver(v))
+      return FhirPublication.R6; 
     return null;
   }
 
@@ -40,6 +43,7 @@ public enum FhirPublication {
     case R4: return "4.0.1";
     case R4B: return "4.3.0";
     case R5: return "5.0.0";
+    case R6: return "6.0.0";
     default:
       return "??";
     }

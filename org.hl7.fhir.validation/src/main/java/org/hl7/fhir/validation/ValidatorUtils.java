@@ -20,6 +20,7 @@ import org.hl7.fhir.convertors.loaders.loaderR5.R3ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R4BToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R5ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R6ToR5Loader;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -74,6 +75,9 @@ public class ValidatorUtils {
     }
     if (VersionUtilities.isR5Ver(version)) {
       return new R5ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+    }
+    if (VersionUtilities.isR6Ver(version)) {
+      return new R6ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     }
     return null;
   }

@@ -174,7 +174,7 @@ public class RequirementsRenderer extends ResourceRenderer {
               }
               Resource r = context.getWorker().fetchResource(Resource.class, url, req);
               ResourceWithReference t = null;
-              if (r == null) {
+              if (r == null && context.getResolver() != null) {
                 t = context.getResolver().resolve(context, url);                
               }
               if (r != null) {

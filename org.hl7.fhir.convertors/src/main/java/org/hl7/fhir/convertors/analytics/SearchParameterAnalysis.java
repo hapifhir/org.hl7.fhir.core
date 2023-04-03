@@ -107,7 +107,7 @@ public class SearchParameterAnalysis implements IPackageVisitorProcessor {
       versions.get(version).version = version;
     }
     try {
-    if (VersionUtilities.isR5Ver(version)) {
+    if (VersionUtilities.isR5Plus(version)) {
       processR5SP(core, versions.get(version), content);
     } else if (VersionUtilities.isR4BVer(version)) {
       processR4SP(core, versions.get(version), content);
