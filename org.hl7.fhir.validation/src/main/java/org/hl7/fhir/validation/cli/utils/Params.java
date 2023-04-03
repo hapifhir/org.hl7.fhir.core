@@ -87,6 +87,7 @@ public class Params {
   public static final String TARGET = "-target";
   public static final String SOURCE = "-source";
   public static final String FILTER = "-filter";
+  private static final String API_KEY_FILE = "-api-key-file";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -123,6 +124,8 @@ public class Params {
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals(VERSION)) {
         cliContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
+      } else if (args[i].equals(API_KEY_FILE)) {
+
       } else if (args[i].equals(OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -output without indicating output file");
