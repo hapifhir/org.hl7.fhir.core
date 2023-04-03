@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -51,7 +52,6 @@ import ca.uhn.fhir.model.primitive.XhtmlDt;
 @ca.uhn.fhir.model.api.annotation.DatatypeDef(name="xhtml")
 public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   private static final long serialVersionUID = -4362547161441436492L;
-
 
   public static class Location implements Serializable {
     private static final long serialVersionUID = -4079302502900219721L;
@@ -87,6 +87,8 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   private boolean notPretty;
   private boolean seperated;  
   private Boolean emptyExpanded;
+  private Map<String, XhtmlNode> namedParams;
+  private Map<String, String> namedParamValues;
 
   public XhtmlNode() {
     super();
@@ -769,5 +771,70 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return span("color: "+color, null);
   }
   
-  
+  public XhtmlNode param(String name) {
+    XhtmlNode node = new XhtmlNode(NodeType.Element, "p"); // this node is dead will never appear anywhere, but we are in paragraph mode
+    if (namedParams == null) {
+      namedParams = new HashMap<>();
+    }
+    namedParams.put(name, node);
+    return node;
+  }
+
+
+  public void paramValue(String name, String value) {
+    if (namedParamValues == null) {
+      namedParamValues = new HashMap<>();
+    }
+    namedParamValues.put(name, value); 
+  }
+
+  public void paramValue(String name, int value) {
+    if (namedParamValues == null) {
+      namedParamValues = new HashMap<>();
+    }
+    namedParamValues.put(name, Integer.toString(value)); 
+  }
+
+  public void sentenceForParams(String structure) throws FHIRException, IOException {
+    XhtmlNode script = new XhtmlParser().parseFragment("<div>"+structure+"</div>");
+    for (XhtmlNode n : script.getChildNodes()) {
+      if ("param".equals(n.getName())) {
+        XhtmlNode node = namedParams.get(n.getAttribute("name"));
+        if (node != null) {
+          this.getChildNodes().addAll(node.getChildNodes());
+        }
+      } else if ("if".equals(n.getName())) {
+        String test = n.getAttribute("test");
+        if (passesTest(test)) {
+          this.getChildNodes().addAll(n.getChildNodes());
+        }
+      } else {
+        this.getChildNodes().add(n);
+      }
+    }
+    namedParams = null;
+    namedParamValues = null;
+  }
+
+
+  private boolean passesTest(String test) {
+    String[] p = test.split("\\s+");
+    if (p.length != 3) {
+      return false;
+    }
+    if (!namedParamValues.containsKey(p[0])) {
+      return false;
+    }
+    String pv = namedParamValues.get(p[0]);
+    switch (p[1]) {
+    case "=": return p[2].equalsIgnoreCase(pv);
+    case "!=": return !p[2].equalsIgnoreCase(pv);
+    case "<": return Utilities.isInteger(p[2]) && Utilities.isInteger(pv) && Integer.parseInt(pv) < Integer.parseInt(p[2]);
+    case "<=": return Utilities.isInteger(p[2]) && Utilities.isInteger(pv) && Integer.parseInt(pv) <= Integer.parseInt(p[2]);
+    case ">": return Utilities.isInteger(p[2]) && Utilities.isInteger(pv) && Integer.parseInt(pv) > Integer.parseInt(p[2]);
+    case ">=": return Utilities.isInteger(p[2]) && Utilities.isInteger(pv) && Integer.parseInt(pv) >= Integer.parseInt(p[2]);
+    }
+    return false;
+  }
+
 }

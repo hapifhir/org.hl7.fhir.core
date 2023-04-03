@@ -90,7 +90,7 @@ public class UTGVersionSorter {
   private Map<String, CanonicalResource> loadPackageR2(String id) throws IOException {
     Map<String, CanonicalResource> res = new HashMap<>();
     if (pcm == null) {
-      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+      pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
     }
     System.out.println("Load " + id);
     NpmPackage npm = pcm.loadPackage(id);
@@ -104,7 +104,7 @@ public class UTGVersionSorter {
   private Map<String, CanonicalResource> loadPackageR3(String id) throws IOException {
     Map<String, CanonicalResource> res = new HashMap<>();
     if (pcm == null) {
-      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+      pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
     }
     System.out.println("Load " + id);
     NpmPackage npm = pcm.loadPackage(id);
@@ -118,7 +118,7 @@ public class UTGVersionSorter {
   private Map<String, CanonicalResource> loadPackageR4(String id) throws IOException {
     Map<String, CanonicalResource> res = new HashMap<>();
     if (pcm == null) {
-      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+      pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
     }
     System.out.println("Load " + id);
     NpmPackage npm = pcm.loadPackage(id);

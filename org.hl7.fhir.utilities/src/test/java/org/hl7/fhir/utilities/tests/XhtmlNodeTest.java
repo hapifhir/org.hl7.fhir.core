@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
@@ -150,5 +151,62 @@ public class XhtmlNodeTest {
     Assertions.assertEquals(src.trim(), xml.trim());
   }
 
+  @Test
+  public void testComposeScripted1() throws IOException {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    x.para().tx("This is a paragraph");
+    Assertions.assertEquals("<div><p>This is a paragraph</p></div>", new XhtmlComposer(true, false).compose(x));
+  }
   
+  @Test
+  public void testComposeScripted2() throws IOException {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    XhtmlNode p = x.para();
+    p.tx("This is ");
+    p.tx("a paragraph");
+    Assertions.assertEquals("<div><p>This is a paragraph</p></div>", new XhtmlComposer(true, false).compose(x));
+  }
+
+  @Test
+  public void testComposeScripted3() throws IOException {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    XhtmlNode p = x.para();
+    p.tx("This is a ");
+    p.b().tx("long");
+    p.tx(" paragraph");
+    Assertions.assertEquals("<div><p>This is a <b>long</b> paragraph</p></div>", new XhtmlComposer(true, false).compose(x));
+  }
+  
+  @Test
+  public void testComposeScripted4() throws IOException {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    XhtmlNode p = x.para();
+    p.param("long").b().tx("long");
+    p.sentenceForParams("This <b>is</b> a <param name='long'/> paragraph");
+    Assertions.assertEquals("<div><p>This <b>is</b> a <b>long</b> paragraph</p></div>", new XhtmlComposer(true, false).compose(x));
+  }
+
+
+  @Test
+  public void testComposeScripted5() throws IOException {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    XhtmlNode p = x.para();
+    p.param("long").b().tx("long");
+    p.paramValue("count", "2");
+    p.sentenceForParams("This <b>is</b> a <param name='long'/> paragraph<if test='count != 1'>s</if>");
+    Assertions.assertEquals("<div><p>This <b>is</b> a <b>long</b> paragraphs</p></div>", new XhtmlComposer(true, false).compose(x));
+  }
+
+
+  @Test
+  public void testComposeScripted6() throws IOException {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    XhtmlNode p = x.para();
+    p.param("long").b().tx("long");
+    p.paramValue("count", "1");
+    p.sentenceForParams("This <b>is</b> a <param name='long'/> paragraph<if test='count != 1'>s</if>");
+    Assertions.assertEquals("<div><p>This <b>is</b> a <b>long</b> paragraph</p></div>", new XhtmlComposer(true, false).compose(x));
+  }
+
+
 }

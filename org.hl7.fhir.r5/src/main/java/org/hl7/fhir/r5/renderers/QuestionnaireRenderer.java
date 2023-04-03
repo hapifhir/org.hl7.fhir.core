@@ -1025,7 +1025,11 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       if (qi.getEnableWhen().size() == 1) {
         renderEnableWhen(td, qi.getEnableWhen().get(0));
       } else {
-        td.tx(qi.getEnableBehavior().getDisplay()+" are true:");
+        if (qi.hasEnableBehavior()) {
+          td.tx(qi.getEnableBehavior().getDisplay()+" are true:");
+        } else {
+          td.tx("?? are true:");
+        }
         XhtmlNode ul = td.ul();
         for (QuestionnaireItemEnableWhenComponent ew : qi.getEnableWhen()) {
           renderEnableWhen(ul.li(), ew);

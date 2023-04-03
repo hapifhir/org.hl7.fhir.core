@@ -122,7 +122,7 @@ public class ToolingExtensions {
   public static final String EXT_IGP_PAGES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-pages"; 
   public static final String EXT_IGP_SPREADSHEET = "http://hl7.org/fhir/StructureDefinition/igpublisher-spreadsheet";
   public static final String EXT_IGP_MAPPING_CSV = "http://hl7.org/fhir/StructureDefinition/igpublisher-mapping-csv";
-  public static final String EXT_IGP_BUNDLE = "http://hl7.org/fhir/StructureDefinition/igpublisher-bundle";
+  public static final String EXT_IGP_BUNDLE = "http://hl7.org/fhir/tools/StructureDefinition/igpublisher-bundle";
   public static final String EXT_IGP_BASE = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-base";
   public static final String EXT_IGP_DEFNS = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-defns";
   public static final String EXT_IGP_FORMAT = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-format";

@@ -30,14 +30,16 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     private String id;
     private String url;
     private String version;
+    private String supplements;
     private CanonicalResource resource;
     
-    public CanonicalResourceProxy(String type, String id, String url, String version) {
+    public CanonicalResourceProxy(String type, String id, String url, String version, String supplements) {
       super();
       this.type = type;
       this.id = id;
       this.url = url;
       this.version = version;
+      this.supplements = supplements;
     }
     
     public String getType() {
@@ -68,6 +70,10 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       return version != null;
     }
     
+    public String getSupplements() {
+      return supplements;
+    }
+
     public CanonicalResource getResource() throws FHIRException {
       if (resource == null) {
         resource = loadResource();
@@ -111,7 +117,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     private T1 resource;
     private CanonicalResourceProxy proxy;
     private PackageInformation packageInfo;
-    
+
     public CachedCanonicalResource(T1 resource, PackageInformation packageInfo) {
       super();
       this.resource = resource;
@@ -159,6 +165,14 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     @Override
     public String toString() {
       return resource != null ? resource.fhirType()+"/"+resource.getId()+"["+resource.getUrl()+"|"+resource.getVersion()+"]" : proxy.toString();
+    }
+
+    public String supplements() {
+      if (resource == null) {
+        return proxy.getSupplements(); 
+      } else {
+        return resource instanceof CodeSystem ? ((CodeSystem) resource).getSupplements() : null;
+      }
     }  
 
   }
@@ -191,6 +205,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   private Map<String, List<CachedCanonicalResource<T>>> listForId = new HashMap<>();
   private Map<String, List<CachedCanonicalResource<T>>> listForUrl = new HashMap<>();
   private Map<String, CachedCanonicalResource<T>> map = new HashMap<>();
+  private Map<String, List<CachedCanonicalResource<T>>> supplements = new HashMap<>(); // general index based on CodeSystem.supplements
   private String version; // for debugging purposes
   
   
@@ -288,6 +303,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (!listForUrl.containsKey(cr.getUrl())) {
       listForUrl.put(cr.getUrl(), new ArrayList<>());
     }    
+    addToSupplements(cr);
     List<CachedCanonicalResource<T>> set = listForUrl.get(cr.getUrl());
     set.add(cr);
     Collections.sort(set, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
@@ -324,10 +340,27 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
   }
 
+  private void addToSupplements(CanonicalResourceManager<T>.CachedCanonicalResource<T> cr) {
+    String surl = cr.supplements();
+    if (surl != null) {
+      List<CanonicalResourceManager<T>.CachedCanonicalResource<T>> list = supplements.get(surl);
+      if (list == null) {
+        list = new ArrayList<>();
+        supplements.put(surl, list);
+      }
+      list.add(cr);
+    }    
+  }
+
+
   public void drop(CachedCanonicalResource<T> cr) {
     while (map.values().remove(cr)); 
     while (listForId.values().remove(cr)); 
     while (listForUrl.values().remove(cr)); 
+    String surl = cr.supplements();
+    if (surl != null) {
+      supplements.get(surl).remove(cr);
+    }
     list.remove(cr);
     List<CachedCanonicalResource<T>> set = listForUrl.get(cr.getUrl());
     if (set != null) { // it really should be
@@ -514,6 +547,54 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
   }
 
+  public List<T> getSupplements(T cr) {
+    if (cr.hasSourcePackage()) {
+      List<String> pvl = new ArrayList<>();
+      pvl.add(cr.getSourcePackage().getVID());
+      return getSupplements(cr.getUrl(), cr.getVersion(), pvl);    
+    } else {
+      return getSupplements(cr.getUrl(), cr.getVersion(), null);
+    }
+  }
+  
+  public List<T> getSupplements(String url) {
+    return getSupplements(url, null, null);    
+  }
+  
+  public List<T> getSupplements(String url, String version) {
+    return getSupplements(url, version, null);    
+  }
+  
+  public List<T> getSupplements(String url, String version, List<String> pvlist) {
+    boolean possibleMatches = false;
+    List<T> res = new ArrayList<>();
+    if (version != null) {
+      List<CanonicalResourceManager<T>.CachedCanonicalResource<T>> list = supplements.get(url+"|"+version);
+      if (list != null) {
+        for (CanonicalResourceManager<T>.CachedCanonicalResource<T> t : list) {
+          possibleMatches = true;
+          if (pvlist == null || pvlist.contains(t.getPackageInfo().getVID())) {
+            res.add(t.getResource());
+          }
+        }
+      }      
+    }
+    List<CanonicalResourceManager<T>.CachedCanonicalResource<T>> list = supplements.get(url);
+    if (list != null) {
+      for (CanonicalResourceManager<T>.CachedCanonicalResource<T> t : list) {
+        possibleMatches = true;
+        if (pvlist == null || pvlist.contains(t.getPackageInfo().getVID())) {
+          res.add(t.getResource());
+        }
+      }
+    }
+    if (res.isEmpty() && pvlist != null && possibleMatches) {
+      return getSupplements(url, version, null);
+    } else {
+      return res;
+    }
+  }
+  
   public void clear() {
     list.clear();
     map.clear();

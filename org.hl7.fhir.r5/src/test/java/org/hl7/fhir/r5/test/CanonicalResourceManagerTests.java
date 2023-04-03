@@ -7,6 +7,7 @@ import java.util.List;
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +19,7 @@ public class CanonicalResourceManagerTests {
     private CanonicalResource resource;
 
     public DeferredLoadTestResource(CanonicalResource resource) {
-      super(resource.fhirType(), resource.getId(), resource.getUrl(), resource.getVersion());
+      super(resource.fhirType(), resource.getId(), resource.getUrl(), resource.getVersion(), resource instanceof CodeSystem ? ((CodeSystem) resource).getSupplements() : null);
       this.resource = resource;
     }
 
@@ -853,4 +854,77 @@ public class CanonicalResourceManagerTests {
     Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0.2", pvl2).getName());
   }
 
+  @Test
+  public void testSupplements() {
+    CanonicalResourceManager<CodeSystem> mrm = new CanonicalResourceManager<>(true);
+    CodeSystem csb1 = new CodeSystem();
+    csb1.setId("2345");
+    csb1.setUrl("http://url/CodeSystem/234");
+    csb1.setVersion("4.0.1");
+    csb1.setName("1");
+    mrm.see(csb1, new PackageInformation("pid.one", "1.0.0", new Date()));
+
+    CodeSystem csb2 = new CodeSystem();
+    csb2.setId("2346");
+    csb2.setUrl("http://url/CodeSystem/234");
+    csb2.setVersion("4.0.1");
+    csb2.setName("2");
+    mrm.see(csb2, new PackageInformation("pid.two", "1.0.0", new Date()));
+
+    CodeSystem css1 = new CodeSystem();
+    css1.setId("s2345");
+    css1.setUrl("http://url/CodeSystem/s234");
+    css1.setVersion("4.0.1");
+    css1.setName("s1");
+    css1.setSupplements("http://url/CodeSystem/234");
+    mrm.see(css1, new PackageInformation("pid.one", "1.0.0", new Date()));
+
+    CodeSystem css2 = new CodeSystem();
+    css2.setId("s2346");
+    css2.setUrl("http://url/CodeSystem/s234");
+    css2.setVersion("4.0.1");
+    css2.setName("s2");
+    css2.setSupplements("http://url/CodeSystem/234");
+    mrm.see(css2, new PackageInformation("pid.two", "1.0.0", new Date()));
+
+    List<CodeSystem> sl = mrm.getSupplements("http://url/CodeSystem/234");
+    Assertions.assertEquals(2, sl.size());
+    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1");
+    Assertions.assertEquals(2, sl.size());
+    sl = mrm.getSupplements("http://url/CodeSystem/s234");
+    Assertions.assertEquals(0, sl.size());
+
+    List<String> pvl = new ArrayList<>();
+    pvl.add("pid.two#1.0.0");
+    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1", pvl);
+    Assertions.assertEquals(1, sl.size());    
+    
+    mrm.drop("s2346");
+    sl = mrm.getSupplements("http://url/CodeSystem/234");
+    Assertions.assertEquals(1, sl.size());
+    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1");
+    Assertions.assertEquals(1, sl.size());
+    sl = mrm.getSupplements("http://url/CodeSystem/s234");
+    Assertions.assertEquals(0, sl.size());
+
+    pvl = new ArrayList<>();
+    pvl.add("pid.two#1.0.0");
+    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1", pvl);
+    Assertions.assertEquals(1, sl.size()); // cause we fall back to the other     
+
+    pvl = new ArrayList<>();
+    pvl.add("pid.one#1.0.0");
+    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1", pvl);
+    Assertions.assertEquals(1, sl.size());    
+
+    mrm.drop("s2345");   
+
+    mrm.drop("s2346");
+    sl = mrm.getSupplements("http://url/CodeSystem/234");
+    Assertions.assertEquals(0, sl.size());
+    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1");
+    Assertions.assertEquals(0, sl.size());
+    sl = mrm.getSupplements("http://url/CodeSystem/s234");
+    Assertions.assertEquals(0, sl.size());
+  }
 }

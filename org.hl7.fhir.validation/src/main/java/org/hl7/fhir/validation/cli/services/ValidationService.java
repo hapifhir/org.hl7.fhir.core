@@ -107,7 +107,7 @@ public class ValidationService {
   public VersionSourceInformation scanForVersions(CliContext cliContext) throws Exception {
     VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
-      new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION),
+      new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER),
       new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing(),
       null);
     for (String src : cliContext.getIgs()) {
@@ -392,11 +392,7 @@ public class ValidationService {
       IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
       igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);
       if (!VersionUtilities.isR5Ver(validator.getContext().getVersion())) {
-        System.out.print("  Load R5 Extensions");
-        R5ExtensionsLoader r5e = new R5ExtensionsLoader(validator.getPcm(), validator.getContext());
-        r5e.load();
-        r5e.loadR5Extensions();
-        System.out.println(" - " + r5e.getCount() + " resources (" + tt.milestone() + ")");
+        igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.fhir.uv.extensions", false);
       }
       System.out.print("  Terminology server " + cliContext.getTxServer());
       String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
@@ -458,7 +454,7 @@ public class ValidationService {
 
   public String determineVersion(CliContext cliContext, String sessionId) throws Exception {
     if (cliContext.getMode() != EngineMode.VALIDATION) {
-      return "current";
+      return "5.0";
     }
     System.out.println("Scanning for versions (no -version parameter):");
     VersionSourceInformation versions = scanForVersions(cliContext);
@@ -468,8 +464,8 @@ public class ValidationService {
       }
     }
     if (versions.isEmpty()) {
-      System.out.println("  No Version Info found: Using Default version '" + VersionUtilities.CURRENT_DEFAULT_VERSION + "'");
-      return VersionUtilities.CURRENT_DEFAULT_FULL_VERSION;
+      System.out.println("  No Version Info found: Using Default version R5");
+      return "5.0.0";
     }
     if (versions.size() == 1) {
       System.out.println("-> use version " + versions.version());

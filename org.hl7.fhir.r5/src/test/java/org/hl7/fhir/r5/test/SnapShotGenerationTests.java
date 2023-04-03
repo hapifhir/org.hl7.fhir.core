@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -535,7 +536,7 @@ public class SnapShotGenerationTests {
     pu.setIds(test.getSource(), false);
     pu.setAllowUnknownProfile(test.allow);
     if (!TestingUtilities.getSharedWorkerContext().hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
-      NpmPackage npm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
+      NpmPackage npm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER).loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
       TestingUtilities.getSharedWorkerContext().loadFromPackage(npm, new TestPackageLoader(Utilities.strings("StructureDefinition")), Utilities.strings("StructureDefinition"));
     }
     pu.setXver(new XVerExtensionManager(TestingUtilities.getSharedWorkerContext()));

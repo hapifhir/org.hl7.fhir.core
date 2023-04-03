@@ -4,6 +4,7 @@ public enum EngineMode {
   VALIDATION,
   COMPILE,
   TRANSFORM,
+  LANG_TRANSFORM,
   NARRATIVE,
   SNAPSHOT,
   SCAN,

@@ -1874,7 +1874,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             erow.getSubRows().add(row);
             Cell c = gen.new Cell();
             row.getCells().add(c);
-            c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+(VersionUtilities.isR5Ver(context.getWorker().getVersion()) ? "types-definitions.html#"+ed.getBase().getPath() : "element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
+            c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+(VersionUtilities.isR5Plus(context.getWorker().getVersion()) ? "types-definitions.html#"+ed.getBase().getPath() : "element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
             c = gen.new Cell();
             row.getCells().add(c);
             c.addPiece(gen.new Piece(null, null, null));

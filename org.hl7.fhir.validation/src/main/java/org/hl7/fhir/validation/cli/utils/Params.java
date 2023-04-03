@@ -41,6 +41,7 @@ public class Params {
   public static final String NO_NATIVE = "-no-native";
   public static final String COMPILE = "-compile";
   public static final String TRANSFORM = "-transform";
+  public static final String LANG_TRANSFORM = "-lang-transform";
   public static final String NARRATIVE = "-narrative";
   public static final String SNAPSHOT = "-snapshot";
   public static final String SCAN = "-scan";
@@ -237,6 +238,9 @@ public class Params {
       } else if (args[i].equals(TRANSFORM)) {
         cliContext.setMap(args[++i]);
         cliContext.setMode(EngineMode.TRANSFORM);
+      } else if (args[i].equals(LANG_TRANSFORM)) {
+        cliContext.setLangTransform(args[++i]);
+        cliContext.setMode(EngineMode.LANG_TRANSFORM);
       } else if (args[i].equals(COMPILE)) {
         cliContext.setMap(args[++i]);
         cliContext.setMode(EngineMode.COMPILE);

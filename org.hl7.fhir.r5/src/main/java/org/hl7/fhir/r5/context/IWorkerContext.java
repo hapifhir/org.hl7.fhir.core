@@ -545,6 +545,14 @@ public interface IWorkerContext {
   public CodeSystem fetchCodeSystem(String system, String version);
 
   /**
+   * Like fetchCodeSystem, except that the context will find any CodeSysetm supplements and merge them into the
+   * @param system
+   * @return
+   */
+  public CodeSystem fetchSupplementedCodeSystem(String system);
+  public CodeSystem fetchSupplementedCodeSystem(String system, String version);
+
+  /**
    * True if the underlying terminology service provider will do 
    * expansion and code validation for the terminology. Corresponds
    * to the extension 
