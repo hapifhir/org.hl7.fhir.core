@@ -399,13 +399,13 @@ public class ValidationService {
     System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
     ValidationEngine validationEngine = getValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(timeTracker).withUserAgent("fhir/validator").fromSource(definitions);
 
+    System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
     final IniFile apiKeyFile = cliContext.getApiKeyFile() != null
       ? new IniFile(cliContext.getApiKeyFile())
       : new IniFile(Utilities.path(System.getProperty("user.home"), "fhir-api-keys.ini"));
     validationEngine.setApiKeyFile(apiKeyFile);
-
-    System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
-
+    System.out.println("API keys loaded from "+apiKeyFile.getFileName());
+    
     loadIgsAndExtensions(validationEngine, cliContext, timeTracker);
     System.out.print("  Get set... ");
     validationEngine.setQuestionnaireMode(cliContext.getQuestionnaireMode());
