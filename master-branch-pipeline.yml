@@ -89,7 +89,7 @@ steps:
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.11'
       jdkArchitectureOption: 'x64'
-      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -DdeployToSonatype'
+      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -DdeployToSonatype -Dmaven.resolver.transport=wagon'
       mavenOptions: '-Xmx768m'
       publishJUnitResults: false
 

@@ -39,7 +39,7 @@ jobs:
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
-              options: '-pl org.hl7.fhir.validation.cli -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+              options: '-pl org.hl7.fhir.validation.cli -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -Dmaven.resolver.transport=wagon'
               publishJUnitResults: false
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
               goals: 'exec:exec'
