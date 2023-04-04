@@ -1,14 +1,11 @@
 package org.hl7.fhir.validation.cli.services;
 
 import org.apache.commons.io.IOUtils;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
@@ -16,7 +13,6 @@ import org.hl7.fhir.validation.cli.model.ValidationRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
@@ -264,9 +260,9 @@ class ValidationServiceTest {
 
     CliContext cliContext = new CliContext();
     final String dummyFilePath = "dummyFilePath";
-    cliContext.setApiKeyFilePath(dummyFilePath);
+    cliContext.setApiKeyFile(dummyFilePath);
     validationService.buildValidationEngine(cliContext, null, timeTracker);
-    
+
     verify(validationEngine).setApiKeyFile(argThat(iniFile -> dummyFilePath.equals(iniFile.getFileName())));
   }
 }

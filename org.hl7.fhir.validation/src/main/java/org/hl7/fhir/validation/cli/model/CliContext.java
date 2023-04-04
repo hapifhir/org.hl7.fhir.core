@@ -124,8 +124,8 @@ public class CliContext {
   @JsonProperty("jurisdiction")
   private String jurisdiction = JurisdictionUtilities.getJurisdictionFromLocale(Locale.getDefault().getCountry());
 
-  @JsonProperty
-  private String apiKeyFilePath;
+  @JsonProperty("apiKeyFile")
+  private String apiKeyFile;
 
 
   @JsonProperty("map")
@@ -733,11 +733,14 @@ public class CliContext {
       '}';
   }
 
-  public void setApiKeyFilePath(String apiKeyFilePath) {
-    this.apiKeyFilePath = apiKeyFilePath;
+  @JsonProperty("apiKeyFile")
+  public CliContext setApiKeyFile(String apiKeyFile) {
+    this.apiKeyFile = apiKeyFile;
+    return this;
   }
 
-  public String getApiKeyFilePath() {
-    return apiKeyFilePath;
+  @JsonProperty("apiKeyFile")
+  public String getApiKeyFile() {
+    return apiKeyFile;
   }
 }
