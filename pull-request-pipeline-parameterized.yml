@@ -24,7 +24,7 @@ jobs:
             inputs:
               mavenPomFile: 'pom.xml'
               options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
-              mavenOptions: '-Xmx768m'
+              mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
@@ -35,11 +35,11 @@ jobs:
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
-              mavenOptions: '-Xmx768m'
+              mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
-              options: '-pl org.hl7.fhir.validation.cli -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -Dmaven.resolver.transport=wagon'
+              options: '-pl org.hl7.fhir.validation.cli -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
               publishJUnitResults: false
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
               goals: 'exec:exec'
