@@ -150,7 +150,7 @@
                 <artifactId>junit-bom</artifactId>
                 <version>${junit_jupiter_version}</version>
                 <type>pom</type>
-                <scope>import</scope>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>net.bytebuddy</groupId>
