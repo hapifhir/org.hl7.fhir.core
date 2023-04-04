@@ -125,7 +125,11 @@ public class Params {
       if (args[i].equals(VERSION)) {
         cliContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
       } else if (args[i].equals(API_KEY_FILE)) {
-
+        final String apiKeyFilePath = args[++i];
+        if (! new File(apiKeyFilePath).exists()) {
+          throw new Error("Cannot find api key file: " + apiKeyFilePath);
+        }
+        cliContext.setApiKeyFilePath(apiKeyFilePath);
       } else if (args[i].equals(OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -output without indicating output file");

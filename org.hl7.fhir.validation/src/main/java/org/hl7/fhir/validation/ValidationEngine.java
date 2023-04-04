@@ -190,6 +190,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean anyExtensionsAllowed = false;
   @Getter @Setter private String version;
   @Getter @Setter private String language;
+
+  @Getter @Setter private IniFile apiKeyFile;
   @Setter private FilesystemPackageCacheManager pcm;
   @Getter @Setter private PrintWriter mapLog;
   @Getter @Setter private boolean debug = false;
