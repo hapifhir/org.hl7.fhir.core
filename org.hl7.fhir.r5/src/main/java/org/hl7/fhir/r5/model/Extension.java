@@ -68,6 +68,11 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
     @Description(shortDefinition="Value of extension", formalDefinition="Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list)." )
     protected DataType value;
 
+    @Override
+    public String toString() {
+      return url + "=" + value.toString();
+    }
+
     private static final long serialVersionUID = 465890108L;
 
   /**

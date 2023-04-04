@@ -360,7 +360,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       engine.initContext(timeTracker);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
       loadTx(engine);
-      if (VersionUtilities.isR5Ver(version)) {
+      if (VersionUtilities.isR5Plus(version)) {
         engine.loadPackage("hl7.fhir.uv.extensions", null);
       }
       return engine;
@@ -379,7 +379,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if (THO) {
         loadTx(engine);
       }
-      if (VersionUtilities.isR5Ver(version)) {
+      if (VersionUtilities.isR5Plus(version)) {
         engine.loadPackage("hl7.fhir.uv.extensions", null);
       }
       return engine;
@@ -396,7 +396,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if (VersionUtilities.isR4BVer(version)) {
         pid =  "hl7.terminology.r4";
       }
-      if (VersionUtilities.isR5Ver(version)) {
+      if (VersionUtilities.isR5Plus(version)) {
         pid =  "hl7.terminology.r5";
       }
       if (pid != null) {
@@ -883,7 +883,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         new org.hl7.fhir.dstu2.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu2.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else
         throw new FHIRException("Unsupported format for " + fn);
-    } else if (VersionUtilities.isR5Ver(version)) {
+    } else if (VersionUtilities.isR5Plus(version)) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         new XmlParser().setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY).compose(s, r);
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
@@ -975,7 +975,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public FilesystemPackageCacheManager getPcm() throws IOException {
     if (pcm == null) {
       //System.out.println("Creating Package manager?");
-      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+      pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
     }
     return pcm;
   }

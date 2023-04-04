@@ -50,6 +50,8 @@ public class CliContext {
   @JsonProperty("htmlInMarkdownCheck")
   private HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
 
+  @JsonProperty("langTransform")
+  private String langTransform = null;
   @JsonProperty("map")
   private String map = null;
   @JsonProperty("output")
@@ -139,6 +141,17 @@ public class CliContext {
     return this;
   }
 
+
+  @JsonProperty("langTransform")
+  public String getLangTransform() {
+    return langTransform;
+  }
+
+  @JsonProperty("langTransform")
+  public CliContext setLangTransform(String langTransform) {
+    this.langTransform = langTransform;
+    return this;
+  }
   @JsonProperty("igs")
   public List<String> getIgs() {
     return igs;

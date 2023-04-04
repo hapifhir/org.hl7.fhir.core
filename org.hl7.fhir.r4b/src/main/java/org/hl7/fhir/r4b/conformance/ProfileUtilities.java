@@ -2573,6 +2573,10 @@ public class ProfileUtilities extends TranslatingUtilities {
     return element;
   }
 
+  private String baseSpecUrl() {
+    return VersionUtilities.getSpecUrl(context.getVersion());
+  }
+
   public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, Set<String> baseFilenames, Set<String> localFilenames, boolean processRelatives) {
     if (markdown == null) {
       return "";
@@ -2600,6 +2604,9 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (isLikelySourceURLReference(url, resourceNames, baseFilenames, localFilenames)) {
               b.append("](");
               b.append(basePath);
+              if (!basePath.endsWith("/")) {
+                b.append("/");
+              }
               i = i + 1;
             } else {
               b.append("](");
@@ -2684,28 +2691,6 @@ public class ProfileUtilities extends TranslatingUtilities {
         url.startsWith("patient-operation-match.html") ||
         (url.startsWith("extension-") && url.contains(".html")) || 
         url.startsWith("resource-definitions.html");
-  }
-
-  private String baseSpecUrl() {
-    if (VersionUtilities.isR5Ver(context.getVersion())) {
-      return "http://build.fhir.org/";
-    }
-    if (VersionUtilities.isR4Ver(context.getVersion())) {
-      return "http://hl7.org/fhir/R4/";
-    }
-    if (VersionUtilities.isR3Ver(context.getVersion())) {
-      return "http://hl7.org/fhir/STU3/";
-    }
-    if (VersionUtilities.isR2BVer(context.getVersion())) {
-      return "http://hl7.org/fhir/2016May/";
-    }
-    if (VersionUtilities.isR2Ver(context.getVersion())) {
-      return "http://hl7.org/fhir/DSTU2/";
-    }
-    if (VersionUtilities.isR4BVer(context.getVersion())) {
-      return "http://hl7.org/fhir/2021Mar/";
-    }
-    return "";
   }
 
   private List<ElementDefinition> getSiblings(List<ElementDefinition> list, ElementDefinition current) {

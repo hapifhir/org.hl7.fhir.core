@@ -7159,6 +7159,12 @@ public class ImplementationGuide extends CanonicalResource {
         @Description(shortDefinition="Location of the resource", formalDefinition="Where this resource is found." )
         protected Reference reference;
 
+        @Override
+        public String toString() {
+          return "ImplementationGuideDefinitionResourceComponent [name=" + name + ", reference=" + reference
+              + ", profile=" + profile + "]";
+        }
+
         /**
          * Indicates the FHIR Version(s) this artifact is intended to apply to. If no versions are specified, the resource is assumed to apply to all the versions stated in ImplementationGuide.fhirVersion.
          */

@@ -829,7 +829,7 @@ public class IgLoader {
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_10_50.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
-    } else if (fhirVersion.startsWith("5.0") || "current".equals(fhirVersion)) {
+    } else if (fhirVersion.startsWith("5.0")) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         r = new XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))

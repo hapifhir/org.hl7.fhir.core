@@ -949,10 +949,15 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   private boolean exemptFromRendering(ElementDefinition child) {
     if (child == null)
       return false;
-    if ("Composition.subject".equals(child.getPath()))
+    if ("DomainResource.text".equals(child.getBase().getPath())) {
       return true;
-    if ("Composition.section".equals(child.getPath()))
+    }
+    if ("Composition.subject".equals(child.getPath())) {
       return true;
+    }
+    if ("Composition.section".equals(child.getPath())) {
+      return true;
+    }
     return false;
   }
 

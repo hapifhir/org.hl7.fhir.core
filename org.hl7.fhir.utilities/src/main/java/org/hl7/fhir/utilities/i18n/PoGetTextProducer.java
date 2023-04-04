@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -70,16 +71,22 @@ public class PoGetTextProducer extends LanguageFileProducer {
     }
 
     @Override
-    public void entry(String id, String src, String dst) {
-      ln("#: "+id);
+    public void entry(TextUnit unit) {
+      ln("#: "+unit.getContext());
       //    if (context != null) {
       //      ln("#. "+context);
       //    }
-      ln("msgid \""+src+"\"");
-      ln("msgstr \""+dst+"\"");
+      ln("msgid \""+unit.getSrcText()+"\"");
+      ln("msgstr \""+unit.getTgtText()+"\"");
       ln("");
     }
 
+  }
+
+
+  @Override
+  public List<TextUnit> loadTranslations(String baseLang, String tgtLang) {
+    return null;
   }
 
 

@@ -555,7 +555,7 @@ public class SnapShotGenerationTests {
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
     if (!TestingUtilities.context().hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
-      NpmPackage npm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
+      NpmPackage npm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER).loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
       TestingUtilities.context().loadFromPackage(npm, new TestLoader(new String[]{"StructureDefinition"}), new String[]{"StructureDefinition"});
     }
     pu.setXver(new XVerExtensionManager(TestingUtilities.context()));

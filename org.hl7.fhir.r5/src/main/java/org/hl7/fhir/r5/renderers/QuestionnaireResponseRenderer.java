@@ -7,6 +7,7 @@ import java.util.List;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Expression;
+import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.QuestionnaireResponse;
 import org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent;
 import org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent;
@@ -127,15 +128,27 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     return r;    
   }
 
-  private Row addTreeRoot(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper q) throws IOException {
+  private Row addTreeRoot(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper qr) throws IOException {
     Row r = gen.new Row();
     rows.add(r);
 
+    Base b = qr.get("questionnaire");
+    String ref = b == null ? null : b.primitiveValue();
+    Questionnaire q = context.getContext().fetchResource(Questionnaire.class, ref);
+    
     r.setIcon("icon_q_root.gif", "QuestionnaireResponseRoot");
-    r.getCells().add(gen.new Cell(null, null, q.getId(), null, null));
+    r.getCells().add(gen.new Cell(null, null, qr.getId(), null, null));
     r.getCells().add(gen.new Cell(null, null, "", null, null));
-    r.getCells().add(gen.new Cell(null, null, "QuestionnaireResponse", null, null));
-    r.getCells().add(gen.new Cell(null, null, "", null, null));
+    if (ref == null ) {
+      r.getCells().add(gen.new Cell(null, null, "", null, null));
+      r.getCells().add(gen.new Cell("Questionnaire:", null, "None specified", null, null));
+    } else if (q == null || !q.hasWebPath()) {
+      r.getCells().add(gen.new Cell(null, null, "", null, null));
+      r.getCells().add(gen.new Cell("Questionnaire:", null, ref, null, null));
+    } else{
+      r.getCells().add(gen.new Cell(null, null, "", null, null));
+      r.getCells().add(gen.new Cell("Questionnaire:", q.getWebPath(), q.present(), null, null));
+    }
     return r;    
   }
 

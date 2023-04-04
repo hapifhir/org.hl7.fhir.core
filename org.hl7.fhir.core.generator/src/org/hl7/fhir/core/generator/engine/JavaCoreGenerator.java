@@ -75,7 +75,7 @@ public class JavaCoreGenerator {
     Date ddate = new Date();
     String date = config.DATE_FORMAT().format(ddate);
     
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
     System.out.println("Cache: "+pcm.getFolder());
     System.out.println("Load hl7.fhir."+pid+".core");
     NpmPackage npm = pcm.loadPackage("hl7.fhir."+pid+".core", version);

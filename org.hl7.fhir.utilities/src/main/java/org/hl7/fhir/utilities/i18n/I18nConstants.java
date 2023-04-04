@@ -306,6 +306,7 @@ public class I18nConstants {
   public static final String PROFILE___ERROR_GENERATING_SNAPSHOT = "Profile___Error_generating_snapshot";
   public static final String PROFILE___HAS_NO_BASE_AND_NO_SNAPSHOT = "Profile___has_no_base_and_no_snapshot";
   public static final String QUESTIONNAIRE_QR_ITEM_BADOPTION = "Questionnaire_QR_Item_BadOption";
+  public static final String QUESTIONNAIRE_QR_ITEM_BADOPTION_CS = "QUESTIONNAIRE_QR_ITEM_BADOPTION_CS";
   public static final String QUESTIONNAIRE_QR_ITEM_CODING = "Questionnaire_QR_Item_Coding";
   public static final String QUESTIONNAIRE_QR_ITEM_CODINGNOOPTIONS = "Questionnaire_QR_Item_CodingNoOptions";
   public static final String QUESTIONNAIRE_QR_ITEM_DATENOOPTIONS = "Questionnaire_QR_Item_DateNoOptions";

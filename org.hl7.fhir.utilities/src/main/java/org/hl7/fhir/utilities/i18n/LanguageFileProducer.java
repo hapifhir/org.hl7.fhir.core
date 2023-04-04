@@ -1,8 +1,55 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
+
+import java.util.HashMap;
+
 
 public abstract class LanguageFileProducer {
+
+  public static class TextUnit {
+    private String context;
+    private String srcText;
+    private String tgtText;
+    public TextUnit(String context, String srcText, String tgtText) {
+      super();
+      this.context = context;
+      this.srcText = srcText;
+      this.tgtText = tgtText;
+    }
+
+    public String getContext() {
+      return context;
+    }
+
+    public String getSrcText() {
+      return srcText;
+    }
+    public String getTgtText() {
+      return tgtText;
+    }
+    
+  }
+
+  public class Translations {
+    private String id;
+    private Map<String, String> translations = new HashMap<>();
+    protected Translations(String id) {
+      super();
+      this.id = id;
+    }
+    public String getId() {
+      return id;
+    }
+    public Map<String, String> getTranslations() {
+      return translations;
+    }
+    
+  }
 
   public abstract class LanguageProducerLanguageSession {
 
@@ -27,7 +74,7 @@ public abstract class LanguageFileProducer {
 
     public abstract void finish() throws IOException;
 
-    public abstract void entry(String id, String src, String dst);
+    public abstract void entry(TextUnit unit);
   }
 
   public abstract class LanguageProducerSession {
@@ -35,7 +82,7 @@ public abstract class LanguageFileProducer {
     protected String id;
     protected String baseLang;
     
-    protected LanguageProducerSession( String id, String baseLang) {
+    protected LanguageProducerSession(String id, String baseLang) {
       super();
       this.id = id;
       this.baseLang = baseLang;
@@ -58,4 +105,5 @@ public abstract class LanguageFileProducer {
   public abstract LanguageProducerSession startSession(String id, String baseLang) throws IOException;
   public abstract void finish();
 
+  public abstract List<TextUnit> loadTranslations(String baseLang, String targetLang);
 }

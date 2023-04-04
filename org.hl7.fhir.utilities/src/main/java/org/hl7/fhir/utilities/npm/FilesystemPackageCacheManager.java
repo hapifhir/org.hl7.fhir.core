@@ -36,6 +36,7 @@ import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.IPackageProvider;
 import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
@@ -88,6 +89,11 @@ import org.slf4j.LoggerFactory;
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
 
+  public enum FilesystemPackageCacheMode {
+    USER, SYSTEM, TESTING
+
+  }
+
   // When running in testing mode, some packages are provided from the test case repository rather than by the normal means
   // the PackageProvider is responsible for this. if no package provider is defined, or it declines to handle the package, 
   // then the normal means will be used
@@ -111,31 +117,32 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private JsonArray buildInfo;
   private boolean suppressErrors;
  
-  /**
-   * Constructor
-   */
-  @Deprecated
-  public FilesystemPackageCacheManager(boolean userMode, int toolsVersion) throws IOException {
-    myPackageServers.addAll(PackageServer.publicServers());
-
-    if (userMode)
-      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
-    else
-      cacheFolder = Utilities.path("var", "lib", ".fhir", "packages");
-    if (!(new File(cacheFolder).exists()))
-      Utilities.createDirectory(cacheFolder);
-    if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
-      TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", Utilities.path(cacheFolder, "packages.ini"), false);
-    createIniFile();
-  }
-
+  
   public FilesystemPackageCacheManager(boolean userMode) throws IOException {
+    init(userMode ? FilesystemPackageCacheMode.USER : FilesystemPackageCacheMode.SYSTEM);  
+  }
+  
+  public FilesystemPackageCacheManager(FilesystemPackageCacheMode mode) throws IOException {
+    init(mode);
+  }
+  
+  public void init(FilesystemPackageCacheMode mode) throws IOException {
     myPackageServers.addAll(PackageServer.publicServers());
 
-    if (userMode)
-      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
-    else
+    switch (mode) {
+    case SYSTEM:
       cacheFolder = Utilities.path("var", "lib", ".fhir", "packages");
+      break;
+    case USER:
+      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
+      break;
+    case TESTING:
+      cacheFolder = Utilities.path("[tmp]", ".fhir", "packages");
+      break;
+    default:
+      break;    
+    }
+
     if (!(new File(cacheFolder).exists()))
       Utilities.createDirectory(cacheFolder);
     if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
