@@ -36,7 +36,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit_jupiter_version}</version>
             <scope>compile</scope>
         </dependency>
         <!-- shoo!
@@ -51,7 +50,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit_jupiter_version}</version>
             <scope>compile</scope>
         </dependency>
 
