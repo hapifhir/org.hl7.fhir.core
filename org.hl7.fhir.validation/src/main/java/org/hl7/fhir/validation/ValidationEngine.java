@@ -89,7 +89,6 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
@@ -191,7 +190,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private String version;
   @Getter @Setter private String language;
 
-  @Getter @Setter private IniFile apiKeyFile;
+  @Getter @Setter private IniFile fhirSettingsFile;
   @Setter private FilesystemPackageCacheManager pcm;
   @Getter @Setter private PrintWriter mapLog;
   @Getter @Setter private boolean debug = false;

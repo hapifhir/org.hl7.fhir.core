@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.hl7.fhir.r5.conformance.R5ExtensionsLoader;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
@@ -38,7 +37,6 @@ import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
@@ -400,10 +398,10 @@ public class ValidationService {
     ValidationEngine validationEngine = getValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(timeTracker).withUserAgent("fhir/validator").fromSource(definitions);
 
     System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
-    final IniFile apiKeyFile = cliContext.getApiKeyFile() != null
-      ? new IniFile(cliContext.getApiKeyFile())
+    final IniFile apiKeyFile = cliContext.getFhirSettingsFile() != null
+      ? new IniFile(cliContext.getFhirSettingsFile())
       : new IniFile(Utilities.path(System.getProperty("user.home"), "fhir-api-keys.ini"));
-    validationEngine.setApiKeyFile(apiKeyFile);
+    validationEngine.setFhirSettingsFile(apiKeyFile);
     System.out.println("API keys loaded from "+apiKeyFile.getFileName());
     
     loadIgsAndExtensions(validationEngine, cliContext, timeTracker);

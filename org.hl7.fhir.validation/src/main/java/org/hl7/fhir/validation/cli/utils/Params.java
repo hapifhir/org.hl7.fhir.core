@@ -130,7 +130,7 @@ public class Params {
         if (! new File(apiKeyFilePath).exists()) {
           throw new Error("Cannot find api key file: " + apiKeyFilePath);
         }
-        cliContext.setApiKeyFile(apiKeyFilePath);
+        cliContext.setFhirSettingsFile(apiKeyFilePath);
       } else if (args[i].equals(OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -output without indicating output file");

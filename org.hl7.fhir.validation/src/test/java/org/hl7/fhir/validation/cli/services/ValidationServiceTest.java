@@ -260,9 +260,9 @@ class ValidationServiceTest {
 
     CliContext cliContext = new CliContext();
     final String dummyFilePath = "dummyFilePath";
-    cliContext.setApiKeyFile(dummyFilePath);
+    cliContext.setFhirSettingsFile(dummyFilePath);
     validationService.buildValidationEngine(cliContext, null, timeTracker);
 
-    verify(validationEngine).setApiKeyFile(argThat(iniFile -> dummyFilePath.equals(iniFile.getFileName())));
+    verify(validationEngine).setFhirSettingsFile(argThat(iniFile -> dummyFilePath.equals(iniFile.getFileName())));
   }
 }

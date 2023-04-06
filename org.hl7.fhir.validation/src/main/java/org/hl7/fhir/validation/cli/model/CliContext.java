@@ -126,8 +126,8 @@ public class CliContext {
   @JsonProperty("jurisdiction")
   private String jurisdiction = JurisdictionUtilities.getJurisdictionFromLocale(Locale.getDefault().getCountry());
 
-  @JsonProperty("apiKeyFile")
-  private String apiKeyFile;
+  @JsonProperty("fhirSettingsFile")
+  private String fhirSettingsFile;
 
 
   @JsonProperty("map")
@@ -746,14 +746,14 @@ public class CliContext {
       '}';
   }
 
-  @JsonProperty("apiKeyFile")
-  public CliContext setApiKeyFile(String apiKeyFile) {
-    this.apiKeyFile = apiKeyFile;
+  @JsonProperty("fhirSettingsFile")
+  public CliContext setFhirSettingsFile(String fhirSettingsFile) {
+    this.fhirSettingsFile = fhirSettingsFile;
     return this;
   }
 
-  @JsonProperty("apiKeyFile")
-  public String getApiKeyFile() {
-    return apiKeyFile;
+  @JsonProperty("fhirSettingsFile")
+  public String getFhirSettingsFile() {
+    return fhirSettingsFile;
   }
 }
