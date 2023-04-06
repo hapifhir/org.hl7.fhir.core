@@ -6,10 +6,12 @@ import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
+import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +36,7 @@ import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-class ValidationServiceTest {
+class ValidationServiceTest implements ResourceLoaderTests {
 
   final String DUMMY_SOURCE = "dummySource";
   final String DUMMY_SOURCE1 = "dummySource1";
@@ -258,11 +262,15 @@ class ValidationServiceTest {
       }
     };
 
+    Path path = Files.createTempFile("fhir-settings", "json");
+
+    copyResourceToFile(path, "settings", "settings-example.json");
+
     CliContext cliContext = new CliContext();
-    final String dummyFilePath = "dummyFilePath";
-    cliContext.setFhirSettingsFile(dummyFilePath);
+
+    cliContext.setFhirSettingsFile(path.toAbsolutePath().toString());
     validationService.buildValidationEngine(cliContext, null, timeTracker);
 
-    verify(validationEngine).setFhirSettingsFile(argThat(iniFile -> dummyFilePath.equals(iniFile.getFileName())));
+    verify(validationEngine).setFhirSettings(argThat(settings -> "dummy-api-key".equals(settings.getApiKey())));
   }
 }

@@ -77,15 +77,9 @@ import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.SIDUtilities;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -190,7 +184,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private String version;
   @Getter @Setter private String language;
 
-  @Getter @Setter private IniFile fhirSettingsFile;
+  @Getter @Setter private FhirSettings fhirSettings;
   @Setter private FilesystemPackageCacheManager pcm;
   @Getter @Setter private PrintWriter mapLog;
   @Getter @Setter private boolean debug = false;
