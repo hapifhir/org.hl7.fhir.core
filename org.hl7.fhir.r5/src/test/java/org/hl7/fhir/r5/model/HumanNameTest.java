@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+package org.hl7.fhir.r5.model;
 
 import org.junit.jupiter.api.Test;
 

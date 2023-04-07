@@ -900,7 +900,9 @@ public class HumanName extends DataType implements ICompositeType {
     List<StringType> nameParts = new ArrayList<StringType>(); 
     nameParts.addAll(getPrefix()); 
     nameParts.addAll(getGiven()); 
-    nameParts.add(getFamilyElement()); 
+    if (hasFamilyElement()) {
+      nameParts.add(getFamilyElement());
+    }
     nameParts.addAll(getSuffix()); 
     if (nameParts.size() > 0) { 
       return joinStringsSpaceSeparated(nameParts); 
