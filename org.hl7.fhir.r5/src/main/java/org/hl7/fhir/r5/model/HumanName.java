@@ -917,17 +917,17 @@ public class HumanName extends DataType implements ICompositeType {
    * TODO: replace with call to ca.uhn.fhir.util.DatatypeUtil.joinStringsSpaceSeparated when HAPI upgrades to 1.4 
    */ 
   private static String joinStringsSpaceSeparated(List<? extends IPrimitiveType<String>> theStrings) { 
-    StringBuilder b = new StringBuilder(); 
-    for (IPrimitiveType<String> next : theStrings) { 
-      if (next.isEmpty()) { 
-        continue; 
-      } 
-      if (b.length() > 0) { 
-        b.append(' '); 
-      } 
-      b.append(next.getValue()); 
-    } 
-    return b.toString(); 
+    StringBuilder stringBuilder = new StringBuilder();
+    for (IPrimitiveType<String> string : theStrings) {
+      if (string.isEmpty()) {
+        continue;
+      }
+      if (stringBuilder.length() > 0) {
+        stringBuilder.append(' ');
+      }
+      stringBuilder.append(string.getValue());
+    }
+    return stringBuilder.toString();
   }
 // end addition
 
