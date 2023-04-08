@@ -178,19 +178,19 @@ public class IgLoader {
     if (s.size() != 1)
       throw new FHIRException("Unable to find resource " + source + " to " + opName);
     for (Map.Entry<String, byte[]> t : s.entrySet()) {
-      res.focus = t.getValue();
+      res.setFocus(t.getValue());
       if (t.getKey().endsWith(".json"))
-        res.cntType = Manager.FhirFormat.JSON;
+        res.setCntType(Manager.FhirFormat.JSON);
       else if (t.getKey().endsWith(".xml"))
-        res.cntType = Manager.FhirFormat.XML;
+        res.setCntType(Manager.FhirFormat.XML);
       else if (t.getKey().endsWith(".ttl"))
-        res.cntType = Manager.FhirFormat.TURTLE;
+        res.setCntType(Manager.FhirFormat.TURTLE);
       else if (t.getKey().endsWith(".shc"))
-        res.cntType = Manager.FhirFormat.SHC;
+        res.setCntType(Manager.FhirFormat.SHC);
       else if (t.getKey().endsWith(".txt"))
-        res.cntType = Manager.FhirFormat.TEXT;
+        res.setCntType(Manager.FhirFormat.TEXT);
       else if (t.getKey().endsWith(".fml") || t.getKey().endsWith(".map"))
-        res.cntType = Manager.FhirFormat.FML;
+        res.setCntType(Manager.FhirFormat.FML);
       else
         throw new FHIRException("Todo: Determining resource type is not yet done");
     }
@@ -305,7 +305,7 @@ public class IgLoader {
     ValidatorUtils.parseSources(sources, refs, context);
     for (String ref : refs) {
       Content cnt = loadContent(ref, "validate", false);      
-      scanForFhirVersion(versions, ref, cnt.focus);
+      scanForFhirVersion(versions, ref, cnt.getFocus());
     }
   }
 

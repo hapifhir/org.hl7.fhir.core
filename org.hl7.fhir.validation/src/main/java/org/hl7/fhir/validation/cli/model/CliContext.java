@@ -125,6 +125,10 @@ public class CliContext {
 
   @JsonProperty("jurisdiction")
   private String jurisdiction = JurisdictionUtilities.getJurisdictionFromLocale(Locale.getDefault().getCountry());
+  @JsonProperty("srcLang")
+  private String srcLang = null;
+  @JsonProperty("tgtLang")
+  private String tgtLang = null;
 
 
   @JsonProperty("map")
@@ -643,6 +647,23 @@ public class CliContext {
     this.jurisdiction = jurisdiction;
   }
 
+  
+  public String getSrcLang() {
+    return srcLang;
+  }
+
+  public void setSrcLang(String srcLang) {
+    this.srcLang = srcLang;
+  }
+
+  public String getTgtLang() {
+    return tgtLang;
+  }
+
+  public void setTgtLang(String tgtLang) {
+    this.tgtLang = tgtLang;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -670,6 +691,8 @@ public class CliContext {
       Objects.equals(txCache, that.txCache) &&
       Objects.equals(mapLog, that.mapLog) &&
       Objects.equals(lang, that.lang) &&
+      Objects.equals(srcLang, that.srcLang) &&
+      Objects.equals(tgtLang, that.tgtLang) &&
       Objects.equals(fhirpath, that.fhirpath) &&
       Objects.equals(snomedCT, that.snomedCT) &&
       Objects.equals(targetVer, that.targetVer) &&
@@ -692,7 +715,7 @@ public class CliContext {
   @Override
   public int hashCode() {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
-            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, fhirpath, snomedCT,
+            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
             targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
   }
 
@@ -721,6 +744,8 @@ public class CliContext {
       ", txCache='" + txCache + '\'' +
       ", mapLog='" + mapLog + '\'' +
       ", lang='" + lang + '\'' +
+      ", srcLang='" + srcLang + '\'' +
+      ", tgtLang='" + tgtLang + '\'' +
       ", fhirpath='" + fhirpath + '\'' +
       ", snomedCT='" + snomedCT + '\'' +
       ", targetVer='" + targetVer + '\'' +

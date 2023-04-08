@@ -4,10 +4,10 @@
     "code" : "continuous-variable",
     "display" : "Continuous Variable"
   }]
-}, "url": "http://hl7.org/fhir/ValueSet/measure-scoring", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
+}, "url": "http://hl7.org/fhir/ValueSet/measure-scoring", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
 v: {
   "severity" : "error",
-  "error" : "The code system '' is not known (encountered paired with code = 'continuous-variable'); The code provided (#continuous-variable) is not valid in the value set 'MeasureScoring' (from http://tx.fhir.org/r4)",
+  "error" : "The code system '' is not known (encountered paired with code = 'continuous-variable'); The code provided (#continuous-variable) is not valid in the value set 'MeasureScoring' (from http://local.fhir.org/r4)",
   "class" : "CODESYSTEM_UNSUPPORTED"
 }
 -------------------------------------------------------------------------------------
@@ -16,34 +16,10 @@ v: {
     "code" : "proportion",
     "display" : "Proportion"
   }]
-}, "url": "http://hl7.org/fhir/ValueSet/measure-scoring", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
+}, "url": "http://hl7.org/fhir/ValueSet/measure-scoring", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
 v: {
   "severity" : "error",
-  "error" : "The code system '' is not known (encountered paired with code = 'proportion'); The code provided (#proportion) is not valid in the value set 'MeasureScoring' (from http://tx.fhir.org/r4)",
-  "class" : "CODESYSTEM_UNSUPPORTED"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "code" : "continuous-variable",
-    "display" : "Continuous Variable"
-  }]
-}, "url": "http://hl7.org/fhir/ValueSet/measure-scoring", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
-v: {
-  "severity" : "error",
-  "error" : "The code system '' is not known (encountered paired with code = 'continuous-variable'); The code provided (#continuous-variable) is not valid in the value set 'MeasureScoring' (from http://tx.fhir.org/r4)",
-  "class" : "CODESYSTEM_UNSUPPORTED"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "code" : "proportion",
-    "display" : "Proportion"
-  }]
-}, "url": "http://hl7.org/fhir/ValueSet/measure-scoring", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
-v: {
-  "severity" : "error",
-  "error" : "The code system '' is not known (encountered paired with code = 'proportion'); The code provided (#proportion) is not valid in the value set 'MeasureScoring' (from http://tx.fhir.org/r4)",
+  "error" : "The code system '' is not known (encountered paired with code = 'proportion'); The code provided (#proportion) is not valid in the value set 'MeasureScoring' (from http://local.fhir.org/r4)",
   "class" : "CODESYSTEM_UNSUPPORTED"
 }
 -------------------------------------------------------------------------------------

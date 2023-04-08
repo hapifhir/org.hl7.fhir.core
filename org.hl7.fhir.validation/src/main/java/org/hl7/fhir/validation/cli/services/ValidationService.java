@@ -1,7 +1,9 @@
 package org.hl7.fhir.validation.cli.services;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
@@ -11,11 +13,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.R5ExtensionsLoader;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
 import org.hl7.fhir.r5.context.TerminologyCache;
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser;
@@ -34,17 +39,24 @@ import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
+import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerSession;
+import org.hl7.fhir.utilities.i18n.PoGetTextProducer;
+import org.hl7.fhir.utilities.i18n.XLIFFProducer;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.validation.Content;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidationRecord;
+import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationOutcome;
@@ -494,4 +506,120 @@ public class ValidationService {
       System.out.println(" ...generated spreadsheet successfully");
     }
   }
+
+  public void transformLang(CliContext cliContext, ValidationEngine validator) throws IOException {
+    switch (cliContext.getLangTransform()) {
+    case "extract":
+      transformLangExtract(cliContext, validator);
+      break;
+    default:
+      System.out.println(" ...Unknown lang transform mode "+cliContext.getLangTransform());        
+    }
+  }
+
+  private void transformLangExtract(CliContext cliContext, ValidationEngine validator) throws IOException { 
+    String dst = cliContext.getOutput();
+    Utilities.createDirectory(dst);
+    PoGetTextProducer po = new PoGetTextProducer(Utilities.path(dst));
+    XLIFFProducer xliff = new XLIFFProducer(Utilities.path(dst));
+    
+    List<String> refs = new ArrayList<String>();
+    ValidatorUtils.parseSources(cliContext.getSources(), refs, validator.getContext());    
+    for (String ref : refs) {
+      System.out.println("  Extract Translations from " + ref);
+      org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref, "translate", false);
+      Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
+      LanguageProducerSession ps = po.startSession(e.fhirType()+"-"+e.getIdBase(), cliContext.getSrcLang());
+      LanguageProducerLanguageSession psl = ps.forLang(cliContext.getTgtLang());
+      new LanguageUtils(validator.getContext()).generateTranslations(e, psl);
+      psl.finish();
+      ps.finish();
+      ps = xliff.startSession(e.fhirType()+"-"+e.getIdBase(), cliContext.getSrcLang());
+      psl = ps.forLang(cliContext.getTgtLang());
+      new LanguageUtils(validator.getContext()).generateTranslations(e, psl);
+      psl.finish();
+      ps.finish(); 
+    }
+    System.out.println("Done - produced "+(po.fileCount()+xliff.fileCount()) + " files in "+dst);
+  }
+//
+//      try {
+//        OperationOutcome outcome = validate(ref, cnt.focus, cnt.cntType, profiles, record);
+//        ToolingExtensions.addStringExtension(outcome, ToolingExtensions.EXT_OO_FILE, ref);
+//        System.out.println(" " + context.clock().milestone());
+//        results.addEntry().setResource(outcome);
+//        tts.end();
+//      } catch (Exception e) {
+//        System.out.println("Validation Infrastructure fail validating " + ref + ": " + e.getMessage());
+//        tts.end();
+//        throw new FHIRException(e);
+//      }
+//    }
+//    if (asBundle)
+//      return results;
+//    else
+//      return results.getEntryFirstRep().getResource();
+//    
+//    List<ValidationRecord> records = new ArrayList<>();
+//    Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles(), records);
+//    MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
+//    System.out.println("Done. " + validator.getContext().clock().report()+". Memory = "+Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed()+mbean.getNonHeapMemoryUsage().getUsed()));
+//    System.out.println();
+//
+//    PrintStream dst = null;
+//    ValidationOutputRenderer renderer = makeValidationOutputRenderer(cliContext);
+//    renderer.setCrumbTrails(validator.isCrumbTrails());
+//    renderer.setRunDate(runDate);
+//    if (renderer.isSingleFile()) {
+//      if (cliContext.getOutput() == null) {
+//        dst = System.out;
+//      } else {
+//        dst = new PrintStream(new FileOutputStream(cliContext.getOutput()));
+//      }
+//      renderer.setOutput(dst);
+//    } else {
+//      File dir = new File(cliContext.getOutput());
+//      if (!dir.isDirectory()) {
+//        throw new Error("The output location "+dir.getAbsolutePath()+" must be an existing directory for the output style "+renderer.getStyleCode());
+//      }
+//      renderer.setFolder(dir);
+//    }
+//
+//    int ec = 0;
+//
+//    if (r instanceof Bundle) {
+//      if (renderer.handlesBundleDirectly()) {
+//        renderer.render((Bundle) r);
+//      } else {
+//        renderer.start(((Bundle) r).getEntry().size() > 1);
+//        for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry()) {
+//          OperationOutcome op = (OperationOutcome) e.getResource();
+//          ec = ec + countErrors(op);
+//          renderer.render(op);
+//        }
+//        renderer.finish();
+//      }
+//    } else if (r == null) {
+//      ec = ec + 1;
+//      System.out.println("No output from validation - nothing to validate");
+//    } else {
+//      renderer.start(false);
+//      OperationOutcome op = (OperationOutcome) r;
+//      ec = countErrors(op);
+//      renderer.render((OperationOutcome) r);
+//      renderer.finish();
+//    }
+//
+//    if (cliContext.getOutput() != null && dst != null) {
+//      dst.close();
+//    }
+//
+//    if (cliContext.getHtmlOutput() != null) {
+//      String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis() - start);
+//      TextFile.stringToFile(html, cliContext.getHtmlOutput());
+//      System.out.println("HTML Summary in " + cliContext.getHtmlOutput());
+//    }
+//    System.exit(ec > 0 ? 1 : 0);
+//    
+//  }
 }

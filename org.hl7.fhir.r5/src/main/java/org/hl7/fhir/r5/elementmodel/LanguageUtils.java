@@ -18,12 +18,12 @@ import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
  *  generateTranslations = -langTransform export -src {src} -tgt {tgt} -dest {dest}
  *  importFromTranslations =  -langTransform import -src {src} -tgt {tgt} -dest {dest}
  */
-public class LangaugeUtils {
+public class LanguageUtils {
 
   IWorkerContext context;
   
   
-  public LangaugeUtils(IWorkerContext context) {
+  public LanguageUtils(IWorkerContext context) {
     super();
     this.context = context;
   }

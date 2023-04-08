@@ -1,11 +1,12 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "1591957"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+  "code" : "1000990",
+  "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray"
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "Mircera",
-  "code" : "1591957",
+  "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray",
+  "code" : "1000990",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm"
 }
 -------------------------------------------------------------------------------------
@@ -13,7 +14,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "code" : "1010603",
   "display" : "Suboxone 2 MG / 0.5 MG Sublingual Film"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film [Suboxone]",
   "code" : "1010603",
@@ -22,77 +23,9 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "1049502",
-  "display" : "12 HR Oxycodone Hydrochloride 10 MG Extended Release Oral Tablet"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "12 HR oxycodone hydrochloride 10 MG Extended Release Oral Tablet",
-  "code" : "1049502",
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "1010600",
-  "display" : "Buprenorphine 2 MG / Naloxone 0.5 MG Oral Strip"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film",
-  "code" : "1010600",
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "severity" : "warning",
-  "error" : "The display \"Buprenorphine 2 MG / Naloxone 0.5 MG Oral Strip\" is not a valid display for the code {http://www.nlm.nih.gov/research/umls/rxnorm}1010600 - should be one of ['buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film', 'buprenorphine 2 MG / naloxone 0.5 MG Buccal Film', 'buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film', 'buprenorphine HCl 2 MG / naloxone HCl 0.5 MG Sublingual Film'] (from http://tx.fhir.org/r4)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "197696",
-  "display" : "72 HR Fentanyl 0.075 MG/HR Transdermal System"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "72 HR fentanyl 0.075 MG/HR Transdermal System",
-  "code" : "197696",
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "892495",
-  "display" : "Morphine Sulfate 10 MG [Kadian]"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "morphine sulfate 10 MG [Kadian]",
-  "code" : "892495",
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "1049502",
-  "display" : "oxyCODONE HCl 10 MG 12HR Extended Release Oral Tablet"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "12 HR oxycodone hydrochloride 10 MG Extended Release Oral Tablet",
-  "code" : "1049502",
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "836397",
-  "display" : "Acetaminophen 325 MG / tramadol hydrochloride 37.5 MG Oral Tablet [Ultracet]"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "acetaminophen 325 MG / tramadol hydrochloride 37.5 MG Oral Tablet [Ultracet]",
-  "code" : "836397",
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "code" : "1298088",
   "display" : "Flurazepam Hydrochloride 15 MG Oral Capsule"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "flurazepam hydrochloride 15 MG Oral Capsule",
   "code" : "1298088",
@@ -103,7 +36,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "code" : "1010600",
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film",
   "code" : "1010600",
@@ -112,12 +45,11 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "1000990",
-  "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+  "code" : "1591957"
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray",
-  "code" : "1000990",
+  "display" : "Mircera",
+  "code" : "1591957",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm"
 }
 -------------------------------------------------------------------------------------

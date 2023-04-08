@@ -2485,7 +2485,7 @@ public class FHIRPathEngine {
     if (vs != null) {
       for (Base l : left) {
         if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
-          if (worker.validateCode(terminologyServiceOptions.guessSystem() , l.castToCoding(l), vs).isOk()) {
+          if (worker.validateCode(terminologyServiceOptions.withGuessSystem() , l.castToCoding(l), vs).isOk()) {
             ans = true;
           }
         } else if (l.fhirType().equals("Coding")) {
@@ -4270,7 +4270,7 @@ public class FHIRPathEngine {
     }
     Base l = focus.get(0);
     if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
-      return makeBoolean(worker.validateCode(terminologyServiceOptions.guessSystem(), l.castToCoding(l), vs).isOk());
+      return makeBoolean(worker.validateCode(terminologyServiceOptions.withGuessSystem(), l.castToCoding(l), vs).isOk());
     } else if (l.fhirType().equals("Coding")) {
       return makeBoolean(worker.validateCode(terminologyServiceOptions, l.castToCoding(l), vs).isOk());
     } else if (l.fhirType().equals("CodeableConcept")) {

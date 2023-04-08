@@ -289,6 +289,7 @@ public class ValidatorCli {
     if (cliContext.getSv() == null) {
       cliContext.setSv(validationService.determineVersion(cliContext));
     }
+    System.out.println("  Locale: "+Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
     if (cliContext.getJurisdiction() == null) {
       System.out.println("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");      
       System.out.println("  Note that exceptions and validation failures may happen in the absense of a locale");      
@@ -326,6 +327,9 @@ public class ValidatorCli {
         break;
       case VERSION:
         validationService.transformVersion(cliContext, validator);
+        break;
+      case LANG_TRANSFORM:
+        validationService.transformLang(cliContext, validator);
         break;
       case VALIDATION:
       case SCAN:

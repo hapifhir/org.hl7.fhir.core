@@ -17,6 +17,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.Reference;
@@ -254,10 +255,21 @@ public abstract class ResourceRenderer extends DataRenderer {
       if ((tr == null || (tr.getReference() != null && !tr.getReference().startsWith("#"))) && name != null) {
         x.addText(" \""+name+"\"");
       }
-      if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID)) {
-        x.addText("(#"+r.getExtensionString(ToolingExtensions.EXT_TARGET_ID)+")");
-      } else if (r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
-        x.addText("(#/"+r.getExtensionString(ToolingExtensions.EXT_TARGET_PATH)+")");
+      if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID) || r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+        x.addText("(");
+        for (Extension ex : r.getExtensionsByUrl(ToolingExtensions.EXT_TARGET_ID)) {
+          if (ex.hasValue()) {
+            x.sep(", ");
+            x.addText("#"+ex.getValue().primitiveValue());
+          }
+        }
+        for (Extension ex : r.getExtensionsByUrl(ToolingExtensions.EXT_TARGET_PATH)) {
+          if (ex.hasValue()) {
+            x.sep(", ");
+            x.addText("/#"+ex.getValue().primitiveValue());
+          }
+        }
+        x.addText(")");
       }  
     } else {
       if (display != null) {

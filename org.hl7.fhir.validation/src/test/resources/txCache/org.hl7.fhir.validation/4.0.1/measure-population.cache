@@ -4,10 +4,10 @@
     "code" : "numerator",
     "display" : "Numerator"
   }]
-}, "url": "http://hl7.org/fhir/ValueSet/measure-population", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
+}, "url": "http://hl7.org/fhir/ValueSet/measure-population", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
 v: {
   "severity" : "error",
-  "error" : "The code system '' is not known (encountered paired with code = 'numerator'); The code provided (#numerator) is not valid in the value set 'MeasurePopulationType' (from http://tx.fhir.org/r4)",
+  "error" : "The code system '' is not known (encountered paired with code = 'numerator'); The code provided (#numerator) is not valid in the value set 'MeasurePopulationType' (from http://local.fhir.org/r4)",
   "class" : "CODESYSTEM_UNSUPPORTED"
 }
 -------------------------------------------------------------------------------------
@@ -16,10 +16,10 @@ v: {
     "code" : "denominator",
     "display" : "Denominator"
   }]
-}, "url": "http://hl7.org/fhir/ValueSet/measure-population", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
+}, "url": "http://hl7.org/fhir/ValueSet/measure-population", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
 v: {
   "severity" : "error",
-  "error" : "The code system '' is not known (encountered paired with code = 'denominator'); The code provided (#denominator) is not valid in the value set 'MeasurePopulationType' (from http://tx.fhir.org/r4)",
+  "error" : "The code system '' is not known (encountered paired with code = 'denominator'); The code provided (#denominator) is not valid in the value set 'MeasurePopulationType' (from http://local.fhir.org/r4)",
   "class" : "CODESYSTEM_UNSUPPORTED"
 }
 -------------------------------------------------------------------------------------
@@ -27,45 +27,10 @@ v: {
   "coding" : [{
     "code" : "initial-population"
   }]
-}, "url": "http://hl7.org/fhir/ValueSet/measure-population", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
+}, "url": "http://hl7.org/fhir/ValueSet/measure-population", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
 v: {
   "severity" : "error",
-  "error" : "The code system '' is not known (encountered paired with code = 'initial-population'); The code provided (#initial-population) is not valid in the value set 'MeasurePopulationType' (from http://tx.fhir.org/r4)",
-  "class" : "CODESYSTEM_UNSUPPORTED"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "code" : "numerator",
-    "display" : "Numerator"
-  }]
-}, "url": "http://hl7.org/fhir/ValueSet/measure-population", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
-v: {
-  "severity" : "error",
-  "error" : "The code system '' is not known (encountered paired with code = 'numerator'); The code provided (#numerator) is not valid in the value set 'MeasurePopulationType' (from http://tx.fhir.org/r4)",
-  "class" : "CODESYSTEM_UNSUPPORTED"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "code" : "denominator",
-    "display" : "Denominator"
-  }]
-}, "url": "http://hl7.org/fhir/ValueSet/measure-population", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
-v: {
-  "severity" : "error",
-  "error" : "The code system '' is not known (encountered paired with code = 'denominator'); The code provided (#denominator) is not valid in the value set 'MeasurePopulationType' (from http://tx.fhir.org/r4)",
-  "class" : "CODESYSTEM_UNSUPPORTED"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "code" : "initial-population"
-  }]
-}, "url": "http://hl7.org/fhir/ValueSet/measure-population", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"+}####
-v: {
-  "severity" : "error",
-  "error" : "The code system '' is not known (encountered paired with code = 'initial-population'); The code provided (#initial-population) is not valid in the value set 'MeasurePopulationType' (from http://tx.fhir.org/r4)",
+  "error" : "The code system '' is not known (encountered paired with code = 'initial-population'); The code provided (#initial-population) is not valid in the value set 'MeasurePopulationType' (from http://local.fhir.org/r4)",
   "class" : "CODESYSTEM_UNSUPPORTED"
 }
 -------------------------------------------------------------------------------------

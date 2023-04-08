@@ -106,7 +106,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
-  private static final boolean BUILD_NEW = false;
+  private static final boolean BUILD_NEW = true;
   private static final boolean CLONE = true;
 
   @Parameters(name = "{index}: id {0}")
@@ -206,6 +206,18 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
     val.setDebug(false);
+    if (!VersionUtilities.isR5Plus(val.getContext().getVersion())) {
+      val.getBaseOptions().setUseValueSetDisplays(true);
+    }
+    val.getBaseOptions().getLanguages().clear();
+    if (content.has("languages")) {
+      for (String s : content.get("languages").getAsString().split("\\,")) {
+        String l = s.trim();
+        val.getBaseOptions().getLanguages().add(l);        
+      }
+    } else {
+      
+    }
     
     if (content.has("fetcher") && "standalone".equals(JsonUtilities.str(content, "fetcher"))) {
       val.setFetcher(vCurr);
@@ -226,9 +238,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     else
       val.setValidationLanguage(null);
     if (content.has("default-version")) {
-      val.setBaseOptions(val.getBaseOptions().setVersionFlexible(content.get("default-version").getAsBoolean()));
+      val.setBaseOptions(val.getBaseOptions().withVersionFlexible(content.get("default-version").getAsBoolean()));
     } else {
-      val.setBaseOptions(val.getBaseOptions().setVersionFlexible(false));
+      val.setBaseOptions(val.getBaseOptions().withVersionFlexible(false));
     }
     if (content.has("packages")) {
       for (JsonElement e : content.getAsJsonArray("packages")) {
@@ -303,6 +315,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("profile")) {
       System.out.print("** Profile: ");
       JsonObject profile = content.getAsJsonObject("profile");
+      if (profile.has("valueset-displays")) {
+        val.getBaseOptions().setUseValueSetDisplays(true);
+      }
       if (profile.has("packages")) {
         for (JsonElement e : profile.getAsJsonArray("packages")) {
           logOutput("load package "+e.getAsString());

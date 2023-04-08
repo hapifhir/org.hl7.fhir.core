@@ -438,7 +438,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private boolean serverSupportsValueSet(String ref) {
-    ValidationResult vr = context.validateCode(new ValidationOptions().checkValueSetOnly().setVsAsUrl().noClient(), new Coding("http://loinc.org", "5792-7", null), new ValueSet().setUrl(ref));
+    ValidationResult vr = context.validateCode(new ValidationOptions().withCheckValueSetOnly().withVsAsUrl().withNoClient(), new Coding("http://loinc.org", "5792-7", null), new ValueSet().setUrl(ref));
     return vr.getErrorClass() == null;
   }
 

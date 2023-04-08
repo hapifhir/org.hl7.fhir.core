@@ -137,7 +137,7 @@ public class SimpleWorkerContextTests {
 
   @Test
   public void testValidateCodingWithCache() throws IOException {
-    ValidationOptions validationOptions = new ValidationOptions().guessSystem().setVersionFlexible(false);
+    ValidationOptions validationOptions = new ValidationOptions().withGuessSystem().withVersionFlexible(false);
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
 
@@ -157,7 +157,7 @@ public class SimpleWorkerContextTests {
 
   @Test
   public void testValidateCodingWithValueSetChecker() throws IOException {
-    ValidationOptions validationOptions = new ValidationOptions().guessSystem().setVersionFlexible(false);
+    ValidationOptions validationOptions = new ValidationOptions().withGuessSystem().withVersionFlexible(false);
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
 
@@ -180,7 +180,7 @@ public class SimpleWorkerContextTests {
 
   @Test
   public void testValidateCodingWithServer() throws IOException {
-    ValidationOptions validationOptions = new ValidationOptions().guessSystem().setVersionFlexible(false).noClient();
+    ValidationOptions validationOptions = new ValidationOptions().withGuessSystem().withVersionFlexible(false).withNoClient();
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
 
@@ -240,7 +240,7 @@ public class SimpleWorkerContextTests {
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
 
-    ValidationOptions validationOptions = CacheTestUtils.validationOptions.noClient();
+    ValidationOptions validationOptions = CacheTestUtils.validationOptions.withNoClient();
     Mockito.doReturn(pIn).when(context).constructParameters(validationOptions, codeableConcept);
 
     Mockito.doReturn(expectedValidationResult).when(context).validateOnServer(valueSet, pIn, validationOptions);

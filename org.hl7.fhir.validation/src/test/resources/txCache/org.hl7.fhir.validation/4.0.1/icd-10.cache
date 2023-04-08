@@ -3,7 +3,7 @@
   "system" : "http://hl7.org/fhir/sid/icd-10",
   "code" : "C18.0",
   "display" : "Malignant neoplasm: Caecum"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Caecum",
   "code" : "C18.0",
@@ -14,12 +14,12 @@ v: {
   "system" : "http://hl7.org/fhir/sid/icd-10",
   "code" : "C12",
   "display" : "Malignant neoplasm of pyriform sinus"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Malignant neoplasm of piriform sinus",
   "code" : "C12",
   "system" : "http://hl7.org/fhir/sid/icd-10",
   "severity" : "warning",
-  "error" : "The display \"Malignant neoplasm of pyriform sinus\" is not a valid display for the code {http://hl7.org/fhir/sid/icd-10}C12 - should be one of ['Malignant neoplasm of piriform sinus'] (from http://tx.fhir.org/r4)"
+  "error" : "The display \"Malignant neoplasm of pyriform sinus\" is not a valid display for the code {http://hl7.org/fhir/sid/icd-10}C12 - should be one of ['Malignant neoplasm of piriform sinus'] (from http://local.fhir.org/r4)"
 }
 -------------------------------------------------------------------------------------

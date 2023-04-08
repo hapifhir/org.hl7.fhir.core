@@ -60,6 +60,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple.ConceptReferencePair;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -74,6 +75,27 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
 public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChecker {
+
+  public class ConceptReferencePair {
+
+    private ValueSet valueset;
+    private ConceptReferenceComponent cc;
+
+    public ConceptReferencePair(ValueSet valueset, ConceptReferenceComponent cc) {
+      this.valueset = valueset;
+      this.cc = cc;
+    }
+
+    public ValueSet getValueset() {
+      return valueset;
+    }
+
+    public ConceptReferenceComponent getCc() {
+      return cc;
+    }
+
+  }
+
 
   private ValueSet valueset;
   private IWorkerContext context;
@@ -138,7 +160,11 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         CodeSystem cs = resolveCodeSystem(c.getSystem(), c.getVersion());
         ValidationResult res = null;
         if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
-          res = context.validateCode(options.noClient(), c, null);
+          if (context.isNoTerminologyServer()) {
+            res = new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.UKNOWN_CODESYSTEM, c.getSystem(), c.getVersion()));
+          } else {
+            res = context.validateCode(options.withNoClient(), c, null);
+          }
         } else {
           res = validateCode(c, cs);
         }
@@ -174,7 +200,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     } else {
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(foundCoding.getDisplay());
-      return new ValidationResult(foundCoding.getSystem(), cd);
+      return new ValidationResult(foundCoding.getSystem(), cd, getPreferredDisplay(cd, null));
     }
   }
 
@@ -227,7 +253,11 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       inInclude = checkInclude(code);
       CodeSystem cs = resolveCodeSystem(system, code.getVersion());
       if (cs == null) {
-        warningMessage = "Unable to resolve system "+system;
+        if (code.getVersion() == null) {
+          warningMessage = context.formatMessage(I18nConstants.UKNOWN_CODESYSTEM, system);
+        } else {
+          warningMessage = context.formatMessage(I18nConstants.UKNOWN_CODESYSTEM_VERSION, system, code.getVersion());
+        }
         if (!inExpansion) {
           if (valueset != null && valueset.hasExpansion()) {
             return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.CODESYSTEM_CS_UNK_EXPANSION, valueset.getUrl(), code.getCode().toString(), code.getSystem()));
@@ -252,7 +282,8 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
             ConceptReferenceComponent cc = findInInclude(code);
             if (cc != null) {
               // we'll take it on faith
-              res = new ValidationResult(system, new ConceptDefinitionComponent().setCode(cc.getCode()).setDisplay(cc.getDisplay()));
+              String disp = getPreferredDisplay(cc);
+              res = new ValidationResult(system, new ConceptDefinitionComponent().setCode(cc.getCode()).setDisplay(disp), disp);
               res.setMessage("Resolved system "+system+", but the definition is not complete, so assuming value set include is correct");
               return res;
             }
@@ -263,7 +294,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         res = validateCode(code, cs);
       } else if (cs == null && valueset.hasExpansion() && inExpansion) {
         // we just take the value set as face value then
-        res = new ValidationResult(system, new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()));
+        res = new ValidationResult(system, new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()), code.getDisplay());
       } else {
         // well, we didn't find a code system - try the expansion? 
         // disabled waiting for discussion
@@ -372,7 +403,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         ConceptDefinitionComponent ccd = new ConceptDefinitionComponent();
         ccd.setCode(containsComponent.getCode());
         ccd.setDisplay(containsComponent.getDisplay());
-        ValidationResult res = new ValidationResult(code.getSystem(), ccd);
+        ValidationResult res = new ValidationResult(code.getSystem(), ccd, getPreferredDisplay(ccd, null));
         return res;
       }
       if (containsComponent.hasContains()) {
@@ -414,41 +445,60 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       }
     }
     if (code.getDisplay() == null) {
-      return new ValidationResult(code.getSystem(), cc);
+      return new ValidationResult(code.getSystem(), cc, getPreferredDisplay(cc, cs));
     }
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    if (cc.hasDisplay()) {
+    if (cc.hasDisplay() && isOkLanguage(cs.getLanguage())) {
       b.append(cc.getDisplay());
       if (code.getDisplay().equalsIgnoreCase(cc.getDisplay())) {
-        return new ValidationResult(code.getSystem(), cc);
+        return new ValidationResult(code.getSystem(), cc, getPreferredDisplay(cc, cs));
       }
     }
     for (ConceptDefinitionDesignationComponent ds : cc.getDesignation()) {
-      b.append(ds.getValue());
-      if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
-        return new ValidationResult(code.getSystem(), cc);
+      if (isOkLanguage(ds.getLanguage())) {
+        b.append(ds.getValue());
+        if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
+          return new ValidationResult(code.getSystem(), cc, getPreferredDisplay(cc, cs));
+        }
       }
     }
     // also check to see if the value set has another display
-    ConceptReferenceComponent vs = findValueSetRef(code.getSystem(), code.getCode());
-    if (vs != null && (vs.hasDisplay() ||vs.hasDesignation())) {
-      if (vs.hasDisplay()) {
-        b.append(vs.getDisplay());
-        if (code.getDisplay().equalsIgnoreCase(vs.getDisplay())) {
-          return new ValidationResult(code.getSystem(), cc);
+    if (options.isUseValueSetDisplays()) {
+      ConceptReferencePair vs = findValueSetRef(code.getSystem(), code.getCode());
+      if (vs != null && (vs.getCc().hasDisplay() ||vs.getCc().hasDesignation())) {
+        if (vs.getCc().hasDisplay() && isOkLanguage(vs.getValueset().getLanguage())) {
+          b.append(vs.getCc().getDisplay());
+          if (code.getDisplay().equalsIgnoreCase(vs.getCc().getDisplay())) {
+            return new ValidationResult(code.getSystem(), cc, getPreferredDisplay(cc, cs));
+          }
         }
-      }
-      for (ConceptReferenceDesignationComponent ds : vs.getDesignation()) {
-        b.append(ds.getValue());
-        if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
-          return new ValidationResult(code.getSystem(), cc);
+        for (ConceptReferenceDesignationComponent ds : vs.getCc().getDesignation()) {
+          if (isOkLanguage(ds.getLanguage())) {
+            b.append(ds.getValue());
+            if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
+              return new ValidationResult(code.getSystem(), cc, getPreferredDisplay(cc, cs));
+            }
+          }
         }
       }
     }
-    return new ValidationResult(IssueSeverity.WARNING, context.formatMessagePlural(b.count(), I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay()), code.getSystem(), cc);
+    return new ValidationResult(IssueSeverity.WARNING, context.formatMessagePlural(b.count(), I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay()), code.getSystem(), cc, getPreferredDisplay(cc, cs));
+  }
+  
+  private boolean isOkLanguage(String language) {
+    if (!options.hasLanguages()) {
+      return true;
+    }
+    if (options.getLanguages().contains(language)) {
+      return true;
+    }
+    if (language == null && (options.getLanguages().contains("en") || options.getLanguages().contains("en-US"))) {
+      return true;
+    }
+    return false;
   }
 
-  private ConceptReferenceComponent findValueSetRef(String system, String code) {
+  private ConceptReferencePair findValueSetRef(String system, String code) {
     if (valueset == null)
       return null;
     // if it has an expansion
@@ -457,19 +507,19 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         ConceptReferenceComponent cc = new ConceptReferenceComponent();
         cc.setDisplay(exp.getDisplay());
         cc.setDesignation(exp.getDesignation());
-        return cc;
+        return new ConceptReferencePair(valueset, cc);
       }
     }
     for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
       if (system.equals(inc.getSystem())) {
         for (ConceptReferenceComponent cc : inc.getConcept()) {
           if (cc.getCode().equals(code)) {
-            return cc;
+            return new ConceptReferencePair(valueset, cc);
           }
         }
       }
       for (CanonicalType url : inc.getValueSet()) {
-        ConceptReferenceComponent cc = getVs(url.asStringValue()).findValueSetRef(system, code);
+        ConceptReferencePair cc = getVs(url.asStringValue()).findValueSetRef(system, code);
         if (cc != null) {
           return cc;
         }
@@ -748,7 +798,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       }
     }
 
-    if (!system.equals(vsi.getSystem()))
+    if (system == null || !system.equals(vsi.getSystem()))
       return false;
     // ok, we need the code system
     CodeSystem cs = resolveCodeSystem(system, version);
@@ -759,7 +809,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       vs.setUrl(valueset.getUrl()+"--"+vsiIndex);
       vs.setVersion(valueset.getVersion());
       vs.getCompose().addInclude(vsi);
-      ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
+      ValidationResult res = context.validateCode(options.withNoClient(), new Coding(system, code, null), vs);
       if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
         if (info != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
        // server didn't know the code system either - we'll take it face value
@@ -884,6 +934,56 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       Boolean ok = vs.codeInValueSet(system, version, code, null);
       return ok != null && ok;
     }
+  }
+
+
+  private String getPreferredDisplay(ConceptReferenceComponent cc) {
+    if (!options.hasLanguages()) {
+      return cc.getDisplay();
+    }
+    if (options.getLanguages().contains(valueset.getLanguage())) {
+      return cc.getDisplay();
+    }
+    // if there's no language, we default to accepting the displays as (US) English
+    if (valueset.getLanguage() == null && (options.getLanguages().contains("en") || options.getLanguages().contains("en-US"))) {
+      return cc.getDisplay();
+    }
+    for (ConceptReferenceDesignationComponent d : cc.getDesignation()) {
+      if (!d.hasUse() && options.getLanguages().contains(d.getLanguage())) {
+        return d.getValue();
+      }
+    }
+    for (ConceptReferenceDesignationComponent d : cc.getDesignation()) {
+      if (options.getLanguages().contains(d.getLanguage())) {
+        return d.getValue();
+      }
+    }
+    return cc.getDisplay();
+  }
+
+
+  private String getPreferredDisplay(ConceptDefinitionComponent cc, CodeSystem cs) {
+    if (!options.hasLanguages()) {
+      return cc.getDisplay();
+    }
+    if (cs != null && options.getLanguages().contains(cs.getLanguage())) {
+      return cc.getDisplay();
+    }
+    // if there's no language, we default to accepting the displays as (US) English
+    if ((cs == null || cs.getLanguage() == null) && (options.getLanguages().contains("en") || options.getLanguages().contains("en-US"))) {
+      return cc.getDisplay();
+    }
+    for (ConceptDefinitionDesignationComponent d : cc.getDesignation()) {
+      if (!d.hasUse() && options.getLanguages().contains(d.getLanguage())) {
+        return d.getValue();
+      }
+    }
+    for (ConceptDefinitionDesignationComponent d : cc.getDesignation()) {
+      if (options.getLanguages().contains(d.getLanguage())) {
+        return d.getValue();
+      }
+    }
+    return cc.getDisplay();
   }
 
 }

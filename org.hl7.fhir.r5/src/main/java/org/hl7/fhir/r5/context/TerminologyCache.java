@@ -605,7 +605,7 @@ public class TerminologyCache {
       String definition = loadJS(o.get("definition"));
       t = loadJS(o.get("class"));
       TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
-      ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code)).setErrorClass(errorClass);
+      ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display).setErrorClass(errorClass);
     }
     return ce;
   }
