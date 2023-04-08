@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.txClient;
 import java.net.URISyntaxException;
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.HashMap;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -87,7 +88,7 @@ public class TerminologyClientR4 implements TerminologyClient {
   
   @Override
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException {
-    return TerminologyCapabilities40_50.convertTerminologyCapabilities(client.getTerminologyCapabilities());
+    return (TerminologyCapabilities) VersionConvertorFactory_40_50.convertResource(client.getTerminologyCapabilities());
   }
 
   @Override
@@ -97,8 +98,11 @@ public class TerminologyClientR4 implements TerminologyClient {
 
   @Override
   public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException {
-    org.hl7.fhir.r4.model.ValueSet vs2 = (org.hl7.fhir.r4.model.ValueSet) VersionConvertorFactory_40_50.convertResource(vs);
-    org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(p);
+    org.hl7.fhir.r4.model.ValueSet vs2 = vs == null ? null : (org.hl7.fhir.r4.model.ValueSet) VersionConvertorFactory_40_50.convertResource(vs);
+    org.hl7.fhir.r4.model.Parameters p2 = p == null ? null :  (org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(p);
+    if (params == null) {
+      params = new HashMap<>();
+    }
     vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
     return (ValueSet) VersionConvertorFactory_40_50.convertResource(vs2);
   }

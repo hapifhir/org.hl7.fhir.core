@@ -20,9 +20,9 @@ public class TerminologyClientFactory {
       case DSTU2:
         return new TerminologyClientR2(checkEndsWith("/r2", url), userAgent);
       case R4:
-        return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent);
+        return new TerminologyClientR4(checkEndsWith("/r4", url), userAgent);
       case R4B:
-        return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent);
+        return new TerminologyClientR4(checkEndsWith("/r4", url), userAgent);
       case R5:
         return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent); // r4 for now, since the terminology is currently the same
       case STU3:
@@ -62,7 +62,7 @@ public class TerminologyClientFactory {
       return url;
     if (url.startsWith("http://tx.fhir.org") || url.startsWith("https://tx.fhir.org"))
       return Utilities.pathURL(url, term);
-    if (url.equals("http://local.fhir.org:8080"))
+    if (url.equals("http://local.fhir.org"))
       return Utilities.pathURL(url, term);
     return url;
   }
