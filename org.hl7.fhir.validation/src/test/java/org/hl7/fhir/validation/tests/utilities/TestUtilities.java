@@ -32,6 +32,18 @@ public class TestUtilities {
     return Paths.get(TestConfig.getInstance().getTxCacheDirectory("org.hl7.fhir.validation"), testSetPath).toString();
   }
 
+
+  public static ValidationEngine getValidationEngineNoTxServer(java.lang.String src, FhirPublication version, java.lang.String vString) throws Exception {
+    TestingUtilities.injectCorePackageLoader();
+
+   final ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder()
+      .withCanRunWithoutTerminologyServer(true)
+      .withVersion(vString)
+      .withUserAgent(TestConstants.USER_AGENT)
+      .fromSource(src);
+
+    return validationEngine;
+  }
   public static ValidationEngine getValidationEngine(java.lang.String src, java.lang.String txServer, FhirPublication version, java.lang.String vString) throws Exception {
     TestingUtilities.injectCorePackageLoader();
     final ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder()

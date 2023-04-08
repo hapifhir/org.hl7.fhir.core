@@ -3,7 +3,7 @@
   "system" : "http://hl7.org/fhir/sid/cvx",
   "code" : "207",
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose",
   "code" : "207",
@@ -14,19 +14,19 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "code" : "207",
   "display" : "X SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose",
   "code" : "207",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "severity" : "warning",
-  "error" : "The display \"X SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose\" is not a valid display for the code {http://hl7.org/fhir/sid/cvx}207 - should be one of ['SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose', 'COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5 mL dose' (en)] (from http://tx.fhir.org/r4)"
+  "error" : "The display \"X SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose\" is not a valid display for the code {http://hl7.org/fhir/sid/cvx}207 - should be one of ['SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose', 'COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5 mL dose' (en)] (from http://local.fhir.org/r4)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "code" : "208"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 30 mcg/0.3mL dose",
   "code" : "208",
@@ -36,7 +36,7 @@ v: {
 {"code" : {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "code" : "208"
-}, "url": "http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx", "version": "0.6.2", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx", "version": "0.6.2", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 30 mcg/0.3mL dose",
   "code" : "208",
@@ -46,9 +46,9 @@ v: {
 {"code" : {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "code" : "209"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code \"209\" is not valid in the system http://hl7.org/fhir/sid/cvx; The code provided (http://hl7.org/fhir/sid/cvx#209) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
+  "error" : "The code \"209\" is not valid in the system http://hl7.org/fhir/sid/cvx; The code provided (http://hl7.org/fhir/sid/cvx#209) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r4)"
 }
 -------------------------------------------------------------------------------------

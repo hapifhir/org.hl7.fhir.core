@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "L/min"
-}, "valueSet" :null, "lang":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[fi]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "L/min",
   "code" : "L/min",
@@ -12,38 +12,28 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "21612-7"
-}, "valueSet" :null, "lang":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[fi]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Error processing Unit: '21612-7': Expected \"/\" or \".\" at character 6; The code \"21612-7\" is not valid in the system http://unitsofmeasure.org; The code provided (http://unitsofmeasure.org#21612-7) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r3)"
+  "error" : "Error processing Unit: '21612-7': Expected \"/\" or \".\" at character 6; The code \"21612-7\" is not valid in the system http://unitsofmeasure.org; The code provided (http://unitsofmeasure.org#21612-7) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "tbl"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Error processing Unit: 'tbl': The unit \"tbl\" is unknown at character 1; The code \"tbl\" is not valid in the system http://unitsofmeasure.org; The code provided (http://unitsofmeasure.org#tbl) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r3)"
+  "error" : "Error processing Unit: 'tbl': The unit \"tbl\" is unknown at character 1; The code \"tbl\" is not valid in the system http://unitsofmeasure.org; The code provided (http://unitsofmeasure.org#tbl) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "mmol/L"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "mmol/L",
   "code" : "mmol/L",
-  "system" : "http://unitsofmeasure.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://unitsofmeasure.org",
-  "code" : "[lb_av]"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "display" : "[lb_av]",
-  "code" : "[lb_av]",
   "system" : "http://unitsofmeasure.org"
 }
 -------------------------------------------------------------------------------------

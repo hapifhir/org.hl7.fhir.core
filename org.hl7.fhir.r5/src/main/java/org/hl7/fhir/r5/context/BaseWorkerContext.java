@@ -925,7 +925,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public ValidationResult validateCode(ValidationOptions options, String code, ValueSet vs) {
     assert options != null;
     Coding c = new Coding(null, code, null);
-    return validateCode(options.guessSystem(), c, vs);
+    return validateCode(options.withGuessSystem(), c, vs);
   }
 
 
@@ -1074,8 +1074,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     
+    if (localError != null && txClient == null) {
+      return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_LOCALLY, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);
+    }
     if (!options.isUseServer()) {
-      return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);
+      return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);
     }
     String codeKey = getCodeKey(code);
     if (unsupportedCodeSystems.contains(codeKey)) {
@@ -1099,7 +1102,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
     }
     if (!res.isOk() && localError != null) {
-      res.setMessage("Local Error: "+localError+". Server Error: "+res.getMessage());
+      res.setDiagnostics("Local Error: "+localError.trim()+". Server Error: "+res.getMessage());
     }
     updateUnsupportedCodeSystems(res, code, codeKey);
     if (txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
@@ -1169,13 +1172,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
-    if (!Utilities.noString(options.getLanguage())) {
-      pIn.addParameter("displayLanguage", options.getLanguage());
+    for (String s : options.getLanguages()) {
+      pIn.addParameter("displayLanguage", s);
     }
     if (options.getValueSetMode() != ValueSetMode.ALL_CHECKS) {
       pIn.addParameter("valueSetMode", options.getValueSetMode().toString());
     }
-    if (options.versionFlexible()) {
+    if (options.isVersionFlexible()) {
       pIn.addParameter("default-to-latest-version", true);     
     }
   }
@@ -1201,6 +1204,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
         return res;
       } catch (Exception e) {
+        e.printStackTrace();
         if (e instanceof NoTerminologyServiceException) {
           return new ValidationResult(IssueSeverity.ERROR, "No Terminology Service", TerminologyServiceErrorClass.NOSERVICE);
         }
@@ -1220,7 +1224,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       Parameters pIn = constructParameters(options, code);
       res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
-      res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog.getLastId());
+      res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
@@ -1352,11 +1356,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!ok) {
       return new ValidationResult(IssueSeverity.ERROR, message+" (from "+txClient.getAddress()+")", err).setTxLink(txLog.getLastId());
     } else if (message != null && !message.equals("No Message returned")) { 
-      return new ValidationResult(IssueSeverity.WARNING, message+" (from "+txClient.getAddress()+")", system, new ConceptDefinitionComponent().setDisplay(display).setCode(code)).setTxLink(txLog.getLastId());
+      return new ValidationResult(IssueSeverity.WARNING, message+" (from "+txClient.getAddress()+")", system, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog.getLastId());
     } else if (display != null) {
-      return new ValidationResult(system, new ConceptDefinitionComponent().setDisplay(display).setCode(code)).setTxLink(txLog.getLastId());
+      return new ValidationResult(system, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog.getLastId());
     } else {
-      return new ValidationResult(system, new ConceptDefinitionComponent().setCode(code)).setTxLink(txLog.getLastId());
+      return new ValidationResult(system, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog.getLastId());
     }
   }
 

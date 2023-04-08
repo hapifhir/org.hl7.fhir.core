@@ -582,6 +582,7 @@ public class I18nConstants {
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_INCLUDES_OR_EXPANSION = "Unable_to_resolve_system__value_set_has_no_includes_or_expansion";
   public static final String UNABLE_TO_RESOLVE_VALUE_SET_ = "Unable_to_resolve_value_Set_";
   public static final String UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER = "Unable_to_validate_code_without_using_server";
+  public static final String UNABLE_TO_VALIDATE_LOCALLY = "UNABLE_TO_VALIDATE_LOCALLY";
   public static final String UNDEFINED_ATTRIBUTE__ON__FOR_TYPE__PROPERTIES__ = "Undefined_attribute__on__for_type__properties__";
   public static final String UNDEFINED_ELEMENT_ = "Undefined_element_";
   public static final String UNEXPECTED_CONDITION_IN_DIFFERENTIAL_TYPESLICETYPELISTSIZE__10_AND_IMPLICIT_SLICE_NAME_DOES_NOT_CONTAIN_A_VALID_TYPE__AT_ = "Unexpected_condition_in_differential_typeslicetypelistsize__10_and_implicit_slice_name_does_not_contain_a_valid_type__at_";
@@ -854,6 +855,8 @@ public class I18nConstants {
   public static final String CONCEPTMAP_GROUP_TARGET_INCOMPLETE = "CONCEPTMAP_GROUP_TARGET_INCOMPLETE";
   public static final String UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE = "UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE";
   public static final String SD_NO_TYPE_CODE_ON_CODE = "SD_NO_TYPE_CODE_ON_CODE";
+  public static final String UKNOWN_CODESYSTEM = "UKNOWN_CODESYSTEM";
+  public static final String UKNOWN_CODESYSTEM_VERSION = "UKNOWN_CODESYSTEM_VERSION";
 }
 
 

@@ -111,11 +111,13 @@ public interface IWorkerContext {
 
   class ValidationResult {
     private ConceptDefinitionComponent definition;
+    private String preferredDisplay;
     private String system;
     private IssueSeverity severity;
     private String message;
     private TerminologyServiceErrorClass errorClass;
     private String txLink;
+    private String diagnostics;
 
     @Override
     public String toString() {
@@ -128,16 +130,18 @@ public interface IWorkerContext {
       this.message = message;
     }
 
-    public ValidationResult(String system, ConceptDefinitionComponent definition) {
+    public ValidationResult(String system, ConceptDefinitionComponent definition, String preferredDisplay) {
       this.system = system;
       this.definition = definition;
+      this.preferredDisplay = preferredDisplay;
     }
 
-    public ValidationResult(IssueSeverity severity, String message, String system, ConceptDefinitionComponent definition) {
+    public ValidationResult(IssueSeverity severity, String message, String system, ConceptDefinitionComponent definition, String preferredDisplay) {
       this.severity = severity;
       this.message = message;
       this.system = system;
       this.definition = definition;
+      this.preferredDisplay = preferredDisplay;
     }
 
     public ValidationResult(IssueSeverity severity, String message, TerminologyServiceErrorClass errorClass) {
@@ -155,7 +159,11 @@ public interface IWorkerContext {
     }
 
     public String getDisplay() {
-      return definition == null ? null : definition.getDisplay();
+      if (preferredDisplay != null) {
+        return preferredDisplay; 
+      } else {
+        return definition == null ? null : definition.getDisplay();
+      }
     }
 
     public String getCode() {
@@ -212,6 +220,14 @@ public interface IWorkerContext {
 
     public boolean hasMessage() {
       return message != null;
+    }
+
+    public String getDiagnostics() {
+      return diagnostics;
+    }
+
+    public void setDiagnostics(String diagnostics) {
+      this.diagnostics = diagnostics;
     }
 
     public Coding asCoding() {

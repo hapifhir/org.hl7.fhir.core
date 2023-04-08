@@ -1,28 +1,9 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
-  "code" : "US"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction--0", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "United States of America",
-  "code" : "US",
-  "system" : "urn:iso:std:iso:3166"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:iso:std:iso:3166",
-  "code" : "US"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "United States of America",
-  "code" : "US",
-  "system" : "urn:iso:std:iso:3166"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:iso:std:iso:3166",
-  "code" : "NO"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+  "code" : "NO",
+  "display" : "Norway"
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Norway",
   "code" : "NO",
@@ -32,7 +13,7 @@ v: {
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "US"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction--0", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "display" : "United States of America",
   "code" : "US",
@@ -42,7 +23,7 @@ v: {
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "US"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction--0", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "United States of America",
   "code" : "US",
@@ -51,9 +32,8 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
-  "code" : "NO",
-  "display" : "Norway"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+  "code" : "NO"
+}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Norway",
   "code" : "NO",

@@ -78,6 +78,9 @@ public class Params {
   public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
   public static final String JURISDICTION = "-jurisdiction";
   public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
+  public static final String SRC_LANG = "-src-lang";
+  public static final String TGT_LANG = "-tgt-lang";
+  
 
   public static final String RUN_TESTS = "-run-tests";
 
@@ -291,8 +294,7 @@ public class Params {
           throw new Error("Specified -txCache without indicating file");
         else
           cliContext.setTxCache(args[++i]);
-      }
-      else if (args[i].equals(LOG)) {
+      } else if (args[i].equals(LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -log without indicating file");
         else
@@ -302,6 +304,16 @@ public class Params {
           throw new Error("Specified -language without indicating language");
         else
           cliContext.setLang(args[++i]);
+      } else if (args[i].equals(SRC_LANG)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -src-lang without indicating file");
+        else
+          cliContext.setSrcLang(args[++i]);
+      } else if (args[i].equals(TGT_LANG)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -tgt-lang without indicating file");
+        else
+          cliContext.setTgtLang(args[++i]);
       } else if (args[i].equals(JURISDICTION)) {
         if (i + 1 == args.length)
           throw new Error("Specified -jurisdiction without indicating jurisdiction");

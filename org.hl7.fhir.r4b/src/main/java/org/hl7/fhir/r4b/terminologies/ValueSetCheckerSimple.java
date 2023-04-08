@@ -131,7 +131,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         CodeSystem cs = resolveCodeSystem(c.getSystem());
         ValidationResult res = null;
         if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
-          res = context.validateCode(options.noClient(), c, null);
+          res = context.validateCode(options.withNoClient(), c, null);
         } else {
           res = validateCode(c, cs);
         }
@@ -668,7 +668,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       vs.setUrl(valueset.getUrl()+"--"+vsiIndex);
       vs.setVersion(valueset.getVersion());
       vs.getCompose().addInclude(vsi);
-      ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
+      ValidationResult res = context.validateCode(options.withNoClient(), new Coding(system, code, null), vs);
       if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
         if (warnings != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
           warnings.add(context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system));

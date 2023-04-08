@@ -454,7 +454,12 @@ public class FHIRToolingClient {
 
   public ValueSet expandValueset(ValueSet source, Parameters expParams, Map<String, String> params) {
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
-    p.addParameter().setName("valueSet").setResource(source);
+    if (source != null) {
+      p.addParameter().setName("valueSet").setResource(source);
+    }
+    if (params == null) {
+      params = new HashMap<>();
+    }
     for (String n : params.keySet()) {
       p.addParameter().setName(n).setValue(new StringType(params.get(n)));
     }
@@ -465,7 +470,7 @@ public class FHIRToolingClient {
         ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
         getPreferredResourceFormat(),
         generateHeaders(),
-        "ValueSet/$expand?url=" + source.getUrl(),
+        source == null ? "ValueSet/$expand" : "ValueSet/$expand?url=" + source.getUrl(),
         TIMEOUT_OPERATION_EXPAND);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());

@@ -81,7 +81,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.LangaugeUtils;
+import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.extensions.Extensions;
 import org.hl7.fhir.r5.extensions.ExtensionsUtils;
@@ -290,7 +290,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     ConceptDefinitionDesignationComponent tu = expParams.hasParameter("displayLanguage") ? getMatchingLang(designations, expParams.getParameterString("displayLanguage")) : null;
     if (tu != null) {
       n.setDisplay(tu.getValue());        
-    } else if (display != null && (srcLang == null || dstLang == null || LangaugeUtils.matches(dstLang, srcLang))) {
+    } else if (display != null && (srcLang == null || dstLang == null || LanguageUtils.matches(dstLang, srcLang))) {
       n.setDisplay(display);
       usedDisplay = true;
     } else {

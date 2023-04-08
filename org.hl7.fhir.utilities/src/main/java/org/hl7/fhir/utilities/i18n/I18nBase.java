@@ -85,9 +85,9 @@ public abstract class I18nBase {
     String message = theMessage;
     if (messageExistsForLocale(theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
-        message = MessageFormat.format(i18nMessages.getString(theMessage), theMessageArguments);
+        message = MessageFormat.format(i18nMessages.getString(theMessage).trim(), theMessageArguments);
       } else {
-        message = i18nMessages.getString(theMessage);
+        message = i18nMessages.getString(theMessage).trim();
       }
     }
     return message;
