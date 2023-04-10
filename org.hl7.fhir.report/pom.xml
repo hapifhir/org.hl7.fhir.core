@@ -16,7 +16,6 @@
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
-        <jacoco_version>0.8.5</jacoco_version>
     </properties>
 
     <dependencies>
