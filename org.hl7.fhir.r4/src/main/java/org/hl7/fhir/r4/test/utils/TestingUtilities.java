@@ -51,10 +51,7 @@ import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.model.Parameters;
-import org.hl7.fhir.utilities.CSFile;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.ToolGlobalSettings;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
@@ -490,8 +487,8 @@ public class TestingUtilities {
      */
 
     String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
-    if (dir == null && ToolGlobalSettings.hasTestsPath()) {
-      dir = ToolGlobalSettings.getTestsPath();
+    if (dir == null && FhirSettings.getInstance().hasFhirTestCasesPath()) {
+      dir = FhirSettings.getInstance().getFhirTestCasesPath();
     }
     if (dir != null && new CSFile(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));

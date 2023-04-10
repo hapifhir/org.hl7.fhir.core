@@ -166,8 +166,8 @@ public class PathBuilder {
     if ("[tmp]".equals(a)) {
       if (hasCTempDir()) {
         return Utilities.C_TEMP_DIR;
-      } else if (ToolGlobalSettings.hasTempPath()) {
-        return ToolGlobalSettings.getTempPath();
+      } else if (FhirSettings.getInstance().hasTempPath()) {
+        return FhirSettings.getInstance().getTempPath();
       } else {
         return System.getProperty("java.io.tmpdir");
       }

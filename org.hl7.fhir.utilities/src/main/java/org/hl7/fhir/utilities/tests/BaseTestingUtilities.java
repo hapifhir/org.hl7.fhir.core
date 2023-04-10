@@ -1,10 +1,7 @@
 package org.hl7.fhir.utilities.tests;
 
 import org.apache.commons.io.IOUtils;
-import org.hl7.fhir.utilities.CSFile;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.ToolGlobalSettings;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -25,8 +22,8 @@ public class BaseTestingUtilities {
      */
 
     String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
-    if (dir == null && ToolGlobalSettings.hasTestsPath()) {
-      dir = ToolGlobalSettings.getTestsPath();
+    if (dir == null && FhirSettings.getInstance().hasFhirTestCasesPath()) {
+      dir = FhirSettings.getInstance().getFhirTestCasesPath();
     }
     if (dir != null && new CSFile(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
@@ -49,8 +46,8 @@ public class BaseTestingUtilities {
   
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
     String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
-    if (dir == null && ToolGlobalSettings.hasTestsPath()) {
-      dir = ToolGlobalSettings.getTestsPath();
+    if (dir == null && FhirSettings.getInstance().hasFhirTestCasesPath()) {
+      dir = FhirSettings.getInstance().getFhirTestCasesPath();
     }
     if (dir != null && new File(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
@@ -67,8 +64,8 @@ public class BaseTestingUtilities {
 
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
     String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
-    if (dir == null && ToolGlobalSettings.hasTestsPath()) {
-      dir = ToolGlobalSettings.getTestsPath();
+    if (dir == null && FhirSettings.getInstance().hasFhirTestCasesPath()) {
+      dir = FhirSettings.getInstance().getFhirTestCasesPath();
     }
     if (dir != null && new File(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
@@ -85,8 +82,8 @@ public class BaseTestingUtilities {
 
   public static boolean findTestResource(String... paths) throws IOException {
     String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
-    if (dir == null && ToolGlobalSettings.hasTestsPath()) {
-      dir = ToolGlobalSettings.getTestsPath();
+    if (dir == null && FhirSettings.getInstance().hasFhirTestCasesPath()) {
+      dir = FhirSettings.getInstance().getFhirTestCasesPath();
     }
     if (dir != null && new File(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
@@ -108,7 +105,7 @@ public class BaseTestingUtilities {
   }
 
   public static String tempFolder(String name) throws IOException {
-    String path = Utilities.path(ToolGlobalSettings.hasTempPath() ? ToolGlobalSettings.getTempPath() : "[tmp]", name);
+    String path = Utilities.path(FhirSettings.getInstance().hasTempPath() ? FhirSettings.getInstance().getTempPath() : "[tmp]", name);
     Utilities.createDirectory(path);
     return path;
   }

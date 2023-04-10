@@ -398,9 +398,7 @@ public class ValidationService {
     ValidationEngine validationEngine = getValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(timeTracker).withUserAgent("fhir/validator").fromSource(definitions);
 
     System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
-    final FhirSettings fhirSettings = cliContext.getFhirSettingsFile() != null
-      ? new FhirSettingsLoader<FhirSettings>().getFhirSettings(cliContext.getFhirSettingsFile())
-      : new FhirSettingsLoader<FhirSettings>().getFhirSettings();
+    final FhirSettings fhirSettings = FhirSettings.getInstance(cliContext.getFhirSettingsFile());
     validationEngine.setFhirSettings(fhirSettings);
 
     loadIgsAndExtensions(validationEngine, cliContext, timeTracker);
