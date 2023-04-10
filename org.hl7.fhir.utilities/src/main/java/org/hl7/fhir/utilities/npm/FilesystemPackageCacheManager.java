@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.sql.Timestamp;
@@ -24,20 +25,17 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.IPackageProvider;
+
 import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
 import org.slf4j.Logger;
@@ -101,7 +99,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     boolean handlesPackage(String id, String version);
     InputStreamWithSrc provide(String id, String version) throws IOException;
   }
-  private static IPackageProvider packageProvider;
+
+  @Getter
+  @Setter
+  private IPackageProvider packageProvider;
 
   //  private static final String SECONDARY_SERVER = "http://local.fhir.org:8080/packages";
   public static final String PACKAGE_REGEX = "^[a-zA-Z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+$";
@@ -127,6 +128,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
   
   public void init(FilesystemPackageCacheMode mode) throws IOException {
+    packageProvider = initPackageProvider();
     myPackageServers.addAll(PackageServer.publicServers());
 
     switch (mode) {
@@ -158,6 +160,29 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           temporaryPackages.add(NpmPackage.fromPackage(new FileInputStream(f)));
         }
       }
+    }
+  }
+
+  private IPackageProvider initPackageProvider() {
+    String className = new UtilitiesPropertiesImpl().getIPackageProviderClassName();
+    if (className == null) {
+      return null;
+    }
+    Class<IPackageProvider> clazz = null;
+    try {
+      clazz = (Class<IPackageProvider>) Class.forName(className);
+      IPackageProvider packageProvider = clazz.getDeclaredConstructor().newInstance();
+      return packageProvider;
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    } catch (InstantiationException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(e);
+    } catch (NoSuchMethodException e) {
+      throw new RuntimeException(e);
+    } catch (InvocationTargetException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -997,14 +1022,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   public void setSuppressErrors(boolean suppressErrors) {
     this.suppressErrors = suppressErrors;
-  }
-
-  public static IPackageProvider getPackageProvider() {
-    return packageProvider;
-  }
-
-  public static void setPackageProvider(IPackageProvider packageProvider) {
-    FilesystemPackageCacheManager.packageProvider = packageProvider;
   }
 
   

@@ -43,7 +43,7 @@ public class ResourceValidationTests {
 
 
   private void runTest(String filename) throws IOException, FileNotFoundException, Exception {
-    TestingUtilities.injectCorePackageLoader();
+
     if (val == null) {
       ctxt = TestingUtilities.getSharedWorkerContext();
       engine = TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", ValidationEngineTests.DEF_TX, null, FhirPublication.R5, true, "5.0.0");

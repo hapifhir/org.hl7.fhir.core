@@ -25,20 +25,6 @@ import org.hl7.fhir.utilities.tests.TestConfig;
 
 public class TestingUtilities extends BaseTestingUtilities {
 
-  public static class PackageProvider implements IPackageProvider {
-
-    @Override
-    public boolean handlesPackage(String id, String version) {
-      return id.equals("hl7.fhir.r5.core");
-    }
-
-    @Override
-    public InputStreamWithSrc provide(String id, String version) throws IOException {
-      return new InputStreamWithSrc(TestingUtilities.loadR5CorePackageSource(), "Test Case Repository", "5.0.0");
-    }
-
-  }
-
   static public Map<String, IWorkerContext> fcontexts;
 
   final static public String DEFAULT_CONTEXT_VERSION = "5.0.0";
@@ -109,7 +95,7 @@ public class TestingUtilities extends BaseTestingUtilities {
     return NpmPackage.fromPackage(loadR5CorePackageSource());
   }
 
-  private static InputStream loadR5CorePackageSource() throws IOException {
+  protected static InputStream loadR5CorePackageSource() throws IOException {
     return TestingUtilities.loadTestResourceStream("r5", "packages", "hl7.fhir.r5.core.tgz");
   }
 
@@ -170,10 +156,5 @@ public class TestingUtilities extends BaseTestingUtilities {
       return s;
     throw new Error("FHIR US directory not configured");
   }
-
-  public static void injectCorePackageLoader() {
-    FilesystemPackageCacheManager.setPackageProvider(new TestingUtilities.PackageProvider());    
-  }
-
 
 }

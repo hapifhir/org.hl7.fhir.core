@@ -13,7 +13,6 @@ public class TransformationTests {
 
   @Test
   public void testCCDA() throws Exception {
-    TestingUtilities.injectCorePackageLoader();
 
     String mappings = Utilities.path(TestingUtilities.home(), "tests", "transform-examples", "ccda");
     String input = Utilities.path(TestingUtilities.home(), "tests", "transform-examples", "ccda.xml");
