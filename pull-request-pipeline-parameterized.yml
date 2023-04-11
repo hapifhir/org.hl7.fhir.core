@@ -24,7 +24,7 @@ jobs:
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
-              options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -Djacoco.skip=${{variables.runJaCoCo}}'
+              options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -Djacoco.skip=$(runJaCoCo)'
               mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
@@ -53,7 +53,7 @@ jobs:
           # Publishes the test results to build artifacts.
           - task: PublishCodeCoverageResults@1
             displayName: 'Publish JaCoCo test results'
-            condition: $(runJaCoCo)
+            condition: runJaCoCo
             inputs:
               codeCoverageTool: 'JaCoCo'
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
