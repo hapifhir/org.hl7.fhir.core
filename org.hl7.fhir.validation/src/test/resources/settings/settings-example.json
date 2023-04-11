@@ -1,3 +1,13 @@
 {
-  "apiKey": "dummy-api-key"
+  "apiKey": "dummy-api-key",
+  "npmPath":  "dummy-npm-path",
+  "rubyPath": "dummy-ruby-path",
+  "fhirTestCasesPath": "dummy-fhir-test-cases-path",
+  "diffToolPath": "dummy-diff-tool-path",
+  "tempPath": "dummy-temp-path",
+  "testIgsPath": "dummy-test-igs-path",
+  "unusedField" : "unused",
+  "unusedData" : {
+    "unusedDateField" : "unused-data"
+  }
 }

@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
@@ -47,11 +48,11 @@ public class FhirSettings {
     return fhirSettings.getFhirTestCasesPath();
   }
 
-  public boolean hasDiffPath() {
+  public boolean hasDiffToolPath() {
     return fhirSettings.getDiffToolPath() != null;
   }
 
-  public String getDiffPath() {
+  public String getDiffToolPath() {
     return fhirSettings.getDiffToolPath();
   }
 
@@ -112,6 +113,7 @@ public class FhirSettings {
     }
 
     final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     final InputStream inputStream = new FileInputStream(file);
     final FhirSettingsPOJO output = objectMapper.readValue(inputStream, FhirSettingsPOJO.class);
 
@@ -119,6 +121,6 @@ public class FhirSettings {
   }
 
   private static String getDefaultSettingsPath() throws IOException {
-    return Utilities.path(System.getProperty("user.home"), "fhir-settings.json");
+    return Utilities.path(System.getProperty("user.home"), ".fhir", "fhir-settings.json");
   }
 }
