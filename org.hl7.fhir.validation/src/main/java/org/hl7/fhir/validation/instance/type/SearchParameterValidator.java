@@ -101,7 +101,7 @@ public class SearchParameterValidator extends BaseValidator {
       pass.get(i).setOperation(Operation.Union);
       pass.get(i).setOpNext(pass.get(i+1));
     }
-    return pass.get(0).toString();
+    return pass.size() > 0 ? pass.get(0).toString() : null;
   }
 
 }
