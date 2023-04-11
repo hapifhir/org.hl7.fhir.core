@@ -13,7 +13,7 @@ jobs:
           codecov: $(CODECOV_TOKEN)
           VERSION:
           JAVA_TOOL_OPTIONS: ${{image.javaToolOptions}}
-          runJaCoCo: $[eq(${{image.displayName}}, 'ubuntu-latest-java-11')]
+          runJaCoCo: $[eq(variables['image.displayName'], 'ubuntu-latest-java-11')]
 
         steps:
           - task: Cache@2
