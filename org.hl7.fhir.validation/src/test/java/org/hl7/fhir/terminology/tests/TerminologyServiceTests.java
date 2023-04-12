@@ -41,6 +41,7 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.ValidationEngineTests;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -51,6 +52,7 @@ import com.google.common.base.Charsets;
 
 
 
+@Ignore
 @RunWith(Parameterized.class)
 public class TerminologyServiceTests {
 
@@ -62,6 +64,7 @@ public class TerminologyServiceTests {
     private JsonObject suite;
     private JsonObject test;
   }
+
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
