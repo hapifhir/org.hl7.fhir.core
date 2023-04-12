@@ -13,6 +13,7 @@ jobs:
           codecov: $(CODECOV_TOKEN)
           VERSION:
           JAVA_TOOL_OPTIONS: ${{image.javaToolOptions}}
+          skipJaCoCo: $[not(eq(variables['currentName'], 'ubuntu-latest-java-11'))]
 
         steps:
           - task: Cache@2
@@ -23,7 +24,7 @@ jobs:
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
-              options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+              options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -Djacoco.skip=$(skipJaCoCo)'
               mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '${{image.jdkVersion}}'
@@ -47,12 +48,12 @@ jobs:
           # Upload test results to codecov
           - script: bash <(curl https://codecov.io/bash) -t $(codecov)
             displayName: 'codecov Bash Uploader'
-            condition: eq(variables.currentName, 'ubuntu-latest-java-11')
+            condition: eq(variables.skipJaCoCo, false)
 
           # Publishes the test results to build artifacts.
           - task: PublishCodeCoverageResults@1
             displayName: 'Publish JaCoCo test results'
-            condition: eq(variables.currentName, 'ubuntu-latest-java-11')
+            condition: eq(variables.skipJaCoCo, false)
             inputs:
               codeCoverageTool: 'JaCoCo'
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
