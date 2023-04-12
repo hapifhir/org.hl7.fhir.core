@@ -48,7 +48,7 @@ jobs:
           # Upload test results to codecov
           - script: bash <(curl https://codecov.io/bash) -t $(codecov)
             displayName: 'codecov Bash Uploader'
-            condition: eq(variables.currentName, 'ubuntu-latest-java-11')
+            condition: eq(variables.skipJaCoCo, false)
 
           # Publishes the test results to build artifacts.
           - task: PublishCodeCoverageResults@1
