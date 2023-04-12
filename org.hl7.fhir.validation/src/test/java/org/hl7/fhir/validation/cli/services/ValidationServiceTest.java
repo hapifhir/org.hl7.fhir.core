@@ -10,7 +10,6 @@ import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -40,7 +39,6 @@ class ValidationServiceTest {
 
   final String DUMMY_SV = "1.2.3";
 
-  @Disabled
   @Test
   void validateSources() throws Exception {
     TestingUtilities.injectCorePackageLoader();
