@@ -678,7 +678,9 @@ public class HumanName extends Type implements ICompositeType {
     List<StringType> nameParts = new ArrayList<StringType>();
     nameParts.addAll(getPrefix());
     nameParts.addAll(getGiven());
-    nameParts.add(getFamilyElement());
+    if (hasFamilyElement()) {
+      nameParts.add(getFamilyElement());
+    }
     nameParts.addAll(getSuffix());
     if (nameParts.size() > 0) {
       return joinStringsSpaceSeparated(nameParts);
@@ -693,17 +695,17 @@ public class HumanName extends Type implements ICompositeType {
    * TODO: replace with call to ca.uhn.fhir.util.DatatypeUtil.joinStringsSpaceSeparated when HAPI upgrades to 1.4
    */
   private static String joinStringsSpaceSeparated(List<? extends IPrimitiveType<String>> theStrings) {
-    StringBuilder b = new StringBuilder();
-    for (IPrimitiveType<String> next : theStrings) {
-      if (next.isEmpty()) {
+    StringBuilder stringBuilder = new StringBuilder();
+    for (IPrimitiveType<String> string : theStrings) {
+      if (string.isEmpty()) {
         continue;
       }
-      if (b.length() > 0) {
-        b.append(' ');
+      if (stringBuilder.length() > 0) {
+        stringBuilder.append(' ');
       }
-      b.append(next.getValue());
+      stringBuilder.append(string.getValue());
     }
-    return b.toString();
+    return stringBuilder.toString();
   }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
