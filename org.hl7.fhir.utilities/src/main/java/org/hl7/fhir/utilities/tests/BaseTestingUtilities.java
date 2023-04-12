@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.tests;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import java.io.*;
 import java.nio.file.Path;

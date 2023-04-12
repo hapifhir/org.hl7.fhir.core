@@ -1,20 +1,38 @@
-package org.hl7.fhir.utilities;
+package org.hl7.fhir.utilities.settings;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
+import org.hl7.fhir.utilities.Utilities;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+
+
 public class FhirSettings {
 
+  private static String explicitFilePath = null;
 
+  public static void setExplicitFilePath(String explicitFilePath) {
+    if (instance != null) {
+      throw new IllegalStateException("Attempted to set explicitFilePath after FhirSettings has already been initialized with path: " + instance.filePath);
+    }
+    if (FhirSettings.explicitFilePath != null) {
+      throw new IllegalStateException("Attempted to set explicitFilePath to " + explicitFilePath + " when already set to " + FhirSettings.explicitFilePath);
+    }
+    FhirSettings.explicitFilePath = explicitFilePath;
+  }
   final FhirSettingsPOJO fhirSettings;
 
-  private FhirSettings(FhirSettingsPOJO fhirSettings) {
+  @Getter
+  final String filePath;
+  private FhirSettings(FhirSettingsPOJO fhirSettings, String filePath) {
+
     this.fhirSettings = fhirSettings;
+    this.filePath = filePath;
   }
 
   public String getApiKey() {
@@ -77,23 +95,16 @@ public class FhirSettings {
   public static FhirSettings getInstance()  {
     if (instance == null) {
       try {
-        instance = getInstanceFromPath(null);
+        instance = getInstanceFromPath(explicitFilePath);
       } catch (IOException e) {
         e.printStackTrace();
-        instance = new FhirSettings(new FhirSettingsPOJO());
+        instance = new FhirSettings(new FhirSettingsPOJO(), null);
       }
     }
     return instance;
   }
 
-  public static FhirSettings getInstance(String explicitFilePath) throws IOException {
-    if (explicitFilePath == null) {
-      return getInstance();
-    }
-    return getInstanceFromPath(explicitFilePath);
-  }
-
-  private static FhirSettings getInstanceFromPath(String explicitFilePath) throws IOException {
+  protected static FhirSettings getInstanceFromPath(String explicitFilePath) throws IOException {
       String pathFromSystemProperties;
       try {
         pathFromSystemProperties = getDefaultSettingsPath();
@@ -102,7 +113,7 @@ public class FhirSettings {
       }
       final String filePath = explicitFilePath != null ? explicitFilePath :
         System.getProperty("fhir.settings.path", pathFromSystemProperties);
-    return new FhirSettings(getFhirSettingsPOJO(filePath));
+    return new FhirSettings(getFhirSettingsPOJO(filePath), filePath);
   }
 
   private static FhirSettingsPOJO getFhirSettingsPOJO(String filePath) throws IOException {

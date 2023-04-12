@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.With;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import java.io.File;
 import java.nio.file.Path;

@@ -270,12 +270,5 @@ class ValidationServiceTest implements ResourceLoaderTests {
     cliContext.setFhirSettingsFile(path.toAbsolutePath().toString());
     validationService.buildValidationEngine(cliContext, null, timeTracker);
 
-    verify(validationEngine).setFhirSettings(argThat(settings -> "dummy-api-key".equals(settings.getApiKey())));
-    verify(validationEngine).setFhirSettings(argThat(settings -> "dummy-npm-path".equals(settings.getNpmPath())));
-    verify(validationEngine).setFhirSettings(argThat(settings -> "dummy-ruby-path".equals(settings.getRubyPath())));
-    verify(validationEngine).setFhirSettings(argThat(settings -> "dummy-fhir-test-cases-path".equals(settings.getFhirTestCasesPath())));
-    verify(validationEngine).setFhirSettings(argThat(settings -> "dummy-diff-tool-path".equals(settings.getDiffToolPath())));
-    verify(validationEngine).setFhirSettings(argThat(settings -> "dummy-temp-path".equals(settings.getTempPath())));
-    verify(validationEngine).setFhirSettings(argThat(settings -> "dummy-test-igs-path".equals(settings.getTestIgsPath())));
   }
 }

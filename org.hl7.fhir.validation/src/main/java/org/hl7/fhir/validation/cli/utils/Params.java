@@ -88,7 +88,7 @@ public class Params {
   public static final String TARGET = "-target";
   public static final String SOURCE = "-source";
   public static final String FILTER = "-filter";
-  private static final String API_KEY_FILE = "-api-key-file";
+  private static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -125,7 +125,7 @@ public class Params {
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals(VERSION)) {
         cliContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
-      } else if (args[i].equals(API_KEY_FILE)) {
+      } else if (args[i].equals(FHIR_SETTINGS_PARAM)) {
         final String apiKeyFilePath = args[++i];
         if (! new File(apiKeyFilePath).exists()) {
           throw new Error("Cannot find api key file: " + apiKeyFilePath);
