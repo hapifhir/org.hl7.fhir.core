@@ -5,13 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
+import java.util.Map;
+
 @Data
 @Builder
 @Jacksonized
 @AllArgsConstructor
 public class FhirSettingsPOJO {
 
-  private String apiKey;
+  private String fhirDirectory;
+  private Map<String, String> apiKeys;
 
   private String npmPath;
 
@@ -26,7 +29,7 @@ public class FhirSettingsPOJO {
   private String testIgsPath;
 
   protected FhirSettingsPOJO() {
-    apiKey = null;
+    apiKeys = null;
     npmPath = null;
     rubyPath = null;
     fhirTestCasesPath = null;

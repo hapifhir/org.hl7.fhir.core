@@ -35,7 +35,7 @@ import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-class ValidationServiceTest implements ResourceLoaderTests {
+class ValidationServiceTest  {
 
   final String DUMMY_SOURCE = "dummySource";
   final String DUMMY_SOURCE1 = "dummySource1";
@@ -261,14 +261,10 @@ class ValidationServiceTest implements ResourceLoaderTests {
       }
     };
 
-    Path path = Files.createTempFile("fhir-settings", "json");
 
-    copyResourceToFile(path, "settings", "settings-example.json");
 
     CliContext cliContext = new CliContext();
 
-    cliContext.setFhirSettingsFile(path.toAbsolutePath().toString());
     validationService.buildValidationEngine(cliContext, null, timeTracker);
-
   }
 }

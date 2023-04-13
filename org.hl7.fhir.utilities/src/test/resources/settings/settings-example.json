@@ -1,5 +1,7 @@
 {
-  "apiKey": "dummy-api-key",
+  "apiKeys": {
+    "dummy-api-key": "dummy-api-key-value"
+  },
   "npmPath":  "dummy-npm-path",
   "rubyPath": "dummy-ruby-path",
   "fhirTestCasesPath": "dummy-fhir-test-cases-path",

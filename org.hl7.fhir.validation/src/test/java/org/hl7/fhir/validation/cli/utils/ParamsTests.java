@@ -20,9 +20,9 @@ public class ParamsTests {
   }
 
   @Test
-  void testApiKeyFile() throws Exception {
-    File tempFile = Files.createTempFile("api-keys", "ini").toFile();
-    CliContext cliContext = Params.loadCliContext(new String[]{"-api-key-file", tempFile.getAbsolutePath()});
+  void testFhirSettingsFile() throws Exception {
+    File tempFile = Files.createTempFile("fhir-settings", "json").toFile();
+    CliContext cliContext = Params.loadCliContext(new String[]{"-fhir-settings", tempFile.getAbsolutePath()});
     assertEquals(tempFile.getAbsolutePath(), cliContext.getFhirSettingsFile());
   }
 
