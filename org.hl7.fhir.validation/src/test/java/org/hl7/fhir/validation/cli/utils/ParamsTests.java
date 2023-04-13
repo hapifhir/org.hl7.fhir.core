@@ -27,11 +27,11 @@ public class ParamsTests {
   }
 
   @Test
-  void testApiKeyFileDoesntExist() {
+  void testFhirSettingsFileDoesntExist() {
 
     java.lang.Error error = Assertions.assertThrows(java.lang.Error.class, () -> {
-      CliContext cliContext = Params.loadCliContext(new String[]{"-api-key-file", "this-does-not-exist.ini"});
+      CliContext cliContext = Params.loadCliContext(new String[]{"-fhir-settings", "this-does-not-exist.json"});
     });
-    assertThat(error.getMessage(), containsString("this-does-not-exist.ini"));
+    assertThat(error.getMessage(), containsString("this-does-not-exist.json"));
   }
 }

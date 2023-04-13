@@ -126,11 +126,11 @@ public class Params {
       if (args[i].equals(VERSION)) {
         cliContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
       } else if (args[i].equals(FHIR_SETTINGS_PARAM)) {
-        final String apiKeyFilePath = args[++i];
-        if (! new File(apiKeyFilePath).exists()) {
-          throw new Error("Cannot find api key file: " + apiKeyFilePath);
+        final String fhirSettingsFilePath = args[++i];
+        if (! new File(fhirSettingsFilePath).exists()) {
+          throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
         }
-        cliContext.setFhirSettingsFile(apiKeyFilePath);
+        cliContext.setFhirSettingsFile(fhirSettingsFilePath);
       } else if (args[i].equals(OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -output without indicating output file");
