@@ -46,10 +46,19 @@ public class FhirSettingsTests implements ResourceLoaderTests {
   }
 
   @Test
-  public void testJavaSystemParameterFhirSettingsPath() throws IOException {
+  public void testJavaSystemPropertyFhirSettingsPath() throws IOException {
     final String dummyPath = "dummy-path";
     System.setProperty(FhirSettings.FHIR_SETTINGS_PATH, dummyPath);
     String actualPath = FhirSettings.getSettingsFilePath(null);
+    assertEquals(dummyPath, actualPath);
+  }
+
+  @Test
+  public void testExplicitSettingsPathSelected() throws IOException {
+    final String wrongDummyPath = "wrong-dummy-path";
+    final String dummyPath = "dummy-path";
+    System.setProperty(FhirSettings.FHIR_SETTINGS_PATH, wrongDummyPath);
+    String actualPath = FhirSettings.getSettingsFilePath(dummyPath);
     assertEquals(dummyPath, actualPath);
   }
 
