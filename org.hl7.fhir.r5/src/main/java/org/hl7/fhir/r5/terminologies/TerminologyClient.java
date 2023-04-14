@@ -47,6 +47,7 @@ public interface TerminologyClient {
   EnumSet<FhirPublication> getAllowedVersions();
   FhirPublication getActualVersion();
   
+  String getId();
   String getAddress();
   String getServerVersion();
   TerminologyCapabilities getTerminologyCapabilities() throws FHIRException;

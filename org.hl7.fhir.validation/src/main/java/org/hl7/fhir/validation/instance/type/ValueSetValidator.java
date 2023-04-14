@@ -203,6 +203,9 @@ public class ValueSetValidator extends BaseValidator {
       } else {
         boolean ok = vv.isOk();
         warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, code);
+        if (vv.getMessage() != null) {
+          hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, vv.getMessage());
+        }
       }
     } else {
       ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null).setVersion(version), null);

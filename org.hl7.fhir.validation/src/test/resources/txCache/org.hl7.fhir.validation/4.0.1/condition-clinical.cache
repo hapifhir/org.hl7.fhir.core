@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
   "code" : "active"
-}, "url": "http://hl7.org/fhir/ValueSet/condition-clinical--0", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/condition-clinical--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "display" : "Active",
   "code" : "active",
@@ -11,10 +11,10 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
-  "version" : "4.0.1",
+  "version" : "0.5.0",
   "code" : "active",
   "display" : "Active"
-}, "url": "http://hl7.org/fhir/ValueSet/condition-clinical", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/condition-clinical", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Active",
   "code" : "active",
@@ -23,12 +23,12 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
-  "version" : "4.0.1",
+  "version" : "0.5.0",
   "code" : "active"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "severity" : "error",
-  "error" : "Version '4.0.1' of the code system 'http://terminology.hl7.org/CodeSystem/condition-clinical' is not known (encountered paired with code = 'active'). ValidVersions = [0.5.0]; The code provided (http://terminology.hl7.org/CodeSystem/condition-clinical#active) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r4)",
-  "class" : "CODESYSTEM_UNSUPPORTED"
+  "display" : "Active",
+  "code" : "active",
+  "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical"
 }
 -------------------------------------------------------------------------------------

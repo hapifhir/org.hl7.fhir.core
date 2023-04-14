@@ -44,6 +44,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.special.TxTesterSorters;
 import org.hl7.fhir.validation.tests.ValidationEngineTests;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
@@ -133,7 +134,7 @@ public class TerminologyServiceTests {
     if (setup.test.asString("operation").equals("expand")) {
       expand(engine, req, resp, fp);
     } else if (setup.test.asString("operation").equals("validate-code")) {
-      validate(engine, req, resp, fp);      
+      validate(engine, setup.test.asString("name"), req, resp, fp);      
     } else {
       Assertions.fail("Unknown Operation "+setup.test.asString("operation"));
     }
@@ -152,6 +153,7 @@ public class TerminologyServiceTests {
         if (!p.hasParameter("excludeNested")) {
           removeParameter(vse.getValueset(), "excludeNested");
         }
+        TxTesterSorters.sortValueSet(vse.getValueset());
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
         String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj);
         if (diff != null) {
@@ -183,6 +185,9 @@ public class TerminologyServiceTests {
       case SERVER_ERROR:
         e.setCode(IssueType.EXCEPTION);
         break;
+      case TOO_COSTLY:
+        e.setCode(IssueType.TOOCOSTLY);
+        break;
       case UNKNOWN:
         e.setCode(IssueType.UNKNOWN);
         break;
@@ -212,12 +217,15 @@ public class TerminologyServiceTests {
     }
   }
 
-  private void validate(ValidationEngine engine, Resource req, String resp, String fp) throws JsonSyntaxException, FileNotFoundException, IOException {
+  private void validate(ValidationEngine engine, String name, Resource req, String resp, String fp) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) req;
     ValueSet vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
     ValidationOptions options = new ValidationOptions();
     if (p.hasParameter("displayLanguage")) {
       options = options.withLanguage(p.getParameterString("displayLanguage"));
+    }
+    if (p.hasParameter("valueSetMode") && "CHECK_MEMBERSHIP_ONLY".equals(p.getParameterString("valueSetMode"))) {
+       options = options.withCheckValueSetOnly();
     }
     ValidationResult vm;
     if (p.hasParameter("code")) {
@@ -229,12 +237,14 @@ public class TerminologyServiceTests {
       CodeableConcept cc = (CodeableConcept) p.getParameterValue("codeableConcept");
       vm = engine.getContext().validateCode(options, cc, vs);
     } else {
-      vm = null;
-      Assertions.fail("validate not done yet");
+      throw new Error("validate not done yet for this steup");
     }
     org.hl7.fhir.r5.model.Parameters res = new org.hl7.fhir.r5.model.Parameters();
     if (vm.getSystem() != null) {
       res.addParameter("system", vm.getSystem());
+    }
+    if (vm.getCode() != null) {
+      res.addParameter("code", vm.getCode());
     }
     if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
       res.addParameter("result", false);
@@ -247,12 +257,19 @@ public class TerminologyServiceTests {
     if (vm.getDisplay() != null) {
       res.addParameter("display", vm.getDisplay());
     }
+    if (vm.getIssues().size() > 0) {
+      OperationOutcome oo = new OperationOutcome();
+      oo.getIssue().addAll(vm.getIssues());
+      res.addParameter().setName("issues").setResource(oo);
+    }
+    TxTesterSorters.sortParameters(res);
 
     String pj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(res);
     String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-      TextFile.stringToFile(pj, fp);        
+      TextFile.stringToFile(pj, fp); 
+      System.out.println("Test "+name+"failed: "+diff);
     }
     Assertions.assertTrue(diff == null, diff);
   }

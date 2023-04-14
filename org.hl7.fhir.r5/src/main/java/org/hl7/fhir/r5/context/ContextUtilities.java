@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.context;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -399,6 +400,16 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       String u = map.getUrl();
       if (u.startsWith(start) && u.endsWith(end)) {
         res.add(map);
+      }
+    }
+    return res;
+  }
+
+  public List<String> fetchCodeSystemVersions(String system) {
+    List<String> res = new ArrayList<>();
+    for (CodeSystem cs : context.fetchResourcesByType(CodeSystem.class)) {
+      if (system.equals(cs.getUrl()) && cs.hasVersion()) {
+        res.add(cs.getVersion());
       }
     }
     return res;

@@ -3,7 +3,7 @@
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "code" : "1049640",
   "display" : "Acetaminophen 325 MG / Oxycodone Hydrochloride 5 MG Oral Tablet [Percocet]"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet [Percocet]",
   "code" : "1049640",

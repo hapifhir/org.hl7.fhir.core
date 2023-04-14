@@ -3,12 +3,12 @@
   "system" : "http://www.whocc.no/atc",
   "code" : "N02AA",
   "display" : "Barbiturates and derivatives"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Natural opium alkaloids",
   "code" : "N02AA",
   "system" : "http://www.whocc.no/atc",
   "severity" : "warning",
-  "error" : "The display \"Barbiturates and derivatives\" is not a valid display for the code {http://www.whocc.no/atc}N02AA - should be one of ['Natural opium alkaloids'] (from http://local.fhir.org/r4)"
+  "error" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA - should be 'Natural opium alkaloids', (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------

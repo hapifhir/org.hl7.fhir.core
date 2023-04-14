@@ -54,6 +54,7 @@ import org.hl7.fhir.utilities.Utilities;
 public class TerminologyClientR2 implements TerminologyClient {
 
   private final FHIRToolingClient client; // todo: use the R2 client
+  private String id;
 
   public EnumSet<FhirPublication> supportableVersions() {
     return EnumSet.of(FhirPublication.DSTU2);
@@ -81,8 +82,14 @@ public class TerminologyClientR2 implements TerminologyClient {
     return FhirPublication.DSTU2;
   }
 
-  public TerminologyClientR2(String address, String userAgent) throws URISyntaxException {
+  public TerminologyClientR2(String id, String address, String userAgent) throws URISyntaxException {
     client = new FHIRToolingClient(address, userAgent);
+    this.id = id;
+  }
+
+  @Override
+  public String getId() {
+    return id;
   }
 
   @Override

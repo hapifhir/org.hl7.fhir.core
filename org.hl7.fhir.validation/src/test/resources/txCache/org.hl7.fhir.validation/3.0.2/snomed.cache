@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "66493003"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Product containing theophylline (medicinal product)",
   "code" : "66493003",
@@ -13,7 +13,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "394899003",
   "display" : "oral administration of treatment"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Oral administration of treatment",
   "code" : "394899003",
@@ -24,33 +24,33 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "118246004",
   "display" : "Laboratory test finding (finding)"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Laboratory test finding",
   "code" : "118246004",
   "system" : "http://snomed.info/sct",
   "severity" : "warning",
-  "error" : "The display \"Laboratory test finding (finding)\" is not a valid display for the code {http://snomed.info/sct}118246004 - should be one of ['Laboratory test finding', 'Laboratory test observations', 'Laboratory test result', 'Laboratory test finding (navigational concept)'] (from http://local.fhir.org/r3)"
+  "error" : "Wrong Display Name 'Laboratory test finding (finding)' for http://snomed.info/sct#118246004 - should be one of 4 choices: 'Laboratory test finding, \"Laboratory test observations\", \"Laboratory test result\", \"Laboratory test finding (navigational concept)\"' (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "275711006",
   "display" : "Chemistry"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Serum chemistry test",
   "code" : "275711006",
   "system" : "http://snomed.info/sct",
   "severity" : "warning",
-  "error" : "The display \"Chemistry\" is not a valid display for the code {http://snomed.info/sct}275711006 - should be one of ['Serum chemistry test', 'Serum chemistry test (procedure)'] (from http://local.fhir.org/r3)"
+  "error" : "Wrong Display Name 'Chemistry' for http://snomed.info/sct#275711006 - should be one of 2 choices: 'Serum chemistry test, \"Serum chemistry test (procedure)\"' (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "281302008",
   "display" : "Above reference range"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Above reference range",
   "code" : "281302008",
@@ -61,7 +61,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "419891008",
   "display" : "Record artifact (record artifact)"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Record artifact (record artifact)",
   "code" : "419891008",
@@ -72,7 +72,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "371525003",
   "display" : "Clinical procedure report (record artifact)"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Clinical procedure report",
   "code" : "371525003",
@@ -83,7 +83,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "17621005",
   "display" : "Normal (qualifier value)"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Normal",
   "code" : "17621005",
@@ -94,7 +94,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "722172003",
   "display" : "Military health institution (environment)"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Military health institution (environment)",
   "code" : "722172003",
@@ -105,7 +105,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "394609007",
   "display" : "General surgery (qualifier value)"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "General surgery (qualifier value)",
   "code" : "394609007",
@@ -116,7 +116,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "71388002",
   "display" : "Procedure (procedure)"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Procedure",
   "code" : "71388002",
@@ -127,157 +127,172 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "823681000000100",
   "display" : "Outpatient letter"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 823681000000100 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"823681000000100\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#823681000000100) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 823681000000100 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '823681000000100' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "886921000000105",
   "display" : "Allergies and adverse reactions"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 886921000000105 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"886921000000105\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#886921000000105) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 886921000000105 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '886921000000105' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "1077881000000105",
   "display" : "Attendance details"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 1077881000000105 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"1077881000000105\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#1077881000000105) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 1077881000000105 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '1077881000000105' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "887181000000106",
   "display" : "Clinical summary"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 887181000000106 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"887181000000106\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#887181000000106) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 887181000000106 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '887181000000106' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "887161000000102",
   "display" : "Diagnoses"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 887161000000102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"887161000000102\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#887161000000102) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 887161000000102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '887161000000102' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "1052891000000108",
   "display" : "Referrer details"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 1052891000000108 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"1052891000000108\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#1052891000000108) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 1052891000000108 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '1052891000000108' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "715851000000102",
   "display" : "Examination findings"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 715851000000102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"715851000000102\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#715851000000102) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 715851000000102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '715851000000102' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "717121000000105",
   "display" : "History"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 717121000000105 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"717121000000105\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#717121000000105) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 717121000000105 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '717121000000105' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "933361000000108",
   "display" : "Medications and medical devices"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 933361000000108 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"933361000000108\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#933361000000108) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 933361000000108 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '933361000000108' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "887171000000109",
   "display" : "Procedures"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 887171000000109 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"887171000000109\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#887171000000109) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 887171000000109 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '887171000000109' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "887201000000105",
   "display" : "Plan and requested actions"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 887201000000105 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"887201000000105\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#887201000000105) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 887201000000105 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '887201000000105' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "1052951000000105",
   "display" : "Information and advice given"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 1052951000000105 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"1052951000000105\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#1052951000000105) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 1052951000000105 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '1052951000000105' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "886731000000109",
   "display" : "Patient demographics"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 886731000000109 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"886731000000109\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#886731000000109) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 886731000000109 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '886731000000109' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "887231000000104",
   "display" : "Person completing record"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 887231000000104 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"887231000000104\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#887231000000104) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 887231000000104 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '887231000000104' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "9290701000001101",
   "display" : "Optrex"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 9290701000001101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"9290701000001101\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#9290701000001101) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 9290701000001101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '9290701000001101' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "443938003",
   "display" : "Procedure carried out on subject"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Procedure carried out on subject (situation)",
   "code" : "443938003",
@@ -288,7 +303,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "17621005",
   "display" : "Normal"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Normal",
   "code" : "17621005",
@@ -298,7 +313,7 @@ v: {
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "27171005"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Urinalysis",
   "code" : "27171005",
@@ -335,9 +350,10 @@ v: {
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "11181000146103"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 11181000146103 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"11181000146103\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#11181000146103) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r3)"
+  "error" : "Unable to find code 11181000146103 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '11181000146103' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------

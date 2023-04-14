@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "%"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "%",
   "code" : "%",
@@ -12,7 +12,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "L/min"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "L/min",
   "code" : "L/min",
@@ -21,8 +21,28 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://unitsofmeasure.org",
+  "code" : "%"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+v: {
+  "display" : "percent",
+  "code" : "%",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "L/min"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-vitals-common--0' (from null)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
   "code" : "cm"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "cm",
   "code" : "cm",
@@ -32,16 +52,17 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "cm"
-}, "url": "https://bb/ValueSet/BBDemographicAgeUnit--0", "version": "20190731", "langs":"[null]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "https://bb/ValueSet/BBDemographicAgeUnit--0", "version": "20190731", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#cm) is not valid (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://bb/ValueSet/BBDemographicAgeUnit--0' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "min"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "min",
   "code" : "min",
@@ -51,7 +72,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "mmol/L"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "mmol/L",
   "code" : "mmol/L",
@@ -61,7 +82,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "kg"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "kg",
   "code" : "kg",
@@ -71,7 +92,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "kg/m2"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "kg/m2",
   "code" : "kg/m2",
@@ -81,7 +102,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "mm[Hg]"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "mm[Hg]",
   "code" : "mm[Hg]",
@@ -91,7 +112,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "wk"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "wk",
   "code" : "wk",
@@ -101,7 +122,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "mm[Hg]"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "display" : "millimeter of mercury",
   "code" : "mm[Hg]",
@@ -111,7 +132,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "{capsule}"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "{capsule}",
   "code" : "{capsule}",
@@ -121,7 +142,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "{patch}"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "{patch}",
   "code" : "{patch}",
@@ -131,7 +152,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "m"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "m",
   "code" : "m",
@@ -141,16 +162,17 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "m"
-}, "url": "http://hl7.org/fhir/ValueSet/age-units--0", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/age-units--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#m) is not valid (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/age-units--0' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "/min"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "/min",
   "code" : "/min",
@@ -160,7 +182,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "mg"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "mg",
   "code" : "mg",
@@ -170,7 +192,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "mm"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "mm",
   "code" : "mm",
@@ -180,7 +202,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "Cel"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Cel",
   "code" : "Cel",
@@ -190,7 +212,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "g"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "g",
   "code" : "g",
@@ -200,7 +222,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "mm[Hg]{hg}"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "mm[Hg]{hg}",
   "code" : "mm[Hg]{hg}",
@@ -210,16 +232,17 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "fmm[Hg]"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Error processing Unit: 'fmm[Hg]': The unit \"fmm[Hg]\" is unknown at character 1; The code \"fmm[Hg]\" is not valid in the system http://unitsofmeasure.org; The code provided (http://unitsofmeasure.org#fmm[Hg]) is not valid in the value set 'All codes known to the system' (from http://local.fhir.org/r4)"
+  "error" : "Error processing Unit: 'fmm[Hg]': The unit \"fmm[Hg]\" is unknown at character 1; Unknown Code 'fmm[Hg]' in the system 'http://unitsofmeasure.org'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "J/C"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "J/C",
   "code" : "J/C",

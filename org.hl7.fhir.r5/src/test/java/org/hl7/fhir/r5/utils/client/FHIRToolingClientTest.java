@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.utils.client.network.Client;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
+import org.hl7.fhir.utilities.Servers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ import static org.mockito.Mockito.times;
 
 class FHIRToolingClientTest {
 
-  String TX_ADDR = "http://tx.fhir.org";
+  String TX_ADDR = Servers.TX_SERVER_DEV;
 
   Header h1 = new Header("header1", "value1");
   Header h2 = new Header("header2", "value2");

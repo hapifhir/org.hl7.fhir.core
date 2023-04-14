@@ -3,19 +3,19 @@
   "system" : "http://nucc.org/provider-taxonomy",
   "code" : "208D00000X",
   "display" : "General Practice"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
   "severity" : "warning",
-  "error" : "The display \"General Practice\" is not a valid display for the code {http://nucc.org/provider-taxonomy}208D00000X - should be one of ['General Practice Physician'] (from http://local.fhir.org/r4)"
+  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician', (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://nucc.org/provider-taxonomy",
   "code" : "208D00000X"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0", "version": "4.0.0", "langs":"[null]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
@@ -26,19 +26,19 @@ v: {
   "system" : "http://nucc.org/provider-taxonomy",
   "code" : "208D00000X",
   "display" : "General Practice"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role", "version": "4.0.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
   "severity" : "warning",
-  "error" : "The display \"General Practice\" is not a valid display for the code {http://nucc.org/provider-taxonomy}208D00000X - should be one of ['General Practice Physician'] (from http://local.fhir.org/r4)"
+  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician', (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://nucc.org/provider-taxonomy",
   "code" : "208D00000X"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",

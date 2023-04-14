@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/octet-stream"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "application/octet-stream",
   "code" : "application/octet-stream",
@@ -12,14 +12,14 @@ v: {
   "code" : "de-CH"
 }, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "Deutsch (Schweiz)",
+  "display" : "German (Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/pdf"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "application/pdf",
   "code" : "application/pdf",
@@ -30,18 +30,18 @@ v: {
   "system" : "http://loinc.org",
   "code" : "59284-0",
   "display" : "Patient Authorization Signature"
-}, "url": "http://hl7.org/fhir/ValueSet/consent-category", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/consent-category", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Consent Document",
   "code" : "59284-0",
   "system" : "http://loinc.org",
   "severity" : "warning",
-  "error" : "The display \"Patient Authorization Signature\" is not a valid display for the code {http://loinc.org}59284-0 - should be one of ['Consent Document', 'Consent', '', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 事件发生的地方' (zh-CN), '场景' (zh-CN), '环境' (zh-CN), '背景 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 同意书' (zh-CN), '知情同意' (zh-CN), '知情同意书 文档本体' (zh-CN), '临床文档本体' (zh-CN), '文档本体' (zh-CN), '文书本体' (zh-CN), '医疗文书本体' (zh-CN), '临床医疗文书本体 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间' (zh-CN), 'Documentazione dell''ontologia Osservazione Punto nel tempo (episodio)' (it-IT)] (from http://local.fhir.org/r4)"
+  "error" : "Wrong Display Name 'Patient Authorization Signature' for http://loinc.org#59284-0 - should be one of 29 choices: 'Consent Document, \"Consent\", \"临床文档型\" (zh-CN), \"临床文档\" (zh-CN), \"文档\" (zh-CN), \"文书\" (zh-CN), \"医疗文书\" (zh-CN), \"临床医疗文书 事件发生的地方\" (zh-CN), \"场景\" (zh-CN), \"环境\" (zh-CN), \"背景 医疗服务对象\" (zh-CN), \"客户\" (zh-CN), \"病人\" (zh-CN), \"超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。\" (zh-CN), \"发现物\" (zh-CN), \"所见\" (zh-CN), \"结果\" (zh-CN), \"结论 同意书\" (zh-CN), \"知情同意\" (zh-CN), \"知情同意书 文档本体\" (zh-CN), \"临床文档本体\" (zh-CN), \"文档本体\" (zh-CN), \"文书本体\" (zh-CN), \"医疗文书本体\" (zh-CN), \"临床医疗文书本体 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间\" (zh-CN), \"Documentazione dell'ontologia Osservazione Punto nel tempo (episodio)\" (it-IT)' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "image/*"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "image/*",
   "code" : "image/*",
@@ -50,9 +50,9 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "d"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "天",
+  "display" : "day",
   "code" : "d",
   "system" : "http://unitsofmeasure.org"
 }
@@ -68,7 +68,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "image/jpg"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "image/jpg",
   "code" : "image/jpg",
@@ -77,7 +77,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "min",
   "code" : "min",
@@ -86,7 +86,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "mmol/L",
   "code" : "mmol/L",
@@ -95,7 +95,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "%",
   "code" : "%",
@@ -104,7 +104,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "kg",
   "code" : "kg",
@@ -113,15 +113,16 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#cm) is not valid in the value set 'BodyWeightUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "cm",
   "code" : "cm",
@@ -130,17 +131,18 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#kg/m2) is not valid in the value set 'BodyWeightUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "112144000",
   "display" : "Blood group A (finding)"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-bloodGroup", "version": "0.5.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-bloodGroup", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Blood group A",
   "code" : "112144000",
@@ -149,23 +151,25 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#kg) is not valid in the value set 'BodyLengthUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#kg/m2) is not valid in the value set 'BodyLengthUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "wk",
   "code" : "wk",
@@ -176,7 +180,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "722446000",
   "display" : "Allergy record (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Allergy record (record artifact)",
   "code" : "722446000",
@@ -187,7 +191,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "371531000",
   "display" : "Report of clinical encounter (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Encounter report",
   "code" : "371531000",
@@ -198,7 +202,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "4241000179101",
   "display" : "Laboratory report (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Laboratory report (record artifact)",
   "code" : "4241000179101",
@@ -209,7 +213,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "422735006",
   "display" : "Summary clinical document (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Summary clinical document (record artifact)",
   "code" : "422735006",
@@ -218,103 +222,115 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#min) is not valid in the value set 'BodyWeightUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#min) is not valid in the value set 'BodyLengthUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "min"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#min) is not valid in the value set 'MNITimeOfGestation' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#mmol/L) is not valid in the value set 'BodyWeightUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#mmol/L) is not valid in the value set 'BodyLengthUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#mmol/L) is not valid in the value set 'MNITimeOfGestation' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#%) is not valid in the value set 'BodyWeightUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#%) is not valid in the value set 'BodyLengthUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#%) is not valid in the value set 'MNITimeOfGestation' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#wk) is not valid in the value set 'BodyWeightUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#wk) is not valid in the value set 'BodyLengthUnits' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#kg) is not valid in the value set 'MNITimeOfGestation' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "kg",
   "code" : "kg",
@@ -323,15 +339,16 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#cm) is not valid in the value set 'MNITimeOfGestation' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "cm",
   "code" : "cm",
@@ -340,15 +357,16 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#kg/m2) is not valid in the value set 'MNITimeOfGestation' (from http://local.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "kg/m2",
   "code" : "kg/m2",
@@ -357,7 +375,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "wk",
   "code" : "wk",
@@ -366,7 +384,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "json"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "json",
   "code" : "json",
@@ -375,7 +393,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "xml",
   "code" : "xml",
@@ -384,7 +402,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/fhir+json"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "application/fhir+json",
   "code" : "application/fhir+json",
@@ -393,7 +411,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "text/plain"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "text/plain",
   "code" : "text/plain",
@@ -401,8 +419,32 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371532007",
+  "display" : "Progress note"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Progress report",
+  "code" : "371532007",
+  "system" : "http://snomed.info/sct",
+  "severity" : "warning",
+  "error" : "Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007 - should be one of 3 choices: 'Progress report, \"Report of subsequent visit\", \"Progress report (record artifact)\"' (from null)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371525003",
+  "display" : "Clinical procedure report"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Clinical procedure report",
+  "code" : "371525003",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
   "code" : "text/css"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "text/css",
   "code" : "text/css",
@@ -411,7 +453,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "de-CH"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
@@ -422,7 +464,7 @@ v: {
   "system" : "http://loinc.org",
   "code" : "34133-9",
   "display" : "Summary of episode note"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-documentreference-type", "version": "3.1.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-documentreference-type", "version": "3.1.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Summary of episode note",
   "code" : "34133-9",
@@ -431,7 +473,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en-US"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "English (United States)",
   "code" : "en-US",
@@ -440,7 +482,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "application/xml",
   "code" : "application/xml",
@@ -449,7 +491,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "text/xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "text/xml",
   "code" : "text/xml",
@@ -460,7 +502,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "code" : "US",
   "display" : "United States of America"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "United States of America",
   "code" : "US",
@@ -469,7 +511,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "text/cql.identifier"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "text/cql.identifier",
   "code" : "text/cql.identifier",
@@ -502,7 +544,7 @@ v: {
       }]
     }]
   }
-}, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "display" : "Not at all",
   "code" : "Not-at-all",
@@ -535,7 +577,7 @@ v: {
       }]
     }]
   }
-}, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "display" : "Several days",
   "code" : "Several-days",
@@ -568,7 +610,7 @@ v: {
       }]
     }]
   }
-}, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "display" : "More than half the days",
   "code" : "More than half the days",
@@ -601,7 +643,7 @@ v: {
       }]
     }]
   }
-}, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "display" : "Nearly every day",
   "code" : "Nearly every day",
@@ -648,9 +690,9 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "星期",
+  "display" : "week",
   "code" : "wk",
   "system" : "http://unitsofmeasure.org"
 }
@@ -658,7 +700,7 @@ v: {
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "US"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "United States of America",
   "code" : "US",
@@ -667,9 +709,10 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "[%payloadFormat%]"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code \"[%payloadFormat%]\" is not valid in the system urn:ietf:bcp:13; The code provided (urn:ietf:bcp:13#[%payloadFormat%]) is not valid in the value set 'Mime Types' (from http://local.fhir.org/r4)"
+  "error" : "Unknown Code '[%payloadFormat%]' in the system 'urn:ietf:bcp:13'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/mimetypes' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------

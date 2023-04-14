@@ -260,7 +260,7 @@ public class I18nConstants {
   public static final String NAMED_ITEMS_ARE_OUT_OF_ORDER_IN_THE_SLICE = "Named_items_are_out_of_order_in_the_slice";
   public static final String NEEDS_A_SNAPSHOT = "needs_a_snapshot";
   public static final String NODE_TYPE__IS_NOT_ALLOWED = "Node_type__is_not_allowed";
-  public static final String NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "None_of_the_provided_codes_are_in_the_value_set_";
+  public static final String NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "None_of_the_provided_codes_are_in_the_value_set";
   public static final String UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_";
   public static final String NOT_DONE_YET = "Not_done_yet";
   public static final String NOT_DONE_YET_CANT_FETCH_ = "not_done_yet_cant_fetch_";
@@ -855,8 +855,9 @@ public class I18nConstants {
   public static final String CONCEPTMAP_GROUP_TARGET_INCOMPLETE = "CONCEPTMAP_GROUP_TARGET_INCOMPLETE";
   public static final String UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE = "UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE";
   public static final String SD_NO_TYPE_CODE_ON_CODE = "SD_NO_TYPE_CODE_ON_CODE";
-  public static final String UKNOWN_CODESYSTEM = "UKNOWN_CODESYSTEM";
-  public static final String UKNOWN_CODESYSTEM_VERSION = "UKNOWN_CODESYSTEM_VERSION";
+  public static final String UNKNOWN_CODESYSTEM = "UNKNOWN_CODESYSTEM";
+  public static final String UNKNOWN_CODESYSTEM_VERSION = "UNKNOWN_CODESYSTEM_VERSION";
+  public static final String VALUESET_TOO_COSTLY = "VALUESET_TOO_COSTLY";
 }
 
 

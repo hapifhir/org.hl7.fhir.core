@@ -150,7 +150,7 @@ public class SimpleWorkerContextTests {
 
     assertEquals(expectedValidationResult, actualValidationResult);
 
-    Mockito.verify(valueSetCheckerSimple, times(0)).validateCode(coding);
+    Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("Coding", coding);
     Mockito.verify(terminologyCache).getValidation(cacheToken);
     Mockito.verify(terminologyCache, times(0)).cacheValidation(any(), any(), anyBoolean());
   }
@@ -172,7 +172,7 @@ public class SimpleWorkerContextTests {
 
     assertEquals(expectedValidationResult, actualValidationResult);
 
-    Mockito.verify(valueSetCheckerSimple).validateCode(coding);
+    Mockito.verify(valueSetCheckerSimple).validateCode("Coding", coding);
     Mockito.verify(terminologyCache).getValidation(cacheToken);
     Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult,false);
   }
@@ -194,7 +194,7 @@ public class SimpleWorkerContextTests {
 
     assertEquals(expectedValidationResult, actualValidationResult);
 
-    Mockito.verify(valueSetCheckerSimple, times(0)).validateCode(coding);
+    Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("Coding", coding);
     Mockito.verify(terminologyCache).getValidation(cacheToken);
     Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult,true);
   }
@@ -210,7 +210,7 @@ public class SimpleWorkerContextTests {
     IWorkerContext.ValidationResult actualValidationResult = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
     assertEquals(expectedValidationResult, actualValidationResult);
 
-    Mockito.verify(valueSetCheckerSimple, times(0)).validateCode(codeableConcept);
+    Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).getValidation(cacheToken);
     Mockito.verify(terminologyCache, times(0)).cacheValidation(any(), any(), anyBoolean());
   }
@@ -228,7 +228,7 @@ public class SimpleWorkerContextTests {
     IWorkerContext.ValidationResult validationResultB = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
     assertEquals(expectedValidationResult, validationResultB);
 
-    Mockito.verify(valueSetCheckerSimple).validateCode(codeableConcept);
+    Mockito.verify(valueSetCheckerSimple).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult, false);
     Mockito.verify(context, times(0)).validateOnServer(any(), any(), any());
   }
@@ -251,7 +251,7 @@ public class SimpleWorkerContextTests {
 
     assertEquals(expectedValidationResult, validationResultB);
 
-    Mockito.verify(valueSetCheckerSimple, times(0)).validateCode(codeableConcept);
+    Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult, true);
     Mockito.verify(context).validateOnServer(valueSet, pIn, validationOptions);
   }
