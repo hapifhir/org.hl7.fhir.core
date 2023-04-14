@@ -29,7 +29,7 @@ jobs:
         inputs:
           mavenPomFile: 'pom.xml'
           options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
-          mavenOptions: '-Xmx768m'
+          mavenOptions: '-Xmx768m  -Dmaven.resolver.transport=wagon'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
@@ -39,7 +39,7 @@ jobs:
         inputs:
           mavenPomFile: 'pom.xml'
           options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
-          mavenOptions: '-Xmx4096m'
+          mavenOptions: '-Xmx4096m -Dmaven.resolver.transport=wagon'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
