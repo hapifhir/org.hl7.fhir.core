@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidationEngineTests {
 
-  private static final String DEF_TX = Servers.TX_SERVER_DEV;
-//  private static final String DEF_TX = Servers.TX_SERVER_LOCAL;
+//  private static final String DEF_TX = Servers.TX_SERVER_DEV;
+  private static final String DEF_TX = Servers.TX_SERVER_LOCAL;
 
   public static boolean inbuild;
 

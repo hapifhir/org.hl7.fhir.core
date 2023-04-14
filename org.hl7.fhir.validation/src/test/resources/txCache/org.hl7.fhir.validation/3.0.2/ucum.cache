@@ -39,3 +39,13 @@ v: {
   "system" : "http://unitsofmeasure.org"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "[lb_av]"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "Error parsing response message: only whitespace content allowed before start tag and not D (position: START_DOCUMENT seen D... @1:1)",
+  "class" : "SERVER_ERROR"
+}
+-------------------------------------------------------------------------------------
