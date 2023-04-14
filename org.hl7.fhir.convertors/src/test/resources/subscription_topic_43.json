@@ -1,0 +1,19 @@
+{
+  "resourceType": "SubscriptionTopic",
+  "id": "1",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2023-04-13T19:11:45.601-04:00"
+  },
+  "url": "http://example.com/topic/test",
+  "status": "active",
+  "resourceTrigger": [ {
+    "resource": "Encounter",
+    "supportedInteraction": [ "create" ],
+    "queryCriteria": {
+      "previous": "Encounter?status=planned",
+      "current": "Encounter?status=finished",
+      "requireBoth": true
+    }
+  } ]
+}
