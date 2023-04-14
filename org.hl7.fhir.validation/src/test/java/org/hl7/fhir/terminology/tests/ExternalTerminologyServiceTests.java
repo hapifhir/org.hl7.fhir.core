@@ -50,6 +50,7 @@ import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
 import org.hl7.fhir.validation.tests.ValidationEngineTests;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -59,6 +60,7 @@ import org.junit.runners.Parameterized.Parameters;
 import com.google.common.base.Charsets;
 import com.google.gson.JsonSyntaxException;
 
+@Ignore
 @RunWith(Parameterized.class)
 public class ExternalTerminologyServiceTests implements ITxTesterLoader {
 

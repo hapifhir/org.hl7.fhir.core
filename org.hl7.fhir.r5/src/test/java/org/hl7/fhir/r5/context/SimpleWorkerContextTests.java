@@ -164,7 +164,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet);
 
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any(), any());
-    Mockito.doReturn(expectedValidationResult).when(valueSetCheckerSimple).validateCode(any(Coding.class));
+    Mockito.doReturn(expectedValidationResult).when(valueSetCheckerSimple).validateCode(eq("Coding"), any(Coding.class));
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
 
@@ -218,7 +218,7 @@ public class SimpleWorkerContextTests {
   @Test
   public void testValidateCodableConceptWithValueSetChecker() throws IOException {
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any());
-    Mockito.doReturn(expectedValidationResult).when(valueSetCheckerSimple).validateCode(any(CodeableConcept.class));
+    Mockito.doReturn(expectedValidationResult).when(valueSetCheckerSimple).validateCode(eq("CodeableConcept"),any(CodeableConcept.class));
 
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
