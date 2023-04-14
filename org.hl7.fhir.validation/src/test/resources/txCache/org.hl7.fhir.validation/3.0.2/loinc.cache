@@ -307,3 +307,25 @@ v: {
   "system" : "http://loinc.org"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "29463-7",
+  "display" : "Body Weight"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "Error parsing response message: only whitespace content allowed before start tag and not D (position: START_DOCUMENT seen D... @1:1)",
+  "class" : "SERVER_ERROR"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3141-9",
+  "display" : "Body weight Measured"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "Error parsing response message: only whitespace content allowed before start tag and not D (position: START_DOCUMENT seen D... @1:1)",
+  "class" : "SERVER_ERROR"
+}
+-------------------------------------------------------------------------------------
