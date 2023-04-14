@@ -21,6 +21,7 @@ public class SubscriptionTopic43_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4b.model.SubscriptionTopic tgt = new org.hl7.fhir.r4b.model.SubscriptionTopic();
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyResource(src, tgt);
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt);
     if (src.hasUrl())
       tgt.setUrlElement(Uri43_50.convertUri(src.getUrlElement()));
