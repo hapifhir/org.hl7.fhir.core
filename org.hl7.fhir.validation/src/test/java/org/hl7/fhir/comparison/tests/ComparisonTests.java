@@ -46,6 +46,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.Servers;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -93,7 +94,7 @@ public class ComparisonTests {
   private static IWorkerContext context;
   private JsonObject content;
 
-  private static final String DEF_TX = "http://tx.fhir.org";
+  private static final String DEF_TX = Servers.TX_SERVER_DEV;
   private static final String HEADER = "<html><link href=\"http://hl7.org/fhir/fhir.css\" rel=\"stylesheet\"/><body>";
   private static final String BREAK = "<hr/>";
   private static final String FOOTER = "</body></html>";

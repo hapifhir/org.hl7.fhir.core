@@ -6340,6 +6340,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setValidationLanguage(String validationLanguage) {
     this.validationLanguage = validationLanguage;
+    if (this.validationLanguage == null) {
+      this.validationLanguage = "en";
+    }
   }
 
   public boolean isDebug() {

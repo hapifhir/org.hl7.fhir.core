@@ -117,12 +117,12 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     terminologyCacheA.cacheTerminologyCapabilities(terminologyCapabilities);
     terminologyCacheA.cacheCapabilityStatement(capabilityStatement);
 
-    IWorkerContext.ValidationResult codingResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo");
+    IWorkerContext.ValidationResult codingResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
     TerminologyCache.CacheToken codingTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
       coding, valueSet);
     terminologyCacheA.cacheValidation(codingTokenA, codingResultA, true);
 
-    IWorkerContext.ValidationResult codeableConceptResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo");
+    IWorkerContext.ValidationResult codeableConceptResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
     TerminologyCache.CacheToken codeableConceptTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
       concept, valueSet);
     terminologyCacheA.cacheValidation(codeableConceptTokenA, codeableConceptResultA, true);

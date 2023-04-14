@@ -3,7 +3,7 @@
   "system" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
   "code" : "urn:ihe:iti:xds:2017:mimeTypeSufficient",
   "display" : "MimeType sufficient"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "mimeType Sufficient",
   "code" : "urn:ihe:iti:xds:2017:mimeTypeSufficient",

@@ -10,9 +10,9 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "d"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "3.0.2", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "天",
+  "display" : "day",
   "code" : "d",
   "system" : "http://unitsofmeasure.org"
 }
@@ -26,7 +26,7 @@ v: {
       "system" : "urn:ietf:bcp:13"
     }]
   }
-}, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "image/jpg",
   "code" : "image/jpg",
@@ -42,7 +42,7 @@ v: {
       "system" : "urn:ietf:bcp:13"
     }]
   }
-}, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "application/pdf",
   "code" : "application/pdf",
@@ -51,7 +51,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "de-CH"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "3.0.2", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
@@ -62,7 +62,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "code" : "US",
   "display" : "United States of America"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "3.0.2", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "United States of America",
   "code" : "US",

@@ -155,7 +155,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       if (result == null) {
         warnings.add(0, context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));        
       } else if (!result) {
-        errors.add(0, context.formatMessage(I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));
+        errors.add(0, context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));
       }
     }
     if (errors.size() > 0) {
@@ -349,9 +349,9 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     ConceptDefinitionComponent cc = cs.hasUserData("tx.cs.special") ? ((SpecialCodeSystem) cs.getUserData("tx.cs.special")).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode());
     if (cc == null) {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
-        return new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, gen(code), cs.getUrl()));        
+        return new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, code, cs.getUrl()));        
       } else {
-        return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_, gen(code), cs.getUrl()));
+        return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_, code, cs.getUrl()));
       }
     }
     if (code.getDisplay() == null) {

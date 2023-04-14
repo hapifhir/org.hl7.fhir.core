@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "https://www.humanservices.gov.au/organisations/health-professionals/enablers/air-vaccine-code-formats",
   "code" : "COVAST"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "COVID-19 Vaccine AstraZeneca",
   "code" : "COVAST",

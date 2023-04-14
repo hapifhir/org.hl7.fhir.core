@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "urn:ietf:bcp:47",
   "code" : "de-CH"
-}, "url": "http://hl7.org/fhir/ValueSet/languages--0", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
@@ -13,7 +13,7 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "code" : "de-CH",
   "display" : "German (Region=Switzerland)"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
@@ -23,7 +23,7 @@ v: {
 {"code" : {
   "system" : "urn:ietf:bcp:47",
   "code" : "de-CH"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
@@ -33,7 +33,7 @@ v: {
 {"code" : {
   "system" : "urn:ietf:bcp:47",
   "code" : "fr"
-}, "url": "http://hl7.org/fhir/ValueSet/languages--0", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "display" : "French",
   "code" : "fr",
@@ -44,7 +44,7 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "code" : "fr",
   "display" : "French"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "French",
   "code" : "fr",
@@ -54,7 +54,7 @@ v: {
 {"code" : {
   "system" : "urn:ietf:bcp:47",
   "code" : "fr"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "French",
   "code" : "fr",
@@ -64,7 +64,7 @@ v: {
 {"code" : {
   "system" : "urn:ietf:bcp:47",
   "code" : "en"
-}, "url": "http://hl7.org/fhir/ValueSet/languages--0", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "display" : "English",
   "code" : "en",
@@ -75,7 +75,7 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "code" : "en",
   "display" : "English"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "English",
   "code" : "en",
@@ -85,7 +85,7 @@ v: {
 {"code" : {
   "system" : "urn:ietf:bcp:47",
   "code" : "en"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "English",
   "code" : "en",

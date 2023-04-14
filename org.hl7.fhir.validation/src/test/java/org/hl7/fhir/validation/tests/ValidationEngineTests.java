@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.Servers;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.OperationOutcome;
@@ -20,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidationEngineTests {
 
-//  public static final String DEF_TX = "http://tx.fhir.org";
-  public static final String DEF_TX = "http://local.fhir.org";
+  private static final String DEF_TX = Servers.TX_SERVER_DEV;
+//  private static final String DEF_TX = Servers.TX_SERVER_LOCAL;
 
   public static boolean inbuild;
 

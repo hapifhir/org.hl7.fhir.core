@@ -2,40 +2,40 @@
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>A"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Error from server: Error parsing JSON source: Unexpected char \"<\" in json stream at Line 0 (path=[])",
+  "error" : "Error from server: Error parsing HGVS response: Error parsing JSON source: Unexpected char \"<\" in json stream at Line 0 (path=[])",
   "class" : "SERVER_ERROR"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>A"
-}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"[null]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Error from server: Error parsing JSON source: Unexpected char \"<\" in json stream at Line 0 (path=[])",
+  "error" : "Error from server: Error parsing HGVS response: Error parsing JSON source: Unexpected char \"<\" in json stream at Line 0 (path=[])",
   "class" : "SERVER_ERROR"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>AXXX"
-}, "valueSet" :null, "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Error from server: Error parsing JSON source: Unexpected char \"<\" in json stream at Line 0 (path=[])",
+  "error" : "Error from server: Error parsing HGVS response: Error parsing JSON source: Unexpected char \"<\" in json stream at Line 0 (path=[])",
   "class" : "SERVER_ERROR"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>AXXX"
-}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"[null]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Error from server: Error parsing JSON source: Unexpected char \"<\" in json stream at Line 0 (path=[])",
+  "error" : "Error from server: Error parsing HGVS response: Error parsing JSON source: Unexpected char \"<\" in json stream at Line 0 (path=[])",
   "class" : "SERVER_ERROR"
 }
 -------------------------------------------------------------------------------------

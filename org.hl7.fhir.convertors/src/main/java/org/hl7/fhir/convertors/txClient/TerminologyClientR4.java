@@ -38,7 +38,9 @@ import java.util.HashMap;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.TerminologyCapabilities40_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4.utils.client.EFhirClientException;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -56,16 +58,24 @@ public class TerminologyClientR4 implements TerminologyClient {
 
   private final FHIRToolingClient client; // todo: use the R2 client
   private ClientHeaders clientHeaders;
+  private String id;
 
-  public TerminologyClientR4(String address, String userAgent) throws URISyntaxException {
+  public TerminologyClientR4(String id, String address, String userAgent) throws URISyntaxException {
     this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(new ClientHeaders());
   }
 
-  public TerminologyClientR4(String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
+  public TerminologyClientR4(String id, String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
     this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(clientHeaders);
+    this.id = id;
   }
+
+  @Override
+  public String getId() {
+    return id;
+  }
+
 
 
   public EnumSet<FhirPublication> supportableVersions() {
@@ -103,8 +113,14 @@ public class TerminologyClientR4 implements TerminologyClient {
     if (params == null) {
       params = new HashMap<>();
     }
-    vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
-    return (ValueSet) VersionConvertorFactory_40_50.convertResource(vs2);
+    try {
+      vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
+      return (ValueSet) VersionConvertorFactory_40_50.convertResource(vs2);
+    } catch (org.hl7.fhir.r4.utils.client.EFhirClientException e) {
+      throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), 
+          (org.hl7.fhir.r5.model.OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0)));
+
+    }
   }
 
   @Override

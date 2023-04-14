@@ -3,6 +3,9 @@ package org.hl7.fhir.r5.terminologies;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -37,20 +40,41 @@ import java.util.List;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ETooCostly;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 
 public interface ValueSetChecker {
 
   public static class ValidationProcessInfo {
     private TerminologyServiceErrorClass err;
-    private List<String> warnings = new ArrayList<>();
+    private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     public TerminologyServiceErrorClass getErr() {
       return err;
     }
     public void setErr(TerminologyServiceErrorClass err) {
       this.err = err;
     }
-    public List<String> getWarnings() {
-      return warnings;
+
+    public List<OperationOutcomeIssueComponent> getIssues() {
+      return issues;
+    }
+    public void addIssue(List<OperationOutcomeIssueComponent> issues) {
+      issues.addAll(issues);
+      
+    }
+    public boolean hasErrors() {
+      for (OperationOutcomeIssueComponent issue : issues) {
+        if (issue.getSeverity() == IssueSeverity.FATAL || issue.getSeverity() == IssueSeverity.ERROR) {
+          return true;
+        }
+      }
+      return false;
+    }
+    public String summary() {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("; ");
+      for (OperationOutcomeIssueComponent issue : issues) {
+        b.append(issue.getDetails().getText());
+      }
+      return b.toString();
     }
   }
   Boolean codeInValueSet(String system, String version, String code, ValidationProcessInfo info) throws ETooCostly, EOperationOutcome, Exception;

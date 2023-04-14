@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
@@ -16,17 +17,18 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
+import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
-import org.hl7.fhir.validation.special.TxTester.InternalLoader;
 
 public class TxTester {
 
@@ -86,7 +88,7 @@ public class TxTester {
 
   private TerminologyClient connectToServer() throws URISyntaxException {
     System.out.println("Connect to "+server);
-    return TerminologyClientFactory.makeClient(server, "Tools/Java", FhirPublication.R4);  
+    return TerminologyClientFactory.makeClient("Test-Server", server, "Tools/Java", FhirPublication.R4);  
   }
 
 
@@ -161,8 +163,17 @@ public class TxTester {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    ValueSet vs = tx.expandValueset(null, p, null);
-    String vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);
+    String vsj;
+    try {
+      ValueSet vs = tx.expandValueset(null, p, null);
+      vs.setText(null);
+      TxTesterSorters.sortValueSet(vs);
+      vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);
+    } catch (EFhirClientException e) {
+      OperationOutcome oo = e.getServerErrors().get(0); 
+      oo.setText(null);
+      vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
     String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
@@ -171,10 +182,28 @@ public class TxTester {
     return diff;
   }
 
-  private String validate(TerminologyClient tx, List<Resource> setup, Resource req, String resp, String fp) {
-    // TODO Auto-generated method stub
-    return "not done yet";
+  private String validate(TerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp) throws IOException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    String pj;
+    try {
+      Parameters po = tx.validateVS(p);
+      TxTesterSorters.sortParameters(po);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+    } catch (EFhirClientException e) {
+      OperationOutcome oo = e.getServerErrors().get(0); 
+      oo.setText(null);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj);
+    if (diff != null) {
+      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+      TextFile.stringToFile(pj, fp);        
+    }
+    return diff;
   }
+
 
   private List<Resource> loadSetupResources(JsonObject suite) throws FHIRFormatError, FileNotFoundException, IOException {
     List<Resource> res = new ArrayList<>();

@@ -2,6 +2,8 @@ package org.hl7.fhir.validation.tests;
 
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.Servers;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.NativeHostServices;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,7 @@ public class NativeHostServiceTester {
     
     NativeHostServices svc = new NativeHostServices();
     svc.init("hl7.fhir.r4.core#4.0.1");
-    svc.connectToTxSvc("http://tx.fhir.org/r4", null, getTerminologyCacheDirectory("nativeHost").toString());
+    svc.connectToTxSvc(Utilities.path(Servers.TX_SERVER_DEV, "r4"), null, getTerminologyCacheDirectory("nativeHost").toString());
     msg("base: "+svc.status());
 
     svc.seeResource(TestingUtilities.loadTestResourceBytes("validator", "misc", "ValueSet-dicm-2-AnatomicModifier.json"), FhirFormat.JSON);

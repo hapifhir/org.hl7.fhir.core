@@ -11,7 +11,7 @@
   "valueSet": {
     "resourceType": "ValueSet"
   },
-  "lang": "null",
+  "langs": "[]",
   "useServer": "true",
   "useClient": "true",
   "guessSystem": "true",

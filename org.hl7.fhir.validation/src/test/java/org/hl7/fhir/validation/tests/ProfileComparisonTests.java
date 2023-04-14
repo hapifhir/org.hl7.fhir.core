@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 
 public class ProfileComparisonTests {
 
-  private static final String DEF_TX = "http://tx.fhir.org";
-
   @Test
   public void testCurrentComparison() throws Exception {
 //    if (!TestUtilities.silent) 

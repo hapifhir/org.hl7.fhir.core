@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "text/plain"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "text/plain",
   "code" : "text/plain",
@@ -12,7 +12,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "271649006",
   "display" : "Systolic blood pressure"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Systolic blood pressure",
   "code" : "271649006",
@@ -39,7 +39,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0", "langs":"[null]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "English",
   "code" : "en",
