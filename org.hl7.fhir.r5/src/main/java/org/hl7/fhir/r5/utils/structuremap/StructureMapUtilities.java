@@ -69,18 +69,11 @@ import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -1047,7 +1040,7 @@ public class StructureMapUtilities {
       lexer.token(")");
     } else if (lexer.hasToken(".")) {
       lexer.token(".");
-      source.setElement(lexer.take());
+      source.setElement(readAsStringOrProcessedConstant(lexer.take(), lexer));
     }
     if (lexer.hasToken(":")) {
       // type and cardinality
@@ -1090,6 +1083,12 @@ public class StructureMapUtilities {
     }
   }
 
+  private String readAsStringOrProcessedConstant(String s, FHIRLexer lexer) throws FHIRLexerException {
+    if (s.startsWith("\"") || s.startsWith("`"))
+      return lexer.processConstant(s);
+    else
+      return s;
+  }
  
   private void parseTarget(StructureMapGroupRuleComponent rule, FHIRLexer lexer) throws FHIRException {
     StructureMapGroupRuleTargetComponent target = rule.addTarget();
