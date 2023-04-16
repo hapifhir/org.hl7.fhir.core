@@ -1,6 +1,5 @@
 package org.hl7.fhir.terminology.tests;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,38 +17,15 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
-import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.terminology.tests.ExternalTerminologyServiceTests.JsonObjectPair;
-import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Servers;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
-import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
-import org.hl7.fhir.validation.tests.ValidationEngineTests;
-import org.hl7.fhir.validation.tests.utilities.TestUtilities;
-import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -58,9 +34,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Charsets;
-import com.google.gson.JsonSyntaxException;
 
-@Ignore
 @RunWith(Parameterized.class)
 public class ExternalTerminologyServiceTests implements ITxTesterLoader {
 
@@ -74,6 +48,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   }
 
   private static final String SERVER = Servers.TX_SERVER_DEV;
+//  private static final String SERVER = Servers.TX_SERVER_LOCAL2;
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
