@@ -167,7 +167,9 @@ public class TxTester {
 
   private boolean runTest(JsonObject test, TerminologyClient tx, List<Resource> setup, String filter, JsonArray output) { 
     JsonObject outputT = new JsonObject();
-    output.add(outputT);
+    if (output != null) {
+      output.add(outputT);
+    }
     outputT.add("name", test.asString("name"));
     if (Utilities.noString(filter) || filter.equals("*") || test.asString("name").contains(filter)) {
       System.out.print("  Test "+test.asString("name")+": ");
