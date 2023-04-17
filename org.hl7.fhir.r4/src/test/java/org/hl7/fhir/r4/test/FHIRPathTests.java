@@ -295,4 +295,16 @@ public class FHIRPathTests {
     assertEquals(DUMMY_CONSTANT_1, result.get(0).primitiveValue());
     assertEquals(DUMMY_CONSTANT_2, result.get(1).primitiveValue());
   }
+
+
+  @Test
+  public void testEvaluateToString_Id() {
+    Patient input = new Patient();
+    input.setId(new IdType("http://base/Patient/123/_history/222"));
+    String actual = fp.evaluateToString(input, "Patient.id");
+    assertEquals("123", actual);
+
+  }
+
+
 }
