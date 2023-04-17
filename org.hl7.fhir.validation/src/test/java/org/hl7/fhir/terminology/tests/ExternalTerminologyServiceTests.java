@@ -26,7 +26,7 @@ import org.hl7.fhir.utilities.Servers;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
-import org.junit.Ignore;
+
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
