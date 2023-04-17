@@ -22,6 +22,7 @@ import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
@@ -894,7 +895,9 @@ public class FHIRPathEngine {
   }
 
   public String convertToString(Base item) {
-    if (item.isPrimitive()) {
+    if (item instanceof IIdType) {
+      return ((IIdType)item).getIdPart();
+    } else if (item.isPrimitive()) {
       return item.primitiveValue();
     } else if (item instanceof Quantity) {
       Quantity q = (Quantity) item;
