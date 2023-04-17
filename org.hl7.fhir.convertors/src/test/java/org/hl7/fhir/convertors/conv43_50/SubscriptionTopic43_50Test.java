@@ -19,15 +19,15 @@ public class SubscriptionTopic43_50Test {
     InputStream r5_input = this.getClass().getResourceAsStream("/subscription_topic_50.json");
 
     org.hl7.fhir.r5.model.SubscriptionTopic r5_actual = (org.hl7.fhir.r5.model.SubscriptionTopic) new org.hl7.fhir.r5.formats.JsonParser().parse(r5_input);
-    org.hl7.fhir.r4b.model.Resource r4_conv = VersionConvertorFactory_43_50.convertResource(r5_actual);
+    org.hl7.fhir.r4b.model.Resource r4b_conv = VersionConvertorFactory_43_50.convertResource(r5_actual);
 
-    org.hl7.fhir.r4b.formats.XmlParser r4_parser = new org.hl7.fhir.r4b.formats.XmlParser();
+    org.hl7.fhir.r4b.formats.JsonParser r4b_parser = new org.hl7.fhir.r4b.formats.JsonParser();
 
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-    r4_parser.compose(stream, r4_conv);
+    r4b_parser.compose(stream, r4b_conv);
 
-    org.hl7.fhir.r4b.model.Resource r4_streamed = new org.hl7.fhir.r4b.formats.XmlParser().parse(new ByteArrayInputStream(stream.toByteArray()));
-    org.hl7.fhir.r5.model.Resource r5_conv = VersionConvertorFactory_43_50.convertResource(r4_streamed);
+    org.hl7.fhir.r4b.model.Resource r4b_streamed = new org.hl7.fhir.r4b.formats.JsonParser().parse(new ByteArrayInputStream(stream.toByteArray()));
+    org.hl7.fhir.r5.model.Resource r5_conv = VersionConvertorFactory_43_50.convertResource(r4b_streamed);
 
     assertTrue(r5_actual.equalsDeep(r5_conv), "should be the same");
   }
