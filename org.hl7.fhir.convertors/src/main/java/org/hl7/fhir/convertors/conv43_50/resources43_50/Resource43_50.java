@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_43_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv43_50.SubscriptionTopic43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Id43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
@@ -10,7 +9,6 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Extension43
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Meta43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Narrative43_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.SubscriptionTopic;
 
 public class Resource43_50 {
 
@@ -246,6 +244,8 @@ public class Resource43_50 {
       return StructureDefinition43_50.convertStructureDefinition((org.hl7.fhir.r4b.model.StructureDefinition) src);
     if (src instanceof org.hl7.fhir.r4b.model.StructureMap)
       return StructureMap43_50.convertStructureMap((org.hl7.fhir.r4b.model.StructureMap) src);
+    if (src instanceof org.hl7.fhir.r4b.model.SubscriptionStatus)
+      return SubscriptionStatus43_50.convertSubscriptionStatus((org.hl7.fhir.r4b.model.SubscriptionStatus)src);
     if (src instanceof org.hl7.fhir.r4b.model.SubscriptionTopic)
       return SubscriptionTopic43_50.convertSubscriptionTopic((org.hl7.fhir.r4b.model.SubscriptionTopic)src);
     if (src instanceof org.hl7.fhir.r4b.model.Substance)
@@ -482,6 +482,8 @@ public class Resource43_50 {
       return StructureDefinition43_50.convertStructureDefinition((org.hl7.fhir.r5.model.StructureDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.StructureMap)
       return StructureMap43_50.convertStructureMap((org.hl7.fhir.r5.model.StructureMap) src);
+    if (src instanceof org.hl7.fhir.r5.model.SubscriptionStatus)
+      return SubscriptionStatus43_50.convertSubscriptionStatus((org.hl7.fhir.r5.model.SubscriptionStatus)src);
     if (src instanceof org.hl7.fhir.r5.model.SubscriptionTopic)
       return SubscriptionTopic43_50.convertSubscriptionTopic((org.hl7.fhir.r5.model.SubscriptionTopic)src);
     if (src instanceof org.hl7.fhir.r5.model.Substance)
