@@ -7,14 +7,10 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.convertors.conv43_50.resources43_50.Enumerations43_50;
-import org.hl7.fhir.r4b.model.Enumeration;
-import org.hl7.fhir.r4b.model.Resource;
+import org.hl7.fhir.r4b.model.SubscriptionTopic;
 
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SubscriptionTopic43_50 {
   public static org.hl7.fhir.r4b.model.SubscriptionTopic convertSubscriptionTopic(org.hl7.fhir.r5.model.SubscriptionTopic src) {
@@ -65,6 +61,21 @@ public class SubscriptionTopic43_50 {
       tgt.setEffectivePeriod(Period43_50.convertPeriod(src.getEffectivePeriod()));
     for(org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent triggerComponent : src.getResourceTrigger()) {
      tgt.addResourceTrigger(convertResourceTrigger(triggerComponent));}
+    for (org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent canFilterByComponent : src.getCanFilterBy()) {
+      tgt.addCanFilterBy(convertCanFilterBy(canFilterByComponent));
+    }
+    return tgt;
+  }
+
+  private static org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent convertCanFilterBy(org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent src) {
+    org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent tgt = new SubscriptionTopic.SubscriptionTopicCanFilterByComponent();
+    if (src.hasDescription()) {
+      tgt.setDescriptionElement(MarkDown43_50.convertMarkdown(src.getDescriptionElement()));
+    }
+    if (src.hasResource()) {
+
+      tgt.setResource(src.getResource()));
+    }
     return tgt;
   }
 
@@ -96,10 +107,28 @@ public class SubscriptionTopic43_50 {
     if (src.hasPrevious()) {
       tgt.setPreviousElement(String43_50.convertString(src.getPreviousElement()));
     }
+    if (src.hasResultForCreate()) {
+      tgt.setResultForCreate(convertCriteriaNotExistsBehavior(src.getResultForCreate()));
+    }
     if (src.hasCurrent()) {
       tgt.setCurrentElement(String43_50.convertString(src.getCurrentElement()));
     }
+    if (src.hasResultForDelete()) {
+      tgt.setResultForDelete(convertCriteriaNotExistsBehavior(src.getResultForDelete()));
+    }
+    if (src.hasRequireBoth()) {
+      tgt.setRequireBothElement(Boolean43_50.convertBoolean(src.getRequireBothElement()));
+    }
     return tgt;
+  }
+
+  private static org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior convertCriteriaNotExistsBehavior(org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior src) {
+    switch(src) {
+      case TESTFAILS: return org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTFAILS;
+      case TESTPASSES: return org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTPASSES;
+      case NULL: return org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.NULL;
+    }
+    return null;
   }
 
   private static org.hl7.fhir.r4b.model.SubscriptionTopic.InteractionTrigger convertInteractionTrigger(org.hl7.fhir.r5.model.SubscriptionTopic.InteractionTrigger value) {
