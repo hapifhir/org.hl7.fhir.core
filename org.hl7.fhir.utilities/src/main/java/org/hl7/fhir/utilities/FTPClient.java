@@ -100,6 +100,10 @@ public class FTPClient {
    * Connect to the server, throw an exception if it fails
    */
   public void connect() throws IOException {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
+    
     if (port != -1) {
       logger.debug("Connecting to : " + server + ":" + port);
       clientImpl.connect(server, port);

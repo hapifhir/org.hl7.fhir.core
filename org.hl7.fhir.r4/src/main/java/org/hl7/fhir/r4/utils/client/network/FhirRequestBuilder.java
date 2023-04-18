@@ -2,6 +2,7 @@ package org.hl7.fhir.r4.utils.client.network;
 
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.IParser;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
@@ -11,6 +12,7 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.utils.ResourceUtilities;
 import org.hl7.fhir.r4.utils.client.EFhirClientException;
 import org.hl7.fhir.r4.utils.client.ResourceFormat;
+import org.hl7.fhir.utilities.ToolGlobalSettings;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -148,6 +150,10 @@ public class FhirRequestBuilder {
    * @return {@link OkHttpClient} instance
    */
   protected OkHttpClient getHttpClient() {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
+    
     if (okHttpClient == null) {
       okHttpClient = new OkHttpClient();
     }

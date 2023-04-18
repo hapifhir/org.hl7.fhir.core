@@ -85,6 +85,8 @@ import org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu2.model.ResourceType;
 import org.hl7.fhir.dstu2.utils.ResourceUtilities;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.ToolGlobalSettings;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -140,26 +142,42 @@ public class ClientUtils {
   }
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat, int timeoutLoading) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
+    
     HttpOptions options = new HttpOptions(optionsUri);
     return issueResourceRequest(resourceFormat, options, timeoutLoading);
   }
 
   public <T extends Resource> ResourceRequest<T> issueGetResourceRequest(URI resourceUri, String resourceFormat, int timeoutLoading) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     HttpGet httpget = new HttpGet(resourceUri);
     return issueResourceRequest(resourceFormat, httpget, timeoutLoading);
   }
 
   public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, int timeoutLoading) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     HttpPut httpPut = new HttpPut(resourceUri);
     return issueResourceRequest(resourceFormat, httpPut, payload, headers, timeoutLoading);
   }
 
   public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     HttpPut httpPut = new HttpPut(resourceUri);
     return issueResourceRequest(resourceFormat, httpPut, payload, null, timeoutLoading);
   }
 
   public <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, int timeoutLoading) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     HttpPost httpPost = new HttpPost(resourceUri);
     return issueResourceRequest(resourceFormat, httpPost, payload, headers, timeoutLoading);
   }
@@ -170,6 +188,9 @@ public class ClientUtils {
   }
 
   public Bundle issueGetFeedRequest(URI resourceUri, String resourceFormat) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     HttpGet httpget = new HttpGet(resourceUri);
     configureFhirRequest(httpget, resourceFormat);
     HttpResponse response = sendRequest(httpget);
@@ -188,6 +209,9 @@ public class ClientUtils {
   }
 
   public Bundle postBatchRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     HttpPost httpPost = new HttpPost(resourceUri);
     configureFhirRequest(httpPost, resourceFormat);
     HttpResponse response = sendPayload(httpPost, payload, proxy, timeoutLoading);
@@ -195,6 +219,9 @@ public class ClientUtils {
   }
 
   public boolean issueDeleteRequest(URI resourceUri) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     HttpDelete deleteRequest = new HttpDelete(resourceUri);
     HttpResponse response = sendRequest(deleteRequest);
     int responseStatusCode = response.getStatusLine().getStatusCode();
@@ -228,6 +255,9 @@ public class ClientUtils {
    * @return
    */
   protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, byte[] payload, List<Header> headers, int timeoutLoading) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     configureFhirRequest(request, resourceFormat, headers);
     HttpResponse response = null;
     if(request instanceof HttpEntityEnclosingRequest && payload != null) {
@@ -285,6 +315,9 @@ public class ClientUtils {
    */
   @SuppressWarnings({ "resource", "deprecation" })
   protected HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload, HttpHost proxy, int timeoutLoading) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     HttpResponse response = null;
     boolean ok = false;
     long t = System.currentTimeMillis();
@@ -309,7 +342,7 @@ public class ClientUtils {
         if (tryCount <= retryCount || (tryCount < 3 && ioe instanceof org.apache.http.conn.ConnectTimeoutException)) {
           ok = false;
         } else {
-          throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);
+          throw new EFhirClientException("Error sending HTTP Post/Put Payload to "+"??"+": "+ioe.getMessage(), ioe);
         }
       }
     }
@@ -323,6 +356,9 @@ public class ClientUtils {
    * @return
    */
   protected HttpResponse sendRequest(HttpUriRequest request) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     HttpResponse response = null;
     try {
       HttpClient httpclient = new DefaultHttpClient();
@@ -430,6 +466,10 @@ public class ClientUtils {
    * ***************************************************************/
 
   public HttpURLConnection buildConnection(URI baseServiceUri, String tail) {
+    if (ToolGlobalSettings.isNoNetwork()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
+    
     try {
       HttpURLConnection client = (HttpURLConnection) baseServiceUri.resolve(tail).toURL().openConnection();
       return client;
