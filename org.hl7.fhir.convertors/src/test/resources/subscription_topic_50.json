@@ -37,7 +37,25 @@
       "description" : "Filter based on the group membership of the subject of an encounter.",
       "resource" : "Encounter",
       "filterParameter" : "_in"
-    }],
+    },
+    {
+      "description" : "Filter based on the length of an encounter.",
+      "resource" : "Encounter",
+      "filterParameter" : "length",
+      "comparator" : ["gt",
+        "lt",
+        "ge",
+        "le"]
+    },
+    {
+      "description" : "Filter based on the account for billing an encounter.",
+      "resource" : "Encounter",
+      "filterParameter" : "account",
+      "modifier" : [
+        "not-in"
+        ]
+    }
+  ],
   "notificationShape" : [{
     "resource" : "Encounter",
     "include" : ["Encounter:patient&iterate=Patient.link",
