@@ -269,8 +269,32 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
       }
     }
+    try {
+      return fetchVersionTheOldWay(id);
+    } catch (Exception e) {
+      ourLog.info("Failed to determine latest version of package {} from server: {}", id, "build.fhir.org");      
+    }
+    // still here? use the latest version we previously found or at least, is in the cache
 
-    return fetchVersionTheOldWay(id);
+    String version = getLatestVersionFromCache(id);
+    if (version != null) {
+      return version;
+    }
+    throw new FHIRException("Unable to find the last version for package "+id+": no local copy, and no network access");
+  }
+
+  public String getLatestVersionFromCache(String id) throws IOException {
+    for (String f : reverseSorted(new File(cacheFolder).list())) {
+      File cf = new File(Utilities.path(cacheFolder, f));
+      if (cf.isDirectory()) {
+        if (f.startsWith(id + "#")) {
+          String ver = f.substring(f.indexOf("#")+1);
+          ourLog.info("Latest version of package {} found locally is {} - using that", id, ver);      
+          return ver;
+        }
+      }
+    }
+    return null;
   }
 
   private NpmPackage loadPackageFromFile(String id, String folder) throws IOException {
@@ -685,20 +709,26 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         return null; // nup, we need a new copy
       }
     } catch (Exception e) {
+      log("Unable to check package currency: "+id+": "+id);
     }
     return p;
   }
 
-  private boolean checkBuildLoaded() {
-    if (buildLoaded)
-      return true;
-    try {
-      loadFromBuildServer();
-    } catch (Exception e) {
-      log("Error connecting to build server - running without build (" + e.getMessage() + ")");
-      e.printStackTrace();
+  private void checkBuildLoaded() {
+    if (!buildLoaded) {
+      try {
+        loadFromBuildServer();
+      } catch (Exception e) {
+        try {
+          // we always pause a second and try again - the most common reason to be here is that the file was being changed on the server
+          Thread.sleep(1000);
+          loadFromBuildServer();
+        } catch (Exception e2) {
+          log("Error connecting to build server - running without build (" + e2.getMessage() + ")");
+          //        e.printStackTrace();
+        }
+      }
     }
-    return false;
   }
 
   private void loadFromBuildServer() throws IOException {
@@ -726,7 +756,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         ciList.put(bld.getPackageId(), "https://build.fhir.org/ig/" + bld.getRepo());
       }
     }
-    buildLoaded = true; // whether it succeeds or not
+    buildLoaded = true; 
   }
 
   private String getRepo(String path) {

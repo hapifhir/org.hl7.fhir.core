@@ -858,6 +858,7 @@ public class I18nConstants {
   public static final String UNKNOWN_CODESYSTEM = "UNKNOWN_CODESYSTEM";
   public static final String UNKNOWN_CODESYSTEM_VERSION = "UNKNOWN_CODESYSTEM_VERSION";
   public static final String VALUESET_TOO_COSTLY = "VALUESET_TOO_COSTLY";
+  public static final String NO_VALID_DISPLAY_FOUND = "NO_VALID_DISPLAY_FOUND";
 }
 
 

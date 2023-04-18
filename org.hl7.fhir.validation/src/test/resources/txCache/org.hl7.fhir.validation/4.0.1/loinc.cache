@@ -9,7 +9,7 @@ v: {
   "code" : "59408-5",
   "system" : "http://loinc.org",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 25 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry, \"SaO2 % BldA PulseOx\", \"O2 SaO2\" (pl-PL), \"saturacja krwi tlenem\" (pl-PL), \"MFr O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法\" (zh-CN), \"脉搏血氧定量\" (zh-CN), \"脉搏血氧测定\" (zh-CN), \"脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度\" (zh-CN), \"O2-Sättigung\" (de-DE), \"Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso\" (it-IT), \"Oksijen doymuşluğu\" (tr-TR), \"Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия\" (ru-RU), \"Гемоксиметрия Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"O2 SatO2\" (fr-BE)' (from null)"
+  "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 25 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry, \"SaO2 % BldA PulseOx\", \"O2 SaO2\" (pl-PL), \"saturacja krwi tlenem\" (pl-PL), \"MFr O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法\" (zh-CN), \"脉搏血氧定量\" (zh-CN), \"脉搏血氧测定\" (zh-CN), \"脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度\" (zh-CN), \"O2-Sättigung\" (de-DE), \"Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso\" (it-IT), \"Oksijen doymuşluğu\" (tr-TR), \"Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия\" (ru-RU), \"Гемоксиметрия Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"O2 SatO2\" (fr-BE)' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -44,145 +44,7 @@ v: {
   "code" : "3151-8",
   "system" : "http://loinc.org",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate, \"Inhaled O2 flow rate\", \"O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 体积速率(单位时间)\" (zh-CN), \"单位时间内体积的变化速率\" (zh-CN), \"流量 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 吸入气\" (zh-CN), \"吸入气体\" (zh-CN), \"吸入的空气 所吸入的氧\" (zh-CN), \"已吸入的氧气 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 气 气体类 空气\" (zh-CN), \"Inhaled O2\" (pt-BR), \"vRate\" (pt-BR), \"Volume rate\" (pt-BR), \"Flow\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"IhG\" (pt-BR), \"Inhaled Gas\" (pt-BR), \"Inspired\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"Gases\" (pt-BR), \"Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume\" (it-IT), \"Количественный Объемная скорость Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"ingeademde O2\" (nl-NL), \"O2-Zufuhr\" (de-AT)' (from null)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "59408-5"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
-  "code" : "59408-5",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "severity" : "error",
-  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0' (from null)",
-  "class" : "UNKNOWN"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood",
-  "code" : "2708-6",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "59408-5",
-  "display" : "O2 % BldC Oximetry"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
-  "code" : "59408-5",
-  "system" : "http://loinc.org",
-  "severity" : "warning",
-  "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 25 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry, \"SaO2 % BldA PulseOx\", \"O2 SaO2\" (pl-PL), \"saturacja krwi tlenem\" (pl-PL), \"MFr O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法\" (zh-CN), \"脉搏血氧定量\" (zh-CN), \"脉搏血氧测定\" (zh-CN), \"脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度\" (zh-CN), \"O2-Sättigung\" (de-DE), \"Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso\" (it-IT), \"Oksijen doymuşluğu\" (tr-TR), \"Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия\" (ru-RU), \"Гемоксиметрия Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"O2 SatO2\" (fr-BE)' (from null)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6",
-  "display" : "Oxygen saturation in Arterial blood"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood",
-  "code" : "2708-6",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "59408-5"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
-  "code" : "59408-5",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood",
-  "code" : "2708-6",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3150-0"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen concentration",
-  "code" : "3150-0",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3150-0",
-  "display" : "Inhaled Oxygen Concentration"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen concentration",
-  "code" : "3150-0",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3150-0"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen concentration",
-  "code" : "3150-0",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3151-8"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen flow rate",
-  "code" : "3151-8",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3151-8",
-  "display" : "Flow Rate"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen flow rate",
-  "code" : "3151-8",
-  "system" : "http://loinc.org",
-  "severity" : "warning",
-  "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate, \"Inhaled O2 flow rate\", \"O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 体积速率(单位时间)\" (zh-CN), \"单位时间内体积的变化速率\" (zh-CN), \"流量 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 吸入气\" (zh-CN), \"吸入气体\" (zh-CN), \"吸入的空气 所吸入的氧\" (zh-CN), \"已吸入的氧气 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 气 气体类 空气\" (zh-CN), \"Inhaled O2\" (pt-BR), \"vRate\" (pt-BR), \"Volume rate\" (pt-BR), \"Flow\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"IhG\" (pt-BR), \"Inhaled Gas\" (pt-BR), \"Inspired\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"Gases\" (pt-BR), \"Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume\" (it-IT), \"Количественный Объемная скорость Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"ingeademde O2\" (nl-NL), \"O2-Zufuhr\" (de-AT)' (from null)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3151-8"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen flow rate",
-  "code" : "3151-8",
-  "system" : "http://loinc.org"
+  "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate, \"Inhaled O2 flow rate\", \"O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 体积速率(单位时间)\" (zh-CN), \"单位时间内体积的变化速率\" (zh-CN), \"流量 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 吸入气\" (zh-CN), \"吸入气体\" (zh-CN), \"吸入的空气 所吸入的氧\" (zh-CN), \"已吸入的氧气 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 气 气体类 空气\" (zh-CN), \"Inhaled O2\" (pt-BR), \"vRate\" (pt-BR), \"Volume rate\" (pt-BR), \"Flow\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"IhG\" (pt-BR), \"Inhaled Gas\" (pt-BR), \"Inspired\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"Gases\" (pt-BR), \"Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume\" (it-IT), \"Количественный Объемная скорость Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"ingeademde O2\" (nl-NL), \"O2-Zufuhr\" (de-AT)' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -950,7 +812,7 @@ v: {
   "code" : "51726-8",
   "system" : "http://loinc.org",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'NDC labeler code request' for http://loinc.org#51726-8 - should be one of 22 choices: 'FDA product label NDC labeler code request, \"FDA label NDC labeler code request\", \"FDA 药品标签 National Drug Code\" (zh-CN), \"NDC\" (zh-CN), \"国家药品验证号\" (zh-CN), \"国家药品代码\" (zh-CN), \"美国国家药品代码\" (zh-CN), \"全国药品代码\" (zh-CN), \"NDC labeler code\" (zh-CN), \"NDC 标识者识别代码\" (zh-CN), \"NDC 厂家号\" (zh-CN), \"NDC 贴签厂商代码请求\" (zh-CN), \"NDC 标签号申请 叙述\" (zh-CN), \"叙述性文字\" (zh-CN), \"报告\" (zh-CN), \"报告型\" (zh-CN), \"文字叙述\" (zh-CN), \"文本叙述型\" (zh-CN), \"文本描述\" (zh-CN), \"文本描述型 监管类文档\" (zh-CN), \"Documentazione normativa Etichetta di prodotto della Food and Drug Administ\" (it-IT), \"Описательный\" (ru-RU)' (from null)"
+  "error" : "Wrong Display Name 'NDC labeler code request' for http://loinc.org#51726-8 - should be one of 22 choices: 'FDA product label NDC labeler code request, \"FDA label NDC labeler code request\", \"FDA 药品标签 National Drug Code\" (zh-CN), \"NDC\" (zh-CN), \"国家药品验证号\" (zh-CN), \"国家药品代码\" (zh-CN), \"美国国家药品代码\" (zh-CN), \"全国药品代码\" (zh-CN), \"NDC labeler code\" (zh-CN), \"NDC 标识者识别代码\" (zh-CN), \"NDC 厂家号\" (zh-CN), \"NDC 贴签厂商代码请求\" (zh-CN), \"NDC 标签号申请 叙述\" (zh-CN), \"叙述性文字\" (zh-CN), \"报告\" (zh-CN), \"报告型\" (zh-CN), \"文字叙述\" (zh-CN), \"文本叙述型\" (zh-CN), \"文本描述\" (zh-CN), \"文本描述型 监管类文档\" (zh-CN), \"Documentazione normativa Etichetta di prodotto della Food and Drug Administ\" (it-IT), \"Описательный\" (ru-RU)' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1178,7 +1040,7 @@ v: {
   "code" : "18684-1",
   "system" : "http://loinc.org",
   "severity" : "warning",
-  "error" : "Wrong Display Name '����' for http://loinc.org#18684-1 - should be one of 46 choices: 'First Blood pressure Set, \"ED Health Insurance Portability and Accountability Act of 1996\" (zh-CN), \"HIPAA\" (zh-CN), \"健康保險可攜與責任法\" (zh-CN), \"HIPAA法案\" (zh-CN), \"健康保险可移植性和问责法1996年\" (zh-CN), \"美国健康保险携带和责任法案\" (zh-CN), \"医疗保险便携性和责任法案\" (zh-CN), \"医疗保险便携性与责任法案\" (zh-CN), \"醫療保險可攜性與責任法\" (zh-CN), \"HIPAA 信息附件.急诊\" (zh-CN), \"HIPAA 信息附件.急诊科\" (zh-CN), \"HIPAA 信息附件.急诊科就医\" (zh-CN), \"HIPAA 信息附件.急诊科就诊\" (zh-CN), \"健康保险便携与责任法案信息附件.急诊\" (zh-CN), \"健康保险便携与责任法案信息附件.急诊 临床信息附件集\" (zh-CN), \"临床信息附件集合\" (zh-CN), \"集\" (zh-CN), \"集合 信息附件\" (zh-CN), \"健康保险便携与责任法案信息附件\" (zh-CN), \"附件 医疗服务对象\" (zh-CN), \"客户\" (zh-CN), \"病人\" (zh-CN), \"病患\" (zh-CN), \"病号\" (zh-CN), \"超系统 - 病人 压强 复合属性\" (zh-CN), \"复杂型属性\" (zh-CN), \"复杂属性 就医\" (zh-CN), \"就医过程 急诊科 急诊科（DEEDS）变量\" (zh-CN), \"DEEDS 变量\" (zh-CN), \"急诊\" (zh-CN), \"急诊科\" (zh-CN), \"Emergency Department\" (zh-CN), \"ED\" (zh-CN), \"急诊科（急诊科系统代码之数据元素）变量\" (zh-CN), \"急诊科（急诊科系统代码之数据元素）指标\" (zh-CN), \"急诊科（美国CDC急诊科系统代码之数据元素）指标\" (zh-CN), \"急诊科指标 急诊科（Emergency Department，ED） 急诊部 第一个\" (zh-CN), \"第一次\" (zh-CN), \"首个\" (zh-CN), \"首次 血\" (zh-CN), \"全血\" (zh-CN), \"Allegato Allegato di reparto di emergenza (pronto soccorso) Complesso Emergenza (DEEDS - Data Elements for Emergency Dep Incontro\" (it-IT), \"Appuntamento paziente Stabilito\" (it-IT), \"Fissato\" (it-IT), \"Встреча Комплекс\" (ru-RU)' (from null)"
+  "error" : "Wrong Display Name '����' for http://loinc.org#18684-1 - should be one of 46 choices: 'First Blood pressure Set, \"ED Health Insurance Portability and Accountability Act of 1996\" (zh-CN), \"HIPAA\" (zh-CN), \"健康保險可攜與責任法\" (zh-CN), \"HIPAA法案\" (zh-CN), \"健康保险可移植性和问责法1996年\" (zh-CN), \"美国健康保险携带和责任法案\" (zh-CN), \"医疗保险便携性和责任法案\" (zh-CN), \"医疗保险便携性与责任法案\" (zh-CN), \"醫療保險可攜性與責任法\" (zh-CN), \"HIPAA 信息附件.急诊\" (zh-CN), \"HIPAA 信息附件.急诊科\" (zh-CN), \"HIPAA 信息附件.急诊科就医\" (zh-CN), \"HIPAA 信息附件.急诊科就诊\" (zh-CN), \"健康保险便携与责任法案信息附件.急诊\" (zh-CN), \"健康保险便携与责任法案信息附件.急诊 临床信息附件集\" (zh-CN), \"临床信息附件集合\" (zh-CN), \"集\" (zh-CN), \"集合 信息附件\" (zh-CN), \"健康保险便携与责任法案信息附件\" (zh-CN), \"附件 医疗服务对象\" (zh-CN), \"客户\" (zh-CN), \"病人\" (zh-CN), \"病患\" (zh-CN), \"病号\" (zh-CN), \"超系统 - 病人 压强 复合属性\" (zh-CN), \"复杂型属性\" (zh-CN), \"复杂属性 就医\" (zh-CN), \"就医过程 急诊科 急诊科（DEEDS）变量\" (zh-CN), \"DEEDS 变量\" (zh-CN), \"急诊\" (zh-CN), \"急诊科\" (zh-CN), \"Emergency Department\" (zh-CN), \"ED\" (zh-CN), \"急诊科（急诊科系统代码之数据元素）变量\" (zh-CN), \"急诊科（急诊科系统代码之数据元素）指标\" (zh-CN), \"急诊科（美国CDC急诊科系统代码之数据元素）指标\" (zh-CN), \"急诊科指标 急诊科（Emergency Department，ED） 急诊部 第一个\" (zh-CN), \"第一次\" (zh-CN), \"首个\" (zh-CN), \"首次 血\" (zh-CN), \"全血\" (zh-CN), \"Allegato Allegato di reparto di emergenza (pronto soccorso) Complesso Emergenza (DEEDS - Data Elements for Emergency Dep Incontro\" (it-IT), \"Appuntamento paziente Stabilito\" (it-IT), \"Fissato\" (it-IT), \"Встреча Комплекс\" (ru-RU)' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1191,7 +1053,7 @@ v: {
   "code" : "8480-6",
   "system" : "http://loinc.org",
   "severity" : "warning",
-  "error" : "Wrong Display Name '���k������' for http://loinc.org#8480-6 - should be one of 33 choices: 'Systolic blood pressure, \"BP sys\", \"一般血压\" (zh-CN), \"血压.原子型\" (zh-CN), \"血压指标.原子型 压力\" (zh-CN), \"压强 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 血管内收缩期\" (zh-CN), \"血管内心缩期 血管内的\" (zh-CN), \"Pressure\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"Art sys\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"IV\" (pt-BR), \"Intravenous\" (pt-BR), \"BLOOD PRESSURE MEASUREMENTS.ATOM\" (pt-BR), \"BP systolic\" (pt-BR), \"Blood pressure systolic\" (pt-BR), \"Sys BP\" (pt-BR), \"SBP\" (pt-BR), \"Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)\" (it-IT), \"Давление Количественный Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"Blutdruck systolisch\" (de-AT)' (from null)"
+  "error" : "Wrong Display Name '���k������' for http://loinc.org#8480-6 - should be one of 33 choices: 'Systolic blood pressure, \"BP sys\", \"一般血压\" (zh-CN), \"血压.原子型\" (zh-CN), \"血压指标.原子型 压力\" (zh-CN), \"压强 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 血管内收缩期\" (zh-CN), \"血管内心缩期 血管内的\" (zh-CN), \"Pressure\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"Art sys\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"IV\" (pt-BR), \"Intravenous\" (pt-BR), \"BLOOD PRESSURE MEASUREMENTS.ATOM\" (pt-BR), \"BP systolic\" (pt-BR), \"Blood pressure systolic\" (pt-BR), \"Sys BP\" (pt-BR), \"SBP\" (pt-BR), \"Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)\" (it-IT), \"Давление Количественный Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"Blutdruck systolisch\" (de-AT)' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1204,7 +1066,7 @@ v: {
   "code" : "8462-4",
   "system" : "http://loinc.org",
   "severity" : "warning",
-  "error" : "Wrong Display Name '�g��������' for http://loinc.org#8462-4 - should be one of 36 choices: 'Diastolic blood pressure, \"BP dias\", \"一般血压\" (zh-CN), \"血压.原子型\" (zh-CN), \"血压指标.原子型 压力\" (zh-CN), \"压强 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 血管内心舒期\" (zh-CN), \"血管内舒张期 血管内的\" (zh-CN), \"Dias\" (pt-BR), \"Diast\" (pt-BR), \"Pressure\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"Art sys\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"IV\" (pt-BR), \"Intravenous\" (pt-BR), \"Diastoli\" (pt-BR), \"BLOOD PRESSURE MEASUREMENTS.ATOM\" (pt-BR), \"Blood pressure diastolic\" (pt-BR), \"BP diastolic\" (pt-BR), \"Dias BP\" (pt-BR), \"DBP\" (pt-BR), \"Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)\" (it-IT), \"Внутрисосудистый диастолический Давление Количественный Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"Blutdruck diastolisch\" (de-AT)' (from null)"
+  "error" : "Wrong Display Name '�g��������' for http://loinc.org#8462-4 - should be one of 36 choices: 'Diastolic blood pressure, \"BP dias\", \"一般血压\" (zh-CN), \"血压.原子型\" (zh-CN), \"血压指标.原子型 压力\" (zh-CN), \"压强 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 血管内心舒期\" (zh-CN), \"血管内舒张期 血管内的\" (zh-CN), \"Dias\" (pt-BR), \"Diast\" (pt-BR), \"Pressure\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"Art sys\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"IV\" (pt-BR), \"Intravenous\" (pt-BR), \"Diastoli\" (pt-BR), \"BLOOD PRESSURE MEASUREMENTS.ATOM\" (pt-BR), \"Blood pressure diastolic\" (pt-BR), \"BP diastolic\" (pt-BR), \"Dias BP\" (pt-BR), \"DBP\" (pt-BR), \"Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)\" (it-IT), \"Внутрисосудистый диастолический Давление Количественный Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"Blutdruck diastolisch\" (de-AT)' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2114,6 +1976,144 @@ v: {
 v: {
   "display" : "History of allergies, reported",
   "code" : "10155-0",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "59408-5"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
+  "code" : "59408-5",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0' (from null)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood",
+  "code" : "2708-6",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "59408-5",
+  "display" : "O2 % BldC Oximetry"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
+  "code" : "59408-5",
+  "system" : "http://loinc.org",
+  "severity" : "warning",
+  "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 25 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry, \"SaO2 % BldA PulseOx\", \"O2 SaO2\" (pl-PL), \"saturacja krwi tlenem\" (pl-PL), \"MFr O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法\" (zh-CN), \"脉搏血氧定量\" (zh-CN), \"脉搏血氧测定\" (zh-CN), \"脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度\" (zh-CN), \"O2-Sättigung\" (de-DE), \"Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso\" (it-IT), \"Oksijen doymuşluğu\" (tr-TR), \"Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия\" (ru-RU), \"Гемоксиметрия Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"O2 SatO2\" (fr-BE)' for the language(s) '--' (from null)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6",
+  "display" : "Oxygen saturation in Arterial blood"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood",
+  "code" : "2708-6",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "59408-5"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
+  "code" : "59408-5",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood",
+  "code" : "2708-6",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3150-0"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+v: {
+  "display" : "Inhaled oxygen concentration",
+  "code" : "3150-0",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3150-0",
+  "display" : "Inhaled Oxygen Concentration"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Inhaled oxygen concentration",
+  "code" : "3150-0",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3150-0"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Inhaled oxygen concentration",
+  "code" : "3150-0",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3151-8"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+v: {
+  "display" : "Inhaled oxygen flow rate",
+  "code" : "3151-8",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3151-8",
+  "display" : "Flow Rate"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Inhaled oxygen flow rate",
+  "code" : "3151-8",
+  "system" : "http://loinc.org",
+  "severity" : "warning",
+  "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate, \"Inhaled O2 flow rate\", \"O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 体积速率(单位时间)\" (zh-CN), \"单位时间内体积的变化速率\" (zh-CN), \"流量 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 吸入气\" (zh-CN), \"吸入气体\" (zh-CN), \"吸入的空气 所吸入的氧\" (zh-CN), \"已吸入的氧气 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 气 气体类 空气\" (zh-CN), \"Inhaled O2\" (pt-BR), \"vRate\" (pt-BR), \"Volume rate\" (pt-BR), \"Flow\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"IhG\" (pt-BR), \"Inhaled Gas\" (pt-BR), \"Inspired\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"Gases\" (pt-BR), \"Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume\" (it-IT), \"Количественный Объемная скорость Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"ingeademde O2\" (nl-NL), \"O2-Zufuhr\" (de-AT)' for the language(s) '--' (from null)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3151-8"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Inhaled oxygen flow rate",
+  "code" : "3151-8",
   "system" : "http://loinc.org"
 }
 -------------------------------------------------------------------------------------

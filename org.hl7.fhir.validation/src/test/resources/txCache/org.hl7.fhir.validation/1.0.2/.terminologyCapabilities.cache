@@ -139,6 +139,9 @@
     "uri" : "http://hl7.org/fhir/concept-map-equivalence"
   },
   {
+    "uri" : "http://hl7.org/fhir/conditional-delete-status"
+  },
+  {
     "uri" : "http://hl7.org/fhir/condition-category"
   },
   {
@@ -149,9 +152,6 @@
   },
   {
     "uri" : "http://hl7.org/fhir/condition-ver-status"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/conditional-delete-status"
   },
   {
     "uri" : "http://hl7.org/fhir/conformance-expectation"
@@ -166,13 +166,13 @@
     "uri" : "http://hl7.org/fhir/constraint-severity"
   },
   {
+    "uri" : "http://hl7.org/fhir/contactentity-type"
+  },
+  {
     "uri" : "http://hl7.org/fhir/contact-point-system"
   },
   {
     "uri" : "http://hl7.org/fhir/contact-point-use"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/contactentity-type"
   },
   {
     "uri" : "http://hl7.org/fhir/content-type"
@@ -196,10 +196,10 @@
     "uri" : "http://hl7.org/fhir/data-absent-reason"
   },
   {
-    "uri" : "http://hl7.org/fhir/data-types"
+    "uri" : "http://hl7.org/fhir/dataelement-stringency"
   },
   {
-    "uri" : "http://hl7.org/fhir/dataelement-stringency"
+    "uri" : "http://hl7.org/fhir/data-types"
   },
   {
     "uri" : "http://hl7.org/fhir/days-of-week"
@@ -211,13 +211,13 @@
     "uri" : "http://hl7.org/fhir/device-action"
   },
   {
+    "uri" : "http://hl7.org/fhir/devicestatus"
+  },
+  {
     "uri" : "http://hl7.org/fhir/device-use-request-priority"
   },
   {
     "uri" : "http://hl7.org/fhir/device-use-request-status"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/devicestatus"
   },
   {
     "uri" : "http://hl7.org/fhir/diagnostic-order-priority"
@@ -271,6 +271,9 @@
     "uri" : "http://hl7.org/fhir/episode-of-care-status"
   },
   {
+    "uri" : "http://hl7.org/fhir/exception"
+  },
+  {
     "uri" : "http://hl7.org/fhir/ex-fdi"
   },
   {
@@ -286,6 +289,9 @@
     "uri" : "http://hl7.org/fhir/ex-surface"
   },
   {
+    "uri" : "http://hl7.org/fhir/extension-context"
+  },
+  {
     "uri" : "http://hl7.org/fhir/ex-udi"
   },
   {
@@ -295,16 +301,13 @@
     "uri" : "http://hl7.org/fhir/ex-visionprescriptionproduct"
   },
   {
-    "uri" : "http://hl7.org/fhir/exception"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/extension-context"
-  },
-  {
     "uri" : "http://hl7.org/fhir/FDI-surface"
   },
   {
     "uri" : "http://hl7.org/fhir/filter-operator"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/flagCategory"
   },
   {
     "uri" : "http://hl7.org/fhir/flag-category"
@@ -314,9 +317,6 @@
   },
   {
     "uri" : "http://hl7.org/fhir/flag-status"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/flagCategory"
   },
   {
     "uri" : "http://hl7.org/fhir/fm-conditions"
@@ -505,9 +505,6 @@
     "uri" : "http://hl7.org/fhir/object-type"
   },
   {
-    "uri" : "http://hl7.org/fhir/obs-kind"
-  },
-  {
     "uri" : "http://hl7.org/fhir/observation-category"
   },
   {
@@ -515,6 +512,9 @@
   },
   {
     "uri" : "http://hl7.org/fhir/observation-status"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/obs-kind"
   },
   {
     "uri" : "http://hl7.org/fhir/operation-kind"
@@ -532,13 +532,13 @@
     "uri" : "http://hl7.org/fhir/organization-type"
   },
   {
-    "uri" : "http://hl7.org/fhir/participant-type"
-  },
-  {
     "uri" : "http://hl7.org/fhir/participantrequired"
   },
   {
     "uri" : "http://hl7.org/fhir/participantstatus"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/participant-type"
   },
   {
     "uri" : "http://hl7.org/fhir/participationstatus"
@@ -553,10 +553,10 @@
     "uri" : "http://hl7.org/fhir/payeetype"
   },
   {
-    "uri" : "http://hl7.org/fhir/payment-type"
+    "uri" : "http://hl7.org/fhir/paymentstatus"
   },
   {
-    "uri" : "http://hl7.org/fhir/paymentstatus"
+    "uri" : "http://hl7.org/fhir/payment-type"
   },
   {
     "uri" : "http://hl7.org/fhir/practitioner-role"
@@ -736,13 +736,13 @@
     "uri" : "http://hl7.org/fhir/substance-category"
   },
   {
+    "uri" : "http://hl7.org/fhir/supplydelivery-status"
+  },
+  {
     "uri" : "http://hl7.org/fhir/supply-item-type"
   },
   {
     "uri" : "http://hl7.org/fhir/supply-kind"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/supplydelivery-status"
   },
   {
     "uri" : "http://hl7.org/fhir/supplyrequest-reason"

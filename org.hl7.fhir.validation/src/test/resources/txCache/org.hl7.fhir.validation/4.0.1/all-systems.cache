@@ -36,7 +36,7 @@ v: {
   "code" : "59284-0",
   "system" : "http://loinc.org",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'Patient Authorization Signature' for http://loinc.org#59284-0 - should be one of 29 choices: 'Consent Document, \"Consent\", \"临床文档型\" (zh-CN), \"临床文档\" (zh-CN), \"文档\" (zh-CN), \"文书\" (zh-CN), \"医疗文书\" (zh-CN), \"临床医疗文书 事件发生的地方\" (zh-CN), \"场景\" (zh-CN), \"环境\" (zh-CN), \"背景 医疗服务对象\" (zh-CN), \"客户\" (zh-CN), \"病人\" (zh-CN), \"超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。\" (zh-CN), \"发现物\" (zh-CN), \"所见\" (zh-CN), \"结果\" (zh-CN), \"结论 同意书\" (zh-CN), \"知情同意\" (zh-CN), \"知情同意书 文档本体\" (zh-CN), \"临床文档本体\" (zh-CN), \"文档本体\" (zh-CN), \"文书本体\" (zh-CN), \"医疗文书本体\" (zh-CN), \"临床医疗文书本体 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间\" (zh-CN), \"Documentazione dell'ontologia Osservazione Punto nel tempo (episodio)\" (it-IT)' (from null)"
+  "error" : "Wrong Display Name 'Patient Authorization Signature' for http://loinc.org#59284-0 - should be one of 29 choices: 'Consent Document, \"Consent\", \"临床文档型\" (zh-CN), \"临床文档\" (zh-CN), \"文档\" (zh-CN), \"文书\" (zh-CN), \"医疗文书\" (zh-CN), \"临床医疗文书 事件发生的地方\" (zh-CN), \"场景\" (zh-CN), \"环境\" (zh-CN), \"背景 医疗服务对象\" (zh-CN), \"客户\" (zh-CN), \"病人\" (zh-CN), \"超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。\" (zh-CN), \"发现物\" (zh-CN), \"所见\" (zh-CN), \"结果\" (zh-CN), \"结论 同意书\" (zh-CN), \"知情同意\" (zh-CN), \"知情同意书 文档本体\" (zh-CN), \"临床文档本体\" (zh-CN), \"文档本体\" (zh-CN), \"文书本体\" (zh-CN), \"医疗文书本体\" (zh-CN), \"临床医疗文书本体 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间\" (zh-CN), \"Documentazione dell'ontologia Osservazione Punto nel tempo (episodio)\" (it-IT)' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -419,30 +419,6 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "371532007",
-  "display" : "Progress note"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Progress report",
-  "code" : "371532007",
-  "system" : "http://snomed.info/sct",
-  "severity" : "warning",
-  "error" : "Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007 - should be one of 3 choices: 'Progress report, \"Report of subsequent visit\", \"Progress report (record artifact)\"' (from null)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "371525003",
-  "display" : "Clinical procedure report"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Clinical procedure report",
-  "code" : "371525003",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "code" : "text/css"
 }, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
@@ -714,5 +690,29 @@ v: {
   "severity" : "error",
   "error" : "Unknown Code '[%payloadFormat%]' in the system 'urn:ietf:bcp:13'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/mimetypes' (from null)",
   "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371532007",
+  "display" : "Progress note"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Progress report",
+  "code" : "371532007",
+  "system" : "http://snomed.info/sct",
+  "severity" : "warning",
+  "error" : "Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007 - should be one of 3 choices: 'Progress report, \"Report of subsequent visit\", \"Progress report (record artifact)\"' for the language(s) '--' (from null)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371525003",
+  "display" : "Clinical procedure report"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Clinical procedure report",
+  "code" : "371525003",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
