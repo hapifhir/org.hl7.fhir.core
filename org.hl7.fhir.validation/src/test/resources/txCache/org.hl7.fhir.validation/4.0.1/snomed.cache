@@ -335,7 +335,7 @@ v: {
   "code" : "11840006",
   "system" : "http://snomed.info/sct",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'Traveller's Diarrhea (disorder)' for http://snomed.info/sct#11840006 - should be one of 4 choices: 'Traveler's diarrhea, \"Turista\", \"Traveler's diarrhoea\", \"Traveler's diarrhea (disorder)\"' (from null)"
+  "error" : "Wrong Display Name 'Traveller's Diarrhea (disorder)' for http://snomed.info/sct#11840006 - should be one of 4 choices: 'Traveler's diarrhea, \"Turista\", \"Traveler's diarrhoea\", \"Traveler's diarrhea (disorder)\"' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -546,53 +546,13 @@ v: {
   "code" : "371532007",
   "system" : "http://snomed.info/sct",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007 - should be one of 3 choices: 'Progress report, \"Report of subsequent visit\", \"Progress report (record artifact)\"' (from null)"
+  "error" : "Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007 - should be one of 3 choices: 'Progress report, \"Report of subsequent visit\", \"Progress report (record artifact)\"' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "371525003",
   "display" : "Clinical procedure report"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Clinical procedure report",
-  "code" : "371525003",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "371532007"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode--0", "version": "2.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "display" : "Progress report (record artifact)",
-  "code" : "371532007",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "371532007"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Progress report",
-  "code" : "371532007",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "371525003"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode--0", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "display" : "Clinical procedure report (record artifact)",
-  "code" : "371525003",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "371525003"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Clinical procedure report",
@@ -764,7 +724,7 @@ v: {
   "code" : "840535000",
   "system" : "http://snomed.info/sct",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'COVID-19' for http://snomed.info/sct#840535000 - should be one of 7 choices: 'Antibody to 2019 novel coronavirus, \"Antibody to 2019-nCoV\", \"Antibody to severe acute respiratory syndrome coronavirus 2 (substance)\", \"Antibody to severe acute respiratory syndrome coronavirus 2\", \"Antibody to SARS-CoV-2\", \"Severe acute respiratory syndrome coronavirus 2 Ab\", \"Severe acute respiratory syndrome coronavirus 2 antibody\"' (from null)"
+  "error" : "Wrong Display Name 'COVID-19' for http://snomed.info/sct#840535000 - should be one of 7 choices: 'Antibody to 2019 novel coronavirus, \"Antibody to 2019-nCoV\", \"Antibody to severe acute respiratory syndrome coronavirus 2 (substance)\", \"Antibody to severe acute respiratory syndrome coronavirus 2\", \"Antibody to SARS-CoV-2\", \"Severe acute respiratory syndrome coronavirus 2 Ab\", \"Severe acute respiratory syndrome coronavirus 2 antibody\"' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -807,7 +767,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 10821000202101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '10821000202101' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 10821000202101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '10821000202101' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -821,7 +781,7 @@ v: {
   "code" : "446745002",
   "system" : "http://snomed.info/sct",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'Diagnostisk med biopsi' for http://snomed.info/sct#446745002 - should be one of 2 choices: 'Colonoscopy and biopsy of colon (procedure), \"Colonoscopy and biopsy of colon\"' (from null)"
+  "error" : "Wrong Display Name 'Diagnostisk med biopsi' for http://snomed.info/sct#446745002 - should be one of 2 choices: 'Colonoscopy and biopsy of colon (procedure), \"Colonoscopy and biopsy of colon\"' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -842,7 +802,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 8921000202108 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '8921000202108' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 8921000202108 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '8921000202108' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -853,7 +813,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 8951000202101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '8951000202101' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 8951000202101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '8951000202101' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -875,7 +835,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 10291000202102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '10291000202102' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 10291000202102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '10291000202102' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -897,7 +857,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 8901000202102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '8901000202102' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 8901000202102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '8901000202102' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -919,7 +879,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 8911000202100 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '8911000202100' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 8911000202100 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '8911000202100' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -941,7 +901,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 8891000202103 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '8891000202103' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 8891000202103 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '8891000202103' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -1003,7 +963,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 15991000202102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '15991000202102' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 15991000202102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '15991000202102' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -1054,7 +1014,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 10821000202101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '10821000202101' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 10821000202101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '10821000202101' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -1074,7 +1034,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 8921000202108 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '8921000202108' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 8921000202108 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '8921000202108' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -1084,7 +1044,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 8951000202101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '8951000202101' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 8951000202101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '8951000202101' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -1191,7 +1151,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The CodeSystem http://snomed.info/sct version http://snomed.info/sct/900000000000207008/version/20210331 is unknown. ValidVersions: [http://snomed.info/sct/11000146104/version/20220930,http://snomed.info/sct/11000172109/version/20221115,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20220731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20220901,http://snomed.info/sct/900000000000207008/version/20190731,http://snomed.info/sct/900000000000207008/version/20200731,http://snomed.info/sct/900000000000207008/version/20210731,http://snomed.info/sct/900000000000207008/version/20220731]; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "The CodeSystem http://snomed.info/sct version http://snomed.info/sct/900000000000207008/version/20210331 is unknown. ValidVersions: [http://snomed.info/sct/11000146104/version/20220930,http://snomed.info/sct/11000172109/version/20221115,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20220731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230301,http://snomed.info/sct/900000000000207008/version/20190731,http://snomed.info/sct/900000000000207008/version/20200731,http://snomed.info/sct/900000000000207008/version/20210731,http://snomed.info/sct/900000000000207008/version/20230131]; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -1217,7 +1177,7 @@ v: {
   "code" : "322236009",
   "system" : "http://snomed.info/sct",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'Paracetamol 500mg tablets' for http://snomed.info/sct#322236009 - should be one of 3 choices: 'Acetaminophen 500 mg oral tablet, \"Paracetamol 500 mg oral tablet\", \"Product containing precisely paracetamol 500 milligram/1 each conventional release oral tablet (clinical drug)\"' (from null)"
+  "error" : "Wrong Display Name 'Paracetamol 500mg tablets' for http://snomed.info/sct#322236009 - should be one of 3 choices: 'Acetaminophen 500 mg oral tablet, \"Paracetamol 500 mg oral tablet\", \"Product containing precisely paracetamol 500 milligram/1 each conventional release oral tablet (clinical drug)\"' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1237,7 +1197,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 35901911000001104 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '35901911000001104' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 35901911000001104 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '35901911000001104' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -1261,7 +1221,7 @@ v: {
   "code" : "329652003",
   "system" : "http://snomed.info/sct",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'Ibuprofen 200mg tablets' for http://snomed.info/sct#329652003 - should be one of 2 choices: 'Ibuprofen 200 mg oral tablet, \"Product containing precisely ibuprofen 200 milligram/1 each conventional release oral tablet (clinical drug)\"' (from null)"
+  "error" : "Wrong Display Name 'Ibuprofen 200mg tablets' for http://snomed.info/sct#329652003 - should be one of 2 choices: 'Ibuprofen 200 mg oral tablet, \"Product containing precisely ibuprofen 200 milligram/1 each conventional release oral tablet (clinical drug)\"' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1271,7 +1231,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 39695211000001102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '39695211000001102' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 39695211000001102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '39695211000001102' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -1282,27 +1242,67 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 56248011000036107 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '56248011000036107' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 56248011000036107 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '56248011000036107' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "1"
-}, "valueSet" :null, "langs":"[en, en-US]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "valueSet" :null, "langs":"[en-US, en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 1 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '1' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 1 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '1' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "2"
-}, "valueSet" :null, "langs":"[en, en-US]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "valueSet" :null, "langs":"[en-US, en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "severity" : "error",
-  "error" : "Unable to find code 2 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); Unknown Code '2' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unable to find code 2 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20230131); Unknown Code '2' in the system 'http://snomed.info/sct'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
   "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371532007"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode--0", "version": "2.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+v: {
+  "display" : "Progress report (record artifact)",
+  "code" : "371532007",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371532007"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Progress report",
+  "code" : "371532007",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371525003"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode--0", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+v: {
+  "display" : "Clinical procedure report (record artifact)",
+  "code" : "371525003",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371525003"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Clinical procedure report",
+  "code" : "371525003",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------

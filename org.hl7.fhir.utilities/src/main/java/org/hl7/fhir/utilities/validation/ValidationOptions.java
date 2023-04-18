@@ -1,14 +1,17 @@
 package org.hl7.fhir.utilities.validation;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+
+import org.hl7.fhir.utilities.Utilities;
+
+import java.util.HashSet;
 
 public class ValidationOptions {
   public enum ValueSetMode {
     ALL_CHECKS, CHECK_MEMERSHIP_ONLY, NO_MEMBERSHIP_CHECK
   }
 
-  private List<String> languages = new ArrayList<>();
+  private Set<String> languages = new HashSet<>();
   private boolean useServer = true;
   private boolean useClient = true;
   private boolean guessSystem = false;
@@ -36,7 +39,7 @@ public class ValidationOptions {
    * 
    * @return
    */
-  public List<String> getLanguages() {
+  public Set<String> getLanguages() {
     return languages;
   }
 
@@ -121,6 +124,9 @@ public class ValidationOptions {
 
 
   public ValidationOptions withLanguage(String language) {
+    if (language == null) {
+      return this;
+    }
     ValidationOptions n = this.copy();
     n.languages.add(language);
     return n;
@@ -247,6 +253,14 @@ public class ValidationOptions {
   public String toJson() {
     return "\"langs\":\""+languages.toString()+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", "+
        "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"valueSetMode\":\""+valueSetMode.toString()+"\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\"";
+  }
+
+  public String langSummary() {
+    if (languages.size() == 0) {
+      return "--";
+    } else {
+      return String.join("|", Utilities.sorted(languages));
+    }
   }
 
 

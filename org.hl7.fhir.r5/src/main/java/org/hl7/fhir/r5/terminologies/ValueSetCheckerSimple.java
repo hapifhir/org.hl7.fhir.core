@@ -364,9 +364,13 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           } else {
             List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".system", warningMessage));
-            String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl());
-            issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
-            throw new VSCheckerException(warningMessage+"; "+msg, issues);
+            if (valueset == null) {
+              throw new VSCheckerException(warningMessage, issues);
+            } else {
+              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl());
+              issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
+              throw new VSCheckerException(warningMessage+"; "+msg, issues);
+            }
           }
         }
       }
@@ -377,7 +381,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
         warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition is not complete";
         if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment
-          throw new FHIRException(warningMessage);
+          throw new VSCheckerException(warningMessage, null);
         }
       }
 
@@ -603,8 +607,13 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
     }
-    String msg = context.formatMessagePlural(b.count(), I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay());
-    return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg));
+    if (b.count() == 0) {
+      String msg = context.formatMessagePlural(options.getLanguages().size(), I18nConstants.NO_VALID_DISPLAY_FOUND, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary());
+      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg));      
+    } else {
+      String msg = context.formatMessagePlural(b.count(), I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
+      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg));
+    }
   }
   
   private boolean isOkLanguage(String language) {
