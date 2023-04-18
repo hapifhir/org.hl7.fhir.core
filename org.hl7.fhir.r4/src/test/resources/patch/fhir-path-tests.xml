@@ -1719,5 +1719,83 @@
         </managingOrganization>
       </Patient>
     </output>
-  </case>  
+  </case>
+  <case name="Consecutive operations" mode="both">
+    <input>
+        <Patient xmlns='http://hl7.org/fhir'>
+            <id value='example'/>
+            <contact>
+                <name>
+                    <family value='du Marché'>
+                        <extension url='http://hl7.org/fhir/StructureDefinition/humanname-own-prefix'>
+                            <valueString value='VV'/>
+                        </extension>
+                    </family>
+                    <given value='Bénédicte'/>
+                </name>
+            </contact>
+        </Patient>
+    </input>
+    <diff>
+        <Parameters xmlns="http://hl7.org/fhir">
+            <parameter>
+                <name value="operation"/>
+                <part>
+                    <name value="type"/>
+                    <valueCode value="add"/>
+                </part>
+                <part>
+                    <name value="path"/>
+                    <valueString value="Patient.contact[0]"/>
+                </part>
+                <part>
+                    <name value="name"/>
+                    <valueString value="gender"/>
+                </part>
+                <part>
+                    <name value="value"/>
+                    <valueCode value="male"/>
+                </part>
+            </parameter>
+            <parameter>
+                <name value="operation"/>
+                <part>
+                    <name value="type"/>
+                    <valueCode value="add"/>
+                </part>
+                <part>
+                    <name value="path"/>
+                    <valueString value="Patient.contact[1]"/>
+                </part>
+                <part>
+                    <name value="name"/>
+                    <valueString value="gender"/>
+                </part>
+                <part>
+                    <name value="value"/>
+                    <valueCode value="male"/>
+                </part>
+            </parameter>
+        </Parameters>
+    </diff>
+    <output>
+        <Patient xmlns='http://hl7.org/fhir'>
+            <id value='example'/>
+            <contact>
+                <name>
+                    <family value='du Marché'>
+                        <extension url='http://hl7.org/fhir/StructureDefinition/humanname-own-prefix'>
+                            <valueString value='WW'/>
+                        </extension>
+                    </family>
+                    <given value='Bénédicte'/>
+                </name>
+                <gender value="male"/>
+            </contact>
+            <contact>
+                <gender value="male"/>
+            </contact>
+        </Patient>
+    </output>
+</case>
 </tests>
