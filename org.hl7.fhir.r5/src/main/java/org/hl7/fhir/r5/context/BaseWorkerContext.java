@@ -1084,8 +1084,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       } catch (VSCheckerException e) {
         localError = e.getMessage();
-        issues.addAll(e.getIssues());
+        if (e.getIssues() != null) {
+          issues.addAll(e.getIssues());
+        }
       } catch (Exception e) {
+//        e.printStackTrace();
         localError = e.getMessage();
       }
     }
