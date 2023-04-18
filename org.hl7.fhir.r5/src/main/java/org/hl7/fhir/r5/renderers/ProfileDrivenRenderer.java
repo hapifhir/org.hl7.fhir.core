@@ -759,7 +759,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   private void generateByProfile(ResourceWrapper res, StructureDefinition profile, BaseWrapper e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     if (children.isEmpty()) {
-      renderLeaf(res, e, defn, x, x, false, showCodeDetails, readDisplayHints(defn), path, indent);
+      StructureDefinition sdt = context.getWorker().fetchTypeDefinition(e.fhirType());
+      if (sdt != null && (sdt.getKind() == StructureDefinitionKind.COMPLEXTYPE || sdt.getKind() == StructureDefinitionKind.PRIMITIVETYPE)) {
+        renderLeaf(res, e, defn, x, x, false, showCodeDetails, readDisplayHints(defn), path, indent);
+      } else {
+        // we don't have anything to render?
+      }
     } else {
       List<PropertyWrapper> pl = splitExtensions(profile, e.children());
       for (PropertyWrapper p : pl) {
