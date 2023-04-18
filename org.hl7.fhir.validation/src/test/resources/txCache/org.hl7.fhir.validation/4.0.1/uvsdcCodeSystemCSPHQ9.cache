@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "code" : "Not-at-all"
-}, "valueSet" :null, "langs":"[en, en-US]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "valueSet" :null, "langs":"[en-US, en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "display" : "Not at all",
   "code" : "Not-at-all",
@@ -12,7 +12,7 @@ v: {
 {"code" : {
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "code" : "Several-days"
-}, "valueSet" :null, "langs":"[en, en-US]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "valueSet" :null, "langs":"[en-US, en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "display" : "Several days",
   "code" : "Several-days",
@@ -22,7 +22,7 @@ v: {
 {"code" : {
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "code" : "More than half the days"
-}, "valueSet" :null, "langs":"[en, en-US]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "valueSet" :null, "langs":"[en-US, en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "display" : "More than half the days",
   "code" : "More than half the days",
@@ -32,7 +32,7 @@ v: {
 {"code" : {
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "code" : "Nearly every day"
-}, "valueSet" :null, "langs":"[en, en-US]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "valueSet" :null, "langs":"[en-US, en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "display" : "Nearly every day",
   "code" : "Nearly every day",

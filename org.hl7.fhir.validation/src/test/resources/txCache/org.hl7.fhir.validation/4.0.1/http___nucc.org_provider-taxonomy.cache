@@ -9,7 +9,7 @@ v: {
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician', (from null)"
+  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician' (for the language(s) '--') (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -32,7 +32,7 @@ v: {
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician', (from null)"
+  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician' (for the language(s) '--') (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {

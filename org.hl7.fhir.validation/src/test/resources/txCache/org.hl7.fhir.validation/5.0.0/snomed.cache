@@ -39,7 +39,7 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The CodeSystem http://snomed.info/sct version http://snomed.info/sct/731000124108/version/20210201 is unknown. ValidVersions: [http://snomed.info/sct/11000146104/version/20220930,http://snomed.info/sct/11000172109/version/20221115,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20220731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20220901,http://snomed.info/sct/900000000000207008/version/20190731,http://snomed.info/sct/900000000000207008/version/20200731,http://snomed.info/sct/900000000000207008/version/20210731,http://snomed.info/sct/900000000000207008/version/20220731]; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "error" : "The CodeSystem http://snomed.info/sct version http://snomed.info/sct/731000124108/version/20210201 is unknown. ValidVersions: [http://snomed.info/sct/11000146104/version/20220930,http://snomed.info/sct/11000172109/version/20221115,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20220731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230301,http://snomed.info/sct/900000000000207008/version/20190731,http://snomed.info/sct/900000000000207008/version/20200731,http://snomed.info/sct/900000000000207008/version/20210731,http://snomed.info/sct/900000000000207008/version/20230131]; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ v: {
   "code" : "132037003",
   "system" : "http://snomed.info/sct",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'Pineywoods pig breed. Not.' for http://snomed.info/sct#132037003 - should be one of 3 choices: 'Pineywoods pig, \"Pineywoods pig breed (organism)\", \"Pineywoods pig breed\"' (from Tx-Server)"
+  "error" : "Wrong Display Name 'Pineywoods pig breed. Not.' for http://snomed.info/sct#132037003 - should be one of 3 choices: 'Pineywoods pig, \"Pineywoods pig breed (organism)\", \"Pineywoods pig breed\"' for the language(s) '--' (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -108,6 +108,55 @@ v: {
 v: {
   "display" : "Anxiety disorder of childhood OR adolescence",
   "code" : "109006",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "106004",
+  "display" : "Posterior carpal region"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Posterior carpal region",
+  "code" : "106004",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "106004"
+}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings--0", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/clinical-findings--0' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "106004",
+  "display" : "Posterior carpal region"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Posterior carpal region",
+  "code" : "106004",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "106004"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct"
+    }]
+  }
+}, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Posterior carpal region",
+  "code" : "106004",
   "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
@@ -212,62 +261,13 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
-  "code" : "106004",
-  "display" : "Posterior carpal region"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Posterior carpal region",
-  "code" : "106004",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "106004"
-}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings--0", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "severity" : "error",
-  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/clinical-findings--0' (from Tx-Server)",
-  "class" : "UNKNOWN"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "106004",
-  "display" : "Posterior carpal region"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Posterior carpal region",
-  "code" : "106004",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "106004"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct"
-    }]
-  }
-}, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Posterior carpal region",
-  "code" : "106004",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
   "code" : "27113001",
   "display" : "Body weight"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -276,8 +276,8 @@ v: {
 }, "url": "http://hl7.org/fhir/ValueSet/c80-practice-codes--0", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"true"}####
 v: {
   "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/c80-practice-codes--0' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -286,9 +286,9 @@ v: {
   "display" : "Geriatrics specialist"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Geriatrics specialist",
+  "code" : "90655003",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -296,9 +296,9 @@ v: {
   "code" : "439401001"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Diagnosis (observable entity)",
+  "code" : "439401001",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -306,20 +306,30 @@ v: {
   "code" : "24484000"
 }, "url": "http://hl7.org/fhir/ValueSet/condition-severity--0", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Severe",
+  "code" : "24484000",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "24484000",
   "display" : "Severe"
+}, "url": "http://hl7.org/fhir/ValueSet/condition-severity", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"true"}####
+v: {
+  "display" : "Severe",
+  "code" : "24484000",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "24484000"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Severe",
+  "code" : "24484000",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -328,9 +338,9 @@ v: {
   "display" : "Burn of ear"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Burn of ear",
+  "code" : "39065001",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -339,9 +349,9 @@ v: {
   "display" : "Left external ear structure"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Left external ear",
+  "code" : "49521004",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -350,9 +360,9 @@ v: {
   "display" : "Apgar score at 20 minutes"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Apgar score at 20 minutes (observable entity)",
+  "code" : "443849008",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -362,8 +372,8 @@ v: {
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -372,9 +382,9 @@ v: {
   "display" : "Apgar heart rate score"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Apgar heart rate score",
+  "code" : "249223000",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -383,9 +393,9 @@ v: {
   "display" : "Apgar response to stimulus score"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Apgar response to stimulus score",
+  "code" : "249226008",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -394,9 +404,9 @@ v: {
   "display" : "Apgar muscle tone score"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Apgar muscle tone score",
+  "code" : "249225007",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -405,9 +415,9 @@ v: {
   "display" : "Apgar respiratory effort score"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Apgar respiratory effort score",
+  "code" : "249224006",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -416,9 +426,9 @@ v: {
   "display" : "Angina (disorder)"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Angina",
+  "code" : "194828000",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -427,9 +437,9 @@ v: {
   "display" : "Myocardial infarction (disorder)"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Myocardial infarction",
+  "code" : "22298006",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -438,9 +448,9 @@ v: {
   "display" : "Ophthalmic route (qualifier value)"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Ophthalmic route",
+  "code" : "54485002",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -449,8 +459,8 @@ v: {
   "display" : "Instill - dosing instruction imperative (qualifier value)"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Instill - dosing instruction imperative (qualifier value)",
+  "code" : "421538008",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------

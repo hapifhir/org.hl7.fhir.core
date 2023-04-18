@@ -5,7 +5,7 @@
   "version" : "1.0.0",
   "name" : "FHIR Reference Server Teminology Capability Statement",
   "status" : "active",
-  "date" : "2023-04-14T06:53:16.803Z",
+  "date" : "2023-04-17T22:56:51.098Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -821,16 +821,16 @@
     "uri" : "http://hl7.org/fhir/us/core/CodeSystem/condition-category"
   },
   {
-    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category"
+    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-category"
   },
   {
-    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-observation-category"
+    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category"
   },
   {
     "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-provenance-participant-type"
   },
   {
-    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-tags"
+    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-sex-for-clinical-use"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/assemble-expectation"
@@ -939,6 +939,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/appointment-cancellation-reason"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/appropriateness-score"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/attribute-estimate-type"
@@ -3275,6 +3278,9 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ManagedParticipationStatus"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ManufacturerModelNameExample"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-MapRelationship"
   },
   {
@@ -3435,6 +3441,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-SetOperator"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-SoftwareNameExample"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-SpecimenType"

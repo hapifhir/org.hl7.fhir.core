@@ -50,9 +50,9 @@ v: {
   "code" : "fr-CA"
 }, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "French (Canada)",
+  "code" : "fr-CA",
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -61,17 +61,17 @@ v: {
   "display" : "Diagnosis"
 }, "url": "http://hl7.org/fhir/ValueSet/condition-category", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "Diagnosis (observable entity)",
+  "code" : "439401001",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "d"
 }, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "Error parsing response message: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 11 path $",
-  "class" : "SERVER_ERROR"
+  "display" : "day",
+  "code" : "d",
+  "system" : "http://unitsofmeasure.org"
 }
 -------------------------------------------------------------------------------------
