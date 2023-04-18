@@ -4,6 +4,7 @@ import java.io.IOException;
 
 public class ToolGlobalSettings {
 
+  private static Boolean noNetwork = null;
   private static boolean inited = false;
   
   private static String npmPath;
@@ -67,6 +68,17 @@ public class ToolGlobalSettings {
     return testIgsPath != null;
   }
   
+
+  public static boolean isNoNetwork() {
+    init();
+    return noNetwork;
+  }
+
+  public static void setNoNetwork(boolean value) {
+    init();
+    noNetwork = value;
+  }
+  
   private static void init() {
     if (!inited) {
       inited = true;
@@ -80,6 +92,7 @@ public class ToolGlobalSettings {
           comparePath = ini.getStringProperty("paths", "compare");
           tempPath = ini.getStringProperty("paths", "temp");
           testIgsPath = ini.getStringProperty("paths", "test-igs");
+          noNetwork = ini.getBooleanProperty("network", "no-access");
         }
       } catch (IOException e) {
       }
