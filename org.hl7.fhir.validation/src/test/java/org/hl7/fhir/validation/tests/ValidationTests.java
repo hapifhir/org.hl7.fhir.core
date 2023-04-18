@@ -404,13 +404,14 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
 
   private ValidationEngine buildVersionEngine(String ver, String txLog) throws Exception {
+    String server = Servers.TX_SERVER_DEV;
     switch (ver) {
-    case "1.0": return TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", Servers.TX_SERVER_PROD, txLog, FhirPublication.DSTU2, true, "1.0.2");
-    case "1.4": return TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", Servers.TX_SERVER_PROD, txLog, FhirPublication.DSTU2016May, true, "1.4.0"); 
-    case "3.0": return TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", Servers.TX_SERVER_PROD, txLog, FhirPublication.STU3, true, "3.0.2");
-    case "4.0": return TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", Servers.TX_SERVER_PROD, txLog, FhirPublication.R4, true, "4.0.1");
-    case "4.3": return TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", Servers.TX_SERVER_PROD, txLog, FhirPublication.R4B, true, "4.3.0");
-    case "5.0": return TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", Servers.TX_SERVER_PROD, txLog, FhirPublication.R5, true, "5.0.0");
+    case "1.0": return TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", server, txLog, FhirPublication.DSTU2, true, "1.0.2");
+    case "1.4": return TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", server, txLog, FhirPublication.DSTU2016May, true, "1.4.0"); 
+    case "3.0": return TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", server, txLog, FhirPublication.STU3, true, "3.0.2");
+    case "4.0": return TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", server, txLog, FhirPublication.R4, true, "4.0.1");
+    case "4.3": return TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", server, txLog, FhirPublication.R4B, true, "4.3.0");
+    case "5.0": return TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", server, txLog, FhirPublication.R5, true, "5.0.0");
     }
     throw new Exception("unknown version " + version);    
   }
