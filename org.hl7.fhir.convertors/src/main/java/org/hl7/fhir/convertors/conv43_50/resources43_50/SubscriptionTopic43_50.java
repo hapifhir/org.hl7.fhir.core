@@ -8,8 +8,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDet
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
 
-import org.hl7.fhir.convertors.conv43_50.resources43_50.Enumerations43_50;
-import org.hl7.fhir.r4b.model.SubscriptionTopic;
+
 
 
 import java.util.stream.Collectors;
@@ -73,7 +72,7 @@ public class SubscriptionTopic43_50 {
     return tgt;
   }
 
-  private static SubscriptionTopic.SubscriptionTopicNotificationShapeComponent convertNotificationShape(org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicNotificationShapeComponent src) {
+  private static org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicNotificationShapeComponent convertNotificationShape(org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicNotificationShapeComponent src) {
     org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicNotificationShapeComponent tgt = new org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicNotificationShapeComponent();
     if (src.hasResource()) {
       tgt.setResourceElement(Uri43_50.convertUri(src.getResourceElement()));
@@ -85,7 +84,7 @@ public class SubscriptionTopic43_50 {
   }
 
   private static org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent convertCanFilterBy(org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent src) {
-    org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent tgt = new SubscriptionTopic.SubscriptionTopicCanFilterByComponent();
+    org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent tgt = new org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent();
     if (src.hasDescription()) {
       tgt.setDescriptionElement(MarkDown43_50.convertMarkdown(src.getDescriptionElement()));
     }
@@ -121,7 +120,8 @@ public class SubscriptionTopic43_50 {
     }
     if (src.hasSupportedInteraction()) {
       for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SubscriptionTopic.InteractionTrigger> srcItem : src.getSupportedInteraction()) {
-        tgt.addSupportedInteraction(convertInteractionTrigger(srcItem.getValue()));
+        org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.InteractionTrigger> newElement = tgt.addSupportedInteractionElement();
+        newElement.setValue(convertInteractionTrigger(srcItem.getValue()));
       }
     }
     if (src.hasQueryCriteria()) {
@@ -139,13 +139,13 @@ public class SubscriptionTopic43_50 {
       tgt.setPreviousElement(String43_50.convertString(src.getPreviousElement()));
     }
     if (src.hasResultForCreate()) {
-      tgt.setResultForCreate(convertCriteriaNotExistsBehavior(src.getResultForCreate()));
+      tgt.setResultForCreateElement(convertCriteriaNotExistsBehavior(src.getResultForCreateElement()));
     }
     if (src.hasCurrent()) {
       tgt.setCurrentElement(String43_50.convertString(src.getCurrentElement()));
     }
     if (src.hasResultForDelete()) {
-      tgt.setResultForDelete(convertCriteriaNotExistsBehavior(src.getResultForDelete()));
+      tgt.setResultForDeleteElement(convertCriteriaNotExistsBehavior(src.getResultForDeleteElement()));
     }
     if (src.hasRequireBoth()) {
       tgt.setRequireBothElement(Boolean43_50.convertBoolean(src.getRequireBothElement()));
@@ -153,11 +153,12 @@ public class SubscriptionTopic43_50 {
     return tgt;
   }
 
-  private static org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior convertCriteriaNotExistsBehavior(org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior src) {
-    switch(src) {
-      case TESTFAILS: return org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTFAILS;
-      case TESTPASSES: return org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTPASSES;
-      case NULL: return org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.NULL;
+  private static org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior> convertCriteriaNotExistsBehavior(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior> src) {
+    org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory enumFactory = new org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory();
+    switch(src.getValue()) {
+      case TESTFAILS: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTFAILS);
+      case TESTPASSES: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTPASSES);
+      case NULL: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.NULL);
     }
     return null;
   }
@@ -231,7 +232,7 @@ public class SubscriptionTopic43_50 {
     return tgt;
   }
 
-  private static org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicNotificationShapeComponent convertNotificationShape(SubscriptionTopic.SubscriptionTopicNotificationShapeComponent src) {
+  private static org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicNotificationShapeComponent convertNotificationShape(org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicNotificationShapeComponent src) {
     org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicNotificationShapeComponent tgt = new org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicNotificationShapeComponent();
     if (src.hasResource()) {
       tgt.setResourceElement(Uri43_50.convertUri(src.getResourceElement()));
@@ -243,7 +244,7 @@ public class SubscriptionTopic43_50 {
 
   }
 
-  private static org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent convertCanFilterBy(SubscriptionTopic.SubscriptionTopicCanFilterByComponent src) {
+  private static org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent convertCanFilterBy(org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent src) {
     org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent tgt = new org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent();
     if (src.hasDescription()) {
       tgt.setDescriptionElement(MarkDown43_50.convertMarkdown(src.getDescriptionElement()));
@@ -265,7 +266,7 @@ public class SubscriptionTopic43_50 {
     return tgt;
   }
 
-  private static org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent convertResourceTrigger(SubscriptionTopic.SubscriptionTopicResourceTriggerComponent src) {
+  private static org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent convertResourceTrigger(org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent src) {
     org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent tgt = new org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasDescription()) {
@@ -276,7 +277,8 @@ public class SubscriptionTopic43_50 {
     }
     if (src.hasSupportedInteraction()) {
       for (org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.InteractionTrigger> srcItem : src.getSupportedInteraction()) {
-        tgt.addSupportedInteraction(convertInteractionTrigger(srcItem.getValue()));
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SubscriptionTopic.InteractionTrigger> tgtElement = tgt.addSupportedInteractionElement();
+        tgtElement.setValue(convertInteractionTrigger(srcItem.getValue()));
       }
     }
     if (src.hasQueryCriteria()) {
@@ -289,19 +291,19 @@ public class SubscriptionTopic43_50 {
 
   }
 
-  private static org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicResourceTriggerQueryCriteriaComponent convertResourceTriggerQueryCriteriaComponent(SubscriptionTopic.SubscriptionTopicResourceTriggerQueryCriteriaComponent src) {
+  private static org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicResourceTriggerQueryCriteriaComponent convertResourceTriggerQueryCriteriaComponent(org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicResourceTriggerQueryCriteriaComponent src) {
     org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicResourceTriggerQueryCriteriaComponent tgt = new org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicResourceTriggerQueryCriteriaComponent();
     if (src.hasPrevious()) {
       tgt.setPreviousElement(String43_50.convertString(src.getPreviousElement()));
     }
     if (src.hasResultForCreate()) {
-      tgt.setResultForCreate(convertCriteriaNotExistsBehavior(src.getResultForCreate()));
+      tgt.setResultForCreateElement(convertCriteriaNotExistsBehavior(src.getResultForCreateElement()));
     }
     if (src.hasCurrent()) {
       tgt.setCurrentElement(String43_50.convertString(src.getCurrentElement()));
     }
     if (src.hasResultForDelete()) {
-      tgt.setResultForDelete(convertCriteriaNotExistsBehavior(src.getResultForDelete()));
+      tgt.setResultForDeleteElement(convertCriteriaNotExistsBehavior(src.getResultForDeleteElement()));
     }
     if (src.hasRequireBoth()) {
       tgt.setRequireBothElement(Boolean43_50.convertBoolean(src.getRequireBothElement()));
@@ -309,16 +311,18 @@ public class SubscriptionTopic43_50 {
     return tgt;
   }
 
-  private static org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior convertCriteriaNotExistsBehavior(SubscriptionTopic.CriteriaNotExistsBehavior src) {
-    switch(src) {
-      case TESTFAILS: return org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTFAILS;
-      case TESTPASSES: return org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTPASSES;
-      case NULL: return org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.NULL;
+  private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior> convertCriteriaNotExistsBehavior(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior> src) {
+    org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory enumFactory = new org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory();
+    switch(src.getValue()) {
+
+      case TESTFAILS: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTFAILS);
+      case TESTPASSES: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTPASSES);
+      case NULL: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.NULL);
     }
     return null;
   }
 
-  private static org.hl7.fhir.r5.model.SubscriptionTopic.InteractionTrigger convertInteractionTrigger(SubscriptionTopic.InteractionTrigger value) {
+  private static org.hl7.fhir.r5.model.SubscriptionTopic.InteractionTrigger convertInteractionTrigger(org.hl7.fhir.r4b.model.SubscriptionTopic.InteractionTrigger value) {
     switch(value) {
       case CREATE : return org.hl7.fhir.r5.model.SubscriptionTopic.InteractionTrigger.CREATE;
       case UPDATE: return org.hl7.fhir.r5.model.SubscriptionTopic.InteractionTrigger.UPDATE;
