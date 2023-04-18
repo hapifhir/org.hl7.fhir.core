@@ -159,16 +159,22 @@ public class ValueSetValidator extends BaseValidator {
         if (parent.isDebug()) {
           System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
         }
-        context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
-        if (parent.isDebug()) {
-          System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
-        }
-        for (VSCodingValidationRequest cv : batch) {
-          if (version == null) {
-            ok = warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode()) && ok;
-          } else {
-            ok = warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode()) && ok;
+        try {
+          context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
+          if (parent.isDebug()) {
+            System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
           }
+          for (VSCodingValidationRequest cv : batch) {
+            if (version == null) {
+              ok = warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode()) && ok;
+            } else {
+              ok = warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode()) && ok;
+            }
+          }
+        } catch (Exception e) {
+          ok = false;
+          VSCodingValidationRequest cv = batch.get(0);
+          rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, cv.getStack().getLiteralPath(), false, e.getMessage());
         }
       }
       
@@ -215,6 +221,9 @@ public class ValueSetValidator extends BaseValidator {
       } else {
         boolean ok = vv.isOk();
         warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, code);
+        if (vv.getMessage() != null) {
+          hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, vv.getMessage());
+        }
       }
     }
     return true;

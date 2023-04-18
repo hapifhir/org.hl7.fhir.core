@@ -6386,7 +6386,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   // no delay on this one? 
   public ValidationResult checkCodeOnServer(NodeStack stack, String code, String system, String version, String display, boolean checkDisplay) {
-    return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), system, version, code, checkDisplay ? display : null);
+    String lang = stack.getWorkingLang();
+    if (lang == null) {
+      lang = validationLanguage;
+    }
+    if (lang == null) {
+      lang = "en"; // ubiquitious default languauge
+    }
+    return context.validateCode(baseOptions.withLanguage(lang), system, version, code, checkDisplay ? display : null);
   }
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c, boolean checkMembership) {
