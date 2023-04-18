@@ -71,7 +71,7 @@ public class ToolGlobalSettings {
 
   public static boolean isNoNetwork() {
     init();
-    return noNetwork;
+    return noNetwork == null ? false : noNetwork;
   }
 
   public static void setNoNetwork(boolean value) {
