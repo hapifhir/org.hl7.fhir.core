@@ -9,6 +9,6 @@ v: {
   "code" : "N02AA",
   "system" : "http://www.whocc.no/atc",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA - should be 'Natural opium alkaloids', (from Tx-Server)"
+  "error" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA - should be 'Natural opium alkaloids' (for the language(s) '--') (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------

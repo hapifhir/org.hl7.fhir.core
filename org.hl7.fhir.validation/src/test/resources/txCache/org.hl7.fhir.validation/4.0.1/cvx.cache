@@ -20,7 +20,7 @@ v: {
   "code" : "207",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'X SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose' for http://hl7.org/fhir/sid/cvx#207 - should be one of 2 choices: 'SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose, \"COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5 mL dose\" (en/SNOMED CT#900000000000013009 \"Synonym\")' (from null)"
+  "error" : "Wrong Display Name 'X SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose' for http://hl7.org/fhir/sid/cvx#207 - should be one of 2 choices: 'SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose, \"COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5 mL dose\" (en/SNOMED CT#900000000000013009 \"Synonym\")' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {

@@ -10,14 +10,3 @@ v: {
   "system" : "http://loinc.org"
 }
 -------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3141-9",
-  "display" : "Weight Measured"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Body weight Measured",
-  "code" : "3141-9",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
