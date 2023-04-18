@@ -850,7 +850,8 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       for (ConceptReferenceComponent c : inc.getConcept()) {
         c.checkNoModifiers("Code in Value Set", "expanding");
         ConceptDefinitionComponent def = CodeSystemUtilities.findCode(cs.getConcept(), c.getCode());
-        Boolean inactive = false; // default is true if we're a fragment and  
+        boolean inactive = false; // default is true if we're a fragment and  
+        boolean isAbstract = false;
         if (def == null) {
           def.checkNoModifiers("Code in Code System", "expanding");
           if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
@@ -864,9 +865,10 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
           }
         } else {
           inactive = CodeSystemUtilities.isInactive(cs, def);
+          isAbstract = CodeSystemUtilities.isNotSelectable(cs, def);
         }
         addCode(inc.getSystem(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def == null ? null : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(), null, mergeDesignations(def, convertDesignations(c.getDesignation())), 
-            expParams, false, inactive, def == null ? null : def.getDefinition(), imports, noInactive, false, exp.getProperty(), def != null ? def.getProperty() : null, null, def == null ? null : def.getExtension(), c.getExtension());
+            expParams, isAbstract, inactive, def == null ? null : def.getDefinition(), imports, noInactive, false, exp.getProperty(), def != null ? def.getProperty() : null, null, def == null ? null : def.getExtension(), c.getExtension());
       }
     }
     if (inc.getFilter().size() > 1) {
