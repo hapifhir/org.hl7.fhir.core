@@ -1,10 +1,12 @@
 package org.hl7.fhir.validation.cli.services;
 
 import org.apache.commons.io.IOUtils;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
@@ -15,8 +17,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +35,7 @@ import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-class ValidationServiceTest {
+class ValidationServiceTest  {
 
   final String DUMMY_SOURCE = "dummySource";
   final String DUMMY_SOURCE1 = "dummySource1";
@@ -214,5 +220,51 @@ class ValidationServiceTest {
     CliContext cliContext;
     cliContext = new CliContext().setSources(Arrays.asList(DUMMY_SOURCE1, DUMMY_SOURCE2, DUMMY_SOURCE3));
     return cliContext;
+  }
+
+  /* This is a particularly long way to test that a single field in ValidationEngine was set.
+     However, it does provide example code to test other parts of the buildValidationEngine method as well.
+  */
+  @Test
+  public void buildValidationEngineTest() throws IOException, URISyntaxException {
+
+    final org.hl7.fhir.utilities.TimeTracker timeTracker = mock(org.hl7.fhir.utilities.TimeTracker.class);
+
+    final SimpleWorkerContext workerContext = mock(SimpleWorkerContext.class);
+
+    final ValidationEngine validationEngine = mock(ValidationEngine.class);
+    when(validationEngine.getContext()).thenReturn(workerContext);
+
+    final ValidationService validationService = new ValidationService() {
+      @Override
+      protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
+
+        ValidationEngine.ValidationEngineBuilder validationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
+
+        when(validationEngineBuilder.withTHO(anyBoolean())).thenReturn(validationEngineBuilder);
+        when(validationEngineBuilder.withVersion(isNull())).thenReturn(validationEngineBuilder);
+        when(validationEngineBuilder.withTimeTracker(any())).thenReturn(validationEngineBuilder);
+        when(validationEngineBuilder.withUserAgent(anyString())).thenReturn(validationEngineBuilder);
+        try {
+          when(validationEngineBuilder.fromSource(isNull())).thenReturn(validationEngine);
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
+          throw new RuntimeException(e);
+        }
+        return validationEngineBuilder;
+      }
+
+      @Override
+      protected void loadIgsAndExtensions(ValidationEngine validationEngine, CliContext cliContext, TimeTracker timeTracker) throws IOException, URISyntaxException {
+        //Don't care. Do nothing.
+      }
+    };
+
+
+
+    CliContext cliContext = new CliContext();
+
+    validationService.buildValidationEngine(cliContext, null, timeTracker);
   }
 }

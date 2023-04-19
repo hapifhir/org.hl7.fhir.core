@@ -2,12 +2,9 @@ package org.hl7.fhir.r5.test.utils;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.utilities.CSFile;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.ToolGlobalSettings;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -47,7 +44,7 @@ public class CompareUtilities extends BaseTestingUtilities {
   public static String checkXMLIsSame(String expected, String actual) throws Exception {
     String result = compareXml(expected, actual);
     if (result != null && SHOW_DIFF) {
-      String diff = ToolGlobalSettings.hasComparePath() ? ToolGlobalSettings.getComparePath() : Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
+      String diff = FhirSettings.hasDiffToolPath() ? FhirSettings.getDiffToolPath() : Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
       if (new File(diff).exists() || Utilities.isToken(diff)) {
         Runtime.getRuntime().exec(new String[]{diff, expected, actual});
       }

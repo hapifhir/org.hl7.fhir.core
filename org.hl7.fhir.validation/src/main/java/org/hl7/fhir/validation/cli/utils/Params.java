@@ -92,6 +92,7 @@ public class Params {
   public static final String TARGET = "-target";
   public static final String SOURCE = "-source";
   public static final String FILTER = "-filter";
+  private static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -128,6 +129,12 @@ public class Params {
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals(VERSION)) {
         cliContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
+      } else if (args[i].equals(FHIR_SETTINGS_PARAM)) {
+        final String fhirSettingsFilePath = args[++i];
+        if (! new File(fhirSettingsFilePath).exists()) {
+          throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
+        }
+        cliContext.setFhirSettingsFile(fhirSettingsFilePath);
       } else if (args[i].equals(OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -output without indicating output file");

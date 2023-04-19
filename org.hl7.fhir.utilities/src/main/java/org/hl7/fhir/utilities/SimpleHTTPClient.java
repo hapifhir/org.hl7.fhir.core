@@ -16,6 +16,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.SimpleHTTPClient.Header;
 import org.hl7.fhir.utilities.npm.SSLCertTruster;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class SimpleHTTPClient {
   
@@ -123,7 +124,7 @@ public class SimpleHTTPClient {
   }
   
   public HTTPResult get(String url, String accept) throws IOException {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     
@@ -185,7 +186,7 @@ public class SimpleHTTPClient {
   }
 
   public HTTPResult post(String url, String contentType, byte[] content, String accept) throws IOException {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     URL u = new URL(url);
@@ -205,7 +206,7 @@ public class SimpleHTTPClient {
 
  
   public HTTPResult put(String url, String contentType, byte[] content, String accept) throws IOException {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     URL u = new URL(url);

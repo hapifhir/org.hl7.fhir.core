@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.With;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -166,8 +167,8 @@ public class PathBuilder {
     if ("[tmp]".equals(a)) {
       if (hasCTempDir()) {
         return Utilities.C_TEMP_DIR;
-      } else if (ToolGlobalSettings.hasTempPath()) {
-        return ToolGlobalSettings.getTempPath();
+      } else if (FhirSettings.hasTempPath()) {
+        return FhirSettings.getTempPath();
       } else {
         return System.getProperty("java.io.tmpdir");
       }
