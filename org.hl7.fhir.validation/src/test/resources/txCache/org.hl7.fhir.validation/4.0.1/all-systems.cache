@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/octet-stream"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "application/octet-stream",
   "code" : "application/octet-stream",
@@ -10,16 +10,16 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "de-CH"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "lang":"de-CH", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "Deutsch (Schweiz)",
+  "display" : "German (Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/pdf"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "application/pdf",
   "code" : "application/pdf",
@@ -30,18 +30,18 @@ v: {
   "system" : "http://loinc.org",
   "code" : "59284-0",
   "display" : "Patient Authorization Signature"
-}, "url": "http://hl7.org/fhir/ValueSet/consent-category", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/consent-category", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Consent Document",
   "code" : "59284-0",
   "system" : "http://loinc.org",
   "severity" : "warning",
-  "error" : "The display \"Patient Authorization Signature\" is not a valid display for the code {http://loinc.org}59284-0 - should be one of ['Consent Document', 'Consent', '', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 事件发生的地方' (zh-CN), '场景' (zh-CN), '环境' (zh-CN), '背景 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 同意书' (zh-CN), '知情同意' (zh-CN), '知情同意书 文档本体' (zh-CN), '临床文档本体' (zh-CN), '文档本体' (zh-CN), '文书本体' (zh-CN), '医疗文书本体' (zh-CN), '临床医疗文书本体 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间' (zh-CN), 'Documentazione dell''ontologia Osservazione Punto nel tempo (episodio)' (it-IT)] (from http://tx.fhir.org/r4)"
+  "error" : "Wrong Display Name 'Patient Authorization Signature' for http://loinc.org#59284-0 - should be one of 29 choices: 'Consent Document, \"Consent\", \"临床文档型\" (zh-CN), \"临床文档\" (zh-CN), \"文档\" (zh-CN), \"文书\" (zh-CN), \"医疗文书\" (zh-CN), \"临床医疗文书 事件发生的地方\" (zh-CN), \"场景\" (zh-CN), \"环境\" (zh-CN), \"背景 医疗服务对象\" (zh-CN), \"客户\" (zh-CN), \"病人\" (zh-CN), \"超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。\" (zh-CN), \"发现物\" (zh-CN), \"所见\" (zh-CN), \"结果\" (zh-CN), \"结论 同意书\" (zh-CN), \"知情同意\" (zh-CN), \"知情同意书 文档本体\" (zh-CN), \"临床文档本体\" (zh-CN), \"文档本体\" (zh-CN), \"文书本体\" (zh-CN), \"医疗文书本体\" (zh-CN), \"临床医疗文书本体 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间\" (zh-CN), \"Documentazione dell'ontologia Osservazione Punto nel tempo (episodio)\" (it-IT)' for the language(s) '--' (from null)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "image/*"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "image/*",
   "code" : "image/*",
@@ -50,16 +50,16 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "d"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "天",
+  "display" : "day",
   "code" : "d",
   "system" : "http://unitsofmeasure.org"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en-IN"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "lang":"en-IN", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en-IN]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "English (India)",
   "code" : "en-IN",
@@ -68,7 +68,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "image/jpg"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "image/jpg",
   "code" : "image/jpg",
@@ -76,1501 +76,8 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "json"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "json",
-  "code" : "json",
-  "system" : "urn:ietf:bcp:13"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "xml",
-  "code" : "xml",
-  "system" : "urn:ietf:bcp:13"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "application/fhir+json"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "application/fhir+json",
-  "code" : "application/fhir+json",
-  "system" : "urn:ietf:bcp:13"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "text/plain"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "text/plain",
-  "code" : "text/plain",
-  "system" : "urn:ietf:bcp:13"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "371532007",
-  "display" : "Progress note"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Progress report",
-  "code" : "371532007",
-  "system" : "http://snomed.info/sct",
-  "severity" : "warning",
-  "error" : "The display \"Progress note\" is not a valid display for the code {http://snomed.info/sct}371532007 - should be one of ['Progress report', 'Report of subsequent visit', 'Progress report (record artifact)'] (from http://tx.fhir.org/r4)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "de-CH"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "German (Switzerland)",
-  "code" : "de-CH",
-  "system" : "urn:ietf:bcp:47"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "34133-9",
-  "display" : "Summary of episode note"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-documentreference-type", "version": "3.1.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Summary of episode note",
-  "code" : "34133-9",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "en-US"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "English (United States)",
-  "code" : "en-US",
-  "system" : "urn:ietf:bcp:47"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "application/xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "application/xml",
-  "code" : "application/xml",
-  "system" : "urn:ietf:bcp:13"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "text/xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "text/xml",
-  "code" : "text/xml",
-  "system" : "urn:ietf:bcp:13"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:iso:std:iso:3166",
-  "code" : "US",
-  "display" : "United States of America"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "United States of America",
-  "code" : "US",
-  "system" : "urn:iso:std:iso:3166"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "10291000132101",
-  "display" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "10281000132103",
-        "display" : "0",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Unprepared colon segment with mucosa not seen due to solid stool that cannot be cleared (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa ikke sett, fast avføring tilstede"
-        }]
-      },
-      {
-        "code" : "10291000132101",
-        "display" : "1",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa delvis sett, farget væske og avføringsrester tilstede."
-        }]
-      },
-      {
-        "code" : "10301000132102",
-        "display" : "2",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa godt visualisert, små mengder farget væske eller avføring."
-        }]
-      },
-      {
-        "code" : "10311000132100",
-        "display" : "3",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa komplett visualisert, ingen farget væske eller avføring."
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "NA",
-        "display" : "NA",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "not applicable"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "10281000132103",
-      "display" : "0"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10291000132101",
-      "display" : "1"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10301000132102",
-      "display" : "2"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10311000132100",
-      "display" : "3"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "NA",
-      "display" : "NA"
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Portion of mucosa of the colon segment seen, but other areas of the colon segment are not well seen because of staining, residual stool, or opaque liquid, 1",
-  "code" : "10291000132101",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "10301000132102",
-  "display" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "10281000132103",
-        "display" : "0",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Unprepared colon segment with mucosa not seen due to solid stool that cannot be cleared (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa ikke sett, fast avføring tilstede"
-        }]
-      },
-      {
-        "code" : "10291000132101",
-        "display" : "1",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa delvis sett, farget væske og avføringsrester tilstede."
-        }]
-      },
-      {
-        "code" : "10301000132102",
-        "display" : "2",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa godt visualisert, små mengder farget væske eller avføring."
-        }]
-      },
-      {
-        "code" : "10311000132100",
-        "display" : "3",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa komplett visualisert, ingen farget væske eller avføring."
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "NA",
-        "display" : "NA",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "not applicable"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "10281000132103",
-      "display" : "0"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10291000132101",
-      "display" : "1"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10301000132102",
-      "display" : "2"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10311000132100",
-      "display" : "3"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "NA",
-      "display" : "NA"
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)",
-  "code" : "10301000132102",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "10311000132100",
-  "display" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "10281000132103",
-        "display" : "0",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Unprepared colon segment with mucosa not seen due to solid stool that cannot be cleared (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa ikke sett, fast avføring tilstede"
-        }]
-      },
-      {
-        "code" : "10291000132101",
-        "display" : "1",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa delvis sett, farget væske og avføringsrester tilstede."
-        }]
-      },
-      {
-        "code" : "10301000132102",
-        "display" : "2",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa godt visualisert, små mengder farget væske eller avføring."
-        }]
-      },
-      {
-        "code" : "10311000132100",
-        "display" : "3",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa komplett visualisert, ingen farget væske eller avføring."
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "NA",
-        "display" : "NA",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "not applicable"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "10281000132103",
-      "display" : "0"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10291000132101",
-      "display" : "1"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10301000132102",
-      "display" : "2"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10311000132100",
-      "display" : "3"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "NA",
-      "display" : "NA"
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)",
-  "code" : "10311000132100",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "32485007",
-  "display" : "Hospital admission (procedure)"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "416406003",
-        "display" : "Undersøkelsen avbrutt",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Procedure discontinued (situation)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "prosedyre avbrutt"
-        }]
-      },
-      {
-        "code" : "103705002",
-        "display" : "Observasjon uten innleggelse",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Patient status observation (procedure)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "observasjon av pasientstatus"
-        }]
-      },
-      {
-        "code" : "32485007",
-        "display" : "Innleggelse",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Hospital admission (procedure)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "sykehusinnleggelse"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "concept" : [{
-        "code" : "nil-known",
-        "display" : "Ingen (med eller uten forlenget prosedyretid)",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Nil Known"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "OTH",
-        "display" : "Annet",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Other"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "416406003",
-      "display" : "Undersøkelsen avbrutt"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "103705002",
-      "display" : "Observasjon uten innleggelse"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "32485007",
-      "display" : "Innleggelse"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "code" : "nil-known",
-      "display" : "Ingen (med eller uten forlenget prosedyretid)"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "OTH",
-      "display" : "Annet"
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Hospital admission",
-  "code" : "32485007",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "10821000202101",
-  "display" : "Narkose eller dyp sedasjon med anestesistøtte"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "10821000202101",
-        "display" : "Narkose eller dyp sedasjon med anestesistøtte",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Narkose eller dyp sedasjon med anestesistøtte"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "concept" : [{
-        "code" : "nil-known",
-        "display" : "Ingen",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Nil Known"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "10821000202101",
-      "display" : "Narkose eller dyp sedasjon med anestesistøtte"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "code" : "nil-known",
-      "display" : "Ingen"
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "severity" : "error",
-  "error" : "Unable to find code 10821000202101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"10821000202101\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#10821000202101) is not valid in the value set 'no-colonoscopy-sedation-level' (from http://tx.fhir.org/r4)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "712510007",
-  "display" : "Intestinal hemorrhage (disorder)"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "712510007",
-        "display" : "Blødning",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Intestinal hemorrhage (disorder)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "blødning i tarm"
-        }]
-      },
-      {
-        "code" : "50008003",
-        "display" : "Perforasjon",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Traumatic perforation of large intestine (disorder)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "traumatisk perforasjon av colon"
-        }]
-      },
-      {
-        "code" : "10341000202100",
-        "display" : "Alvorlig vasovagal reaksjon",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Severe vasovagal reaction (disorder)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "alvorlig vasovagal reaksjon"
-        }]
-      },
-      {
-        "code" : "409622000",
-        "display" : "Respiratorisk",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Respiratory failure (disorder)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "respirasjonssvikt"
-        }]
-      },
-      {
-        "code" : "267037003",
-        "display" : "Kardiovaskulær",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Cardiovascular symptoms (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "kardiovaskulært symptom"
-        }]
-      },
-      {
-        "code" : "416093006",
-        "display" : "Allergisk reaksjon på medikament",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Allergic reaction caused by drug (disorder)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "allergisk reaksjon forårsaket av legemiddel"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "concept" : [{
-        "code" : "nil-known",
-        "display" : "Ingen",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Nil Known"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "OTH",
-        "display" : "Annet",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Other"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "712510007",
-      "display" : "Blødning"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "50008003",
-      "display" : "Perforasjon"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10341000202100",
-      "display" : "Alvorlig vasovagal reaksjon"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "409622000",
-      "display" : "Respiratorisk"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "267037003",
-      "display" : "Kardiovaskulær"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "416093006",
-      "display" : "Allergisk reaksjon på medikament"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "code" : "nil-known",
-      "display" : "Ingen"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "OTH",
-      "display" : "Annet"
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Intestinal hemorrhage (disorder)",
-  "code" : "712510007",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "372756006",
-  "display" : "Warfarin (substance)"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "387458008",
-        "display" : "Acetylsalisylsyre",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Aspirin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "acetylsalisylsyre"
-        }]
-      },
-      {
-        "code" : "372756006",
-        "display" : "Warfarin",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Warfarin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "warfarin"
-        }]
-      },
-      {
-        "code" : "373294004",
-        "display" : "LMWH",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Low molecular weight heparin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "lavmolekylært heparin"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "concept" : [{
-        "code" : "nil-known",
-        "display" : "Ingen relevante medisiner",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Nil Known"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "OTH",
-        "display" : "Annet",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Other"
-        }]
-      },
-      {
-        "code" : "UNK",
-        "display" : "Ukjent/mangler opplysninger",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "unknown"
-        }]
-      }]
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "concept" : [{
-        "code" : "andre-blodplatehemmere",
-        "display" : "Andre blodplatehemmere",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Andre blodplatehemmere"
-        }]
-      },
-      {
-        "code" : "doak",
-        "display" : "DOAK",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "DOAK"
-        }]
-      },
-      {
-        "code" : "andre-antikoagulantia",
-        "display" : "Andre antikoagulantia",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Andre antikoagulantia"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "387458008",
-      "display" : "Acetylsalisylsyre"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "372756006",
-      "display" : "Warfarin"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "373294004",
-      "display" : "LMWH"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "code" : "nil-known",
-      "display" : "Ingen relevante medisiner"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "OTH",
-      "display" : "Annet"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "UNK",
-      "display" : "Ukjent/mangler opplysninger"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "andre-blodplatehemmere",
-      "display" : "Andre blodplatehemmere"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "doak",
-      "display" : "DOAK"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "andre-antikoagulantia",
-      "display" : "Andre antikoagulantia"
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Warfarin (substance)",
-  "code" : "372756006",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "387458008",
-  "display" : "Aspirin (substance)"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "387458008",
-        "display" : "Acetylsalisylsyre",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Aspirin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "acetylsalisylsyre"
-        }]
-      },
-      {
-        "code" : "372756006",
-        "display" : "Warfarin",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Warfarin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "warfarin"
-        }]
-      },
-      {
-        "code" : "373294004",
-        "display" : "LMWH",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Low molecular weight heparin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "lavmolekylært heparin"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "concept" : [{
-        "code" : "nil-known",
-        "display" : "Ingen relevante medisiner",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Nil Known"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "OTH",
-        "display" : "Annet",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Other"
-        }]
-      },
-      {
-        "code" : "UNK",
-        "display" : "Ukjent/mangler opplysninger",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "unknown"
-        }]
-      }]
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "concept" : [{
-        "code" : "andre-blodplatehemmere",
-        "display" : "Andre blodplatehemmere",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Andre blodplatehemmere"
-        }]
-      },
-      {
-        "code" : "doak",
-        "display" : "DOAK",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "DOAK"
-        }]
-      },
-      {
-        "code" : "andre-antikoagulantia",
-        "display" : "Andre antikoagulantia",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Andre antikoagulantia"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "387458008",
-      "display" : "Acetylsalisylsyre"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "372756006",
-      "display" : "Warfarin"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "373294004",
-      "display" : "LMWH"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "code" : "nil-known",
-      "display" : "Ingen relevante medisiner"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "OTH",
-      "display" : "Annet"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "UNK",
-      "display" : "Ukjent/mangler opplysninger"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "andre-blodplatehemmere",
-      "display" : "Andre blodplatehemmere"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "doak",
-      "display" : "DOAK"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "andre-antikoagulantia",
-      "display" : "Andre antikoagulantia"
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Aspirin (substance)",
-  "code" : "387458008",
-  "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "en-AU"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "lang":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "English (Australia)",
-  "code" : "en-AU",
-  "system" : "urn:ietf:bcp:47"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "en"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "lang":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "English",
-  "code" : "en",
-  "system" : "urn:ietf:bcp:47"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "星期",
-  "code" : "wk",
-  "system" : "http://unitsofmeasure.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:iso:std:iso:3166",
-  "code" : "US"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "United States of America",
-  "code" : "US",
-  "system" : "urn:iso:std:iso:3166"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "[%payloadFormat%]"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "severity" : "error",
-  "error" : "The code \"[%payloadFormat%]\" is not valid in the system urn:ietf:bcp:13; The code provided (urn:ietf:bcp:13#[%payloadFormat%]) is not valid in the value set 'Mime Types' (from http://tx.fhir.org/r4)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "text/cql.identifier"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "text/cql.identifier",
-  "code" : "text/cql.identifier",
-  "system" : "urn:ietf:bcp:13"
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "code" : "min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "min",
   "code" : "min",
@@ -1579,7 +86,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "mmol/L",
   "code" : "mmol/L",
@@ -1588,7 +95,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "%",
   "code" : "%",
@@ -1597,7 +104,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "kg",
   "code" : "kg",
@@ -1606,15 +113,16 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#cm) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "cm",
   "code" : "cm",
@@ -1623,17 +131,18 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#kg/m2) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "112144000",
   "display" : "Blood group A (finding)"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-bloodGroup", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-bloodGroup", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Blood group A",
   "code" : "112144000",
@@ -1642,23 +151,25 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#kg) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#kg/m2) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "wk",
   "code" : "wk",
@@ -1669,7 +180,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "722446000",
   "display" : "Allergy record (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Allergy record (record artifact)",
   "code" : "722446000",
@@ -1680,7 +191,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "371531000",
   "display" : "Report of clinical encounter (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Encounter report",
   "code" : "371531000",
@@ -1691,7 +202,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "4241000179101",
   "display" : "Laboratory report (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Laboratory report (record artifact)",
   "code" : "4241000179101",
@@ -1702,7 +213,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "422735006",
   "display" : "Summary clinical document (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Summary clinical document (record artifact)",
   "code" : "422735006",
@@ -1711,103 +222,115 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#min) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#min) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "min"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#min) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#mmol/L) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#mmol/L) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#mmol/L) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#%) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#%) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#%) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#wk) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#wk) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#kg) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "kg",
   "code" : "kg",
@@ -1816,15 +339,16 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#cm) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "cm",
   "code" : "cm",
@@ -1833,15 +357,16 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (http://unitsofmeasure.org#kg/m2) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "kg/m2",
   "code" : "kg/m2",
@@ -1850,7 +375,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "wk",
   "code" : "wk",
@@ -1858,19 +383,35 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "371525003",
-  "display" : "Clinical procedure report"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+  "code" : "json"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "Clinical procedure report",
-  "code" : "371525003",
-  "system" : "http://snomed.info/sct"
+  "display" : "json",
+  "code" : "json",
+  "system" : "urn:ietf:bcp:13"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "xml"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "xml",
+  "code" : "xml",
+  "system" : "urn:ietf:bcp:13"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "application/fhir+json"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "application/fhir+json",
+  "code" : "application/fhir+json",
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "text/plain"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "text/plain",
   "code" : "text/plain",
@@ -1878,17 +419,17 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "application/pdf"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+  "code" : "text/css"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "application/pdf",
-  "code" : "application/pdf",
+  "display" : "text/css",
+  "code" : "text/css",
   "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "de-CH"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
@@ -1896,8 +437,19 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
+  "system" : "http://loinc.org",
+  "code" : "34133-9",
+  "display" : "Summary of episode note"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-documentreference-type", "version": "3.1.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Summary of episode note",
+  "code" : "34133-9",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
   "code" : "en-US"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "English (United States)",
   "code" : "en-US",
@@ -1906,7 +458,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "application/xml",
   "code" : "application/xml",
@@ -1914,17 +466,8 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "d"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "天",
-  "code" : "d",
-  "system" : "http://unitsofmeasure.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "code" : "text/xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "text/xml",
   "code" : "text/xml",
@@ -1932,19 +475,10 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "de-CH"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0-ballot", "lang":"de-CH", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Deutsch (Schweiz)",
-  "code" : "de-CH",
-  "system" : "urn:ietf:bcp:47"
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "US",
   "display" : "United States of America"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "United States of America",
   "code" : "US",
@@ -1952,33 +486,8 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "text/plain"
-}, "url": "http://hl7.org/fhir/ValueSet/expression-language", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "severity" : "error",
-  "error" : "The code provided (urn:ietf:bcp:13#text/plain) is not valid in the value set 'ExpressionLanguage' (from http://tx.fhir.org/r4)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "text/cql"
-}, "url": "http://hl7.org/fhir/ValueSet/expression-language", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "CQL",
-  "code" : "text/cql",
-  "system" : "urn:ietf:bcp:13"
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "code" : "text/cql.identifier"
-}, "url": "http://hl7.org/fhir/ValueSet/expression-language", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "severity" : "error",
-  "error" : "The code provided (urn:ietf:bcp:13#text/cql.identifier) is not valid in the value set 'ExpressionLanguage' (from http://tx.fhir.org/r4)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "text/cql.identifier"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "text/cql.identifier",
   "code" : "text/cql.identifier",
@@ -1986,17 +495,140 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "text/fhirpath"
-}, "url": "http://hl7.org/fhir/ValueSet/expression-language", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+  "code" : "Not-at-all",
+  "display" : "Not at all"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
+      "concept" : [{
+        "code" : "Not-at-all",
+        "display" : "Not at all"
+      },
+      {
+        "code" : "Several-days",
+        "display" : "Several days"
+      },
+      {
+        "code" : "More than half the days",
+        "display" : "More than half the days"
+      },
+      {
+        "code" : "Nearly every day",
+        "display" : "Nearly every day"
+      }]
+    }]
+  }
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "display" : "FHIRPath",
-  "code" : "text/fhirpath",
-  "system" : "urn:ietf:bcp:13"
+  "display" : "Not at all",
+  "code" : "Not-at-all",
+  "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Several-days",
+  "display" : "Several days"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
+      "concept" : [{
+        "code" : "Not-at-all",
+        "display" : "Not at all"
+      },
+      {
+        "code" : "Several-days",
+        "display" : "Several days"
+      },
+      {
+        "code" : "More than half the days",
+        "display" : "More than half the days"
+      },
+      {
+        "code" : "Nearly every day",
+        "display" : "Nearly every day"
+      }]
+    }]
+  }
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "display" : "Several days",
+  "code" : "Several-days",
+  "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "More than half the days",
+  "display" : "More than half the days"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
+      "concept" : [{
+        "code" : "Not-at-all",
+        "display" : "Not at all"
+      },
+      {
+        "code" : "Several-days",
+        "display" : "Several days"
+      },
+      {
+        "code" : "More than half the days",
+        "display" : "More than half the days"
+      },
+      {
+        "code" : "Nearly every day",
+        "display" : "Nearly every day"
+      }]
+    }]
+  }
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "display" : "More than half the days",
+  "code" : "More than half the days",
+  "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Nearly every day",
+  "display" : "Nearly every day"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
+      "concept" : [{
+        "code" : "Not-at-all",
+        "display" : "Not at all"
+      },
+      {
+        "code" : "Several-days",
+        "display" : "Several days"
+      },
+      {
+        "code" : "More than half the days",
+        "display" : "More than half the days"
+      },
+      {
+        "code" : "Nearly every day",
+        "display" : "Nearly every day"
+      }]
+    }]
+  }
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "display" : "Nearly every day",
+  "code" : "Nearly every day",
+  "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en-AU"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0-ballot", "lang":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en-AU]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "English (Australia)",
   "code" : "en-AU",
@@ -2005,7 +637,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0-ballot", "lang":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "English",
   "code" : "en",
@@ -2013,44 +645,8 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "星期",
-  "code" : "wk",
-  "system" : "http://unitsofmeasure.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:iso:std:iso:3166",
-  "code" : "US"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "United States of America",
-  "code" : "US",
-  "system" : "urn:iso:std:iso:3166"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "[%payloadFormat%]"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "severity" : "error",
-  "error" : "The code \"[%payloadFormat%]\" is not valid in the system urn:ietf:bcp:13; The code provided (urn:ietf:bcp:13#[%payloadFormat%]) is not valid in the value set 'Mime Types' (from http://tx.fhir.org/r4)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "h"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "小时",
-  "code" : "h",
-  "system" : "http://unitsofmeasure.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "code" : "en-US"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "lang":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en-US]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "English (United States)",
   "code" : "en-US",
@@ -2061,7 +657,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "5933001",
   "display" : "Clostridioides difficile (organism)"
-}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3194", "version": "20200807", "lang":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3194", "version": "20200807", "langs":"[en-US]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "display" : "Clostridioides difficile (organism)",
   "code" : "5933001",
@@ -2069,11 +665,54 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "text/css"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+  "code" : "wk"
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "text/css",
-  "code" : "text/css",
-  "system" : "urn:ietf:bcp:13"
+  "display" : "week",
+  "code" : "wk",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:iso:std:iso:3166",
+  "code" : "US"
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "United States of America",
+  "code" : "US",
+  "system" : "urn:iso:std:iso:3166"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[%payloadFormat%]"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Unknown Code '[%payloadFormat%]' in the system 'urn:ietf:bcp:13'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/mimetypes' (from null)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371532007",
+  "display" : "Progress note"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Progress report",
+  "code" : "371532007",
+  "system" : "http://snomed.info/sct",
+  "severity" : "warning",
+  "error" : "Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007 - should be one of 3 choices: 'Progress report, \"Report of subsequent visit\", \"Progress report (record artifact)\"' for the language(s) '--' (from null)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371525003",
+  "display" : "Clinical procedure report"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Clinical procedure report",
+  "code" : "371525003",
+  "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------

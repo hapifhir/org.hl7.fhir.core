@@ -600,7 +600,12 @@ public class Property {
 
 
   public boolean isTranslatable() {
-    return ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_TRANSLATABLE);
+    boolean ok = ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_TRANSLATABLE);
+    if (!ok && !Utilities.existsInList(definition.getBase().getPath(), "Reference.reference", "Coding.version", "Identifier.value", "SampledData.offsets", "SampledData.data", "ContactPoint.value")) {
+      String t = getType();
+      ok = Utilities.existsInList(t, "string", "markdown");
+    }
+    return ok;
   }
 
   

@@ -823,7 +823,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public ValidationResult validateCode(ValidationOptions options, String code, ValueSet vs) {
     assert options != null;
     Coding c = new Coding(null, code, null);
-    return validateCode(options.guessSystem(), c, vs);
+    return validateCode(options.withGuessSystem(), c, vs);
   }
 
 
@@ -1007,13 +1007,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
-    if (!Utilities.noString(options.getLanguage())) {
-      pIn.addParameter("displayLanguage", options.getLanguage());
+    for (String s : options.getLanguages()) {
+      pIn.addParameter("displayLanguage", s);
     }
     if (options.getValueSetMode() != ValueSetMode.ALL_CHECKS) {
       pIn.addParameter("valueSetMode", options.getValueSetMode().toString());
     }
-    if (options.versionFlexible()) {
+    if (options.isVersionFlexible()) {
       pIn.addParameter("default-to-latest-version", true);     
     }
   }

@@ -33,6 +33,7 @@ public class XLIFFProducer extends LanguageFileProducer {
       ln("  </file>");
       ln("</xliff>");
       TextFile.stringToFile(xml.toString(), Utilities.path(getFolder(), id+".xliff"));
+      filecount++;
     }
 
     @Override
@@ -70,6 +71,8 @@ public class XLIFFProducer extends LanguageFileProducer {
 
   }
 
+  private int filecount;
+
   public XLIFFProducer(String folder) {
     super(folder);
   }
@@ -85,8 +88,12 @@ public class XLIFFProducer extends LanguageFileProducer {
   }
   
   @Override
-  public List<TextUnit> loadTranslations(String baseLang, String tgtLang) {
+  public List<TextUnit> loadTranslations(String id, String baseLang, String tgtLang) {
     return null;
   }
 
+  @Override
+  public int fileCount() {
+    return filecount;
+  }
 }

@@ -1945,7 +1945,7 @@ public class StructureMapUtilities {
     } else {
       system = uri;
     }
-    ValidationResult vr = worker.validateCode(terminologyServiceOptions.setVersionFlexible(true), system, version, code, null);
+    ValidationResult vr = worker.validateCode(terminologyServiceOptions.withVersionFlexible(true), system, version, code, null);
     if (vr != null && vr.getDisplay() != null)
       display = vr.getDisplay();
     return new Coding().setSystem(system).setCode(code).setDisplay(display);

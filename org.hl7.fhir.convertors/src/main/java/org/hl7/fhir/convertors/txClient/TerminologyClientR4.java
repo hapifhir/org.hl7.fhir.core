@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.txClient;
 import java.net.URISyntaxException;
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.HashMap;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -37,7 +38,9 @@ import java.util.Map;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.TerminologyCapabilities40_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4.utils.client.EFhirClientException;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -55,16 +58,24 @@ public class TerminologyClientR4 implements TerminologyClient {
 
   private final FHIRToolingClient client; // todo: use the R2 client
   private ClientHeaders clientHeaders;
+  private String id;
 
-  public TerminologyClientR4(String address, String userAgent) throws URISyntaxException {
+  public TerminologyClientR4(String id, String address, String userAgent) throws URISyntaxException {
     this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(new ClientHeaders());
   }
 
-  public TerminologyClientR4(String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
+  public TerminologyClientR4(String id, String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
     this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(clientHeaders);
+    this.id = id;
   }
+
+  @Override
+  public String getId() {
+    return id;
+  }
+
 
 
   public EnumSet<FhirPublication> supportableVersions() {
@@ -87,7 +98,7 @@ public class TerminologyClientR4 implements TerminologyClient {
   
   @Override
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException {
-    return TerminologyCapabilities40_50.convertTerminologyCapabilities(client.getTerminologyCapabilities());
+    return (TerminologyCapabilities) VersionConvertorFactory_40_50.convertResource(client.getTerminologyCapabilities());
   }
 
   @Override
@@ -97,10 +108,19 @@ public class TerminologyClientR4 implements TerminologyClient {
 
   @Override
   public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException {
-    org.hl7.fhir.r4.model.ValueSet vs2 = (org.hl7.fhir.r4.model.ValueSet) VersionConvertorFactory_40_50.convertResource(vs);
-    org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(p);
-    vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
-    return (ValueSet) VersionConvertorFactory_40_50.convertResource(vs2);
+    org.hl7.fhir.r4.model.ValueSet vs2 = vs == null ? null : (org.hl7.fhir.r4.model.ValueSet) VersionConvertorFactory_40_50.convertResource(vs);
+    org.hl7.fhir.r4.model.Parameters p2 = p == null ? null :  (org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(p);
+    if (params == null) {
+      params = new HashMap<>();
+    }
+    try {
+      vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
+      return (ValueSet) VersionConvertorFactory_40_50.convertResource(vs2);
+    } catch (org.hl7.fhir.r4.utils.client.EFhirClientException e) {
+      throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), 
+          (org.hl7.fhir.r5.model.OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0)));
+
+    }
   }
 
   @Override

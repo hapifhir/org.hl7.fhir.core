@@ -131,7 +131,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         CodeSystem cs = resolveCodeSystem(c.getSystem());
         ValidationResult res = null;
         if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
-          res = context.validateCode(options.noClient(), c, null);
+          res = context.validateCode(options.withNoClient(), c, null);
         } else {
           res = validateCode(c, cs);
         }
@@ -155,7 +155,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       if (result == null) {
         warnings.add(0, context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));        
       } else if (!result) {
-        errors.add(0, context.formatMessage(I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));
+        errors.add(0, context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));
       }
     }
     if (errors.size() > 0) {
@@ -349,9 +349,9 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     ConceptDefinitionComponent cc = cs.hasUserData("tx.cs.special") ? ((SpecialCodeSystem) cs.getUserData("tx.cs.special")).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode());
     if (cc == null) {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
-        return new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, gen(code), cs.getUrl()));        
+        return new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, code, cs.getUrl()));        
       } else {
-        return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_, gen(code), cs.getUrl()));
+        return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_, code, cs.getUrl()));
       }
     }
     if (code.getDisplay() == null) {
@@ -668,7 +668,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       vs.setUrl(valueset.getUrl()+"--"+vsiIndex);
       vs.setVersion(valueset.getVersion());
       vs.getCompose().addInclude(vsi);
-      ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
+      ValidationResult res = context.validateCode(options.withNoClient(), new Coding(system, code, null), vs);
       if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
         if (warnings != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
           warnings.add(context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system));

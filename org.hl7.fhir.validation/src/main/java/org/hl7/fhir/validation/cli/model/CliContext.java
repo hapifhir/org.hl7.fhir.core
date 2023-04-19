@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.utilities.Servers;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
@@ -61,7 +62,7 @@ public class CliContext {
   @JsonProperty("htmlOutput")
   private String htmlOutput = null;
   @JsonProperty("txServer")
-  private String txServer = "http://tx.fhir.org";
+  private String txServer = Servers.TX_SERVER_PROD;
   @JsonProperty("sv")
   private String sv = null;
   @JsonProperty("txLog")
@@ -125,6 +126,10 @@ public class CliContext {
 
   @JsonProperty("jurisdiction")
   private String jurisdiction = JurisdictionUtilities.getJurisdictionFromLocale(Locale.getDefault().getCountry());
+  @JsonProperty("srcLang")
+  private String srcLang = null;
+  @JsonProperty("tgtLang")
+  private String tgtLang = null;
 
   @JsonProperty("fhirSettingsFile")
   private String fhirSettingsFile;
@@ -646,6 +651,23 @@ public class CliContext {
     this.jurisdiction = jurisdiction;
   }
 
+  
+  public String getSrcLang() {
+    return srcLang;
+  }
+
+  public void setSrcLang(String srcLang) {
+    this.srcLang = srcLang;
+  }
+
+  public String getTgtLang() {
+    return tgtLang;
+  }
+
+  public void setTgtLang(String tgtLang) {
+    this.tgtLang = tgtLang;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -673,6 +695,8 @@ public class CliContext {
       Objects.equals(txCache, that.txCache) &&
       Objects.equals(mapLog, that.mapLog) &&
       Objects.equals(lang, that.lang) &&
+      Objects.equals(srcLang, that.srcLang) &&
+      Objects.equals(tgtLang, that.tgtLang) &&
       Objects.equals(fhirpath, that.fhirpath) &&
       Objects.equals(snomedCT, that.snomedCT) &&
       Objects.equals(targetVer, that.targetVer) &&
@@ -695,7 +719,7 @@ public class CliContext {
   @Override
   public int hashCode() {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
-            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, fhirpath, snomedCT,
+            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
             targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
   }
 
@@ -724,6 +748,8 @@ public class CliContext {
       ", txCache='" + txCache + '\'' +
       ", mapLog='" + mapLog + '\'' +
       ", lang='" + lang + '\'' +
+      ", srcLang='" + srcLang + '\'' +
+      ", tgtLang='" + tgtLang + '\'' +
       ", fhirpath='" + fhirpath + '\'' +
       ", snomedCT='" + snomedCT + '\'' +
       ", targetVer='" + targetVer + '\'' +

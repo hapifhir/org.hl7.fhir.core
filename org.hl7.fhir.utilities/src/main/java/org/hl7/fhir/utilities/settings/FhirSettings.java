@@ -95,6 +95,9 @@ public class FhirSettings {
     return fhirSettings.getTestIgsPath();
   }
 
+  public boolean hasProhibitNetworkAccess() { return fhirSettings.getProhibitNetworkAccess() != null; }
+
+  public boolean isProhibitNetworkAccess() { return fhirSettings.getProhibitNetworkAccess() == null ? false : fhirSettings.getProhibitNetworkAccess(); }
   private static FhirSettings instance = null;
 
   public static FhirSettings getInstance()  {

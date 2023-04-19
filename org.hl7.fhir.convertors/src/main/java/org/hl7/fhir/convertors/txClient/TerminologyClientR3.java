@@ -55,17 +55,24 @@ public class TerminologyClientR3 implements TerminologyClient {
 
   private final FHIRToolingClient client; // todo: use the R2 client
   private ClientHeaders clientHeaders;
+  private String id;
 
-  public TerminologyClientR3(String address, String userAgent) throws URISyntaxException {
+  public TerminologyClientR3(String id, String address, String userAgent) throws URISyntaxException {
     client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(new ClientHeaders());
+    this.id = id;
   }
 
-  public TerminologyClientR3(String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
+  @Override
+  public String getId() {
+    return id;
+  }
+
+  public TerminologyClientR3(String id, String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
     client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(clientHeaders);
+    this.id = id;
   }
-
 
   public EnumSet<FhirPublication> supportableVersions() {
     return client.supportableVersions();

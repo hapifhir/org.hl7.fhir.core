@@ -497,7 +497,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       return "n/a: No Terminology Server";
     } else {
       try {
-        return context.connectToTSServer(TerminologyClientFactory.makeClient(url, context.getUserAgent(), version), log);
+        return context.connectToTSServer(TerminologyClientFactory.makeClient("Tx-Server", url, context.getUserAgent(), version), log);
       } catch (Exception e) {
         if (context.isCanRunWithoutTerminology()) {
           return "n/a: Running without Terminology Server (error: " + e.getMessage() + ")";
@@ -561,7 +561,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       System.out.println("  Validate " + ref);
       Content cnt = igLoader.loadContent(ref, "validate", false);
       try {
-        OperationOutcome outcome = validate(ref, cnt.focus, cnt.cntType, profiles, record);
+        OperationOutcome outcome = validate(ref, cnt.getFocus(), cnt.getCntType(), profiles, record);
         ToolingExtensions.addStringExtension(outcome, ToolingExtensions.EXT_OO_FILE, ref);
         System.out.println(" " + context.clock().milestone());
         results.addEntry().setResource(outcome);
@@ -616,7 +616,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public org.hl7.fhir.r5.elementmodel.Element transform(String source, String map) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false);
-    return transform(cnt.focus, cnt.cntType, map);
+    return transform(cnt.getFocus(), cnt.getCntType(), map);
   }
 
   public StructureMap compile(String mapUri) throws FHIRException, IOException {
@@ -700,7 +700,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = igLoader.loadContent(source, "validate", false);
-    Resource res = igLoader.loadResourceByVersion(version, cnt.focus, source);
+    Resource res = igLoader.loadResourceByVersion(version, cnt.getFocus(), source);
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     genResource(res, rc);
     return (Resource) res;
@@ -721,21 +721,21 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public void convert(String source, String output) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false);
-    Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
     Manager.compose(context, e, new FileOutputStream(output), (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
   }
 
   public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false);
     FHIRPathEngine fpe = this.getValidator(null).getFHIRPathEngine();
-    Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
     ExpressionNode exp = fpe.parse(expression);
     return fpe.evaluateToString(new ValidatorHostContext(context, e), e, e, e, exp);
   }
 
   public StructureDefinition snapshot(String source, String version) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false);
-    Resource res = igLoader.loadResourceByVersion(version, cnt.focus, Utilities.getFileNameForName(source));
+    Resource res = igLoader.loadResourceByVersion(version, cnt.getFocus(), Utilities.getFileNameForName(source));
 
     if (!(res instanceof StructureDefinition))
       throw new FHIRException("Require a StructureDefinition for generating a snapshot");
@@ -748,7 +748,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public CanonicalResource loadCanonicalResource(String source, String version) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false);
-    Resource res = igLoader.loadResourceByVersion(version, cnt.focus, Utilities.getFileNameForName(source));
+    Resource res = igLoader.loadResourceByVersion(version, cnt.getFocus(), Utilities.getFileNameForName(source));
 
     if (!(res instanceof CanonicalResource))
       throw new FHIRException("Require a CanonicalResource");
@@ -892,7 +892,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public byte[] transformVersion(String source, String targetVer, FhirFormat format, Boolean canDoNative) throws FHIRException, IOException, Exception {
     Content cnt = igLoader.loadContent(source, "validate", false);
-    org.hl7.fhir.r5.elementmodel.Element src = Manager.parseSingle(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+    org.hl7.fhir.r5.elementmodel.Element src = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
 
     // if the src has a url, we try to use the java code 
     if ((canDoNative == null && src.hasChild("url")) || (canDoNative != null && canDoNative)) {

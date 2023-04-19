@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -85,6 +86,8 @@ import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.Params;
 import org.hl7.fhir.validation.special.R4R5MapTester;
+import org.hl7.fhir.validation.special.TxTester;
+import org.hl7.fhir.validation.special.TxTester.InternalTxLoader;
 import org.hl7.fhir.validation.testexecutor.TestExecutor;
 import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
 
@@ -141,7 +144,7 @@ public class ValidatorCli {
       if (destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
         doLeftRightComparison(args, cliContext, tt);
       }
-    } else if (Params.hasParam(args, Params.TEST)) {
+    } else if (Params.hasParam(args, Params.TEST) || Params.hasParam(args, Params.TX_TESTS)) {
       parseTestParamsAndExecute(args);
     } else if (Params.hasParam(args, Params.SPECIAL)) {
       executeSpecial(args);
@@ -214,19 +217,29 @@ public class ValidatorCli {
     }
   }
 
-  protected static void parseTestParamsAndExecute(String[] args) {
-    final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);
-    final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
-    final String testCasesDirectory = Params.getParam(args, Params.TEST);
-    final String txCacheDirectory = Params.getParam(args, Params.TERMINOLOGY_CACHE);
-    assert TestExecutorParams.isValidModuleParam(testModuleParam) : "Invalid test module param: " + testModuleParam;
-    final String[] moduleNamesArg = TestExecutorParams.parseModuleParam(testModuleParam);
+  protected static void parseTestParamsAndExecute(String[] args) throws IOException, URISyntaxException {
+    if (Params.hasParam(args, Params.TX_TESTS)) {
+      final String source = Params.getParam(args, Params.SOURCE);
+      final String output = Params.getParam(args, Params.OUTPUT);
+      final String version = Params.getParam(args, Params.VERSION);
+      final String tx = Params.getParam(args, Params.TERMINOLOGY);
+      final String filter = Params.getParam(args, Params.FILTER);
+      boolean ok = new TxTester(new InternalTxLoader(source, output)).setOutput(output).execute(tx, version, filter);
+      System.exit(ok ? 1 : 0);
+    } else {
+      final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);
+      final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
+      final String testCasesDirectory = Params.getParam(args, Params.TEST);
+      final String txCacheDirectory = Params.getParam(args, Params.TERMINOLOGY_CACHE);
+      assert TestExecutorParams.isValidModuleParam(testModuleParam) : "Invalid test module param: " + testModuleParam;
+      final String[] moduleNamesArg = TestExecutorParams.parseModuleParam(testModuleParam);
 
-    assert TestExecutorParams.isValidClassnameFilterParam(testClassnameFilter) : "Invalid regex for test classname filter: " + testClassnameFilter;
+      assert TestExecutorParams.isValidClassnameFilterParam(testClassnameFilter) : "Invalid regex for test classname filter: " + testClassnameFilter;
 
-    new TestExecutor(moduleNamesArg).executeTests(testClassnameFilter, txCacheDirectory, testCasesDirectory);
+      new TestExecutor(moduleNamesArg).executeTests(testClassnameFilter, txCacheDirectory, testCasesDirectory);
 
-    System.exit(0);
+      System.exit(0);
+    }
   }
 
   private static String[] addAdditionalParamsForIpsParam(String[] args) {
@@ -295,6 +308,7 @@ public class ValidatorCli {
     if (cliContext.getSv() == null) {
       cliContext.setSv(validationService.determineVersion(cliContext));
     }
+    System.out.println("  Locale: "+Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
     if (cliContext.getJurisdiction() == null) {
       System.out.println("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");      
       System.out.println("  Note that exceptions and validation failures may happen in the absense of a locale");      
@@ -332,6 +346,9 @@ public class ValidatorCli {
         break;
       case VERSION:
         validationService.transformVersion(cliContext, validator);
+        break;
+      case LANG_TRANSFORM:
+        validationService.transformLang(cliContext, validator);
         break;
       case VALIDATION:
       case SCAN:

@@ -20,6 +20,7 @@
     <properties>
         <hapi_fhir_version>6.2.1</hapi_fhir_version>
         <validator_test_case_version>1.2.26-SNAPSHOT</validator_test_case_version>
+        <jackson_version>2.14.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
         <maven_surefire_version>3.0.0-M5</maven_surefire_version>
@@ -84,7 +85,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
+            <version>1.4.6</version>
             <scope>test</scope>
         </dependency>
 
@@ -440,6 +441,7 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven_surefire_version}</version>
                     <configuration>
+                        <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/>
                         <forkCount>1</forkCount>
                         <reuseForks>true</reuseForks>
                         <parallel>classes</parallel>

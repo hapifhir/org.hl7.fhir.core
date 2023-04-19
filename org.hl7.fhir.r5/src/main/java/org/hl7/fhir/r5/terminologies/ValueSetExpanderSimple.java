@@ -81,7 +81,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.LangaugeUtils;
+import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.extensions.Extensions;
 import org.hl7.fhir.r5.extensions.ExtensionsUtils;
@@ -114,13 +114,19 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
+import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple.EFinished;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProviderExtension;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 import com.google.errorprone.annotations.NoAllocation;
 
 public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetExpander {
+
+  public class EFinished extends FHIRException {
+
+  }
 
   public interface IConceptFilter {
 
@@ -206,7 +212,9 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
   private Set<String> excludeKeys = new HashSet<String>();
   private Set<String> excludeSystems = new HashSet<String>();
   private ValueSet focus;
-  private int maxExpansionSize = 500;
+  private int maxExpansionSize = 1000;
+  private int offset;
+  private int count;
   private List<String> allErrors = new ArrayList<>();
   private List<String> requiredSupplements = new ArrayList<>();
 
@@ -230,7 +238,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
   
   private ValueSetExpansionContainsComponent addCode(String system, String code, String display, String dispLang, ValueSetExpansionContainsComponent parent, List<ConceptDefinitionDesignationComponent> designations, Parameters expParams, 
       boolean isAbstract, boolean inactive, String definition, List<ValueSet> filters, boolean noInactive, boolean deprecated, List<ValueSetExpansionPropertyComponent> vsProp, 
-      List<ConceptPropertyComponent> csProps, List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> expProps, List<Extension> csExtList, List<Extension> vsExtList) {
+      List<ConceptPropertyComponent> csProps, List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> expProps, List<Extension> csExtList, List<Extension> vsExtList) throws ETooCostly {
  
     if (filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, code))
       return null;
@@ -286,11 +294,12 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     // display and designations
     String srcLang = dispLang;
     String dstLang = focus.getLanguage();
+    
     boolean usedDisplay = false;
     ConceptDefinitionDesignationComponent tu = expParams.hasParameter("displayLanguage") ? getMatchingLang(designations, expParams.getParameterString("displayLanguage")) : null;
     if (tu != null) {
       n.setDisplay(tu.getValue());        
-    } else if (display != null && (srcLang == null || dstLang == null || LangaugeUtils.matches(dstLang, srcLang))) {
+    } else if (display != null && (srcLang == null || dstLang == null || LanguageUtils.matches(dstLang, srcLang))) {
       n.setDisplay(display);
       usedDisplay = true;
     } else {
@@ -312,6 +321,11 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
           }
           if (t.getUse() != null) {
             d.setUse(t.getUse());
+          }
+          for (Extension ext : t.getExtension()) {
+            if (Utilities.existsInList(ext.getUrl(), "http://hl7.org/fhir/StructureDefinition/coding-sctdescid")) {
+              d.addExtension(ext);
+            }
           }
         }
       }
@@ -344,6 +358,13 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       codes.add(n);
       map.put(s, n);
       total++;
+      if (total > maxExpansionSize) {
+        if (offset+count > 0 && total > offset+count) {
+          total = -1;
+          throw new EFinished();
+        }
+        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getUrl(), ">" + Integer.toString(maxExpansionSize)));
+      }
     }
     if (canBeHeirarchy && parent != null) {
       parent.getContains().add(n);
@@ -380,7 +401,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     return null;
   }
 
-  private void addCodeAndDescendents(ValueSetExpansionContainsComponent focus, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc)  throws FHIRException {
+  private void addCodeAndDescendents(ValueSetExpansionContainsComponent focus, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc)  throws FHIRException, ETooCostly {
     focus.checkNoModifiers("Expansion.contains", "expanding");
     ValueSetExpansionContainsComponent np = addCode(focus.getSystem(), focus.getCode(), focus.getDisplay(), vsSrc.getLanguage(), parent, 
          convert(focus.getDesignation()), expParams, focus.getAbstract(), focus.getInactive(), focus.getExtensionString(ToolingExtensions.EXT_DEFINITION), filters, noInactive, false, vsProps, null, focus.getProperty(), null, focus.getExtension());
@@ -401,7 +422,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
   }
 
   private void addCodeAndDescendents(CodeSystem cs, String system, ConceptDefinitionComponent def, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, 
-        ConceptDefinitionComponent exclusion, IConceptFilter filterFunc, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps)  throws FHIRException {
+        ConceptDefinitionComponent exclusion, IConceptFilter filterFunc, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps)  throws FHIRException, ETooCostly {
     def.checkNoModifiers("Code in Code System", "expanding");
     if (exclusion != null) {
       if (exclusion.getCode().equals(def.getCode()))
@@ -428,7 +449,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
   private void addCodes(ValueSetExpansionComponent expand, List<ValueSetExpansionParameterComponent> params, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc) throws ETooCostly, FHIRException {
     if (expand != null) {
       if (expand.getContains().size() > maxExpansionSize)
-        throw failCostly("Too many codes to display (>" + Integer.toString(expand.getContains().size()) + ")");
+        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, vsSrc.getUrl(), ">" + Integer.toString(expand.getContains().size())));
       for (ValueSetExpansionParameterComponent p : expand.getParameter()) {
         if (!existsInParams(params, p.getName(), p.getValue()))
           params.add(p);
@@ -503,6 +524,8 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.INTERNAL_ERROR, allErrors);
+    } catch (ETooCostly e) {
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors);
     } catch (Exception e) {
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
@@ -523,8 +546,23 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     focus.getExpansion().setTimestampElement(DateTimeType.now());
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
     for (ParametersParameterComponent p : expParams.getParameter()) {
-      if (Utilities.existsInList(p.getName(), "includeDesignations", "excludeNested", "activeOnly")) {
+      if (Utilities.existsInList(p.getName(), "includeDesignations", "excludeNested", "activeOnly", "offset", "count")) {
         focus.getExpansion().addParameter().setName(p.getName()).setValue(p.getValue());
+      }
+      if ("displayLanguage".equals(p.getName()) && (!expParams.hasLanguage() || !expParams.getLanguage().equals(p.getValue().primitiveValue()))) {
+        focus.getExpansion().addParameter().setName(p.getName()).setValue(p.getValue());
+      }
+      if ("offset".equals(p.getName()) && p.hasValueIntegerType()) {
+        offset = p.getValueIntegerType().getValue();
+        if (offset < 0) {
+          offset = 0;
+        }
+      }
+      if ("count".equals(p.getName()) && p.hasValueIntegerType()) {
+        count = p.getValueIntegerType().getValue();
+        if (count < 0) {
+          count = 0;
+        }
       }
     }
     for (Extension s : focus.getExtensionsByUrl(ExtensionConstants.EXT_VSSUPPLEMENT)) {
@@ -533,10 +571,15 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     if (expParams.hasLanguage()) {
       focus.setLanguage(expParams.getLanguage());
     }
+    
 
-    if (source.hasCompose()) {
-      ExtensionsUtils.stripExtensions(focus.getCompose());
-      handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(), focus.getExpansion().getExtension(), source);
+    try {
+      if (source.hasCompose()) {
+        ExtensionsUtils.stripExtensions(focus.getCompose());
+        handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(), focus.getExpansion().getExtension(), source);
+      }
+    } catch (EFinished e) {
+      // nothing - we intended to trap this here
     }
 
     if (canBeHeirarchy) {
@@ -544,15 +587,24 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
         focus.getExpansion().getContains().add(c);
       }
     } else {
+      int i = 0;
+      int cc = 0;
       for (ValueSetExpansionContainsComponent c : codes) {
         if (map.containsKey(key(c)) && (includeAbstract || !c.getAbstract())) { // we may have added abstract codes earlier while we still thought it might be heirarchical, but later we gave up, so now ignore them
-          focus.getExpansion().getContains().add(c);
-          c.getContains().clear(); // make sure any heirarchy is wiped
+          if (offset == 0 || i >= offset) {
+            focus.getExpansion().getContains().add(c);
+            c.getContains().clear(); // make sure any heirarchy is wiped
+            cc++;
+            if (cc == count) {
+              break;
+            }
+          }
+          i++;
         }
       }
     }
 
-    if (total > 0) {
+    if (total >= 0) {
       focus.getExpansion().setTotal(total);
     }
     if (!requiredSupplements.isEmpty()) {
@@ -586,7 +638,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     // Exclude comes first because we build up a map of things to exclude
     for (ConceptSetComponent inc : compose.getExclude())
       excludeCodes(inc, exp.getParameter(), ctxt);
-    canBeHeirarchy = !expParams.getParameterBool("excludeNested") && excludeKeys.isEmpty() && excludeSystems.isEmpty();
+    canBeHeirarchy = !expParams.getParameterBool("excludeNested") && excludeKeys.isEmpty() && excludeSystems.isEmpty() && offset+count == 0;
     includeAbstract = !expParams.getParameterBool("excludeNotForUI");
     boolean first = true;
     for (ConceptSetComponent inc : compose.getInclude()) {
@@ -693,7 +745,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     }
   }
 
-  private void copyImportContains(List<ValueSetExpansionContainsComponent> list, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filter, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc) throws FHIRException {
+  private void copyImportContains(List<ValueSetExpansionContainsComponent> list, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filter, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc) throws FHIRException, ETooCostly {
     for (ValueSetExpansionContainsComponent c : list) {
       c.checkNoModifiers("Imported Expansion in Code System", "expanding");
       ValueSetExpansionContainsComponent np = addCode(c.getSystem(), c.getCode(), c.getDisplay(), vsSrc.getLanguage(), parent, null, expParams, c.getAbstract(), c.getInactive(), c.getExtensionString(ToolingExtensions.EXT_DEFINITION), 
@@ -731,7 +783,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     }
   }
 
-  private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps) throws FHIRException, CodeSystemProviderExtension {
+  private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps) throws FHIRException, CodeSystemProviderExtension, ETooCostly {
     CodeSystemProvider csp = CodeSystemProvider.factory(inc.getSystem());
     if (csp != null) {
       csp.includeCodes(inc, heirarchical, exp, imports, expParams, extensions, noInactive, vsProps);
@@ -766,7 +818,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
   }
 
 
-  public void doInternalIncludeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, Resource vsSrc) throws NoTerminologyServiceException, TerminologyServiceException, FHIRException {
+  public void doInternalIncludeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, Resource vsSrc) throws NoTerminologyServiceException, TerminologyServiceException, FHIRException, ETooCostly {
     if (cs == null) {
       if (context.isNoTerminologyServer())
         throw failTSE("Unable to find code system " + inc.getSystem().toString());
@@ -798,7 +850,8 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       for (ConceptReferenceComponent c : inc.getConcept()) {
         c.checkNoModifiers("Code in Value Set", "expanding");
         ConceptDefinitionComponent def = CodeSystemUtilities.findCode(cs.getConcept(), c.getCode());
-        Boolean inactive = false; // default is true if we're a fragment and  
+        boolean inactive = false; // default is true if we're a fragment and  
+        boolean isAbstract = false;
         if (def == null) {
           def.checkNoModifiers("Code in Code System", "expanding");
           if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
@@ -812,9 +865,10 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
           }
         } else {
           inactive = CodeSystemUtilities.isInactive(cs, def);
+          isAbstract = CodeSystemUtilities.isNotSelectable(cs, def);
         }
         addCode(inc.getSystem(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def == null ? null : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(), null, mergeDesignations(def, convertDesignations(c.getDesignation())), 
-            expParams, false, inactive, def == null ? null : def.getDefinition(), imports, noInactive, false, exp.getProperty(), def != null ? def.getProperty() : null, null, def == null ? null : def.getExtension(), c.getExtension());
+            expParams, isAbstract, inactive, def == null ? null : def.getDefinition(), imports, noInactive, false, exp.getProperty(), def != null ? def.getProperty() : null, null, def == null ? null : def.getExtension(), c.getExtension());
       }
     }
     if (inc.getFilter().size() > 1) {
@@ -869,7 +923,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
         for (ConceptDefinitionComponent def : cs.getConcept()) {
           addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, null, new PropertyFilter(fc, getPropertyDefinition(cs, fc.getProperty())), noInactive, exp.getProperty());
         }
-      } else if ("regex".equals(fc.getProperty()) && fc.getOp() == FilterOperator.EQUAL) {
+      } else if ("code".equals(fc.getProperty()) && fc.getOp() == FilterOperator.REGEX) {
         for (ConceptDefinitionComponent def : cs.getConcept()) {
           addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, null, new RegexFilter(fc.getValue()), noInactive, exp.getProperty());
         }
@@ -932,6 +986,8 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       c.setLanguage(t.getLanguage());
       c.setUse(t.getUse());
       c.setValue(t.getValue());
+      c.getExtension().addAll(t.getExtension());
+      res.add(c);
     }
     return res;
   }

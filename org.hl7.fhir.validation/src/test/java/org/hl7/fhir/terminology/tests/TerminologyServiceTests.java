@@ -18,9 +18,11 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
@@ -28,7 +30,10 @@ import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
+import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -37,7 +42,9 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.special.TxTesterSorters;
 import org.hl7.fhir.validation.tests.ValidationEngineTests;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
@@ -48,6 +55,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Charsets;
+import com.google.gson.JsonSyntaxException;
 
 
 
@@ -107,7 +115,8 @@ public class TerminologyServiceTests {
   @Test
   public void test() throws Exception {
     if (baseEngine == null) {
-      baseEngine = TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", null, null, FhirPublication.R5, true, "5.0.0");
+      baseEngine = TestUtilities.getValidationEngineNoTxServer("hl7.fhir.r5.core#5.0.0", FhirPublication.R5, "5.0.0");
+
     }
     ValidationEngine engine = new ValidationEngine(this.baseEngine);
     for (String s : setup.suite.forceArray("setup").asStrings()) {
@@ -115,23 +124,23 @@ public class TerminologyServiceTests {
       engine.seeResource(res);
     }
     Resource req = loadResource(setup.test.asString("request"));
-    String resp = TestingUtilities.loadTestResource("tx", setup.test.asString("response"));
-    if (setup.test.asString("operation").equals("expand")) {
-      expand(engine, req, resp, setup.test.asString("response"));
-    } else if (setup.test.asString("operation").equals("validate-code")) {
-      validate(engine, req, resp);      
-    } else {
-      Assertions.fail("Unknown Operation "+setup.test.asString("operation"));
-    }
-  }
-
-  private void expand(ValidationEngine engine, Resource req, String resp, String fn) throws IOException {
+    String fn = setup.test.asString("response");
+    String resp = TestingUtilities.loadTestResource("tx", fn);
     String fp = Utilities.path("[tmp]", "tx", fn);
     File fo = new File(fp);
     if (fo.exists()) {
       fo.delete();
     }
-    
+    if (setup.test.asString("operation").equals("expand")) {
+      expand(engine, req, resp, fp);
+    } else if (setup.test.asString("operation").equals("validate-code")) {
+      validate(engine, setup.test.asString("name"), req, resp, fp);      
+    } else {
+      Assertions.fail("Unknown Operation "+setup.test.asString("operation"));
+    }
+  }
+
+  private void expand(ValidationEngine engine, Resource req, String resp, String fp) throws IOException {
     org.hl7.fhir.r5.model.Parameters p = ( org.hl7.fhir.r5.model.Parameters) req;
     ValueSet vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
     boolean hierarchical = p.hasParameter("excludeNested") ? p.getParameterBool("excludeNested") == false : true;
@@ -144,6 +153,7 @@ public class TerminologyServiceTests {
         if (!p.hasParameter("excludeNested")) {
           removeParameter(vse.getValueset(), "excludeNested");
         }
+        TxTesterSorters.sortValueSet(vse.getValueset());
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
         String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj);
         if (diff != null) {
@@ -175,6 +185,9 @@ public class TerminologyServiceTests {
       case SERVER_ERROR:
         e.setCode(IssueType.EXCEPTION);
         break;
+      case TOO_COSTLY:
+        e.setCode(IssueType.TOOCOSTLY);
+        break;
       case UNKNOWN:
         e.setCode(IssueType.UNKNOWN);
         break;
@@ -204,8 +217,61 @@ public class TerminologyServiceTests {
     }
   }
 
-  private void validate(ValidationEngine engine2, Resource req, String resp) {
-    Assertions.fail("validate not done yet");
+  private void validate(ValidationEngine engine, String name, Resource req, String resp, String fp) throws JsonSyntaxException, FileNotFoundException, IOException {
+    org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) req;
+    ValueSet vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+    ValidationOptions options = new ValidationOptions();
+    if (p.hasParameter("displayLanguage")) {
+      options = options.withLanguage(p.getParameterString("displayLanguage"));
+    }
+    if (p.hasParameter("valueSetMode") && "CHECK_MEMBERSHIP_ONLY".equals(p.getParameterString("valueSetMode"))) {
+       options = options.withCheckValueSetOnly();
+    }
+    ValidationResult vm;
+    if (p.hasParameter("code")) {
+      vm = engine.getContext().validateCode(options.withGuessSystem(), p.getParameterString("system"), p.getParameterString("version"), p.getParameterString("code"), p.getParameterString("display"), vs);
+    } else if (p.hasParameter("coding")) {
+      Coding coding = (Coding) p.getParameterValue("coding");
+      vm = engine.getContext().validateCode(options, coding, vs);
+    } else if (p.hasParameter("codeableConcept")) {
+      CodeableConcept cc = (CodeableConcept) p.getParameterValue("codeableConcept");
+      vm = engine.getContext().validateCode(options, cc, vs);
+    } else {
+      throw new Error("validate not done yet for this steup");
+    }
+    org.hl7.fhir.r5.model.Parameters res = new org.hl7.fhir.r5.model.Parameters();
+    if (vm.getSystem() != null) {
+      res.addParameter("system", vm.getSystem());
+    }
+    if (vm.getCode() != null) {
+      res.addParameter("code", vm.getCode());
+    }
+    if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
+      res.addParameter("result", false);
+    } else {
+      res.addParameter("result", true);
+    }
+    if (vm.getMessage() != null) {
+      res.addParameter("message", vm.getMessage());
+    }
+    if (vm.getDisplay() != null) {
+      res.addParameter("display", vm.getDisplay());
+    }
+    if (vm.getIssues().size() > 0) {
+      OperationOutcome oo = new OperationOutcome();
+      oo.getIssue().addAll(vm.getIssues());
+      res.addParameter().setName("issues").setResource(oo);
+    }
+    TxTesterSorters.sortParameters(res);
+
+    String pj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(res);
+    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj);
+    if (diff != null) {
+      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+      TextFile.stringToFile(pj, fp); 
+      System.out.println("Test "+name+"failed: "+diff);
+    }
+    Assertions.assertTrue(diff == null, diff);
   }
 
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {

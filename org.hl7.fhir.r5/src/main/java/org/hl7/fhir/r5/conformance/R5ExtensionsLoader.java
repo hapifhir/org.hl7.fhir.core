@@ -80,9 +80,9 @@ public class R5ExtensionsLoader {
   }
 
   public void load() throws FHIRException, IOException {
-    pckCore = pcm.loadPackage("hl7.fhir.r5.core", "current");
+    pckCore = pcm.loadPackage("hl7.fhir.r5.core", "5.0.0");
     loadDetails(pckCore); 
-    pckExt = pcm.loadPackage("hl7.fhir.uv.extensions", "current");
+    pckExt = pcm.loadPackage("hl7.fhir.uv.extensions", "1.0.0");
     loadDetails(pckExt); 
   }
 

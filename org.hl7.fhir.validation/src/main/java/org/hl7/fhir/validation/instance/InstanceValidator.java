@@ -1681,7 +1681,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = checkCodeOnServer(stack, valueset, value, baseOptions.setLanguage(stack.getWorkingLang()));
+        ValidationResult vr = checkCodeOnServer(stack, valueset, value, baseOptions.withLanguage(stack.getWorkingLang()));
         timeTracker.tx(t, "vc "+value);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -2991,9 +2991,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           long t = System.nanoTime();
           ValidationResult vr = null;
           if (binding.getStrength() != BindingStrength.EXAMPLE) {
-            ValidationOptions options = baseOptions.setLanguage(stack.getWorkingLang()).guessSystem();
+            ValidationOptions options = baseOptions.withLanguage(stack.getWorkingLang()).withGuessSystem();
             if (validationPolicy == CodedContentValidationPolicy.CODE) {
-              options = options.noCheckValueSetMembership();              
+              options = options.withNoCheckValueSetMembership();              
             }
             vr = checkCodeOnServer(stack, vs, value, options);
           }
@@ -5024,9 +5024,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("CapabilityStatement")) {
       return validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
-      return new CodeSystemValidator(context, timeTracker, this, xverManager, jurisdiction).validateCodeSystem(errors, element, stack, baseOptions.setLanguage(stack.getWorkingLang()));
+      return new CodeSystemValidator(context, timeTracker, this, xverManager, jurisdiction).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("ConceptMap")) {
-      return new ConceptMapValidator(context, timeTracker, this, xverManager, jurisdiction).validateConceptMap(errors, element, stack, baseOptions.setLanguage(stack.getWorkingLang()));
+      return new ConceptMapValidator(context, timeTracker, this, xverManager, jurisdiction).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("SearchParameter")) {
       return new SearchParameterValidator(context, timeTracker, fpe, xverManager, jurisdiction).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {
@@ -6340,6 +6340,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setValidationLanguage(String validationLanguage) {
     this.validationLanguage = validationLanguage;
+    if (this.validationLanguage == null) {
+      this.validationLanguage = "en";
+    }
   }
 
   public boolean isDebug() {
@@ -6383,22 +6386,29 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   // no delay on this one? 
   public ValidationResult checkCodeOnServer(NodeStack stack, String code, String system, String version, String display, boolean checkDisplay) {
-    return context.validateCode(baseOptions.setLanguage(stack.getWorkingLang()), system, version, code, checkDisplay ? display : null);
+    String lang = stack.getWorkingLang();
+    if (lang == null) {
+      lang = validationLanguage;
+    }
+    if (lang == null) {
+      lang = "en"; // ubiquitious default languauge
+    }
+    return context.validateCode(baseOptions.withLanguage(lang), system, version, code, checkDisplay ? display : null);
   }
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c, boolean checkMembership) {
     if (checkMembership) {
-      return context.validateCode(baseOptions.setLanguage(stack.getWorkingLang()).checkValueSetOnly(), c, valueset);   
+      return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), c, valueset);   
     } else {
-      return context.validateCode(baseOptions.setLanguage(stack.getWorkingLang()).noCheckValueSetMembership(), c, valueset);
+      return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withNoCheckValueSetMembership(), c, valueset);
     }
   }
   
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc, boolean vsOnly) {
     if (vsOnly) {
-      return context.validateCode(baseOptions.setLanguage(stack.getWorkingLang()).checkValueSetOnly(), cc, valueset);
+      return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), cc, valueset);
     } else {
-      return context.validateCode(baseOptions.setLanguage(stack.getWorkingLang()), cc, valueset);
+      return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), cc, valueset);
     }
   }
 

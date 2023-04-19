@@ -259,7 +259,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
     String root = getRoot(p, url);
     if (root != null) {
       TerminologyClient c;
-      c = TerminologyClientFactory.makeClient(root, "fhir/validator", context.getVersion());
+      c = TerminologyClientFactory.makeClient("source", root, "fhir/validator", context.getVersion());
       return c.read(p[p.length - 2], p[p.length - 1]);
     } else {
       throw new FHIRException("The URL '" + url + "' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");

@@ -22,6 +22,7 @@ import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.context.IWorkerContext.ValidationResult;
@@ -890,7 +891,9 @@ public class FHIRPathEngine {
   }
 
   public String convertToString(Base item) {
-    if (item.isPrimitive()) {
+    if (item instanceof IIdType) {
+      return ((IIdType)item).getIdPart();
+    } else if (item.isPrimitive()) {
       return item.primitiveValue();
     } else if (item instanceof Quantity) {
       Quantity q = (Quantity) item;
@@ -2481,7 +2484,7 @@ public class FHIRPathEngine {
     if (vs != null) {
       for (Base l : left) {
         if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
-          if (worker.validateCode(terminologyServiceOptions.guessSystem() , TypeConvertor.castToCoding(l), vs).isOk()) {
+          if (worker.validateCode(terminologyServiceOptions.withGuessSystem() , TypeConvertor.castToCoding(l), vs).isOk()) {
             ans = true;
           }
         } else if (l.fhirType().equals("Coding")) {
@@ -4266,7 +4269,7 @@ public class FHIRPathEngine {
     }
     Base l = focus.get(0);
     if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
-      return makeBoolean(worker.validateCode(terminologyServiceOptions.guessSystem(), TypeConvertor.castToCoding(l), vs).isOk());
+      return makeBoolean(worker.validateCode(terminologyServiceOptions.withGuessSystem(), TypeConvertor.castToCoding(l), vs).isOk());
     } else if (l.fhirType().equals("Coding")) {
       return makeBoolean(worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCoding(l), vs).isOk());
     } else if (l.fhirType().equals("CodeableConcept")) {

@@ -274,7 +274,7 @@ public class DataRenderer extends Renderer {
   }
 
   private String lookupCode(String system, String version, String code) {
-    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().setVersionFlexible(true), system, version, code, null);
+    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().withVersionFlexible(true), system, version, code, null);
 
     if (t != null && t.getDisplay() != null)
       return t.getDisplay();

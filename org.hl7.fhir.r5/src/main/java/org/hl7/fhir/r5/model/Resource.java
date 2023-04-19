@@ -438,9 +438,6 @@ public abstract class Resource extends BaseResource implements IAnyResource {
     return webPath;
   }
   public void setWebPath(String webPath) {
-    if (webPath != null && webPath.startsWith("file:")) {
-      System.out.println("!"); // FIXME
-    }
     this.webPath = webPath;
   }
   

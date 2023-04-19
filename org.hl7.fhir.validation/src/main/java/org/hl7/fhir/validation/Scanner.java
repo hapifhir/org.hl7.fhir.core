@@ -87,7 +87,7 @@ public class Scanner {
       try {
         System.out.println("Validate " + ref);
         messages.clear();
-        e = getValidator().validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+        e = getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
         res.add(new ScanOutputItem(ref, null, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
       } catch (Exception ex) {
         res.add(new ScanOutputItem(ref, null, null, exceptionToOutcome(ex)));
@@ -103,7 +103,7 @@ public class Scanner {
             try {
               System.out.println("Validate " + ref + " against " + ig.getUrl());
               messages.clear();
-              getValidator().validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, url);
+              getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType(), url);
               res.add(new ScanOutputItem(ref, ig, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
             } catch (Exception ex) {
               res.add(new ScanOutputItem(ref, ig, null, exceptionToOutcome(ex)));
@@ -117,7 +117,7 @@ public class Scanner {
                 try {
                   System.out.println("Validate " + ref + " against " + sd.getUrl());
                   messages.clear();
-                  validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, Collections.singletonList(sd));
+                  validator.validate(null, messages, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType(), Collections.singletonList(sd));
                   res.add(new ScanOutputItem(ref, ig, sd, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
                 } catch (Exception ex) {
                   res.add(new ScanOutputItem(ref, ig, sd, exceptionToOutcome(ex)));

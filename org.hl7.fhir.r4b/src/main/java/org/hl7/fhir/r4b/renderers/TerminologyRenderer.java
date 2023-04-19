@@ -312,7 +312,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   protected String getDisplayForConcept(String system, String version, String value) {
     if (value == null || system == null)
       return null;
-    ValidationResult cl = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().setVersionFlexible(true), system, version, value, null);
+    ValidationResult cl = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().withVersionFlexible(true), system, version, value, null);
     return cl == null ? null : cl.getDisplay();
   }
 

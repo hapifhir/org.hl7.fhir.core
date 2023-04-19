@@ -1,14 +1,4 @@
 -------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:ietf:bcp:47",
-  "code" : "fr-CA"
-}, "valueSet" :null, "lang":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "severity" : "error",
-  "error" : "Attempt to use Terminology server when no Terminology server is available",
-  "class" : "SERVER_ERROR"
-}
--------------------------------------------------------------------------------------
 {"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
@@ -18,21 +8,6 @@ v: {
     }]
   }
 }}####
-e: {
-  "error" : "Cannot invoke \"org.hl7.fhir.r5.terminologies.TerminologyClient.expandValueset(org.hl7.fhir.r5.model.ValueSet, org.hl7.fhir.r5.model.Parameters, java.util.Map)\" because \"this.txClient\" is null"
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0-snapshot3"}####
-e: {
-  "error" : "Cannot invoke \"org.hl7.fhir.r5.terminologies.TerminologyClient.expandValueset(org.hl7.fhir.r5.model.ValueSet, org.hl7.fhir.r5.model.Parameters, java.util.Map)\" because \"this.txClient\" is null"
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0-draft-final"}####
-e: {
-  "error" : "Cannot invoke \"org.hl7.fhir.r5.terminologies.TerminologyClient.expandValueset(org.hl7.fhir.r5.model.ValueSet, org.hl7.fhir.r5.model.Parameters, java.util.Map)\" because \"this.txClient\" is null"
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0"}####
 e: {
   "error" : "Cannot invoke \"org.hl7.fhir.r5.terminologies.TerminologyClient.expandValueset(org.hl7.fhir.r5.model.ValueSet, org.hl7.fhir.r5.model.Parameters, java.util.Map)\" because \"this.txClient\" is null"
 }

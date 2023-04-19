@@ -1,7 +1,9 @@
 package org.hl7.fhir.utilities.i18n;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -12,6 +14,8 @@ import org.hl7.fhir.utilities.i18n.PoGetTextProducer.POGetTextProducerSession;
 import org.hl7.fhir.utilities.i18n.XLIFFProducer.XLiffLanguageProducerLanguageSession;
 
 public class PoGetTextProducer extends LanguageFileProducer {
+
+  private int filecount;
 
   public PoGetTextProducer(String folder) {
     super(folder);
@@ -42,9 +46,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
     public void finish() throws IOException {
       // nothing
     }
-
   }
-
 
   public class POGetTextLanguageProducerLanguageSession extends LanguageProducerLanguageSession {
 
@@ -54,10 +56,8 @@ public class PoGetTextProducer extends LanguageFileProducer {
     public POGetTextLanguageProducerLanguageSession(String id, String baseLang, String targetLang) {
       super(id, baseLang, targetLang);
       po = new StringBuilder();
-      ln("<?xml version=\"1.0\" ?>\r\n");
-      ln("<xliff xmlns=\"urn:oasis:names:tc:xliff:document:2.0\" version=\"2.0\">");
-      ln("  <file source-language=\""+baseLang+"\" target-language=\""+targetLang+"\" id=\""+id+"\" original=\"Resource "+id+"\" datatype=\"KEYVALUEJSON\">");
-      ln("    <body>");
+      ln("# "+baseLang+" -> "+targetLang);
+      ln("");
     }
 
     protected void ln(String line) {
@@ -66,8 +66,8 @@ public class PoGetTextProducer extends LanguageFileProducer {
 
     @Override
     public void finish() throws IOException {
-      ln("");
-      TextFile.stringToFile(po.toString(), Utilities.path(getFolder(), id+"-"+baseLang+"-"+targetLang+".po"));
+      TextFile.stringToFile(po.toString(), getFileName(id, baseLang, targetLang));
+      filecount++;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
       //      ln("#. "+context);
       //    }
       ln("msgid \""+unit.getSrcText()+"\"");
-      ln("msgstr \""+unit.getTgtText()+"\"");
+      ln("msgstr \""+(unit.getTgtText() == null ? "" : unit.getTgtText())+"\"");
       ln("");
     }
 
@@ -85,8 +85,22 @@ public class PoGetTextProducer extends LanguageFileProducer {
 
 
   @Override
-  public List<TextUnit> loadTranslations(String baseLang, String tgtLang) {
-    return null;
+  public int fileCount() {
+    return filecount;
+  }
+
+  @Override
+  public List<TextUnit> loadTranslations(String id, String baseLang, String targetLang) throws IOException {
+    List<TextUnit> res = new ArrayList<>();
+    File f = new File(getFileName(id, baseLang, targetLang));
+    if (f.exists()) {
+      
+    }
+    return res;
+  }
+
+  private String getFileName(String id, String baseLang, String targetLang) throws IOException {
+    return Utilities.path(getFolder(), id+"-"+baseLang+"-"+targetLang+".po");
   }
 
 

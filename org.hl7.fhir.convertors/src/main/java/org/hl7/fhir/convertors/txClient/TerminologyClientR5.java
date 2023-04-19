@@ -54,17 +54,24 @@ public class TerminologyClientR5 implements TerminologyClient {
 
   private final FHIRToolingClient client;
   private ClientHeaders clientHeaders;
+  private String id;
 
-  public TerminologyClientR5(String address, String userAgent) throws URISyntaxException {
+  public TerminologyClientR5(String id, String address, String userAgent) throws URISyntaxException {
     this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(new ClientHeaders());
+    this.id = id;
   }
 
-  public TerminologyClientR5(String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
+  @Override
+  public String getId() {
+    return id;
+  }
+
+  public TerminologyClientR5(String id, String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
     this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(clientHeaders);
+    this.id = id;
   }
-
 
   public EnumSet<FhirPublication> supportableVersions() {
     // todo

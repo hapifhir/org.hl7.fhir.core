@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,6 +101,10 @@ public class FTPClient {
    * Connect to the server, throw an exception if it fails
    */
   public void connect() throws IOException {
+    if (FhirSettings.getInstance().isProhibitNetworkAccess()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
+    
     if (port != -1) {
       logger.debug("Connecting to : " + server + ":" + port);
       clientImpl.connect(server, port);

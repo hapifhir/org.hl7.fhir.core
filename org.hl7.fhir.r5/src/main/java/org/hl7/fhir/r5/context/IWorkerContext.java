@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.context;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -58,6 +59,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
@@ -111,11 +113,14 @@ public interface IWorkerContext {
 
   class ValidationResult {
     private ConceptDefinitionComponent definition;
+    private String preferredDisplay;
     private String system;
     private IssueSeverity severity;
     private String message;
     private TerminologyServiceErrorClass errorClass;
     private String txLink;
+    private String diagnostics;
+    private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -123,27 +128,38 @@ public interface IWorkerContext {
           + errorClass + ", txLink=" + txLink + "]";
     }
 
-    public ValidationResult(IssueSeverity severity, String message) {
+    public ValidationResult(IssueSeverity severity, String message, List<OperationOutcomeIssueComponent> issues) {
       this.severity = severity;
       this.message = message;
+      if (issues != null) {
+        this.issues.addAll(issues);
+      }
     }
 
-    public ValidationResult(String system, ConceptDefinitionComponent definition) {
+    public ValidationResult(String system, ConceptDefinitionComponent definition, String preferredDisplay) {
       this.system = system;
       this.definition = definition;
+      this.preferredDisplay = preferredDisplay;
     }
 
-    public ValidationResult(IssueSeverity severity, String message, String system, ConceptDefinitionComponent definition) {
+    public ValidationResult(IssueSeverity severity, String message, String system, ConceptDefinitionComponent definition, String preferredDisplay, List<OperationOutcomeIssueComponent>  issues) {
       this.severity = severity;
       this.message = message;
       this.system = system;
       this.definition = definition;
+      this.preferredDisplay = preferredDisplay;
+      if (issues != null) {
+        this.issues.addAll(issues);
+      }
     }
 
-    public ValidationResult(IssueSeverity severity, String message, TerminologyServiceErrorClass errorClass) {
+    public ValidationResult(IssueSeverity severity, String message, TerminologyServiceErrorClass errorClass, List<OperationOutcomeIssueComponent>  issues) {
       this.severity = severity;
       this.message = message;
       this.errorClass = errorClass;
+      if (issues != null) {
+        this.issues.addAll(issues);
+      }
     }
 
     public boolean isOk() {
@@ -155,7 +171,19 @@ public interface IWorkerContext {
     }
 
     public String getDisplay() {
-      return definition == null ? null : definition.getDisplay();
+      if (preferredDisplay != null) {
+        return preferredDisplay; 
+      } else {
+        return definition == null ? null : definition.getDisplay();
+      }
+    }
+
+    public void setDisplay(String display) {
+      this.preferredDisplay = display;
+    }
+
+    public void setSystem(String system) {
+      this.system = system;
     }
 
     public String getCode() {
@@ -164,6 +192,10 @@ public interface IWorkerContext {
 
     public String getDefinition() {
       return definition == null ? null : definition.getDefinition();
+    }
+
+    public void setDefinition(ConceptDefinitionComponent definition) {
+      this.definition = definition;
     }
 
     public ConceptDefinitionComponent asConceptDefinition() {
@@ -214,6 +246,14 @@ public interface IWorkerContext {
       return message != null;
     }
 
+    public String getDiagnostics() {
+      return diagnostics;
+    }
+
+    public void setDiagnostics(String diagnostics) {
+      this.diagnostics = diagnostics;
+    }
+
     public Coding asCoding() {
       if (isOk() && definition != null && definition.getCode() != null) {
         return new Coding(system, definition.getCode(), definition.getDisplay());
@@ -221,6 +261,12 @@ public interface IWorkerContext {
         return null;
       }
     }
+
+    public List<OperationOutcomeIssueComponent> getIssues() {
+      return issues;
+    }
+    
+    
   }
 
   public class CodingValidationRequest {

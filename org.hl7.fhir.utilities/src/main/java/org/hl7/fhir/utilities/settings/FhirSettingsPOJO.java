@@ -28,6 +28,8 @@ public class FhirSettingsPOJO {
 
   private String testIgsPath;
 
+  private Boolean prohibitNetworkAccess;
+
   protected FhirSettingsPOJO() {
     apiKeys = null;
     npmPath = null;

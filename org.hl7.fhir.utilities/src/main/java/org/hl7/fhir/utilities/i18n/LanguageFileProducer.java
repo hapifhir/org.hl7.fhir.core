@@ -105,5 +105,7 @@ public abstract class LanguageFileProducer {
   public abstract LanguageProducerSession startSession(String id, String baseLang) throws IOException;
   public abstract void finish();
 
-  public abstract List<TextUnit> loadTranslations(String baseLang, String targetLang);
+  public abstract List<TextUnit> loadTranslations(String id, String baseLang, String targetLang) throws IOException;
+
+  public abstract int fileCount();
 }

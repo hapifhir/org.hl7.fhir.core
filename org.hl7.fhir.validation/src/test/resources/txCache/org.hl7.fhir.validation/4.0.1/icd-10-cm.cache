@@ -2,9 +2,10 @@
 {"code" : {
   "system" : "http://hl7.org/fhir/sid/icd-10-cm",
   "code" : "E10.3211+TT1.2"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "The code \"E10.3211+TT1.2\" is not valid in the system http://hl7.org/fhir/sid/icd-10-cm; The code provided (http://hl7.org/fhir/sid/icd-10-cm#E10.3211+TT1.2) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
+  "error" : "Unknown Code 'E10.3211+TT1.2' in the system 'http://hl7.org/fhir/sid/icd-10-cm'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------

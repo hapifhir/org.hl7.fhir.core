@@ -206,6 +206,18 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
     val.setDebug(false);
+    if (!VersionUtilities.isR5Plus(val.getContext().getVersion())) {
+      val.getBaseOptions().setUseValueSetDisplays(true);
+    }
+    val.getBaseOptions().getLanguages().clear();
+    if (content.has("languages")) {
+      for (String s : content.get("languages").getAsString().split("\\,")) {
+        String l = s.trim();
+        val.getBaseOptions().getLanguages().add(l);        
+      }
+    } else {
+      
+    }
     
     if (content.has("fetcher") && "standalone".equals(JsonUtilities.str(content, "fetcher"))) {
       val.setFetcher(vCurr);
@@ -226,9 +238,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     else
       val.setValidationLanguage(null);
     if (content.has("default-version")) {
-      val.setBaseOptions(val.getBaseOptions().setVersionFlexible(content.get("default-version").getAsBoolean()));
+      val.setBaseOptions(val.getBaseOptions().withVersionFlexible(content.get("default-version").getAsBoolean()));
     } else {
-      val.setBaseOptions(val.getBaseOptions().setVersionFlexible(false));
+      val.setBaseOptions(val.getBaseOptions().withVersionFlexible(false));
     }
     if (content.has("packages")) {
       for (JsonElement e : content.getAsJsonArray("packages")) {
@@ -303,6 +315,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("profile")) {
       System.out.print("** Profile: ");
       JsonObject profile = content.getAsJsonObject("profile");
+      if (profile.has("valueset-displays")) {
+        val.getBaseOptions().setUseValueSetDisplays(true);
+      }
       if (profile.has("packages")) {
         for (JsonElement e : profile.getAsJsonArray("packages")) {
           logOutput("load package "+e.getAsString());
@@ -389,13 +404,14 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
 
   private ValidationEngine buildVersionEngine(String ver, String txLog) throws Exception {
+    String server = Servers.TX_SERVER_DEV;
     switch (ver) {
-    case "1.0": return TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", ValidationEngineTests.DEF_TX, txLog, FhirPublication.DSTU2, true, "1.0.2");
-    case "1.4": return TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.DSTU2016May, true, "1.4.0"); 
-    case "3.0": return TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", ValidationEngineTests.DEF_TX, txLog, FhirPublication.STU3, true, "3.0.2");
-    case "4.0": return TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R4, true, "4.0.1");
-    case "4.3": return TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R4B, true, "4.3.0");
-    case "5.0": return TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R5, true, "5.0.0");
+    case "1.0": return TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", server, txLog, FhirPublication.DSTU2, true, "1.0.2");
+    case "1.4": return TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", server, txLog, FhirPublication.DSTU2016May, true, "1.4.0"); 
+    case "3.0": return TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", server, txLog, FhirPublication.STU3, true, "3.0.2");
+    case "4.0": return TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", server, txLog, FhirPublication.R4, true, "4.0.1");
+    case "4.3": return TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", server, txLog, FhirPublication.R4B, true, "4.3.0");
+    case "5.0": return TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", server, txLog, FhirPublication.R5, true, "5.0.0");
     }
     throw new Exception("unknown version " + version);    
   }

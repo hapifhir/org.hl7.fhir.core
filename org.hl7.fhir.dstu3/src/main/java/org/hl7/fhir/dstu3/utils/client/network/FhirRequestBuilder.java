@@ -11,7 +11,10 @@ import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.utils.ResourceUtilities;
 import org.hl7.fhir.dstu3.utils.client.EFhirClientException;
 import org.hl7.fhir.dstu3.utils.client.ResourceFormat;
+import org.hl7.fhir.exceptions.FHIRException;
+
 import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -150,6 +153,10 @@ public class FhirRequestBuilder {
    * @return {@link OkHttpClient} instance
    */
   protected OkHttpClient getHttpClient() {
+    if (FhirSettings.getInstance().isProhibitNetworkAccess()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
+    
     if (okHttpClient == null) {
       okHttpClient = new OkHttpClient();
     }

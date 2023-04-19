@@ -60,6 +60,21 @@ public class JurisdictionUtilities {
     return displayJurisdiction(CodeSystemUtilities.readCoding(s));
   }
   
+  public static String displayJurisdictionShort(String s) {
+    String d = displayJurisdiction(CodeSystemUtilities.readCoding(s));
+    if (d.contains("(")) {
+      d = d.substring(0, d.indexOf("(")).trim();
+    }
+    return d;
+  }
+  
+  public static String displayJurisdictionShort(Coding c) {
+    String d = displayJurisdiction(c);
+    if (d.contains("(")) {
+      d = d.substring(0, d.indexOf("(")).trim();
+    }
+    return d;
+  }
   public static String displayJurisdiction(Coding c) {
     if (c == null) {
       return "No Jurisdiction";

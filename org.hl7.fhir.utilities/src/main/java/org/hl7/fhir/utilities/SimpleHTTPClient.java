@@ -12,9 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.SimpleHTTPClient.Header;
 import org.hl7.fhir.utilities.npm.SSLCertTruster;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class SimpleHTTPClient {
   
@@ -122,6 +124,10 @@ public class SimpleHTTPClient {
   }
   
   public HTTPResult get(String url, String accept) throws IOException {
+    if (FhirSettings.getInstance().isProhibitNetworkAccess()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
+    
     URL u = new URL(url);
 //    boolean isSSL = url.startsWith("https://");
     
@@ -180,6 +186,9 @@ public class SimpleHTTPClient {
   }
 
   public HTTPResult post(String url, String contentType, byte[] content, String accept) throws IOException {
+    if (FhirSettings.getInstance().isProhibitNetworkAccess()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     URL u = new URL(url);
     HttpURLConnection c = (HttpURLConnection) u.openConnection();
     c.setDoOutput(true);
@@ -197,6 +206,9 @@ public class SimpleHTTPClient {
 
  
   public HTTPResult put(String url, String contentType, byte[] content, String accept) throws IOException {
+    if (FhirSettings.getInstance().isProhibitNetworkAccess()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     URL u = new URL(url);
     HttpURLConnection c = (HttpURLConnection) u.openConnection();
     c.setDoOutput(true);
