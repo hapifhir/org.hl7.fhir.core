@@ -86,9 +86,10 @@ import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu2.model.ResourceType;
 import org.hl7.fhir.dstu2.utils.ResourceUtilities;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.ToolGlobalSettings;
+
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 /**
  * Helper class handling lower level HTTP transport concerns.
@@ -142,7 +143,7 @@ public class ClientUtils {
   }
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat, int timeoutLoading) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     
@@ -151,7 +152,7 @@ public class ClientUtils {
   }
 
   public <T extends Resource> ResourceRequest<T> issueGetResourceRequest(URI resourceUri, String resourceFormat, int timeoutLoading) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     HttpGet httpget = new HttpGet(resourceUri);
@@ -159,7 +160,7 @@ public class ClientUtils {
   }
 
   public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, int timeoutLoading) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     HttpPut httpPut = new HttpPut(resourceUri);
@@ -167,7 +168,7 @@ public class ClientUtils {
   }
 
   public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     HttpPut httpPut = new HttpPut(resourceUri);
@@ -175,7 +176,7 @@ public class ClientUtils {
   }
 
   public <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, int timeoutLoading) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     HttpPost httpPost = new HttpPost(resourceUri);
@@ -188,7 +189,7 @@ public class ClientUtils {
   }
 
   public Bundle issueGetFeedRequest(URI resourceUri, String resourceFormat) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     HttpGet httpget = new HttpGet(resourceUri);
@@ -209,7 +210,7 @@ public class ClientUtils {
   }
 
   public Bundle postBatchRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     HttpPost httpPost = new HttpPost(resourceUri);
@@ -219,7 +220,7 @@ public class ClientUtils {
   }
 
   public boolean issueDeleteRequest(URI resourceUri) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     HttpDelete deleteRequest = new HttpDelete(resourceUri);
@@ -255,7 +256,7 @@ public class ClientUtils {
    * @return
    */
   protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, byte[] payload, List<Header> headers, int timeoutLoading) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     configureFhirRequest(request, resourceFormat, headers);
@@ -315,7 +316,7 @@ public class ClientUtils {
    */
   @SuppressWarnings({ "resource", "deprecation" })
   protected HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload, HttpHost proxy, int timeoutLoading) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     HttpResponse response = null;
@@ -356,7 +357,7 @@ public class ClientUtils {
    * @return
    */
   protected HttpResponse sendRequest(HttpUriRequest request) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     HttpResponse response = null;
@@ -466,7 +467,7 @@ public class ClientUtils {
    * ***************************************************************/
 
   public HttpURLConnection buildConnection(URI baseServiceUri, String tail) {
-    if (ToolGlobalSettings.isNoNetwork()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     

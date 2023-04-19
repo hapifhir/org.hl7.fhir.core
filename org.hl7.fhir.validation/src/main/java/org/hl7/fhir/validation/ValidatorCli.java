@@ -78,6 +78,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.npm.CommonPackages;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
@@ -130,6 +131,11 @@ public class ValidatorCli {
     Display.displaySystemInfo();
 
     CliContext cliContext = Params.loadCliContext(args);
+
+    if (cliContext.getFhirSettingsFile() != null) {
+      FhirSettings.setExplicitFilePath(cliContext.getFhirSettingsFile());
+    }
+
     FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
 
     if (shouldDisplayHelpToUser(args)) {

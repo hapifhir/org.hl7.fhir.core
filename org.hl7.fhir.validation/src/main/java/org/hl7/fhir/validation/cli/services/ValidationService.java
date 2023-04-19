@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,7 +51,7 @@ import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerSession;
 import org.hl7.fhir.utilities.i18n.PoGetTextProducer;
 import org.hl7.fhir.utilities.i18n.XLIFFProducer;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.Content;
 import org.hl7.fhir.validation.IgLoader;
@@ -70,6 +71,8 @@ import org.hl7.fhir.validation.cli.renderers.NativeRenderer;
 import org.hl7.fhir.validation.cli.renderers.ValidationOutputRenderer;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
+
+import javax.annotation.Nonnull;
 
 public class ValidationService {
 
@@ -394,70 +397,82 @@ public class ValidationService {
       if (sessionId != null) {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
-      System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
-      ValidationEngine validator = new ValidationEngine.ValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(tt).withUserAgent("fhir/validator").fromSource(definitions);
-
+      ValidationEngine validator = buildValidationEngine(cliContext, definitions, tt);
       sessionId = sessionCache.cacheSession(validator);
-
-      FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
-      System.out.println(" - " + validator.getContext().countAllCaches() + " resources (" + tt.milestone() + ")");
-      IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
-      igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);
-      if (!VersionUtilities.isR5Ver(validator.getContext().getVersion())) {
-        igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.fhir.uv.extensions", false);
-      }
-      System.out.print("  Terminology server " + cliContext.getTxServer());
-      String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
-      System.out.println(" - Version " + txver + " (" + tt.milestone() + ")");
-      validator.setDebug(cliContext.isDoDebug());
-      validator.getContext().setLogger(new SystemOutLoggingService(cliContext.isDoDebug()));
-      for (String src : cliContext.getIgs()) {
-        igLoader.loadIg(validator.getIgs(), validator.getBinaries(), src, cliContext.isRecursive());
-      }
-      System.out.println("  Package Summary: "+validator.getContext().loadedPackageSummary());
-      System.out.print("  Get set... ");
-      validator.setQuestionnaireMode(cliContext.getQuestionnaireMode());
-      validator.setLevel(cliContext.getLevel());
-      validator.setDoNative(cliContext.isDoNative());
-      validator.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
-      for (String s : cliContext.getExtensions()) {
-        if ("any".equals(s)) {
-          validator.setAnyExtensionsAllowed(true);
-        } else {
-          validator.getExtensionDomains().add(s);
-        }
-      }
-      validator.setLanguage(cliContext.getLang());
-      validator.setLocale(cliContext.getLocale());
-      validator.setSnomedExtension(cliContext.getSnomedCTCode());
-      validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
-      validator.setShowMessagesFromReferences(cliContext.isShowMessagesFromReferences());
-      validator.setDoImplicitFHIRPathStringConversion(cliContext.isDoImplicitFHIRPathStringConversion());
-      validator.setHtmlInMarkdownCheck(cliContext.getHtmlInMarkdownCheck());
-      validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
-      validator.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
-      validator.setNoInvariantChecks(cliContext.isNoInvariants());
-      validator.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
-      validator.setSecurityChecks(cliContext.isSecurityChecks());
-      validator.setCrumbTrails(cliContext.isCrumbTrails());
-      validator.setForPublication(cliContext.isForPublication());
-      validator.setShowTimes(cliContext.isShowTimes());
-      validator.setAllowExampleUrls(cliContext.isAllowExampleUrls());
-      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator);
-      validator.setFetcher(fetcher);
-      validator.getContext().setLocator(fetcher);
-      validator.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
-      validator.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
-      TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
-      validator.prepare(); // generate any missing snapshots
-      System.out.println(" go (" + tt.milestone() + ")");
     } else {
       System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator session id.");
     }
     return sessionId;
   }
 
+  protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
+    return new ValidationEngine.ValidationEngineBuilder();
+  }
 
+  @Nonnull
+  protected ValidationEngine buildValidationEngine( CliContext cliContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
+    System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
+    ValidationEngine validationEngine = getValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(timeTracker).withUserAgent("fhir/validator").fromSource(definitions);
+
+    System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
+
+    loadIgsAndExtensions(validationEngine, cliContext, timeTracker);
+    System.out.print("  Get set... ");
+    validationEngine.setQuestionnaireMode(cliContext.getQuestionnaireMode());
+    validationEngine.setLevel(cliContext.getLevel());
+    validationEngine.setDoNative(cliContext.isDoNative());
+    validationEngine.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
+    for (String s : cliContext.getExtensions()) {
+      if ("any".equals(s)) {
+        validationEngine.setAnyExtensionsAllowed(true);
+      } else {
+        validationEngine.getExtensionDomains().add(s);
+      }
+    }
+    validationEngine.setLanguage(cliContext.getLang());
+    validationEngine.setLocale(cliContext.getLocale());
+    validationEngine.setSnomedExtension(cliContext.getSnomedCTCode());
+    validationEngine.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
+    validationEngine.setShowMessagesFromReferences(cliContext.isShowMessagesFromReferences());
+    validationEngine.setDoImplicitFHIRPathStringConversion(cliContext.isDoImplicitFHIRPathStringConversion());
+    validationEngine.setHtmlInMarkdownCheck(cliContext.getHtmlInMarkdownCheck());
+    validationEngine.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
+    validationEngine.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
+    validationEngine.setNoInvariantChecks(cliContext.isNoInvariants());
+    validationEngine.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
+    validationEngine.setSecurityChecks(cliContext.isSecurityChecks());
+    validationEngine.setCrumbTrails(cliContext.isCrumbTrails());
+    validationEngine.setForPublication(cliContext.isForPublication());
+    validationEngine.setShowTimes(cliContext.isShowTimes());
+    validationEngine.setAllowExampleUrls(cliContext.isAllowExampleUrls());
+    StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
+    validationEngine.setFetcher(fetcher);
+    validationEngine.getContext().setLocator(fetcher);
+    validationEngine.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
+    validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
+    TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
+    validationEngine.prepare(); // generate any missing snapshots
+    System.out.println(" go (" + timeTracker.milestone() + ")");
+    return validationEngine;
+  }
+
+  protected void loadIgsAndExtensions(ValidationEngine validationEngine, CliContext cliContext, TimeTracker timeTracker) throws IOException, URISyntaxException {
+    FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
+    IgLoader igLoader = new IgLoader(validationEngine.getPcm(), validationEngine.getContext(), validationEngine.getVersion(), validationEngine.isDebug());
+    igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.terminology", false);
+    if (!VersionUtilities.isR5Ver(validationEngine.getContext().getVersion())) {
+      igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
+    }
+    System.out.print("  Terminology server " + cliContext.getTxServer());
+    String txver = validationEngine.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
+    System.out.println(" - Version " + txver + " (" + timeTracker.milestone() + ")");
+    validationEngine.setDebug(cliContext.isDoDebug());
+    validationEngine.getContext().setLogger(new SystemOutLoggingService(cliContext.isDoDebug()));
+    for (String src : cliContext.getIgs()) {
+      igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), src, cliContext.isRecursive());
+    }
+    System.out.println("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
+  }
 
 
   public String determineVersion(CliContext cliContext) throws Exception {

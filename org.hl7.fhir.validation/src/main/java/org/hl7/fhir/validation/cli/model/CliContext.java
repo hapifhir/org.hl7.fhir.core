@@ -131,6 +131,9 @@ public class CliContext {
   @JsonProperty("tgtLang")
   private String tgtLang = null;
 
+  @JsonProperty("fhirSettingsFile")
+  private String fhirSettingsFile;
+
 
   @JsonProperty("map")
   public String getMap() {
@@ -767,5 +770,16 @@ public class CliContext {
       ", locations=" + locations +
       ", bundleValidationRules=" + bundleValidationRules +
       '}';
+  }
+
+  @JsonProperty("fhirSettingsFile")
+  public CliContext setFhirSettingsFile(String fhirSettingsFile) {
+    this.fhirSettingsFile = fhirSettingsFile;
+    return this;
+  }
+
+  @JsonProperty("fhirSettingsFile")
+  public String getFhirSettingsFile() {
+    return fhirSettingsFile;
   }
 }
