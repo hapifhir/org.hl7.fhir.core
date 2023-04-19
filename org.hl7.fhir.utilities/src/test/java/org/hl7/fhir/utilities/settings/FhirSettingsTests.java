@@ -74,23 +74,14 @@ public class FhirSettingsTests implements ResourceLoaderTests {
     Path path = Files.createTempFile("fhir-settings", "json").toAbsolutePath();
     copyResourceToFile(path, "settings", "settings-example.json");
 
-    FhirSettings fhirSettings = FhirSettings.getInstanceFromPath(path.toString());
+    FhirSettingsPOJO fhirSettings = FhirSettings.getFhirSettingsPOJO(path.toString());
 
-   assertEquals(path.toString(), fhirSettings.filePath);
-
-   assertTrue(fhirSettings.hasNpmPath());
    assertEquals("dummy-npm-path", fhirSettings.getNpmPath());
-   assertTrue(fhirSettings.hasRubyPath());
    assertEquals("dummy-ruby-path", fhirSettings.getRubyPath());
-    assertTrue(fhirSettings.hasApiKey("dummy-api-key"));
-    assertEquals("dummy-api-key-value", fhirSettings.getApiKey("dummy-api-key"));
-    assertTrue(fhirSettings.hasFhirTestCasesPath());
+    assertEquals("dummy-api-key-value", fhirSettings.getApiKeys().get("dummy-api-key"));
     assertEquals("dummy-fhir-test-cases-path", fhirSettings.getFhirTestCasesPath());
-    assertTrue(fhirSettings.hasDiffToolPath());
     assertEquals("dummy-diff-tool-path", fhirSettings.getDiffToolPath());
-    assertTrue(fhirSettings.hasTempPath());
     assertEquals("dummy-temp-path", fhirSettings.getTempPath());
-    assertTrue(fhirSettings.hasTestIGsPath());
     assertEquals("dummy-test-igs-path", fhirSettings.getTestIgsPath());
   }
 }

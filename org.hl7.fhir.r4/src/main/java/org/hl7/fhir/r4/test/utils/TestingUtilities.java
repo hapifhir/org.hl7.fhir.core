@@ -487,8 +487,8 @@ public class TestingUtilities {
      */
 
     String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
-    if (dir == null && FhirSettings.getInstance().hasFhirTestCasesPath()) {
-      dir = FhirSettings.getInstance().getFhirTestCasesPath();
+    if (dir == null && FhirSettings.hasFhirTestCasesPath()) {
+      dir = FhirSettings.getFhirTestCasesPath();
     }
     if (dir != null && new CSFile(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));

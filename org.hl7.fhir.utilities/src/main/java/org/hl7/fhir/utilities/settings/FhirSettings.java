@@ -28,7 +28,11 @@ public class FhirSettings {
   }
   private final FhirSettingsPOJO fhirSettings;
 
-  @Getter
+  public static String getFilePath() {
+    getInstance();
+    return instance.filePath;
+  }
+
   final String filePath;
   private FhirSettings(FhirSettingsPOJO fhirSettings, String filePath) {
 
@@ -36,71 +40,91 @@ public class FhirSettings {
     this.filePath = filePath;
   }
 
-  public String getApiKey(String key) {
-    return fhirSettings.getApiKeys() != null
-      ? fhirSettings.getApiKeys().get(key)
+  public static String getApiKey(String key) {
+    getInstance();
+    return instance.fhirSettings.getApiKeys() != null
+      ? instance.fhirSettings.getApiKeys().get(key)
       : null;
   }
 
-  public boolean hasApiKey(String key) {
-    return fhirSettings.getApiKeys() != null
-      ? fhirSettings.getApiKeys().get(key) != null
+  public static boolean hasApiKey(String key) {
+    getInstance();
+    return instance.fhirSettings.getApiKeys() != null
+      ? instance.fhirSettings.getApiKeys().get(key) != null
       : null;
   }
 
-  public String getNpmPath() {
-    return fhirSettings.getNpmPath();
+  public static String getNpmPath() {
+    getInstance();
+    return instance.fhirSettings.getNpmPath();
   }
 
-  public boolean hasNpmPath() {
-    return fhirSettings.getNpmPath() != null;
+  public static boolean hasNpmPath() {
+    getInstance();
+    return instance.fhirSettings.getNpmPath() != null;
   }
-  public boolean hasRubyPath() {
-    return fhirSettings.getRubyPath() != null;
-  }
-
-  public String getRubyPath() {
-    return fhirSettings.getRubyPath();
+  public static boolean hasRubyPath() {
+    getInstance();
+    return instance.fhirSettings.getRubyPath() != null;
   }
 
-  public boolean hasFhirTestCasesPath() {
-    return fhirSettings.getFhirTestCasesPath() != null;
+  public static String getRubyPath() {
+    getInstance();
+    return instance.fhirSettings.getRubyPath();
   }
 
-  public String getFhirTestCasesPath() {
-    return fhirSettings.getFhirTestCasesPath();
+  public static boolean hasFhirTestCasesPath() {
+    getInstance();
+    return instance.fhirSettings.getFhirTestCasesPath() != null;
   }
 
-  public boolean hasDiffToolPath() {
-    return fhirSettings.getDiffToolPath() != null;
+  public static String getFhirTestCasesPath() {
+    getInstance();
+    return instance.fhirSettings.getFhirTestCasesPath();
   }
 
-  public String getDiffToolPath() {
-    return fhirSettings.getDiffToolPath();
+  public static boolean hasDiffToolPath() {
+    getInstance();
+    return instance.fhirSettings.getDiffToolPath() != null;
   }
 
-  public boolean hasTempPath() {
-    return fhirSettings.getTempPath() != null;
+  public static String getDiffToolPath() {
+    getInstance();
+    return instance.fhirSettings.getDiffToolPath();
   }
 
-  public String getTempPath() {
-    return fhirSettings.getTempPath();
+  public static boolean hasTempPath() {
+    getInstance();
+    return instance.fhirSettings.getTempPath() != null;
   }
 
-  public boolean hasTestIGsPath() {
-    return fhirSettings.getTestIgsPath() != null;
+  public static String getTempPath() {
+    getInstance();
+    return instance.fhirSettings.getTempPath();
   }
 
-  public String getTestIgsPath() {
-    return fhirSettings.getTestIgsPath();
+  public static boolean hasTestIGsPath() {
+    getInstance();
+    return instance.fhirSettings.getTestIgsPath() != null;
   }
 
-  public boolean hasProhibitNetworkAccess() { return fhirSettings.getProhibitNetworkAccess() != null; }
+  public static String getTestIgsPath() {
+    getInstance();
+    return instance.fhirSettings.getTestIgsPath();
+  }
 
-  public boolean isProhibitNetworkAccess() { return fhirSettings.getProhibitNetworkAccess() == null ? false : fhirSettings.getProhibitNetworkAccess(); }
+  public static boolean hasProhibitNetworkAccess() {
+    getInstance();
+    return instance.fhirSettings.getProhibitNetworkAccess() != null; }
+
+  public static boolean isProhibitNetworkAccess() {
+    getInstance();
+    return instance.fhirSettings.getProhibitNetworkAccess() == null
+      ? false
+      : instance.fhirSettings.getProhibitNetworkAccess(); }
   private static FhirSettings instance = null;
 
-  public static FhirSettings getInstance()  {
+  private static FhirSettings getInstance()  {
     if (instance == null) {
       try {
         instance = getInstanceFromPath(explicitFilePath);
@@ -131,7 +155,7 @@ public class FhirSettings {
     return filePath;
   }
 
-  private static FhirSettingsPOJO getFhirSettingsPOJO(String filePath) throws IOException {
+  static FhirSettingsPOJO getFhirSettingsPOJO(String filePath) throws IOException {
     final File file = new File(filePath);
 
     if (!file.exists()) {

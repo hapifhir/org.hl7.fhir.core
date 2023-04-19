@@ -44,7 +44,7 @@ public class CompareUtilities extends BaseTestingUtilities {
   public static String checkXMLIsSame(String expected, String actual) throws Exception {
     String result = compareXml(expected, actual);
     if (result != null && SHOW_DIFF) {
-      String diff = FhirSettings.getInstance().hasDiffToolPath() ? FhirSettings.getInstance().getDiffToolPath() : Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
+      String diff = FhirSettings.hasDiffToolPath() ? FhirSettings.getDiffToolPath() : Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
       if (new File(diff).exists() || Utilities.isToken(diff)) {
         Runtime.getRuntime().exec(new String[]{diff, expected, actual});
       }

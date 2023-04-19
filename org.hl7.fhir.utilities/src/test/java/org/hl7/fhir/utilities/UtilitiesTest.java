@@ -46,8 +46,8 @@ class UtilitiesTest {
   @Test
   @DisplayName("Test Utilities.path maps temp directory correctly")
   public void testTempDirPath() throws IOException {
-    if (FhirSettings.getInstance().hasTempPath()) {
-      assertEquals(Utilities.path("[tmp]", TEST_TXT), FhirSettings.getInstance().getTempPath() +File.separator+ TEST_TXT);
+    if (FhirSettings.hasTempPath()) {
+      assertEquals(Utilities.path("[tmp]", TEST_TXT), FhirSettings.getTempPath() +File.separator+ TEST_TXT);
     } else {
       assertEquals(Utilities.path("[tmp]", TEST_TXT), getTempDirectory() + TEST_TXT);
     }

@@ -23,8 +23,8 @@ public class BaseTestingUtilities {
      */
 
     String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
-    if (dir == null && FhirSettings.getInstance().hasFhirTestCasesPath()) {
-      dir = FhirSettings.getInstance().getFhirTestCasesPath();
+    if (dir == null && FhirSettings.hasFhirTestCasesPath()) {
+      dir = FhirSettings.getFhirTestCasesPath();
     }
     if (dir != null && new CSFile(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
@@ -47,8 +47,8 @@ public class BaseTestingUtilities {
   
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
     String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
-    if (dir == null && FhirSettings.getInstance().hasFhirTestCasesPath()) {
-      dir = FhirSettings.getInstance().getFhirTestCasesPath();
+    if (dir == null && FhirSettings.hasFhirTestCasesPath()) {
+      dir = FhirSettings.getFhirTestCasesPath();
     }
     if (dir != null && new File(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
@@ -65,8 +65,8 @@ public class BaseTestingUtilities {
 
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
     String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
-    if (dir == null && FhirSettings.getInstance().hasFhirTestCasesPath()) {
-      dir = FhirSettings.getInstance().getFhirTestCasesPath();
+    if (dir == null && FhirSettings.hasFhirTestCasesPath()) {
+      dir = FhirSettings.getFhirTestCasesPath();
     }
     if (dir != null && new File(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
@@ -83,8 +83,8 @@ public class BaseTestingUtilities {
 
   public static boolean findTestResource(String... paths) throws IOException {
     String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
-    if (dir == null && FhirSettings.getInstance().hasFhirTestCasesPath()) {
-      dir = FhirSettings.getInstance().getFhirTestCasesPath();
+    if (dir == null && FhirSettings.hasFhirTestCasesPath()) {
+      dir = FhirSettings.getFhirTestCasesPath();
     }
     if (dir != null && new File(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
@@ -106,7 +106,7 @@ public class BaseTestingUtilities {
   }
 
   public static String tempFolder(String name) throws IOException {
-    String path = Utilities.path(FhirSettings.getInstance().hasTempPath() ? FhirSettings.getInstance().getTempPath() : "[tmp]", name);
+    String path = Utilities.path(FhirSettings.hasTempPath() ? FhirSettings.getTempPath() : "[tmp]", name);
     Utilities.createDirectory(path);
     return path;
   }

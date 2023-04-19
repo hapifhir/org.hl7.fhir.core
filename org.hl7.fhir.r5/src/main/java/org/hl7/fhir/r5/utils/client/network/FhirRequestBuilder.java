@@ -150,7 +150,7 @@ public class FhirRequestBuilder {
    * @return {@link OkHttpClient} instance
    */
   protected OkHttpClient getHttpClient() {
-    if (FhirSettings.getInstance().isProhibitNetworkAccess()) {
+    if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
     
