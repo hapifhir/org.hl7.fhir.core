@@ -31,7 +31,7 @@ public class SubscriptionStatus43_50 {
     }
     if (src.hasNotificationEvent()) {
       for (org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent element : src.getNotificationEvent()) {
-        tgt.addNotificationEvent(covertSubscriptionStatusNotificationEventComponent(element));
+        tgt.addNotificationEvent(convertSubscriptionStatusNotificationEventComponent(element));
       }
     }
     if (src.hasSubscription()) {
@@ -43,7 +43,7 @@ public class SubscriptionStatus43_50 {
     return tgt;
   }
 
-  private static org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent covertSubscriptionStatusNotificationEventComponent(org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent src) {
+  private static org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent convertSubscriptionStatusNotificationEventComponent(org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent src) {
     org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent tgt = new org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent();
     if (src.hasEventNumber()) {
       org.hl7.fhir.r4b.model.StringType value = new org.hl7.fhir.r4b.model.StringType();
@@ -104,7 +104,7 @@ public class SubscriptionStatus43_50 {
     }
     if (src.hasNotificationEvent()) {
       for (org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent element : src.getNotificationEvent()) {
-        tgt.addNotificationEvent(covertSubscriptionStatusNotificationEventComponent(element));
+        tgt.addNotificationEvent(convertSubscriptionStatusNotificationEventComponent(element));
       }
     }
     if (src.hasSubscription()) {
@@ -116,7 +116,7 @@ public class SubscriptionStatus43_50 {
     return tgt;
   }
 
-  private static org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent covertSubscriptionStatusNotificationEventComponent(org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent src) {
+  private static org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent convertSubscriptionStatusNotificationEventComponent(org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent src) {
     org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent tgt = new org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent();
     if (src.hasEventNumber()) {
       org.hl7.fhir.r5.model.Integer64Type value = new org.hl7.fhir.r5.model.Integer64Type();
