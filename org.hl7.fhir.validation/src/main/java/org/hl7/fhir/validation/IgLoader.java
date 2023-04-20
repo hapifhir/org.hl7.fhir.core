@@ -21,6 +21,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -785,7 +786,7 @@ public class IgLoader {
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
-        res = new org.hl7.fhir.dstu3.utils.StructureMapUtilities(null).parse(new String(content));
+        res = new org.hl7.fhir.dstu3.utils.StructureMapUtilities(new org.hl7.fhir.dstu3.context.SimpleWorkerContext()).parse(new String(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_30_50.convertResource(res);
@@ -796,7 +797,7 @@ public class IgLoader {
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.r4.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
-        res = new org.hl7.fhir.r4.utils.StructureMapUtilities(null).parse(new String(content), fn);
+        res = new org.hl7.fhir.r4.utils.StructureMapUtilities(new org.hl7.fhir.r4.context.SimpleWorkerContext()).parse(new String(content), fn);
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_40_50.convertResource(res);
@@ -807,7 +808,7 @@ public class IgLoader {
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.r4b.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
-        res = new org.hl7.fhir.r4b.utils.structuremap.StructureMapUtilities(null).parse(new String(content), fn);
+        res = new org.hl7.fhir.r4b.utils.structuremap.StructureMapUtilities(new org.hl7.fhir.r4b.context.SimpleWorkerContext()).parse(new String(content), fn);
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_43_50.convertResource(res);
