@@ -128,7 +128,7 @@ public class Property {
 			String tn = definition.getType().get(0).getWorkingCode();
 			for (int i = 1; i < definition.getType().size(); i++) {
 				if (!tn.equals(definition.getType().get(i).getWorkingCode()))
-					throw new Error("logic error, gettype when types > 1");
+					return null; // though really, we shouldn't get here - type != null when definition.getType.size() > 1, or it should be
 			}
 			return tn;
 		} else
