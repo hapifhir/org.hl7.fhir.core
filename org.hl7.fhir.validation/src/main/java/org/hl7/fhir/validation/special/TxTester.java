@@ -227,12 +227,12 @@ public class TxTester {
     String vsj;
     try {
       ValueSet vs = tx.expandValueset(null, p, null);
-      vs.setText(null);
+      TxTesterScrubbers.scrub(vs);
       TxTesterSorters.sortValueSet(vs);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);
     } catch (EFhirClientException e) {
       OperationOutcome oo = e.getServerErrors().get(0); 
-      oo.setText(null);
+      TxTesterScrubbers.scrub(oo);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
     String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj);
@@ -250,6 +250,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = tx.validateVS(p);
+      TxTesterScrubbers.scrub(po);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
     } catch (EFhirClientException e) {

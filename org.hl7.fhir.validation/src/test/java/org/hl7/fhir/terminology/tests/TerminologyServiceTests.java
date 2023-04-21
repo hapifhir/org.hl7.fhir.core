@@ -44,6 +44,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.special.TxTesterScrubbers;
 import org.hl7.fhir.validation.special.TxTesterSorters;
 import org.hl7.fhir.validation.tests.ValidationEngineTests;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
@@ -154,6 +155,7 @@ public class TerminologyServiceTests {
           removeParameter(vse.getValueset(), "excludeNested");
         }
         TxTesterSorters.sortValueSet(vse.getValueset());
+        TxTesterScrubbers.scrub(vse.getValueset());
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
         String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj);
         if (diff != null) {
@@ -197,6 +199,7 @@ public class TerminologyServiceTests {
       }
       e.getDetails().setText(vse.getError());
       oo.addIssue(e);
+      TxTesterScrubbers.scrub(oo);
       
       String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
       String diff = CompareUtilities.checkJsonSrcIsSame(resp, ooj);
@@ -263,7 +266,8 @@ public class TerminologyServiceTests {
       res.addParameter().setName("issues").setResource(oo);
     }
     TxTesterSorters.sortParameters(res);
-
+    TxTesterScrubbers.scrub(res);
+    
     String pj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(res);
     String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj);
     if (diff != null) {

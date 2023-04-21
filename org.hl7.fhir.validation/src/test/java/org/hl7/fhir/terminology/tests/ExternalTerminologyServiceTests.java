@@ -47,8 +47,8 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-  private static final String SERVER = Servers.TX_SERVER_DEV;
-//  private static final String SERVER = Servers.TX_SERVER_LOCAL;
+//  private static final String SERVER = Servers.TX_SERVER_DEV;
+  private static final String SERVER = Servers.TX_SERVER_LOCAL;
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
