@@ -16,6 +16,7 @@ public class FhirSettings {
 
   public static final String FHIR_SETTINGS_PATH = "fhir.settings.path";
   private static String explicitFilePath = null;
+  private static Boolean prohibitNetworkAccess;
 
   public static void setExplicitFilePath(String explicitFilePath) {
     if (instance != null) {
@@ -114,14 +115,27 @@ public class FhirSettings {
   }
 
   public static boolean hasProhibitNetworkAccess() {
+    if (prohibitNetworkAccess != null) {
+      return true;
+    }
     getInstance();
-    return instance.fhirSettings.getProhibitNetworkAccess() != null; }
+    return instance.fhirSettings.getProhibitNetworkAccess() != null; 
+  }
 
   public static boolean isProhibitNetworkAccess() {
+    if (prohibitNetworkAccess != null) {
+      return prohibitNetworkAccess;
+    }
     getInstance();
     return instance.fhirSettings.getProhibitNetworkAccess() == null
       ? false
-      : instance.fhirSettings.getProhibitNetworkAccess(); }
+      : instance.fhirSettings.getProhibitNetworkAccess(); 
+  }
+  
+  public static void setProhibitNetworkAccess(boolean value) {
+    prohibitNetworkAccess = value;
+  }
+
   private static FhirSettings instance = null;
 
   private static FhirSettings getInstance()  {
