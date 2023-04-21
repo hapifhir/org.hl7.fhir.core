@@ -9,8 +9,9 @@ import java.util.Objects;
 
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.utilities.Servers;
+
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
@@ -62,7 +63,7 @@ public class CliContext {
   @JsonProperty("htmlOutput")
   private String htmlOutput = null;
   @JsonProperty("txServer")
-  private String txServer = Servers.TX_SERVER_PROD;
+  private String txServer = FhirSettings.getTxFhirProduction();
   @JsonProperty("sv")
   private String sv = null;
   @JsonProperty("txLog")

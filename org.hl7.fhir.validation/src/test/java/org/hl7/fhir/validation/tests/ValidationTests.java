@@ -72,6 +72,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
@@ -404,7 +405,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
 
   private ValidationEngine buildVersionEngine(String ver, String txLog) throws Exception {
-    String server = Servers.TX_SERVER_DEV;
+    String server = FhirSettings.getTxFhirDevelopment();
     switch (ver) {
     case "1.0": return TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", server, txLog, FhirPublication.DSTU2, true, "1.0.2");
     case "1.4": return TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", server, txLog, FhirPublication.DSTU2016May, true, "1.4.0"); 

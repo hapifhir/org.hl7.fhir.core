@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-
 public class FhirSettings {
 
+  
   public static final String FHIR_SETTINGS_PATH = "fhir.settings.path";
   private static String explicitFilePath = null;
   private static Boolean prohibitNetworkAccess;
@@ -136,6 +136,28 @@ public class FhirSettings {
     prohibitNetworkAccess = value;
   }
 
+
+  public static String getTxFhirProduction() {
+    getInstance();
+    return instance.fhirSettings.getTxFhirProduction() == null
+      ? FhirSettingsPOJO.TX_SERVER_PROD
+      : instance.fhirSettings.getTxFhirProduction(); 
+  }
+
+  public static String getTxFhirDevelopment() {
+    getInstance();
+    return instance.fhirSettings.getTxFhirDevelopment() == null
+      ? FhirSettingsPOJO.TX_SERVER_PROD
+      : instance.fhirSettings.getTxFhirDevelopment();
+  }
+
+  public static String getTxFhirLocal() {
+    getInstance();
+    return instance.fhirSettings.getTxFhirLocal() == null
+      ? FhirSettingsPOJO.TX_SERVER_PROD
+      : instance.fhirSettings.getTxFhirLocal();
+  }
+  
   private static FhirSettings instance = null;
 
   private static FhirSettings getInstance()  {
@@ -187,4 +209,5 @@ public class FhirSettings {
   protected static String getDefaultSettingsPath() throws IOException {
     return Utilities.path(System.getProperty("user.home"), ".fhir", "fhir-settings.json");
   }
+
 }

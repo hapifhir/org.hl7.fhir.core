@@ -22,8 +22,9 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.Servers;
+
 import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
 
@@ -47,8 +48,8 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-  private static final String SERVER = Servers.TX_SERVER_DEV;
-//  private static final String SERVER = Servers.TX_SERVER_LOCAL;
+  private static final String SERVER = FhirSettings.getTxFhirDevelopment();
+//  private static final String SERVER = FhirSettings.getTxFhirLocal();
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {

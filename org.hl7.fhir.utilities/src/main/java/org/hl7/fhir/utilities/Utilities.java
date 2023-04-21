@@ -64,6 +64,7 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileNotifier.FileNotifier2;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import javax.annotation.Nullable;
 
@@ -1960,5 +1961,9 @@ public class Utilities {
 //
 //}
 
+
+  public static boolean isTxFhirOrgServer(String s) {
+    return Utilities.startsWithInList(s.replace("https://", "http://"), FhirSettings.getTxFhirProduction(), FhirSettings.getTxFhirDevelopment(), FhirSettings.getTxFhirLocal());
+  }
 
 }
