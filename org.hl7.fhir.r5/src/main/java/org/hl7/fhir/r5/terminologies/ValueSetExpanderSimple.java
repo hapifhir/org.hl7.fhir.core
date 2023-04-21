@@ -406,7 +406,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     ValueSetExpansionContainsComponent np = addCode(focus.getSystem(), focus.getCode(), focus.getDisplay(), vsSrc.getLanguage(), parent, 
          convert(focus.getDesignation()), expParams, focus.getAbstract(), focus.getInactive(), focus.getExtensionString(ToolingExtensions.EXT_DEFINITION), filters, noInactive, false, vsProps, null, focus.getProperty(), null, focus.getExtension());
     for (ValueSetExpansionContainsComponent c : focus.getContains())
-      addCodeAndDescendents(focus, np, expParams, filters, noInactive, vsProps, vsSrc);
+      addCodeAndDescendents(c, np, expParams, filters, noInactive, vsProps, vsSrc);
   }
   
   private List<ConceptDefinitionDesignationComponent> convert(List<ConceptReferenceDesignationComponent> designations) {
@@ -542,6 +542,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       expParams = makeDefaultExpansion();
     source.checkNoModifiers("ValueSet", "expanding");
     focus = source.copy();
+    focus.setIdBase(null);
     focus.setExpansion(new ValueSet.ValueSetExpansionComponent());
     focus.getExpansion().setTimestampElement(DateTimeType.now());
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
