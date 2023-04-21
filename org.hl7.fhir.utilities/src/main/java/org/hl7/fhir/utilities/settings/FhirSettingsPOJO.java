@@ -13,6 +13,11 @@ import java.util.Map;
 @AllArgsConstructor
 public class FhirSettingsPOJO {
 
+
+  protected static final String TX_SERVER_PROD = "http://tx.fhir.org";
+  protected static final String TX_SERVER_DEV = "http://tx-dev.fhir.org";
+  protected static final String TX_SERVER_LOCAL = "http://local.fhir.org";  
+  
   private String fhirDirectory;
   private Map<String, String> apiKeys;
 
@@ -30,6 +35,10 @@ public class FhirSettingsPOJO {
 
   private Boolean prohibitNetworkAccess;
 
+  private String txFhirProduction;
+  private String txFhirDevelopment;
+  private String txFhirLocal;
+
   protected FhirSettingsPOJO() {
     apiKeys = null;
     npmPath = null;
@@ -38,5 +47,8 @@ public class FhirSettingsPOJO {
     diffToolPath = null;
     tempPath = null;
     testIgsPath = null;
+    txFhirProduction = TX_SERVER_PROD;
+    txFhirDevelopment = TX_SERVER_DEV;
+    txFhirLocal = TX_SERVER_LOCAL;
   }
 }

@@ -2,9 +2,10 @@ package org.hl7.fhir.validation.cli.utils;
 
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.Servers;
+
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
 
 public class Common {
@@ -75,7 +76,7 @@ public class Common {
    * Default validation engine will point to "http://tx.fhir.org" terminology server.
    */
   public static ValidationEngine getValidationEngine(String version, String definitions, String txLog, TimeTracker tt) throws Exception {
-    return getValidationEngine(version, Servers.TX_SERVER_PROD, definitions, txLog, tt);
+    return getValidationEngine(version, FhirSettings.getTxFhirProduction(), definitions, txLog, tt);
   }
 
   public static ValidationEngine getValidationEngine(String version, String txServer, String definitions, String txLog, TimeTracker tt) throws Exception {
