@@ -2,6 +2,7 @@ package org.hl7.fhir.validation;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -1112,6 +1113,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public void packageLoaded(String pid, String version) {
     resolvedUrls.clear();
     
+  }
+
+  public Resource loadResource(byte[] content, String fn) throws FHIRException, IOException {
+    return  igLoader.loadResourceByVersion(version, content, fn);
+
   }
 
 }

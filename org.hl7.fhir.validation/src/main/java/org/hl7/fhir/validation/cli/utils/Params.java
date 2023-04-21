@@ -44,6 +44,7 @@ public class Params {
   public static final String LANG_TRANSFORM = "-lang-transform";
   public static final String NARRATIVE = "-narrative";
   public static final String SNAPSHOT = "-snapshot";
+  public static final String INSTALL = "-install";
   public static final String SCAN = "-scan";
   public static final String TERMINOLOGY = "-tx";
   public static final String TERMINOLOGY_LOG = "-txLog";
@@ -261,6 +262,8 @@ public class Params {
         cliContext.setMode(EngineMode.SPREADSHEET);
       } else if (args[i].equals(SNAPSHOT)) {
         cliContext.setMode(EngineMode.SNAPSHOT);
+      } else if (args[i].equals(INSTALL)) {
+        cliContext.setMode(EngineMode.INSTALL);
       } else if (args[i].equals(RUN_TESTS)) {
         // TODO setBaseTestingUtils test directory
         cliContext.setMode(EngineMode.RUN_TESTS);
