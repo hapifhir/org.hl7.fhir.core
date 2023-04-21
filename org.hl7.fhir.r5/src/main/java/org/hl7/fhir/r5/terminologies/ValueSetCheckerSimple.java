@@ -359,8 +359,13 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
         if (!inExpansion) {
           if (valueset != null && valueset.hasExpansion()) {
-            String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_UNK_EXPANSION, valueset.getUrl(), code.getCode().toString(), code.getSystem());
-            return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path, msg));
+            String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_UNK_EXPANSION,
+                valueset.getUrl(), 
+                code.getSystem(), 
+                code.getCode().toString());
+            List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+            issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path, msg));
+            throw new VSCheckerException(msg, issues);
           } else {
             List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".system", warningMessage));
