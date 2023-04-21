@@ -36,11 +36,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   }
   
   public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, (ConceptMap) dr);
+    return render(x, (ConceptMap) dr, false);
   }
 
-  public boolean render(XhtmlNode x, ConceptMap cm) throws FHIRFormatError, DefinitionException, IOException {
-    x.h2().addText(cm.getName()+" ("+cm.getUrl()+")");
+  public boolean render(XhtmlNode x, ConceptMap cm, boolean header) throws FHIRFormatError, DefinitionException, IOException {
+    if (header) {
+      x.h2().addText(cm.getName()+" ("+cm.getUrl()+")");
+    }
 
     XhtmlNode p = x.para();
     p.tx("Mapping from ");
