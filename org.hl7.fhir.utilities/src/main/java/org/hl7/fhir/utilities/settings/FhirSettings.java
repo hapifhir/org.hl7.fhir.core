@@ -147,14 +147,14 @@ public class FhirSettings {
   public static String getTxFhirDevelopment() {
     getInstance();
     return instance.fhirSettings.getTxFhirDevelopment() == null
-      ? FhirSettingsPOJO.TX_SERVER_PROD
+      ? FhirSettingsPOJO.TX_SERVER_DEV
       : instance.fhirSettings.getTxFhirDevelopment();
   }
 
   public static String getTxFhirLocal() {
     getInstance();
     return instance.fhirSettings.getTxFhirLocal() == null
-      ? FhirSettingsPOJO.TX_SERVER_PROD
+      ? FhirSettingsPOJO.TX_SERVER_LOCAL
       : instance.fhirSettings.getTxFhirLocal();
   }
   
