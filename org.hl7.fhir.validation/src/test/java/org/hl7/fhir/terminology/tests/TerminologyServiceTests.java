@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.OperationOutcome;
@@ -29,6 +30,7 @@ import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -244,10 +246,10 @@ public class TerminologyServiceTests {
     }
     org.hl7.fhir.r5.model.Parameters res = new org.hl7.fhir.r5.model.Parameters();
     if (vm.getSystem() != null) {
-      res.addParameter("system", vm.getSystem());
+      res.addParameter("system", new UriType(vm.getSystem()));
     }
     if (vm.getCode() != null) {
-      res.addParameter("code", vm.getCode());
+      res.addParameter("code", new CodeType(vm.getCode()));
     }
     if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
       res.addParameter("result", false);

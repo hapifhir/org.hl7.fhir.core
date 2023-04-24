@@ -1,11 +1,11 @@
 {
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
-  "url" : "http://localhost/r4/metadata",
+  "url" : "http://tx.fhir.org/r4/metadata",
   "version" : "1.0.0",
   "name" : "FHIR Reference Server Teminology Capability Statement",
   "status" : "active",
-  "date" : "2023-04-17T22:56:55.394Z",
+  "date" : "2023-04-24T12:43:24.018Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -134,25 +134,19 @@
     "uri" : "http://hl7.org/fhir/code-search-support"
   },
   {
-    "uri" : "http://hl7.org/fhir/codesystem-content-mode"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/codesystem-hierarchy-meaning"
-  },
-  {
     "uri" : "http://hl7.org/fhir/CodeSystem/example"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/CodeSystem/medication-statement-status"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/CodeSystem/medication-status"
   },
   {
     "uri" : "http://hl7.org/fhir/CodeSystem/medicationrequest-intent"
   },
   {
     "uri" : "http://hl7.org/fhir/CodeSystem/medicationrequest-status"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medication-statement-status"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medication-status"
   },
   {
     "uri" : "http://hl7.org/fhir/CodeSystem/status"
@@ -162,6 +156,12 @@
   },
   {
     "uri" : "http://hl7.org/fhir/CodeSystem/task-code"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/codesystem-content-mode"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/codesystem-hierarchy-meaning"
   },
   {
     "uri" : "http://hl7.org/fhir/compartment-type"
@@ -176,6 +176,9 @@
     "uri" : "http://hl7.org/fhir/concept-map-equivalence"
   },
   {
+    "uri" : "http://hl7.org/fhir/conceptmap-unmapped-mode"
+  },
+  {
     "uri" : "http://hl7.org/fhir/concept-properties"
   },
   {
@@ -183,9 +186,6 @@
   },
   {
     "uri" : "http://hl7.org/fhir/concept-subsumption-outcome"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/conceptmap-unmapped-mode"
   },
   {
     "uri" : "http://hl7.org/fhir/conditional-delete-status"
@@ -197,13 +197,13 @@
     "uri" : "http://hl7.org/fhir/consent-data-meaning"
   },
   {
+    "uri" : "http://hl7.org/fhir/consentperformer"
+  },
+  {
     "uri" : "http://hl7.org/fhir/consent-provision-type"
   },
   {
     "uri" : "http://hl7.org/fhir/consent-state-codes"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/consentperformer"
   },
   {
     "uri" : "http://hl7.org/fhir/constraint-severity"
@@ -341,6 +341,9 @@
     "uri" : "http://hl7.org/fhir/event-timing"
   },
   {
+    "uri" : "http://hl7.org/fhir/examplescenario-actor-type"
+  },
+  {
     "uri" : "http://hl7.org/fhir/ex-claimitemtype"
   },
   {
@@ -356,18 +359,6 @@
     "uri" : "http://hl7.org/fhir/ex-pharmaservice"
   },
   {
-    "uri" : "http://hl7.org/fhir/ex-servicemodifier"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/ex-serviceproduct"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/ex-udi"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/examplescenario-actor-type"
-  },
-  {
     "uri" : "http://hl7.org/fhir/explanationofbenefit-status"
   },
   {
@@ -377,10 +368,19 @@
     "uri" : "http://hl7.org/fhir/expression-language"
   },
   {
+    "uri" : "http://hl7.org/fhir/ex-servicemodifier"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/ex-serviceproduct"
+  },
+  {
     "uri" : "http://hl7.org/fhir/extension-context-type"
   },
   {
     "uri" : "http://hl7.org/fhir/extra-activity-type"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/ex-udi"
   },
   {
     "uri" : "http://hl7.org/fhir/feeding-device"
@@ -473,10 +473,10 @@
     "uri" : "http://hl7.org/fhir/language-preference-type"
   },
   {
-    "uri" : "http://hl7.org/fhir/link-type"
+    "uri" : "http://hl7.org/fhir/linkage-type"
   },
   {
-    "uri" : "http://hl7.org/fhir/linkage-type"
+    "uri" : "http://hl7.org/fhir/link-type"
   },
   {
     "uri" : "http://hl7.org/fhir/list-mode"
@@ -521,10 +521,10 @@
     "uri" : "http://hl7.org/fhir/message-events"
   },
   {
-    "uri" : "http://hl7.org/fhir/message-significance-category"
+    "uri" : "http://hl7.org/fhir/messageheader-response-request"
   },
   {
-    "uri" : "http://hl7.org/fhir/messageheader-response-request"
+    "uri" : "http://hl7.org/fhir/message-significance-category"
   },
   {
     "uri" : "http://hl7.org/fhir/metric-calibration-state"
@@ -650,10 +650,10 @@
     "uri" : "http://hl7.org/fhir/related-artifact-type"
   },
   {
-    "uri" : "http://hl7.org/fhir/relation-type"
+    "uri" : "http://hl7.org/fhir/relationship"
   },
   {
-    "uri" : "http://hl7.org/fhir/relationship"
+    "uri" : "http://hl7.org/fhir/relation-type"
   },
   {
     "uri" : "http://hl7.org/fhir/remittance-outcome"
@@ -998,16 +998,16 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/chromosome-human"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/claim-exception"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/claim-type"
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/claimcareteamrole"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/claim-exception"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/claiminformationcategory"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/claim-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/codesystem-altcode-kind"
@@ -1067,19 +1067,16 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/container-cap"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/contract-content-derivative"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/contract-data-meaning"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/contract-type"
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/contractaction"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/contractactorrole"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contract-content-derivative"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contract-data-meaning"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/contractsignertypecodes"
@@ -1094,6 +1091,9 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/contracttermtypecodes"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contract-type"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/copy-number-event"
   },
   {
@@ -1103,10 +1103,10 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/coverage-copay-type"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/coverage-selfpay"
+    "uri" : "http://terminology.hl7.org/CodeSystem/coverageeligibilityresponse-ex-auth-support"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/coverageeligibilityresponse-ex-auth-support"
+    "uri" : "http://terminology.hl7.org/CodeSystem/coverage-selfpay"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/data-absent-reason"
@@ -1190,6 +1190,12 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-diagnosistype"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-parameter-source"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-processing-rule"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-payee-resource-type"
   },
   {
@@ -1217,19 +1223,13 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-tooth"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/extra-security-role-type"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-USCLS"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-visionprescriptionproduct"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-parameter-source"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-processing-rule"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/extra-security-role-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/failure-action"
@@ -1280,10 +1280,10 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-document-format-codes"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group"
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra"
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status"
@@ -1370,12 +1370,6 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/medication-admin-status"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/medication-statement-category"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/medication-usage-admin-location"
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/medicationdispense-performer-function"
   },
   {
@@ -1401,6 +1395,12 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/medicationrequest-status-reason"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medication-statement-category"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medication-usage-admin-location"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/message-reasons-encounter"
@@ -1451,10 +1451,10 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/payment-adjustment-reason"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/payment-type"
+    "uri" : "http://terminology.hl7.org/CodeSystem/paymentstatus"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/paymentstatus"
+    "uri" : "http://terminology.hl7.org/CodeSystem/payment-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/plan-definition-type"
@@ -3572,9 +3572,6 @@
     "uri" : "urn:ietf:rfc:3986"
   },
   {
-    "uri" : "urn:iso-astm:E1762-95:2013"
-  },
-  {
     "uri" : "urn:iso:std:iso:11073:10101"
   },
   {
@@ -3585,6 +3582,9 @@
   },
   {
     "uri" : "urn:iso:std:iso:4217"
+  },
+  {
+    "uri" : "urn:iso-astm:E1762-95:2013"
   },
   {
     "uri" : "urn:oid:1.2.36.1.2001.1001.101.104.16592"

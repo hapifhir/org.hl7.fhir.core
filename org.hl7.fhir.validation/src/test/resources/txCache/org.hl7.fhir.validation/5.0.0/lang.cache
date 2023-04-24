@@ -14,9 +14,9 @@ v: {
   "code" : "fr-CA"
 }, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"true"}####
 v: {
-  "display" : "French (Region=Canada)",
-  "code" : "fr-CA",
-  "system" : "urn:ietf:bcp:47"
+  "severity" : "error",
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/all-languages' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -24,8 +24,8 @@ v: {
   "code" : "fr-CA"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "display" : "French (Region=Canada)",
-  "code" : "fr-CA",
-  "system" : "urn:ietf:bcp:47"
+  "severity" : "error",
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------

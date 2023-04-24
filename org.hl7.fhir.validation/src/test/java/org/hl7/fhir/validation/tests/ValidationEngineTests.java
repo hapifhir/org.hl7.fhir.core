@@ -213,7 +213,7 @@ public class ValidationEngineTests {
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "observation301.xml"), null);
     if (!TestUtilities.silent)
       for (OperationOutcomeIssueComponent issue : op.getIssue())
-        System.out.println("  - " + issue.getDetails().getText());
+        System.out.println("  - " + issue.getDetails().getText()+" ("+issue.getSeverity().toCode()+")");
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);

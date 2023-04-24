@@ -1,6 +1,28 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
+  "code" : "29463-7",
+  "display" : "Body Weight"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "display" : "Body weight",
+  "code" : "29463-7",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3141-9",
+  "display" : "Body weight Measured"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "display" : "Body weight Measured",
+  "code" : "3141-9",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
   "code" : "19935-6",
   "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter"
 }, "valueSet" :null, "langs":"[fi]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
@@ -305,27 +327,5 @@ v: {
   "display" : "Chloride [Moles/volume] in Blood",
   "code" : "2069-3",
   "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "29463-7",
-  "display" : "Body Weight"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "severity" : "error",
-  "error" : "Error performing tx3 operation 'validate-code: Failed to connect to local.fhir.org/127.0.0.1:80' (parameters = \"\")",
-  "class" : "SERVER_ERROR"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3141-9",
-  "display" : "Body weight Measured"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "severity" : "error",
-  "error" : "Error performing tx3 operation 'validate-code: Failed to connect to local.fhir.org/127.0.0.1:80' (parameters = \"\")",
-  "class" : "SERVER_ERROR"
 }
 -------------------------------------------------------------------------------------
