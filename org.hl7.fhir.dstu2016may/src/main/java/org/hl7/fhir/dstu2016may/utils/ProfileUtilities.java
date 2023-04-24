@@ -509,7 +509,7 @@ public class ProfileUtilities {
             if (!orderMatches(dSlice.getOrderedElement(), bSlice.getOrderedElement()))
               throw new DefinitionException("Slicing rules on differential ("+summariseSlicing(dSlice)+") do not match those on base ("+summariseSlicing(bSlice)+") - order @ "+path+" ("+contextName+")");
             if (!discriiminatorMatches(dSlice.getDiscriminator(), bSlice.getDiscriminator()))
-             throw new DefinitionException("Slicing rules on differential ("+summariseSlicing(dSlice)+") do not match those on base ("+summariseSlicing(bSlice)+") - disciminator @ "+path+" ("+contextName+")");
+             throw new DefinitionException("Slicing rules on differential ("+summariseSlicing(dSlice)+") do not match those on base ("+summariseSlicing(bSlice)+") - discriminator @ "+path+" ("+contextName+")");
             if (!ruleMatches(dSlice.getRules(), bSlice.getRules()))
              throw new DefinitionException("Slicing rules on differential ("+summariseSlicing(dSlice)+") do not match those on base ("+summariseSlicing(bSlice)+") - rule @ "+path+" ("+contextName+")");
           }
