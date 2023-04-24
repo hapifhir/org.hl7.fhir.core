@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -16,6 +17,7 @@ import java.util.Locale;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.R5ExtensionsLoader;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
@@ -51,6 +53,7 @@ import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerSession;
 import org.hl7.fhir.utilities.i18n.PoGetTextProducer;
 import org.hl7.fhir.utilities.i18n.XLIFFProducer;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.Content;
@@ -480,7 +483,7 @@ public class ValidationService {
   }
 
   public String determineVersion(CliContext cliContext, String sessionId) throws Exception {
-    if (cliContext.getMode() != EngineMode.VALIDATION) {
+    if (cliContext.getMode() != EngineMode.VALIDATION && cliContext.getMode() != EngineMode.INSTALL) {
       return "5.0";
     }
     System.out.println("Scanning for versions (no -version parameter):");
@@ -637,4 +640,42 @@ public class ValidationService {
 //    System.exit(ec > 0 ? 1 : 0);
 //    
 //  }
+
+  private int cp;
+  private int cs;
+  public void install(CliContext cliContext, ValidationEngine validator) throws FHIRException, IOException {
+    cp = 0;
+    cs = 0;
+    System.out.println("Generating Snapshots");
+    for (String ig : cliContext.getIgs()) {
+      processIG(validator, ig);
+    }
+    System.out.println("Installed/Processed "+cp+" packages, generated "+cs+" snapshots");
+  }
+
+  private void processIG(ValidationEngine validator, String ig) throws FHIRException, IOException {
+    validator.loadPackage(ig, null);
+    NpmPackage npm = validator.getPcm().loadPackage(ig);
+    if (!npm.isCore()) {
+      for (String d : npm.dependencies()) {
+        processIG(validator, d);
+      }
+      System.out.println("Processing "+ig);
+      cp++;
+      for (String d : npm.listResources("StructureDefinition")) {
+        String filename = npm.getFilePath(d);
+        Resource res = validator.loadResource(TextFile.fileToBytes(filename), filename);
+        if (!(res instanceof StructureDefinition))
+          throw new FHIRException("Require a StructureDefinition for generating a snapshot");
+        StructureDefinition sd = (StructureDefinition) res;
+        if (!sd.hasSnapshot()) {
+          StructureDefinition base = validator.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+          cs++;
+          new ProfileUtilities(validator.getContext(), null, null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
+          validator.handleOutput(sd, filename, validator.getVersion());
+        }
+      }
+    }
+  }
+
 }

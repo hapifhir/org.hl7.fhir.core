@@ -1,6 +1,83 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
+  "code" : "29463-7",
+  "display" : "Body Weight"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3141-9",
+  "display" : "Body weight Measured"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6724-4",
+  "display" : "Good color all over"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6718-6",
+  "display" : "At least 100 beats per minute"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6721-0",
+  "display" : "Grimace and pulling away, cough, or sneeze during suctioning"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6715-2",
+  "display" : "Active motion "
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Active motion ' for http://loinc.org#LA6715-2 - should be 'Active motion' (for the language(s) '--'); The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6727-7",
+  "display" : "Good, strong cry; normal rate and effort of breathing    "
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7 - should be 'Good, strong cry; normal rate and effort of breathing' (for the language(s) '--'); The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
   "code" : "85354-9",
   "display" : "Blood pressure panel with all children optional"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
@@ -309,86 +386,5 @@ v: {
   "system" : "http://loinc.org",
   "severity" : "warning",
   "error" : "Wrong Display Name 'Triglyceride [Moles/​volume] in Serum or Plasma' for http://loinc.org#35217-9 - should be one of 50 choices: 'Triglyceride [Mass or Moles/volume] in Serum or Plasma, \"Trigl SerPl-msCnc\", \"TG\" (zh-CN), \"Trigly\" (zh-CN), \"甘油三脂\" (zh-CN), \"甘油三酸酯\" (zh-CN), \"三酸甘油酯\" (zh-CN), \"甘油三酸脂\" (zh-CN), \"三酸甘油脂 化学\" (zh-CN), \"化学检验项目\" (zh-CN), \"化学检验项目类\" (zh-CN), \"化学类\" (zh-CN), \"化学试验\" (zh-CN), \"非刺激耐受型化学检验项目\" (zh-CN), \"非刺激耐受型化学检验项目类\" (zh-CN), \"非刺激耐受型化学试验\" (zh-CN), \"非刺激耐受型化学试验类 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 血清或血浆 质量或摩尔浓度\" (zh-CN), \"质量或摩尔浓度(单位体积)\" (zh-CN), \"质量或物质的量浓度(单位体积)\" (zh-CN), \"Juhuslik Kvantitatiivne Plasma Seerum Seerum või plasma\" (et-EE), \"Trigl\" (pt-BR), \"Triglycrides\" (pt-BR), \"Trig\" (pt-BR), \"Triglycerides\" (pt-BR), \"Level\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"SerPl\" (pt-BR), \"SerPlas\" (pt-BR), \"SerP\" (pt-BR), \"Serum\" (pt-BR), \"SR\" (pt-BR), \"Plasma\" (pt-BR), \"Pl\" (pt-BR), \"Plsm\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"Chemistry\" (pt-BR), \"Chimica Concentrazione Sostanza o Massa Plasma Punto nel tempo (episodio) Siero Siero o Plasma\" (it-IT), \"Количественный Массовая или Молярная Концентрация Плазма Сыворотка Сыворотка или Плазма Точка во времени\" (ru-RU), \"Момент\" (ru-RU)' for the language(s) '--' (from Tx-Server)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "29463-7",
-  "display" : "Body Weight"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "severity" : "error",
-  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
-  "class" : "UNKNOWN"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3141-9",
-  "display" : "Body weight Measured"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "severity" : "error",
-  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
-  "class" : "UNKNOWN"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "LA6724-4",
-  "display" : "Good color all over"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "display" : "Good color all over",
-  "code" : "LA6724-4",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "LA6718-6",
-  "display" : "At least 100 beats per minute"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "display" : "At least 100 beats per minute",
-  "code" : "LA6718-6",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "LA6721-0",
-  "display" : "Grimace and pulling away, cough, or sneeze during suctioning"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "display" : "Grimace and pulling away, cough, or sneeze during suctioning",
-  "code" : "LA6721-0",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "LA6715-2",
-  "display" : "Active motion "
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "display" : "Active motion",
-  "code" : "LA6715-2",
-  "system" : "http://loinc.org",
-  "severity" : "warning",
-  "error" : "Wrong Display Name 'Active motion ' for http://loinc.org#LA6715-2 - should be 'Active motion', (from Tx-Server)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "LA6727-7",
-  "display" : "Good, strong cry; normal rate and effort of breathing    "
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "display" : "Good, strong cry; normal rate and effort of breathing",
-  "code" : "LA6727-7",
-  "system" : "http://loinc.org",
-  "severity" : "warning",
-  "error" : "Wrong Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7 - should be 'Good, strong cry; normal rate and effort of breathing', (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------

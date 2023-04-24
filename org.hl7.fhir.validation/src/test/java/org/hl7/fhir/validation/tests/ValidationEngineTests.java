@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.Servers;
+
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.OperationOutcome;
@@ -21,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidationEngineTests {
 
-  private static final String DEF_TX = Servers.TX_SERVER_DEV;
-//  private static final String DEF_TX = Servers.TX_SERVER_LOCAL;
+  private static final String DEF_TX = FhirSettings.getTxFhirDevelopment();
+//  private static final String DEF_TX = FhirSettings.getTxFhirLocal();
 
   public static boolean inbuild;
 
@@ -212,7 +213,7 @@ public class ValidationEngineTests {
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "observation301.xml"), null);
     if (!TestUtilities.silent)
       for (OperationOutcomeIssueComponent issue : op.getIssue())
-        System.out.println("  - " + issue.getDetails().getText());
+        System.out.println("  - " + issue.getDetails().getText()+" ("+issue.getSeverity().toCode()+")");
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
