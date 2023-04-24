@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Foo"
+}, "url": "https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction", "version": "20170626", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The CodeSystem http://canadapost.ca/CodeSystem/ProvinceCodes is unknown; The provided code is not in the value set 'https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------

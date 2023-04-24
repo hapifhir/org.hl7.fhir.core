@@ -335,6 +335,9 @@ public class ValidatorCli {
       case SNAPSHOT:
         validationService.generateSnapshot(cliContext, validator);
         break;
+      case INSTALL:
+        validationService.install(cliContext, validator);
+        break;
       case SPREADSHEET:
         validationService.generateSpreadsheet(cliContext, validator);
         break;

@@ -4,7 +4,7 @@ import java.net.URISyntaxException;
 
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.Servers;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -61,7 +61,7 @@ public class TerminologyClientFactory {
   private static String checkEndsWith(String term, String url) {
     if (url.endsWith(term))
       return url;
-    if (Servers.isTxFhirOrg(url)) {
+    if (Utilities.isTxFhirOrgServer(url)) {
       return Utilities.pathURL(url, term);
     }
     return url;

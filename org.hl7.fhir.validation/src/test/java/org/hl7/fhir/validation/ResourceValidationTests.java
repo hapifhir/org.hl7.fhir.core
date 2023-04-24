@@ -25,8 +25,9 @@ import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.Servers;
+
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.tests.ValidationEngineTests;
@@ -47,7 +48,7 @@ public class ResourceValidationTests {
     TestingUtilities.injectCorePackageLoader();
     if (val == null) {
       ctxt = TestingUtilities.getSharedWorkerContext();
-      engine = TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", Servers.TX_SERVER_DEV, null, FhirPublication.R5, true, "5.0.0");
+      engine = TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", FhirSettings.getTxFhirDevelopment(), null, FhirPublication.R5, true, "5.0.0");
       val = engine.getValidator(null);
       val.setDebug(false);
     }

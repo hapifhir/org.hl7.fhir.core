@@ -1224,6 +1224,10 @@ public class NpmPackage {
   public String toString() {
     return "NpmPackage "+name()+"#"+version()+" [path=" + path + "]";
   }
+
+  public String getFilePath(String d) throws IOException {
+    return Utilities.path(path, "package", d);
+  }
   
   
 }
