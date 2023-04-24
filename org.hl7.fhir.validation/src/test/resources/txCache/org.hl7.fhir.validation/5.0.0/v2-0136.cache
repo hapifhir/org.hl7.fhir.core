@@ -4,8 +4,8 @@
   "code" : "Y"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
-  "severity" : "error",
-  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
-  "class" : "UNKNOWN"
+  "display" : "Yes",
+  "code" : "Y",
+  "system" : "http://terminology.hl7.org/CodeSystem/v2-0136"
 }
 -------------------------------------------------------------------------------------
