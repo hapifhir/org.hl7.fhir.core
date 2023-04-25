@@ -240,11 +240,15 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       }
     }
     if (doDesignations) {
-      for (String url : designations.keySet()) {
-        tr.td().b().addText(designations.get(url));        
+      if (designations != null) {
+        for (String url : designations.keySet()) {
+          tr.td().b().addText(designations.get(url));
+        }
       }
-      for (String lang : langs) {
-        tr.td().b().addText(describeLang(lang));
+      if (langs != null) {
+        for (String lang : langs) {
+          tr.td().b().addText(describeLang(lang));
+        }
       }
     }
     return tr;

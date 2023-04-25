@@ -139,13 +139,26 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
   }
 
-  private String sentenceForContent(CodeSystemContentMode mode) {
+  private String sentenceForContent(CodeSystemContentMode mode, CodeSystem cs) {
     switch (mode) {
     case COMPLETE: return "This code system <param name='cs'/> defines the following code<if test='code-count != 1'>s</if>:";
     case EXAMPLE: return "This code system <param name='cs'/> provides some example code<if test='code-count != 1'>s</if>:";
     case FRAGMENT: return "This code system <param name='cs'/> provides a fragment that includes following code<if test='code-count != 1'>s</if>:";
     case NOTPRESENT: return "This code system <param name='cs'/> defines codes, but no codes are represented here";
-    case SUPPLEMENT: return "This code system <param name='cs'/> defines properties on the following code<if test='code-count != 1'>s</if>:";
+    case SUPPLEMENT:
+      boolean properties = CodeSystemUtilities.hasProperties(cs);
+      boolean designations = CodeSystemUtilities.hasDesignations(cs); 
+      String features;
+      if (properties && designations) {
+        features = "displays and properties";
+      } else if (properties) {
+        features = "properties";
+      } else if (designations) {
+        features = "displays";
+      } else {
+        features = "features"; // ?
+      }
+      return "This code system <param name='cs'/> defines "+features+" on the following code<if test='code-count != 1'>s</if>:";
     }
     throw new FHIRException("Unknown CodeSystemContentMode mode");
   }
@@ -157,7 +170,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     XhtmlNode p = x.para();
     p.param("cs").code().tx(cs.getUrl());
     p.paramValue("code-count", CodeSystemUtilities.countCodes(cs));
-    p.sentenceForParams(sentenceForContent(cs.getContent()));
+    p.sentenceForParams(sentenceForContent(cs.getContent(), cs));
     if (cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
       return false;
     }
@@ -186,6 +199,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         }
       }
     }
+    List<String> langs = new ArrayList<>();
     for (ConceptDefinitionComponent c : cs.getConcept()) {
       commentS = commentS || conceptsHaveComments(c);
       deprecated = deprecated || conceptsHaveDeprecated(cs, c, ignoreStatus);
@@ -193,16 +207,20 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       version = version || conceptsHaveVersion(c);
       hierarchy = hierarchy || c.hasConcept();
       definitions = definitions || conceptsHaveDefinition(c);
+      listConceptLanguages(cs, c, langs);
     }
     CodeSystemNavigator csNav = new CodeSystemNavigator(cs);
     hierarchy = hierarchy || csNav.isRestructure();
     
-    List<String> langs = new ArrayList<>();
-    addCopyColumn(addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, null, null, false), maps));
-    for (ConceptDefinitionComponent c : csNav.getConcepts(null)) {
-      hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, definitions, commentS, version, deprecated, maps, cs.getUrl(), cs, properties, csNav, langs, isSupplement) || hasExtensions;
+    if (langs.size() < 2) {
+      addCopyColumn(addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, langs, null, true), maps));
+    } else {
+      addCopyColumn(addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, null, null, false), maps));      
     }
-    if (langs.size() > 0) {
+    for (ConceptDefinitionComponent c : csNav.getConcepts(null)) {
+      hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, definitions, commentS, version, deprecated, maps, cs.getUrl(), cs, properties, csNav, langs.size() < 2 ? langs : null, isSupplement) || hasExtensions;
+    }
+    if (langs.size() >= 2) {
       Collections.sort(langs);
       x.para().b().tx("Additional Language Displays");
       t = x.table("codes");
@@ -215,6 +233,18 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
     }
     return hasExtensions;
+  }
+
+  private void listConceptLanguages(CodeSystem cs, ConceptDefinitionComponent c, List<String> langs) {
+    for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
+      if (cd.hasLanguage() && !langs.contains(cd.getLanguage()) && (!cs.hasLanguage() || !cs.getLanguage().equals(cd.getLanguage()))) {
+        langs.add(cd.getLanguage());
+      }
+    }
+
+    for (ConceptDefinitionComponent g : c.getConcept()) {
+      listConceptLanguages(cs, g, langs);
+    }
   }
 
   private void addCopyColumn(XhtmlNode tr) {
@@ -353,13 +383,6 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       td.an(cs.getId()+"-" + Utilities.nmtokenize(c.getCode()));
     }
 
-    for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
-      if (cd.hasLanguage() && !langs.contains(cd.getLanguage()) && (!cs.hasLanguage() || !cs.getLanguage().equals(cd.getLanguage()))) {
-        langs.add(cd.getLanguage());
-      }
-        
-    }
-
     if (hasDisplay) {
       td = tr.td();
       renderDisplayName(c, cs, td);
@@ -491,6 +514,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
     }
     
+    if (langs != null) {
+      for (String lang : langs) {
+        td = tr.td().tx(getDisplay(lang, c));
+      }
+    }
     for (UsedConceptMap m : maps) {
       td = tr.td();
       List<TargetElementComponentWrapper> mappings = findMappingsForCode(c.getCode(), m.getMap());
@@ -538,6 +566,20 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       clipboard(td, "icon_clipboard_j.png", "JSON", "\"system\" : \""+Utilities.escapeXml(cs.getUrl())+"\",\n"+(cs.getVersionNeeded() ? "\"version\" : \""+Utilities.escapeXml(cs.getVersion())+"\",\n" : "")+"\"code\" : \""+Utilities.escapeXml(c.getCode())+"\",\n\"display\" : \""+Utilities.escapeXml(c.getDisplay())+"\"\n");
     }
     return hasExtensions;
+  }
+
+  private String getDisplay(String lang, ConceptDefinitionComponent c) {
+    for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
+      if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage() && cd.getLanguage().equals(lang)) {
+        return cd.getValue();
+      }
+    }
+    for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
+      if (cd.hasLanguage() && cd.getLanguage().equals(lang)) {
+        return cd.getValue();
+      }
+    }
+    return null;
   }
 
   private boolean hasMarkdownInDefinitions(CodeSystem cs) {
