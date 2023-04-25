@@ -1,10 +1,15 @@
 package org.hl7.fhir.utilities.i18n;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
+import org.xml.sax.SAXException;
 
 import java.util.HashMap;
 
@@ -12,9 +17,9 @@ import java.util.HashMap;
 public abstract class LanguageFileProducer {
 
   public static class TextUnit {
-    private String context;
-    private String srcText;
-    private String tgtText;
+    protected String context;
+    protected String srcText;
+    protected String tgtText;
     public TextUnit(String context, String srcText, String tgtText) {
       super();
       this.context = context;
@@ -32,7 +37,33 @@ public abstract class LanguageFileProducer {
     public String getTgtText() {
       return tgtText;
     }
+
     
+  }
+  
+  public static class TranslationUnit extends TextUnit {
+    private String language;
+
+    public TranslationUnit(String language, String context, String srcText, String tgtText) {
+      super(context, srcText, tgtText);
+      this.language = language;
+    }
+
+    public String getLanguage() {
+      return language;
+    }
+
+    public void setContext(String context) {
+      this.context = context;
+    }
+
+    public void setSrcText(String srcText) {
+      this.srcText = srcText;
+    }
+
+    public void setTgtText(String tgtText) {
+      this.tgtText = tgtText;
+    }
   }
 
   public class Translations {
@@ -98,6 +129,10 @@ public abstract class LanguageFileProducer {
     this.folder = folder;
   }
   
+  public LanguageFileProducer() {
+    super();
+  }
+  
   public String getFolder() {
     return folder;
   }
@@ -105,7 +140,7 @@ public abstract class LanguageFileProducer {
   public abstract LanguageProducerSession startSession(String id, String baseLang) throws IOException;
   public abstract void finish();
 
-  public abstract List<TextUnit> loadTranslations(String id, String baseLang, String targetLang) throws IOException;
+  public abstract List<TranslationUnit> loadSource(InputStream source) throws IOException, ParserConfigurationException, SAXException;
 
   public abstract int fileCount();
 }
