@@ -92,6 +92,7 @@ public class Params {
   public static final String SPECIAL = "-special";
   public static final String TARGET = "-target";
   public static final String SOURCE = "-source";
+  public static final String INPUT = "-input";
   public static final String FILTER = "-filter";
   private static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
 
@@ -158,8 +159,7 @@ public class Params {
         i++;
       } else if (args[i].equals(HTTPS_PROXY)) {
         i++;
-      }
-      else if (args[i].equals(PROFILE)) {
+      } else if (args[i].equals(PROFILE)) {
         String p = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating profile source");
@@ -194,6 +194,13 @@ public class Params {
         else {
           String q = args[++i];
           cliContext.setLevel(ValidationLevel.fromCode(q));
+        }
+      } else if (args[i].equals(INPUT)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -input without providing value");
+        else {
+          String inp = args[++i];
+          cliContext.getInputs().add(inp);
         }
       } else if (args[i].equals(NATIVE)) {
         cliContext.setDoNative(true);

@@ -1,11 +1,20 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
+import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
+import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 public class XLIFFProducer extends LanguageFileProducer {
 
@@ -77,6 +86,10 @@ public class XLIFFProducer extends LanguageFileProducer {
     super(folder);
   }
 
+  public XLIFFProducer() {
+    super();
+  }
+  
   @Override
   public LanguageProducerSession startSession(String id, String baseLang) throws IOException {
     return new XLiffLanguageProducerSession(id, baseLang);
@@ -88,8 +101,31 @@ public class XLIFFProducer extends LanguageFileProducer {
   }
   
   @Override
-  public List<TextUnit> loadTranslations(String id, String baseLang, String tgtLang) {
-    return null;
+  public List<TranslationUnit> loadSource(InputStream source) throws IOException, ParserConfigurationException, SAXException {
+    List<TranslationUnit> list = new ArrayList<>();
+    Document dom = XMLUtil.parseToDom(TextFile.streamToBytes(source));
+    Element xliff = dom.getDocumentElement();
+    if (!xliff.getNodeName().equals("xliff")) {
+      throw new IOException("Not an XLIFF document");
+    }
+    
+    for (Element file : XMLUtil.getNamedChildren(xliff, "file")) {
+      Element body = XMLUtil.getNamedChild(file, "body");
+      for (Element transUnit : XMLUtil.getNamedChildren(body, "trans-unit")) {
+        TranslationUnit tu = new TranslationUnit(file.getAttribute("target-language"), transUnit.getAttribute("id"), 
+            XMLUtil.getNamedChildText(transUnit, "source"), XMLUtil.getNamedChildText(transUnit, "target"));
+        if (!Utilities.noString(tu.getSrcText()) && !Utilities.noString(tu.getTgtText())) {
+          list.add(tu);
+        }
+      }
+    }
+    return list;
+  }
+
+
+  private void check(String string, boolean equals) {
+    // TODO Auto-generated method stub
+    
   }
 
   @Override

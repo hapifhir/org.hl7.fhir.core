@@ -818,5 +818,31 @@ public class CodeSystemUtilities {
     }
     return null;
   }
+
+  public static boolean hasProperties(CodeSystem cs) {
+    return hasProperties(cs.getConcept());
+  }
+
+  private static boolean hasProperties(List<ConceptDefinitionComponent> list) {
+    for (ConceptDefinitionComponent c : list) {
+      if (c.hasProperty() || hasProperties(c.getConcept())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static boolean hasDesignations(CodeSystem cs) {
+    return hasDesignations(cs.getConcept());
+  }
+
+  private static boolean hasDesignations(List<ConceptDefinitionComponent> list) {
+    for (ConceptDefinitionComponent c : list) {
+      if (c.hasDesignation() || hasDesignations(c.getConcept())) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 

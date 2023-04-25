@@ -45,6 +45,7 @@ import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.extensions.ExtensionsUtils;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -1443,12 +1444,66 @@ public class Element extends Base {
               }
             }
           }
-          if (lang.equals(l)) {
+          if (LanguageUtils.langsMatch(lang, l)) {
             return v;
           }
         }
       }
     }
     return null;
+  }
+
+  public String getBasePath() {
+    if (property.getStructure().hasExtension(ToolingExtensions.EXT_RESOURCE_IMPLEMENTS)) {
+      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ExtensionsUtils.getExtensionString(property.getStructure(), ToolingExtensions.EXT_RESOURCE_IMPLEMENTS));
+      if (sd != null) {
+        ElementDefinition ed = sd.getSnapshot().getElementByPath(property.getDefinition().getPath().replace(property.getStructure().getType(), sd.getType()));
+        if (ed != null) {
+          return ed.getBase().getPath();
+        }
+      }
+    }
+    return property.getDefinition().getBase().getPath();
+  }
+
+  public void setTranslation(String lang, String translation) {
+    for (Element e : getChildren()) {
+      if (e.fhirType().equals("Extension")) {
+        String url = e.getNamedChildValue("url");
+        if (ToolingExtensions.EXT_TRANSLATION.equals(url)) {
+          String l = null;
+          Element v = null;
+          for (Element g : e.getChildren()) {
+            if (g.fhirType().equals("Extension")) {
+              String u = g.getNamedChildValue("url");
+              if ("lang".equals(u)) {
+                l = g.getNamedChildValue("value");
+              } else if ("value".equals(u)) {
+                v = g.getNamedChild("value");
+              }
+            }
+          }
+          if (LanguageUtils.langsMatch(lang, l)) {
+            if (v == null) {
+              Element ext = e.addElement("extension");
+              ext.addElement("url").setValue("value");
+              ext.addElement("valueString").setValue(translation);
+            } else {
+              v.setValue(translation);
+            }
+          }
+        }
+      }
+    }
+    Element t = addElement("extension");
+    t.addElement("url").setValue(ToolingExtensions.EXT_TRANSLATION);
+
+    Element ext = t.addElement("extension");
+    ext.addElement("url").setValue("lang");
+    ext.addElement("valueCode").setValue(lang);
+   
+    ext = t.addElement("extension");
+    ext.addElement("url").setValue("value");
+    ext.addElement("valueString").setValue(translation);
   }
 }
