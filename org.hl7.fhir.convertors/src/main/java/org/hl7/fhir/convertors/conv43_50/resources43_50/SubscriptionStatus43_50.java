@@ -3,11 +3,8 @@ package org.hl7.fhir.convertors.conv43_50.resources43_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
 
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Integer64_43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
-
-
-
-
 
 public class SubscriptionStatus43_50 {
   public static org.hl7.fhir.r4b.model.SubscriptionStatus convertSubscriptionStatus(org.hl7.fhir.r5.model.SubscriptionStatus src) {
@@ -46,9 +43,7 @@ public class SubscriptionStatus43_50 {
   private static org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent convertSubscriptionStatusNotificationEventComponent(org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent src) {
     org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent tgt = new org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent();
     if (src.hasEventNumber()) {
-      org.hl7.fhir.r4b.model.StringType value = new org.hl7.fhir.r4b.model.StringType();
-      value.setValue(src.getEventNumberElement().getValueAsString());
-      tgt.setEventNumberElement(value);
+      tgt.setEventNumberElement(Integer64_43_50.convertInteger64ToString(src.getEventNumberElement()));
     }
     if (src.hasFocus()) {
       tgt.setFocus(Reference43_50.convertReference(src.getFocus()));
@@ -119,9 +114,7 @@ public class SubscriptionStatus43_50 {
   private static org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent convertSubscriptionStatusNotificationEventComponent(org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent src) {
     org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent tgt = new org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent();
     if (src.hasEventNumber()) {
-      org.hl7.fhir.r5.model.Integer64Type value = new org.hl7.fhir.r5.model.Integer64Type();
-      value.fromStringValue(src.getEventNumberElement().getValueAsString());
-      tgt.setEventNumberElement(value);
+      tgt.setEventNumberElement(Integer64_43_50.convertStringToInteger64(src.getEventNumberElement()));
     }
     if (src.hasFocus()) {
       tgt.setFocus(Reference43_50.convertReference(src.getFocus()));
