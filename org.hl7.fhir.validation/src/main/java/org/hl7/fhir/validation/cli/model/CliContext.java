@@ -94,6 +94,8 @@ public class CliContext {
   private List<String> profiles = new ArrayList<String>();
   @JsonProperty("sources")
   private List<String> sources = new ArrayList<String>();
+  @JsonProperty("inputs")
+  private List<String> inputs = new ArrayList<String>();
 
   @JsonProperty("mode")
   private EngineMode mode = EngineMode.VALIDATION;
@@ -387,6 +389,11 @@ public class CliContext {
   @JsonProperty("sources")
   public List<String> getSources() {
     return sources;
+  }
+
+  @JsonProperty("inputs")
+  public List<String> getInputs() {
+    return inputs;
   }
 
   @JsonProperty("sources")
@@ -721,7 +728,7 @@ public class CliContext {
   public int hashCode() {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
             noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
-            targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
+            targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
   }
 
   @Override
@@ -759,6 +766,7 @@ public class CliContext {
       ", level=" + level +
       ", profiles=" + profiles +
       ", sources=" + sources +
+      ", inputs=" + inputs +
       ", mode=" + mode +
       ", securityChecks=" + securityChecks +
       ", crumbTrails=" + crumbTrails +

@@ -299,7 +299,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     ConceptDefinitionDesignationComponent tu = expParams.hasParameter("displayLanguage") ? getMatchingLang(designations, expParams.getParameterString("displayLanguage")) : null;
     if (tu != null) {
       n.setDisplay(tu.getValue());        
-    } else if (display != null && (srcLang == null || dstLang == null || LanguageUtils.matches(dstLang, srcLang))) {
+    } else if (display != null && (srcLang == null || dstLang == null || LanguageUtils.langsMatch(dstLang, srcLang))) {
       n.setDisplay(display);
       usedDisplay = true;
     } else {
