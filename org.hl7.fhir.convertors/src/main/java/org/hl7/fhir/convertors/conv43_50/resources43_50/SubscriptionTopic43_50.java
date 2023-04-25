@@ -92,9 +92,6 @@ public class SubscriptionTopic43_50 {
     if (src.hasFilterParameter()) {
       tgt.setFilterParameterElement(String43_50.convertString(src.getFilterParameterElement()));
     }
-    if (src.hasComparator()) {
-
-    }
     if (src.hasModifier() || src.hasComparator()) {
       List<org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier>> tgtModifiers = convertR5ModifierToR4BModifier(src.getModifier());
 
