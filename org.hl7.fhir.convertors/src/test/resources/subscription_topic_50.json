@@ -10,6 +10,7 @@
     "system" : "urn:ietf:rfc:3986",
     "value" : "urn:uuid:1caa02ba-051b-4602-8856-65921748ae76"
   }],
+  "name" : "my topic name",
   "version" : "1.0.0-beta.1",
   "title" : "example",
   "status" : "draft",

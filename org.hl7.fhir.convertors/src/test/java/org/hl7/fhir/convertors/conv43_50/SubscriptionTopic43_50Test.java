@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SubscriptionTopic43_50Test {
 
   @Test
-  @DisplayName("Test r5 -> r4 SubscriptionTopic conversion.")
+  @DisplayName("Test r5 -> r4b SubscriptionTopic conversion.")
   public void testR5_R4b() throws IOException {
     InputStream r5_input = this.getClass().getResourceAsStream("/subscription_topic_50.json");
 
