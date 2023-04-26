@@ -7,6 +7,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.r4b.model.SubscriptionTopic;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +54,9 @@ public class SubscriptionTopic43_50 {
       tgt.setPurposeElement(MarkDown43_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown43_50.convertMarkdown(src.getCopyrightElement()));
+    if (src.hasName()) {
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.name", String43_50.convertString(src.getNameElement()));
+    }
     if (src.hasApprovalDate())
       tgt.setApprovalDateElement(Date43_50.convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
@@ -64,8 +68,25 @@ public class SubscriptionTopic43_50 {
     for (org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent canFilterByComponent : src.getCanFilterBy()) {
       tgt.addCanFilterBy(convertCanFilterBy(canFilterByComponent));
     }
+    for (org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicEventTriggerComponent eventTrigger : src.getEventTrigger()) {
+      tgt.addEventTrigger(convertEventTrigger(eventTrigger));
+    }
     for (org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicNotificationShapeComponent notificationShape : src.getNotificationShape()) {
       tgt.addNotificationShape(convertNotificationShape(notificationShape));
+    }
+    return tgt;
+  }
+
+  private static SubscriptionTopic.SubscriptionTopicEventTriggerComponent convertEventTrigger(org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicEventTriggerComponent src) {
+    org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicEventTriggerComponent tgt = new org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicEventTriggerComponent();
+    if (src.hasDescription()) {
+      tgt.setDescriptionElement(MarkDown43_50.convertMarkdown(src.getDescriptionElement()));
+    }
+    if (src.hasEvent()) {
+      tgt.setEvent(CodeableConcept43_50.convertCodeableConcept(src.getEvent()));
+    }
+    if (src.hasResource()) {
+      tgt.setResourceElement(Uri43_50.convertUri(src.getResourceElement()));
     }
     return tgt;
   }
@@ -77,6 +98,9 @@ public class SubscriptionTopic43_50 {
     }
     if (src.hasInclude()) {
       tgt.setInclude(src.getInclude().stream().map(String43_50::convertString).collect(Collectors.toList()));
+    }
+    if (src.hasRevInclude()) {
+      tgt.setRevInclude(src.getRevInclude().stream().map(String43_50::convertString).collect(Collectors.toList()));
     }
     return tgt;
   }
@@ -91,6 +115,9 @@ public class SubscriptionTopic43_50 {
     }
     if (src.hasFilterParameter()) {
       tgt.setFilterParameterElement(String43_50.convertString(src.getFilterParameterElement()));
+    }
+    if (src.hasFilterDefinition()) {
+      // TODO r4b spec has this, but the Java model does not
     }
     if (src.hasModifier() || src.hasComparator()) {
       List<org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier>> tgtModifiers = convertR5ModifierToR4BModifier(src.getModifier());
@@ -182,6 +209,7 @@ public class SubscriptionTopic43_50 {
     if (src.hasRequireBoth()) {
       tgt.setRequireBothElement(Boolean43_50.convertBoolean(src.getRequireBothElement()));
     }
+
     return tgt;
   }
 
@@ -213,6 +241,10 @@ public class SubscriptionTopic43_50 {
     org.hl7.fhir.r5.model.SubscriptionTopic tgt = new org.hl7.fhir.r5.model.SubscriptionTopic();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyResource(src, tgt);
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt);
+
+    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.name")) {
+      tgt.setNameElement(String43_50.convertString((org.hl7.fhir.r4b.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.name").getValue()));
+    }
     if (src.hasUrl())
       tgt.setUrlElement(Uri43_50.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4b.model.Identifier t : src.getIdentifier())
