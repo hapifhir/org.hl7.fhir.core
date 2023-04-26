@@ -54,6 +54,9 @@ public class SubscriptionTopic43_50 {
       tgt.setPurposeElement(MarkDown43_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown43_50.convertMarkdown(src.getCopyrightElement()));
+    if (src.hasCopyrightLabel()) {
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.copyrightLabel", String43_50.convertString(src.getCopyrightLabelElement()));
+    }
     if (src.hasName()) {
       tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.name", String43_50.convertString(src.getNameElement()));
     }
@@ -245,6 +248,9 @@ public class SubscriptionTopic43_50 {
     if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.name")) {
       tgt.setNameElement(String43_50.convertString((org.hl7.fhir.r4b.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.name").getValue()));
     }
+    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.copyrightLabel")) {
+      tgt.setCopyrightLabelElement(String43_50.convertString((org.hl7.fhir.r4b.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.copyrightLabel").getValue()));
+    }
     if (src.hasUrl())
       tgt.setUrlElement(Uri43_50.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4b.model.Identifier t : src.getIdentifier())
@@ -288,6 +294,9 @@ public class SubscriptionTopic43_50 {
     for(org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent triggerComponent : src.getResourceTrigger()) {
       tgt.addResourceTrigger(convertResourceTrigger(triggerComponent));
     }
+    for (org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicEventTriggerComponent eventTrigger : src.getEventTrigger()) {
+      tgt.addEventTrigger(convertEventTrigger(eventTrigger));
+    }
     for (org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent canFilterByComponent : src.getCanFilterBy()) {
       tgt.addCanFilterBy(convertCanFilterBy(canFilterByComponent));
     }
@@ -305,8 +314,25 @@ public class SubscriptionTopic43_50 {
     if (src.hasInclude()) {
       tgt.setInclude(src.getInclude().stream().map(String43_50::convertString).collect(Collectors.toList()));
     }
+    if (src.hasRevInclude()) {
+      tgt.setRevInclude(src.getRevInclude().stream().map(String43_50::convertString).collect(Collectors.toList()));
+    }
     return tgt;
 
+  }
+
+  private static org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicEventTriggerComponent convertEventTrigger(org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicEventTriggerComponent src) {
+    org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicEventTriggerComponent tgt = new org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicEventTriggerComponent();
+    if (src.hasDescription()) {
+      tgt.setDescriptionElement(MarkDown43_50.convertMarkdown(src.getDescriptionElement()));
+    }
+    if (src.hasEvent()) {
+      tgt.setEvent(CodeableConcept43_50.convertCodeableConcept(src.getEvent()));
+    }
+    if (src.hasResource()) {
+      tgt.setResourceElement(Uri43_50.convertUri(src.getResourceElement()));
+    }
+    return tgt;
   }
 
   private static org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent convertCanFilterBy(org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicCanFilterByComponent src) {

@@ -14,8 +14,44 @@
   "version" : "1.0.0-beta.1",
   "title" : "example",
   "status" : "draft",
+  "experimental" : true,
   "date" : "2019-01-01",
+  "publisher" : "Somebody McSomeoneson",
+  "contact" : [
+    { "contact" :  "Somebody McSomeoneson"}
+  ],
   "description" : "Example topic for completed encounters",
+  "useContext" : [
+    {
+      "code": {
+        "system": "http://hl7.org/fhir/usage-context-type",
+        "code": "focus"
+      },
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "306206005",
+            "display": "Referral to service (procedure)"
+          }
+        ]
+      }
+    }
+  ],
+  "jurisdiction": [
+    {
+      "coding": [
+        {
+          "system": "urn:iso:std:iso:3166",
+          "code": "US",
+          "display": "United States of America (the)"
+        }
+      ]
+    }
+  ],
+  "purpose" : "Some purpose description [link](http://someplace.somewhere)",
+  "copyright": "Some copyright info [link](http://someplace.somewhere)",
+  "copyrightLabel": "A copyright label",
   "resourceTrigger" : [{
     "description" : "An Encounter has been completed",
     "resource" : "http://hl7.org/fhir/StructureDefinition/Encounter",
@@ -28,6 +64,17 @@
       "requireBoth" : true
     },
     "fhirPathCriteria" : "(%previous.empty() | (%previous.status != 'completed')) and (%current.status = 'completed')"
+  }],
+  "eventTrigger" : [{
+    "description" : "Patient admission is covered by HL7v2 ADT^A01",
+    "event" : {
+      "coding" : [{
+        "system" : "http://terminology.hl7.org/CodeSystem/v2-0003",
+        "code" : "A01",
+        "display" : "ADT/ACK - Admit/visit notification"
+      }]
+    },
+    "resource" : "http://hl7.org/fhir/StructureDefinition/Encounter"
   }],
   "canFilterBy" : [{
     "description" : "Filter based on the subject of an encounter.",
@@ -65,6 +112,7 @@
       "Encounter:account",
       "Encounter:diagnosis",
       "Encounter:observation",
-      "Encounter:location"]
+      "Encounter:location"],
+    "revInclude" : ["Encounter:subject"]
   }]
 }
