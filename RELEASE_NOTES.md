@@ -14,6 +14,7 @@ in effect a mandatory upgrade
 * Warning not error when the code system isn't known validating questionnaires
 * Fix up loading of IG bundles
 * Work around issue with R5 path in extensions pack
+* Fix issue with SearchParameter validation throwing an exception if no expressions are valid
 
 ## Other code changes
 
@@ -35,3 +36,5 @@ in effect a mandatory upgrade
 * Re-org validation testing to be more memory efficient
 * Better error handling loading resources
 * Restore broken R4 loading
+* Add new R5 fields to R4/R5 conversion for ValueSet
+* minor changes two HumanName.getNameAsSingleString (missed family name)
