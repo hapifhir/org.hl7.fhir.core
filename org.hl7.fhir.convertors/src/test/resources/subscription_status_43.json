@@ -1,0 +1,16 @@
+{
+  "resourceType": "SubscriptionStatus",
+  "status": "active",
+  "type": "event-notification",
+  "eventsSinceSubscriptionStart": "1",
+  "notificationEvent": [ {
+    "eventNumber": "1",
+    "focus": {
+      "reference": "Encounter/3"
+    }
+  } ],
+  "subscription": {
+    "reference": "Subscription/2"
+  },
+  "topic": "http://example.com/topic/test"
+}
