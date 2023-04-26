@@ -147,6 +147,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return res;
   }
 
+  public static SimpleWorkerContext fromNothing() throws FileNotFoundException, IOException, FHIRException {
+    SimpleWorkerContext res = new SimpleWorkerContext();
+    return res;
+  }
+
   public static SimpleWorkerContext fromPackage(NpmPackage pi, boolean allowDuplicates) throws FileNotFoundException, IOException, FHIRException {
     SimpleWorkerContext res = new SimpleWorkerContext();
     res.setAllowLoadingDuplicates(allowDuplicates);
