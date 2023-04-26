@@ -1,0 +1,118 @@
+{
+  "resourceType" : "SubscriptionTopic",
+  "id" : "example",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative: SubscriptionTopic</b><a name=\"example\"> </a></p><div style=\"display: inline-block; background-color: #d9e0e7; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\">Resource SubscriptionTopic &quot;example&quot; </p></div><p><b>url</b>: <code>http://example.org/FHIR/R5/SubscriptionTopic/example</code></p><p><b>identifier</b>: id:\u00a0urn:uuid:1caa02ba-051b-4602-8856-65921748ae76</p><p><b>version</b>: 1.0.0-beta.1</p><p><b>title</b>: example</p><p><b>status</b>: draft</p><p><b>date</b>: 2019-01-01</p><p><b>description</b>: Example topic for completed encounters</p><blockquote><p><b>resourceTrigger</b></p><p><b>description</b>: An Encounter has been completed</p><p><b>resource</b>: <a href=\"encounter.html\">Encounter</a></p><p><b>supportedInteraction</b>: update</p><h3>QueryCriteria</h3><table class=\"grid\"><tr><td>-</td><td><b>Previous</b></td><td><b>ResultForCreate</b></td><td><b>Current</b></td><td><b>ResultForDelete</b></td><td><b>RequireBoth</b></td></tr><tr><td>*</td><td>status:not=completed</td><td>test-passes</td><td>status=completed</td><td>test-fails</td><td>true</td></tr></table><p><b>fhirPathCriteria</b>: (%previous.empty() | (%previous.status != 'completed')) and (%current.status = 'completed')</p></blockquote><blockquote><p><b>canFilterBy</b></p><p><b>description</b>: Filter based on the subject of an encounter.</p><p><b>resource</b>: <a href=\"encounter.html\">Encounter</a></p><p><b>filterParameter</b>: subject</p></blockquote><blockquote><p><b>canFilterBy</b></p><p><b>description</b>: Filter based on the group membership of the subject of an encounter.</p><p><b>resource</b>: <a href=\"encounter.html\">Encounter</a></p><p><b>filterParameter</b>: _in</p></blockquote><blockquote><p><b>canFilterBy</b></p><p><b>description</b>: Filter based on the length of an encounter.</p><p><b>resource</b>: <a href=\"encounter.html\">Encounter</a></p><p><b>filterParameter</b>: length</p><p><b>comparator</b>: gt, lt, ge, le</p></blockquote><blockquote><p><b>canFilterBy</b></p><p><b>description</b>: Filter based on the account for billing an encounter.</p><p><b>resource</b>: <a href=\"encounter.html\">Encounter</a></p><p><b>filterParameter</b>: account</p><p><b>modifier</b>: missing, not, identifier</p></blockquote><h3>NotificationShapes</h3><table class=\"grid\"><tr><td>-</td><td><b>Resource</b></td><td><b>Include</b></td></tr><tr><td>*</td><td><a href=\"encounter.html\">Encounter</a></td><td>Encounter:patient&amp;iterate=Patient.link, Encounter:practitioner, Encounter:service-provider, Encounter:account, Encounter:diagnosis, Encounter:observation, Encounter:location</td></tr></table></div>"
+  },
+  "url" : "http://example.org/FHIR/R5/SubscriptionTopic/example",
+  "identifier" : [{
+    "system" : "urn:ietf:rfc:3986",
+    "value" : "urn:uuid:1caa02ba-051b-4602-8856-65921748ae76"
+  }],
+  "name" : "my topic name",
+  "version" : "1.0.0-beta.1",
+  "title" : "example",
+  "status" : "draft",
+  "experimental" : true,
+  "date" : "2019-01-01",
+  "publisher" : "Somebody McSomeoneson",
+  "contact" : [
+    { "contact" :  "Somebody McSomeoneson"}
+  ],
+  "description" : "Example topic for completed encounters",
+  "useContext" : [
+    {
+      "code": {
+        "system": "http://hl7.org/fhir/usage-context-type",
+        "code": "focus"
+      },
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "306206005",
+            "display": "Referral to service (procedure)"
+          }
+        ]
+      }
+    }
+  ],
+  "jurisdiction": [
+    {
+      "coding": [
+        {
+          "system": "urn:iso:std:iso:3166",
+          "code": "US",
+          "display": "United States of America (the)"
+        }
+      ]
+    }
+  ],
+  "purpose" : "Some purpose description [link](http://someplace.somewhere)",
+  "copyright": "Some copyright info [link](http://someplace.somewhere)",
+  "copyrightLabel": "A copyright label",
+  "resourceTrigger" : [{
+    "description" : "An Encounter has been completed",
+    "resource" : "http://hl7.org/fhir/StructureDefinition/Encounter",
+    "supportedInteraction" : ["update"],
+    "queryCriteria" : {
+      "previous" : "status:not=completed",
+      "resultForCreate" : "test-passes",
+      "current" : "status=completed",
+      "resultForDelete" : "test-fails",
+      "requireBoth" : true
+    },
+    "fhirPathCriteria" : "(%previous.empty() | (%previous.status != 'completed')) and (%current.status = 'completed')"
+  }],
+  "eventTrigger" : [{
+    "description" : "Patient admission is covered by HL7v2 ADT^A01",
+    "event" : {
+      "coding" : [{
+        "system" : "http://terminology.hl7.org/CodeSystem/v2-0003",
+        "code" : "A01",
+        "display" : "ADT/ACK - Admit/visit notification"
+      }]
+    },
+    "resource" : "http://hl7.org/fhir/StructureDefinition/Encounter"
+  }],
+  "canFilterBy" : [{
+    "description" : "Filter based on the subject of an encounter.",
+    "resource" : "Encounter",
+    "filterParameter" : "subject"
+  },
+    {
+      "description" : "Filter based on the group membership of the subject of an encounter.",
+      "resource" : "Encounter",
+      "filterParameter" : "_in"
+    },
+    {
+      "description" : "Filter based on the length of an encounter.",
+      "resource" : "Encounter",
+      "filterParameter" : "length",
+      "comparator" : ["gt",
+        "lt",
+        "ge",
+        "le"]
+    },
+    {
+      "description" : "Filter based on the account for billing an encounter.",
+      "resource" : "Encounter",
+      "filterParameter" : "account",
+      "modifier" : [
+        "not-in"
+        ]
+    }
+  ],
+  "notificationShape" : [{
+    "resource" : "Encounter",
+    "include" : ["Encounter:patient&iterate=Patient.link",
+      "Encounter:practitioner",
+      "Encounter:service-provider",
+      "Encounter:account",
+      "Encounter:diagnosis",
+      "Encounter:observation",
+      "Encounter:location"],
+    "revInclude" : ["Encounter:subject"]
+  }]
+}
