@@ -9,7 +9,7 @@ in effect a mandatory upgrade
 * Add support for -install operation to install packages and generate snapshots while at it (support simplifier packages in sushi)
 * Add support for ```lang-transform extract``` and ```-lang-transform inject``` to the validator (start of multi-lingual implementation support)
 * Add support for -tx-tests to validator
-* Change settings file to fhir-settings.json in .fhir, instead of fhir-tools-setting.ini (see [where] for doco)
+* Change settings file to fhir-settings.json in .fhir, instead of fhir-tools-setting.ini (see [here](https://confluence.hl7.org/pages/viewpage.action?pageId=35718580#UsingtheFHIRValidator-FHIRSettings) for documentation)
 * Add provisional support for running without a network: -no-network. Beware: this is not fully tested at this point
 * Warning not error when the code system isn't known validating questionnaires
 * Fix up loading of IG bundles
