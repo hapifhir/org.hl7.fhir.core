@@ -12,6 +12,10 @@
     <artifactId>org.hl7.fhir.dstu2016may</artifactId>
     <packaging>bundle</packaging>
 
+    <properties>
+        <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>
+    </properties>
+
     <dependencies>
 
         <!-- HAPI Dependencies -->
