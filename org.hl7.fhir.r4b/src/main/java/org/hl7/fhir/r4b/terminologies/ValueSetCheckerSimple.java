@@ -144,7 +144,9 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     }
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       Boolean result = false;
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(",", " and ");
       for (Coding c : code.getCoding()) {
+        b.append(c.toString());
         Boolean ok = codeInValueSet(c.getSystem(), c.getCode(), warnings);
         if (ok == null && result == false) {
           result = null;
@@ -153,9 +155,9 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
       if (result == null) {
-        warnings.add(0, context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));        
+        warnings.add(0, context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), b.toString()));        
       } else if (!result) {
-        errors.add(0, context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));
+        errors.add(0, context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), b.toString()));
       }
     }
     if (errors.size() > 0) {
