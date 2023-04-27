@@ -39,6 +39,7 @@
         <maven.compiler.testSource>11</maven.compiler.testSource>
         <maven.compiler.testTarget>11</maven.compiler.testTarget>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
+        <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -192,7 +193,7 @@
                             <enableRulesSummary>true</enableRulesSummary>
                             <enableSeveritySummary>true</enableSeveritySummary>
                             <consoleOutput>true</consoleOutput>
-                            <configLocation>${project.basedir}/../checkstyle.xml</configLocation>
+                            <configLocation>${checkstyle_config_location}/checkstyle.xml</configLocation>
                         </configuration>
                     </execution>
                 </executions>
