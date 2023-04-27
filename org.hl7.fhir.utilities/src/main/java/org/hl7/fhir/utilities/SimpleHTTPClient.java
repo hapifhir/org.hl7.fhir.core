@@ -72,10 +72,11 @@ public class SimpleHTTPClient {
 
     public void checkThrowException() throws IOException {
       if (code >= 300) {
-        String filename = Utilities.path("[tmp]", "fhir-http-"+(++counter)+".log");
+        String filename = Utilities.path("[tmp]", "http-log", "fhir-http-"+(++counter)+".log");
         if (content == null || content.length == 0) {
           throw new IOException("Invalid HTTP response "+code+" from "+source+" ("+message+") (no content)");          
         } else {
+          Utilities.createDirectory(Utilities.path("[tmp]", "http-log"));
           TextFile.bytesToFile(content, filename);
           throw new IOException("Invalid HTTP response "+code+" from "+source+" ("+message+") (content in "+filename+")");
         }
