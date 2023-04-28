@@ -73,6 +73,8 @@ public class StructureDefinitionValidator extends BaseValidator {
     String typeName = null;
     try {
       sd = loadAsSD(src);
+      checkExtensionContext(errors, src, stack);
+      
       List<ElementDefinition> snapshot = sd.getSnapshot().getElement();
       sd.setSnapshot(null);
       typeName = sd.getTypeName();
@@ -132,6 +134,41 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
   
+  private void checkExtensionContext(List<ValidationMessage> errors, Element src, NodeStack stack) {
+    String type = src.getNamedChildValue("type");
+    List<Element> eclist = src.getChildren("context");
+    List<Element> cilist = src.getChildren("contextInvariant");
+    int i = 0;
+    for (Element ec : eclist) {
+      NodeStack n = stack.push(ec, i, null, null);
+      if ("Extension".equals(type)) {
+        String ct = null;
+        String cv = null; 
+        if (VersionUtilities.isR4Plus(context.getVersion())) {
+          ct = ec.getNamedChildValue("type");
+          cv = ec.getNamedChildValue("expression");          
+        } else {
+          ct = src.getNamedChildValue("contextType"); /// todo - this doesn't have the right value
+          cv = ec.primitiveValue();
+        }
+        if ("element".equals(ct) && "Element".equals(cv)) {
+          warning(errors, "2023-04-23", IssueType.BUSINESSRULE, n.getLiteralPath(), false, I18nConstants.SD_CONTEXT_SHOULD_NOT_BE_ELEMENT, cv);
+        }          
+      } else {
+        rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_WHEN_NOT_EXTENSION, type);
+      }
+    }
+    i = 0;
+    for (Element ci : cilist) {
+      NodeStack n = stack.push(ci, i, null, null);
+      if ("Extension".equals(type)) {
+          
+      } else {
+        rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION, type);
+      }
+    }
+  }
+
   private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName) {
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
