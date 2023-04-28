@@ -1,6 +1,10 @@
 ## Validator Changes
 
-* Improved Error messages when code is not in value set
+* Improved Error messages when code is not in value set + various typo fixes
+* Updated Dutch translations for error messages
+* More informative failures when questionnaire value set validation fails
+* Warnings when extension context is 'Element'
+* Fix missing source id for tx server messages in validation output
 
 ## Other code changes
 
