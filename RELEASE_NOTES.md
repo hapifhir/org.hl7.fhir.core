@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* no changes
+* Add support for JSON in tx client batch handling
 
 ## Other code changes
 
