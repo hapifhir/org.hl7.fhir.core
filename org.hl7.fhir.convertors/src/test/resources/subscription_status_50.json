@@ -9,7 +9,8 @@
   "type" : "event-notification",
   "eventsSinceSubscriptionStart" : "1000",
   "notificationEvent" : [{
-    "eventNumber" : "1000"
+    "eventNumber" : "1000",
+    "timestamp" : "2022-02-10T15:12:28-05:00"
   }],
   "subscription" : {
     "reference" : "http://example.org/FHIR/R5/Subscription/123"
