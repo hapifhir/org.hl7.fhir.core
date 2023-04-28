@@ -566,7 +566,7 @@ public class QuestionnaireValidator extends BaseValidator {
           if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
             txWarning(errors, NO_RULE_DATE, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION_CS, c.getSystem(), c.getCode(), vs.present());
           } else {
-            ok = txRule(errors, NO_RULE_DATE, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION, c.getSystem(), c.getCode(), vs.present()) && ok;
+            ok = txRule(errors, NO_RULE_DATE, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION, c.getSystem(), c.getCode(), vs.present(), res.getMessage()) && ok;
           }
         } else if (res.getSeverity() != null) {
           super.addValidationMessage(errors, NO_RULE_DATE, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity(), Source.TerminologyEngine, null);
