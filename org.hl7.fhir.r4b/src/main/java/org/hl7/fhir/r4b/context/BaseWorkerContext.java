@@ -1165,13 +1165,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (p.getName().equals("result")) {
           ok = ((BooleanType) p.getValue()).getValue().booleanValue();
         } else if (p.getName().equals("message")) {
-          message = ((StringType) p.getValue()).getValue();
+          message = p.getValue().primitiveValue();
         } else if (p.getName().equals("display")) {
-          display = ((StringType) p.getValue()).getValue();
+          display = p.getValue().primitiveValue();
         } else if (p.getName().equals("system")) {
-          system = ((StringType) p.getValue()).getValue();
+          system = p.getValue().primitiveValue();
         } else if (p.getName().equals("code")) {
-          code = ((StringType) p.getValue()).getValue();
+          code = p.getValue().primitiveValue();
         } else if (p.getName().equals("cause")) {
           try {
             IssueType it = IssueType.fromCode(((StringType) p.getValue()).getValue());

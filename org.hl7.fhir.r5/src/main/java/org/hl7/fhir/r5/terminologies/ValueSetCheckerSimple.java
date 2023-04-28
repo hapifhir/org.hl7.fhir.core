@@ -208,7 +208,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     Coding foundCoding = null;
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       Boolean result = false;
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+      
       for (Coding c : code.getCoding()) {
+        b.append(c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode());
         Boolean ok = codeInValueSet(c.getSystem(), c.getVersion(), c.getCode(), info);
         if (ok == null && result == false) {
           result = null;
@@ -218,10 +221,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
       if (result == null) {
-        String msg = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl());
+        String msg = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), b.toString());
         info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, msg));
       } else if (!result) {
-        String msg = context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl());
+        String msg = context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), b.toString());
         info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
       }
     }
@@ -372,7 +375,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
             if (valueset == null) {
               throw new VSCheckerException(warningMessage, issues);
             } else {
-              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl());
+              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), code.toString());
               issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
               throw new VSCheckerException(warningMessage+"; "+msg, issues);
             }
@@ -440,7 +443,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
               res.setMessage("Not in value set "+valueset.getUrl()+": "+info.summary()).setSeverity(IssueSeverity.ERROR);              
               res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, res.getMessage()));
             } else {
-              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl());
+              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), code.toString());
               res.setMessage(msg).setSeverity(IssueSeverity.ERROR);
               res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
               res.setDefinition(null);
@@ -459,7 +462,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           }
         }
       } else if ((res != null && !res.isOk())) {
-        String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl());
+        String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), code.toString());
         res.setMessage(res.getMessage()+"; "+msg);
         res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
       }
