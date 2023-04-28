@@ -12,6 +12,10 @@
     <artifactId>org.hl7.fhir.convertors</artifactId>
     <packaging>bundle</packaging>
 
+    <properties>
+        <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>
+    </properties>
+
     <dependencies>
 
         <!-- Commons -->
