@@ -859,6 +859,9 @@ public class I18nConstants {
   public static final String UNKNOWN_CODESYSTEM_VERSION = "UNKNOWN_CODESYSTEM_VERSION";
   public static final String VALUESET_TOO_COSTLY = "VALUESET_TOO_COSTLY";
   public static final String NO_VALID_DISPLAY_FOUND = "NO_VALID_DISPLAY_FOUND";
+  public static final String SD_NO_CONTEXT_WHEN_NOT_EXTENSION = "SD_NO_CONTEXT_WHEN_NOT_EXTENSION";
+  public static final String SD_CONTEXT_SHOULD_NOT_BE_ELEMENT = "SD_CONTEXT_SHOULD_NOT_BE_ELEMENT";
+  public static final String SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION = "SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION";
 }
 
 
