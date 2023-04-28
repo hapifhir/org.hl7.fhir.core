@@ -63,6 +63,7 @@ public class TerminologyClientR4 implements TerminologyClient {
   public TerminologyClientR4(String id, String address, String userAgent) throws URISyntaxException {
     this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(new ClientHeaders());
+    this.id = id;
   }
 
   public TerminologyClientR4(String id, String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
