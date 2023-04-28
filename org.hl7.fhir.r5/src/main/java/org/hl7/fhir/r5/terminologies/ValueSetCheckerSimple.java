@@ -208,10 +208,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     Coding foundCoding = null;
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       Boolean result = false;
-      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(",", " and ");
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
       
       for (Coding c : code.getCoding()) {
-        b.append(c.toString());
+        b.append(c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode());
         Boolean ok = codeInValueSet(c.getSystem(), c.getVersion(), c.getCode(), info);
         if (ok == null && result == false) {
           result = null;
