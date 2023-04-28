@@ -9,10 +9,28 @@
   "type" : "event-notification",
   "eventsSinceSubscriptionStart" : "1000",
   "notificationEvent" : [{
-    "eventNumber" : "1000"
+    "eventNumber" : "1000",
+    "timestamp" : "2022-02-10T15:12:28-05:00",
+    "additionalContext": [
+      {
+        "reference": "http://example.org/FHIR/R5/Patient/ABC"
+      }
+    ]
   }],
   "subscription" : {
     "reference" : "http://example.org/FHIR/R5/Subscription/123"
   },
-  "topic" : "http://example.org/FHIR/R5/SubscriptionTopic/admission"
+  "topic" : "http://example.org/FHIR/R5/SubscriptionTopic/admission",
+  "error": [
+    {
+      "code": {
+        "coding": [
+          {
+            "code": "no-response ",
+            "system": "http://terminology.hl7.org/CodeSystem/subscription-error"
+          }
+        ]
+      }
+    }
+  ]
 }
