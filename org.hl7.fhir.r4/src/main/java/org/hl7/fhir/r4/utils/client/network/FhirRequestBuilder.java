@@ -276,7 +276,7 @@ public class FhirRequestBuilder {
       byte[] body = response.body().bytes();
       String contentType = response.header("Content-Type");
       if (body != null) {
-        if (contentType.contains(ResourceFormat.RESOURCE_XML.getHeader()) || contentType.contains("text/xml+fhir")) {
+        if (contentType.contains(ResourceFormat.RESOURCE_XML.getHeader()) || contentType.contains(ResourceFormat.RESOURCE_JSON.getHeader()) || contentType.contains("text/xml+fhir")) {
           Resource rf = getParser(format).parse(body);
           if (rf instanceof Bundle)
             feed = (Bundle) rf;
