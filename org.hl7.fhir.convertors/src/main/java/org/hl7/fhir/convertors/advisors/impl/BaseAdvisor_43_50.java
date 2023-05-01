@@ -27,12 +27,6 @@ public class BaseAdvisor_43_50 extends BaseAdvisor50<org.hl7.fhir.r4b.model.Exte
     final String lastPath = paths.get(paths.size() - 1);
     if ((lastPath.equals("TestScript")) && (TestScriptIgnoredUrls.contains(url))) {
       return true;
-    } else if (lastPath.equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.")) {
-      return true;
-    } else if (lastPath.equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.")) {
-      return true;
-    } else if (lastPath.equals("SubscriptionTopic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.")) {
-      return true;
     }
     else
       return false;
