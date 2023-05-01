@@ -40,7 +40,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import javax.annotation.Nonnull;
 
 public class QuestionnaireRenderer extends TerminologyRenderer {
-  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = "http://hl7.org/fhir/tools/StructureDefinition/original-item-type";
+  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-Questionnaire.item.type";
 
   public QuestionnaireRenderer(RenderingContext context) {
     super(context);
