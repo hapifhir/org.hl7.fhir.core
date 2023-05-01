@@ -1,9 +1,7 @@
 ## Validator Changes
 
-* Structure map validation improvements
+* no changes
 
 ## Other code changes
 
-* Fix wrong name for systemVersion Parameter
-* Language improvements for Lang Packs
-* Fix up StructureMap R4/R5 conversion
+* no changes
