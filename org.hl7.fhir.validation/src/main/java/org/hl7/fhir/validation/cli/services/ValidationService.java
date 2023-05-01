@@ -52,6 +52,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.JsonLangFileProducer;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
@@ -548,6 +549,7 @@ public class ValidationService {
     Utilities.createDirectory(dst);
     PoGetTextProducer po = new PoGetTextProducer(Utilities.path(dst));
     XLIFFProducer xliff = new XLIFFProducer(Utilities.path(dst));
+    JsonLangFileProducer jl = new JsonLangFileProducer(Utilities.path(dst));
     
     List<String> refs = new ArrayList<String>();
     ValidatorUtils.parseSources(cliContext.getSources(), refs, validator.getContext());    
@@ -561,6 +563,11 @@ public class ValidationService {
       psl.finish();
       ps.finish();
       ps = xliff.startSession(e.fhirType()+"-"+e.getIdBase(), cliContext.getSrcLang());
+      psl = ps.forLang(cliContext.getTgtLang());
+      new LanguageUtils(validator.getContext()).generateTranslations(e, psl);
+      psl.finish();
+      ps.finish(); 
+      ps = jl.startSession(e.fhirType()+"-"+e.getIdBase(), cliContext.getSrcLang());
       psl = ps.forLang(cliContext.getTgtLang());
       new LanguageUtils(validator.getContext()).generateTranslations(e, psl);
       psl.finish();
