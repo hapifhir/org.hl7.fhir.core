@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
+import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
 import org.xml.sax.SAXException;
 
 import java.util.HashMap;
@@ -143,4 +144,6 @@ public abstract class LanguageFileProducer {
   public abstract List<TranslationUnit> loadSource(InputStream source) throws IOException, ParserConfigurationException, SAXException;
 
   public abstract int fileCount();
+
+  public abstract void produce(String id, String baseLang, String targetLang, List<TranslationUnit> translations, String filename) throws IOException;
 }

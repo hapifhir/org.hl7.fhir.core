@@ -79,11 +79,11 @@ class Convertor_Factory_40_50Test  {
     assertEquals("item", mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(0).getValueAsString());
     assertEquals("patient", mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(1).getValueAsString());
 
-    assertEquals("url", mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(0).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE).getValue().fhirType());
-    assertEquals("url", mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(1).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE).getValue().fhirType());
+    assertNull(mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(0).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE));
+    assertNull(mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(1).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE));
 
-    assertEquals("id", ((org.hl7.fhir.r4.model.UrlType)mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(0).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE).getValue()).getValueAsString());
-    assertEquals("id", ((org.hl7.fhir.r4.model.UrlType)mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(1).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE).getValue()).getValueAsString());
+    assertEquals("item", mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(0).getValueAsString());
+    assertEquals("patient", mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(1).getValueAsString());
 
 
 
@@ -111,7 +111,7 @@ class Convertor_Factory_40_50Test  {
     assertEquals("item", mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(0).getValueIdType().getValueAsString());
     assertEquals("patient", mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(1).getValueIdType().getValueAsString());
 
-    assertNull(mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(0).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE));
-    assertNull(mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(1).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE));
+    assertNull(mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(0).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE));
+    assertNull(mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(1).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE));
   }
 }

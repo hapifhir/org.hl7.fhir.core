@@ -234,7 +234,7 @@ public class TerminologyServiceTests {
     }
     ValidationResult vm;
     if (p.hasParameter("code")) {
-      vm = engine.getContext().validateCode(options.withGuessSystem(), p.getParameterString("system"), p.getParameterString("version"), p.getParameterString("code"), p.getParameterString("display"), vs);
+      vm = engine.getContext().validateCode(options.withGuessSystem(), p.getParameterString("system"), p.getParameterString("systemVersion"), p.getParameterString("code"), p.getParameterString("display"), vs);
     } else if (p.hasParameter("coding")) {
       Coding coding = (Coding) p.getParameterValue("coding");
       vm = engine.getContext().validateCode(options, coding, vs);
