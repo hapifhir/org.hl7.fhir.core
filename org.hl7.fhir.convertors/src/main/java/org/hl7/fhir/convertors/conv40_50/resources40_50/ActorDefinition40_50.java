@@ -59,6 +59,7 @@ public class ActorDefinition40_50 {
       throw new FHIRException("Error in logic: this basic resource is not an ActorDefinition");
     }
     org.hl7.fhir.r5.model.ActorDefinition tgt = new org.hl7.fhir.r5.model.ActorDefinition();
+    //FIXME add ignore
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())

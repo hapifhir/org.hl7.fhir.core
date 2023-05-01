@@ -9,11 +9,14 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageConte
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
 import org.hl7.fhir.r4b.model.SubscriptionTopic;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SubscriptionTopic43_50 {
+
+  private static final List<String> ignoredExtensionUrls = Arrays.asList("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope");
   public static org.hl7.fhir.r4b.model.SubscriptionTopic convertSubscriptionTopic(org.hl7.fhir.r5.model.SubscriptionTopic src) {
     if (src == null)
       return null;
@@ -243,6 +246,7 @@ public class SubscriptionTopic43_50 {
       return null;
     org.hl7.fhir.r5.model.SubscriptionTopic tgt = new org.hl7.fhir.r5.model.SubscriptionTopic();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyResource(src, tgt);
+    //FIXME add ignore
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt);
 
     if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.name")) {
