@@ -131,13 +131,13 @@ public class VersionConvertor_30_50 {
   }
 
   public void copyDomainResource(@Nonnull org.hl7.fhir.dstu3.model.DomainResource src,
-                                 @Nonnull org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
-    resourceConvertor.copyDomainResource(src, tgt);
+                                 @Nonnull org.hl7.fhir.r5.model.DomainResource tgt, String... extensionUrlsToIgnore) throws FHIRException {
+    resourceConvertor.copyDomainResource(src, tgt, extensionUrlsToIgnore);
   }
 
   public void copyDomainResource(@Nonnull org.hl7.fhir.r5.model.DomainResource src,
-                                 @Nonnull org.hl7.fhir.dstu3.model.DomainResource tgt) throws FHIRException {
-    resourceConvertor.copyDomainResource(src, tgt);
+                                 @Nonnull org.hl7.fhir.dstu3.model.DomainResource tgt, String... extensionUrlsToIgnore) throws FHIRException {
+    resourceConvertor.copyDomainResource(src, tgt, extensionUrlsToIgnore);
   }
 
   public void copyElement(@Nonnull org.hl7.fhir.dstu3.model.Element src,
