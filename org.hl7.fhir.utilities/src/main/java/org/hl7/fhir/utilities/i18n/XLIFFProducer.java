@@ -11,6 +11,8 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -132,4 +134,33 @@ public class XLIFFProducer extends LanguageFileProducer {
   public int fileCount() {
     return filecount;
   }
+  
+
+
+  protected void ln(StringBuilder xml, String line) {
+    xml.append(line+"\r\n");  
+  }
+  
+  @Override
+  public void produce(String id, String baseLang, String targetLang, List<TranslationUnit> translations, String filename) throws IOException {
+    StringBuilder xml = new StringBuilder();
+      ln(xml, "<?xml version=\"1.0\" ?>\r\n");
+      ln(xml, "<xliff xmlns=\"urn:oasis:names:tc:xliff:document:2.0\" version=\"2.0\">");
+      ln(xml, "  <file source-language=\""+baseLang+"\" target-language=\""+targetLang+"\" id=\""+id+"\" original=\"Resource "+id+"\" datatype=\"KEYVALUEJSON\">");
+      ln(xml, "    <body>");
+      for (TranslationUnit tu : translations) {
+        ln(xml, "      <trans-unit id=\""+id+"\" resname=\""+tu.getContext()+"\">");
+        ln(xml, "        <source>"+Utilities.escapeXml(tu.getSrcText())+"</source>");
+        ln(xml, "        <target>"+Utilities.escapeXml(tu.getTgtText())+"</target>");
+        ln(xml, "      </trans-unit>");
+      }
+    
+      ln(xml, "    </body>");
+      ln(xml, "  </file>");
+      ln(xml, "</xliff>");
+    TextFile.stringToFile(xml.toString(), Utilities.path(getFolder(), filename));
+  }
+
+  
+  
 }
