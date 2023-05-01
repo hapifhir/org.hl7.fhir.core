@@ -730,7 +730,7 @@ public class Utilities {
 
 
   public static String stripBOM(String string) {
-    return string.replace("\uFEFF", "");
+    return string == null ? null : string.replace("\uFEFF", "");
   }
 
 
