@@ -24,7 +24,6 @@ public class CapabilityStatement30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.CapabilityStatement tgt = new org.hl7.fhir.dstu3.model.CapabilityStatement();
-    //FIXME add ignore
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
     if (src.hasUrl())
       tgt.setUrlElement(Uri30_40.convertUri(src.getUrlElement()));
