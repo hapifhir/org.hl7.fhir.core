@@ -20,6 +20,7 @@ import org.hl7.fhir.utilities.i18n.XLIFFProducer.XLiffLanguageProducerLanguageSe
 public class PoGetTextProducer extends LanguageFileProducer {
 
   private int filecount;
+  private boolean incLangInFilename;
 
   public PoGetTextProducer(String folder) {
     super(folder);
@@ -144,8 +145,38 @@ public class PoGetTextProducer extends LanguageFileProducer {
   }
 
   private String getFileName(String id, String baseLang, String targetLang) throws IOException {
-    return Utilities.path(getFolder(), id+"-"+baseLang+"-"+targetLang+".po");
+    return Utilities.path(getFolder(), id+(incLangInFilename ? "-"+baseLang+"-"+targetLang+".po" : ""));
   }
 
+  public boolean isIncLangInFilename() {
+    return incLangInFilename;
+  }
+
+  public void setIncLangInFilename(boolean incLangInFilename) {
+    this.incLangInFilename = incLangInFilename;
+  }
+
+  protected void ln(StringBuilder po, String line) {
+    po.append(line+"\r\n");  
+  }
+  
+  @Override
+  public void produce(String id, String baseLang, String targetLang, List<TranslationUnit> translations, String filename) throws IOException {
+    StringBuilder po = new StringBuilder();
+    ln(po, "# "+baseLang+" -> "+targetLang);
+    ln(po, "");
+    for (TranslationUnit tu : translations) {
+      ln(po, "#: "+tu.getContext());
+      //    if (context != null) {
+      //      ln("#. "+context);
+      //    }
+      ln(po, "msgid \""+tu.getSrcText()+"\"");
+      ln(po, "msgstr \""+(tu.getTgtText() == null ? "" : tu.getTgtText())+"\"");
+      ln(po, "");
+    }
+    TextFile.stringToFile(po.toString(), Utilities.path(getFolder(), filename));
+  }
+
+  
 
 }

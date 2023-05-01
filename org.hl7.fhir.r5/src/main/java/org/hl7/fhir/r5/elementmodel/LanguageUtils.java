@@ -1,12 +1,19 @@
 package org.hl7.fhir.r5.elementmodel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.checkerframework.checker.units.qual.cd;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer;
@@ -28,6 +35,12 @@ import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
  *  importFromTranslations =  -langTransform import -src {src} -tgt {tgt} -dest {dest}
  */
 public class LanguageUtils {
+
+  public static final List<String> TRANSLATION_SUPPLEMENT_RESOURCE_TYPES = Arrays.asList("CodeSystem", "StructureDefinition");
+
+  private static final String ORPHAN_TRANSLATIONS_NAME = "translations.orphans";
+
+  private static final String SUPPLEMENT_NAME = "translations.supplement";
 
   IWorkerContext context;
   private List<String> crlist;
@@ -184,5 +197,85 @@ public class LanguageUtils {
 
   public static boolean langsMatch(String dstLang, String srcLang) {
     return dstLang == null ? false : dstLang.equals(srcLang);
+  }
+
+  public static void fillSupplement(CodeSystem cs, List<TranslationUnit> list) {
+    cs.setUserData(SUPPLEMENT_NAME, "true");
+    for (TranslationUnit tu : list) {
+      ConceptDefinitionComponent cd = CodeSystemUtilities.getCode(cs, tu.getContext());
+      if (cd != null && cd.hasDisplay() && cd.getDisplay().equals(tu.getSrcText())) {
+        cd.addDesignation().setLanguage(tu.getLanguage()).setValue(tu.getTgtText());
+      } else {
+        addOrphanTranslation(cs, tu);
+      }
+    }    
+  }
+
+  private static void addOrphanTranslation(CodeSystem cs, TranslationUnit tu) {
+    List<TranslationUnit> list = (List<TranslationUnit>) cs.getUserData(ORPHAN_TRANSLATIONS_NAME);
+    if (list == null) {
+      list = new ArrayList<>();
+      cs.setUserData(ORPHAN_TRANSLATIONS_NAME, list);
+    }
+    list.add(tu);
+  }
+
+  public static String nameForLang(String lang) {
+    // todo: replace with structures from loading languages properly
+    switch (lang) {
+    case "en" : return "English";
+    case "de" : return "German";
+    case "es" : return "Spanish";
+    case "nl" : return "Dutch";
+    }
+    return Utilities.capitalize(lang);
+  }
+
+  public static String titleForLang(String lang) {
+    // todo: replace with structures from loading languages properly
+    switch (lang) {
+    case "en" : return "English";
+    case "de" : return "German";
+    case "es" : return "Spanish";
+    case "nl" : return "Dutch";
+    }
+    return Utilities.capitalize(lang);
+  }
+
+  public static boolean handlesAsResource(Resource resource) {
+    return (resource instanceof CodeSystem && resource.hasUserData(SUPPLEMENT_NAME));
+  }
+
+  public static boolean handlesAsElement(Element element) {
+    return false; // for now...
+  }
+
+  public static List<TranslationUnit> generateTranslations(Resource res, String lang) {
+    List<TranslationUnit> list = new ArrayList<>();
+    CodeSystem cs = (CodeSystem) res;
+    for (ConceptDefinitionComponent cd : cs.getConcept()) {
+      generateTranslations(list, cd, lang);
+    }
+    return list;
+  }
+
+  private static void generateTranslations(List<TranslationUnit> list, ConceptDefinitionComponent cd, String lang) {
+    String code = cd.getCode();
+    String display = cd.getDisplay();
+    String target = null;
+    for (ConceptDefinitionDesignationComponent d : cd.getDesignation()) {
+      if (target == null && !d.hasUse() && d.hasLanguage() && lang.equals(d.getLanguage())) {
+        target = d.getValue();
+      }
+    }
+    for (ConceptDefinitionDesignationComponent d : cd.getDesignation()) {
+      if (target == null && d.hasLanguage() && lang.equals(d.getLanguage())) {
+        target = d.getValue();
+      }
+    }
+    list.add(new TranslationUnit(lang, code, display, target));
+    for (ConceptDefinitionComponent cd1 : cd.getConcept()) {
+      generateTranslations(list, cd1, lang);
+    }
   }
 }
