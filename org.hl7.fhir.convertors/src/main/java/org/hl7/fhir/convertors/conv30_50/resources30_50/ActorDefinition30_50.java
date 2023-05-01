@@ -50,6 +50,50 @@ import org.hl7.fhir.r5.model.UsageContext;
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
 public class ActorDefinition30_50 {
 
+  public static final String URL_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.url";
+  public static final String VERSION_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.version";
+  public static final String NAME_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.name";
+  public static final String TITLE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.title";
+  public static final String STATUS_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.status";
+  public static final String EXPERIMENTAL_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.experimental";
+  public static final String DATE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.date";
+  public static final String PUBLISHER_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.publisher";
+  public static final String CONTACT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.contact";
+  public static final String DESCRIPTION_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.description";
+  public static final String USE_CONTEXT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.useContext";
+  public static final String JURISDICTION_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.jurisdiction";
+  public static final String PURPOSE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.purpose";
+  public static final String COPYRIGHT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.copyright";
+  public static final String COPYRIGHT_LABEL_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.copyrightLabel";
+  public static final String TYPE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.type";
+  public static final String DOCUMENTATION_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.documentation";
+  public static final String REFERENCE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.reference";
+  public static final String CAPABILITIES_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.capabilities";
+  public static final String DERIVED_FROM_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.derivedFrom";
+
+  private static final String[] IGNORED_EXTENSION_URLS = new String[]{
+    URL_EXTENSION_URL,
+    VERSION_EXTENSION_URL,
+    NAME_EXTENSION_URL,
+    TITLE_EXTENSION_URL,
+    STATUS_EXTENSION_URL,
+    EXPERIMENTAL_EXTENSION_URL,
+    DATE_EXTENSION_URL,
+    PUBLISHER_EXTENSION_URL,
+    CONTACT_EXTENSION_URL,
+    DESCRIPTION_EXTENSION_URL,
+    USE_CONTEXT_EXTENSION_URL,
+    JURISDICTION_EXTENSION_URL,
+    PURPOSE_EXTENSION_URL,
+    COPYRIGHT_EXTENSION_URL,
+    COPYRIGHT_LABEL_EXTENSION_URL,
+    TYPE_EXTENSION_URL,
+    DOCUMENTATION_EXTENSION_URL,
+    REFERENCE_EXTENSION_URL,
+    CAPABILITIES_EXTENSION_URL,
+    DERIVED_FROM_EXTENSION_URL
+  };
+
   public static org.hl7.fhir.r5.model.ActorDefinition convertActorDefinition(org.hl7.fhir.dstu3.model.Basic src) throws FHIRException {
     if (src == null)
       return null;
@@ -57,70 +101,70 @@ public class ActorDefinition30_50 {
       throw new FHIRException("Error in logic: this basic resource is not an ActorDefinition");
     }
     org.hl7.fhir.r5.model.ActorDefinition tgt = new org.hl7.fhir.r5.model.ActorDefinition();
-    //FIXME add ignore
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
+
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt, IGNORED_EXTENSION_URLS);
     
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
 
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.url")) {
-      tgt.setUrlElement(Uri30_50.convertUri((org.hl7.fhir.dstu3.model.UriType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.url").getValue()));
+    if (src.hasExtension(URL_EXTENSION_URL)) {
+      tgt.setUrlElement(Uri30_50.convertUri((org.hl7.fhir.dstu3.model.UriType) src.getExtensionByUrl(URL_EXTENSION_URL).getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.version")) {
-      tgt.setVersionElement(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.version").getValue()));
+    if (src.hasExtension(VERSION_EXTENSION_URL)) {
+      tgt.setVersionElement(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl(VERSION_EXTENSION_URL).getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.name")) {
-      tgt.setNameElement(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.name").getValue()));
+    if (src.hasExtension(NAME_EXTENSION_URL)) {
+      tgt.setNameElement(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl(NAME_EXTENSION_URL).getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.title")) {
-      tgt.setTitleElement(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.title").getValue()));
+    if (src.hasExtension(TITLE_EXTENSION_URL)) {
+      tgt.setTitleElement(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl(TITLE_EXTENSION_URL).getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.status")) {
-      tgt.setStatus(PublicationStatus.fromCode(src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.status").getValue().primitiveValue()));
+    if (src.hasExtension(STATUS_EXTENSION_URL)) {
+      tgt.setStatus(PublicationStatus.fromCode(src.getExtensionByUrl(STATUS_EXTENSION_URL).getValue().primitiveValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.experimental")) {
-      tgt.setExperimentalElement(Boolean30_50.convertBoolean((org.hl7.fhir.dstu3.model.BooleanType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.experimental").getValue()));
+    if (src.hasExtension(EXPERIMENTAL_EXTENSION_URL)) {
+      tgt.setExperimentalElement(Boolean30_50.convertBoolean((org.hl7.fhir.dstu3.model.BooleanType) src.getExtensionByUrl(EXPERIMENTAL_EXTENSION_URL).getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.date")) {
-      tgt.setDateElement(DateTime30_50.convertDateTime((org.hl7.fhir.dstu3.model.DateTimeType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.date").getValue()));
+    if (src.hasExtension(DATE_EXTENSION_URL)) {
+      tgt.setDateElement(DateTime30_50.convertDateTime((org.hl7.fhir.dstu3.model.DateTimeType) src.getExtensionByUrl(DATE_EXTENSION_URL).getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.publisher")) {
-      tgt.setPublisherElement(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.publisher").getValue()));
+    if (src.hasExtension(PUBLISHER_EXTENSION_URL)) {
+      tgt.setPublisherElement(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl(PUBLISHER_EXTENSION_URL).getValue()));
     }
-    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.contact")) {
+    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl(CONTACT_EXTENSION_URL)) {
       tgt.addContact(ContactDetail30_50.convertContactDetail((org.hl7.fhir.dstu3.model.ContactDetail) ext.getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.description")) {
-      tgt.setPublisherElement(MarkDown30_50.convertMarkdown((org.hl7.fhir.dstu3.model.MarkdownType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.description").getValue()));
+    if (src.hasExtension(DESCRIPTION_EXTENSION_URL)) {
+      tgt.setPublisherElement(MarkDown30_50.convertMarkdown((org.hl7.fhir.dstu3.model.MarkdownType) src.getExtensionByUrl(DESCRIPTION_EXTENSION_URL).getValue()));
     }
-    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.useContext")) {
+    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl(USE_CONTEXT_EXTENSION_URL)) {
       tgt.addUseContext(UsageContext30_50.convertUsageContext((org.hl7.fhir.dstu3.model.UsageContext) ext.getValue()));
     }
-    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.jurisdiction")) {
+    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl(JURISDICTION_EXTENSION_URL)) {
       tgt.addJurisdiction(CodeableConcept30_50.convertCodeableConcept((org.hl7.fhir.dstu3.model.CodeableConcept) ext.getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.purpose")) {
-      tgt.setPurposeElement(MarkDown30_50.convertMarkdown((org.hl7.fhir.dstu3.model.MarkdownType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.purpose").getValue()));
+    if (src.hasExtension(PURPOSE_EXTENSION_URL)) {
+      tgt.setPurposeElement(MarkDown30_50.convertMarkdown((org.hl7.fhir.dstu3.model.MarkdownType) src.getExtensionByUrl(PURPOSE_EXTENSION_URL).getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.copyright")) {
-      tgt.setCopyrightElement(MarkDown30_50.convertMarkdown((org.hl7.fhir.dstu3.model.MarkdownType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.copyright").getValue()));
+    if (src.hasExtension(COPYRIGHT_EXTENSION_URL)) {
+      tgt.setCopyrightElement(MarkDown30_50.convertMarkdown((org.hl7.fhir.dstu3.model.MarkdownType) src.getExtensionByUrl(COPYRIGHT_EXTENSION_URL).getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.copyrightLabel")) {
-      tgt.setCopyrightLabelElement(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.copyrightLabel").getValue()));
+    if (src.hasExtension(COPYRIGHT_LABEL_EXTENSION_URL)) {
+      tgt.setCopyrightLabelElement(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl(COPYRIGHT_LABEL_EXTENSION_URL).getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.type")) {
-      tgt.setType(ExampleScenarioActorType.fromCode(src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.type").getValue().primitiveValue()));
+    if (src.hasExtension(TYPE_EXTENSION_URL)) {
+      tgt.setType(ExampleScenarioActorType.fromCode(src.getExtensionByUrl(TYPE_EXTENSION_URL).getValue().primitiveValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.documentation")) {
-      tgt.setDocumentationElement(MarkDown30_50.convertMarkdown((org.hl7.fhir.dstu3.model.MarkdownType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.documentation").getValue()));
+    if (src.hasExtension(DOCUMENTATION_EXTENSION_URL)) {
+      tgt.setDocumentationElement(MarkDown30_50.convertMarkdown((org.hl7.fhir.dstu3.model.MarkdownType) src.getExtensionByUrl(DOCUMENTATION_EXTENSION_URL).getValue()));
     }
-    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.reference")) {
+    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl(REFERENCE_EXTENSION_URL)) {
       tgt.getReference().add(Uri30_50.convertUrl((org.hl7.fhir.dstu3.model.UriType) ext.getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.capabilities")) {
-      tgt.setCapabilitiesElement(Uri30_50.convertCanonical((org.hl7.fhir.dstu3.model.UriType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.capabilities").getValue()));
+    if (src.hasExtension(CAPABILITIES_EXTENSION_URL)) {
+      tgt.setCapabilitiesElement(Uri30_50.convertCanonical((org.hl7.fhir.dstu3.model.UriType) src.getExtensionByUrl(CAPABILITIES_EXTENSION_URL).getValue()));
     }
-    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.derivedFrom")) {
+    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl(DERIVED_FROM_EXTENSION_URL)) {
       tgt.getDerivedFrom().add(Uri30_50.convertCanonical((org.hl7.fhir.dstu3.model.UriType) ext.getValue()));
     }
     return tgt;
@@ -136,64 +180,64 @@ public class ActorDefinition30_50 {
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
     if (src.hasUrl()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.url", Uri30_50.convertUri(src.getUrlElement()));
+      tgt.addExtension(URL_EXTENSION_URL, Uri30_50.convertUri(src.getUrlElement()));
     }
     if (src.hasVersion()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.version", String30_50.convertString(src.getVersionElement()));
+      tgt.addExtension(VERSION_EXTENSION_URL, String30_50.convertString(src.getVersionElement()));
     }
     if (src.hasName()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.name", String30_50.convertString(src.getNameElement()));
+      tgt.addExtension(NAME_EXTENSION_URL, String30_50.convertString(src.getNameElement()));
     }
     if (src.hasTitle()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.title", String30_50.convertString(src.getTitleElement()));
+      tgt.addExtension(TITLE_EXTENSION_URL, String30_50.convertString(src.getTitleElement()));
     }
     if (src.hasStatus()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.status", new org.hl7.fhir.dstu3.model.CodeType(src.getStatus().toCode()));
+      tgt.addExtension(STATUS_EXTENSION_URL, new org.hl7.fhir.dstu3.model.CodeType(src.getStatus().toCode()));
     }
     if (src.hasExperimental()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.experimental", Boolean30_50.convertBoolean(src.getExperimentalElement()));
+      tgt.addExtension(EXPERIMENTAL_EXTENSION_URL, Boolean30_50.convertBoolean(src.getExperimentalElement()));
     }
     if (src.hasDate()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.date", DateTime30_50.convertDateTime(src.getDateElement()));
+      tgt.addExtension(DATE_EXTENSION_URL, DateTime30_50.convertDateTime(src.getDateElement()));
     }
     if (src.hasPublisher()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.publisher", String30_50.convertString(src.getPublisherElement()));
+      tgt.addExtension(PUBLISHER_EXTENSION_URL, String30_50.convertString(src.getPublisherElement()));
     }
     for (ContactDetail cd : src.getContact()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.contact", ContactDetail30_50.convertContactDetail(cd));
+      tgt.addExtension(CONTACT_EXTENSION_URL, ContactDetail30_50.convertContactDetail(cd));
     }
     if (src.hasDescription()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.description", MarkDown30_50.convertMarkdown(src.getDescriptionElement()));
+      tgt.addExtension(DESCRIPTION_EXTENSION_URL, MarkDown30_50.convertMarkdown(src.getDescriptionElement()));
     }
     for (UsageContext cd : src.getUseContext()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.useContext", UsageContext30_50.convertUsageContext(cd));
+      tgt.addExtension(USE_CONTEXT_EXTENSION_URL, UsageContext30_50.convertUsageContext(cd));
     }
     for (CodeableConcept cd : src.getJurisdiction()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.jurisdiction", CodeableConcept30_50.convertCodeableConcept(cd));
+      tgt.addExtension(JURISDICTION_EXTENSION_URL, CodeableConcept30_50.convertCodeableConcept(cd));
     }
     if (src.hasPurpose()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.purpose", MarkDown30_50.convertMarkdown(src.getPurposeElement()));
+      tgt.addExtension(PURPOSE_EXTENSION_URL, MarkDown30_50.convertMarkdown(src.getPurposeElement()));
     }
     if (src.hasCopyright()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.copyright", MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
+      tgt.addExtension(COPYRIGHT_EXTENSION_URL, MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
     }
     if (src.hasCopyrightLabel()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.copyrightLabel", String30_50.convertString(src.getCopyrightLabelElement()));
+      tgt.addExtension(COPYRIGHT_LABEL_EXTENSION_URL, String30_50.convertString(src.getCopyrightLabelElement()));
     }
     if (src.hasType()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.type", new org.hl7.fhir.dstu3.model.CodeType(src.getType().toCode()));
+      tgt.addExtension(TYPE_EXTENSION_URL, new org.hl7.fhir.dstu3.model.CodeType(src.getType().toCode()));
     }
     if (src.hasDocumentation()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.documentation", MarkDown30_50.convertMarkdown(src.getDocumentationElement()));
+      tgt.addExtension(DOCUMENTATION_EXTENSION_URL, MarkDown30_50.convertMarkdown(src.getDocumentationElement()));
     }   
     for (UrlType ref : src.getReference()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.reference", Uri30_50.convertUrl(ref));
+      tgt.addExtension(REFERENCE_EXTENSION_URL, Uri30_50.convertUrl(ref));
     }
     if (src.hasCapabilities()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.capabilities", Uri30_50.convertCanonical(src.getCapabilitiesElement()));
+      tgt.addExtension(CAPABILITIES_EXTENSION_URL, Uri30_50.convertCanonical(src.getCapabilitiesElement()));
     }   
     for (CanonicalType ct : src.getDerivedFrom()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.derivedFrom", Uri30_50.convertCanonical(ct));
+      tgt.addExtension(DERIVED_FROM_EXTENSION_URL, Uri30_50.convertCanonical(ct));
     }
 
     return tgt;
