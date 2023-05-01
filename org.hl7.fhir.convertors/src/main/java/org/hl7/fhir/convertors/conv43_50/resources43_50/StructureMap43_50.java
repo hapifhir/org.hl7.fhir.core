@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import java.util.stream.Collectors;
 
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
@@ -801,25 +802,17 @@ public class StructureMap43_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.DataType convertVariableStringToParameterDataType(org.hl7.fhir.r4b.model.StringType it) {
-    org.hl7.fhir.r4b.model.Extension originalElementType = it.getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE);
-
-    return originalElementType != null ? convertVariableStringToParameterDataType(it, originalElementType) : convertVariableStringToGuessedParameterDataType(it);
-  }
-
-  public static org.hl7.fhir.r5.model.DataType convertVariableStringToParameterDataType(org.hl7.fhir.r4b.model.StringType it, org.hl7.fhir.r4b.model.Extension originalElementType) {
-    if (!(originalElementType.getValue() instanceof org.hl7.fhir.r4b.model.UrlType)) {
-      throw new FHIRException("");
-    }
-    org.hl7.fhir.r4b.model.UrlType url = (org.hl7.fhir.r4b.model.UrlType)originalElementType.getValue();
-    switch (url.getValueAsString()) {
-      case "id" : return  it.hasValue() ? new org.hl7.fhir.r5.model.IdType(it.getValueAsString()) : new org.hl7.fhir.r5.model.IdType();
-      case "string" : return  it.hasValue() ? new org.hl7.fhir.r5.model.StringType(it.getValueAsString()) : new org.hl7.fhir.r5.model.StringType();
-      case "integer" : return  it.hasValue() ? new org.hl7.fhir.r5.model.IntegerType(it.getValueAsString()) : new org.hl7.fhir.r5.model.IntegerType();
-      case "decimal" : return  it.hasValue() ? new org.hl7.fhir.r5.model.DecimalType(it.getValueAsString()) : new org.hl7.fhir.r5.model.DecimalType();
-      case "boolean" : return  it.hasValue() ? new org.hl7.fhir.r5.model.BooleanType(it.getValueAsString()) : new org.hl7.fhir.r5.model.BooleanType();
-    }
-    return null;
+  public static org.hl7.fhir.r5.model.DataType convertVariableStringToParameterDataType(org.hl7.fhir.r4b.model.StringType src) {
+    if (src.hasExtension(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE)) {
+      return ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE).getValue()); 
+    } else {
+      org.hl7.fhir.r5.model.IdType tgt = new org.hl7.fhir.r5.model.IdType();
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.hasValue()) {
+        tgt.setValueAsString(src.getValueAsString());
+      }
+      return tgt;
+    } 
   }
 
   public static org.hl7.fhir.r5.model.DataType convertVariableStringToGuessedParameterDataType(org.hl7.fhir.r4b.model.StringType it) {
@@ -860,24 +853,12 @@ public class StructureMap43_50 {
 
   public static org.hl7.fhir.r4b.model.StringType convertStructureMapGroupRuleTargetParameterComponentToString(StructureMapGroupRuleTargetParameterComponent src) {
     org.hl7.fhir.r4b.model.StringType tgt = new org.hl7.fhir.r4b.model.StringType();
-    org.hl7.fhir.instance.model.api.IPrimitiveType primitiveType;
-      if (src.hasValueIdType()) {
-        primitiveType = src.getValueIdType();
-      } else if (src.hasValueStringType()) {
-        primitiveType = src.getValueStringType();
-      } else if (src.hasValueIntegerType()) {
-        primitiveType = src.getValueIntegerType();
-      } else if (src.hasValueDecimalType()) {
-        primitiveType = src.getValueDecimalType();
-      } else if (src.hasValueBooleanType()) {
-        primitiveType = src.getValueBooleanType();
-      } else {
-        throw new FHIRException("Unrecognized primitive type");
-      }
-      tgt.setValueAsString(primitiveType.getValueAsString());
-      ToolingExtensions.addUrlExtension(tgt, ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE, primitiveType.fhirType());
-
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+    if (src.hasValueIdType()) {
+      tgt.setValueAsString(src.getValueIdType().getValueAsString());
+    } else if (src.hasValue()) {
+      tgt.addExtension(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE,ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getValue())); 
+    }
     return tgt;
   }
 }
