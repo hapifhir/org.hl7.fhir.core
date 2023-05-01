@@ -789,6 +789,9 @@ public class StructureMapValidator extends BaseValidator {
                   ok = checkParamExistsOrPrimitive(errors, params.get(1).getNamedChild("value"), "cc", "parameter "+i, target, variables, stack, ok, false);
                 }
                 break;                
+              case "uuid" :
+                ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 0, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
+                break;                
               case "translate":
                 ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 3, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
                 Element srcE = params.size() > 0 ? params.get(0).getNamedChild("value") : null;
