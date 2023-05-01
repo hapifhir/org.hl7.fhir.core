@@ -157,8 +157,8 @@ public class ToolingExtensions {
   public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type";
   public static final String EXT_JSON_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type";
 
-  public static final String EXT_ORIGINAL_ITEM_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/original-item-type";
-  public static final String EXT_ORIGINAL_ELEMENT_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/original-item-type";
+  public static final String EXT_ORIGINAL_ITEM_TYPE = "http://hl7.org/fhir/4.0/StructureDefinition/extension-Questionnaire.item.type";
+  public static final String EXT_ORIGINAL_VARIABLE_TYPE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-StructureMap.group.rule.dependent.parameter";
 
 
   // specific extension helpers
