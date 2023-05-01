@@ -63,6 +63,7 @@ public class Requirements30_50 {
       throw new FHIRException("Error in logic: this basic resource is not an Requirements");
     }
     org.hl7.fhir.r5.model.Requirements tgt = new org.hl7.fhir.r5.model.Requirements();
+    //FIXME add ignore
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
     
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
