@@ -115,6 +115,7 @@ public interface IWorkerContext {
     private ConceptDefinitionComponent definition;
     private String preferredDisplay;
     private String system;
+    private String version;
     private IssueSeverity severity;
     private String message;
     private TerminologyServiceErrorClass errorClass;
@@ -136,16 +137,18 @@ public interface IWorkerContext {
       }
     }
 
-    public ValidationResult(String system, ConceptDefinitionComponent definition, String preferredDisplay) {
+    public ValidationResult(String system, String version, ConceptDefinitionComponent definition, String preferredDisplay) {
       this.system = system;
+      this.version = version;
       this.definition = definition;
       this.preferredDisplay = preferredDisplay;
     }
 
-    public ValidationResult(IssueSeverity severity, String message, String system, ConceptDefinitionComponent definition, String preferredDisplay, List<OperationOutcomeIssueComponent>  issues) {
+    public ValidationResult(IssueSeverity severity, String message, String system, String version, ConceptDefinitionComponent definition, String preferredDisplay, List<OperationOutcomeIssueComponent>  issues) {
       this.severity = severity;
       this.message = message;
       this.system = system;
+      this.version = version;
       this.definition = definition;
       this.preferredDisplay = preferredDisplay;
       if (issues != null) {
@@ -168,6 +171,10 @@ public interface IWorkerContext {
 
     public String getSystem() {
       return system;
+    }
+
+    public String getVersion() {
+      return version;
     }
 
     public String getDisplay() {

@@ -134,6 +134,11 @@ public class TerminologyServiceTests {
     if (fo.exists()) {
       fo.delete();
     }
+    if (setup.test.has("profile")) {
+      engine.getContext().setExpansionProfile((org.hl7.fhir.r5.model.Parameters) loadResource(setup.test.asString("profile")));
+    } else {
+      engine.getContext().setExpansionProfile((org.hl7.fhir.r5.model.Parameters) loadResource("parameters-default.json"));
+    }
     if (setup.test.asString("operation").equals("expand")) {
       expand(engine, req, resp, fp);
     } else if (setup.test.asString("operation").equals("validate-code")) {
@@ -258,6 +263,9 @@ public class TerminologyServiceTests {
     }
     if (vm.getMessage() != null) {
       res.addParameter("message", vm.getMessage());
+    }
+    if (vm.getVersion() != null) {
+      res.addParameter("version", vm.getVersion());
     }
     if (vm.getDisplay() != null) {
       res.addParameter("display", vm.getDisplay());
