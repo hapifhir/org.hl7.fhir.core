@@ -210,9 +210,9 @@ public class MarkDownProcessor {
    * @return
    */
   public static String preProcess(String source) {
-    // Escape all open and closing tags ('<' or '</', followed by an ASCII letter, followed by ASCII letters, digits
-    // and/or hyphens).
-    String processed = source.replaceAll("</?([A-Za-z][A-Za-z0-9-]*[\\s>])", "\\\\<$1");
+    // Escape all unescaped open and closing tags ('<' or '</', followed by an ASCII letter, followed by ASCII 
+    // letters, digits and/or hyphens).
+    String processed = source.replaceAll("(?<!\\\\)<(\\/)?([A-Za-z][A-Za-z0-9-]*[\\s>])", "\\\\<$1$2");
 
     // Escape all other HTML tags: HTML comments, processing instructions, declarations and CDATA sections -- 
     // everything starting with '<?' or '<!'.
