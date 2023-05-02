@@ -18,6 +18,9 @@ public class MarkdownPreprocessorTesting {
   public void testHTML() throws IOException {
     assertEquals(MarkDownProcessor.preProcess("<type>"), "\\<type>");
     assertEquals(MarkDownProcessor.preProcess("\\<type>"), "\\<type>");
+    assertEquals(MarkDownProcessor.preProcess("</type>"), "\\</type>");
+    assertEquals(MarkDownProcessor.preProcess("<http://hl7.org>"), "<http://hl7.org>");
+    assertEquals(MarkDownProcessor.preProcess("\\<http://hl7.org>"), "\\<http://hl7.org>");
   }
 
 
