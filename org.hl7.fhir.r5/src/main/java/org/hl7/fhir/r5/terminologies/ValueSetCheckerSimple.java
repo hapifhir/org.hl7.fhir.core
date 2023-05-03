@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.ContextUtilities;
@@ -252,6 +253,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
   public ValidationResult validateCode(String path, CodeableConcept code) throws FHIRException {
     // first, we validate the codings themselves
     ValidationProcessInfo info = new ValidationProcessInfo();
+
     if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
       int i = 0;
       for (Coding c : code.getCoding()) {
@@ -273,6 +275,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
             res = context.validateCode(options.withNoClient(), c, null);
           }
         } else {
+          c.setUserData("cs", cs);
           res = validateCode(path+".coding["+i+"]", c, cs);
         }
         info.getIssues().addAll(res.getIssues());
@@ -309,6 +312,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         cd.setDisplay(lookupDisplay(foundCoding));
         res.setDefinition(cd);
         res.setSystem(foundCoding.getSystem());
+        res.setVersion(foundCoding.hasVersion() ? foundCoding.getVersion() : ((CodeSystem) foundCoding.getUserData("cs")).getVersion());
         res.setDisplay(cd.getDisplay());
       }
       return res;
@@ -318,11 +322,11 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       String disp = lookupDisplay(foundCoding);
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(disp);
-      return new ValidationResult(IssueSeverity.WARNING, info.summary(), foundCoding.getSystem(), foundCoding.getVersion(), cd, disp, info.getIssues());
+      return new ValidationResult(IssueSeverity.WARNING, info.summary(), foundCoding.getSystem(), foundCoding.hasVersion() ? foundCoding.getVersion() : ((CodeSystem) foundCoding.getUserData("cs")).getVersion(), cd, disp, info.getIssues());
     } else {
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(lookupDisplay(foundCoding));
-      return new ValidationResult(foundCoding.getSystem(), foundCoding.getVersion(), cd, getPreferredDisplay(cd, null));
+      return new ValidationResult(foundCoding.getSystem(), foundCoding.hasVersion() ? foundCoding.getVersion() : ((CodeSystem) foundCoding.getUserData("cs")).getVersion(), cd, getPreferredDisplay(cd, null));
     }
   }
 
@@ -583,9 +587,9 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     }
     for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
       if (inc.hasSystem() && inc.getSystem().equals(code.getSystem())) {
+        vi.setComposeVersion(inc.getVersion());
         for (ConceptReferenceComponent cc : inc.getConcept()) {
           if (cc.hasCode() && cc.getCode().equals(code.getCode())) {
-            vi.setComposeVersion(inc.getVersion());
             return true;
           }
         }

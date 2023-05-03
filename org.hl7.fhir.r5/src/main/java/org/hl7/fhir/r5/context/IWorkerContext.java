@@ -193,6 +193,10 @@ public interface IWorkerContext {
       this.system = system;
     }
 
+    public void setVersion(String version) {
+      this.version = version;
+    }
+
     public String getCode() {
       return definition == null ? null : definition.getCode();
     }

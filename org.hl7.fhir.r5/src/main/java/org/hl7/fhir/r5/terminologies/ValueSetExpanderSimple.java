@@ -104,6 +104,7 @@ import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
@@ -688,7 +689,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       throw fail("Unable to expand imported value set "+vs.getUrl()+": " + vso.getError());
     }
     if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
-      CanonicalType u = new CanonicalType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
+      UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
       if (!existsInParams(exp.getParameter(), "version", u))
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
     }
@@ -801,7 +802,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     }
     ValueSet vs = vso.getValueset();
     if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
-      CanonicalType u = new CanonicalType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
+      UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
       if (!existsInParams(exp.getParameter(), "version", u)) {
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
       }
@@ -835,7 +836,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     if (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)
       throw failTSE("Code system " + inc.getSystem().toString() + " is incomplete");
     if (cs.hasVersion() || REPORT_VERSION_ANYWAY) {
-      CanonicalType u = new CanonicalType(cs.getUrl() + (cs.hasVersion() ? "|"+cs.getVersion() : ""));
+      UriType u = new UriType(cs.getUrl() + (cs.hasVersion() ? "|"+cs.getVersion() : ""));
       if (!existsInParams(exp.getParameter(), "version", u))
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
     }
