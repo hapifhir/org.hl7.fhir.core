@@ -260,7 +260,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         if (!c.hasSystem()) {
           info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.UNKNOWN, path, context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE)));
         }
-        CodeSystem cs = resolveCodeSystem(c.getSystem(), c.getVersion());
+        VersionInfo vi = new VersionInfo();
+        checkExpansion(c, vi);
+        checkInclude(c, vi);
+        CodeSystem cs = resolveCodeSystem(c.getSystem(), vi.getVersion(c.getSystem(), c.getVersion()));
         ValidationResult res = null;
         if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
           if (context.isNoTerminologyServer()) {
