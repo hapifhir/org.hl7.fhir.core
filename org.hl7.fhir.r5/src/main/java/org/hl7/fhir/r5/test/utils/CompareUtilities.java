@@ -3,7 +3,7 @@ package org.hl7.fhir.r5.test.utils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.utilities.*;
-
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -245,9 +245,10 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private static String compareObjects(String path, JsonObject expectedJsonObject, JsonObject actualJsonObject) {
+    List<String> optionals = listOptionals(expectedJsonObject);
     for (Map.Entry<String, JsonElement> en : actualJsonObject.entrySet()) {
       String n = en.getKey();
-      if (!n.equals("fhir_comments") && !n.equals("$optional$")) {
+      if (!n.equals("fhir_comments")) {
         if (expectedJsonObject.has(n)) {
           String s = compareNodes(path + '.' + n, expectedJsonObject.get(n), en.getValue());
           if (!Utilities.noString(s))
@@ -258,12 +259,23 @@ public class CompareUtilities extends BaseTestingUtilities {
     }
     for (Map.Entry<String, JsonElement> en : expectedJsonObject.entrySet()) {
       String n = en.getKey();
-      if (!n.equals("fhir_comments") && !n.equals("$optional$")) {
+      if (!n.equals("fhir_comments") && !n.equals("$optional$") && !optionals.contains(n)) {
         if (!actualJsonObject.has(n))
           return "properties differ at " + path + ": missing property " + n;
       }
     }
     return null;
+  }
+
+  private static List<String> listOptionals(JsonObject expectedJsonObject) {
+    List<String> res = new ArrayList<>();
+    if (expectedJsonObject.has("$optional-properties$")) {
+      res.add("$optional-properties$");
+      for (String s : JsonUtilities.strings(expectedJsonObject.getAsJsonArray("$optional-properties$"))) {
+        res.add(s);
+      }
+    }
+    return res;
   }
 
   private static String compareNodes(String path, JsonElement expectedJsonElement, JsonElement actualJsonElement) {

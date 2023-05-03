@@ -614,7 +614,11 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     if (!requiredSupplements.isEmpty()) {
       return new ValueSetExpansionOutcome("Required supplements not found: "+requiredSupplements.toString(), TerminologyServiceErrorClass.BUSINESS_RULE, allErrors);
     }
-
+    if (!expParams.hasParameter("includeDefinition") || !expParams.getParameterBool("includeDefinition")) {
+      focus.setCompose(null);
+      focus.getExtension().clear();
+      focus.setPublisher(null);
+    }
     return new ValueSetExpansionOutcome(focus);
   }
 
