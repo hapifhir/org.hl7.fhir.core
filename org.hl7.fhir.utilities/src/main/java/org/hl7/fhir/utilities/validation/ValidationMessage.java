@@ -522,6 +522,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private boolean criticalSignpost;
   private Date ruleDate;
   public static final String NO_RULE_DATE = null;
+  private boolean matched; // internal use counting matching filters
 
 
   /**
@@ -841,4 +842,14 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   public boolean isError() {
     return level == IssueSeverity.ERROR || level == IssueSeverity.FATAL;
   }
+
+  public boolean isMatched() {
+    return matched;
+  }
+
+  public void setMatched(boolean matched) {
+    this.matched = matched;
+  }
+  
+  
 }

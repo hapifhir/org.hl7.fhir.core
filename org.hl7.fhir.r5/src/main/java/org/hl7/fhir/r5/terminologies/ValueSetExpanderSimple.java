@@ -103,6 +103,7 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
@@ -203,6 +204,8 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       return def.getCode().matches(regex);
     }
   }
+  private static final boolean REPORT_VERSION_ANYWAY = false;
+  
   private List<ValueSetExpansionContainsComponent> codes = new ArrayList<ValueSet.ValueSetExpansionContainsComponent>();
   private List<ValueSetExpansionContainsComponent> roots = new ArrayList<ValueSet.ValueSetExpansionContainsComponent>();
   private Map<String, ValueSetExpansionContainsComponent> map = new HashMap<String, ValueSet.ValueSetExpansionContainsComponent>();
@@ -611,7 +614,11 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     if (!requiredSupplements.isEmpty()) {
       return new ValueSetExpansionOutcome("Required supplements not found: "+requiredSupplements.toString(), TerminologyServiceErrorClass.BUSINESS_RULE, allErrors);
     }
-
+    if (!expParams.hasParameter("includeDefinition") || !expParams.getParameterBool("includeDefinition")) {
+      focus.setCompose(null);
+      focus.getExtension().clear();
+      focus.setPublisher(null);
+    }
     return new ValueSetExpansionOutcome(focus);
   }
 
@@ -685,13 +692,15 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       addErrors(vso.getAllErrors());
       throw fail("Unable to expand imported value set "+vs.getUrl()+": " + vso.getError());
     }
-    if (vs.hasVersion())
-      if (!existsInParams(exp.getParameter(), "version", new UriType(vs.getUrl() + "|" + vs.getVersion())))
-        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(new UriType(vs.getUrl() + "|" + vs.getVersion())));
+    if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
+      UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
+      if (!existsInParams(exp.getParameter(), "version", u))
+        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
+    }
     for (Extension ex : vso.getValueset().getExpansion().getExtension()) {
       if (ex.getUrl().equals(ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
         if (ex.getValue() instanceof BooleanType) {
-          exp.getExtension().add(new Extension(ToolingExtensions.EXT_EXP_TOOCOSTLY).setValue(new UriType(value)));
+          exp.getExtension().add(new Extension(ToolingExtensions.EXT_EXP_TOOCOSTLY).setValue(new CanonicalType(value)));
         } else {
           exp.getExtension().add(ex);
         }
@@ -758,7 +767,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
   private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet) throws ETooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
     inc.checkNoModifiers("Compose.include", "expanding");
     List<ValueSet> imports = new ArrayList<ValueSet>();
-    for (UriType imp : inc.getValueSet()) {
+    for (CanonicalType imp : inc.getValueSet()) {
       imports.add(importValueSet(imp.getValue(), exp, expParams, noInactive, valueSet));
     }
 
@@ -796,9 +805,10 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       throw failTSE("Unable to expand imported value set: " + vso.getError());
     }
     ValueSet vs = vso.getValueset();
-    if (vs.hasVersion()) {
-      if (!existsInParams(exp.getParameter(), "version", new UriType(vs.getUrl() + "|" + vs.getVersion()))) {
-        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(new UriType(vs.getUrl() + "|" + vs.getVersion())));
+    if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
+      UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
+      if (!existsInParams(exp.getParameter(), "version", u)) {
+        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
       }
     }
     for (ValueSetExpansionParameterComponent p : vso.getValueset().getExpansion().getParameter()) {
@@ -829,10 +839,11 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     cs.checkNoModifiers("Code System", "expanding");
     if (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)
       throw failTSE("Code system " + inc.getSystem().toString() + " is incomplete");
-    if (cs.hasVersion())
-      if (!existsInParams(exp.getParameter(), "version", new UriType(cs.getUrl() + "|" + cs.getVersion())))
-        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(new UriType(cs.getUrl() + "|" + cs.getVersion())));
-
+    if (cs.hasVersion() || REPORT_VERSION_ANYWAY) {
+      UriType u = new UriType(cs.getUrl() + (cs.hasVersion() ? "|"+cs.getVersion() : ""));
+      if (!existsInParams(exp.getParameter(), "version", u))
+        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
+    }
     if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
       // special case - add all the code system
       for (ConceptDefinitionComponent def : cs.getConcept()) {
@@ -967,7 +978,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
         return;
       }     
     }
-    exp.addParameter().setName("fragment").setValue(new UriType(url));
+    exp.addParameter().setName("fragment").setValue(new CanonicalType(url));
   }
 
   private void addExampleWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
@@ -977,7 +988,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
         return;
       }     
     }
-    exp.addParameter().setName("example").setValue(new UriType(url));
+    exp.addParameter().setName("example").setValue(new CanonicalType(url));
   }
   
   private List<ConceptDefinitionDesignationComponent> convertDesignations(List<ConceptReferenceDesignationComponent> list) {
