@@ -325,11 +325,21 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       String disp = lookupDisplay(foundCoding);
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(disp);
-      return new ValidationResult(IssueSeverity.WARNING, info.summary(), foundCoding.getSystem(), foundCoding.hasVersion() ? foundCoding.getVersion() : ((CodeSystem) foundCoding.getUserData("cs")).getVersion(), cd, disp, info.getIssues());
+      return new ValidationResult(IssueSeverity.WARNING, info.summary(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues());
     } else {
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(lookupDisplay(foundCoding));
-      return new ValidationResult(foundCoding.getSystem(), foundCoding.hasVersion() ? foundCoding.getVersion() : ((CodeSystem) foundCoding.getUserData("cs")).getVersion(), cd, getPreferredDisplay(cd, null));
+      return new ValidationResult(foundCoding.getSystem(), getVersion(foundCoding), cd, getPreferredDisplay(cd, null));
+    }
+  }
+
+  private String getVersion(Coding c) {
+    if (c.hasVersion()) {
+      return c.getVersion();
+    } else if (c.hasUserData("cs")) {
+      return ((CodeSystem) c.getUserData("cs")).getVersion();
+    } else {
+      return null;
     }
   }
 
