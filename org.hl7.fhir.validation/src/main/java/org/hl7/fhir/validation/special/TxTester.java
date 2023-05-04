@@ -165,11 +165,12 @@ public class TxTester {
     return ok;
   }
 
-  private boolean runTest(JsonObject test, TerminologyClient tx, List<Resource> setup, String filter, JsonArray output) { 
+  private boolean runTest(JsonObject test, TerminologyClient tx, List<Resource> setup, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
     JsonObject outputT = new JsonObject();
     if (output != null) {
       output.add(outputT);
     }
+    Parameters profile = loadProfile(test);
     outputT.add("name", test.asString("name"));
     if (Utilities.noString(filter) || filter.equals("*") || test.asString("name").contains(filter)) {
       System.out.print("  Test "+test.asString("name")+": ");
@@ -186,9 +187,9 @@ public class TxTester {
 
         String msg = null;
         if (test.asString("operation").equals("expand")) {
-          msg = expand(tx, setup, req, resp, fp);
+          msg = expand(tx, setup, req, resp, fp, profile);
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(tx, setup, req, resp, fp);      
+          msg = validate(tx, setup, req, resp, fp, profile);      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -216,14 +217,23 @@ public class TxTester {
     }
   }
 
+  private Parameters loadProfile(JsonObject test) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException {
+    if (test.has("profile")) {        
+      return (Parameters) loader.loadResource(test.asString("profile"));
+    } else {
+      return (Parameters) loader.loadResource("parameters-default.json");
+    }
+  }
+
   private String serverId() throws URISyntaxException {
     return new URI(server).getHost();
   }
 
-  private String expand(TerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp) throws IOException {
+  private String expand(TerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
+    p.getParameter().addAll(profile.getParameter());
     String vsj;
     try {
       ValueSet vs = tx.expandValueset(null, p, null);
@@ -243,10 +253,11 @@ public class TxTester {
     return diff;
   }
 
-  private String validate(TerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp) throws IOException {
+  private String validate(TerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
+    p.getParameter().addAll(profile.getParameter());
     String pj;
     try {
       Parameters po = tx.validateVS(p);
