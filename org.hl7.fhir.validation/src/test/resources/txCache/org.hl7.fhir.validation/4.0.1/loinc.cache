@@ -3,202 +3,105 @@
   "system" : "http://loinc.org",
   "code" : "59408-5",
   "display" : "O2 % BldC Oximetry"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
   "code" : "59408-5",
   "system" : "http://loinc.org",
+  "version" : "2.74",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 25 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry, \"SaO2 % BldA PulseOx\", \"O2 SaO2\" (pl-PL), \"saturacja krwi tlenem\" (pl-PL), \"MFr O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法\" (zh-CN), \"脉搏血氧定量\" (zh-CN), \"脉搏血氧测定\" (zh-CN), \"脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度\" (zh-CN), \"O2-Sättigung\" (de-DE), \"Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso\" (it-IT), \"Oksijen doymuşluğu\" (tr-TR), \"Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия\" (ru-RU), \"Гемоксиметрия Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"O2 SatO2\" (fr-BE)' for the language(s) '--' (from null)"
+  "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 26 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry, \"SaO2 % BldA PulseOx\", \"O2 SaO2\" (pl-PL), \"saturacja krwi tlenem\" (pl-PL), \"MFr O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法\" (zh-CN), \"脉搏血氧定量\" (zh-CN), \"脉搏血氧测定\" (zh-CN), \"脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度\" (zh-CN), \"O2-Sättigung\" (de-DE), \"Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso\" (it-IT), \"Oksijen doymuşluğu\" (tr-TR), \"Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия\" (ru-RU), \"Гемоксиметрия Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"zuurstofsaturatiemeting\" (nl-NL), \"O2 SatO2\" (fr-BE)' for the language(s) '--' (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "2708-6",
   "display" : "Oxygen saturation in Arterial blood"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Oxygen saturation in Arterial blood",
   "code" : "2708-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "3150-0",
   "display" : "Inhaled Oxygen Concentration"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Inhaled oxygen concentration",
   "code" : "3150-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "3151-8",
   "display" : "Flow Rate"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Inhaled oxygen flow rate",
   "code" : "3151-8",
   "system" : "http://loinc.org",
+  "version" : "2.74",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate, \"Inhaled O2 flow rate\", \"O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 体积速率(单位时间)\" (zh-CN), \"单位时间内体积的变化速率\" (zh-CN), \"流量 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 吸入气\" (zh-CN), \"吸入气体\" (zh-CN), \"吸入的空气 所吸入的氧\" (zh-CN), \"已吸入的氧气 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 气 气体类 空气\" (zh-CN), \"Inhaled O2\" (pt-BR), \"vRate\" (pt-BR), \"Volume rate\" (pt-BR), \"Flow\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"IhG\" (pt-BR), \"Inhaled Gas\" (pt-BR), \"Inspired\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"Gases\" (pt-BR), \"Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume\" (it-IT), \"Количественный Объемная скорость Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"ingeademde O2\" (nl-NL), \"O2-Zufuhr\" (de-AT)' for the language(s) '--' (from null)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "59408-5"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
-  "code" : "59408-5",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "severity" : "error",
-  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0' (from null)",
-  "class" : "UNKNOWN"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood",
-  "code" : "2708-6",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "59408-5",
-  "display" : "O2 % BldC Oximetry"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
-  "code" : "59408-5",
-  "system" : "http://loinc.org",
-  "severity" : "warning",
-  "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 25 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry, \"SaO2 % BldA PulseOx\", \"O2 SaO2\" (pl-PL), \"saturacja krwi tlenem\" (pl-PL), \"MFr O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法\" (zh-CN), \"脉搏血氧定量\" (zh-CN), \"脉搏血氧测定\" (zh-CN), \"脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度\" (zh-CN), \"O2-Sättigung\" (de-DE), \"Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso\" (it-IT), \"Oksijen doymuşluğu\" (tr-TR), \"Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия\" (ru-RU), \"Гемоксиметрия Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"O2 SatO2\" (fr-BE)' for the language(s) '--' (from null)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6",
-  "display" : "Oxygen saturation in Arterial blood"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood",
-  "code" : "2708-6",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "59408-5"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
-  "code" : "59408-5",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood",
-  "code" : "2708-6",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3150-0"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen concentration",
-  "code" : "3150-0",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3150-0",
-  "display" : "Inhaled Oxygen Concentration"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen concentration",
-  "code" : "3150-0",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3150-0"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen concentration",
-  "code" : "3150-0",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3151-8"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen flow rate",
-  "code" : "3151-8",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3151-8",
-  "display" : "Flow Rate"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen flow rate",
-  "code" : "3151-8",
-  "system" : "http://loinc.org",
-  "severity" : "warning",
-  "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate, \"Inhaled O2 flow rate\", \"O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 体积速率(单位时间)\" (zh-CN), \"单位时间内体积的变化速率\" (zh-CN), \"流量 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 吸入气\" (zh-CN), \"吸入气体\" (zh-CN), \"吸入的空气 所吸入的氧\" (zh-CN), \"已吸入的氧气 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 气 气体类 空气\" (zh-CN), \"Inhaled O2\" (pt-BR), \"vRate\" (pt-BR), \"Volume rate\" (pt-BR), \"Flow\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"IhG\" (pt-BR), \"Inhaled Gas\" (pt-BR), \"Inspired\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"Gases\" (pt-BR), \"Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume\" (it-IT), \"Количественный Объемная скорость Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"ingeademde O2\" (nl-NL), \"O2-Zufuhr\" (de-AT)' for the language(s) '--' (from null)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3151-8"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Inhaled oxygen flow rate",
-  "code" : "3151-8",
-  "system" : "http://loinc.org"
+  "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate, \"Inhaled O2 flow rate\", \"O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 体积速率(单位时间)\" (zh-CN), \"单位时间内体积的变化速率\" (zh-CN), \"流量 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 吸入气\" (zh-CN), \"吸入气体\" (zh-CN), \"吸入的空气 所吸入的氧\" (zh-CN), \"已吸入的氧气 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 气 气体类 空气\" (zh-CN), \"Inhaled O2\" (pt-BR), \"vRate\" (pt-BR), \"Volume rate\" (pt-BR), \"Flow\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"IhG\" (pt-BR), \"Inhaled Gas\" (pt-BR), \"Inspired\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"Gases\" (pt-BR), \"Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume\" (it-IT), \"Количественный Объемная скорость Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"ingeademde O2\" (nl-NL), \"O2-Zufuhr\" (de-AT)' for the language(s) '--' (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "5792-7"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Glucose [Mass/volume] in Urine by Test strip",
   "code" : "5792-7",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "11502-2"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Laboratory report",
   "code" : "11502-2",
@@ -208,27 +111,47 @@ v: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "11502-2"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Laboratory report",
   "code" : "11502-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "11502-2"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Laboratory report",
   "code" : "11502-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "60591-5"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "langs":"[de-CH]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "langs":"[de-CH]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
@@ -239,258 +162,425 @@ v: {
   "system" : "http://loinc.org",
   "code" : "60591-5",
   "display" : "Patient summary Document"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "60591-5"
-}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "76437-3",
   "display" : "Primary insurance"
-}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Primary insurance",
   "code" : "76437-3",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "10160-0",
   "display" : "History of Medication use Narrative"
-}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "History of Medication use Narrative",
   "code" : "10160-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "48765-2",
   "display" : "Allergies and adverse reactions Document"
-}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Allergies and adverse reactions Document",
   "code" : "48765-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "11450-4",
   "display" : "Problem list - Reported"
-}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Problem list - Reported",
   "code" : "11450-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "47519-4",
   "display" : "History of Procedures Document"
-}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "History of Procedures Document",
   "code" : "47519-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "30954-2",
   "display" : "Relevant diagnostic tests/laboratory data Narrative"
-}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Relevant diagnostic tests/laboratory data Narrative",
   "code" : "30954-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8716-3",
   "display" : "Vital signs"
-}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Vital signs",
   "code" : "8716-3",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "29762-2",
   "display" : "Social history Narrative"
-}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Social history Narrative",
   "code" : "29762-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "10162-6",
   "display" : "History of pregnancies Narrative"
-}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "History of pregnancies Narrative",
   "code" : "10162-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "51899-3",
   "display" : "Details Document"
-}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Details Document",
   "code" : "51899-3",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "46418-0",
   "display" : "INR in Capillary blood by Coagulation assay"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "INR in Capillary blood by Coagulation assay",
   "code" : "46418-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "77140-2",
   "display" : "Creatinine [Moles/volume] in Serum, Plasma or Blood"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Creatinine [Moles/volume] in Serum, Plasma or Blood",
   "code" : "77140-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "4535-1",
   "display" : "Cytotoxic percent reactive Ab [Presence] in Serum by Quick method"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Cytotoxic percent reactive Ab [Presence] in Serum by Quick method",
   "code" : "4535-1",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "29463-7",
   "display" : "Body weight"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body weight",
   "code" : "29463-7",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8302-2",
   "display" : "Body height"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body height",
   "code" : "8302-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "39156-5",
   "display" : "Body mass index (BMI) [Ratio]"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body mass index (BMI) [Ratio]",
   "code" : "39156-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "85354-9",
   "display" : "Blood pressure panel with all children optional"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8480-6",
   "display" : "Systolic blood pressure"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8462-4",
   "display" : "Diastolic blood pressure"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "883-9",
   "display" : "ABO group [Type] in Blood"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "ABO group [Type] in Blood",
   "code" : "883-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "57024-2",
   "display" : "Health Quality Measure Document"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Health Quality Measure document",
   "code" : "57024-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "59284-0"
-}, "url": "http://hl7.org/fhir/ValueSet/consent-category--2", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/consent-category--2", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Patient Consent",
   "code" : "59284-0",
@@ -500,17 +590,30 @@ v: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "59284-0"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Consent Document",
   "code" : "59284-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "46418-0"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "INR in Capillary blood by Coagulation assay",
   "code" : "46418-0",
@@ -521,27 +624,47 @@ v: {
   "system" : "http://loinc.org",
   "code" : "46418-0",
   "display" : "INR in Capillary blood by Coagulation assay"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "INR in Capillary blood by Coagulation assay",
   "code" : "46418-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "46418-0"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "INR in Capillary blood by Coagulation assay",
   "code" : "46418-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "77140-2"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Creatinine [Moles/volume] in Serum, Plasma or Blood",
   "code" : "77140-2",
@@ -552,27 +675,47 @@ v: {
   "system" : "http://loinc.org",
   "code" : "77140-2",
   "display" : "Creatinine [Moles/volume] in Serum, Plasma or Blood"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Creatinine [Moles/volume] in Serum, Plasma or Blood",
   "code" : "77140-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "77140-2"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Creatinine [Moles/volume] in Serum, Plasma or Blood",
   "code" : "77140-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "4535-1"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Cytotoxic percent reactive Ab [Presence] in Serum by Quick method",
   "code" : "4535-1",
@@ -583,27 +726,47 @@ v: {
   "system" : "http://loinc.org",
   "code" : "4535-1",
   "display" : "Cytotoxic percent reactive Ab [Presence] in Serum by Quick method"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Cytotoxic percent reactive Ab [Presence] in Serum by Quick method",
   "code" : "4535-1",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "4535-1"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Cytotoxic percent reactive Ab [Presence] in Serum by Quick method",
   "code" : "4535-1",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "29463-7"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body weight",
   "code" : "29463-7",
@@ -614,27 +777,47 @@ v: {
   "system" : "http://loinc.org",
   "code" : "29463-7",
   "display" : "Body weight"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body weight",
   "code" : "29463-7",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "29463-7"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body weight",
   "code" : "29463-7",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8302-2"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body height",
   "code" : "8302-2",
@@ -645,27 +828,47 @@ v: {
   "system" : "http://loinc.org",
   "code" : "8302-2",
   "display" : "Body height"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body height",
   "code" : "8302-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8302-2"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body height",
   "code" : "8302-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "39156-5"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body mass index (BMI) [Ratio]",
   "code" : "39156-5",
@@ -676,27 +879,47 @@ v: {
   "system" : "http://loinc.org",
   "code" : "39156-5",
   "display" : "Body mass index (BMI) [Ratio]"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body mass index (BMI) [Ratio]",
   "code" : "39156-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "39156-5"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body mass index (BMI) [Ratio]",
   "code" : "39156-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "85354-9"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
@@ -707,27 +930,47 @@ v: {
   "system" : "http://loinc.org",
   "code" : "85354-9",
   "display" : "Blood pressure panel with all children optional"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "85354-9"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8480-6"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
@@ -738,27 +981,47 @@ v: {
   "system" : "http://loinc.org",
   "code" : "8480-6",
   "display" : "Systolic blood pressure"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8480-6"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8462-4"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
@@ -769,117 +1032,191 @@ v: {
   "system" : "http://loinc.org",
   "code" : "8462-4",
   "display" : "Diastolic blood pressure"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8462-4"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "883-9"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0' (from null)",
+  "error" : "The provided code http://loinc.org#883-9 is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "46418-0"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0' (from null)",
+  "error" : "The provided code http://loinc.org#46418-0 is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "77140-2"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0' (from null)",
+  "error" : "The provided code http://loinc.org#77140-2 is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "4535-1"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0' (from null)",
+  "error" : "The provided code http://loinc.org#4535-1 is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "29463-7"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0' (from null)",
+  "error" : "The provided code http://loinc.org#29463-7 is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8302-2"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0' (from null)",
+  "error" : "The provided code http://loinc.org#8302-2 is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "39156-5"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0' (from null)",
+  "error" : "The provided code http://loinc.org#39156-5 is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "85354-9"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0' (from null)",
+  "error" : "The provided code http://loinc.org#85354-9 is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "883-9"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The provided code is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0' (from null)",
+  "error" : "The provided code http://loinc.org#883-9 is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "60591-5"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
@@ -890,87 +1227,141 @@ v: {
   "system" : "http://loinc.org",
   "code" : "60591-5",
   "display" : "Patient Summary Document"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "60591-5"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "48765-2",
   "display" : "Allergies and adverse reactions Document"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Allergies and adverse reactions Document",
   "code" : "48765-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "10160-0",
   "display" : "History of Medication use Narrative"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "History of Medication use Narrative",
   "code" : "10160-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "11450-4",
   "display" : "Problem list - Reported"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Problem list - Reported",
   "code" : "11450-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "51726-8",
   "display" : "NDC labeler code request"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "FDA product label NDC labeler code request",
   "code" : "51726-8",
   "system" : "http://loinc.org",
+  "version" : "2.74",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'NDC labeler code request' for http://loinc.org#51726-8 - should be one of 22 choices: 'FDA product label NDC labeler code request, \"FDA label NDC labeler code request\", \"FDA 药品标签 National Drug Code\" (zh-CN), \"NDC\" (zh-CN), \"国家药品验证号\" (zh-CN), \"国家药品代码\" (zh-CN), \"美国国家药品代码\" (zh-CN), \"全国药品代码\" (zh-CN), \"NDC labeler code\" (zh-CN), \"NDC 标识者识别代码\" (zh-CN), \"NDC 厂家号\" (zh-CN), \"NDC 贴签厂商代码请求\" (zh-CN), \"NDC 标签号申请 叙述\" (zh-CN), \"叙述性文字\" (zh-CN), \"报告\" (zh-CN), \"报告型\" (zh-CN), \"文字叙述\" (zh-CN), \"文本叙述型\" (zh-CN), \"文本描述\" (zh-CN), \"文本描述型 监管类文档\" (zh-CN), \"Documentazione normativa Etichetta di prodotto della Food and Drug Administ\" (it-IT), \"Описательный\" (ru-RU)' for the language(s) '--' (from null)"
+  "error" : "Wrong Display Name 'NDC labeler code request' for http://loinc.org#51726-8 - should be one of 22 choices: 'FDA product label NDC labeler code request, \"FDA label NDC labeler code request\", \"FDA 药品标签 National Drug Code\" (zh-CN), \"NDC\" (zh-CN), \"国家药品验证号\" (zh-CN), \"国家药品代码\" (zh-CN), \"美国国家药品代码\" (zh-CN), \"全国药品代码\" (zh-CN), \"NDC labeler code\" (zh-CN), \"NDC 标识者识别代码\" (zh-CN), \"NDC 厂家号\" (zh-CN), \"NDC 贴签厂商代码请求\" (zh-CN), \"NDC 标签号申请 叙述\" (zh-CN), \"叙述性文字\" (zh-CN), \"报告\" (zh-CN), \"报告型\" (zh-CN), \"文字叙述\" (zh-CN), \"文本叙述型\" (zh-CN), \"文本描述\" (zh-CN), \"文本描述型 监管类文档\" (zh-CN), \"Documentazione normativa Etichetta di prodotto della Food and Drug Administ\" (it-IT), \"Описательный\" (ru-RU)' for the language(s) '--' (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "X-34133-9",
   "display" : "SoEN2"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "Unknown Code 'X-34133-9' in the system 'http://loinc.org'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unknown Code 'X-34133-9' in the system 'http://loinc.org'; The provided code http://loinc.org#X-34133-9 is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "X-34133-9"
-}, "url": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "Unknown Code 'X-34133-9' in the system 'http://loinc.org'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes--0' (from null)",
+  "error" : "Unknown Code 'X-34133-9' in the system 'http://loinc.org'; The provided code http://loinc.org#X-34133-9 is not in the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes--0' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -978,10 +1369,16 @@ v: {
   "system" : "http://loinc.org",
   "code" : "X-34133-9",
   "display" : "SoEN2"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "Unknown Code 'X-34133-9' in the system 'http://loinc.org'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unknown Code 'X-34133-9' in the system 'http://loinc.org'; The provided code http://loinc.org#X-34133-9 is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -989,17 +1386,30 @@ v: {
   "system" : "http://loinc.org",
   "code" : "80764-4",
   "display" : "Pain medicine Plan of care note"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Pain medicine Plan of care note",
   "code" : "80764-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "56445-0"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
@@ -1011,10 +1421,16 @@ v: {
   "version" : "current",
   "code" : "56445-0",
   "display" : "Medication summary Doc"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The CodeSystem http://loinc.org version current is unknown. ValidVersions: [2.73]; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/doc-typecodes' (from null)",
+  "error" : "The CodeSystem http://loinc.org version current is unknown. Valid versions: [2.74]; The provided code http://loinc.org|current#56445-0 is not in the value set 'http://hl7.org/fhir/ValueSet/doc-typecodes' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -1022,10 +1438,16 @@ v: {
   "system" : "http://loinc.org",
   "version" : "current",
   "code" : "56445-0"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The CodeSystem http://loinc.org version current is unknown. ValidVersions: [2.73]; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "The CodeSystem http://loinc.org version current is unknown. Valid versions: [2.74]; The provided code http://loinc.org|current#56445-0 is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -1034,17 +1456,29 @@ v: {
   "version" : "current",
   "code" : "48765-2",
   "display" : "Allergies and adverse reactions"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The CodeSystem http://loinc.org version current is unknown. ValidVersions: [2.73]; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "The CodeSystem http://loinc.org version current is unknown. Valid versions: [2.74]; The provided code http://loinc.org|current#48765-2 is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "34133-9"
-}, "url": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Summary of episode note",
   "code" : "34133-9",
@@ -1055,27 +1489,47 @@ v: {
   "system" : "http://loinc.org",
   "code" : "34133-9",
   "display" : "Summary of episode note"
-}, "url": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Summary of episode note",
   "code" : "34133-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "34133-9"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Summary of episode note",
   "code" : "34133-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "34133-9"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-documentreference-type--1", "version": "3.1.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-documentreference-type--1", "version": "3.1.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Summary of episode note",
   "code" : "34133-9",
@@ -1087,17 +1541,29 @@ v: {
   "version" : "2.73",
   "code" : "57852-6",
   "display" : "Problem list Narrative - Reported"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
-  "display" : "Problem list Narrative - Reported",
-  "code" : "57852-6",
-  "system" : "http://loinc.org"
+  "severity" : "error",
+  "error" : "The CodeSystem http://loinc.org version 2.73 is unknown. Valid versions: [2.74]; The provided code http://loinc.org|2.73#57852-6 is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "18842-5"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
@@ -1108,41 +1574,68 @@ v: {
   "system" : "http://loinc.org",
   "code" : "18842-5",
   "display" : "Discharge Summary"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "18842-5"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "29299-5"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Reason for visit Narrative",
   "code" : "29299-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "�g��",
   "display" : "8302-2"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "Unknown Code '�g��' in the system 'http://loinc.org'; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "Unknown Code '�g��' in the system 'http://loinc.org'; The provided code http://loinc.org#�g�� is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
@@ -1150,191 +1643,316 @@ v: {
   "system" : "http://loinc.org",
   "code" : "8867-4",
   "display" : "Heart rate"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Heart rate",
   "code" : "8867-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "10331-7",
   "display" : "Rh [Type] in Blood"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Rh [Type] in Blood",
   "code" : "10331-7",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "18684-1",
   "display" : "����"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "First Blood pressure Set",
   "code" : "18684-1",
   "system" : "http://loinc.org",
+  "version" : "2.74",
   "severity" : "warning",
-  "error" : "Wrong Display Name '����' for http://loinc.org#18684-1 - should be one of 46 choices: 'First Blood pressure Set, \"ED Health Insurance Portability and Accountability Act of 1996\" (zh-CN), \"HIPAA\" (zh-CN), \"健康保險可攜與責任法\" (zh-CN), \"HIPAA法案\" (zh-CN), \"健康保险可移植性和问责法1996年\" (zh-CN), \"美国健康保险携带和责任法案\" (zh-CN), \"医疗保险便携性和责任法案\" (zh-CN), \"医疗保险便携性与责任法案\" (zh-CN), \"醫療保險可攜性與責任法\" (zh-CN), \"HIPAA 信息附件.急诊\" (zh-CN), \"HIPAA 信息附件.急诊科\" (zh-CN), \"HIPAA 信息附件.急诊科就医\" (zh-CN), \"HIPAA 信息附件.急诊科就诊\" (zh-CN), \"健康保险便携与责任法案信息附件.急诊\" (zh-CN), \"健康保险便携与责任法案信息附件.急诊 临床信息附件集\" (zh-CN), \"临床信息附件集合\" (zh-CN), \"集\" (zh-CN), \"集合 信息附件\" (zh-CN), \"健康保险便携与责任法案信息附件\" (zh-CN), \"附件 医疗服务对象\" (zh-CN), \"客户\" (zh-CN), \"病人\" (zh-CN), \"病患\" (zh-CN), \"病号\" (zh-CN), \"超系统 - 病人 压强 复合属性\" (zh-CN), \"复杂型属性\" (zh-CN), \"复杂属性 就医\" (zh-CN), \"就医过程 急诊科 急诊科（DEEDS）变量\" (zh-CN), \"DEEDS 变量\" (zh-CN), \"急诊\" (zh-CN), \"急诊科\" (zh-CN), \"Emergency Department\" (zh-CN), \"ED\" (zh-CN), \"急诊科（急诊科系统代码之数据元素）变量\" (zh-CN), \"急诊科（急诊科系统代码之数据元素）指标\" (zh-CN), \"急诊科（美国CDC急诊科系统代码之数据元素）指标\" (zh-CN), \"急诊科指标 急诊科（Emergency Department，ED） 急诊部 第一个\" (zh-CN), \"第一次\" (zh-CN), \"首个\" (zh-CN), \"首次 血\" (zh-CN), \"全血\" (zh-CN), \"Allegato Allegato di reparto di emergenza (pronto soccorso) Complesso Emergenza (DEEDS - Data Elements for Emergency Dep Incontro\" (it-IT), \"Appuntamento paziente Stabilito\" (it-IT), \"Fissato\" (it-IT), \"Встреча Комплекс\" (ru-RU)' for the language(s) '--' (from null)"
+  "error" : "Wrong Display Name '����' for http://loinc.org#18684-1 - should be one of 46 choices: 'First Blood pressure Set, \"ED Health Insurance Portability and Accountability Act of 1996\" (zh-CN), \"HIPAA\" (zh-CN), \"健康保險可攜與責任法\" (zh-CN), \"HIPAA法案\" (zh-CN), \"健康保险可移植性和问责法1996年\" (zh-CN), \"美国健康保险携带和责任法案\" (zh-CN), \"医疗保险便携性和责任法案\" (zh-CN), \"医疗保险便携性与责任法案\" (zh-CN), \"醫療保險可攜性與責任法\" (zh-CN), \"HIPAA 信息附件.急诊\" (zh-CN), \"HIPAA 信息附件.急诊科\" (zh-CN), \"HIPAA 信息附件.急诊科就医\" (zh-CN), \"HIPAA 信息附件.急诊科就诊\" (zh-CN), \"健康保险便携与责任法案信息附件.急诊\" (zh-CN), \"健康保险便携与责任法案信息附件.急诊 临床信息附件集\" (zh-CN), \"临床信息附件集合\" (zh-CN), \"集\" (zh-CN), \"集合 信息附件\" (zh-CN), \"健康保险便携与责任法案信息附件\" (zh-CN), \"附件 医疗服务对象\" (zh-CN), \"客户\" (zh-CN), \"病人\" (zh-CN), \"病患\" (zh-CN), \"病号\" (zh-CN), \"超系统 - 病人 压强 复合属性\" (zh-CN), \"复杂型属性\" (zh-CN), \"复杂属性 就医\" (zh-CN), \"就医过程 急诊科 急诊科（DEEDS）变量\" (zh-CN), \"DEEDS 变量\" (zh-CN), \"急诊\" (zh-CN), \"急诊科\" (zh-CN), \"Emergency Department\" (zh-CN), \"ED\" (zh-CN), \"急诊科（急诊科系统代码之数据元素）变量\" (zh-CN), \"急诊科（急诊科系统代码之数据元素）指标\" (zh-CN), \"急诊科（美国CDC急诊科系统代码之数据元素）指标\" (zh-CN), \"急诊科指标 急诊科（Emergency Department，ED） 急诊部 第一个\" (zh-CN), \"第一次\" (zh-CN), \"首个\" (zh-CN), \"首次 血\" (zh-CN), \"全血\" (zh-CN), \"Allegato Allegato di reparto di emergenza (pronto soccorso) Complesso Emergenza (DEEDS - Data Elements for Emergency Dep Incontro\" (it-IT), \"Appuntamento paziente Stabilito\" (it-IT), \"Fissato\" (it-IT), \"Встреча Комплекс\" (ru-RU)' for the language(s) '--' (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8480-6",
   "display" : "���k������"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
   "system" : "http://loinc.org",
+  "version" : "2.74",
   "severity" : "warning",
-  "error" : "Wrong Display Name '���k������' for http://loinc.org#8480-6 - should be one of 33 choices: 'Systolic blood pressure, \"BP sys\", \"一般血压\" (zh-CN), \"血压.原子型\" (zh-CN), \"血压指标.原子型 压力\" (zh-CN), \"压强 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 血管内收缩期\" (zh-CN), \"血管内心缩期 血管内的\" (zh-CN), \"Pressure\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"Art sys\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"IV\" (pt-BR), \"Intravenous\" (pt-BR), \"BLOOD PRESSURE MEASUREMENTS.ATOM\" (pt-BR), \"BP systolic\" (pt-BR), \"Blood pressure systolic\" (pt-BR), \"Sys BP\" (pt-BR), \"SBP\" (pt-BR), \"Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)\" (it-IT), \"Давление Количественный Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"Blutdruck systolisch\" (de-AT)' for the language(s) '--' (from null)"
+  "error" : "Wrong Display Name '���k������' for http://loinc.org#8480-6 - should be one of 33 choices: 'Systolic blood pressure, \"BP sys\", \"一般血压\" (zh-CN), \"血压.原子型\" (zh-CN), \"血压指标.原子型 压力\" (zh-CN), \"压强 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 血管内收缩期\" (zh-CN), \"血管内心缩期 血管内的\" (zh-CN), \"Pressure\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"Art sys\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"IV\" (pt-BR), \"Intravenous\" (pt-BR), \"BLOOD PRESSURE MEASUREMENTS.ATOM\" (pt-BR), \"BP systolic\" (pt-BR), \"Blood pressure systolic\" (pt-BR), \"Sys BP\" (pt-BR), \"SBP\" (pt-BR), \"Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)\" (it-IT), \"Давление Количественный Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"Blutdruck systolisch\" (de-AT)' for the language(s) '--' (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8462-4",
   "display" : "�g��������"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
   "system" : "http://loinc.org",
+  "version" : "2.74",
   "severity" : "warning",
-  "error" : "Wrong Display Name '�g��������' for http://loinc.org#8462-4 - should be one of 36 choices: 'Diastolic blood pressure, \"BP dias\", \"一般血压\" (zh-CN), \"血压.原子型\" (zh-CN), \"血压指标.原子型 压力\" (zh-CN), \"压强 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 血管内心舒期\" (zh-CN), \"血管内舒张期 血管内的\" (zh-CN), \"Dias\" (pt-BR), \"Diast\" (pt-BR), \"Pressure\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"Art sys\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"IV\" (pt-BR), \"Intravenous\" (pt-BR), \"Diastoli\" (pt-BR), \"BLOOD PRESSURE MEASUREMENTS.ATOM\" (pt-BR), \"Blood pressure diastolic\" (pt-BR), \"BP diastolic\" (pt-BR), \"Dias BP\" (pt-BR), \"DBP\" (pt-BR), \"Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)\" (it-IT), \"Внутрисосудистый диастолический Давление Количественный Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"Blutdruck diastolisch\" (de-AT)' for the language(s) '--' (from null)"
+  "error" : "Wrong Display Name '�g��������' for http://loinc.org#8462-4 - should be one of 36 choices: 'Diastolic blood pressure, \"BP dias\", \"一般血压\" (zh-CN), \"血压.原子型\" (zh-CN), \"血压指标.原子型 压力\" (zh-CN), \"压强 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 血管内心舒期\" (zh-CN), \"血管内舒张期 血管内的\" (zh-CN), \"Dias\" (pt-BR), \"Diast\" (pt-BR), \"Pressure\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"Art sys\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"IV\" (pt-BR), \"Intravenous\" (pt-BR), \"Diastoli\" (pt-BR), \"BLOOD PRESSURE MEASUREMENTS.ATOM\" (pt-BR), \"Blood pressure diastolic\" (pt-BR), \"BP diastolic\" (pt-BR), \"Dias BP\" (pt-BR), \"DBP\" (pt-BR), \"Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)\" (it-IT), \"Внутрисосудистый диастолический Давление Количественный Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"Blutdruck diastolisch\" (de-AT)' for the language(s) '--' (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "718-7",
   "display" : "Hemoglobin [Mass/volume] in Blood"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Hemoglobin [Mass/volume] in Blood",
   "code" : "718-7",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "38483-4",
   "display" : "Creat Bld-mCnc"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Creatinine [Mass/volume] in Blood",
   "code" : "38483-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "2093-3",
   "display" : "Cholesterol [Mass/volume] in Serum or Plasma"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Cholesterol [Mass/volume] in Serum or Plasma",
   "code" : "2093-3",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "44261-6",
   "display" : "Patient Health Questionnaire 9 item (PHQ-9) total score [Reported]"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Patient Health Questionnaire 9 item (PHQ-9) total score [Reported]",
   "code" : "44261-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "69548-6"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Genetic variant assessment",
   "code" : "69548-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA9633-4"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Present",
   "code" : "LA9633-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA26398-0"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Sequencing",
   "code" : "LA26398-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "48018-6"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Gene studied [ID]",
   "code" : "48018-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "81252-9"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Discrete genetic variant",
   "code" : "81252-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "81290-9"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Genomic DNA change (gHGVS)",
   "code" : "81290-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "48002-0"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Genomic source class [Type]",
   "code" : "48002-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA6684-0"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Somatic",
   "code" : "LA6684-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "69548-6"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-codes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-codes--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Genetic variant assessment",
   "code" : "69548-6",
@@ -1344,11 +1962,18 @@ v: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "69548-6"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-codes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-codes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Genetic variant assessment",
   "code" : "69548-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1366,7 +1991,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Present",
   "code" : "LA9633-4",
@@ -1388,11 +2019,18 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Present",
   "code" : "LA9633-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1410,7 +2048,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Sequencing",
   "code" : "LA26398-0",
@@ -1432,11 +2076,18 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Sequencing",
   "code" : "LA26398-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1454,7 +2105,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Somatic",
   "code" : "LA6684-0",
@@ -1476,98 +2133,161 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Somatic",
   "code" : "LA6684-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8310-5"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Body temperature",
   "code" : "8310-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA20271-5",
   "display" : "Medications"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Medications",
   "code" : "LA20271-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA20278-0",
   "display" : "Prescription or over-the-counter (including herbal supplements)"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Prescription or over-the-counter (including herbal supplements)",
   "code" : "LA20278-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA20275-6",
   "display" : "Incorrect action (process failure or error) (e.g., such as administering overdose or incorrect medication)"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Incorrect action (process failure or error) (e.g., such as administering overdose or incorrect medication)",
   "code" : "LA20275-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA20276-4",
   "display" : "Incorrect patient"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Incorrect patient",
   "code" : "LA20276-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA20296-2",
   "display" : "Administering"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Administering",
   "code" : "LA20296-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA32-8",
   "display" : "No"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "No",
   "code" : "LA32-8",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA33-6",
   "display" : "Yes"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Yes",
   "code" : "LA33-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1701,7 +2421,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Medications",
   "code" : "LA20271-5",
@@ -1767,7 +2493,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Prescription or over-the-counter (including herbal supplements)",
   "code" : "LA20278-0",
@@ -1813,7 +2545,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Incorrect action (process failure or error) (e.g., such as administering overdose or incorrect medication)",
   "code" : "LA20275-6",
@@ -1891,7 +2629,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Incorrect patient",
   "code" : "LA20276-4",
@@ -1949,7 +2693,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Administering",
   "code" : "LA20296-2",
@@ -1975,7 +2725,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "No",
   "code" : "LA32-8",
@@ -2001,7 +2757,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Yes",
   "code" : "LA33-6",
@@ -2011,21 +2773,35 @@ v: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA33-6"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Yes",
   "code" : "LA33-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA32-8"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "No",
   "code" : "LA32-8",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2044,7 +2820,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Yes",
   "code" : "LA33-6",
@@ -2067,7 +2849,13 @@ v: {
       }]
     }]
   }
-}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "No",
   "code" : "LA32-8",
@@ -2078,42 +2866,312 @@ v: {
   "system" : "http://loinc.org",
   "code" : "88123-5",
   "display" : "Within the past 12 months the food we bought just didn't last and we didn't have money to get more [U.S. FSS]"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Within the past 12 months the food we bought just didn't last and we didn't have money to get more [U.S. FSS]",
   "code" : "88123-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LA28397-0",
   "display" : "Often true"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "Often true",
   "code" : "LA28397-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "version" : "http://loinc.org",
   "code" : "test"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "severity" : "error",
-  "error" : "The CodeSystem http://loinc.org version http://loinc.org is unknown. ValidVersions: [2.73]; The provided code is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from null)",
+  "error" : "The CodeSystem http://loinc.org version http://loinc.org is unknown. Valid versions: [2.74]; The provided code http://loinc.org|http://loinc.org#test is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "10155-0"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "History of allergies, reported",
   "code" : "10155-0",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "59408-5"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
+  "code" : "59408-5",
   "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code http://loinc.org#2708-6 is not in the value set 'http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood",
+  "code" : "2708-6",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "59408-5",
+  "display" : "O2 % BldC Oximetry"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
+  "code" : "59408-5",
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "severity" : "warning",
+  "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 26 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry, \"SaO2 % BldA PulseOx\", \"O2 SaO2\" (pl-PL), \"saturacja krwi tlenem\" (pl-PL), \"MFr O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法\" (zh-CN), \"脉搏血氧定量\" (zh-CN), \"脉搏血氧测定\" (zh-CN), \"脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度\" (zh-CN), \"O2-Sättigung\" (de-DE), \"Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso\" (it-IT), \"Oksijen doymuşluğu\" (tr-TR), \"Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия\" (ru-RU), \"Гемоксиметрия Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"zuurstofsaturatiemeting\" (nl-NL), \"O2 SatO2\" (fr-BE)' for the language(s) '--' (from Tx-Server)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6",
+  "display" : "Oxygen saturation in Arterial blood"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood",
+  "code" : "2708-6",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "59408-5"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
+  "code" : "59408-5",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood",
+  "code" : "2708-6",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3150-0"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen concentration",
+  "code" : "3150-0",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3150-0",
+  "display" : "Inhaled Oxygen Concentration"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen concentration",
+  "code" : "3150-0",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3150-0"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen concentration",
+  "code" : "3150-0",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3151-8"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen flow rate",
+  "code" : "3151-8",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3151-8",
+  "display" : "Flow Rate"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen flow rate",
+  "code" : "3151-8",
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "severity" : "warning",
+  "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate, \"Inhaled O2 flow rate\", \"O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 体积速率(单位时间)\" (zh-CN), \"单位时间内体积的变化速率\" (zh-CN), \"流量 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 吸入气\" (zh-CN), \"吸入气体\" (zh-CN), \"吸入的空气 所吸入的氧\" (zh-CN), \"已吸入的氧气 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 气 气体类 空气\" (zh-CN), \"Inhaled O2\" (pt-BR), \"vRate\" (pt-BR), \"Volume rate\" (pt-BR), \"Flow\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"IhG\" (pt-BR), \"Inhaled Gas\" (pt-BR), \"Inspired\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"Gases\" (pt-BR), \"Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume\" (it-IT), \"Количественный Объемная скорость Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"ingeademde O2\" (nl-NL), \"O2-Zufuhr\" (de-AT)' for the language(s) '--' (from Tx-Server)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3151-8"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen flow rate",
+  "code" : "3151-8",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "code" : "57852-6",
+  "display" : "Problem list Narrative - Reported"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Problem list Narrative - Reported",
+  "code" : "57852-6",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------

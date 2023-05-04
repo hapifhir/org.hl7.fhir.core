@@ -223,7 +223,7 @@ public class TerminologyCache {
   public void cacheCapabilityStatement(CapabilityStatement capabilityStatement) {
     if (noCaching) {
       return;
-    }
+    } 
     this.capabilityStatementCache = capabilityStatement;
     save(capabilityStatementCache, CAPABILITY_STATEMENT_TITLE);
   }
@@ -250,34 +250,32 @@ public class TerminologyCache {
     caches.clear();
   }
 
-  public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs) {
-    CacheToken ct = new CacheToken();
-    if (code.hasSystem()) {
-      ct.setName(code.getSystem());
-      ct.hasVersion = code.hasVersion();
-    }
-    else
-      ct.name = NAME_FOR_NO_SYSTEM;
-    nameCacheToken(vs, ct);
-    JsonParser json = new JsonParser();
-    json.setOutputStyle(OutputStyle.PRETTY);
-    if (vs != null && vs.hasUrl() && vs.hasVersion()) {
-      try {
+  public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters) {
+    try {
+      CacheToken ct = new CacheToken();
+      if (code.hasSystem()) {
+        ct.setName(code.getSystem());
+        ct.hasVersion = code.hasVersion();
+      }
+      else
+        ct.name = NAME_FOR_NO_SYSTEM;
+      nameCacheToken(vs, ct);
+      JsonParser json = new JsonParser();
+      json.setOutputStyle(OutputStyle.PRETTY);
+      String expJS = json.composeString(expParameters);
+
+      if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
-        +"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+"}\r\n";      
-      } catch (IOException e) {
-        throw new Error(e);
+        +"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";      
+      } else {
+        ValueSet vsc = getVSEssense(vs);
+        ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
       }
-    } else {
-      ValueSet vsc = getVSEssense(vs);
-      try {
-        ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+"}";
-      } catch (IOException e) {
-        throw new Error(e);
-      }
+      ct.key = String.valueOf(hashJson(ct.request));
+      return ct;
+    } catch (IOException e) {
+      throw new Error(e);
     }
-    ct.key = String.valueOf(hashJson(ct.request));
-    return ct;
   }
 
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
@@ -290,34 +288,31 @@ public class TerminologyCache {
     return s;
   }
 
-  public CacheToken generateValidationToken(ValidationOptions options, CodeableConcept code, ValueSet vs) {
-    CacheToken ct = new CacheToken();
-    for (Coding c : code.getCoding()) {
-      if (c.hasSystem()) {
-        ct.setName(c.getSystem());
-        ct.hasVersion = c.hasVersion();
+  public CacheToken generateValidationToken(ValidationOptions options, CodeableConcept code, ValueSet vs, Parameters expParameters) {
+    try {
+      CacheToken ct = new CacheToken();
+      for (Coding c : code.getCoding()) {
+        if (c.hasSystem()) {
+          ct.setName(c.getSystem());
+          ct.hasVersion = c.hasVersion();
+        }
       }
-    }
-    nameCacheToken(vs, ct);
-    JsonParser json = new JsonParser();
-    json.setOutputStyle(OutputStyle.PRETTY);
-    if (vs != null && vs.hasUrl() && vs.hasVersion()) {
-      try {
+      nameCacheToken(vs, ct);
+      JsonParser json = new JsonParser();
+      json.setOutputStyle(OutputStyle.PRETTY);
+      String expJS = json.composeString(expParameters);
+      if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+
-            "\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+"+}\r\n";      
-      } catch (IOException e) {
-        throw new Error(e);
+            "\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";      
+      } else {
+        ValueSet vsc = getVSEssense(vs);
+        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
       }
-    } else {
-      ValueSet vsc = getVSEssense(vs);
-      try {
-        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+(options == null ? "" : ", "+options.toJson())+"}";
-      } catch (IOException e) {
-        throw new Error(e);
-      }
+      ct.key = String.valueOf(hashJson(ct.request));
+      return ct;
+    } catch (IOException e) {
+      throw new Error(e);
     }
-    ct.key = String.valueOf(hashJson(ct.request));
-    return ct;
   }
 
   public ValueSet getVSEssense(ValueSet vs) {
@@ -530,6 +525,10 @@ public class TerminologyCache {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"system\" : \""+Utilities.escapeJson(ce.v.getSystem()).trim()+"\"");
           }
+          if (ce.v.getVersion() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"version\" : \""+Utilities.escapeJson(ce.v.getVersion()).trim()+"\"");
+          }
           if (ce.v.getSeverity() != null) {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"severity\" : "+"\""+ce.v.getSeverity().toCode().trim()+"\""+"");
@@ -602,10 +601,11 @@ public class TerminologyCache {
       String display = loadJS(o.get("display"));
       String code = loadJS(o.get("code"));
       String system = loadJS(o.get("system"));
+      String version = loadJS(o.get("version"));
       String definition = loadJS(o.get("definition"));
       t = loadJS(o.get("class")); 
       TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
-      ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
+      ce.v = new ValidationResult(severity, error, system, version, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
     }
     return ce;
   }
