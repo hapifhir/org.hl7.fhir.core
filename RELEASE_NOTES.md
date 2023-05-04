@@ -1,7 +1,8 @@
 ## Validator Changes
 
-* no changes
+* Fix bug accessing canonical resources on servers
 
 ## Other code changes
 
-* no changes
+* Various changes to support terminology service testing
+
