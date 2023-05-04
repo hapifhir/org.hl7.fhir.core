@@ -229,7 +229,12 @@ public class TerminologyServiceTests {
 
   private void validate(ValidationEngine engine, String name, Resource req, String resp, String fp) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) req;
-    ValueSet vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+    ValueSet vs = null;
+    if (p.hasParameter("valueSetVersion")) {
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue());      
+    } else {
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+    }
     ValidationOptions options = new ValidationOptions();
     if (p.hasParameter("displayLanguage")) {
       options = options.withLanguage(p.getParameterString("displayLanguage"));
