@@ -3,7 +3,7 @@ package org.hl7.fhir.r5.test.utils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.utilities.*;
-
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -245,6 +245,7 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private static String compareObjects(String path, JsonObject expectedJsonObject, JsonObject actualJsonObject) {
+    List<String> optionals = listOptionals(expectedJsonObject);
     for (Map.Entry<String, JsonElement> en : actualJsonObject.entrySet()) {
       String n = en.getKey();
       if (!n.equals("fhir_comments")) {
@@ -258,12 +259,23 @@ public class CompareUtilities extends BaseTestingUtilities {
     }
     for (Map.Entry<String, JsonElement> en : expectedJsonObject.entrySet()) {
       String n = en.getKey();
-      if (!n.equals("fhir_comments")) {
+      if (!n.equals("fhir_comments") && !n.equals("$optional$") && !optionals.contains(n)) {
         if (!actualJsonObject.has(n))
           return "properties differ at " + path + ": missing property " + n;
       }
     }
     return null;
+  }
+
+  private static List<String> listOptionals(JsonObject expectedJsonObject) {
+    List<String> res = new ArrayList<>();
+    if (expectedJsonObject.has("$optional-properties$")) {
+      res.add("$optional-properties$");
+      for (String s : JsonUtilities.strings(expectedJsonObject.getAsJsonArray("$optional-properties$"))) {
+        res.add(s);
+      }
+    }
+    return res;
   }
 
   private static String compareNodes(String path, JsonElement expectedJsonElement, JsonElement actualJsonElement) {
@@ -294,13 +306,26 @@ public class CompareUtilities extends BaseTestingUtilities {
     } else if (actualJsonElement instanceof JsonArray) {
       JsonArray actualArray = (JsonArray) actualJsonElement;
       JsonArray expectedArray = (JsonArray) expectedJsonElement;
+      int expectedMin = countExpectedMin(expectedArray);
 
-      if (actualArray.size() != expectedArray.size())
+      if (actualArray.size() > expectedArray.size() || actualArray.size() < expectedMin)
         return createNotEqualMessage("array properties count differs at " + path, Integer.toString(expectedArray.size()), Integer.toString(actualArray.size()));
-      for (int i = 0; i < actualArray.size(); i++) {
-        String s = compareNodes(path + "[" + Integer.toString(i) + "]", expectedArray.get(i), actualArray.get(i));
-        if (!Utilities.noString(s))
+      int c = 0;
+      for (int i = 0; i < expectedArray.size(); i++) {
+        if (c >= actualArray.size()) {
+          if (i == expectedArray.size() - 1 && isOptional(expectedArray.get(i))) {
+            return null; // this is OK 
+          } else {
+            return "One or more array items did not match at "+path;
+          }
+        }
+        String s = compareNodes(path + "[" + Integer.toString(i) + "]", expectedArray.get(i), actualArray.get(c));
+        if (!Utilities.noString(s) && !isOptional(expectedArray.get(i))) {
           return s;
+        }
+        if (Utilities.noString(s)) {
+          c++;
+        }
       }
     } else if (actualJsonElement instanceof JsonNull) {
 
@@ -309,18 +334,46 @@ public class CompareUtilities extends BaseTestingUtilities {
     return null;
   }
 
+  private static boolean isOptional(JsonElement e) {
+    return e.isJsonObject() && e.getAsJsonObject().has("$optional$");
+  }
+
+  private static int countExpectedMin(JsonArray array) {
+    int count = array.size();
+    for (JsonElement e : array) {
+      if (isOptional(e)) {
+        count--;
+      }
+    }
+    return count;
+  }
+
   private static boolean matches(String actualJsonString, String expectedJsonString) {
     if (expectedJsonString.startsWith("$") && expectedJsonString.endsWith("$")) {
-      switch (expectedJsonString) {
-      case "$$" : return true;
-      case "$instant$": return actualJsonString.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]{1,9})?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))");
-      case "$uuid$": return actualJsonString.matches("urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
-      default: 
-        throw new Error("Unhandled template: "+expectedJsonString);
+      if (expectedJsonString.startsWith("$choice:")) {
+        return Utilities.existsInList(actualJsonString, readChoices(expectedJsonString));
+
+      } else {
+        switch (expectedJsonString) {
+        case "$$" : return true;
+        case "$instant$": return actualJsonString.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]{1,9})?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))");
+        case "$uuid$": return actualJsonString.matches("urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+        default: 
+          throw new Error("Unhandled template: "+expectedJsonString);
+        }
       }
     } else {
       return actualJsonString.equals(expectedJsonString);
     }
+  }
+
+  private static List<String> readChoices(String s) {
+    List<String> list = new ArrayList<>();
+    s = s.substring(8, s.length()-1);
+    for (String p : s.split("\\|")) {
+      list.add(p);
+    }
+    return list;
   }
 
   public static String checkTextIsSame(String expected, String actual) throws JsonSyntaxException, FileNotFoundException, IOException {

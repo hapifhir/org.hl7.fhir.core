@@ -940,7 +940,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 2nd pass: What can we do internally 
     // 3rd pass: hit the server
     for (CodingValidationRequest t : codes) {
-      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs) : null);
+      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, expParameters) : null);
       if (t.getCoding().hasSystem()) {
         codeSystemsUsed.add(t.getCoding().getSystem());
       }
@@ -1058,7 +1058,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       codeSystemsUsed.add(code.getSystem());
     }
 
-    final CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
+    final CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs, expParameters) : null;
     ValidationResult res = null;
     if (txCache != null) {
       res = txCache.getValidation(cacheToken);
@@ -1135,11 +1135,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected ValueSetCheckerSimple constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
-    return new ValueSetCheckerSimple(options, vs, this, ctxt);
+    return new ValueSetCheckerSimple(options, vs, this, ctxt, expParameters, txcaps);
   }
 
   protected ValueSetCheckerSimple constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
-    return new ValueSetCheckerSimple(options, vs, this);
+    return new ValueSetCheckerSimple(options, vs, this, expParameters, txcaps);
   }
 
   protected Parameters constructParameters(ValueSet vs, boolean hierarchical) {
@@ -1204,7 +1204,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
-    CacheToken cacheToken = txCache.generateValidationToken(options, code, vs);
+    CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, expParameters);
     ValidationResult res = txCache.getValidation(cacheToken);
     if (res != null) {
       return res;
@@ -1342,6 +1342,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     String display = null;
     String system = null;
     String code = null;
+    String version = null;
     TerminologyServiceErrorClass err = TerminologyServiceErrorClass.UNKNOWN;
     for (ParametersParameterComponent p : pOut.getParameter()) {
       if (p.hasValue()) {
@@ -1353,6 +1354,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           display = p.getValue().primitiveValue();
         } else if (p.getName().equals("system")) {
           system = ((PrimitiveType<?>) p.getValue()).asStringValue();
+        } else if (p.getName().equals("version")) {
+          version = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("code")) {
           code = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("cause")) {
@@ -1375,11 +1378,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!ok) {
       return new ValidationResult(IssueSeverity.ERROR, message+" (from "+txClient.getId()+")", err, null).setTxLink(txLog.getLastId());
     } else if (message != null && !message.equals("No Message returned")) { 
-      return new ValidationResult(IssueSeverity.WARNING, message+" (from "+txClient.getId()+")", system, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog.getLastId());
+      return new ValidationResult(IssueSeverity.WARNING, message+" (from "+txClient.getId()+")", system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog.getLastId());
     } else if (display != null) {
-      return new ValidationResult(system, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog.getLastId());
+      return new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog.getLastId());
     } else {
-      return new ValidationResult(system, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog.getLastId());
+      return new ValidationResult(system, version, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog.getLastId());
     }
   }
 
