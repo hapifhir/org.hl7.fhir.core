@@ -47,18 +47,32 @@ public class ResourceEqualsTests {
     return "/" + resource;
   }
 
-  /* All files pairs contain a single difference, which can be evaluated with a diff. These differences are at various depths in the element tree. */
+  /* All files pairs contain a single difference, which can be evaluated with a diff. These differences are at various depths in the element tree, but not at the shallow level. */
   @ParameterizedTest
   @CsvSource({
     "conformance_example_1.json,conformance_example_2.json",
     "immunization_example_1.json,immunization_example_2.json",
     "patient_example_1.json,patient_example_2.json"
   })
-  public void testEqualsFalse(String resourceAName, String resourceBName) throws IOException {
+  public void testEqualsDeepFalse(String resourceAName, String resourceBName) throws IOException {
     org.hl7.fhir.dstu2016may.model.Resource resourceA = getResource(resourceAName);
 
     org.hl7.fhir.dstu2016may.model.Resource resourceB = getResource(resourceBName);
+    assertTrue(resourceA.equalsShallow(resourceB));
+    assertFalse(resourceA.equalsDeep(resourceB));
+  }
 
+  /* All files pairs contain a single difference, which can be evaluated with a diff. These differences are at the shallow level. */
+  @ParameterizedTest
+  @CsvSource({
+    "conformance_example_1.json,conformance_example_3.json",
+    "immunization_example_1.json,immunization_example_3.json",
+    "patient_example_1.json,patient_example_3.json"
+  })
+  public void testEqualsShallowFalse(String resourceAName, String resourceBName) throws IOException {
+    org.hl7.fhir.dstu2016may.model.Resource resourceA = getResource(resourceAName);
+
+    org.hl7.fhir.dstu2016may.model.Resource resourceB = getResource(resourceBName);
     assertFalse(resourceA.equalsShallow(resourceB));
     assertFalse(resourceA.equalsDeep(resourceB));
   }
