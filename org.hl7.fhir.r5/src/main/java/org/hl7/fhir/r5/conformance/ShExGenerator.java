@@ -41,7 +41,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.stringtemplate.v4.ST;
 
@@ -1848,7 +1848,7 @@ public class ShExGenerator {
    */
   private String genValueSet(ValueSet vs) {
     ST vsd = tmplt(VALUE_SET_DEFINITION).add("vsuri", vsprefix(vs.getUrl())).add("comment", vs.getDescription());
-    ValueSetExpander.ValueSetExpansionOutcome vse = context.expandVS(vs, true, false);
+    ValueSetExpansionOutcome vse = context.expandVS(vs, true, false);
     List<String> valid_codes = new ArrayList<String>();
     if(vse != null &&
       vse.getValueset() != null &&

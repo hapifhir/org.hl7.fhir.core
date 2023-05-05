@@ -13,10 +13,9 @@ public class FHIRPathExpressionFixer {
 //      return expr;
 //    }
 
-    //TODO is this expression below correct? @grahamegrieve
-//    if ("probability is decimal implies (probability as decimal) <= 100".equals(expr)) {
-//      return "probability.empty() or ((probability is decimal) implies ((probability as decimal) <= 100))";
-//    }
+    if ("probability is decimal implies (probability as decimal) <= 100".equals(expr)) {
+      return "(probability.exists() and (probability is decimal)) implies ((probability as decimal) <= 100)";
+    }
     if ("enableWhen.count() > 2 implies enableBehavior.exists()".equals(expr)) {
       return "enableWhen.count() >= 2 implies enableBehavior.exists()";
     }

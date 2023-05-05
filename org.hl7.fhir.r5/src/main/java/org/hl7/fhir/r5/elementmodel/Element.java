@@ -57,7 +57,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;

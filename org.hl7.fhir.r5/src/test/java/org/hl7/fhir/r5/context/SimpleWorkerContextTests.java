@@ -20,10 +20,10 @@ import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.terminologies.TerminologyClient;
-import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander;
-import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -54,7 +54,7 @@ public class SimpleWorkerContextTests {
   ToolingClientLogger txLog;
 
   @Mock
-  TerminologyClient terminologyClient;
+  ITerminologyClient terminologyClient;
 
   @Mock
   TerminologyCache.CacheToken cacheToken;
@@ -63,13 +63,13 @@ public class SimpleWorkerContextTests {
   IWorkerContext.ValidationResult expectedValidationResult;
 
   @Mock
-  ValueSetExpander.ValueSetExpansionOutcome expectedExpansionResult;
+  ValueSetExpansionOutcome expectedExpansionResult;
 
   @Mock
-  ValueSetCheckerSimple valueSetCheckerSimple;
+  ValueSetValidator valueSetCheckerSimple;
 
   @Mock
-  ValueSetExpanderSimple valueSetExpanderSimple;
+  ValueSetExpander valueSetExpanderSimple;
 
   @Mock
   Parameters pIn;
@@ -90,7 +90,7 @@ public class SimpleWorkerContextTests {
   public void beforeEach() {
     context.txCache = terminologyCache;
     context.expParameters = expParameters;
-    context.txClient = terminologyClient;
+    context.tcc.setClient(terminologyClient);
     context.txLog = txLog;
   }
 
@@ -270,7 +270,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
-    ValueSetExpander.ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
 
     assertEquals(expectedExpansionResult, actualExpansionResult);
 
@@ -300,7 +300,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(argThat(new ValueSetMatcher(vs)),
       argThat(new ParametersMatcher(pInWithDependentResources)), eq(params));
 
-    ValueSetExpander.ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
 
     assertEquals(expectedValueSet, actualExpansionResult.getValueset());
 
@@ -319,7 +319,7 @@ public class SimpleWorkerContextTests {
 
     Parameters pIn = new Parameters();
 
-    ValueSetExpander.ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn);
 
     assertEquals(expectedExpansionResult, actualExpansionResult);
 
@@ -345,7 +345,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple();
 
-    ValueSetExpander.ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn);
 
     assertEquals(expectedExpansionResult, actualExpansionResult);
 
@@ -374,7 +374,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(eq(vs), argThat(new ParametersMatcher(pInWithDependentResources)), eq(params));
 
-    ValueSetExpander.ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn);
 
     assertEquals(expectedValueSet, actualExpansionResult.getValueset());
 

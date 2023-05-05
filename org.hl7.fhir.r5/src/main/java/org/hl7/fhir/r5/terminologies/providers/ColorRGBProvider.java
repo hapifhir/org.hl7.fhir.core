@@ -9,7 +9,6 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
-import org.hl7.fhir.r5.terminologies.CodeSystemProvider;
 
 public class ColorRGBProvider extends CodeSystemProvider {
 
@@ -21,7 +20,7 @@ public class ColorRGBProvider extends CodeSystemProvider {
   }
 
   @Override
-  protected Boolean checkCode(String code) {
+  public Boolean checkCode(String code) {
     return code.matches("^\\#[0-9a-fA-F]{6}$");
   }
 
