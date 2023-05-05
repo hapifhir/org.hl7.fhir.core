@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander;
@@ -119,12 +120,12 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
     IWorkerContext.ValidationResult codingResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
     TerminologyCache.CacheToken codingTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
-      coding, valueSet);
+      coding, valueSet, new Parameters());
     terminologyCacheA.cacheValidation(codingTokenA, codingResultA, true);
 
     IWorkerContext.ValidationResult codeableConceptResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
     TerminologyCache.CacheToken codeableConceptTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
-      concept, valueSet);
+      concept, valueSet, new Parameters());
     terminologyCacheA.cacheValidation(codeableConceptTokenA, codeableConceptResultA, true);
 
     TerminologyCache.CacheToken expansionTokenA = terminologyCacheA.generateExpandToken(valueSet, true);
@@ -148,10 +149,8 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       assertCanonicalResourceEquals(terminologyCapabilities, terminologyCacheB.getTerminologyCapabilities());
       assertCanonicalResourceEquals(capabilityStatement, terminologyCacheB.getCapabilityStatement());
 
-      assertValidationResultEquals(codingResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
-        coding, valueSet)));
-      assertValidationResultEquals(codeableConceptResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
-        concept, valueSet)));
+      assertValidationResultEquals(codingResultA, terminologyCacheB.getValidation(         terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters())));
+      assertValidationResultEquals(codeableConceptResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, valueSet, new Parameters())));
       assertExpansionOutcomeEquals(expansionOutcomeA,terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, true)));
     }
     deleteTempCacheDirectory(tempCacheDirectory);
@@ -179,7 +178,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     Coding coding = new Coding();
     coding.setCode("dummyCode");
     TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
-      coding, valueSet );
+      coding, valueSet, new Parameters());
 
     JsonElement actual = jsonParser.parse(cacheToken.getRequest());
     JsonElement expected = getJsonFromFile("codingEmptyValueSet.json");
@@ -199,7 +198,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     coding.setSystem("dummySystem");
     coding.setVersion("dummyVersion");
     TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
-      coding, valueSet );
+      coding, valueSet, new Parameters());
 
     JsonElement actual = jsonParser.parse(cacheToken.getRequest());
     JsonElement expected = getJsonFromFile("codingEmptyValueSetSystem.json");
@@ -218,7 +217,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     coding.setCode("dummyCode");
 
     TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
-      coding, valueSet);
+      coding, valueSet, new Parameters());
     assertEquals("all-systems", cacheToken.getName());
     assertFalse(cacheToken.hasVersion());
   }
@@ -234,7 +233,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     coding.setSystem("dummySystem");
     coding.setVersion("dummyVersion");
     TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
-      coding, valueSet);
+      coding, valueSet, new Parameters());
     assertEquals("dummySystem", cacheToken.getName());
     assertTrue(cacheToken.hasVersion());
   }
@@ -249,7 +248,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     concept.addCoding(new Coding().setCode("dummyCode"));
     ValueSet valueSet = new ValueSet();
     TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
-      concept, valueSet );
+      concept, valueSet, new Parameters());
 
     assertNull(cacheToken.getName());
     assertEquals(false, cacheToken.hasVersion());
@@ -273,7 +272,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
     ValueSet valueSet = new ValueSet();
     TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
-      concept, valueSet);
+      concept, valueSet, new Parameters());
 
     assertEquals("dummySystem", cacheToken.getName());
     assertEquals(true, cacheToken.hasVersion());
@@ -297,7 +296,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
     ValueSet valueSet = new ValueSet();
     TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
-      concept, valueSet);
+      concept, valueSet, new Parameters());
 
     assertNull(cacheToken.getName());
     assertFalse(cacheToken.hasVersion());
@@ -482,14 +481,14 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       Coding coding = new Coding();
       coding.setSystem(system);
       TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
-        coding, valueSet);
+        coding, valueSet, new Parameters());
       assertEquals(expectedName, cacheToken.getName());
     }
     {
       Coding coding = new Coding();
       coding.setSystem(system + "|dummyVersion");
       TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
-        coding, valueSet);
+        coding, valueSet, new Parameters());
       assertEquals(expectedName + "_dummyVersion", cacheToken.getName());
     }
   }

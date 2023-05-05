@@ -141,7 +141,7 @@ public class SimpleWorkerContextTests {
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
     Mockito.doReturn(expectedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
@@ -161,7 +161,7 @@ public class SimpleWorkerContextTests {
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
 
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any(), any());
     Mockito.doReturn(expectedValidationResult).when(valueSetCheckerSimple).validateCode(eq("Coding"), any(Coding.class));
@@ -184,7 +184,7 @@ public class SimpleWorkerContextTests {
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
     Mockito.doReturn(pIn).when(context).constructParameters(validationOptions, coding);
     Mockito.doReturn(expectedValidationResult).when(context).validateOnServer(valueSet, pIn, validationOptions);
 
@@ -204,7 +204,7 @@ public class SimpleWorkerContextTests {
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
     Mockito.doReturn(expectedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
     IWorkerContext.ValidationResult actualValidationResult = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
@@ -223,7 +223,7 @@ public class SimpleWorkerContextTests {
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
 
     IWorkerContext.ValidationResult validationResultB = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
     assertEquals(expectedValidationResult, validationResultB);
@@ -245,7 +245,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.doReturn(expectedValidationResult).when(context).validateOnServer(valueSet, pIn, validationOptions);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet, expParameters);
 
     IWorkerContext.ValidationResult validationResultB = context.validateCode(validationOptions, codeableConcept, valueSet);
 
