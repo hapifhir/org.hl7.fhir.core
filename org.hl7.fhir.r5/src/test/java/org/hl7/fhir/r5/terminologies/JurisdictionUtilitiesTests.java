@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.terminology;
+package org.hl7.fhir.r5.terminologies;
 
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -68,6 +68,11 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class ValueSetUtilities {
 
+
+  public static boolean isServerSide(String url) {
+    return Utilities.existsInList(url, "http://hl7.org/fhir/sid/cvx");
+  }
+  
   public static ValueSet makeShareable(ValueSet vs) {
     if (!vs.hasExperimental()) {
       vs.setExperimental(false);
