@@ -13,7 +13,7 @@ public class CapabilityStatement30_50Test {
   @Test
   @DisplayName("Test r5 -> dstu3 CapabilityStatement conversion.")
   public void testR5_Dstu3() throws IOException {
-    InputStream r5_input = this.getClass().getResourceAsStream("/capability_statement_50.json");
+    InputStream r5_input = this.getClass().getResourceAsStream("/capability_statement_50_with_30_extensions.json");
 
     org.hl7.fhir.r5.model.CapabilityStatement r5_actual = (org.hl7.fhir.r5.model.CapabilityStatement) new org.hl7.fhir.r5.formats.JsonParser().parse(r5_input);
     org.hl7.fhir.dstu3.model.Resource dstu3_conv = VersionConvertorFactory_30_50.convertResource(r5_actual);
