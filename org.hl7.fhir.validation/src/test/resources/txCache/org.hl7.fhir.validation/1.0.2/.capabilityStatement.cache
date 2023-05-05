@@ -13,10 +13,10 @@
     "valueCode" : "both"
   }],
   "url" : "http://localhost/r2/metadata",
-  "version" : "1.0.2-2.0.14",
+  "version" : "1.0.2-2.1.0",
   "name" : "FHIR Reference Server Conformance Statement",
   "status" : "active",
-  "date" : "2023-04-24T12:40:21.199Z",
+  "date" : "2023-05-02T06:09:01.119Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -27,7 +27,7 @@
   "kind" : "instance",
   "software" : {
     "name" : "Reference Server",
-    "version" : "2.0.14",
+    "version" : "2.1.0",
     "releaseDate" : "2022-05-13T19:50:55.040Z"
   },
   "implementation" : {

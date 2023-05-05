@@ -173,7 +173,7 @@ public class TerminologyClientR3 implements TerminologyClient {
       throw new FHIRException("Unable to fetch resource " + Utilities.pathURL(getAddress(), type, id));
     }
     org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_30_50.convertResource(r3);
-    if (r5 != null) {
+    if (r5 == null) {
       throw new FHIRException("Unable to convert resource " + Utilities.pathURL(getAddress(), type, id) + " to R5 (internal representation)");
     }
     if (!(r5 instanceof CanonicalResource)) {

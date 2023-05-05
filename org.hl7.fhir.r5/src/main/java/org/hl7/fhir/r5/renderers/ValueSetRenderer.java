@@ -315,7 +315,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals(mode)) {
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
-        if (parts.length == 2)
+        if (parts.length == 2 && !Utilities.noString(parts[0]))
           versions.put(parts[0], parts[1]);
       }
     }
@@ -441,7 +441,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
-        if (parts.length == 2)
+        if (parts.length == 2 && !Utilities.noString(parts[0]))
           versions.put(parts[0], parts[1]);
       }
     }
@@ -491,6 +491,17 @@ public class ValueSetRenderer extends TerminologyRenderer {
         x.tx("Loinc v"+v+" ("+vd+")");
       } else {
         x.tx("Loinc v"+v);        
+      }
+    } else if (Utilities.noString(v)) {
+      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, source);
+      if (cr != null) {
+        if (cr.hasWebPath()) {
+          x.ah(cr.getWebPath()).tx(cr.present()+" (no version) ("+cr.fhirType()+")");          
+        } else {
+          x.tx(describeSystem(u)+" (no version) ("+cr.fhirType()+")");
+        }
+      } else {
+        x.tx(describeSystem(u)+" (no version)");
       }
     } else {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v, source);

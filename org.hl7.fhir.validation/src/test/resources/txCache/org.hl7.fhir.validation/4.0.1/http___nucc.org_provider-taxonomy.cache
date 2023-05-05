@@ -3,19 +3,32 @@
   "system" : "http://nucc.org/provider-taxonomy",
   "code" : "208D00000X",
   "display" : "General Practice"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
+  "version" : "22.0",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician' (for the language(s) '--') (from null)"
+  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician' (for the language(s) '--') (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://nucc.org/provider-taxonomy",
   "code" : "208D00000X"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
@@ -26,22 +39,36 @@ v: {
   "system" : "http://nucc.org/provider-taxonomy",
   "code" : "208D00000X",
   "display" : "General Practice"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
+  "version" : "22.0",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician' (for the language(s) '--') (from null)"
+  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician' (for the language(s) '--') (from Tx-Server)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://nucc.org/provider-taxonomy",
   "code" : "208D00000X"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
 v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
-  "system" : "http://nucc.org/provider-taxonomy"
+  "system" : "http://nucc.org/provider-taxonomy",
+  "version" : "22.0"
 }
 -------------------------------------------------------------------------------------

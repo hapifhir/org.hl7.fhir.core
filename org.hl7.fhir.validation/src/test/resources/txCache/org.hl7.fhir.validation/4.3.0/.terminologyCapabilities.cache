@@ -2,10 +2,10 @@
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
   "url" : "http://localhost/r4/metadata",
-  "version" : "1.0.0",
+  "version" : "2.0.0",
   "name" : "FHIR Reference Server Teminology Capability Statement",
   "status" : "active",
-  "date" : "2023-04-24T12:40:18.709Z",
+  "date" : "2023-05-02T06:12:57.020Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
