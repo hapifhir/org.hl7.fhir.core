@@ -28,7 +28,7 @@ public class BaseAdvisor_10_40 extends BaseAdvisor40<org.hl7.fhir.dstu2.model.Ex
                                  @Nonnull String url) {
     final List<String> paths = Arrays.asList(path.split(","));
     final String lastPath = paths.get(paths.size() - 1);
-    return (lastPath.equals("Conformance")) && (conformanceIgnoredUrls.contains(url));
+    return (lastPath.equals("CapabilityStatement")) && (conformanceIgnoredUrls.contains(url));
   }
 
   @Override
