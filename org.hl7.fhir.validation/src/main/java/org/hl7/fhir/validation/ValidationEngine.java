@@ -369,12 +369,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       }
       engine.setVersion(version);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
-//      if (THO) {
-//        loadTx(engine);
-//      }
-//      if (VersionUtilities.isR5Plus(version)) {
-//        engine.loadPackage("hl7.fhir.uv.extensions", "1.0.0");
-//      }
+      if (THO) {
+        loadTx(engine);
+      }
+      if (VersionUtilities.isR5Plus(version)) {
+        engine.loadPackage("hl7.fhir.uv.extensions", "1.0.0");
+      }
       return engine;
     }
 

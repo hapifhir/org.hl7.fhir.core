@@ -77,6 +77,234 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
+  "code" : "59408-5"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
+  "code" : "59408-5",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code http://loinc.org#2708-6 is not in the value set 'http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood",
+  "code" : "2708-6",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "59408-5",
+  "display" : "O2 % BldC Oximetry"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
+  "code" : "59408-5",
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "severity" : "warning",
+  "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 26 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry, \"SaO2 % BldA PulseOx\", \"O2 SaO2\" (pl-PL), \"saturacja krwi tlenem\" (pl-PL), \"MFr O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法\" (zh-CN), \"脉搏血氧定量\" (zh-CN), \"脉搏血氧测定\" (zh-CN), \"脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度\" (zh-CN), \"O2-Sättigung\" (de-DE), \"Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso\" (it-IT), \"Oksijen doymuşluğu\" (tr-TR), \"Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия\" (ru-RU), \"Гемоксиметрия Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"zuurstofsaturatiemeting\" (nl-NL), \"O2 SatO2\" (fr-BE)' for the language(s) '--' (from Tx-Server)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6",
+  "display" : "Oxygen saturation in Arterial blood"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood",
+  "code" : "2708-6",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "59408-5"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
+  "code" : "59408-5",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2708-6"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood",
+  "code" : "2708-6",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3150-0"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen concentration",
+  "code" : "3150-0",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3150-0",
+  "display" : "Inhaled Oxygen Concentration"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen concentration",
+  "code" : "3150-0",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3150-0"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen concentration",
+  "code" : "3150-0",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3151-8"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen flow rate",
+  "code" : "3151-8",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3151-8",
+  "display" : "Flow Rate"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen flow rate",
+  "code" : "3151-8",
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "severity" : "warning",
+  "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate, \"Inhaled O2 flow rate\", \"O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 体积速率(单位时间)\" (zh-CN), \"单位时间内体积的变化速率\" (zh-CN), \"流量 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 吸入气\" (zh-CN), \"吸入气体\" (zh-CN), \"吸入的空气 所吸入的氧\" (zh-CN), \"已吸入的氧气 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 气 气体类 空气\" (zh-CN), \"Inhaled O2\" (pt-BR), \"vRate\" (pt-BR), \"Volume rate\" (pt-BR), \"Flow\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"IhG\" (pt-BR), \"Inhaled Gas\" (pt-BR), \"Inspired\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"Gases\" (pt-BR), \"Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume\" (it-IT), \"Количественный Объемная скорость Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"ingeademde O2\" (nl-NL), \"O2-Zufuhr\" (de-AT)' for the language(s) '--' (from Tx-Server)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3151-8"
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen flow rate",
+  "code" : "3151-8",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
   "code" : "5792-7"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
@@ -105,7 +333,8 @@ v: {
 v: {
   "display" : "Laboratory report",
   "code" : "11502-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -155,7 +384,8 @@ v: {
 v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -584,7 +814,8 @@ v: {
 v: {
   "display" : "Patient Consent",
   "code" : "59284-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -617,7 +848,8 @@ v: {
 v: {
   "display" : "INR in Capillary blood by Coagulation assay",
   "code" : "46418-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -668,7 +900,8 @@ v: {
 v: {
   "display" : "Creatinine [Moles/volume] in Serum, Plasma or Blood",
   "code" : "77140-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -719,7 +952,8 @@ v: {
 v: {
   "display" : "Cytotoxic percent reactive Ab [Presence] in Serum by Quick method",
   "code" : "4535-1",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -770,7 +1004,8 @@ v: {
 v: {
   "display" : "Body weight",
   "code" : "29463-7",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -821,7 +1056,8 @@ v: {
 v: {
   "display" : "Body height",
   "code" : "8302-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -872,7 +1108,8 @@ v: {
 v: {
   "display" : "Body mass index (BMI) [Ratio]",
   "code" : "39156-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -923,7 +1160,8 @@ v: {
 v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -974,7 +1212,8 @@ v: {
 v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1025,7 +1264,8 @@ v: {
 v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1220,7 +1460,8 @@ v: {
 v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1413,7 +1654,8 @@ v: {
 v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1482,7 +1724,8 @@ v: {
 v: {
   "display" : "Summary of episode note",
   "code" : "34133-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1533,12 +1776,13 @@ v: {
 v: {
   "display" : "Summary of episode note",
   "code" : "34133-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
-  "version" : "2.73",
+  "version" : "2.74",
   "code" : "57852-6",
   "display" : "Problem list Narrative - Reported"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
@@ -1549,9 +1793,10 @@ v: {
   }]
 }}####
 v: {
-  "severity" : "error",
-  "error" : "The CodeSystem http://loinc.org version 2.73 is unknown. Valid versions: [2.74]; The provided code http://loinc.org|2.73#57852-6 is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
-  "class" : "UNKNOWN"
+  "display" : "Problem list Narrative - Reported",
+  "code" : "57852-6",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1567,7 +1812,8 @@ v: {
 v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1956,7 +2202,8 @@ v: {
 v: {
   "display" : "Genetic variant assessment",
   "code" : "69548-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2001,7 +2248,8 @@ v: {
 v: {
   "display" : "Present",
   "code" : "LA9633-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2058,7 +2306,8 @@ v: {
 v: {
   "display" : "Sequencing",
   "code" : "LA26398-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2115,7 +2364,8 @@ v: {
 v: {
   "display" : "Somatic",
   "code" : "LA6684-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2431,7 +2681,8 @@ v: {
 v: {
   "display" : "Medications",
   "code" : "LA20271-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2503,7 +2754,8 @@ v: {
 v: {
   "display" : "Prescription or over-the-counter (including herbal supplements)",
   "code" : "LA20278-0",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2555,7 +2807,8 @@ v: {
 v: {
   "display" : "Incorrect action (process failure or error) (e.g., such as administering overdose or incorrect medication)",
   "code" : "LA20275-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2639,7 +2892,8 @@ v: {
 v: {
   "display" : "Incorrect patient",
   "code" : "LA20276-4",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2703,7 +2957,8 @@ v: {
 v: {
   "display" : "Administering",
   "code" : "LA20296-2",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2735,7 +2990,8 @@ v: {
 v: {
   "display" : "No",
   "code" : "LA32-8",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2767,7 +3023,8 @@ v: {
 v: {
   "display" : "Yes",
   "code" : "LA33-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2830,7 +3087,8 @@ v: {
 v: {
   "display" : "Yes",
   "code" : "LA33-6",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2859,7 +3117,8 @@ v: {
 v: {
   "display" : "No",
   "code" : "LA32-8",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -2928,249 +3187,6 @@ v: {
 v: {
   "display" : "History of allergies, reported",
   "code" : "10155-0",
-  "system" : "http://loinc.org",
-  "version" : "2.74"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "59408-5"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
-  "code" : "59408-5",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "severity" : "error",
-  "error" : "The provided code http://loinc.org#2708-6 is not in the value set 'http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0' (from Tx-Server)",
-  "class" : "UNKNOWN"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood",
-  "code" : "2708-6",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "59408-5",
-  "display" : "O2 % BldC Oximetry"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
-  "code" : "59408-5",
-  "system" : "http://loinc.org",
-  "version" : "2.74",
-  "severity" : "warning",
-  "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 26 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry, \"SaO2 % BldA PulseOx\", \"O2 SaO2\" (pl-PL), \"saturacja krwi tlenem\" (pl-PL), \"MFr O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法\" (zh-CN), \"脉搏血氧定量\" (zh-CN), \"脉搏血氧测定\" (zh-CN), \"脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度\" (zh-CN), \"O2-Sättigung\" (de-DE), \"Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso\" (it-IT), \"Oksijen doymuşluğu\" (tr-TR), \"Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия\" (ru-RU), \"Гемоксиметрия Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"zuurstofsaturatiemeting\" (nl-NL), \"O2 SatO2\" (fr-BE)' for the language(s) '--' (from Tx-Server)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6",
-  "display" : "Oxygen saturation in Arterial blood"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood",
-  "code" : "2708-6",
-  "system" : "http://loinc.org",
-  "version" : "2.74"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "59408-5"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
-  "code" : "59408-5",
-  "system" : "http://loinc.org",
-  "version" : "2.74"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "2708-6"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Oxygen saturation in Arterial blood",
-  "code" : "2708-6",
-  "system" : "http://loinc.org",
-  "version" : "2.74"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3150-0"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Inhaled oxygen concentration",
-  "code" : "3150-0",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3150-0",
-  "display" : "Inhaled Oxygen Concentration"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Inhaled oxygen concentration",
-  "code" : "3150-0",
-  "system" : "http://loinc.org",
-  "version" : "2.74"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3150-0"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Inhaled oxygen concentration",
-  "code" : "3150-0",
-  "system" : "http://loinc.org",
-  "version" : "2.74"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3151-8"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Inhaled oxygen flow rate",
-  "code" : "3151-8",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3151-8",
-  "display" : "Flow Rate"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs", "version": "4.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Inhaled oxygen flow rate",
-  "code" : "3151-8",
-  "system" : "http://loinc.org",
-  "version" : "2.74",
-  "severity" : "warning",
-  "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate, \"Inhaled O2 flow rate\", \"O2\" (zh-CN), \"tO2\" (zh-CN), \"总氧\" (zh-CN), \"氧气 体积速率(单位时间)\" (zh-CN), \"单位时间内体积的变化速率\" (zh-CN), \"流量 可用数量表示的\" (zh-CN), \"定量性\" (zh-CN), \"数值型\" (zh-CN), \"数量型\" (zh-CN), \"连续数值型标尺 吸入气\" (zh-CN), \"吸入气体\" (zh-CN), \"吸入的空气 所吸入的氧\" (zh-CN), \"已吸入的氧气 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 气 气体类 空气\" (zh-CN), \"Inhaled O2\" (pt-BR), \"vRate\" (pt-BR), \"Volume rate\" (pt-BR), \"Flow\" (pt-BR), \"Point in time\" (pt-BR), \"Random\" (pt-BR), \"IhG\" (pt-BR), \"Inhaled Gas\" (pt-BR), \"Inspired\" (pt-BR), \"Quantitative\" (pt-BR), \"QNT\" (pt-BR), \"Quant\" (pt-BR), \"Quan\" (pt-BR), \"Gases\" (pt-BR), \"Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume\" (it-IT), \"Количественный Объемная скорость Точка во времени\" (ru-RU), \"Момент\" (ru-RU), \"ingeademde O2\" (nl-NL), \"O2-Zufuhr\" (de-AT)' for the language(s) '--' (from Tx-Server)"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "3151-8"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Inhaled oxygen flow rate",
-  "code" : "3151-8",
-  "system" : "http://loinc.org",
-  "version" : "2.74"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "version" : "2.74",
-  "code" : "57852-6",
-  "display" : "Problem list Narrative - Reported"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Problem list Narrative - Reported",
-  "code" : "57852-6",
   "system" : "http://loinc.org",
   "version" : "2.74"
 }

@@ -35,6 +35,39 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://unitsofmeasure.org",
+  "code" : "%"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "percent",
+  "code" : "%",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "L/min"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code http://unitsofmeasure.org#L/min is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-vitals-common--0' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
   "code" : "cm"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
@@ -181,7 +214,8 @@ v: {
 v: {
   "display" : "millimeter of mercury",
   "code" : "mm[Hg]",
-  "system" : "http://unitsofmeasure.org"
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -384,37 +418,5 @@ v: {
   "code" : "J/C",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://unitsofmeasure.org",
-  "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "percent",
-  "code" : "%",
-  "system" : "http://unitsofmeasure.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://unitsofmeasure.org",
-  "code" : "L/min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "severity" : "error",
-  "error" : "The provided code http://unitsofmeasure.org#L/min is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-vitals-common--0' (from Tx-Server)",
-  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------

@@ -1074,7 +1074,7 @@ public class ValueSetValidator {
   }
 
   private boolean codeInConceptIsAFilter(CodeSystem cs, ConceptSetFilterComponent f, String code, boolean excludeRoot) {
-    if (!excludeRoot && code.equals(f.getProperty())) {
+    if (!excludeRoot && code.equals(f.getValue())) {
       return true;
     }
     ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), f.getValue());

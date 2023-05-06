@@ -16,8 +16,7 @@ public class FhirSettingsPOJO {
 
   protected static final String TX_SERVER_PROD = "http://tx.fhir.org";
   protected static final String TX_SERVER_DEV = "http://tx-dev.fhir.org";
-//  protected static final String TX_SERVER_LOCAL = "http://local.fhir.org";  
-  protected static final String TX_SERVER_LOCAL = "http://localhost";  
+  protected static final String TX_SERVER_LOCAL = "http://local.fhir.org";  
   
   private String fhirDirectory;
   private Map<String, String> apiKeys;

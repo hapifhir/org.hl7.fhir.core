@@ -48,8 +48,8 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-//  private static final String SERVER = FhirSettings.getTxFhirDevelopment();
-  private static final String SERVER = FhirSettings.getTxFhirLocal();
+  private static final String SERVER = FhirSettings.getTxFhirDevelopment();
+//  private static final String SERVER = FhirSettings.getTxFhirLocal();
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
