@@ -1,0 +1,23 @@
+{ 
+  "code": {
+    "coding": [
+      {
+        "system": "dummySystem",
+        "version": "dummyVersion",
+        "code": "dummyCode"
+      }
+    ]
+  },
+  "valueSet": {
+    "resourceType": "ValueSet"
+  },
+  "langs": "[]",
+  "useServer": "true",
+  "useClient": "true",
+  "guessSystem": "true",
+  "valueSetMode": "ALL_CHECKS",
+  "versionFlexible": "false",
+  "profile":{
+    "resourceType":"Parameters"
+  }
+}
