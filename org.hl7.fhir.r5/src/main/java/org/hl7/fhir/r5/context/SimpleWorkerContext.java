@@ -67,7 +67,7 @@ import org.hl7.fhir.r5.profilemodel.PEDefinition;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
-import org.hl7.fhir.r5.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -316,22 +316,22 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       loadBytes(name, stream);
   }
 
-  public String connectToTSServer(TerminologyClient client, String log) {
+  public String connectToTSServer(ITerminologyClient client, String log) {
     try {
       txLog("Connect to "+client.getAddress());
-      txClient = client;
+      tcc.setClient(client);
       if (log != null && (log.endsWith(".htm") || log.endsWith(".html"))) {
         txLog = new HTMLClientLogger(log);
       } else {
         txLog = new TextClientLogger(log);
       }
-      txClient.setLogger(txLog);
-      txClient.setUserAgent(userAgent);
+      tcc.getClient().setLogger(txLog);
+      tcc.getClient().setUserAgent(userAgent);
 
-      final CapabilityStatement capabilitiesStatementQuick = txCache.hasCapabilityStatement() ? txCache.getCapabilityStatement() : txClient.getCapabilitiesStatementQuick();
+      final CapabilityStatement capabilitiesStatementQuick = txCache.hasCapabilityStatement() ? txCache.getCapabilityStatement() : tcc.getClient().getCapabilitiesStatementQuick();
       txCache.cacheCapabilityStatement(capabilitiesStatementQuick);
 
-      final TerminologyCapabilities capabilityStatement = txCache.hasTerminologyCapabilities() ? txCache.getTerminologyCapabilities() : txClient.getTerminologyCapabilities();
+      final TerminologyCapabilities capabilityStatement = txCache.hasTerminologyCapabilities() ? txCache.getTerminologyCapabilities() : tcc.getClient().getTerminologyCapabilities();
       txCache.cacheTerminologyCapabilities(capabilityStatement);
 
       setTxCaps(capabilityStatement);

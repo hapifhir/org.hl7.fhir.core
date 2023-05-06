@@ -433,7 +433,7 @@ public class CliContext {
 
   @JsonProperty("sv")
   public CliContext setSv(String sv) {
-    if (sv != null && sv.startsWith("R")) {
+    if (sv != null && (sv.startsWith("R") || sv.startsWith("r"))) {
       this.sv = VersionUtilities.versionFromCode(sv.toLowerCase());
     } else {
       this.sv = sv;

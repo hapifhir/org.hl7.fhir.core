@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.terminologies;
+package org.hl7.fhir.r5.terminologies.client;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -40,7 +40,7 @@ import org.hl7.fhir.utilities.ToolingClientLogger;
 import java.util.EnumSet;
 import java.util.Map;
 
-public interface TerminologyClient {
+public interface ITerminologyClient {
 
   EnumSet<FhirPublication> supportableVersions();
   void setAllowedVersions(EnumSet<FhirPublication> versions);
@@ -54,15 +54,15 @@ public interface TerminologyClient {
   ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException;
   Parameters validateCS(Parameters pin) throws FHIRException;
   Parameters validateVS(Parameters pin) throws FHIRException;
-  TerminologyClient setTimeout(int i) throws FHIRException;
-  TerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
+  ITerminologyClient setTimeout(int i) throws FHIRException;
+  ITerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
   int getRetryCount() throws FHIRException;
-  TerminologyClient setRetryCount(int retryCount) throws FHIRException;
+  ITerminologyClient setRetryCount(int retryCount) throws FHIRException;
   CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
   Parameters lookupCode(Map<String, String> params) throws FHIRException;
   Bundle validateBatch(Bundle batch);
   CanonicalResource read(String type, String id);
   ClientHeaders getClientHeaders();
-  TerminologyClient setClientHeaders(ClientHeaders clientHeaders);
-  TerminologyClient setUserAgent(String userAgent);
+  ITerminologyClient setClientHeaders(ClientHeaders clientHeaders);
+  ITerminologyClient setUserAgent(String userAgent);
 }

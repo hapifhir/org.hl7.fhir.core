@@ -19,7 +19,7 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
@@ -258,7 +258,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   
     String root = getRoot(p, url);
     if (root != null) {
-      TerminologyClient c;
+      ITerminologyClient c;
       c = TerminologyClientFactory.makeClient("source", root, "fhir/validator", context.getVersion());
       return c.read(p[p.length - 2], p[p.length - 1]);
     } else {

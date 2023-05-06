@@ -110,12 +110,14 @@ import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.r5.terminologies.TerminologyClient;
-import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple;
-import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple.VSCheckerException;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
+import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
+import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -205,12 +207,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private Object lock = new Object(); // used as a lock for the data that follows
   protected String version; // although the internal resources are all R5, the version of FHIR they describe may not be 
-  private String cacheId;
-  private boolean isTxCaching;
-  @Getter
-  private int serverQueryCount = 0;
-  private final Set<String> cached = new HashSet<>();
-  
+
+  protected TerminologyClientContext tcc = new TerminologyClientContext();
+
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
   // all maps are to the full URI
   private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<CodeSystem>(false);
@@ -239,14 +238,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected Map<String, String> oidCache = new HashMap<>();
 
   protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String,ValidationResult>>();
-  protected String tsServer;
   protected String name;
   private boolean allowLoadingDuplicates;
 
-  protected TerminologyClient txClient;
   private final Set<String> codeSystemsUsed = new HashSet<>();
   protected ToolingClientLogger txLog;
-  private TerminologyCapabilities txcaps;
   private boolean canRunWithoutTerminology;
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
@@ -288,7 +284,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       allResourcesById.putAll(other.allResourcesById);
       translator = other.translator;
       codeSystems.copy(other.codeSystems);
-      txcaps = other.txcaps;
       valueSets.copy(other.valueSets);
       maps.copy(other.maps);
       transforms.copy(other.transforms);
@@ -305,11 +300,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       libraries.copy(libraries);
 
       allowLoadingDuplicates = other.allowLoadingDuplicates;
-      tsServer = other.tsServer;
       name = other.name;
-      txClient = other.txClient;
       txLog = other.txLog;
-      txcaps = other.txcaps;
       canRunWithoutTerminology = other.canRunWithoutTerminology;
       noTerminologyServer = other.noTerminologyServer;
       if (other.txCache != null)
@@ -318,9 +310,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       logger = other.logger;
       expParameters = other.expParameters;
       version = other.version;
-      cacheId = other.cacheId;
-      isTxCaching = other.isTxCaching;
-      cached.addAll(other.cached);
       supportedCodeSystems.addAll(other.supportedCodeSystems);
       unsupportedCodeSystems.addAll(other.unsupportedCodeSystems);
       codeSystemsUsed.addAll(other.codeSystemsUsed);
@@ -331,6 +320,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       tlogging = other.tlogging;
       locator = other.locator;
       userAgent = other.userAgent;
+      tcc.copy(other.tcc);
     }
   }
   
@@ -697,18 +687,18 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (noTerminologyServer) {
           return false;
         }
-        if (txcaps == null) {
+        if (tcc.getTxcaps() == null) {
           try {
             logger.logMessage("Terminology server: Check for supported code systems for "+system);
-            final TerminologyCapabilities capabilityStatement = txCache.hasTerminologyCapabilities() ? txCache.getTerminologyCapabilities() : txClient.getTerminologyCapabilities();
+            final TerminologyCapabilities capabilityStatement = txCache.hasTerminologyCapabilities() ? txCache.getTerminologyCapabilities() : tcc.getClient().getTerminologyCapabilities();
             txCache.cacheTerminologyCapabilities(capabilityStatement);
             setTxCaps(capabilityStatement);
           } catch (Exception e) {
             if (canRunWithoutTerminology) {
               noTerminologyServer = true;
               logger.logMessage("==============!! Running without terminology server !! ==============");
-              if (txClient!=null) {
-                logger.logMessage("txServer = "+txClient.getId());
+              if (tcc.getClient() != null) {
+                logger.logMessage("txServer = "+tcc.getClient().getId());
                 logger.logMessage("Error = "+e.getMessage()+"");
               }
               logger.logMessage("=====================================================================");
@@ -787,7 +777,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     params.put("_incomplete", "true");
     txLog("$expand on "+txCache.summary(vs));
     try {
-      ValueSet result = txClient.expandValueset(vs, p, params);
+      ValueSet result = tcc.getClient().expandValueset(vs, p, params);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN);
@@ -855,7 +845,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     List<String> allErrors = new ArrayList<>();
     
     // ok, first we try to expand locally
-    ValueSetExpanderSimple vse = constructValueSetExpanderSimple();
+    ValueSetExpander vse = constructValueSetExpanderSimple();
     res = null;
     try {
       res = vse.expand(vs, p);
@@ -878,7 +868,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     // if that failed, we try to expand on the server
     if (addDependentResources(p, vs)) {
-      p.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
+      p.addParameter().setName("cache-id").setValue(new StringType(tcc.getCacheId()));              
     }
     
     if (noTerminologyServer) {
@@ -889,7 +879,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     params.put("_incomplete", "true");
     txLog("$expand on "+txCache.summary(vs));
     try {
-      ValueSet result = txClient.expandValueset(vs, p, params);
+      ValueSet result = tcc.getClient().expandValueset(vs, p, params);
       if (!result.hasUrl()) {
         result.setUrl(vs.getUrl());
       }
@@ -952,7 +942,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       for (CodingValidationRequest t : codes) {
         if (!t.hasResult()) {
           try {
-            ValueSetCheckerSimple vsc = constructValueSetCheckerSimple(options, vs);
+            ValueSetValidator vsc = constructValueSetCheckerSimple(options, vs);
             ValidationResult res = vsc.validateCode("Coding", t.getCoding());
             if (txCache != null) {
               txCache.cacheValidation(t.getCacheToken(), res, TerminologyCache.TRANSIENT);
@@ -997,13 +987,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (batch.getEntry().size() > 0) {
       txLog("$batch validate for "+batch.getEntry().size()+" codes on systems "+systems.toString());
-      if (txClient == null) {
+      if (tcc.getClient() == null) {
         throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
       }
       if (txLog != null) {
         txLog.clearLastId();
       }
-      Bundle resp = txClient.validateBatch(batch);
+      Bundle resp = tcc.getClient().validateBatch(batch);
       if (resp == null) {
         throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_NO_BATCH_RESPONSE));          
       }      
@@ -1074,8 +1064,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
-        ValueSetCheckerSimple vsc = constructValueSetCheckerSimple(options, vs, ctxt);
-        if (!vsc.isServerSide(code.getSystem())) {
+        ValueSetValidator vsc = constructValueSetCheckerSimple(options, vs, ctxt);
+        if (!ValueSetUtilities.isServerSide(code.getSystem())) {
           res = vsc.validateCode(path, code);
           if (txCache != null) {
             txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
@@ -1093,7 +1083,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     
-    if (localError != null && txClient == null) {
+    if (localError != null && tcc.getClient() == null) {
       return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.UNKNOWN, issues);
     }
     if (!options.isUseServer()) {
@@ -1130,16 +1120,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  protected ValueSetExpanderSimple constructValueSetExpanderSimple() {
-    return new ValueSetExpanderSimple(this);
+  protected ValueSetExpander constructValueSetExpanderSimple() {
+    return new ValueSetExpander(this);
   }
 
-  protected ValueSetCheckerSimple constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
-    return new ValueSetCheckerSimple(options, vs, this, ctxt, expParameters, txcaps);
+  protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
+    return new ValueSetValidator(options, vs, this, ctxt, expParameters, tcc.getTxcaps());
   }
 
-  protected ValueSetCheckerSimple constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
-    return new ValueSetCheckerSimple(options, vs, this, expParameters, txcaps);
+  protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
+    return new ValueSetValidator(options, vs, this, expParameters, tcc.getTxcaps());
   }
 
   protected Parameters constructParameters(ValueSet vs, boolean hierarchical) {
@@ -1149,7 +1139,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     boolean cached = addDependentResources(p, vs);
     if (cached) {
-      p.addParameter().setName("cache-id").setValue(new StringType(cacheId));
+      p.addParameter().setName("cache-id").setValue(new StringType(tcc.getCacheId()));
     }
     return p;
   }
@@ -1218,7 +1208,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
-        ValueSetCheckerSimple vsc = constructValueSetCheckerSimple(options, vs);
+        ValueSetValidator vsc = constructValueSetCheckerSimple(options, vs);
         res = vsc.validateCode("CodeableConcept", code);
         txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
         return res;
@@ -1259,22 +1249,23 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         codeSystemsUsed.add(inc.getSystem());
       }
     }
+    
     if (vs != null) {
-      if (isTxCaching && cacheId != null && vs.getUrl() != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
+      if (tcc.isTxCaching() && tcc.getCacheId() != null && vs.getUrl() != null && tcc.getCached().contains(vs.getUrl()+"|"+vs.getVersion())) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+(vs.hasVersion() ? "|"+vs.getVersion() : "")));        
       } else if (options.getVsAsUrl()){
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()));
       } else {
         pin.addParameter().setName("valueSet").setResource(vs);
         if (vs.getUrl() != null) {
-          cached.add(vs.getUrl()+"|"+vs.getVersion());
+          tcc.getCached().add(vs.getUrl()+"|"+vs.getVersion());
         }
       }
       cache = true;
       addDependentResources(pin, vs);
     }
     if (cache) {
-      pin.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
+      pin.addParameter().setName("cache-id").setValue(new StringType(tcc.getCacheId()));              
     }
     for (ParametersParameterComponent pp : pin.getParameter()) {
       if (pp.getName().equals("profile")) {
@@ -1288,14 +1279,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (txLog != null) {
       txLog.clearLastId();
     }
-    if (txClient == null) {
+    if (tcc.getClient() == null) {
       throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
     }
     Parameters pOut;
     if (vs == null) {
-      pOut = txClient.validateCS(pin);
+      pOut = tcc.getClient().validateCS(pin);
     } else {
-      pOut = txClient.validateVS(pin);
+      pOut = tcc.getClient().validateVS(pin);
     }
     return processValidationResult(pOut);
   }
@@ -1317,8 +1308,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       ValueSet vs = fetchResource(ValueSet.class, c.getValue(), src);
       if (vs != null) {
         pin.addParameter().setName("tx-resource").setResource(vs);
-        if (isTxCaching && cacheId == null || !cached.contains(vs.getVUrl())) {
-          cached.add(vs.getVUrl());
+        if (tcc.isTxCaching() && tcc.getCacheId() == null || !tcc.getCached().contains(vs.getVUrl())) {
+          tcc.getCached().add(vs.getVUrl());
           cache = true;
         }
         addDependentResources(pin, vs);
@@ -1327,8 +1318,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem(), src);
     if (cs != null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
       pin.addParameter().setName("tx-resource").setResource(cs);
-      if (isTxCaching && cacheId == null || !cached.contains(cs.getVUrl())) {
-        cached.add(cs.getVUrl());
+      if (tcc.isTxCaching() && tcc.getCacheId() == null || !tcc.getCached().contains(cs.getVUrl())) {
+        tcc.getCached().add(cs.getVUrl());
         cache = true;
       }
       // todo: supplements
@@ -1376,9 +1367,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     if (!ok) {
-      return new ValidationResult(IssueSeverity.ERROR, message+" (from "+txClient.getId()+")", err, null).setTxLink(txLog.getLastId());
+      return new ValidationResult(IssueSeverity.ERROR, message+" (from "+tcc.getClient().getId()+")", err, null).setTxLink(txLog.getLastId());
     } else if (message != null && !message.equals("No Message returned")) { 
-      return new ValidationResult(IssueSeverity.WARNING, message+" (from "+txClient.getId()+")", system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog.getLastId());
+      return new ValidationResult(IssueSeverity.WARNING, message+" (from "+tcc.getClient().getId()+")", system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog.getLastId());
     } else if (display != null) {
       return new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog.getLastId());
     } else {
@@ -1425,7 +1416,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public boolean isNoTerminologyServer() {
-    return noTerminologyServer || txClient == null;
+    return noTerminologyServer || tcc.getClient() == null;
   }
 
   public void setNoTerminologyServer(boolean noTerminologyServer) {
@@ -2376,41 +2367,41 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
   
   public int getClientRetryCount() {
-    return txClient == null ? 0 : txClient.getRetryCount();
+    return tcc.getClient() == null ? 0 : tcc.getClient().getRetryCount();
   }
   
   public IWorkerContext setClientRetryCount(int value) {
-    if (txClient != null) {
-      txClient.setRetryCount(value);
+    if (tcc.getClient() != null) {
+      tcc.getClient().setRetryCount(value);
     }
     return this;
   }
 
-  public TerminologyClient getTxClient() {
-    return txClient;
+  public ITerminologyClient getTxClient() {
+    return tcc.getClient();
   }
 
   public String getCacheId() {
-    return cacheId;
+    return tcc.getCacheId();
   }
 
   public void setCacheId(String cacheId) {
-    this.cacheId = cacheId;
+    tcc.setCacheId(cacheId);
   }
 
   public TerminologyCapabilities getTxCaps() {
-    return txcaps;
+    return tcc.getTxcaps();
   }
 
   public void setTxCaps(TerminologyCapabilities txCaps) {
-    this.txcaps = txCaps;
+    this.tcc.setTxcaps(txCaps);
     if (txCaps != null) {
-      for (TerminologyCapabilitiesExpansionParameterComponent t : txcaps.getExpansion().getParameter()) {
+      for (TerminologyCapabilitiesExpansionParameterComponent t : tcc.getTxcaps().getExpansion().getParameter()) {
         if ("cache-id".equals(t.getName())) {
-          isTxCaching = true;
+          tcc.setTxCaching(true);
         }
       }
-      for (TerminologyCapabilitiesCodeSystemComponent tccs : txcaps.getCodeSystem()) {
+      for (TerminologyCapabilitiesCodeSystemComponent tccs : tcc.getTxcaps().getCodeSystem()) {
         supportedCodeSystems.add(tccs.getUri());
       }
     }
@@ -2445,8 +2436,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected void setUserAgent(String userAgent) {
     this.userAgent = userAgent;
-    if (txClient != null)
-      txClient.setUserAgent(userAgent);
+    if (tcc.getClient() != null)
+      tcc.getClient().setUserAgent(userAgent);
   }
 
 
