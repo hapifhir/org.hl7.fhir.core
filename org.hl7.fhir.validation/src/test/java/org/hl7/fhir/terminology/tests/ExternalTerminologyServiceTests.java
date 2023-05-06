@@ -80,6 +80,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   private static org.hl7.fhir.utilities.json.model.JsonObject manifest;
   private JsonObjectPair setup;
   private String version = "5.0.0";
+  private static TxTester tester;
 
   public ExternalTerminologyServiceTests(String name, JsonObjectPair setup) {
     this.setup = setup;
@@ -89,7 +90,10 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   @Test
   public void test() throws Exception {
     if (SERVER != null) {
-      String err = new TxTester(this).executeTest(setup.suite, setup.test, SERVER);
+      if (tester == null) {
+        tester = new TxTester(this, SERVER);
+      }
+      String err = tester.executeTest(setup.suite, setup.test);
       Assertions.assertTrue(err == null, err);
     } else {
       Assertions.assertTrue(true);

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.terminologies;
+package org.hl7.fhir.r5.terminologies.validation;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,12 +54,12 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.Transport.ParameterComponent;
@@ -70,10 +70,12 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple.ConceptReferencePair;
-import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple.VersionInfo;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.providers.CodeSystemProvider;
+import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
+import org.hl7.fhir.r5.terminologies.providers.URICodeSystem;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
@@ -87,117 +89,18 @@ import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
 import com.google.j2objc.annotations.ReflectionSupport.Level;
 
-public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChecker {
-
-  public class VersionInfo {
-    private String expansionVersion;
-    private String composeVersion;
-
-    public String getExpansionVersion() {
-      return expansionVersion;
-    }
-
-    public void setExpansionVersion(String expansionVersion) {
-      this.expansionVersion = expansionVersion;
-    }
-
-    public String getComposeVersion() {
-      return composeVersion;
-    }
-
-    public void setComposeVersion(String composeVersion) {
-      this.composeVersion = composeVersion;
-    }
-
-    public String getVersion(String system, String version) {
-      String fixedVersion = getVersionParameter("force-system-version", system);
-      if (fixedVersion != null) {
-        return fixedVersion;
-      }
-      String checkVersion = getVersionParameter("check-system-version", system);
-      if (version != null) {
-        if (checkVersion != null && !version.equals(checkVersion)) {
-          throw new FHIRException("Attempt to use version "+version+" of "+system+", when the expansion parameters limit the use to "+checkVersion);
-        }
-        return version;
-      }
-      if (expansionVersion != null) {
-        if (checkVersion != null && !expansionVersion.equals(checkVersion)) {
-          throw new FHIRException("Attempt to use version "+expansionVersion+" of "+system+", when the expansion parameters limit the use to "+checkVersion);
-        }
-        return expansionVersion;
-      }
-      if (composeVersion != null) {
-        if (checkVersion != null && !composeVersion.equals(checkVersion)) {
-          throw new FHIRException("Attempt to use version "+composeVersion+" of "+system+", when the expansion parameters limit the use to "+checkVersion);
-        }
-        return composeVersion;
-      }
-      return getVersionParameter("system-version", system);
-    }
-
-    private String getVersionParameter(String name, String system) {
-      if (expansionProfile != null) {
-        for (ParametersParameterComponent pc : expansionProfile.getParameter()) {
-          if (name.equals(pc.getName()) && pc.hasValue()) {
-            String v = pc.getValue().primitiveValue();
-            if (v != null && v.startsWith(system+"|")) {
-              return v.substring(system.length()+1);
-            }
-          }
-        }
-      }
-      return null;
-    }
-
-  }
-  public static class VSCheckerException extends FHIRException {
-
-    private List<OperationOutcomeIssueComponent> issues;
-
-    public VSCheckerException(String message, List<OperationOutcomeIssueComponent> issues) {
-      super(message);
-      this.issues = issues;
-    }
-
-    public List<OperationOutcomeIssueComponent> getIssues() {
-      return issues;
-    }
-
-    private static final long serialVersionUID = -5889505119633054187L;
-    
-  }
-  public class ConceptReferencePair {
-
-    private ValueSet valueset;
-    private ConceptReferenceComponent cc;
-
-    public ConceptReferencePair(ValueSet valueset, ConceptReferenceComponent cc) {
-      this.valueset = valueset;
-      this.cc = cc;
-    }
-
-    public ValueSet getValueset() {
-      return valueset;
-    }
-
-    public ConceptReferenceComponent getCc() {
-      return cc;
-    }
-
-  }
-
+public class ValueSetValidator {
 
   private ValueSet valueset;
   private IWorkerContext context;
-  private Map<String, ValueSetCheckerSimple> inner = new HashMap<>();
+  private Map<String, ValueSetValidator> inner = new HashMap<>();
   private ValidationOptions options;
   private ValidationContextCarrier localContext;
   private List<CodeSystem> localSystems = new ArrayList<>();
-  private Parameters expansionProfile;
+  Parameters expansionProfile;
   private TerminologyCapabilities txCaps;
 
-  public ValueSetCheckerSimple(ValidationOptions options, ValueSet source, IWorkerContext context, Parameters expansionProfile, TerminologyCapabilities txCaps) {
+  public ValueSetValidator(ValidationOptions options, ValueSet source, IWorkerContext context, Parameters expansionProfile, TerminologyCapabilities txCaps) {
     this.valueset = source;
     this.context = context;
     this.options = options;
@@ -205,7 +108,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     this.txCaps = txCaps;
   }
   
-  public ValueSetCheckerSimple(ValidationOptions options, ValueSet source, IWorkerContext context, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyCapabilities txCaps) {
+  public ValueSetValidator(ValidationOptions options, ValueSet source, IWorkerContext context, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyCapabilities txCaps) {
     this.valueset = source;
     this.context = context;
     this.options = options.copy();
@@ -260,7 +163,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         if (!c.hasSystem()) {
           info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.UNKNOWN, path, context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE)));
         }
-        VersionInfo vi = new VersionInfo();
+        VersionInfo vi = new VersionInfo(this);
         checkExpansion(c, vi);
         checkInclude(c, vi);
         CodeSystem cs = resolveCodeSystem(c.getSystem(), vi.getVersion(c.getSystem(), c.getVersion()));
@@ -417,7 +320,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     ValidationResult res = null;
     boolean inExpansion = false;
     boolean inInclude = false;
-    VersionInfo vi = new VersionInfo();
+    VersionInfo vi = new VersionInfo(this);
 
     String system = code.hasSystem() ? code.getSystem() : getValueSetSystemOrNull();
     if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
@@ -966,7 +869,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
   }
 
   private boolean checkForCodeInValueSet(String code, String uri, Set<String> sys, List<String> problems) {
-    ValueSetCheckerSimple vs = getVs(uri);
+    ValueSetValidator vs = getVs(uri);
     return vs.scanForCodeInValueSet(code, sys, problems);
   }
 
@@ -985,7 +888,6 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     return true;
   }
   
-  @Override
   public Boolean codeInValueSet(String system, String version, String code, ValidationProcessInfo info) throws FHIRException {
     return codeInValueSet("code", system, version, code, info);
   }
@@ -994,7 +896,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       return false;
     }
     Boolean result = false;
-    VersionInfo vi = new VersionInfo();
+    VersionInfo vi = new VersionInfo(this);
       
     if (valueset.hasExpansion()) {
       return checkExpansion(new Coding(system, code, null), vi);
@@ -1126,9 +1028,33 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       return codeInConceptFilter(cs, f, code);
     else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.REGEX)
       return codeInRegexFilter(cs, f, code);
-    else {
+    else if (CodeSystemUtilities.hasPropertyDef(cs, f.getProperty())) {
+      return codeInPropertyFilter(cs, f, code);
+    } else {
       System.out.println("todo: handle filters with property = "+f.getProperty()+" "+f.getOp().toCode()); 
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__FILTER_WITH_PROPERTY__, cs.getUrl(), f.getProperty(), f.getOp().toCode()));
+    }
+  }
+
+  private boolean codeInPropertyFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {
+    switch (f.getOp()) {
+    case EQUAL:
+      if (f.getValue() == null) {
+        return false;
+      }
+      DataType d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
+      return d != null && f.getValue().equals(d.primitiveValue());
+    case EXISTS: 
+      return CodeSystemUtilities.getProperty(cs, code, f.getProperty()) != null;
+    case REGEX:
+      if (f.getValue() == null) {
+        return false;
+      }
+      d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
+      return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
+    default:
+      System.out.println("todo: handle property filters with op = "+f.getOp()); 
+      throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
   }
 
@@ -1147,16 +1073,16 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     }
   }
 
-  private boolean codeInConceptIsAFilter(CodeSystem cs, ConceptSetFilterComponent f, String code, boolean rootOnly) {
-    if (!rootOnly && code.equals(f.getProperty())) {
+  private boolean codeInConceptIsAFilter(CodeSystem cs, ConceptSetFilterComponent f, String code, boolean excludeRoot) {
+    if (!excludeRoot && code.equals(f.getValue())) {
       return true;
     }
     ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), f.getValue());
     if (cc == null) {
       return false;
     }
-    cc = findCodeInConcept(cc, code);
-    return cc != null;
+    ConceptDefinitionComponent cc2 = findCodeInConcept(cc, code);
+    return cc2 != null && cc2 != cc;
   }
 
   public boolean validateCodeInConceptList(String code, CodeSystem def, List<ConceptDefinitionComponent> list) {
@@ -1182,18 +1108,18 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     return false;
   }
 
-  private ValueSetCheckerSimple getVs(String url) {
+  private ValueSetValidator getVs(String url) {
     if (inner.containsKey(url)) {
       return inner.get(url);
     }
     ValueSet vs = context.fetchResource(ValueSet.class, url, valueset);
-    ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, context, localContext, expansionProfile, txCaps);
+    ValueSetValidator vsc = new ValueSetValidator(options, vs, context, localContext, expansionProfile, txCaps);
     inner.put(url, vsc);
     return vsc;
   }
 
   private boolean inImport(String uri, String system, String version, String code) throws FHIRException {
-    ValueSetCheckerSimple vs = getVs(uri);
+    ValueSetValidator vs = getVs(uri);
     if (vs == null) {
       return false;
     } else {

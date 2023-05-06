@@ -32,7 +32,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -57,19 +57,20 @@ public class TxTester {
   private ITxTesterLoader loader;
   private String error;
   private String output;
+  private ITerminologyClient tx;
   
 
-  public TxTester(ITxTesterLoader loader) {
+  public TxTester(ITxTesterLoader loader, String server) {
     super();
+    this.server = server;
     this.loader = loader;
   }
 
   public static void main(String[] args) throws Exception {
-    new TxTester(new InternalTxLoader(args[0])).execute(args[1], args[2], args[3]);
+    new TxTester(new InternalTxLoader(args[0]), args[1]).execute(args[2], args[3]);
   }
   
-  public boolean execute(String server, String version, String filter) throws IOException, URISyntaxException {
-    this.server = server;
+  public boolean execute(String version, String filter) throws IOException, URISyntaxException {
     if (output == null) {
       output = Utilities.path("[tmp]", serverId());
     }
@@ -89,7 +90,7 @@ public class TxTester {
     json.add("date", new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone());
     try {
       JsonObject tests = loadTests();
-      TerminologyClient tx = connectToServer();
+      ITerminologyClient tx = connectToServer();
       boolean ok = checkClient(tx);
       for (JsonObject suite : tests.getJsonObjects("suites")) {
         ok = runSuite(suite, tx, filter, json.forceArray("suites")) && ok;
@@ -121,7 +122,7 @@ public class TxTester {
     return offset;
   }
 
-  private boolean checkClient(TerminologyClient tx) {
+  private boolean checkClient(ITerminologyClient tx) {
     tx.getCapabilitiesStatementQuick();
     tx.getTerminologyCapabilities();
     return true;
@@ -132,17 +133,18 @@ public class TxTester {
     return JsonParser.parseObject(loader.loadContent("test-cases.json"));
   }
 
-  private TerminologyClient connectToServer() throws URISyntaxException {
+  private ITerminologyClient connectToServer() throws URISyntaxException {
     System.out.println("Connect to "+server);
     return TerminologyClientFactory.makeClient("Test-Server", server, "Tools/Java", FhirPublication.R4);  
   }
 
 
-  public String executeTest(JsonObject suite, JsonObject test, String server) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
-    this.server = server;
+  public String executeTest(JsonObject suite, JsonObject test) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
     error = null;
-    TerminologyClient tx = connectToServer();
-    checkClient(tx);
+    if (tx == null) {
+      tx = connectToServer();
+      checkClient(tx);
+    }
     List<Resource> setup = loadSetupResources(suite);
     if (runTest(test, tx, setup, "*", null)) {
       return null;      
@@ -150,7 +152,7 @@ public class TxTester {
       return error;
     }
   }
-  private boolean runSuite(JsonObject suite, TerminologyClient tx, String filter, JsonArray output) throws FHIRFormatError, FileNotFoundException, IOException {
+  private boolean runSuite(JsonObject suite, ITerminologyClient tx, String filter, JsonArray output) throws FHIRFormatError, FileNotFoundException, IOException {
     System.out.println("Group "+suite.asString("name"));
     JsonObject outputS = new JsonObject();
     if (output != null) {
@@ -165,7 +167,7 @@ public class TxTester {
     return ok;
   }
 
-  private boolean runTest(JsonObject test, TerminologyClient tx, List<Resource> setup, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
+  private boolean runTest(JsonObject test, ITerminologyClient tx, List<Resource> setup, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
     JsonObject outputT = new JsonObject();
     if (output != null) {
       output.add(outputT);
@@ -229,7 +231,7 @@ public class TxTester {
     return new URI(server).getHost();
   }
 
-  private String expand(TerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile) throws IOException {
+  private String expand(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -253,7 +255,7 @@ public class TxTester {
     return diff;
   }
 
-  private String validate(TerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile) throws IOException {
+  private String validate(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }

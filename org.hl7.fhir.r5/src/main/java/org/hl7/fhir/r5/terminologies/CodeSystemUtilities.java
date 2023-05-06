@@ -844,5 +844,20 @@ public class CodeSystemUtilities {
     }
     return false;
   }
+
+  public static boolean hasPropertyDef(CodeSystem cs, String property) {
+    for (PropertyComponent pd : cs.getProperty()) {
+      if (pd.getCode().equals(property)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static DataType getProperty(CodeSystem cs, String code, String property) {
+    ConceptDefinitionComponent def = getCode(cs, code);
+    ConceptPropertyComponent cp = getProperty(def, property);
+    return cp == null ? null : cp.getValue();
+  }
 }
 
