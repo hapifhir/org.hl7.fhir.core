@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
 import org.fhir.ucum.UcumException;
@@ -4224,7 +4225,8 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1) {
       String cnt = focus.get(0).primitiveValue();
-      for (String s : cnt.split(param)) {
+      String[] sl = Pattern.compile(param, Pattern.LITERAL).split(cnt);
+      for (String s : sl) {
         result.add(new StringType(s));
       }
     }
