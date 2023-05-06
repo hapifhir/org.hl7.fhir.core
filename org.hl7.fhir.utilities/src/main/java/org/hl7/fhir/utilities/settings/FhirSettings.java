@@ -52,7 +52,7 @@ public class FhirSettings {
     getInstance();
     return instance.fhirSettings.getApiKeys() != null
       ? instance.fhirSettings.getApiKeys().get(key) != null
-      : null;
+      : false;
   }
 
   public static String getNpmPath() {
