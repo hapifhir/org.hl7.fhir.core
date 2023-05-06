@@ -10,7 +10,7 @@ public class TerminologyClientContext {
   private boolean isTxCaching;
   private int serverQueryCount = 0;
   private final Set<String> cached = new HashSet<>();
-//  protected String tsServer;
+  protected String server;
   private ITerminologyClient client;
   private TerminologyCapabilities txcaps;
 
@@ -42,13 +42,13 @@ public class TerminologyClientContext {
     return cached;
   }
 
-//  public String getTsServer() {
-//    return tsServer;
-//  }
-//
-//  public void setTsServer(String tsServer) {
-//    this.tsServer = tsServer;
-//  }
+  public String getServer() {
+    return server;
+  }
+
+  public void setServer(String server) {
+    this.server = server;
+  }
 
   public ITerminologyClient getClient() {
     return client;

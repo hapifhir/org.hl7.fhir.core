@@ -8,12 +8,11 @@ public class URICodeSystem extends SpecialCodeSystem {
 
   @Override
   public ConceptDefinitionComponent findConcept(Coding code) {
-    throw new Error("This is used");
-//    if (Utilities.isAbsoluteUrl(code.getCode())) {
-//      return new ConceptDefinitionComponent(code.getCode());
-//    } else {
-//      return null;
-//    }
+    if (Utilities.isAbsoluteUrl(code.getCode())) {
+      return new ConceptDefinitionComponent(code.getCode());
+    } else {
+      return null;
+    }
   }
 
 }
