@@ -3,7 +3,9 @@ package org.hl7.fhir.r5.utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class BuildExtensions extends ToolingExtensions {
 
@@ -51,19 +53,24 @@ public class BuildExtensions extends ToolingExtensions {
   public static final String EXT_BINDING_NAME = "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName";
   
 
-  public static List<String> allConsts() {
-    List<String> list = new ArrayList<>();
-    for (Field field : BuildExtensions.class.getDeclaredFields()) {
-      int modifiers = field.getModifiers();
-      if (Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
-        try {
-          list.add(field.get(field.getType()).toString());
-        } catch (Exception e) {
+  private static Set<String> cachedConsts;
+  
+  public static Set<String> allConsts() {
+    if (cachedConsts == null) {
+      Set<String> list = new HashSet<>();
+      for (Field field : BuildExtensions.class.getDeclaredFields()) {
+        int modifiers = field.getModifiers();
+        if (Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
+          try {
+            list.add(field.get(field.getType()).toString());
+          } catch (Exception e) {
+          }
         }
       }
+      list.addAll(ToolingExtensions.allConsts());
+      cachedConsts = list;
     }
-    list.addAll(ToolingExtensions.allConsts());
-    return list;
+    return cachedConsts;
   }
 
 

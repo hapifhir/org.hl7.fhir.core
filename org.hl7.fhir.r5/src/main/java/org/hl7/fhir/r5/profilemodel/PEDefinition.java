@@ -129,7 +129,7 @@ public abstract class PEDefinition {
       type= type.substring(0, type.indexOf("."));
     }
     StructureDefinition sd = builder.getContext().fetchTypeDefinition(type);
-    return sd.getSnapshot().getElementByPath(definition.getBase().getPath());
+    return sd.getSnapshot().getElementByPath(definition.getBase().getPath(), true);
   }
   
   /**
