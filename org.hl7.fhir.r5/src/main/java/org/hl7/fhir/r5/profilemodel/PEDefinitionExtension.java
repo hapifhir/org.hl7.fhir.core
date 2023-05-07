@@ -21,8 +21,8 @@ public class PEDefinitionExtension extends PEDefinition {
     super(builder, name, profile, definition, ppath);
     this.sliceDefinition = sliceDefinition;
     this.extension= extension;
-    eed = extension.getSnapshot().getElementByPath("Extension.extension");
-    ved = extension.getSnapshot().getElementByPath("Extension.value[x]"); 
+    eed = extension.getSnapshot().getElementByPath("Extension.extension", true);
+    ved = extension.getSnapshot().getElementByPath("Extension.value[x]", true); 
   }
 
   @Override

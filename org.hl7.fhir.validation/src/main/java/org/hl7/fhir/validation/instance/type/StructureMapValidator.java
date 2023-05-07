@@ -1060,7 +1060,7 @@ public class StructureMapValidator extends BaseValidator {
             if (sdt == null) {
               throw new Error("Unable to resolve "+url);
             } else {
-              ElementDefinition t2 = sdt.getSnapshot().getElementByPath(path);
+              ElementDefinition t2 = sdt.getSnapshot().getElementByPath(path, true);
               if (t2 == null) {
                 throw new Error("Unable to resolve "+path+" in "+url);
               } else {

@@ -98,7 +98,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
     ElementDefinition edRoot = sd.getSnapshot().getElementFirstRep();
     boolean repeats = !edRoot.getMax().equals("1");
     String verb = repeats ? "add" : "set";
-    ElementDefinition edValue = sd.getSnapshot().getElementByPath("Extension.value[x]");
+    ElementDefinition edValue = sd.getSnapshot().getElementByPath("Extension.value[x]", false);
     List<TypeTuple> types = analyseTypes(edValue);
     if (types.size() > 5) {
       src.append("  public static Extension make"+name+"(DataType value) {\r\n");

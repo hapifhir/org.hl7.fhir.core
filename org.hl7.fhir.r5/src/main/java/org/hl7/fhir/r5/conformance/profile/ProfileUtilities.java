@@ -3969,12 +3969,12 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (!isExtensionDefinition(sd)) {
       return false;
     }
-    ElementDefinition value = sd.getSnapshot().getElementByPath("Extension.value");
+    ElementDefinition value = sd.getSnapshot().getElementByPath("Extension.value", true);
     return value != null && !value.isProhibited();
   }
 
   public static boolean isModifierExtension(StructureDefinition sd) {
-    ElementDefinition defn = sd.getSnapshot().getElementByPath("Extension");
+    ElementDefinition defn = sd.getSnapshot().getElementByPath("Extension", true);
     return defn.getIsModifier();
   }
 

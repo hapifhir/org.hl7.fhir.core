@@ -1031,7 +1031,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
       if (!Utilities.isAbsoluteUrl(ref)) {
         String[] p = ref.split("\\/");
         List<Element> ml = new ArrayList<>();
-        if (p.length >= 2 && Utilities.existsInList(p[0], context.getResourceNames()) && Utilities.isValidId(p[1])) {
+        if (p.length >= 2 && context.getResourceNamesAsSet().contains(p[0]) && Utilities.isValidId(p[1])) {
           for (int i = 0; i < entries.size(); i++) {
             Element we = entries.get(i);
             Element r = we.getNamedChild(RESOURCE);
