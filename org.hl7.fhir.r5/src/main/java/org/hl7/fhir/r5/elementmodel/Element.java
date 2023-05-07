@@ -1451,7 +1451,7 @@ public class Element extends Base {
     if (property.getStructure().hasExtension(ToolingExtensions.EXT_RESOURCE_IMPLEMENTS)) {
       StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ExtensionsUtils.getExtensionString(property.getStructure(), ToolingExtensions.EXT_RESOURCE_IMPLEMENTS));
       if (sd != null) {
-        ElementDefinition ed = sd.getSnapshot().getElementByPath(property.getDefinition().getPath().replace(property.getStructure().getType(), sd.getType()), true);
+        ElementDefinition ed = sd.getSnapshot().getElementByPath(property.getDefinition().getPath().replace(property.getStructure().getType(), sd.getType()));
         if (ed != null) {
           return ed.getBase().getPath();
         }
