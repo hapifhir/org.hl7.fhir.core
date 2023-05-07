@@ -580,7 +580,7 @@ public class NpmPackage {
     for (NpmPackageFolder folder : folders.values()) {
       if (folder.index != null) {
         for (JsonObject fi : folder.index.getJsonObjects("files")) {
-          if (Utilities.existsInList(fi.asString("resourceType"), types)) {
+          if (Utilities.existsInList(fi.asString("resourceType"), types) || types.isEmpty()) {
             res.add(new PackageResourceInformation(folder.folder == null ? "@"+folder.getName() : folder.folder.getAbsolutePath(), fi));
           }
         }
