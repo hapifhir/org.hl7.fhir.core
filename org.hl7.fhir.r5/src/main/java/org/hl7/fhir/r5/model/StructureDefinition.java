@@ -1233,15 +1233,12 @@ public class StructureDefinition extends CanonicalResource {
 
 // added from java-adornments.txt:
 
-  public ElementDefinition getElementByPath(String path, boolean autoChoice) {
-    if (autoChoice && path.endsWith("[x]")) {
-      path = path.substring(0, path.length()-3);
-    }
+  public ElementDefinition getElementByPath(String path) {
     if (path == null) {
       return null;
     }
     for (ElementDefinition ed : getElement()) {
-      if (path.equals(ed.getPath()) || (autoChoice && (path+"[x]").equals(ed.getPath()))) {
+      if (path.equals(ed.getPath()) || (path+"[x]").equals(ed.getPath())) {
         return ed;
       }
     }
