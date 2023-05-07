@@ -32,13 +32,15 @@ package org.hl7.fhir.r5.utils;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 
 public class TypesUtilities {
+  private static final HashSet<String> primitiveTypes = new HashSet<>(Arrays.asList("boolean", "integer", "integer64", "string", "decimal", "uri", "url", "canonical", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "uuid", "markdown", "unsignedInt", "positiveInt", "xhtml"));
 
   public enum TypeClassification {
     PRIMITIVE, DATATYPE, METADATATYPE, SPECIAL;
@@ -170,6 +172,6 @@ public class TypesUtilities {
   }
 
   public static boolean isPrimitive(String code) {
-    return Utilities.existsInList(code, "boolean", "integer", "integer64", "string", "decimal", "uri", "url", "canonical", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "uuid", "markdown", "unsignedInt", "positiveInt", "xhtml");
+    return primitiveTypes.contains(code);
   }
 }
