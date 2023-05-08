@@ -159,20 +159,20 @@ public class VersionConvertor_10_40 {
 
   public void copyElement(@Nonnull org.hl7.fhir.dstu2.model.Element src,
                           @Nonnull org.hl7.fhir.r4.model.Element tgt,
-                          String... var) throws FHIRException {
-    elementConvertor.copyElement(src, tgt, ConversionContext10_40.INSTANCE.path(), var);
+                          String... ignoredExtensionUrls) throws FHIRException {
+    elementConvertor.copyElement(src, tgt, ConversionContext10_40.INSTANCE.path(), ignoredExtensionUrls);
   }
 
   public void copyElement(@Nonnull org.hl7.fhir.r4.model.Element src,
                           @Nonnull org.hl7.fhir.dstu2.model.Element tgt,
-                          String... var) throws FHIRException {
-    elementConvertor.copyElement(src, tgt, ConversionContext10_40.INSTANCE.path(), var);
+                          String... extensionUrlsToIgnore) throws FHIRException {
+    elementConvertor.copyElement(src, tgt, ConversionContext10_40.INSTANCE.path(), extensionUrlsToIgnore);
   }
 
   public void copyElement(@Nonnull org.hl7.fhir.r4.model.DomainResource src,
                           @Nonnull org.hl7.fhir.dstu2.model.Element tgt,
-                          String... var) throws FHIRException {
-    elementConvertor.copyElement(src, tgt, ConversionContext10_40.INSTANCE.path(), var);
+                          String... extensionUrlsToIgnore) throws FHIRException {
+    elementConvertor.copyElement(src, tgt, ConversionContext10_40.INSTANCE.path(), extensionUrlsToIgnore);
   }
 
   public void copyBackboneElement(@Nonnull org.hl7.fhir.r4.model.BackboneElement src,
