@@ -274,6 +274,9 @@ public class TerminologyServiceTests {
     if (vm.getDisplay() != null) {
       res.addParameter("display", vm.getDisplay());
     }
+    if (vm.getCodeableConcept() != null) {
+      res.addParameter("codeableConcept", vm.getCodeableConcept());
+    }
     if (vm.getIssues().size() > 0) {
       OperationOutcome oo = new OperationOutcome();
       oo.getIssue().addAll(vm.getIssues());
