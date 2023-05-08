@@ -32,14 +32,7 @@ import java.io.PrintStream;
  */
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -57,7 +50,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
@@ -77,6 +70,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  *
  */
 public class Element extends Base {
+  private static final HashSet<String> extensionList = new HashSet<>(Arrays.asList("extension", "modifierExtension"));
 
   public enum SpecialElement {
 		CONTAINED, BUNDLE_ENTRY, BUNDLE_OUTCOME, BUNDLE_ISSUES, PARAMETER, LOGICAL;
@@ -1070,7 +1064,7 @@ public class Element extends Base {
   public Element getExtension(String url) {
     if (children != null) {
       for (Element child : children) {
-        if (Utilities.existsInList(child.getName(), "extension", "modifierExtension")) {
+        if (extensionList.contains(child.getName())) {
           String u = child.getChildValue("url");
           if (url.equals(u)) {
             return child;

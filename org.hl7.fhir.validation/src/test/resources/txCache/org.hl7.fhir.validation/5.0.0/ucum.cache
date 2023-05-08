@@ -29,7 +29,8 @@ v: {
 v: {
   "display" : "millimeter of mercury",
   "code" : "mm[Hg]",
-  "system" : "http://unitsofmeasure.org"
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {

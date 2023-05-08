@@ -68,6 +68,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.Utilities;
@@ -235,8 +237,6 @@ public class ToolingExtensions {
   public static final String EXT_MAPPING_CARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-source-cardinality";
   public static final String EXT_MAPPING_TGTTYPE = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-type";
   public static final String EXT_MAPPING_TGTCARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-cardinality";
-  
-  
   
   public static final String WEB_EXTENSION_STYLE = "http://build.fhir.org/ig/FHIR/fhir-tools-ig/format-extensions.html#extension-related-extensions";
   public static final String EXT_IGDEP_COMMENT = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment";
@@ -1029,20 +1029,23 @@ public class ToolingExtensions {
     return false;
   }
 
-  public static List<String> allConsts() {
-
-    List<String> list = new ArrayList<>();
-    for (Field field : ToolingExtensions.class.getDeclaredFields()) {
-      int modifiers = field.getModifiers();
-      if (Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
-        try {
-          list.add(field.get(field.getType()).toString());
-        } catch (Exception e) {
+  private static Set<String> cachedConsts;
+  
+  public static Set<String> allConsts() {
+    if (cachedConsts == null) {
+      Set<String> list = new HashSet<>();
+      for (Field field : ToolingExtensions.class.getDeclaredFields()) {
+        int modifiers = field.getModifiers();
+        if (Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
+          try {
+            list.add(field.get(field.getType()).toString());
+          } catch (Exception e) {
+          }
         }
       }
+      cachedConsts = list;
     }
-    return list;
-
+    return cachedConsts;
   }
 
   public static boolean hasExtensions(ElementDefinition d, String... urls) {

@@ -19,6 +19,58 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
+  "code" : "19935-6"
+}, "url": "http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns--0", "version": "0.03", "langs":"[fi]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
+  "code" : "19935-6",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "19935-6",
+  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter"
+}, "url": "http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns", "version": "0.03", "langs":"[fi]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
+  "code" : "19935-6",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "19935-6"
+}, "valueSet" :null, "langs":"[fi]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
+  "code" : "19935-6",
+  "system" : "http://loinc.org",
+  "version" : "2.74"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
   "code" : "28655-9"
 }, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
@@ -30,7 +82,8 @@ v: {
 v: {
   "display" : "Attending Discharge summary",
   "code" : "28655-9",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -151,7 +204,8 @@ v: {
 v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
-  "system" : "http://loinc.org"
+  "system" : "http://loinc.org",
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -445,57 +499,6 @@ v: {
 v: {
   "display" : "Chloride [Moles/volume] in Blood",
   "code" : "2069-3",
-  "system" : "http://loinc.org",
-  "version" : "2.74"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "19935-6"
-}, "url": "http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns--0", "version": "0.03", "langs":"[fi]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
-  "code" : "19935-6",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "19935-6",
-  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter"
-}, "url": "http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns", "version": "0.03", "langs":"[fi]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
-  "code" : "19935-6",
-  "system" : "http://loinc.org",
-  "version" : "2.74"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "19935-6"
-}, "valueSet" :null, "langs":"[fi]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
-  "code" : "19935-6",
   "system" : "http://loinc.org",
   "version" : "2.74"
 }

@@ -28,7 +28,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Test;
@@ -129,7 +129,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     terminologyCacheA.cacheValidation(codeableConceptTokenA, codeableConceptResultA, true);
 
     TerminologyCache.CacheToken expansionTokenA = terminologyCacheA.generateExpandToken(valueSet, true);
-    ValueSetExpander.ValueSetExpansionOutcome expansionOutcomeA = new ValueSetExpander.ValueSetExpansionOutcome(valueSet);
+    ValueSetExpansionOutcome expansionOutcomeA = new ValueSetExpansionOutcome(valueSet);
 
     terminologyCacheA.cacheExpansion(expansionTokenA, expansionOutcomeA, true);
     // Check that the in-memory cache is returning what we put in
@@ -165,7 +165,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     assertEquals(a.getMessage(), b.getMessage());
   }
 
-  private void assertExpansionOutcomeEquals(ValueSetExpander.ValueSetExpansionOutcome a, ValueSetExpander.ValueSetExpansionOutcome b) {
+  private void assertExpansionOutcomeEquals(ValueSetExpansionOutcome a, ValueSetExpansionOutcome b) {
     assertEquals(a.getValueset().getUrl(), b.getValueset().getUrl());
   }
 

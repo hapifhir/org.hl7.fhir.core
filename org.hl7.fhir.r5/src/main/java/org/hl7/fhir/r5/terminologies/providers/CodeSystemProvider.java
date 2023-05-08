@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.terminologies;
+package org.hl7.fhir.r5.terminologies.providers;
 
 import java.util.List;
 
@@ -8,8 +8,6 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
-import org.hl7.fhir.r5.terminologies.providers.CodeSystemProviderExtension;
-import org.hl7.fhir.r5.terminologies.providers.ColorRGBProvider;
 
 /**
  * For special code systems where the code system resource isn't enough, but we can support them internall
@@ -32,6 +30,6 @@ public abstract class CodeSystemProvider {
       List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive,
       List<ValueSetExpansionPropertyComponent> vsProps) throws CodeSystemProviderExtension;
 
-  protected abstract Boolean checkCode(String code);
+  public abstract Boolean checkCode(String code);
 
 }

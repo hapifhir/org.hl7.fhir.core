@@ -393,8 +393,12 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     * @return an unmodifiable list containing all extensions on this element which match the given URL
     */
    public List<Extension> getExtensionsByUrl(String theUrl) {
-     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
-     ArrayList<Extension> retVal = new ArrayList<Extension>();
+     if (theUrl == null) {
+       throw new NullPointerException("theUrl must not be null");
+     } else if (theUrl.length() == 0) {
+       throw new IllegalArgumentException("theUrl must not be empty");
+     }
+     ArrayList<Extension> retVal = new ArrayList<>();
      for (Extension next : getExtension()) {
        if (theUrl.equals(next.getUrl())) {
          retVal.add(next);
@@ -411,7 +415,17 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     * @param theUrl The URL. Must not be blank or null.
     */
    public boolean hasExtension(String theUrl) {
-     return !getExtensionsByUrl(theUrl).isEmpty(); 
+     if (extension == null || extension.size() == 0) {
+       return false;
+     }
+
+     for (Extension ext : extension) {
+       if (theUrl.equals(ext.getUrl())) {
+         return true;
+       }
+     }
+
+     return false;
    }
 
    /**

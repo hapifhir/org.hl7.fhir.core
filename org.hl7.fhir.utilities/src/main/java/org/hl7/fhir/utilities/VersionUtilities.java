@@ -2,6 +2,8 @@ package org.hl7.fhir.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -393,8 +395,10 @@ public class VersionUtilities {
     return null;
   }
 
-  public static List<String> getCanonicalResourceNames(String version) {
-    ArrayList<String> res = new ArrayList<String>();
+
+  public static Set<String> getCanonicalResourceNames(String version) {
+
+    Set<String> res = new HashSet<String>();
     if (isR2Ver(version) || isR2BVer(version)) {
       res.add("ValueSet");
       res.add("ConceptMap");

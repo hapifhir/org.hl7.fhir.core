@@ -2,7 +2,7 @@ package org.hl7.fhir.convertors.txClient;
 
 import java.net.URISyntaxException;
 
-import org.hl7.fhir.r5.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.utilities.FhirPublication;
 
 import org.hl7.fhir.utilities.Utilities;
@@ -10,7 +10,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 
 public class TerminologyClientFactory {
 
-  public static TerminologyClient makeClient(String id, String url, String userAgent, FhirPublication v) throws URISyntaxException {
+  public static ITerminologyClient makeClient(String id, String url, String userAgent, FhirPublication v) throws URISyntaxException {
     if (v == null)
       return new TerminologyClientR5(id, checkEndsWith("/r4", url), userAgent);
     switch (v) {
@@ -33,7 +33,7 @@ public class TerminologyClientFactory {
     }
   }
 
-  public static TerminologyClient makeClient(String id, String url, String userAgent, String v) throws URISyntaxException {
+  public static ITerminologyClient makeClient(String id, String url, String userAgent, String v) throws URISyntaxException {
     if (v == null)
       return new TerminologyClientR5(id, checkEndsWith("/r4", url), userAgent);
     v = VersionUtilities.getMajMin(v);

@@ -127,11 +127,11 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
 	public boolean hasValue() {
   	  return !StringUtils.isBlank(getValueAsString());
 	}
-	
-	@Override
-	public boolean isEmpty() {
-		return super.isEmpty() && StringUtils.isBlank(getValueAsString());
-	}
+
+  @Override
+  public boolean isEmpty() {
+    return super.isEmpty() && StringUtils.isBlank(getValueAsString());
+  }
 
 	public boolean isPrimitive() {
 		return true;
