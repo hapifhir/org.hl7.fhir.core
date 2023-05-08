@@ -65,7 +65,8 @@ v: {
 v: {
   "display" : "Netherlands",
   "code" : "NL",
-  "system" : "urn:iso:std:iso:3166"
+  "system" : "urn:iso:std:iso:3166",
+  "version" : "2018"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -81,7 +82,8 @@ v: {
 v: {
   "display" : "Netherlands",
   "code" : "NL",
-  "system" : "urn:iso:std:iso:3166"
+  "system" : "urn:iso:std:iso:3166",
+  "version" : "2018"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -115,7 +117,8 @@ v: {
 v: {
   "display" : "United States of America",
   "code" : "US",
-  "system" : "urn:iso:std:iso:3166"
+  "system" : "urn:iso:std:iso:3166",
+  "version" : "2018"
 }
 -------------------------------------------------------------------------------------
 {"code" : {

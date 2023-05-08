@@ -34,7 +34,7 @@ public class TestUtilities {
 
 
   public static ValidationEngine getValidationEngineNoTxServer(java.lang.String src, FhirPublication version, java.lang.String vString) throws Exception {
-    TestingUtilities.injectCorePackageLoader();
+//    TestingUtilities.injectCorePackageLoader();
 
    final ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder()
       .withCanRunWithoutTerminologyServer(true)

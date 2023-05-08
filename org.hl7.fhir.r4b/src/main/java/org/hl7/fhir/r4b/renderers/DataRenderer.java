@@ -338,7 +338,7 @@ public class DataRenderer extends Renderer {
     StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(t);
     if (sd == null)
       return false;
-    if (Utilities.existsInList(t, VersionUtilities.getCanonicalResourceNames(getContext().getWorker().getVersion()))) {
+    if (VersionUtilities.getCanonicalResourceNames(getContext().getWorker().getVersion()).contains(t)) {
       return true;
     }
     if (Utilities.existsInList(t, 

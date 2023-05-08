@@ -45,13 +45,13 @@ import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
-public class TerminologyClientR2 implements TerminologyClient {
+public class TerminologyClientR2 implements ITerminologyClient {
 
   private final FHIRToolingClient client; // todo: use the R2 client
   private String id;
@@ -125,19 +125,19 @@ public class TerminologyClientR2 implements TerminologyClient {
   }
 
   @Override
-  public TerminologyClient setTimeout(int i) {
+  public ITerminologyClient setTimeout(int i) {
     client.setTimeout(i);
     return this;
   }
 
   @Override
-  public TerminologyClient setLogger(ToolingClientLogger txLog) {
+  public ITerminologyClient setLogger(ToolingClientLogger txLog) {
     client.setLogger(txLog);
     return this;
   }
 
   @Override
-  public TerminologyClient setRetryCount(int retryCount) throws FHIRException {
+  public ITerminologyClient setRetryCount(int retryCount) throws FHIRException {
     client.setRetryCount(retryCount);
     return this;
   }
@@ -190,12 +190,12 @@ public class TerminologyClientR2 implements TerminologyClient {
   }
 
   @Override
-  public TerminologyClient setClientHeaders(ClientHeaders clientHeaders) {
+  public ITerminologyClient setClientHeaders(ClientHeaders clientHeaders) {
     return null;
   }
 
   @Override
-  public TerminologyClient setUserAgent(String userAgent) {
+  public ITerminologyClient setUserAgent(String userAgent) {
     client.setUserAgent(userAgent);
     return this;
   }

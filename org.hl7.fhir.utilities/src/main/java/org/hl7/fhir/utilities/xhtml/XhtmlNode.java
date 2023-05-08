@@ -837,4 +837,33 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return false;
   }
 
+
+  public XhtmlNode getElementById(String id) {
+    if (id.equals(getAttribute("id"))) {
+      return this;
+    }
+    if (childNodes != null) {
+      for (XhtmlNode x : childNodes) {
+        XhtmlNode r = x.getElementById(id);
+        if (r != null) {
+          return r;
+        }   
+      }
+    }
+    return null;
+  }
+
+
+  public List<XhtmlNode> getChildren(String name) {
+    List<XhtmlNode> res = new ArrayList<>();
+    XhtmlNode x = getFirstElement();
+    while (x != null) {
+      if (name.equals(x.getName())) {
+        res.add(x);
+      }
+      x = getNextElement(x);
+    }
+    return res;
+  }
+
 }

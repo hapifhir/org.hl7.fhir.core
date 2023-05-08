@@ -26,7 +26,8 @@ v: {
 v: {
   "display" : "day",
   "code" : "d",
-  "system" : "http://unitsofmeasure.org"
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
