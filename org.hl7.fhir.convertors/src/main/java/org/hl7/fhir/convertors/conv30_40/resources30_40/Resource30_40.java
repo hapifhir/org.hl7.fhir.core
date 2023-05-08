@@ -7,6 +7,8 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Meta30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Narrative30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
+import java.util.Arrays;
+
 public class Resource30_40 {
 
   public final BaseAdvisor_30_40 advisor;
@@ -384,7 +386,8 @@ public class Resource30_40 {
   }
 
   public void copyDomainResource(org.hl7.fhir.dstu3.model.DomainResource src,
-                                 org.hl7.fhir.r4.model.DomainResource tgt) throws FHIRException {
+                                 org.hl7.fhir.r4.model.DomainResource tgt,
+                                 String... extensionUrlsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative30_40.convertNarrative(src.getText()));
     src.getContained().stream()
@@ -396,7 +399,7 @@ public class Resource30_40 {
         org.hl7.fhir.r4.model.Extension convertExtension = new org.hl7.fhir.r4.model.Extension();
         advisor.handleExtension(ConversionContext30_40.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext30_40.INSTANCE.path(), extension)) {
+      } else if (!advisor.ignoreExtension(ConversionContext30_40.INSTANCE.path(), extension)&& !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension30_40.convertExtension(extension));
       }
     });
@@ -407,7 +410,8 @@ public class Resource30_40 {
   }
 
   public void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src,
-                                 org.hl7.fhir.dstu3.model.DomainResource tgt) throws FHIRException {
+                                 org.hl7.fhir.dstu3.model.DomainResource tgt,
+                                 String... extensionUrlsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative30_40.convertNarrative(src.getText()));
     src.getContained().stream()
@@ -418,7 +422,7 @@ public class Resource30_40 {
         org.hl7.fhir.dstu3.model.Extension convertExtension = new org.hl7.fhir.dstu3.model.Extension();
         advisor.handleExtension(ConversionContext30_40.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext30_40.INSTANCE.path(), extension)) {
+      } else if (!advisor.ignoreExtension(ConversionContext30_40.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension30_40.convertExtension(extension));
       }
     });
