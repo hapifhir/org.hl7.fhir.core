@@ -12,7 +12,7 @@ import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Expression;
 
 public class BaseAdvisor_10_50 extends BaseAdvisor50<org.hl7.fhir.dstu2.model.Extension> {
-  final List<String> conformanceIgnoredUrls = Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
+
   private final List<Class<?>> ignoredExtensionTypes = new ArrayList<>(Collections.singletonList(Expression.class));
 
   public BaseAdvisor_10_50() {
