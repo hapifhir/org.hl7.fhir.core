@@ -13,8 +13,6 @@ import org.hl7.fhir.r4.model.Type;
 
 public class BaseAdvisor_14_40 extends BaseAdvisor40<org.hl7.fhir.dstu2016may.model.Extension> {
 
-  final List<String> conformanceIgnoredUrls = Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
-  private final List<String> ignoredUrls = new ArrayList<>(Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown"));
   private final List<Class<?>> ignoredExtensionTypes = new ArrayList<>(Collections.singletonList(Expression.class));
 
   public BaseAdvisor_14_40() {
@@ -27,13 +25,8 @@ public class BaseAdvisor_14_40 extends BaseAdvisor40<org.hl7.fhir.dstu2016may.mo
 
   public boolean ignoreExtension(@Nonnull String path,
                                  @Nonnull String url) {
-    final List<String> paths = Arrays.asList(path.split(","));
-    final String lastPath = paths.get(paths.size() - 1);
-    if ((lastPath.equals("Conformance")) && (conformanceIgnoredUrls.contains(url))) {
-      return true;
-    } else {
-      return this.ignoredUrls.contains(url);
-    }
+    // no globally ignored extensions here.
+    return false;
   }
 
   public boolean ignoreType(@Nonnull String path, @Nonnull Type type) {
