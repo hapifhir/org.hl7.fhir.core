@@ -78,16 +78,34 @@ public class ResourceUtilities {
 		StringBuilder b = new StringBuilder();
 		for (OperationOutcomeIssueComponent t : error.getIssue())
 			if (t.getSeverity() == IssueSeverity.ERROR)
-				b.append("Error:" +t.getDetails()+"\r\n");
+				b.append("Error:" + gen(t.getDetails())+"\r\n");
 			else if (t.getSeverity() == IssueSeverity.FATAL)
-				b.append("Fatal:" +t.getDetails()+"\r\n");
+				b.append("Fatal:"+gen(t.getDetails())+"\r\n");
 			else if (t.getSeverity() == IssueSeverity.WARNING)
-				b.append("Warning:" +t.getDetails()+"\r\n");
+				b.append("Warning:" +gen(t.getDetails())+"\r\n");
 			else if (t.getSeverity() == IssueSeverity.INFORMATION)
-				b.append("Information:" +t.getDetails()+"\r\n");
+				b.append("Information:" +gen(t.getDetails())+"\r\n");
 		return b.toString();
   }
 
+
+  private static String gen(CodeableConcept details) {
+    if (details.hasText()) {
+      return details.getText();
+    }
+    for (Coding c : details.getCoding()) {
+      if (c.hasDisplay()) {
+        return c.getDisplay();
+      }
+    }
+    for (Coding c : details.getCoding()) {
+      if (c.hasCode()) {
+        return c.getCode();
+      }
+    }
+    return "(no details supplied)";   
+  }
+  
   public static Resource getById(Bundle feed, ResourceType type, String reference) {
     for (BundleEntryComponent item : feed.getEntry()) {
       if (item.getResource().getId().equals(reference) && item.getResource().getResourceType() == type)
