@@ -8,6 +8,8 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Narrative10_50;
 import org.hl7.fhir.dstu2.model.Extension;
 import org.hl7.fhir.exceptions.FHIRException;
 
+import java.util.Arrays;
+
 public class Resource10_50 {
 
   public final BaseAdvisor_10_50 advisor;
@@ -264,7 +266,10 @@ public class Resource10_50 {
     }
   }
 
-  public void copyDomainResource(org.hl7.fhir.dstu2.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
+  public void copyDomainResource(
+    org.hl7.fhir.dstu2.model.DomainResource src,
+    org.hl7.fhir.r5.model.DomainResource tgt,
+    String ... extensionUrlsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative10_50.convertNarrative(src.getText()));
     src.getContained().stream()
@@ -275,7 +280,7 @@ public class Resource10_50 {
         org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();
         advisor.handleExtension(ConversionContext10_50.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext10_50.INSTANCE.path(), extension)) {
+      } else if (!advisor.ignoreExtension(ConversionContext10_50.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension10_50.convertExtension(extension));
       }
     });
@@ -285,7 +290,10 @@ public class Resource10_50 {
       .forEach(tgt::addModifierExtension);
   }
 
-  public void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.dstu2.model.DomainResource tgt) throws FHIRException {
+  public void copyDomainResource(
+    org.hl7.fhir.r5.model.DomainResource src,
+    org.hl7.fhir.dstu2.model.DomainResource tgt,
+    String ... extensionUrlsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative10_50.convertNarrative(src.getText()));
     src.getContained().stream()
@@ -296,7 +304,7 @@ public class Resource10_50 {
         Extension convertExtension = new Extension();
         advisor.handleExtension(ConversionContext10_50.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext10_50.INSTANCE.path(), extension)) {
+      } else if (!advisor.ignoreExtension(ConversionContext10_50.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension10_50.convertExtension(extension));
       }
     });
