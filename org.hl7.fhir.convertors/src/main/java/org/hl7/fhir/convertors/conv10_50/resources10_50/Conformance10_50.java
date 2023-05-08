@@ -20,6 +20,12 @@ import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
 
 public class Conformance10_50 {
 
+  public static final String ACCEPT_UNKNOWN_EXTENSION_URL = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown";
+
+  private static final String[] IGNORED_EXTENSION_URLS = new String[]{
+    ACCEPT_UNKNOWN_EXTENSION_URL
+  };
+
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Conformance.ConditionalDeleteStatus> convertConditionalDeleteStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.ConditionalDeleteStatus> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
@@ -72,7 +78,7 @@ public class Conformance10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Conformance tgt = new org.hl7.fhir.dstu2.model.Conformance();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyDomainResource(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyDomainResource(src, tgt, IGNORED_EXTENSION_URLS);
     if (src.hasUrlElement())
       tgt.setUrlElement(Uri10_50.convertUri(src.getUrlElement()));
     if (src.hasVersionElement())
@@ -103,8 +109,8 @@ public class Conformance10_50 {
       tgt.setImplementation(convertConformanceImplementationComponent(src.getImplementation()));
     if (src.hasFhirVersion())
       tgt.setFhirVersion(src.getFhirVersion().toCode());
-    if (src.hasExtension("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown"))
-      tgt.setAcceptUnknown(org.hl7.fhir.dstu2.model.Conformance.UnknownContentCode.fromCode(src.getExtensionByUrl("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown").getValue().primitiveValue()));
+    if (src.hasExtension(ACCEPT_UNKNOWN_EXTENSION_URL))
+      tgt.setAcceptUnknown(org.hl7.fhir.dstu2.model.Conformance.UnknownContentCode.fromCode(src.getExtensionByUrl(ACCEPT_UNKNOWN_EXTENSION_URL).getValue().primitiveValue()));
     for (org.hl7.fhir.r5.model.CodeType t : src.getFormat()) tgt.addFormat(t.getValue());
     for (CapabilityStatementRestComponent r : src.getRest())
       for (CapabilityStatementRestResourceComponent rr : r.getResource())
@@ -155,7 +161,7 @@ public class Conformance10_50 {
     if (src.hasFhirVersion())
       tgt.setFhirVersion(org.hl7.fhir.r5.model.Enumerations.FHIRVersion.fromCode(src.getFhirVersion()));
     if (src.hasAcceptUnknown())
-      tgt.addExtension().setUrl("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown").setValue(new org.hl7.fhir.r5.model.CodeType(src.getAcceptUnknownElement().asStringValue()));
+      tgt.addExtension().setUrl(ACCEPT_UNKNOWN_EXTENSION_URL).setValue(new org.hl7.fhir.r5.model.CodeType(src.getAcceptUnknownElement().asStringValue()));
     for (org.hl7.fhir.dstu2.model.CodeType t : src.getFormat()) tgt.addFormat(t.getValue());
     for (org.hl7.fhir.dstu2.model.Conformance.ConformanceRestComponent t : src.getRest())
       tgt.addRest(convertConformanceRestComponent(t));
