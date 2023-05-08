@@ -128,15 +128,17 @@ public class VersionConvertor_10_30 {
     resourceConvertor.copyDomainResource(src, tgt, extensionUrlsToIgnore);
   }
 
-  public void copyElement(@Nonnull org.hl7.fhir.dstu2.model.Element src,
-                          @Nonnull org.hl7.fhir.dstu3.model.Element tgt, String... var) throws FHIRException {
-    elementConvertor.copyElement(src, tgt, ConversionContext10_30.INSTANCE.path(), var);
+  public void copyElement(
+    @Nonnull org.hl7.fhir.dstu2.model.Element src,
+    @Nonnull org.hl7.fhir.dstu3.model.Element tgt, String... extensionUrlsToIgnore) throws FHIRException {
+    elementConvertor.copyElement(src, tgt, ConversionContext10_30.INSTANCE.path(), extensionUrlsToIgnore);
   }
 
-  public void copyElement(@Nonnull org.hl7.fhir.dstu3.model.Element src,
-                          @Nonnull org.hl7.fhir.dstu2.model.Element tgt,
-                          String... var) throws FHIRException {
-    elementConvertor.copyElement(src, tgt, ConversionContext10_30.INSTANCE.path(), var);
+  public void copyElement(
+    @Nonnull org.hl7.fhir.dstu3.model.Element src,
+    @Nonnull org.hl7.fhir.dstu2.model.Element tgt,
+    String... extensionUrlsToIgnore) throws FHIRException {
+    elementConvertor.copyElement(src, tgt, ConversionContext10_30.INSTANCE.path(), extensionUrlsToIgnore);
   }
 
   public void copyElement(@Nonnull org.hl7.fhir.dstu3.model.DomainResource src,

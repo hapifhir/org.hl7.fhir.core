@@ -14,17 +14,17 @@ public class Element10_30 {
     this.advisor = advisor;
   }
 
-  public boolean isExemptExtension(String url, String[] extensionsToIgnore) {
-    return Arrays.asList(extensionsToIgnore).contains(url);
+  public boolean isExemptExtension(String url, String[] extensionUrlsToIgnore) {
+    return Arrays.asList(extensionUrlsToIgnore).contains(url);
   }
 
   public void copyElement(org.hl7.fhir.dstu2.model.Element src,
                           org.hl7.fhir.dstu3.model.Element tgt,
                           String path,
-                          String... extensionsToIgnore) throws FHIRException {
+                          String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
     src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionsToIgnore))
+      .filter(e -> !isExemptExtension(e.getUrl(), extensionUrlsToIgnore))
       .forEach(e -> {
         if (advisor.useAdvisorForExtension(path, e)) {
           org.hl7.fhir.dstu3.model.Extension convertedExtension = new org.hl7.fhir.dstu3.model.Extension();
@@ -39,10 +39,10 @@ public class Element10_30 {
   public void copyElement(org.hl7.fhir.dstu3.model.Element src,
                           org.hl7.fhir.dstu2.model.Element tgt,
                           String path,
-                          String... extensionsToIgnore) throws FHIRException {
+                          String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
     src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionsToIgnore))
+      .filter(e -> !isExemptExtension(e.getUrl(), extensionUrlsToIgnore))
       .forEach(e -> {
         if (advisor.useAdvisorForExtension(path, e)) {
           org.hl7.fhir.dstu2.model.Extension convertedExtension = new org.hl7.fhir.dstu2.model.Extension();
