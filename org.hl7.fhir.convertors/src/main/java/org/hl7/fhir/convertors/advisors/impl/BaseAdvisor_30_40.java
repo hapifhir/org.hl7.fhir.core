@@ -25,13 +25,7 @@ public class BaseAdvisor_30_40 extends BaseAdvisor40<org.hl7.fhir.dstu3.model.Ex
   @Override
   public boolean ignoreExtension(@Nonnull String path,
                                  @Nonnull String url) throws FHIRException {
-    final List<String> paths = Arrays.asList(path.split(","));
-    final String lastPath = paths.get(paths.size() - 1);
-    if (lastPath.equals("CapabilityStatement")) {
-      return capabilityStatementIgnoredUrls.contains(url);
-    } else if (lastPath.equals("Immunization")) {
-      return immunizationIgnoredUrls.contains(url);
-    }
+    // no globally ignored extensions here.
     return false;
   }
 }
