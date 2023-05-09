@@ -71,10 +71,9 @@ case of r5), so the result will need to be cast to the correct class.
 Example:
 
 ```java
-    // Converting a r5 StructureDefinition to dstu3.
-    org.hl7.fhir.r5.model.StructureDefinition r5_structure_def = new StructureDefinition();
-    org.hl7.fhir.dstu3.model.StructureDefinition dstu3_converted_structure_def 
-        = (StructureDefinition) VersionConvertorFactory_30_50.convertResource(r5_structure_def);
+  // Converting a r4 AllergyIntolerance to r5.
+  org.hl7.fhir.r5.model.Resource r5Resource = VersionConvertorFactory_40_50.convertResource(r4AllergyIntolerance);
+  org.hl7.fhir.r5.model.AllergyIntolerance r5AllergyIntolerance = (org.hl7.fhir.r5.model.AllergyIntolerance) r5Resource;
 ```
 
 ## Developers Notes
@@ -100,18 +99,86 @@ These classes follow the convention:
 
 Where `NAME` is the proper name of the resource or datatype being converted, and `VERSION A` and `VERSION B` indicate the two versions of FHIR that the code will convert the given resource or datatype between (See [Conversion Version Syntax](#-conversion-version-syntax) for version details).
 
-So, in the repository, you may come across a file name `AllergyIntolerance30_40`. This would indicate that the code in this file is related to the conversion of the AllergyIntolerance resource between versions [r4](http://hl7.org/fhir/r4/allergyintolerance.html) and [r5](https://hl7.org/fhir/r5/allergyintolerance.html)
+So, in the repository, you may come across a file name `AllergyIntolerance40_50`. This would indicate that the code in this file is related to the conversion of the AllergyIntolerance resource between versions [r4](http://hl7.org/fhir/r4/allergyintolerance.html) and [r5](https://hl7.org/fhir/r5/allergyintolerance.html)
 
-Note that these classes are not intended to be used directly. When actually converting resources, the provided conversion factory classes are intended to be used as the entry point. For example, to convert a dstu3 AllergyIntolerance resource, the above conversion would not use `AllergyIntolerance40_50` directly, but would instead call: `VersionConvertorFactory_30_40.convertResource(dstu3AllergyIntolerance)`. `VersionConvertorFactory_30_40` would call `AllergyIntolerance40_50` internally to convert `dstu3AllergyIntolerance`.
+Note that these classes are not intended to be used directly. When actually converting resources, the provided conversion factory classes are intended to be used as the entry point. For example, to convert a dstu3 AllergyIntolerance resource, the above conversion would not use `AllergyIntolerance40_50` directly, but would instead call: `VersionConvertorFactory_40_50.convertResource(dstu3AllergyIntolerance)`. `VersionConvertorFactory_40_50` would call `AllergyIntolerance40_50` internally to convert `r4AllergyIntolerance`.
 
 ### Common Conversion Scenarios
 
-//TODO
+Conversion classes are implemented using some simple, repeatable patterns. `AllegeryIntolerance40_50` will be used as an example of this. Each conversion class for a resource will have two entry points, allowing for conversions to be done to and from the two versions in the convertor. 
 
+```java
+public static org.hl7.fhir.r5.model.AllergyIntolerance convertAllergyIntolerance(org.hl7.fhir.r4.model.AllergyIntolerance src);
+public static org.hl7.fhir.r4.model.AllergyIntolerance convertAllergyIntolerance(org.hl7.fhir.r5.model.AllergyIntolerance src)
+```
 
-### It gets complicated...
+Initially, a target resource is created in the appropriate method. Upon the completion of the conversion, this target resource is returned. In our case, the target resource is
+version 50, or r5. 
 
-As the specification has evolved over time, the versions of FHIR have built on top of one another, adding new fields within existing resources, changing the name of existing resources, or adding entirely new resources altogether. As a result of this conversions are inherently lossy operations. 
+```java
+public static org.hl7.fhir.r5.model.AllergyIntolerance convertAllergyIntolerance(org.hl7.fhir.r4.model.AllergyIntolerance src){
+    
+  //...
+  
+  org.hl7.fhir.r5.model.AllergyIntolerance tgt = new org.hl7.fhir.r5.model.AllergyIntolerance();
+	
+  //...
+}
+```
+
+After the target resource is created, the elements of the source resource need to be converted to the target version, and added to the target resource. Many elements can be copied automatically using the static methods provided in the `ConversionContext` and  `VersionConvertor` classes. These classes follow the convention:
+
+`ConversionContext` + `(VERSION A)` + `_` + `(VERSION B)`
+
+and
+
+`VersionConvertor` + `(VERSION A)` + `_` + `(VERSION B)`
+
+An example usage is in the copying of [DomainResource](https://build.fhir.org/domainresource.html) elements (`text`, `contained`, `extension`, and `modifierExtension`). In FHIR, all listed Resources except Bundle, Parameters and Binary extend DomainResource. Copying DomainResource elements is done using the following code:
+
+```java
+ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+```
+
+For elements more specific to the resource being converted, we find the appropriate type convertor class, and set the target element directly:
+
+```java
+if (src.hasClinicalStatus())
+    tgt.setClinicalStatus(CodeableConcept40_50.convertCodeableConcept(src.getClinicalStatus()));
+```
+
+### Converting Extensions
+
+A special case exists for the conversion of extensions. As mentioned above, the `copyDomainResource(src, tgt)` method is used to copy the extensions from one resource to another. This applies a default conversion process to all extensions (see [Using conversion advisors](#using-conversion-advisors) for details).
+
+However, in some conversion cases, an extension may exist that can be converted into a resource element. An example of this is the `acceptUnknown` element in the dstu3 [CapabilityStatement](http://hl7.org/fhir/STU3/capabilitystatement-definitions.html#CapabilityStatement.acceptUnknown) resource. This element does not exist in versions r4 and up, so is converted into an extension with the url `http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown`. Should this extension exist in a resource being converted to a CapabilityStatement in dstu3, the convertor needs to convert this extension to an element, and to indicate to the copyDomainResource method that the extension should not be copied.
+
+First, since the copyDomainResource occurs early in the conversion process, we need to indicate all the ignored URLs using the vararg parameter `extensionUrlsToIgnore`:
+
+```java
+// Call copyDomainResource(DomainResource src, DomainResource tgt, String... extensionUrlsToIgnore)
+ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt, ACCEPT_UNKNOWN_EXTENSION_URL);
+```
+
+Then, we need to handle any instances matching that extension URL. In this case, the `acceptUnknown` element can be set.
+
+```java
+  if (src.hasExtension(ACCEPT_UNKNOWN_EXTENSION_URL))
+		tgt.setAcceptUnknown(org.hl7.fhir.dstu3.model.CapabilityStatement.UnknownContentCode.fromCode(src.getExtensionByUrl(ACCEPT_UNKNOWN_EXTENSION_URL).getValue().primitiveValue()));
+
+```
+
+A similar pattern is used to manage extensions in resource elements:
+
+```
+copyElement(DomainResource src, DomainResource tgt,, String... extensionUrlsToIgnore)
+```
+
+After all necessary elements are converted, the conversion is complete, and the target resource is returned.
+
+## Extending Conversion Functionality 
+
+As the FHIR specification has evolved over time, the versions of FHIR have built on top of one another, adding new fields within existing resources, changing the name of existing resources, or adding entirely new resources altogether. As a result of this conversions are inherently lossy operations. 
 
 A quick example of this would be [ValueSet Expression](https://www.hl7.org/fhir/extension-valueset-expression.html) extension type. This exists in the r4 version of the specification, but no such type exists in dstu2.
 
