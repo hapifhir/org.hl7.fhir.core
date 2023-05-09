@@ -11,8 +11,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class BaseAdvisor_14_50 extends BaseAdvisor50<org.hl7.fhir.dstu2016may.model.Extension> {
 
-  final List<String> capabilityStatementIgnoredUrls = Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
-
   public BaseAdvisor_14_50() {
   }
 
@@ -23,8 +21,7 @@ public class BaseAdvisor_14_50 extends BaseAdvisor50<org.hl7.fhir.dstu2016may.mo
   @Override
   public boolean ignoreExtension(@Nonnull String path,
                                  @Nonnull String url) throws FHIRException {
-    final List<String> paths = Arrays.asList(path.split(","));
-    final String lastPath = paths.get(paths.size() - 1);
-    return (lastPath.equals("CapabilityStatement")) && (capabilityStatementIgnoredUrls.contains(url));
+    // no globally ignored extensions here.
+    return false;
   }
 }

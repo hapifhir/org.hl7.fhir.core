@@ -8,6 +8,8 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Narrative10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Extension;
 
+import java.util.Arrays;
+
 public class Resource10_40 {
 
   public final BaseAdvisor_10_40 advisor;
@@ -272,20 +274,22 @@ public class Resource10_40 {
     }
   }
 
-  public void copyDomainResource(org.hl7.fhir.dstu2.model.DomainResource src,
-                                 org.hl7.fhir.r4.model.DomainResource tgt) throws FHIRException {
+  public void copyDomainResource(
+  org.hl7.fhir.dstu2.model.DomainResource src,
+  org.hl7.fhir.r4.model.DomainResource tgt,
+  String ... extensionUrlsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative10_40.convertNarrative(src.getText()));
     src.getContained().stream()
       .map(this::convertResource)
       .forEach(tgt::addContained);
-    src.getExtension().forEach(ext -> {
-      if (advisor.useAdvisorForExtension(ConversionContext10_40.INSTANCE.path(), ext)) {
+    src.getExtension().forEach(extension -> {
+      if (advisor.useAdvisorForExtension(ConversionContext10_40.INSTANCE.path(), extension)) {
         Extension convertExtension = new Extension();
-        advisor.handleExtension(ConversionContext10_40.INSTANCE.path(), ext, convertExtension);
+        advisor.handleExtension(ConversionContext10_40.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext10_40.INSTANCE.path(), ext)) {
-        tgt.addExtension(Extension10_40.convertExtension(ext));
+      } else if (!advisor.ignoreExtension(ConversionContext10_40.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
+        tgt.addExtension(Extension10_40.convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
@@ -294,8 +298,10 @@ public class Resource10_40 {
       .forEach(tgt::addModifierExtension);
   }
 
-  public void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src,
-                                 org.hl7.fhir.dstu2.model.DomainResource tgt) throws FHIRException {
+  public void copyDomainResource(
+    org.hl7.fhir.r4.model.DomainResource src,
+    org.hl7.fhir.dstu2.model.DomainResource tgt,
+    String ... extensionUrlsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative10_40.convertNarrative(src.getText()));
     src.getContained().stream()
@@ -306,7 +312,7 @@ public class Resource10_40 {
         org.hl7.fhir.dstu2.model.Extension convertExtension = new org.hl7.fhir.dstu2.model.Extension();
         advisor.handleExtension(ConversionContext10_40.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext10_40.INSTANCE.path(), extension)) {
+      } else if (!advisor.ignoreExtension(ConversionContext10_40.INSTANCE.path(), extension)&& !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension10_40.convertExtension(extension));
       }
     });
