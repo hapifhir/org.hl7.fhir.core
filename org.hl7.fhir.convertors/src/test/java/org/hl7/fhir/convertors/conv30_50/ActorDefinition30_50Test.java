@@ -15,17 +15,17 @@ public class ActorDefinition30_50Test {
 
 
   @Test
-  @DisplayName("Test r5 -> r4 ActorDefinition conversion.")
-  public void testR5_R4() throws IOException {
+  @DisplayName("Test r5 -> dstu3 ActorDefinition conversion.")
+  public void testR5_dstu3() throws IOException {
     InputStream r5_input = this.getClass().getResourceAsStream("/actordefinition_50_example.json");
 
     org.hl7.fhir.r5.model.ActorDefinition r5_actual = (org.hl7.fhir.r5.model.ActorDefinition) new org.hl7.fhir.r5.formats.JsonParser().parse(r5_input);
-    org.hl7.fhir.dstu3.model.Resource r4_conv = VersionConvertorFactory_30_50.convertResource(r5_actual);
+    org.hl7.fhir.dstu3.model.Resource dstu3_conv = VersionConvertorFactory_30_50.convertResource(r5_actual);
 
-    org.hl7.fhir.dstu3.formats.XmlParser r4_parser = new org.hl7.fhir.dstu3.formats.XmlParser();
+    org.hl7.fhir.dstu3.formats.XmlParser dstu3_parser = new org.hl7.fhir.dstu3.formats.XmlParser();
 
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-    r4_parser.compose(stream, r4_conv);
+    dstu3_parser.compose(stream, dstu3_conv);
 
     org.hl7.fhir.dstu3.model.Resource r4_streamed = (org.hl7.fhir.dstu3.model.Basic) new org.hl7.fhir.dstu3.formats.XmlParser().parse(new ByteArrayInputStream(stream.toByteArray()));
     org.hl7.fhir.r5.model.Resource r5_conv = VersionConvertorFactory_30_50.convertResource(r4_streamed);

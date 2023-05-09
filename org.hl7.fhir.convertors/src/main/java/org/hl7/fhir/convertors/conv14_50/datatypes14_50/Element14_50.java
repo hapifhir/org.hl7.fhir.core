@@ -21,10 +21,10 @@ public class Element14_50 {
   public void copyElement(org.hl7.fhir.dstu2016may.model.Element src,
                           org.hl7.fhir.r5.model.Element tgt,
                           String path,
-                          String... extensionsToIgnore) throws FHIRException {
+                          String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
     src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionsToIgnore))
+      .filter(e -> !isExemptExtension(e.getUrl(), extensionUrlsToIgnore))
       .forEach(e -> {
         if (advisor.useAdvisorForExtension(path, e)) {
           org.hl7.fhir.r5.model.Extension convertedExtension = new org.hl7.fhir.r5.model.Extension();
@@ -39,10 +39,10 @@ public class Element14_50 {
   public void copyElement(org.hl7.fhir.r5.model.Element src,
                           org.hl7.fhir.dstu2016may.model.Element tgt,
                           String path,
-                          String... extensionsToIgnore) throws FHIRException {
+                          String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
     src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionsToIgnore))
+      .filter(e -> !isExemptExtension(e.getUrl(), extensionUrlsToIgnore))
       .forEach(e -> {
         if (advisor.useAdvisorForExtension(path, e)) {
           org.hl7.fhir.dstu2016may.model.Extension convertedExtension = new org.hl7.fhir.dstu2016may.model.Extension();

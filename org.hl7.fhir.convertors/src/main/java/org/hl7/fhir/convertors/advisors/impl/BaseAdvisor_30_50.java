@@ -11,10 +11,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class BaseAdvisor_30_50 extends BaseAdvisor50<org.hl7.fhir.dstu3.model.Extension> {
 
-  final List<String> valueSetIgnoredUrls = Collections.singletonList("http://hl7.org/fhir/StructureDefinition/valueset-extensible");
-  final List<String> capabilityStatementIgnoredUrls = Arrays.asList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown",
-    "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.profile");
-
   public BaseAdvisor_30_50() {
   }
 
@@ -25,15 +21,8 @@ public class BaseAdvisor_30_50 extends BaseAdvisor50<org.hl7.fhir.dstu3.model.Ex
   @Override
   public boolean ignoreExtension(@Nonnull String path,
                                  @Nonnull String url) throws FHIRException {
-    final List<String> paths = Arrays.asList(path.split(","));
-    final String lastPath = paths.get(paths.size() - 1);
-    if ((lastPath.equals("ValueSet")) && (valueSetIgnoredUrls.contains(url))) {
-      return true;
-    } else if (lastPath.equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.")) {
-      return true;
-    } else if (lastPath.equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.")) {
-      return true;
-    } else
-      return (lastPath.equals("CapabilityStatement")) && (capabilityStatementIgnoredUrls.contains(url));
+      // no globally ignored extensions here.
+      return false;
   }
+
 }
