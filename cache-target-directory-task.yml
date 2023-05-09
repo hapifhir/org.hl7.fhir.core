@@ -1,10 +1,6 @@
-parameters:
-- name: targetModule
-  displayName: 'Target module in project'
-  type: string
-
 steps:
-- task: Cache@2
-  inputs:
-    key: maven | $(Build.BuildId) | targets | "${{ parameters.targetModule }}"
-    path: $(System.DefaultWorkingDirectory)/${{ parameters.targetModule }}/target/
+- ${{ each value in parameters.modules }}:
+  - task: Cache@2
+    inputs:
+      key: maven | $(Build.BuildId) | targets | "${{ value }}"
+      path: $(System.DefaultWorkingDirectory)/${{ value }}/target/
