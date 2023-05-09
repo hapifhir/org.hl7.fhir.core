@@ -20,6 +20,10 @@ public class Immunization30_40 {
 
   public static final String NOT_GIVEN_EXTENSION_URL = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Immunization.notGiven";
 
+  private static final String[] IGNORED_EXTENSION_URLS = new String[]{
+    NOT_GIVEN_EXTENSION_URL
+  };
+
   public static org.hl7.fhir.r4.model.Immunization convertImmunization(org.hl7.fhir.dstu3.model.Immunization src) throws FHIRException {
     if (src == null)
       return null;
@@ -82,7 +86,8 @@ public class Immunization30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Immunization tgt = new org.hl7.fhir.dstu3.model.Immunization();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
+
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt, IGNORED_EXTENSION_URLS);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
     if (src.hasStatus()) {
