@@ -11,6 +11,8 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Narrative40
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Basic;
 
+import java.util.Arrays;
+
 public class Resource40_50 {
 
   public final BaseAdvisor_40_50 advisor;
@@ -525,7 +527,7 @@ public class Resource40_50 {
     }
   }
 
-  public void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
+  public void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt, String... extensionUrlsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative40_50.convertNarrative(src.getText()));
     src.getContained().stream()
@@ -536,7 +538,7 @@ public class Resource40_50 {
         org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();
         advisor.handleExtension(ConversionContext40_50.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext40_50.INSTANCE.path(), extension)) {
+      } else if (!advisor.ignoreExtension(ConversionContext40_50.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension40_50.convertExtension(extension));
       }
     });
@@ -546,7 +548,7 @@ public class Resource40_50 {
       .forEach(tgt::addModifierExtension);
   }
 
-  public void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt) throws FHIRException {
+  public void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt,  String... extensionUrlsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative40_50.convertNarrative(src.getText()));
     src.getContained().stream()
@@ -557,7 +559,7 @@ public class Resource40_50 {
         org.hl7.fhir.r4.model.Extension convertExtension = new org.hl7.fhir.r4.model.Extension();
         advisor.handleExtension(ConversionContext40_50.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext40_50.INSTANCE.path(), extension)) {
+      } else if (!advisor.ignoreExtension(ConversionContext40_50.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension40_50.convertExtension(extension));
       }
     });

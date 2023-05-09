@@ -19,6 +19,11 @@ import org.hl7.fhir.r5.model.BooleanType;
 
 public class ValueSet30_50 {
 
+  public static final String EXTENSIBLE_EXTENSION_URL = "http://hl7.org/fhir/StructureDefinition/valueset-extensible";
+
+  private static final String[] IGNORED_EXTENSION_URLS = new String[]{
+    EXTENSIBLE_EXTENSION_URL
+  };
   public static org.hl7.fhir.dstu3.model.ValueSet.ConceptReferenceComponent convertConceptReferenceComponent(org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent src) throws FHIRException {
     if (src == null)
       return null;
@@ -215,7 +220,7 @@ public class ValueSet30_50 {
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasExtensible())
-      tgt.addExtension("http://hl7.org/fhir/StructureDefinition/valueset-extensible", new BooleanType(src.getExtensible()));
+      tgt.addExtension(EXTENSIBLE_EXTENSION_URL, new BooleanType(src.getExtensible()));
     if (src.hasCompose())
       tgt.setCompose(convertValueSetComposeComponent(src.getCompose()));
     if (src.hasExpansion())
@@ -227,7 +232,7 @@ public class ValueSet30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ValueSet tgt = new org.hl7.fhir.dstu3.model.ValueSet();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt, IGNORED_EXTENSION_URLS);
     if (src.hasUrl())
       tgt.setUrlElement(Uri30_50.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
@@ -260,8 +265,8 @@ public class ValueSet30_50 {
       tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
-    if (src.hasExtension("http://hl7.org/fhir/StructureDefinition/valueset-extensible"))
-      tgt.setExtensible(((BooleanType) src.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/valueset-extensible").getValue()).booleanValue());
+    if (src.hasExtension(EXTENSIBLE_EXTENSION_URL))
+      tgt.setExtensible(((BooleanType) src.getExtensionByUrl(EXTENSIBLE_EXTENSION_URL).getValue()).booleanValue());
     if (src.hasCompose())
       tgt.setCompose(convertValueSetComposeComponent(src.getCompose()));
     if (src.hasExpansion())

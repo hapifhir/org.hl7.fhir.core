@@ -14,6 +14,16 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SubscriptionTopic43_50 {
+
+
+  public static final String NAME_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.name";
+  public static final String COPYRIGHT_LABEL_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.copyrightLabel";
+
+  private static final String[] IGNORED_EXTENSION_URLS = new String[]{
+    NAME_EXTENSION_URL,
+    COPYRIGHT_LABEL_EXTENSION_URL
+  };
+
   public static org.hl7.fhir.r4b.model.SubscriptionTopic convertSubscriptionTopic(org.hl7.fhir.r5.model.SubscriptionTopic src) {
     if (src == null)
       return null;
@@ -55,10 +65,10 @@ public class SubscriptionTopic43_50 {
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown43_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasCopyrightLabel()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.copyrightLabel", String43_50.convertString(src.getCopyrightLabelElement()));
+      tgt.addExtension(COPYRIGHT_LABEL_EXTENSION_URL, String43_50.convertString(src.getCopyrightLabelElement()));
     }
     if (src.hasName()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.name", String43_50.convertString(src.getNameElement()));
+      tgt.addExtension(NAME_EXTENSION_URL, String43_50.convertString(src.getNameElement()));
     }
     if (src.hasApprovalDate())
       tgt.setApprovalDateElement(Date43_50.convertDate(src.getApprovalDateElement()));
@@ -243,13 +253,14 @@ public class SubscriptionTopic43_50 {
       return null;
     org.hl7.fhir.r5.model.SubscriptionTopic tgt = new org.hl7.fhir.r5.model.SubscriptionTopic();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyResource(src, tgt);
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt);
 
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.name")) {
-      tgt.setNameElement(String43_50.convertString((org.hl7.fhir.r4b.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.name").getValue()));
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt, IGNORED_EXTENSION_URLS);
+
+    if (src.hasExtension(NAME_EXTENSION_URL)) {
+      tgt.setNameElement(String43_50.convertString((org.hl7.fhir.r4b.model.StringType) src.getExtensionByUrl(NAME_EXTENSION_URL).getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.copyrightLabel")) {
-      tgt.setCopyrightLabelElement(String43_50.convertString((org.hl7.fhir.r4b.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-SubscriptionTopic.copyrightLabel").getValue()));
+    if (src.hasExtension(COPYRIGHT_LABEL_EXTENSION_URL)) {
+      tgt.setCopyrightLabelElement(String43_50.convertString((org.hl7.fhir.r4b.model.StringType) src.getExtensionByUrl(COPYRIGHT_LABEL_EXTENSION_URL).getValue()));
     }
     if (src.hasUrl())
       tgt.setUrlElement(Uri43_50.convertUri(src.getUrlElement()));
