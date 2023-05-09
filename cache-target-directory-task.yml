@@ -1,6 +1,7 @@
 steps:
 - ${{ each value in parameters.modules }}:
   - task: Cache@2
+    displayName: Cache ${{ value }} target
     inputs:
       key: maven | $(Build.BuildId) | targets | "${{ value }}"
       path: $(System.DefaultWorkingDirectory)/${{ value }}/target/

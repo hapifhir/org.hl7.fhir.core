@@ -18,7 +18,8 @@ jobs:
       - template: cache-target-directory-task.yml
         parameters:
           modules:
-            - org.hl7.fhir.convertors
+            - org.hl7.fhir.dstu2
+            - org.hl7.fhir.dstu2016may
       - task: Bash@3
         inputs:
           targetType: 'inline'
