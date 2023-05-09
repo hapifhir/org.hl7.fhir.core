@@ -32,29 +32,19 @@ package org.hl7.fhir.r5.model;
 // Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
-
 import java.util.Collections;
-import  java.util.Set;
-import   org.hl7.fhir.instance.model.api.IDomainResource;
-import  org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
-import  org.hl7.fhir.instance.model.api.IBaseHasModifierExtensions;
-import  org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import  org.hl7.fhir.r5.utils.ToolingExtensions;
-import  org.hl7.fhir.utilities.StandardsStatus;
+import java.util.List;
+
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
+import org.hl7.fhir.instance.model.api.IBaseHasModifierExtensions;
+import org.hl7.fhir.instance.model.api.IDomainResource;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.StandardsStatus;
+
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 /**
  * A resource that includes narrative, extensions, and contained resources.
  */
@@ -522,6 +512,7 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
       ToolingExtensions.setStandardsStatus(this, status, null);
     }
 
+    
 // end addition
 
 }
