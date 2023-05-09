@@ -1276,6 +1276,9 @@ public class StructureMapValidator extends BaseValidator {
         }
       }
       StructureDefinition tsd = context.fetchTypeDefinition(type);
+      if (tsd == null) {
+        return false;
+      }
       StructureDefinition sd = context.fetchTypeDefinition(v.getType());
       while (sd != null) {
         if (sd.getUrl().equals(tsd.getUrl())) {
