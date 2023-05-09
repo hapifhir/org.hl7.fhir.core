@@ -35,7 +35,7 @@ public class Expression50Test {
 
   @Test
   @DisplayName("Ensure base advisor ignores Expression types and doesn't explode.")
-  public void testBaseAdvisorExpressionIgore() throws IOException {
+  public void testBaseAdvisorExpressionIgnore() throws IOException {
     Expression exp = new Expression();
     exp.setExpression("x + y = z");
     Extension ext = new Extension();
