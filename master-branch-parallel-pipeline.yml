@@ -61,7 +61,6 @@ jobs:
           - org.hl7.fhir.r5
           - org.hl7.fhir.convertors
           - org.hl7.fhir.validation
-          - org.hl7.fhir.validation.cli
         - vmImage: ubuntu-latest
           javaToolOptions:
           jdkVersion: 1.11
@@ -76,4 +75,3 @@ jobs:
           - org.hl7.fhir.r5
           - org.hl7.fhir.convertors
           - org.hl7.fhir.validation
-          - org.hl7.fhir.validation.cli
