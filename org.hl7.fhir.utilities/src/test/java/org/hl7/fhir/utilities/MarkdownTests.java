@@ -25,6 +25,10 @@ class MarkdownTests {
     testMarkdown("this [is(link)] a test string", false);
     testMarkdown("this [is](link a test string", false);
     testMarkdown("this [i]s] (link) a test string", false);
+    testMarkdown("this <https://hl7.org> is a test string", true);
+    testMarkdown("this < https://hl7.org> is a test string", false);
+    testMarkdown("this <mailto:info@hl7.org> is a test string", true);
+    testMarkdown("this <b>is</b> a test string", false);
     testMarkdown("## heading", true);
     testMarkdown("# heading", false);
     testMarkdown("##  heading", false);
