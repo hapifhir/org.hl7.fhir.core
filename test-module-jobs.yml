@@ -16,5 +16,5 @@ jobs:
             path: $(MAVEN_CACHE_FOLDER)
         - template: cache-target-directory-tasks.yml
           parameters:
-          modules:
-            - ${{ value }}
+            modules:
+              - ${{ value }}
