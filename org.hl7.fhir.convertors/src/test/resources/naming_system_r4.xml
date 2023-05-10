@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NamingSystem xmlns="http://hl7.org/fhir">
+  <id value="ADAAreaOralCavitySystem"/>
+  <extension url="http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.title">
+    <valueString value="American Dental Association Area of Oral Cavity System"/>
+  </extension>
+  <extension url="http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url">
+    <valueUri value="http://terminology.hl7.org/NamingSystem/ADAAreaOralCavitySystem"/>
+  </extension>
+  <extension url="http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version">
+    <valueString value="1.0.0"/>
+  </extension>
+  <name value="ADAAreaOralCavitySystem"/>
+  <status value="active"/>
+  <kind value="codesystem"/>
+  <date value="2022-04-07T00:00:00-00:00"/>
+  <publisher value="American Dental Association"/>
+  <contact>
+    <name value="American Dental Association; 211 East Chicago Avenue Chicago, IL 60610-2678"/>
+  </contact>
+  <description value="The Area of Oral Cavity System is accepted and approved by the ADA and is the most commonly used system used by dental professionals in America.&#13;&#10;&#13;&#10;Area of the oral cavity is designated by a two-digit code.&#13;&#10;&#13;&#10;The Area of Oral Cavity System can be found in the ADA Comprehensive ADA Dental Claim Form Completion Instructions (see https://www.ada.org/-/media/project/ada-organization/ada/ada-org/files/publications/cdt/v2019adadentalclaimcompletioninstructions_v3_2022feb.pdf). For more information see here: https://www.ada.org/publications/cdt/ada-dental-claim-form. &#13;&#10;&#13;&#10;A Statement of Understanding (SOU) between ADA and HL7 exists here: http://www.hl7.org/documentcenter/public/mou/ADA%20HL7%20SOU%202021_signed.pdf"/>
+  <uniqueId>
+    <type value="uri"/>
+    <value value="http://terminology.hl7.org/CodeSystem/ADAAreaOralCavitySystem"/>
+    <preferred value="true"/>
+  <comment value="This is the URL endorsed by the HTA and is considered authoritative."/>
+  <period>
+      <start value="2022-04-07"/>
+    </period>
+  </uniqueId>
+</NamingSystem>
