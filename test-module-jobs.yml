@@ -3,10 +3,10 @@ jobs:
       - job:
         dependsOn: [ 'setup' ]
 
-        displayName: ${{image.displayName}}
+        displayName: ${{parameters.vmImage}}
 
         pool:
-          vmImage: ${{image.vmImage}}
+          vmImage: ${{parameters.vmImage}}
 
         steps:
         - task: Cache@2
