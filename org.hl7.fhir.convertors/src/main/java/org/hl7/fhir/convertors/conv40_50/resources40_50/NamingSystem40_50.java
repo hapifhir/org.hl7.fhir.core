@@ -1,6 +1,9 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ContactDetail40_50;
@@ -9,7 +12,13 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r4.model.UriType;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -45,10 +54,22 @@ public class NamingSystem40_50 {
   public static org.hl7.fhir.r5.model.NamingSystem convertNamingSystem(org.hl7.fhir.r4.model.NamingSystem src) throws FHIRException {
     if (src == null)
       return null;
+  
     org.hl7.fhir.r5.model.NamingSystem tgt = new org.hl7.fhir.r5.model.NamingSystem();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_NAMINGSYSTEM_URL, VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION, VersionConvertorConstants.EXT_NAMINGSYSTEM_TITLE);
+
+    if (src.hasExtension(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL)) {
+      tgt.setUrlElement(Uri40_50.convertUri((UriType) src.getExtensionByUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL).getValue()));
+    }
+    if (src.hasExtension(VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION)) {
+      tgt.setVersionElement(String40_50.convertString((StringType) src.getExtensionByUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION).getValue()));
+    }
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
+    if (src.hasExtension(VersionConvertorConstants.EXT_NAMINGSYSTEM_TITLE)) {
+      tgt.setTitleElement(String40_50.convertString((StringType) src.getExtensionByUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_TITLE).getValue()));
+    }
+
     if (src.hasStatus())
       tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
     if (src.hasKind())
@@ -81,8 +102,15 @@ public class NamingSystem40_50 {
       return null;
     org.hl7.fhir.r4.model.NamingSystem tgt = new org.hl7.fhir.r4.model.NamingSystem();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    if (src.hasUrlElement()) 
+      tgt.getExtension().add(new Extension().setUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL).setValue(Uri40_50.convertUri(src.getUrlElement())));
+    if (src.hasVersionElement()) 
+      tgt.getExtension().add(new Extension().setUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION).setValue(String40_50.convertString(src.getVersionElement())));
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
+    if (src.hasTitleElement()) 
+      tgt.getExtension().add(new Extension().setUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_TITLE).setValue(String40_50.convertString(src.getTitleElement())));
+
     if (src.hasStatus())
       tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
     if (src.hasKind())

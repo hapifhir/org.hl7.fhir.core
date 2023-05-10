@@ -158,6 +158,7 @@ public class ValueSetValidator {
     // first, we validate the codings themselves
     ValidationProcessInfo info = new ValidationProcessInfo();
 
+    CodeableConcept vcc = new CodeableConcept();
     if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
       int i = 0;
       for (Coding c : code.getCoding()) {
@@ -183,7 +184,7 @@ public class ValueSetValidator {
           }
         } else {
           c.setUserData("cs", cs);
-          res = validateCode(path+".coding["+i+"]", c, cs);
+          res = validateCode(path+".coding["+i+"]", c, cs, vcc);
         }
         info.getIssues().addAll(res.getIssues());
         i++;
@@ -202,6 +203,12 @@ public class ValueSetValidator {
         } else if (ok) {
           result = true;
           foundCoding = c;
+          if (options.getValueSetMode() == ValueSetMode.CHECK_MEMERSHIP_ONLY) {
+            vcc.addCoding().setSystem(c.getSystem()).setVersion(c.getVersion()).setCode(c.getCode());
+          }
+        }
+        if (ok == null || !ok) {
+          vcc.removeCoding(c.getSystem(), c.getVersion(), c.getCode());          
         }
       }
       if (result == null) {
@@ -222,6 +229,7 @@ public class ValueSetValidator {
         res.setVersion(foundCoding.hasVersion() ? foundCoding.getVersion() : ((CodeSystem) foundCoding.getUserData("cs")).getVersion());
         res.setDisplay(cd.getDisplay());
       }
+      res.addCodeableConcept(vcc);
       return res;
     } else if (foundCoding == null) {
       return new ValidationResult(IssueSeverity.ERROR, "Internal Error that should not happen", makeIssue(IssueSeverity.FATAL, IssueType.EXCEPTION, path, "Internal Error that should not happen"));
@@ -229,11 +237,11 @@ public class ValueSetValidator {
       String disp = lookupDisplay(foundCoding);
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(disp);
-      return new ValidationResult(IssueSeverity.WARNING, info.summary(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues());
+      return new ValidationResult(IssueSeverity.WARNING, info.summary(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues()).addCodeableConcept(vcc);
     } else {
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(lookupDisplay(foundCoding));
-      return new ValidationResult(foundCoding.getSystem(), getVersion(foundCoding), cd, getPreferredDisplay(cd, null));
+      return new ValidationResult(foundCoding.getSystem(), getVersion(foundCoding), cd, getPreferredDisplay(cd, null)).addCodeableConcept(vcc);
     }
   }
 
@@ -406,7 +414,7 @@ public class ValueSetValidator {
           // we can't validate that here. 
           throw new FHIRException("Unable to evaluate based on empty code system");
         }
-        res = validateCode(path, code, cs);
+        res = validateCode(path, code, cs, null);
       } else if (cs == null && valueset.hasExpansion() && inExpansion) {
         // we just take the value set as face value then
         res = new ValidationResult(system, wv, new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()), code.getDisplay());
@@ -589,7 +597,7 @@ public class ValueSetValidator {
     return false;
   }
 
-  private ValidationResult validateCode(String path, Coding code, CodeSystem cs) {
+  private ValidationResult validateCode(String path, Coding code, CodeSystem cs, CodeableConcept vcc) {
     ConceptDefinitionComponent cc = cs.hasUserData("tx.cs.special") ? ((SpecialCodeSystem) cs.getUserData("tx.cs.special")).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode());
     if (cc == null) {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
@@ -600,8 +608,12 @@ public class ValueSetValidator {
         return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".code", msg));
       }
     }
+    Coding vc = new Coding().setCode(code.getCode()).setSystem(cs.getUrl()).setVersion(cs.getVersion()).setDisplay(getPreferredDisplay(cc, cs));
+    if (vcc != null) {
+      vcc.addCoding(vc);
+    }
     if (code.getDisplay() == null) {
-      return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs));
+      return new ValidationResult(code.getSystem(), cs.getVersion(), cc, vc.getDisplay());
     }
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (cc.hasDisplay() && isOkLanguage(cs.getLanguage())) {

@@ -33,6 +33,8 @@ package org.hl7.fhir.utilities;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.commonmark.Extension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
@@ -157,7 +159,13 @@ public class MarkDownProcessor {
         mid = -1;
       }
     }
-    return false;
+
+    // Detect autolinks, which should start with a scheme, followed by a colon, followed by some content. Whitespace
+    // is not allowed and for practical purposes, the scheme is considered to consist of lowercase ASCII characters
+    // only.
+    Pattern autolinkPattern = Pattern.compile("<[a-z]+:[^\\s]+>");
+    Matcher autolinkMatcher = autolinkPattern.matcher(s);
+    return autolinkMatcher.find();
   }
 
 
@@ -193,8 +201,8 @@ public class MarkDownProcessor {
    * and the way commonmark specifies that < is handled in content. For control reasons, the FHIR specification does 
    * not allow raw html tags in the markdown 
    * 
-   * This check finds any raw <[x] where [x] is any alpha character, and prepends \ to it so that it 
-   * renders as a < (e.g. gets escaped in the output HTML)
+   * This check finds any raw html tag and prepends \ to it so that it renders as a < (e.g. gets escaped in the output
+   * HTML)
    * 
    * This is public to enable testing (not for direct use otherwise)
    * 
@@ -202,21 +210,16 @@ public class MarkDownProcessor {
    * @return
    */
   public static String preProcess(String source) {
-    StringBuilder b = new StringBuilder();
-    for (int i = 0; i < source.length(); i++) {
-      char last = i > 0 ? source.charAt(i-1) : 0;
-      char current = source.charAt(i);
-      char next = i < source.length() -1 ? source.charAt(i+1) : 0;
-      if (current == '<' && Character.isAlphabetic(next) && last != '\\') {
-        b.append('\\');
-        b.append(current);        
-      } else {
-        b.append(current);
-      }
-    }
-    return b.toString();
-  }
+    // Escape all unescaped open and closing tags ('<' or '</', followed by an ASCII letter, followed by ASCII 
+    // letters, digits and/or hyphens).
+    String processed = source.replaceAll("(?<!\\\\)<(\\/)?([A-Za-z][A-Za-z0-9-]*[\\s>])", "\\\\<$1$2");
 
+    // Escape all other HTML tags: HTML comments, processing instructions, declarations and CDATA sections -- 
+    // everything starting with '<?' or '<!'.
+    processed = processed.replaceAll("<(!|\\?)", "\\\\<$1");
+
+    return processed;
+  }
 
   private String processCommonMark(String source) {
     Set<Extension> extensions = Collections.singleton(TablesExtension.create());
@@ -258,7 +261,6 @@ public class MarkDownProcessor {
       return false;
     }
   }
-
 
   public static String makeMarkdownForString(String content) {
     StringBuilder b = new StringBuilder();
