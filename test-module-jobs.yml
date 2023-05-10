@@ -22,7 +22,7 @@ jobs:
         - task: Maven@3
           inputs:
             mavenPomFile: 'pom.xml'
-            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl $(value)'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl ${{value}}'
             mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '${{parameters.jdkVersion}}'
