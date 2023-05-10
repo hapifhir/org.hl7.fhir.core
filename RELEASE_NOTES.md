@@ -5,6 +5,7 @@
 * Fix for wrong display when server returns error
 * Slight improvement in performance
 * Fix FHIRPath split function (parameter is not regex)
+* Stop warning that Markdown autolinks need to be escaped
 
 ## Other code changes
 
