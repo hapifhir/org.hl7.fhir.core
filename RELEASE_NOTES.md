@@ -6,6 +6,7 @@
 * Slight improvement in performance
 * Fix FHIRPath split function (parameter is not regex)
 * Stop warning that Markdown autolinks need to be escaped
+* Allow NPM package versions to have the form {id}#{url} for direct access to packages
 
 ## Other code changes
 

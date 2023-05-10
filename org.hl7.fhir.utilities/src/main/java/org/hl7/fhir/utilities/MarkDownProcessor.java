@@ -262,7 +262,6 @@ public class MarkDownProcessor {
     }
   }
 
-
   public static String makeMarkdownForString(String content) {
     StringBuilder b = new StringBuilder();
     for (int i = 0; i < content.length(); i++) {
