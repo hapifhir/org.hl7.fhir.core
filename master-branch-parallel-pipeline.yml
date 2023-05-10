@@ -16,7 +16,7 @@ jobs:
         inputs:
           key: maven | $(Build.BuildId) | artifacts
           path: $(MAVEN_CACHE_FOLDER)
-      - template: cache-target-directory-tasks.yml
+      - template: cache-target-tasks-template.yml
         parameters:
           modules:
             - org.hl7.fhir.utilities
@@ -44,19 +44,36 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'
-  - template: test-module-jobs.yml
+  - template: test-unit-jobs-template.yml
     parameters:
-      vmImage: windows-latest
-      jdkVersion: 1.11
-      modules:
-        - org.hl7.fhir.utilities
-        - org.hl7.fhir.dstu2
-        - org.hl7.fhir.dstu2016may
-        - org.hl7.fhir.dstu3
-        - org.hl7.fhir.r4
-        - org.hl7.fhir.r4b
-        - org.hl7.fhir.r5
-        - org.hl7.fhir.convertors
-        - org.hl7.fhir.validation
-        - org.hl7.fhir.validation.cli
-        - org.hl7.fhir.report
+      testUnits:
+        - vmImage: windows-latest
+          javaToolOptions: -Dfile.encoding=Cp1252
+          jdkVersion: 1.11
+          skipJaCoCo: true
+          modules:
+          - org.hl7.fhir.utilities
+          - org.hl7.fhir.dstu2
+          - org.hl7.fhir.dstu2016may
+          - org.hl7.fhir.dstu3
+          - org.hl7.fhir.r4
+          - org.hl7.fhir.r4b
+          - org.hl7.fhir.r5
+          - org.hl7.fhir.convertors
+          - org.hl7.fhir.validation
+          - org.hl7.fhir.validation.cli
+        - vmImage: ubuntu-latest
+          javaToolOptions:
+          jdkVersion: 1.11
+          skipJaCoCo: false
+          modules:
+          - org.hl7.fhir.utilities
+          - org.hl7.fhir.dstu2
+          - org.hl7.fhir.dstu2016may
+          - org.hl7.fhir.dstu3
+          - org.hl7.fhir.r4
+          - org.hl7.fhir.r4b
+          - org.hl7.fhir.r5
+          - org.hl7.fhir.convertors
+          - org.hl7.fhir.validation
+          - org.hl7.fhir.validation.cli

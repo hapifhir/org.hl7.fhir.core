@@ -1,12 +1,16 @@
 jobs:
-  - ${{ each value in parameters.modules }}:
+  - ${{ each unit in parameters.testUnits }}:
+    - ${{ each value in unit.modules }}
       - job:
         dependsOn: [ 'setup' ]
 
-        displayName: ${{parameters.vmImage}} ${{value}}
+        displayName: ${{unit.vmImage}} ${{value}}
 
         pool:
-          vmImage: ${{parameters.vmImage}}
+          vmImage: ${{unit.vmImage}}
+
+        variables:
+          JAVA_TOOL_OPTIONS: ${{image.javaToolOptions}}
 
         steps:
         - task: Cache@2
@@ -14,7 +18,7 @@ jobs:
           inputs:
             key: maven | $(Build.BuildId) | artifacts
             path: $(MAVEN_CACHE_FOLDER)
-        - template: cache-target-directory-tasks.yml
+        - template: cache-target-tasks-template.yml
           parameters:
             modules:
               - ${{ value }}
@@ -22,10 +26,10 @@ jobs:
         - task: Maven@3
           inputs:
             mavenPomFile: 'pom.xml'
-            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl ${{value}}'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl ${{value}} -Djacoco.skip=${{image.skipJaCoCo}}'
             mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
             javaHomeOption: 'JDKVersion'
-            jdkVersionOption: '${{parameters.jdkVersion}}'
+            jdkVersionOption: '${{unit.jdkVersion}}'
             jdkArchitectureOption: 'x64'
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
