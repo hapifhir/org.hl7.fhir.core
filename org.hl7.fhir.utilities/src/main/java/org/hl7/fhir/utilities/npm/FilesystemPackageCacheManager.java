@@ -402,11 +402,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   @Override
   public NpmPackage addPackageToCache(String id, String version, InputStream packageTgzInputStream, String sourceDesc) throws IOException {
     checkValidVersionString(version, id);
-    if (progress) {
-      log("Installing " + id + "#" + (version == null ? "?" : version) + " to the package cache");
-      log("  Fetching:");
-    }
-
+    
     NpmPackage npm = NpmPackage.fromPackage(packageTgzInputStream, sourceDesc, true);
 
     if (progress) {
@@ -414,8 +410,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       logn("  Installing: ");
     }
     
-    if (!suppressErrors && npm.name() == null || id == null || !id.equalsIgnoreCase(npm.name())) {
-      if (!id.equals("hl7.fhir.r5.core") && !id.equals("hl7.fhir.us.immds")) {// temporary work around
+    if ((npm.name() != null && id != null && !id.equalsIgnoreCase(npm.name()))) {
+      if (!suppressErrors && (!id.equals("hl7.fhir.r5.core") && !id.equals("hl7.fhir.us.immds"))) {// temporary work around
         throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());
       }
     }
@@ -569,10 +565,17 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       version = "current";
     }
 
+    if (progress) {
+      log("Installing " + id + "#" + (version == null ? "?" : version) + " to the package cache");
+      log("  Fetching:");
+    }
+
     // nup, don't have it locally (or it's expired)
     FilesystemPackageCacheManager.InputStreamWithSrc source;
     if (false && packageProvider != null && packageProvider.handlesPackage(id, version)) {
       source = packageProvider.provide(id, version);
+    } else if (Utilities.isAbsoluteUrl(version)) {
+      source = fetchSourceFromUrlSpecific(version);
     } else if ("current".equals(version) || (version!= null && version.startsWith("current$"))) {
       // special case - fetch from ci-build server
       source = loadFromCIBuild(id, version.startsWith("current$") ? version.substring(8) : null);
@@ -583,6 +586,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       throw new FHIRException("Unable to find package "+id+"#"+version);
     }
     return addPackageToCache(id, source.version, source.stream, source.url);
+  }
+
+  private InputStreamWithSrc fetchSourceFromUrlSpecific(String url) {
+    return new InputStreamWithSrc(fetchFromUrlSpecific(url, false), url, "current");
   }
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException {
