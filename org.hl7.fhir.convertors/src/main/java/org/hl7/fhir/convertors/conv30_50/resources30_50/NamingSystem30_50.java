@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.ContactDetail30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
@@ -9,6 +11,12 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Bool
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.MarkDown30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
+import org.hl7.fhir.dstu3.model.Extension;
+import org.hl7.fhir.dstu3.model.StringType;
+import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class NamingSystem30_50 {
@@ -18,8 +26,15 @@ public class NamingSystem30_50 {
       return null;
     org.hl7.fhir.dstu3.model.NamingSystem tgt = new org.hl7.fhir.dstu3.model.NamingSystem();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
+    if (src.hasUrlElement()) 
+      tgt.getExtension().add(new Extension().setUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL).setValue(Uri30_50.convertUri(src.getUrlElement())));
+    if (src.hasVersionElement()) 
+      tgt.getExtension().add(new Extension().setUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION).setValue(String30_50.convertString(src.getVersionElement())));
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
+    if (src.hasTitleElement()) 
+      tgt.getExtension().add(new Extension().setUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_TITLE).setValue(String30_50.convertString(src.getTitleElement())));
+
     if (src.hasStatus())
       tgt.setStatusElement(Enumerations30_50.convertPublicationStatus(src.getStatusElement()));
     if (src.hasKind())
@@ -51,9 +66,19 @@ public class NamingSystem30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.NamingSystem tgt = new org.hl7.fhir.r5.model.NamingSystem();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_NAMINGSYSTEM_URL, VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION, VersionConvertorConstants.EXT_NAMINGSYSTEM_TITLE);
+
+    if (src.hasExtension(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL)) {
+      tgt.setUrlElement(Uri30_50.convertUri((UriType) src.getExtensionByUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL).getValue()));
+    }
+    if (src.hasExtension(VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION)) {
+      tgt.setVersionElement(String30_50.convertString((StringType) src.getExtensionByUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION).getValue()));
+    }
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
+    if (src.hasExtension(VersionConvertorConstants.EXT_NAMINGSYSTEM_TITLE)) {
+      tgt.setTitleElement(String30_50.convertString((StringType) src.getExtensionByUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_TITLE).getValue()));
+    }
     if (src.hasStatus())
       tgt.setStatusElement(Enumerations30_50.convertPublicationStatus(src.getStatusElement()));
     if (src.hasKind())

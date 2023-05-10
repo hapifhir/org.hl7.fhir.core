@@ -316,4 +316,26 @@ public abstract class DomainResource extends Resource implements IBaseHasExtensi
       }
 
 
+      public boolean hasExtension(String url) {
+        for (Extension e : getExtension())
+          if (url.equals(e.getUrl()))
+            return true;
+        return false;
+      }
+
+      public Extension getExtensionByUrl(String theUrl) {
+        org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+        ArrayList<Extension> retVal = new ArrayList<Extension>();
+        for (Extension next : getExtension()) {
+          if (theUrl.equals(next.getUrl())) {
+            retVal.add(next);
+          }
+        }
+        if (retVal.size() == 0)
+          return null;
+        else {
+          org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+theUrl+" must have only one match");
+          return retVal.get(0);
+        }
+      }
 }

@@ -122,6 +122,7 @@ public interface IWorkerContext {
     private String txLink;
     private String diagnostics;
     private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+    private CodeableConcept codeableConcept;
 
     @Override
     public String toString() {
@@ -276,7 +277,17 @@ public interface IWorkerContext {
     public List<OperationOutcomeIssueComponent> getIssues() {
       return issues;
     }
-    
+
+    public ValidationResult addCodeableConcept(CodeableConcept vcc) {
+      if (!vcc.isEmpty()) {
+        codeableConcept = vcc;
+      }
+      return this;
+    }
+
+    public CodeableConcept getCodeableConcept() {
+      return codeableConcept;
+    }
     
   }
 
