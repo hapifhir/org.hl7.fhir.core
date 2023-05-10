@@ -28,7 +28,7 @@ public class AllergyIntolerance10_30Test {
         InputStream stu_exepected_input = this.getClass().getResourceAsStream(stu_path);
 
         org.hl7.fhir.dstu2.model.AllergyIntolerance dstu2 = (org.hl7.fhir.dstu2.model.AllergyIntolerance) new org.hl7.fhir.dstu2.formats.JsonParser().parse(dstu2_input);
-        org.hl7.fhir.dstu3.model.Resource stu_actual = VersionConvertorFactory_10_30.convertResource(dstu2, new BaseAdvisor_10_30());
+        org.hl7.fhir.dstu3.model.Resource stu_actual = VersionConvertorFactory_10_30.convertResource(dstu2);
 
         org.hl7.fhir.dstu3.formats.JsonParser stu_parser = new org.hl7.fhir.dstu3.formats.JsonParser();
         org.hl7.fhir.dstu3.model.Resource stu_expected = stu_parser.parse(stu_exepected_input);
