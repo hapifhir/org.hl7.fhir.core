@@ -52,3 +52,11 @@ jobs:
         - org.hl7.fhir.utilities
         - org.hl7.fhir.dstu2
         - org.hl7.fhir.dstu2016may
+        - org.hl7.fhir.dstu3
+        - org.hl7.fhir.r4
+        - org.hl7.fhir.r4b
+        - org.hl7.fhir.r5
+        - org.hl7.fhir.convertors
+        - org.hl7.fhir.validation
+        - org.hl7.fhir.validation.cli
+        - org.hl7.fhir.report
