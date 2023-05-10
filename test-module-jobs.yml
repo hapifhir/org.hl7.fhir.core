@@ -1,0 +1,20 @@
+steps:
+  - ${{ each value in parameters.modules }}:
+      - job:
+        dependsOn: [ 'setup' ]
+
+        displayName: ${{image.displayName}}
+
+        pool:
+          vmImage: ${{image.vmImage}}
+
+        steps:
+        - task: Cache@2
+          displayName: Cache maven artifacts
+          inputs:
+            key: maven | $(Build.BuildId) | artifacts
+            path: $(MAVEN_CACHE_FOLDER)
+        - template: cache-target-directory-tasks.yml
+          parameters:
+          modules:
+            - ${{ value }}
