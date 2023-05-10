@@ -10,7 +10,7 @@ jobs:
           vmImage: ${{unit.vmImage}}
 
         variables:
-          JAVA_TOOL_OPTIONS: ${{image.javaToolOptions}}
+          JAVA_TOOL_OPTIONS: ${{unit.javaToolOptions}}
 
         steps:
         - task: Cache@2
@@ -26,7 +26,7 @@ jobs:
         - task: Maven@3
           inputs:
             mavenPomFile: 'pom.xml'
-            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl ${{value}} -Djacoco.skip=${{image.skipJaCoCo}}'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl ${{value}} -Djacoco.skip=${{unit.skipJaCoCo}}'
             mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '${{unit.jdkVersion}}'
