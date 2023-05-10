@@ -46,7 +46,7 @@ jobs:
           goals: 'install'
   - template: test-module-jobs.yml
     parameters:
-      vmImage: ubuntu-latest
+      vmImage: windows-latest
       jdkVersion: 1.11
       modules:
         - org.hl7.fhir.utilities
