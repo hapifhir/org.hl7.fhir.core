@@ -1,4 +1,4 @@
-steps:
+jobs:
   - ${{ each value in parameters.modules }}:
       - job:
         dependsOn: [ 'setup' ]
