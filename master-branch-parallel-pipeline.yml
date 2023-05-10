@@ -47,6 +47,7 @@ jobs:
   - template: test-module-jobs.yml
     parameters:
       vmImage: ubuntu-latest
+      jdkVersion: 1.11
       modules:
         - org.hl7.fhir.utilities
         - org.hl7.fhir.dstu2

@@ -3,7 +3,7 @@ jobs:
       - job:
         dependsOn: [ 'setup' ]
 
-        displayName: ${{parameters.vmImage}}
+        displayName: ${{parameters.vmImage}} ${{value}}
 
         pool:
           vmImage: ${{parameters.vmImage}}
@@ -18,3 +18,15 @@ jobs:
           parameters:
             modules:
               - ${{ value }}
+          # Runs 'mvn install'
+        - task: Maven@3
+          inputs:
+            mavenPomFile: 'pom.xml'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl $(value)'
+            mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: '${{parameters.jdkVersion}}'
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            goals: 'test'
