@@ -75,3 +75,10 @@ jobs:
           - org.hl7.fhir.r5
           - org.hl7.fhir.convertors
           - org.hl7.fhir.validation
+  - template: test-cli-exec-job-template.yml
+    parameters:
+     - vmImage: windows-latest
+       jdkVersion: 1.11
+     - vmImage: ubuntu-latest
+       jdkVersion: 1.11
+
