@@ -2396,53 +2396,60 @@ public class ProfileUtilities extends TranslatingUtilities {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     String t = ts.getWorkingCode();
     for (TypeRefComponent td : base.getType()) {;
+      boolean matchType = false;
       String tt = td.getWorkingCode();
       b.append(tt);
       if (td.hasCode() && (tt.equals(t))) {
-        ok = true;
+        matchType = true;
       }
-      if (!ok) {
+      if (!matchType) {
         StructureDefinition sdt = context.fetchTypeDefinition(tt);
         if (sdt != null && (sdt.getAbstract() || sdt.getKind() == StructureDefinitionKind.LOGICAL)) {
           StructureDefinition sdb = context.fetchTypeDefinition(t);
-          while (sdb != null && !ok) {
-            ok = sdb.getType().equals(sdt.getType());
+          while (sdb != null && !matchType) {
+            matchType = sdb.getType().equals(sdt.getType());
             sdb = context.fetchResource(StructureDefinition.class, sdb.getBaseDefinition(), sdb);
           }
         }
       }
      // work around for old badly generated SDs
       if (DONT_DO_THIS && Utilities.existsInList(tt, "Extension", "uri", "string", "Element")) {
-        ok = true;
+        matchType = true;
       }
       if (DONT_DO_THIS && Utilities.existsInList(tt, "Resource","DomainResource") && pkp.isResource(t)) {
-        ok = true;
+        matchType = true;
       }
-      if (ok && ts.hasTargetProfile()) {
-        // check that any derived target has a reference chain back to one of the base target profiles
-        for (UriType u : ts.getTargetProfile()) {
-          String url = u.getValue();
-          boolean tgtOk = !td.hasTargetProfile() || td.hasTargetProfile(url);
-          while (url != null && !tgtOk) {
-            StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
-            if (sd == null) {
-              if (messages != null) {
-                messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, purl+"#"+derived.getPath(), "Cannot check whether the target profile "+url+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
+      if (matchType) {
+        if (ts.hasTargetProfile()) {
+          // check that any derived target has a reference chain back to one of the base target profiles
+          for (UriType u : ts.getTargetProfile()) {
+            String url = u.getValue();
+            boolean tgtOk = !td.hasTargetProfile() || td.hasTargetProfile(url);
+            while (url != null && !tgtOk) {
+              StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+              if (sd == null) {
+                if (messages != null) {
+                  messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, purl + "#" + derived.getPath(), "Cannot check whether the target profile " + url + " is valid constraint on the base because it is not known", IssueSeverity.WARNING));
+                }
+                url = null;
+                tgtOk = true; // suppress error message
+              } else {
+                url = sd.getBaseDefinition();
+                tgtOk = td.hasTargetProfile(url);
               }
-              url = null;
-              tgtOk = true; // suppress error message
-            } else {
-              url = sd.getBaseDefinition();
-              tgtOk = td.hasTargetProfile(url);
+            }
+            if (tgtOk)
+              ok = true;
+            else {
+              if (messages == null) {
+                throw new FHIRException(context.formatMessage(I18nConstants.ERROR_AT__THE_TARGET_PROFILE__IS_NOT__VALID_CONSTRAINT_ON_THE_BASE_, purl, derived.getPath(), url, td.getTargetProfile()));
+              } else {
+                messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, derived.getPath(), "The target profile " + u.getValue() + " is not a valid constraint on the base (" + td.getTargetProfile() + ") at " + derived.getPath(), IssueSeverity.ERROR));
+              }
             }
           }
-          if (!tgtOk) {
-            if (messages == null) {
-              throw new FHIRException(context.formatMessage(I18nConstants.ERROR_AT__THE_TARGET_PROFILE__IS_NOT__VALID_CONSTRAINT_ON_THE_BASE_, purl, derived.getPath(), url, td.getTargetProfile()));
-            } else {
-              messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, derived.getPath(), "The target profile "+u.getValue()+" is not a valid constraint on the base ("+td.getTargetProfile()+") at "+derived.getPath(), IssueSeverity.ERROR));
-            }
-          }
+        } else {
+          ok = true;
         }
       }
     }
