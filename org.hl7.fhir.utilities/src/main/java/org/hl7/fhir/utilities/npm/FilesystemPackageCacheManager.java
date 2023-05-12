@@ -621,7 +621,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), false);
         return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), "current$"+branch);
       }
-    } else if (id.startsWith("hl7.fhir.r5")) {
+    } else if (id.startsWith("hl7.fhir.r6")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id + ".tgz"), "current");
     } else {
