@@ -621,9 +621,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), false);
         return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), "current$"+branch);
       }
-    } else if (id.startsWith("hl7.fhir.r5")) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id + ".tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id + ".tgz"), "current");
+    } else if (id.startsWith("hl7.fhir.r5") || id.startsWith("hl7.fhir.r6")) {
+      final String baseUrl = id.endsWith("r6") ? "http://build.fhir.org" : "https://hl7.org/fhir";
+      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(baseUrl, id + ".tgz"), false);
+      return new InputStreamWithSrc(stream, Utilities.pathURL(baseUrl, id + ".tgz"), "current");
     } else {
       throw new FHIRException("The package '" + id + "' has no entry on the current build server ("+ciList.toString()+")");
     }
