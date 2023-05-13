@@ -68,7 +68,6 @@ public class ShexGeneratorTestUtils {
           break;
         default:
           selSDs.add(new resDef(sd.getName(), sd.getUrl(), getSDInfo(sd), getCategory(sd)));
-
       }
     });
 
