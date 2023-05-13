@@ -670,6 +670,7 @@ public class ShExGenerator {
     shape_defn.add("fhirType", " ");
 
 
+
     // Generate the defining elements
     List<String> elements = new ArrayList<String>();
 
@@ -1561,6 +1562,14 @@ public class ShExGenerator {
       addldef = tmplt(FIXED_VALUE_TEMPLATE).add("val", ed.getFixed().primitiveValue()).render();
     }
     return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", TurtleParser.getClassName(typ)).add("vsdef", addldef).render();
+  }
+
+  private String removeMultipleX(String str) {
+     if ((str != null) && (!"".equals(str))) {
+       str = str.replaceAll("\\[x\\]", "");
+     }
+
+     return str;
   }
 
   private String removeMultipleX(String str) {
