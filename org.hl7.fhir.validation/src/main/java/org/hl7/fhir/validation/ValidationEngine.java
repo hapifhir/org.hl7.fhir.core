@@ -180,6 +180,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private Map<String, byte[]> binaries = new HashMap<>();
   @Getter @Setter private boolean doNative;
   @Getter @Setter private boolean noInvariantChecks;
+  @Getter @Setter private boolean displayWarnings;
   @Getter @Setter private boolean wantInvariantInMessage;
   @Getter @Setter private boolean hintAboutNonMustSupport;
   @Getter @Setter private boolean anyExtensionsAllowed = false;
@@ -773,6 +774,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setWantInvariantInMessage(isWantInvariantInMessage());
     validator.setValidationLanguage(language);
+    validator.setDisplayWarnings(isDisplayWarnings());
     if (language != null) {
       validator.getContext().setValidationMessageLanguage(Locale.forLanguageTag(language));
     }

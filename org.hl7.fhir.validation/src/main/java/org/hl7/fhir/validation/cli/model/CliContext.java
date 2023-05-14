@@ -45,6 +45,8 @@ public class CliContext {
   private boolean noUnicodeBiDiControlChars = false;
   @JsonProperty("noInvariants")
   private boolean noInvariants = false;
+  @JsonProperty("displayWarnings")
+  private boolean displayWarnings = false;
   @JsonProperty("wantInvariantsInMessages")
   private boolean wantInvariantsInMessages = false;
   @JsonProperty("doImplicitFHIRPathStringConversion")
@@ -582,6 +584,16 @@ public class CliContext {
     this.noInvariants = noInvariants;
   }
 
+  @JsonProperty("displayWarnings")
+  public boolean isDisplayWarnings() {
+    return displayWarnings;
+  }
+
+  @JsonProperty("displayWarnings")
+  public void setDisplayWarnings(boolean displayWarnings) {
+    this.displayWarnings = displayWarnings;
+  }
+
   @JsonProperty("wantInvariantsInMessages")
   public boolean isWantInvariantsInMessages() {
     return wantInvariantsInMessages;
@@ -691,6 +703,7 @@ public class CliContext {
       noExtensibleBindingMessages == that.noExtensibleBindingMessages &&
       noUnicodeBiDiControlChars == that.noUnicodeBiDiControlChars &&
       noInvariants == that.noInvariants &&
+      displayWarnings == that.displayWarnings &&
       wantInvariantsInMessages == that.wantInvariantsInMessages &&
       Objects.equals(extensions, that.extensions) &&
       Objects.equals(map, that.map) &&
@@ -727,7 +740,7 @@ public class CliContext {
   @Override
   public int hashCode() {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
-            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
+            noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
             targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
   }
 
@@ -745,6 +758,7 @@ public class CliContext {
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
       ", noUnicodeBiDiControlChars=" + noUnicodeBiDiControlChars +
       ", noInvariants=" + noInvariants +
+      ", displayWarnings=" + displayWarnings +
       ", wantInvariantsInMessages=" + wantInvariantsInMessages +
       ", map='" + map + '\'' +
       ", output='" + output + '\'' +
