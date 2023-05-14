@@ -16,6 +16,7 @@ public class ValidationOptions {
   private boolean useClient = true;
   private boolean guessSystem = false;
   private ValueSetMode valueSetMode = ValueSetMode.ALL_CHECKS;
+  private boolean displayWarningMode = false;
   private boolean vsAsUrl;
   private boolean versionFlexible = true;
   private boolean useValueSetDisplays;
@@ -236,6 +237,15 @@ public class ValidationOptions {
     return this;
   }
 
+  public boolean isDisplayWarningMode() {
+    return displayWarningMode;
+  }
+
+  public ValidationOptions setDisplayWarningMode(boolean displayWarningMode) {
+    this.displayWarningMode = displayWarningMode;
+    return this;
+  }
+
   public ValidationOptions copy() {
     ValidationOptions n = new ValidationOptions();
     n.languages.addAll(languages);
@@ -245,14 +255,15 @@ public class ValidationOptions {
     n.vsAsUrl = vsAsUrl;
     n.versionFlexible = versionFlexible;
     n.valueSetMode = valueSetMode;
-    n.useValueSetDisplays = useValueSetDisplays;    
+    n.useValueSetDisplays = useValueSetDisplays;   
+    n.displayWarningMode = displayWarningMode;
     return n;
   }
   
 
   public String toJson() {
     return "\"langs\":\""+languages.toString()+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", "+
-       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"valueSetMode\":\""+valueSetMode.toString()+"\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\"";
+       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"valueSetMode\":\""+valueSetMode.toString()+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+"\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\"";
   }
 
   public String langSummary() {

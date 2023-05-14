@@ -448,6 +448,7 @@ public class ValidationService {
     validationEngine.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
     validationEngine.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
     validationEngine.setNoInvariantChecks(cliContext.isNoInvariants());
+    validationEngine.setDisplayWarnings(cliContext.isDisplayWarnings());
     validationEngine.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
     validationEngine.setSecurityChecks(cliContext.isSecurityChecks());
     validationEngine.setCrumbTrails(cliContext.isCrumbTrails());

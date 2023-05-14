@@ -69,6 +69,7 @@ public class Params {
   public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
   public static final String NO_UNICODE_BIDI_CONTROL_CHARS = "-no_unicode_bidi_control_chars";
   public static final String NO_INVARIANTS = "-no-invariants";
+  public static final String DISPLAY_WARNINGS = "-display-issues-are-warnings";
   public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String CRUMB_TRAIL = "-crumb-trails";
@@ -243,6 +244,8 @@ public class Params {
         cliContext.setNoUnicodeBiDiControlChars(true);
       } else if (args[i].equals(NO_INVARIANTS)) {
         cliContext.setNoInvariants(true);
+      } else if (args[i].equals(DISPLAY_WARNINGS)) {
+        cliContext.setDisplayWarnings(true);
       } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
         cliContext.setWantInvariantsInMessages(true);
       } else if (args[i].equals(HINT_ABOUT_NON_MUST_SUPPORT)) {

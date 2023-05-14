@@ -477,6 +477,9 @@ public class ValueSetValidator {
         res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
       }
     }
+    if (res != null && res.getSeverity() == IssueSeverity.INFORMATION) {
+      res.setSeverity(IssueSeverity.ERROR); // back patching for display logic issue
+    }
     return res;
   }
 
@@ -655,10 +658,18 @@ public class ValueSetValidator {
       return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg));      
     } else {
       String msg = context.formatMessagePlural(b.count(), I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
-      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg));
+      return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg));
     }
   }
+
+  private IssueSeverity dispWarning() {
+    return options.isDisplayWarningMode() ? IssueSeverity.WARNING : IssueSeverity.ERROR; 
+  }
   
+  private IssueSeverity dispWarningStatus() {
+    return options.isDisplayWarningMode() ? IssueSeverity.WARNING : IssueSeverity.INFORMATION; // information -> error later
+  }
+
   private boolean isOkLanguage(String language) {
     if (!options.hasLanguages()) {
       return true;

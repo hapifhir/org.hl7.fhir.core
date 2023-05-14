@@ -241,6 +241,9 @@ public class TerminologyServiceTests {
     if (p.hasParameter("valueSetMode") && "CHECK_MEMBERSHIP_ONLY".equals(p.getParameterString("valueSetMode"))) {
        options = options.withCheckValueSetOnly();
     }
+    if (p.hasParameter("mode") && "lenient-display-validation".equals(p.getParameterString("mode"))) {
+      options = options.setDisplayWarningMode(true);
+   }
     ValidationResult vm;
     if (p.hasParameter("code")) {
       vm = engine.getContext().validateCode(options.withGuessSystem(), p.getParameterString("system"), p.getParameterString("systemVersion"), p.getParameterString("code"), p.getParameterString("display"), vs);

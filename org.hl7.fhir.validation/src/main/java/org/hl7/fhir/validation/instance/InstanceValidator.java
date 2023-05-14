@@ -466,6 +466,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noUnicodeBiDiControlChars;
   private HtmlInMarkdownCheck htmlInMarkdownCheck;
   private boolean allowComments;
+  private boolean displayWarnings;
  
   private List<ImplementationGuide> igs = new ArrayList<>();
   private List<String> extensionDomains = new ArrayList<String>();
@@ -6534,5 +6535,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.forPublication = forPublication;
   }
 
-  
+  public boolean isDisplayWarnings() {
+    return baseOptions.isDisplayWarningMode();
+  }
+
+  public void setDisplayWarnings(boolean displayWarnings) {
+    baseOptions.setDisplayWarningMode(displayWarnings);
+  }
+
 }
