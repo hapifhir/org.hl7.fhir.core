@@ -29,6 +29,21 @@ parameters:
         - org.hl7.fhir.r5
         - org.hl7.fhir.convertors
         - org.hl7.fhir.validation
+  - name: vmImagesToTest
+    displayName: VM Images to Test Against
+    type: object
+    default:
+      images:
+        - ubuntu-latest
+        - windows-latest
+        - mac-latest
+  - name: jdksToTest
+    displayName: JDKs to Test Against
+    type: object
+    default:
+      jdks:
+        - 1.11
+        - 1.17
 
 trigger: none
 
@@ -84,8 +99,7 @@ jobs:
   - template: test-cli-exec-job-template.yml
     parameters:
       testUnits:
-        - vmImage: windows-latest
-          jdkVersion: 1.11
-        - vmImage: ubuntu-latest
-          jdkVersion: 1.11
+        ${{ each image in parameters.vmImagesToTest.images }}:
+          - vmImage: ${{ image }}
+            jdkVersion: 1.11
 
