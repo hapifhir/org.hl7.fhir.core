@@ -1,9 +1,8 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.text.MessageFormat;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.ibm.icu.text.PluralRules;
 
@@ -58,14 +57,19 @@ public abstract class I18nBase {
    */
   private boolean messageExistsForLocale(String message, boolean hasArgs) {
     checkResourceBundleIsLoaded();
-    if (!i18nMessages.containsKey(message)) {
+    if (!messageKeyExistsForLocale(message)) {
       if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
         System.out.println("Attempting to localize message " + message + ", but no such equivalent message exists for" +
-            " the local " + getLocale());
+            " the locale " + getLocale());
       }
     }
+    return messageKeyExistsForLocale(message);
+  }
+
+  protected boolean messageKeyExistsForLocale(String message) {
     return i18nMessages.containsKey(message);
   }
+
 
   /**
    * Formats the given message, if needed, with the passed in message arguments.
@@ -79,6 +83,12 @@ public abstract class I18nBase {
 
   protected String getPluralKey(Integer number, String baseKey) {
     return baseKey + KEY_DELIMITER + pluralRules.select(number);
+  }
+
+  protected Set<String> getPluralKeys(String baseKey) {
+    return pluralRules
+      .getKeywords().stream()
+      .map(entry -> baseKey + KEY_DELIMITER + entry).collect(Collectors.toSet());
   }
 
   private String formatMessageForLocale(String theMessage, Object... theMessageArguments) {
