@@ -36,17 +36,7 @@ jobs:
       - template: cache-target-tasks-template.yml
         parameters:
           modules:
-            - org.hl7.fhir.utilities
-            - org.hl7.fhir.dstu2
-            - org.hl7.fhir.dstu2016may
-            - org.hl7.fhir.dstu3
-            - org.hl7.fhir.r4
-            - org.hl7.fhir.r4b
-            - org.hl7.fhir.r5
-            - org.hl7.fhir.convertors
-            - org.hl7.fhir.validation
-            - org.hl7.fhir.validation.cli
-            - org.hl7.fhir.report
+            - ${{ each value in parameters.modulesToCache }}
       - task: Bash@3
         inputs:
           targetType: 'inline'
@@ -69,7 +59,15 @@ jobs:
           jdkVersion: 1.11
           skipJaCoCo: true
           modules:
-          - ${{ parameters.modulesToCache }}
+          - org.hl7.fhir.utilities
+          - org.hl7.fhir.dstu2
+          - org.hl7.fhir.dstu2016may
+          - org.hl7.fhir.dstu3
+          - org.hl7.fhir.r4
+          - org.hl7.fhir.r4b
+          - org.hl7.fhir.r5
+          - org.hl7.fhir.convertors
+          - org.hl7.fhir.validation
         - vmImage: ubuntu-latest
           javaToolOptions:
           jdkVersion: 1.11
