@@ -69,7 +69,7 @@ jobs:
           jdkVersion: 1.11
           skipJaCoCo: true
           modules:
-          - ${{ value in parameters.modulesToCache }}
+          - ${{ parameters.modulesToCache }}
         - vmImage: ubuntu-latest
           javaToolOptions:
           jdkVersion: 1.11
