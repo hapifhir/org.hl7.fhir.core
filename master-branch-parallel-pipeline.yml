@@ -15,6 +15,20 @@ parameters:
         - org.hl7.fhir.validation
         - org.hl7.fhir.validation.cli
         - org.hl7.fhir.report
+  - name: modulesToTest
+    displayName: Modules to Test
+    type: object
+    default:
+      modules:
+        - org.hl7.fhir.utilities
+        - org.hl7.fhir.dstu2
+        - org.hl7.fhir.dstu2016may
+        - org.hl7.fhir.dstu3
+        - org.hl7.fhir.r4
+        - org.hl7.fhir.r4b
+        - org.hl7.fhir.r5
+        - org.hl7.fhir.convertors
+        - org.hl7.fhir.validation
 
 trigger: none
 
@@ -60,29 +74,13 @@ jobs:
           jdkVersion: 1.11
           skipJaCoCo: true
           modules:
-          - org.hl7.fhir.utilities
-          - org.hl7.fhir.dstu2
-          - org.hl7.fhir.dstu2016may
-          - org.hl7.fhir.dstu3
-          - org.hl7.fhir.r4
-          - org.hl7.fhir.r4b
-          - org.hl7.fhir.r5
-          - org.hl7.fhir.convertors
-          - org.hl7.fhir.validation
+            ${{ parameters.modulesToTest.modules }}
         - vmImage: ubuntu-latest
           javaToolOptions:
           jdkVersion: 1.11
           skipJaCoCo: false
           modules:
-          - org.hl7.fhir.utilities
-          - org.hl7.fhir.dstu2
-          - org.hl7.fhir.dstu2016may
-          - org.hl7.fhir.dstu3
-          - org.hl7.fhir.r4
-          - org.hl7.fhir.r4b
-          - org.hl7.fhir.r5
-          - org.hl7.fhir.convertors
-          - org.hl7.fhir.validation
+            ${{ parameters.modulesToTest.modules }}
   - template: test-cli-exec-job-template.yml
     parameters:
       testUnits:
