@@ -37,7 +37,7 @@ jobs:
       - template: cache-target-tasks-template.yml
         parameters:
           modules:
-            ${{ each module in parameters.modulesToCache.modules }}:
+            - ${{ each module in parameters.modulesToCache.modules }}:
               - ${{ module }}
       - task: Bash@3
         inputs:
