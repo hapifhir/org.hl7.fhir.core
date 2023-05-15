@@ -99,7 +99,7 @@ jobs:
   - template: test-cli-exec-job-template.yml
     parameters:
       testUnits:
-        ${{ each image in parameters.vmImagesToTest.images }}:
+        - ${{ each image in parameters.vmImagesToTest.images }}:
           - vmImage: ${{ image }}
             jdkVersion: 1.11
 
