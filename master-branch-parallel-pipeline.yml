@@ -103,6 +103,7 @@ jobs:
     parameters:
       testUnits:
         - ${{ each image in parameters.vmImagesToTest.images }}:
-          - vmImage: ${{ image }}
-            jdkVersion: 1.11
+          - ${{ each jdk in parameters.jdksToTest.jdks }}:
+            - vmImage: ${{ image }}
+              jdkVersion: ${{ jdk }}
 
