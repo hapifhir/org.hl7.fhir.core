@@ -90,9 +90,14 @@ jobs:
           - vmImage: ${{ image }}
             javaToolOptions: -Dfile.encoding=Cp1252
             jdkVersion: 1.11
-            skipJaCoCo: true
-            modules:
-              ${{ parameters.modulesToTest.multiplatformModules }}
+            ${{ if eq(image, 'ubuntu-latest') }}:
+              skipJaCoCo: false
+              modules:
+                ${{ parameters.modulesToTest.modules }}
+            ${{ else }}:
+              skipJaCoCo: true
+              modules:
+                ${{ parameters.modulesToTest.multiplatformModules }}
   - template: test-cli-exec-job-template.yml
     parameters:
       testUnits:
