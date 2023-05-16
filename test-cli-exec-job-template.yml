@@ -3,7 +3,7 @@ jobs:
     - job:
       dependsOn: [ 'setup' ]
 
-      displayName: ${{unit.vmImage}} ${{unit.jdkVersion}} cli-exec
+      displayName: ${{unit.vmImage}}-${{unit.jdkVersion}}-cli-exec
 
       pool:
         vmImage: ${{unit.vmImage}}
