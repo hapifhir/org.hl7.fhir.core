@@ -87,17 +87,18 @@ jobs:
     parameters:
       testUnits:
         - ${{ each image in parameters.vmImagesToTest.images }}:
-          - vmImage: ${{ image }}
-            javaToolOptions: -Dfile.encoding=Cp1252
-            jdkVersion: 1.11
-            ${{ if eq(image, 'ubuntu-latest') }}:
-              skipJaCoCo: false
-              modules:
-                ${{ parameters.modulesToTest.modules }}
-            ${{ else }}:
-              skipJaCoCo: true
-              modules:
-                ${{ parameters.modulesToTest.multiplatformModules }}
+          - ${{ each jdk in parameters.jdksToTest.jdks }}:
+            - vmImage: ${{ image }}
+              javaToolOptions: -Dfile.encoding=Cp1252
+              jdkVersion: ${{ jdk }}
+              ${{ if and(eq(image, 'ubuntu-latest'), eq(jdk, '1.11')}}:
+                skipJaCoCo: false
+                modules:
+                  ${{ parameters.modulesToTest.modules }}
+              ${{ else }}:
+                skipJaCoCo: true
+                modules:
+                  ${{ parameters.modulesToTest.multiplatformModules }}
   - template: test-cli-exec-job-template.yml
     parameters:
       testUnits:
