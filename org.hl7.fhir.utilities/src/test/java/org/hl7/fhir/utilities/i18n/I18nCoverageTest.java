@@ -7,17 +7,14 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class I18nCoverageTest {
 
-  private final Logger logger = LoggerFactory.getLogger(I18nCoverageTest.class);
+
 
   final Set<Locale> locales = Set.of(
     Locale.ENGLISH,
@@ -28,6 +25,7 @@ public class I18nCoverageTest {
 
   @Test
   public void testCoverage() throws IllegalAccessException {
+
     Field[] fields = I18nConstants.class.getDeclaredFields();
     Map<Locale, I18nBase> testClassMap = new HashMap<>();
 
@@ -35,14 +33,18 @@ public class I18nCoverageTest {
       testClassMap.put(locale, getI18nTestClass(locale));
     }
 
+    Set<String> messages = new HashSet<>();
+
     for (Field field : fields) {
+      String message = (String)field.get(new String());
+      messages.add(message);
       if (field.getType() == String.class) {
        Map<Locale, Boolean> isSingularPhrase = new HashMap<>();
         Map<Locale, Boolean> isPluralPhrase = new HashMap<>();
 
         for (Locale locale : locales) {
           I18nBase base = testClassMap.get(locale);
-          String message = (String)field.get(new String());
+
 
           isSingularPhrase.put(locale, base.messageKeyExistsForLocale(message));
           isPluralPhrase.put(locale, existsAsPluralPhrase(base, message));
@@ -52,6 +54,26 @@ public class I18nCoverageTest {
         logMissingPhrases(field, isSingularPhrase, isPluralPhrase);
       }
     }
+
+    for (Locale locale : locales) {
+      ResourceBundle i18nMessages = ResourceBundle.getBundle("Messages", locale);
+      for (String message : i18nMessages.keySet()) {
+        boolean mapsToConstant = messages.contains(message);
+        boolean mapsToPluralPhrase = mapsToPluralPhrase(messages, message, testClassMap.get(locale));
+        if (!(mapsToConstant || mapsToPluralPhrase)) {
+          System.err.println("Message " + message + " in " + locale.getLanguage() + " properties resource does not have a matching entry in " + I18nConstants.class.getName() );
+        }
+      }
+    }
+
+  }
+
+  private boolean mapsToPluralPhrase(Set<String> messages, String message, I18nBase base) {
+    String rootKey = base.getRootKeyFromPlural(message);
+    if (rootKey != null) {
+      return messages.contains(rootKey);
+    }
+    return false;
   }
 
   private void assertPhraseTypeAgreement(Field field,
@@ -75,7 +97,7 @@ public class I18nCoverageTest {
     boolean existsInSomeLanguage = existsAsSingular
       || existsAsPlural;
     if (!existsInSomeLanguage) {
-      logger.warn("Constant " + field.getName() + " does not exist in any I18n property definition");
+      System.err.println("Constant " + field.getName() + " does not exist in any I18n property definition");
       return;
     };
     if (existsAsSingular) {
@@ -89,7 +111,7 @@ public class I18nCoverageTest {
   private void logMissingPhrases(Field field, Map<Locale, Boolean> phraseMap, String phraseType) {
     for (Locale locale : locales) {
       if (!phraseMap.get(locale)) {
-        logger.warn("Constant " + field.getName() + " is missing in I18n " + phraseType + " phrase property definition for locale " + locale.getLanguage());
+        System.err.println("Constant " + field.getName() + " is missing in I18n " + phraseType + " phrase property definition for locale " + locale.getLanguage());
       }
     }
   }

@@ -2,7 +2,7 @@ package org.hl7.fhir.utilities.i18n;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,7 +32,7 @@ class I18nBaseTest {
     String result = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
     MessageFormat form = new MessageFormat(loadedBundle.getString(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES));
     Object[] testArgs = {ARG_1};
-    Assertions.assertEquals(form.format(testArgs), result);
+    assertEquals(form.format(testArgs), result);
   }
 
   @Test
@@ -43,7 +43,7 @@ class I18nBaseTest {
     String result = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
     MessageFormat form = new MessageFormat(loadedBundle.getString(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES));
     Object[] testArgs = {ARG_1};
-    Assertions.assertEquals(form.format(testArgs), result);
+    assertEquals(form.format(testArgs), result);
   }
 
   @Test
@@ -81,7 +81,7 @@ class I18nBaseTest {
   @DisplayName("Assert no string modification is done when no match is found.")
   void testFormatMessageForNonExistentMessage() {
     I18nTestClass testClass = new I18nTestClass();
-    Assertions.assertEquals(BAD_STRING_ARG, testClass.formatMessage(BAD_STRING_ARG, ARG_1));
+    assertEquals(BAD_STRING_ARG, testClass.formatMessage(BAD_STRING_ARG, ARG_1));
   }
 
   @Test
@@ -92,7 +92,7 @@ class I18nBaseTest {
     testClass.setLocale(Locale.GERMAN);
     String result = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRST, ARG_1);
     //Ensure the umlaut is displayed correctly. If not right, will show: Ã¼, not ü
-    Assertions.assertEquals("Documents oder Messages müssen mindestens einen Eintrag enthalten", result);
+    assertEquals("Documents oder Messages müssen mindestens einen Eintrag enthalten", result);
   }
 
   @Test
@@ -118,5 +118,23 @@ class I18nBaseTest {
     return Arrays.stream(items).anyMatch(inputStr::contains);
   }
 
+  @Test
+  public void testRootKeyFromPlural() {
+    I18nTestClass esLocale = new I18nTestClass();
+    esLocale.setLocale(Locale.forLanguageTag("es"));
+
+    final String rootKey = "MY_KEY";
+
+    assertEquals(rootKey, esLocale.getRootKeyFromPlural(rootKey + "_one"));
+    assertEquals(rootKey, esLocale.getRootKeyFromPlural(rootKey + "_many"));
+    assertEquals(rootKey, esLocale.getRootKeyFromPlural(rootKey + "_other"));
+
+    I18nTestClass enLocale = new I18nTestClass();
+    enLocale.setLocale(Locale.forLanguageTag("en"));
+
+    assertEquals(rootKey, enLocale.getRootKeyFromPlural(rootKey + "_one"));
+    assertEquals(rootKey, enLocale.getRootKeyFromPlural(rootKey + "_other"));
+    assertNull(enLocale.getRootKeyFromPlural(rootKey + "_many"));
+  }
 
 }

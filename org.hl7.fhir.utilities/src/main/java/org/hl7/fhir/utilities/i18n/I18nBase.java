@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import com.ibm.icu.text.PluralRules;
 
+import javax.annotation.Nonnull;
+
 
 /**
  * Handles the locale, ResourceBundle and String formatting for i18n
@@ -91,6 +93,17 @@ public abstract class I18nBase {
       .map(entry -> baseKey + KEY_DELIMITER + entry).collect(Collectors.toSet());
   }
 
+  protected String getRootKeyFromPlural(@Nonnull String pluralKey) {
+    checkPluralRulesAreLoaded();
+    for (String keyword : pluralRules
+      .getKeywords()) {
+        final String suffix = KEY_DELIMITER + keyword;
+        if (pluralKey.endsWith(suffix)) {
+          return pluralKey.substring(0, pluralKey.length() - suffix.length());
+        }
+    }
+    return null;
+  }
   private String formatMessageForLocale(String theMessage, Object... theMessageArguments) {
     String message = theMessage;
     if (messageExistsForLocale(theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
