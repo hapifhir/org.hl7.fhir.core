@@ -91,7 +91,7 @@ jobs:
             - vmImage: ${{ image }}
               javaToolOptions: -Dfile.encoding=Cp1252
               jdkVersion: ${{ jdk }}
-              ${{ if and(eq(image, 'ubuntu-latest'), eq(jdk, '1.11')}}:
+              ${{ if and(eq(image, 'ubuntu-latest'), eq(jdk, '1.11')) }}:
                 skipJaCoCo: false
                 modules:
                   ${{ parameters.modulesToTest.modules }}
