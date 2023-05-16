@@ -127,7 +127,7 @@ jobs:
   - template: test-cli-exec-job-template.yml
     parameters:
       testUnits:
-        - ${{ each configuration in parameters.testConfigurations.configuration }}:
+        - ${{ each configuration in parameters.testConfigurations.configurations }}:
           - name: ${{ configuration.name }}
             vmImage: ${{ configuration.image }}
             jdkVersion: ${{ configuration.jdk }}
