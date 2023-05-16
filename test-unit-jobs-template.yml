@@ -38,6 +38,7 @@ jobs:
     dependsOn:
       - ${{ each module in parameters.modulesToTest.modules }}:
           - ubuntu-java-11-${{ module }}
+      - ubuntu-java-11-org.hl7.fhir.utilities
     displayName: Publish Codecov Results
 
     pool:
