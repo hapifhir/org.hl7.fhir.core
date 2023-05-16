@@ -31,14 +31,39 @@ parameters:
         - org.hl7.fhir.validation
       multiplatformModules:
         - org.hl7.fhir.utilities
-  - name: vmImagesToTest
-    displayName: VM Images to Test Against
+  - name: testConfigurations
+    displayName: VM Images and JDKs to Test Against
     type: object
     default:
-      images:
-        - ubuntu-latest
-        - windows-latest
-        - macos-latest
+      configurations:
+        - name: ubuntu-java-11
+          image: ubuntu-latest
+          jdk: 1.11
+          javaToolOptions:
+        - name: ubuntu-java-17
+          image: ubuntu-latest
+          jdk: 1.17
+          javaToolOptions:
+        - name: ubuntu-java-11-cp1252
+          image: ubuntu-latest
+          jdk: 1.11
+          javaToolOptions: -Dfile.encoding=Cp1252
+        - name: windows-java-11
+          image: windows-latest
+          jdk: 1.11
+          javaToolOptions:
+        - name: windows-java-17
+          image: windows-latest
+          jdk: 1.17
+          javaToolOptions:
+        - name: macos-java-11
+          image: macos-latest
+          jdk: 1.11
+          javaToolOptions:
+        - name: macos-java-17
+          image: macos-latest
+          jdk: 1.17
+          javaToolOptions:
   - name: jdksToTest
     displayName: JDKs to Test Against
     type: object
@@ -86,12 +111,13 @@ jobs:
   - template: test-unit-jobs-template.yml
     parameters:
       testUnits:
-        - ${{ each image in parameters.vmImagesToTest.images }}:
+        - ${{ each configuration in parameters.testConfigurations.configurations }}:
           - ${{ each jdk in parameters.jdksToTest.jdks }}:
-            - vmImage: ${{ image }}
-              javaToolOptions: -Dfile.encoding=Cp1252
-              jdkVersion: ${{ jdk }}
-              ${{ if and(eq(image, 'ubuntu-latest'), eq(jdk, '1.11')) }}:
+            - name: ${{ configuration.name }}
+              vmImage: ${{ configuration.image }}
+              javaToolOptions:  ${{ configuration.javaToolOptions }}
+              jdkVersion: ${{ configuration.jdk }}
+              ${{ if eq(configuration.name, 'ubuntu-java-11') }}:
                 skipJaCoCo: false
                 modules:
                   ${{ parameters.modulesToTest.modules }}
@@ -102,8 +128,7 @@ jobs:
   - template: test-cli-exec-job-template.yml
     parameters:
       testUnits:
-        - ${{ each image in parameters.vmImagesToTest.images }}:
-          - ${{ each jdk in parameters.jdksToTest.jdks }}:
-            - vmImage: ${{ image }}
-              jdkVersion: ${{ jdk }}
+        - ${{ each configuration in parameters.testConfigurations.configuration }}:
+          - vmImage: ${{ configuration.image }}
+            jdkVersion: ${{ configuration.jdk }}
 
