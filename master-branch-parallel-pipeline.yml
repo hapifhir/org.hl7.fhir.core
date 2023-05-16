@@ -112,19 +112,18 @@ jobs:
     parameters:
       testUnits:
         - ${{ each configuration in parameters.testConfigurations.configurations }}:
-          - ${{ each jdk in parameters.jdksToTest.jdks }}:
-            - name: ${{ configuration.name }}
-              vmImage: ${{ configuration.image }}
-              javaToolOptions:  ${{ configuration.javaToolOptions }}
-              jdkVersion: ${{ configuration.jdk }}
-              ${{ if eq(configuration.name, 'ubuntu-java-11') }}:
-                skipJaCoCo: false
-                modules:
+          - name: ${{ configuration.name }}
+            vmImage: ${{ configuration.image }}
+            javaToolOptions:  ${{ configuration.javaToolOptions }}
+            jdkVersion: ${{ configuration.jdk }}
+            ${{ if eq(configuration.name, 'ubuntu-java-11') }}:
+              skipJaCoCo: false
+              modules:
                   ${{ parameters.modulesToTest.modules }}
-              ${{ else }}:
-                skipJaCoCo: true
-                modules:
-                  ${{ parameters.modulesToTest.multiplatformModules }}
+            ${{ else }}:
+              skipJaCoCo: true
+              modules:
+                ${{ parameters.modulesToTest.multiplatformModules }}
   - template: test-cli-exec-job-template.yml
     parameters:
       testUnits:
