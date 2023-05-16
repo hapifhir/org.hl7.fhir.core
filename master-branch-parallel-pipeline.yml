@@ -29,6 +29,8 @@ parameters:
         - org.hl7.fhir.r5
         - org.hl7.fhir.convertors
         - org.hl7.fhir.validation
+      multiplatformModules:
+        - org.hl7.fhir.utilities
   - name: vmImagesToTest
     displayName: VM Images to Test Against
     type: object
@@ -36,7 +38,7 @@ parameters:
       images:
         - ubuntu-latest
         - windows-latest
-        - mac-latest
+        - macos-latest
   - name: jdksToTest
     displayName: JDKs to Test Against
     type: object
@@ -84,18 +86,13 @@ jobs:
   - template: test-unit-jobs-template.yml
     parameters:
       testUnits:
-        - vmImage: windows-latest
-          javaToolOptions: -Dfile.encoding=Cp1252
-          jdkVersion: 1.11
-          skipJaCoCo: true
-          modules:
-            ${{ parameters.modulesToTest.modules }}
-        - vmImage: ubuntu-latest
-          javaToolOptions:
-          jdkVersion: 1.11
-          skipJaCoCo: false
-          modules:
-            ${{ parameters.modulesToTest.modules }}
+        - ${{ each image in parameters.vmImagesToTest.images }}:
+          - vmImage: ${{ image }}
+            javaToolOptions: -Dfile.encoding=Cp1252
+            jdkVersion: 1.11
+            skipJaCoCo: true
+            modules:
+              ${{ parameters.modulesToTest.multiplatformModules }}
   - template: test-cli-exec-job-template.yml
     parameters:
       testUnits:
