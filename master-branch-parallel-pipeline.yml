@@ -131,7 +131,7 @@ jobs:
           - name: ${{ configuration.name }}
             vmImage: ${{ configuration.image }}
             jdkVersion: ${{ configuration.jdk }}
-  - job: publish-codecov
+  - job: publish_codecov
     dependsOn:
       - ${{ each module in parameters.modulesToTest.modules }}:
           - ubuntu-java-11-${{ module }}
