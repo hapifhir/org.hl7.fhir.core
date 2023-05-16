@@ -131,4 +131,15 @@ jobs:
           - name: ${{ configuration.name }}
             vmImage: ${{ configuration.image }}
             jdkVersion: ${{ configuration.jdk }}
+  - job: publish-codecov
+    dependsOn:
+      - ${{ each module in parameters.modulesToTest.modules }}:
+          - ubuntu-java-11-${{ module }}
+    displayName: Publish Codecov Results
 
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+      - script: bash echo "Placeholder for codecov"
+        displayName: 'codecov Bash Uploader'
