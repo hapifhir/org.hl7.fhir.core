@@ -1,11 +1,12 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.text.MessageFormat;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.ibm.icu.text.PluralRules;
+
+import javax.annotation.Nonnull;
 
 
 /**
@@ -58,14 +59,19 @@ public abstract class I18nBase {
    */
   private boolean messageExistsForLocale(String message, boolean hasArgs) {
     checkResourceBundleIsLoaded();
-    if (!i18nMessages.containsKey(message)) {
+    if (!messageKeyExistsForLocale(message)) {
       if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
         System.out.println("Attempting to localize message " + message + ", but no such equivalent message exists for" +
-            " the local " + getLocale());
+            " the locale " + getLocale());
       }
     }
+    return messageKeyExistsForLocale(message);
+  }
+
+  protected boolean messageKeyExistsForLocale(String message) {
     return i18nMessages.containsKey(message);
   }
+
 
   /**
    * Formats the given message, if needed, with the passed in message arguments.
@@ -81,6 +87,23 @@ public abstract class I18nBase {
     return baseKey + KEY_DELIMITER + pluralRules.select(number);
   }
 
+  protected Set<String> getPluralKeys(String baseKey) {
+    return pluralRules
+      .getKeywords().stream()
+      .map(entry -> baseKey + KEY_DELIMITER + entry).collect(Collectors.toSet());
+  }
+
+  protected String getRootKeyFromPlural(@Nonnull String pluralKey) {
+    checkPluralRulesAreLoaded();
+    for (String keyword : pluralRules
+      .getKeywords()) {
+        final String suffix = KEY_DELIMITER + keyword;
+        if (pluralKey.endsWith(suffix)) {
+          return pluralKey.substring(0, pluralKey.length() - suffix.length());
+        }
+    }
+    return null;
+  }
   private String formatMessageForLocale(String theMessage, Object... theMessageArguments) {
     String message = theMessage;
     if (messageExistsForLocale(theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
