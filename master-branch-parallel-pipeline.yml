@@ -54,7 +54,7 @@ pool:
 
 jobs:
   - job: setup
-    displayName: cache-maven-dependencies
+    displayName: Cache Maven Artifacts and Build Targets
     pool:
       vmImage: ubuntu-latest
     steps:
