@@ -1,10 +1,10 @@
 jobs:
   - ${{ each unit in parameters.testUnits }}:
     - ${{ each value in unit.modules }}:
-      - job: ${{unit.name}}-${{value}}
+      - job: ${{unit.name}}_${{value}}
         dependsOn: [ 'setup' ]
 
-        displayName: ${{unit.name}}-${{value}}
+        displayName: ${{unit.name}}_${{value}}
 
         pool:
           vmImage: ${{unit.vmImage}}
@@ -21,12 +21,12 @@ jobs:
         - template: cache-target-tasks-template.yml
           parameters:
             modules:
-              - ${{ value }}
+              - org.hl7.fhir.${{ value }}
           # Runs 'mvn install'
         - task: Maven@3
           inputs:
             mavenPomFile: 'pom.xml'
-            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl ${{value}} -Djacoco.skip=${{unit.skipJaCoCo}}'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl org.hl7.fhir.${{value}} -Djacoco.skip=${{unit.skipJaCoCo}}'
             mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '${{unit.jdkVersion}}'

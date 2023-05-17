@@ -20,47 +20,47 @@ parameters:
     type: object
     default:
       modules:
-        - org.hl7.fhir.utilities
-        - org.hl7.fhir.dstu2
-        - org.hl7.fhir.dstu2016may
-        - org.hl7.fhir.dstu3
-        - org.hl7.fhir.r4
-        - org.hl7.fhir.r4b
-        - org.hl7.fhir.r5
-        - org.hl7.fhir.convertors
-        - org.hl7.fhir.validation
+        - utilities
+        - dstu2
+        - dstu2016may
+        - dstu3
+        - r4
+        - r4b
+        - r5
+        - convertors
+        - validation
       multiplatformModules:
-        - org.hl7.fhir.utilities
+        - utilities
   - name: testConfigurations
     displayName: VM Images and JDKs to Test Against
     type: object
     default:
       configurations:
-        - name: ubuntu-java-11
+        - name: ubuntu_java_11
           image: ubuntu-latest
           jdk: 1.11
           javaToolOptions:
-        - name: ubuntu-java-17
+        - name: ubuntu_java_17
           image: ubuntu-latest
           jdk: 1.17
           javaToolOptions:
-        - name: ubuntu-java-11-cp1252
+        - name: ubuntu_java_11_cp1252
           image: ubuntu-latest
           jdk: 1.11
           javaToolOptions: -Dfile.encoding=Cp1252
-        - name: windows-java-11
+        - name: windows_java_11
           image: windows-latest
           jdk: 1.11
           javaToolOptions:
-        - name: windows-java-17
+        - name: windows_java_17
           image: windows-latest
           jdk: 1.17
           javaToolOptions:
-        - name: macos-java-11
+        - name: macos_java_11
           image: macos-latest
           jdk: 1.11
           javaToolOptions:
-        - name: macos-java-17
+        - name: macos_java_17
           image: macos-latest
           jdk: 1.17
           javaToolOptions:
