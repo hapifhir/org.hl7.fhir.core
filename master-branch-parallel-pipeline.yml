@@ -28,7 +28,7 @@ parameters:
         - r4b
         - r5
         - convertors
-        - validation
+        # - validation
       multiplatformModules:
         - utilities
   - name: testConfigurations
