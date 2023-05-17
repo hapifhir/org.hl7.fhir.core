@@ -154,7 +154,7 @@ jobs:
             inputs:
               buildType: 'current'
               downloadType: 'single'
-              artifactName: '${{ module }}_target'
+              artifactName: 'org.hl7.fhir.${{ module }}_target'
               downloadPath: '$(System.DefaultWorkingDirectory)/'
           # Copy contents from downloaded artifact directory to final target directory.
           - task: CopyFiles@2

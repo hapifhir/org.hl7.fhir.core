@@ -54,4 +54,4 @@ jobs:
           inputs:
             pathToPublish: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ value }}/target/'
             parallel: true
-            artifactName: '${{ value }}_target'
+            artifactName: 'org.hl7.fhir.${{ value }}_target'
