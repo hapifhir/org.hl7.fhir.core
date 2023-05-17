@@ -204,6 +204,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     JsonElement expected = getJsonFromFile("codingEmptyValueSetSystem.json");
 
     assertEquals(expected, actual);
+    assertEquals(expected.toString(), actual.toString());
     assertEquals(terminologyCache.hashJson(expected.toString()), terminologyCache.hashJson(actual.toString()));
   }
 
