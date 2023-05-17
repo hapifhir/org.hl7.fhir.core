@@ -34,3 +34,15 @@ jobs:
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
             goals: 'test'
+        - task: CopyFiles@2
+          condition: eq(unit.skipJaCoCo, false)
+          inputs:
+            sourceFolder: '$(System.DefaultWorkingDirectory)/'
+            contents: '**/target/*-reports/*.txt'
+            targetFolder: '$(Build.ArtifactStagingDirectory)'
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Full Test Output'
+          condition: eq(unit.skipJaCoCo, false)
+          inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)/'
+          artifactName: '${{p.name}}_full_logs_$(Build.BuildId)_$(Build.BuildNumber)_$(System.JobId).zip'
