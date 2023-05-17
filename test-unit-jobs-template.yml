@@ -1,7 +1,7 @@
 jobs:
   - ${{ each unit in parameters.testUnits }}:
     - ${{ each value in unit.modules }}:
-      - job:
+      - job: ${{unit.name}}-${{value}}
         dependsOn: [ 'setup' ]
 
         displayName: ${{unit.name}}-${{value}}
