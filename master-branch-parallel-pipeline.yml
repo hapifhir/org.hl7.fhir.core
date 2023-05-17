@@ -141,5 +141,25 @@ jobs:
       vmImage: ubuntu-latest
 
     steps:
-      - script: bash echo "Placeholder for codecov"
-        displayName: 'codecov Bash Uploader'
+      - checkout: self
+        fetchDepth: 1
+      - ${{ each module in parameters.modulesToTest.modules }}:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: mkdir -p $(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}/target/
+          - task: DownloadBuildArtifacts@0
+            displayName: 'Download jacoco test coverage result exec file for org.hl7.fhir.${{ module }}'
+            continueOnError: true
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: '${{ module }}_target'
+              downloadPath: '$(System.DefaultWorkingDirectory)/'
+          # Copy contents from downloaded artifact directory to final target directory.
+          - task: CopyFiles@2
+            condition: always()
+            inputs:
+              sourceFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}_target/'
+              contents: '**'
+              targetFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}/target/'

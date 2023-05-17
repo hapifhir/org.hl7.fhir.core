@@ -11,6 +11,7 @@ jobs:
 
         variables:
           JAVA_TOOL_OPTIONS: ${{unit.javaToolOptions}}
+          skipJaCoCo: $[eq(${{unit.skipJaCoCo}}, true)]
 
         steps:
         - task: Cache@2
@@ -35,14 +36,22 @@ jobs:
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
             goals: 'test'
         - task: CopyFiles@2
-          condition: eq(unit.skipJaCoCo, false)
+          condition: eq(variables.skipJaCoCo, false)
           inputs:
             sourceFolder: '$(System.DefaultWorkingDirectory)/'
             contents: '**/target/*-reports/*.txt'
             targetFolder: '$(Build.ArtifactStagingDirectory)'
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Full Test Output'
-          condition: eq(unit.skipJaCoCo, false)
+          condition: eq(variables.skipJaCoCo, false)
           inputs:
             targetPath: '$(Build.ArtifactStagingDirectory)/'
             artifactName: '${{value}}_full_logs_$(Build.BuildId)_$(Build.BuildNumber)_$(System.JobId).zip'
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish generated build files'
+          condition: eq(variables.skipJaCoCo, false)
+          continueOnError: true
+          inputs:
+            pathToPublish: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ value }}/target/'
+            parallel: true
+            artifactName: '${{ value }}_target'
