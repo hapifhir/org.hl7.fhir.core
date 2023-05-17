@@ -14,3 +14,18 @@ v: {
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Foo"
+}, "url": "https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction", "version": "20170626", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "The CodeSystem http://canadapost.ca/CodeSystem/ProvinceCodes is unknown; The provided code http://canadapost.ca/CodeSystem/ProvinceCodes#Foo is not in the value set 'https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction' (from Tx-Server)",
+  "class" : "UNKNOWN"
+}
+-------------------------------------------------------------------------------------
