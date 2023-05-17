@@ -908,7 +908,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
           return VersionConvertor.convertVersionNativeR3(targetVer, cnt, format);
         } else if (VersionUtilities.isR4Ver(version)) {
           return VersionConvertor.convertVersionNativeR4(targetVer, cnt, format);
-        } else {
+        } else if (VersionUtilities.isR4BVer(version)) {
+          return VersionConvertor.convertVersionNativeR4b(targetVer, cnt, format);
+        } else if (VersionUtilities.isR5Ver(version)) {
+            return VersionConvertor.convertVersionNativeR5(targetVer, cnt, format);
+        }else {
           throw new FHIRException("Source version not supported yet: " + version);
         }
       } catch (Exception e) {
@@ -946,6 +950,13 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     } else if (VersionUtilities.isR4Ver(version)) {
       if (VersionUtilities.isR3Ver(targetVer)) {
         return "http://hl7.org/fhir/StructureMap/" + type + "4to3";
+      }
+      else if (VersionUtilities.isR5Ver(targetVer)) {
+        return "http://hl7.org/fhir/StructureMap/" + type + "4to5";
+      }
+    } else if (VersionUtilities.isR5Ver(version)) {
+      if (VersionUtilities.isR4Ver(targetVer)) {
+        return "http://hl7.org/fhir/StructureMap/" + type + "5to4";
       }
     }
     throw new FHIRException("Source/Target version not supported: " + version + " -> " + targetVer);
