@@ -3,23 +3,6 @@
   "system" : "http://hl7.org/fhir/sid/ndc",
   "code" : "2501-813-16",
   "display" : "Timoptic 5mg/ml solution"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "severity" : "error",
-  "error" : "Code \"2501-813-16\" not found in NDC; Unknown Code '2501-813-16' in the system 'http://hl7.org/fhir/sid/ndc'; The provided code http://hl7.org/fhir/sid/ndc#2501-813-16 is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
-  "class" : "UNKNOWN"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://hl7.org/fhir/sid/ndc",
-  "code" : "2501-813-16",
-  "display" : "Timoptic 5mg/ml solution"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
