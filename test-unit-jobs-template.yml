@@ -45,4 +45,4 @@ jobs:
           condition: eq(unit.skipJaCoCo, false)
           inputs:
             targetPath: '$(Build.ArtifactStagingDirectory)/'
-            artifactName: '${{p.name}}_full_logs_$(Build.BuildId)_$(Build.BuildNumber)_$(System.JobId).zip'
+            artifactName: '${{value}}_full_logs_$(Build.BuildId)_$(Build.BuildNumber)_$(System.JobId).zip'
