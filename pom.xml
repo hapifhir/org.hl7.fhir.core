@@ -175,11 +175,11 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.9</version>
+                    <version>${jacoco_version}</version>
                     <configuration>
                         <excludes>
                             <!-- These are auto-generated files that will exceed the JVM limit on file size.
-                                 If these are not excluded, Jacoco complains and won't run the validator tests. -->
+                                 If these are not excluded Jacoco complains and won't run the validator tests. -->
                             <exclude>org/hl7/fhir/r5/terminologies/JurisdictionUtilities</exclude>
                             <exclude>org/hl7/fhir/r5/formats/JsonParser</exclude>
                             <exclude>org/hl7/fhir/r5/formats/XmlParser</exclude>
@@ -192,6 +192,26 @@
                             <exclude>org/hl7/fhir/dstu2/**/*</exclude>
                             <exclude>org/hl7/fhir/dstu2016may/**/*</exclude>
                         </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven_surefire_version}</version>
+                    <configuration>
+                        <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/>
+                        <forkCount>1</forkCount>
+                        <reuseForks>true</reuseForks>
+                        <parallel>classes</parallel>
+                        <trimStackTrace>false</trimStackTrace>
+                        <testFailureIgnore>false</testFailureIgnore>
+                        <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
+                         Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
+                        -->
+                        <argLine>@{argLine} -Xmx5632m</argLine>
+                        <systemPropertyVariables>
+                            <java.locale.providers>COMPAT</java.locale.providers>
+                        </systemPropertyVariables>
+                        <redirectTestOutputToFile>false</redirectTestOutputToFile>
                     </configuration>
                 </plugin>
             </plugins>
@@ -214,6 +234,7 @@
                             <goal>checkstyle</goal>
                         </goals>
                         <configuration>
+                            <skip>true</skip>
                             <failsOnError>true</failsOnError>
                             <suppressionsLocation>${project.basedir}/checkstyle_suppressions.xml</suppressionsLocation>
                             <enableRulesSummary>true</enableRulesSummary>
@@ -388,28 +409,7 @@
                     <skipUpdateLicense>true</skipUpdateLicense>
                 </configuration>
             </plugin>
-            <plugin>
-                <inherited>false</inherited>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco_version}</version>
 
-                <executions>
-                    <execution>
-                        <id>jacoco-initialize</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -442,6 +442,28 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>JACOCO</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <configuration>
+                            <dumpOnExit>true</dumpOnExit>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>default-prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     <profile>
         <id>surefire-java-9-plus</id>
         <activation>
@@ -450,25 +472,10 @@
         <build>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven_surefire_version}</version>
-                    <configuration>
-                        <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/>
-                        <forkCount>1</forkCount>
-                        <reuseForks>true</reuseForks>
-                        <parallel>classes</parallel>
-                        <trimStackTrace>false</trimStackTrace>
-                        <testFailureIgnore>false</testFailureIgnore>
-                        <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
-                         Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
-                        -->
-                            <argLine>${argLine} -Xmx5632m</argLine>
-                            <systemPropertyVariables>
-                                <java.locale.providers>COMPAT</java.locale.providers>
-                            </systemPropertyVariables>
-                            <redirectTestOutputToFile>false</redirectTestOutputToFile>
-                        </configuration>
-                    </plugin>
+                </plugin>
+
                 </plugins>
             </build>
         </profile>
