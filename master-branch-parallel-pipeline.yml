@@ -184,7 +184,6 @@ jobs:
 
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish JaCoCo test results'
-        condition: eq(variables.skipJaCoCo, false)
         inputs:
           codeCoverageTool: 'JaCoCo'
           summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'

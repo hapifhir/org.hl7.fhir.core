@@ -3,7 +3,7 @@ jobs:
     - job:
       dependsOn: [ 'setup' ]
 
-      displayName: ${{unit.name}}-cli-exec
+      displayName: Test validator-cli.jar execution on ${{unit.name}}
 
       pool:
         vmImage: ${{unit.vmImage}}
