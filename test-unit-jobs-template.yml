@@ -4,7 +4,7 @@ jobs:
       - job: ${{unit.name}}_${{value}}
         dependsOn: [ 'setup' ]
 
-        displayName: ${{unit.name}}_${{value}}
+        displayName: Test ${{value}} on ${{unit.name}}
 
         pool:
           vmImage: ${{unit.vmImage}}
