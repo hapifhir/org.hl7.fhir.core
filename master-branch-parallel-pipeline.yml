@@ -138,7 +138,7 @@ jobs:
     dependsOn:
       - ${{ each module in parameters.modulesToTest.modules }}:
           - ubuntu_java_11_${{ module }}
-    displayName: Publish Test Results
+    displayName: Publish Test Results and Coverage
 
     pool:
       vmImage: ubuntu-latest
