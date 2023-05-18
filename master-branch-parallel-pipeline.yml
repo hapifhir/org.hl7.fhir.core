@@ -178,3 +178,18 @@ jobs:
               jdkArchitectureOption: 'x64'
               publishJUnitResults: false
               goals: 'jacoco:report-aggregate'
+
+          - task: PublishCodeCoverageResults@1
+            displayName: 'Publish JaCoCo test results'
+            condition: eq(variables.skipJaCoCo, false)
+            inputs:
+              codeCoverageTool: 'JaCoCo'
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
+              reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
+
+
+          - bash: |
+              curl -Os https://uploader.codecov.io/latest/linux/codecov
+              chmod +x codecov
+              ./codecov -t $(CODECOV_TOKEN) -R $(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/
+            displayName: 'codecov upload'
