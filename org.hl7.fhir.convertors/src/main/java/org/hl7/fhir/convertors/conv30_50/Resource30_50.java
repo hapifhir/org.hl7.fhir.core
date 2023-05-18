@@ -85,6 +85,7 @@ import org.hl7.fhir.convertors.conv30_50.resources30_50.StructureDefinition30_50
 import org.hl7.fhir.convertors.conv30_50.resources30_50.StructureMap30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.Substance30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.SupplyDelivery30_50;
+import org.hl7.fhir.convertors.conv30_50.resources30_50.TestPlan30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.TestReport30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.TestScript30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.ValueSet30_50;
@@ -135,6 +136,8 @@ public class Resource30_50 {
         return ActorDefinition30_50.convertActorDefinition((org.hl7.fhir.dstu3.model.Basic) src);
       } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "Requirements")) {
         return Requirements30_50.convertRequirements((org.hl7.fhir.dstu3.model.Basic) src);
+      } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "TestPlan")) {
+        return TestPlan30_50.convertTestPlan((org.hl7.fhir.dstu3.model.Basic) src);
       } else {
         return Basic30_50.convertBasic((org.hl7.fhir.dstu3.model.Basic) src);
       }
@@ -439,6 +442,8 @@ public class Resource30_50 {
       return Substance30_50.convertSubstance((org.hl7.fhir.r5.model.Substance) src);
     if (src instanceof org.hl7.fhir.r5.model.SupplyDelivery)
       return SupplyDelivery30_50.convertSupplyDelivery((org.hl7.fhir.r5.model.SupplyDelivery) src);
+    if (src instanceof org.hl7.fhir.r5.model.TestPlan)
+      return TestPlan30_50.convertTestPlan((org.hl7.fhir.r5.model.TestPlan) src);
     if (src instanceof org.hl7.fhir.r5.model.TestReport)
       return TestReport30_50.convertTestReport((org.hl7.fhir.r5.model.TestReport) src);
     if (src instanceof org.hl7.fhir.r5.model.TestScript)
