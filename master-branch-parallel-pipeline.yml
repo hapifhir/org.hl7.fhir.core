@@ -163,3 +163,20 @@ jobs:
               sourceFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}_target/'
               contents: '**'
               targetFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}/target/'
+          - task: Cache@2
+            displayName: Cache maven artifacts
+            inputs:
+              key: maven | $(Build.BuildId) | artifacts
+              path: $(MAVEN_CACHE_FOLDER)
+          - task: Maven@3
+            env:
+              JAVA_HOME_11_X64: /usr/java/openjdk-17
+              inputs:
+              mavenPomFile: 'pom.xml'
+              options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '1.11'
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: false
+              goals: 'jacoco:report-aggregate'
