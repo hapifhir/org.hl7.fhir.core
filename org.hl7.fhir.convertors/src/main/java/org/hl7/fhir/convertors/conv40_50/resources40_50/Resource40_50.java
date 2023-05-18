@@ -57,6 +57,8 @@ public class Resource40_50 {
         return ActorDefinition40_50.convertActorDefinition((org.hl7.fhir.r4.model.Basic) src);
       } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "Requirements")) {
         return Requirements40_50.convertRequirements((org.hl7.fhir.r4.model.Basic) src);
+      } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "TestPlan")) {
+        return TestPlan40_50.convertTestPlan((org.hl7.fhir.r4.model.Basic) src);
       } else {
         return Basic40_50.convertBasic((org.hl7.fhir.r4.model.Basic) src);
       }
@@ -510,6 +512,8 @@ public class Resource40_50 {
     if (src instanceof org.hl7.fhir.r5.model.Task) return Task40_50.convertTask((org.hl7.fhir.r5.model.Task) src);
     if (src instanceof org.hl7.fhir.r5.model.TerminologyCapabilities)
       return TerminologyCapabilities40_50.convertTerminologyCapabilities((org.hl7.fhir.r5.model.TerminologyCapabilities) src);
+    if (src instanceof org.hl7.fhir.r5.model.TestPlan)
+      return TestPlan40_50.convertTestPlan((org.hl7.fhir.r5.model.TestPlan)src);
     if (src instanceof org.hl7.fhir.r5.model.TestReport)
       return TestReport40_50.convertTestReport((org.hl7.fhir.r5.model.TestReport) src);
     if (src instanceof org.hl7.fhir.r5.model.TestScript)
