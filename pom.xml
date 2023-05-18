@@ -234,7 +234,6 @@
                             <goal>checkstyle</goal>
                         </goals>
                         <configuration>
-                            <skip>true</skip>
                             <failsOnError>true</failsOnError>
                             <suppressionsLocation>${project.basedir}/checkstyle_suppressions.xml</suppressionsLocation>
                             <enableRulesSummary>true</enableRulesSummary>
