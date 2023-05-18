@@ -169,9 +169,7 @@ jobs:
               key: maven | $(Build.BuildId) | artifacts
               path: $(MAVEN_CACHE_FOLDER)
           - task: Maven@3
-            env:
-              JAVA_HOME_11_X64: /usr/java/openjdk-17
-              inputs:
+            inputs:
               mavenPomFile: 'pom.xml'
               options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
               mavenOptions: '-Xmx3072m'
