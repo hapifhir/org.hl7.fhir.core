@@ -27,14 +27,14 @@ jobs:
         - task: Maven@3
           inputs:
             mavenPomFile: 'pom.xml'
-            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl org.hl7.fhir.${{value}} -Djacoco.skip=${{unit.skipJaCoCo}}'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl org.hl7.fhir.${{value}} -Djacoco.skip=${{unit.skipJaCoCo}} -P JACOCO'
             mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '${{unit.jdkVersion}}'
             jdkArchitectureOption: 'x64'
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
-            goals: 'test'
+            goals: 'verify jacoco:report'
         - task: CopyFiles@2
           condition: eq(variables.skipJaCoCo, false)
           inputs:
