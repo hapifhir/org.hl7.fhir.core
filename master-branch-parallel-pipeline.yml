@@ -77,6 +77,10 @@ trigger: none
 pool:
   vmImage: ubuntu-latest
 
+
+variables:
+  - group: CODECOV_GROUP
+
 jobs:
   - job: setup
     displayName: Cache Maven Artifacts and Build Targets
@@ -143,6 +147,7 @@ jobs:
     pool:
       vmImage: ubuntu-latest
 
+
     steps:
       - checkout: self
         fetchDepth: 1
@@ -184,7 +189,7 @@ jobs:
           reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
 
       - bash: |
-          curl -Os https://uploader.codecov.io/latest/linux/codecov
-          chmod +x codecov
-          ./codecov -t $(CODECOV_TOKEN) -R $(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/
-        displayName: 'codecov upload'
+           curl -Os https://uploader.codecov.io/latest/linux/codecov
+           chmod +x codecov
+           ./codecov -t $(CODECOV_TOKEN) -R $(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/
+        displayName: 'codecov'
