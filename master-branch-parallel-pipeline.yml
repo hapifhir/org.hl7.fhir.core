@@ -123,7 +123,6 @@ jobs:
     pool:
       vmImage: ubuntu-latest
 
-
     steps:
       - checkout: self
         fetchDepth: 1
