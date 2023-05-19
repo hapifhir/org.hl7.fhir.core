@@ -80,6 +80,7 @@ pool:
 
 variables:
   - group: CODECOV_GROUP
+  - MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
 
 jobs:
   - job: setup
