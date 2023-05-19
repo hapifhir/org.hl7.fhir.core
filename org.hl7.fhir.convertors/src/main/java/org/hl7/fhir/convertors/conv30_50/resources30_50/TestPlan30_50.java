@@ -147,7 +147,7 @@ public class TestPlan30_50 {
       tgt.addContact(ContactDetail30_50.convertContactDetail((org.hl7.fhir.dstu3.model.ContactDetail) ext.getValue()));
     }
     if (src.hasExtension(DESCRIPTION_EXTENSION_URL)) {
-      tgt.setPublisherElement(MarkDown30_50.convertMarkdown((org.hl7.fhir.dstu3.model.MarkdownType) src.getExtensionByUrl(DESCRIPTION_EXTENSION_URL).getValue()));
+      tgt.setDescriptionElement(MarkDown30_50.convertMarkdown((org.hl7.fhir.dstu3.model.MarkdownType) src.getExtensionByUrl(DESCRIPTION_EXTENSION_URL).getValue()));
     }
     for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl(USE_CONTEXT_EXTENSION_URL)) {
       tgt.addUseContext(UsageContext30_50.convertUsageContext((org.hl7.fhir.dstu3.model.UsageContext) ext.getValue()));
@@ -368,11 +368,11 @@ public class TestPlan30_50 {
     if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.content")) {
       tgt.setContent(Reference30_50.convertReference((org.hl7.fhir.dstu3.model.Reference) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.content").getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.script.sourceString")) {
-      tgt.setSource(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.script.sourceString").getValue()));
+    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.sourceString")) {
+      tgt.setSource(String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.sourceString").getValue()));
     }
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.script.sourceReference")) {
-      tgt.setSource(Reference30_50.convertReference((org.hl7.fhir.dstu3.model.Reference) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.script.sourceReference").getValue()));
+    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.sourceReference")) {
+      tgt.setSource(Reference30_50.convertReference((org.hl7.fhir.dstu3.model.Reference) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.sourceReference").getValue()));
     }
   }
 
@@ -477,7 +477,7 @@ public class TestPlan30_50 {
   private static void convertTestPlanTestCaseTestRun(TestPlanTestCaseTestRunComponent src, Extension tgt) {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasNarrativeElement()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.testRun.narrative", MarkDown30_50.convertMarkdown(src.getNarrativeElement()));
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testRun.narrative", MarkDown30_50.convertMarkdown(src.getNarrativeElement()));
     }
     if (src.hasScript()) {
       org.hl7.fhir.dstu3.model.Extension tgte = new org.hl7.fhir.dstu3.model.Extension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testRun.script");
@@ -489,29 +489,29 @@ public class TestPlan30_50 {
   private static void convertTestPlanTestCaseTestRunScript(TestPlanTestCaseTestRunScriptComponent src, Extension tgt) {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasLanguage()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.testRun.script.language", CodeableConcept30_50.convertCodeableConcept(src.getLanguage()));
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testRun.script.language", CodeableConcept30_50.convertCodeableConcept(src.getLanguage()));
     }
     if (src.hasSourceStringType()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.testRun.script.sourceString", String30_50.convertString(src.getSourceStringType()));
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testRun.script.sourceString", String30_50.convertString(src.getSourceStringType()));
     }
     if (src.hasSourceReference()) {
-     tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.testRun.script.sourceReference", Reference30_50.convertReference(src.getSourceReference()));
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testRun.script.sourceReference", Reference30_50.convertReference(src.getSourceReference()));
     }
   }
 
   private static void convertTestPlanTestCaseTestData(TestPlanTestCaseTestDataComponent src, Extension tgt) {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasType()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.testRun.testData.type", Coding30_50.convertCoding(src.getType()));
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.type", Coding30_50.convertCoding(src.getType()));
     }
     if (src.hasContent()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.testRun.testData.content", Reference30_50.convertReference(src.getContent()));
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.content", Reference30_50.convertReference(src.getContent()));
     }
     if (src.hasSourceStringType()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.testRun.testData.sourceString", String30_50.convertString(src.getSourceStringType()));
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.sourceString", String30_50.convertString(src.getSourceStringType()));
     }
     if (src.hasSourceReference()) {
-     tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.testRun.testData.sourceReference", Reference30_50.convertReference(src.getSourceReference()));
+     tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testData.sourceReference", Reference30_50.convertReference(src.getSourceReference()));
     }
   }
 
@@ -535,20 +535,20 @@ public class TestPlan30_50 {
   private static void convertTestPlanTestCaseAssertionObject(CodeableReference src, Extension tgt) {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasConcept()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.assertion.object.concept", CodeableConcept30_50.convertCodeableConcept(src.getConcept()));
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.assertion.object.concept", CodeableConcept30_50.convertCodeableConcept(src.getConcept()));
     }
     if (src.hasReference()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.assertion.object.reference", Reference30_50.convertReference(src.getReference()));
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.assertion.object.reference", Reference30_50.convertReference(src.getReference()));
     }
   }
 
   private static void convertTestPlanTestCaseAssertionResult(CodeableReference src, Extension tgt) {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasConcept()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.assertion.result.concept", CodeableConcept30_50.convertCodeableConcept(src.getConcept()));
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.assertion.result.concept", CodeableConcept30_50.convertCodeableConcept(src.getConcept()));
     }
     if (src.hasReference()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.testCase.assertion.result.reference", Reference30_50.convertReference(src.getReference()));
+      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestPlan.testCase.assertion.result.reference", Reference30_50.convertReference(src.getReference()));
     }
   }
 
