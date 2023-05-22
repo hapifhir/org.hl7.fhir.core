@@ -11,6 +11,13 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 public class ValidationProcessInfo {
   private TerminologyServiceErrorClass err;
   private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+  
+  public ValidationProcessInfo() {
+  }
+  
+  public ValidationProcessInfo(List<OperationOutcomeIssueComponent> issues) {
+    this.issues = issues;
+  }
   public TerminologyServiceErrorClass getErr() {
     return err;
   }
