@@ -1116,3 +1116,39 @@ v: {
   "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "77176002",
+  "display" : "Smoker"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-bloodGroup", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Smoker",
+  "code" : "77176002",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230131"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "38341003",
+  "display" : "Hypertensive disorder, systemic arterial (disorder)"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-bloodGroup", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "High blood pressure",
+  "code" : "38341003",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230131"
+}
+-------------------------------------------------------------------------------------
