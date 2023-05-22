@@ -175,19 +175,19 @@ public class SnapShotGenerationXTests {
     }
 
     public void load(String version) throws FHIRFormatError, FileNotFoundException, IOException {
-      if (UtilitiesXTests.findTestResource("rX", "snapshot-generation", id + "-input.json"))
-        source = (StructureDefinition) XVersionLoader.loadJson(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", id + "-input.json"));
+      if (TestingUtilities.findTestResource("rX", "snapshot-generation", id + "-input.json"))
+        source = (StructureDefinition) XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.json"));
       else
-        source = (StructureDefinition) XVersionLoader.loadXml(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", id + "-input.xml"));
+        source = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.xml"));
       if (!fail)
-        expected = (StructureDefinition) XVersionLoader.loadXml(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", id + "-expected.xml"));
+        expected = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-expected.xml"));
       if (!Utilities.noString(include))
-        included = (StructureDefinition) XVersionLoader.loadXml(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", include + ".xml"));
+        included = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", include + ".xml"));
       if (!Utilities.noString(register)) {
-        if (UtilitiesXTests.findTestResource("rX", "snapshot-generation", register + ".xml")) {
-          included = (StructureDefinition)  XVersionLoader.loadXml(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", register + ".xml"));
+        if (TestingUtilities.findTestResource("rX", "snapshot-generation", register + ".xml")) {
+          included = (StructureDefinition)  XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", register + ".xml"));
         } else {
-          included = (StructureDefinition)  XVersionLoader.loadJson(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", register + ".json"));
+          included = (StructureDefinition)  XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", register + ".json"));
         }
       }
     }
@@ -404,7 +404,7 @@ public class SnapShotGenerationXTests {
   public static Iterable<Object[]> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
 
     SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext();
-    Document tests = XMLUtil.parseToDom(UtilitiesXTests.loadTestResource("rX", "snapshot-generation", "manifest.xml"));
+    Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("rX", "snapshot-generation", "manifest.xml"));
     Element test = XMLUtil.getFirstChild(tests.getDocumentElement());
     List<Object[]> objects = new ArrayList<Object[]>();
     while (test != null && test.getNodeName().equals("test")) {
@@ -471,7 +471,7 @@ public class SnapShotGenerationXTests {
     pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors, false);
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
-    IOUtils.copy(UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected.xml")));
+    IOUtils.copy(TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected.xml")));
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-actual.xml")), test.getOutput());
     Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
@@ -545,7 +545,7 @@ public class SnapShotGenerationXTests {
       File dst = new File(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected.xml"));
       if (dst.exists())
         dst.delete();
-      IOUtils.copy(UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(dst));
+      IOUtils.copy(TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(dst));
       new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-actual.xml")), output);
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);

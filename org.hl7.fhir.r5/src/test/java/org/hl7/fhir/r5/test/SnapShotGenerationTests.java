@@ -585,8 +585,8 @@ public class SnapShotGenerationTests {
 
       boolean structureDefinitionEquality = t1.equalsDeep(t2);
       if (!structureDefinitionEquality) {
-        System.out.println("Encountered unexpected diff in structure definition");
-        DiffUtils.testDiff(dst.getAbsolutePath(), actualFilePath);
+        System.out.println("Encountered unexpected change in diff in structure definition");
+//        DiffUtils.testDiff(dst.getAbsolutePath(), actualFilePath);
       }
       Assertions.assertTrue(structureDefinitionEquality, "Output does not match expected");
     }
