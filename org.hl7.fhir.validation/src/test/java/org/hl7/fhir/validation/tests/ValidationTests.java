@@ -202,6 +202,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     byte[] testCaseContent = TestingUtilities.loadTestResource("validator", JsonUtilities.str(content, "file")).getBytes(StandardCharsets.UTF_8);
     // load and process content    
     FhirFormat fmt = determineFormat(content, testCaseContent);
+    if (fmt == null) {
+      throw new FHIRException("Unknown format in source "+JsonUtilities.str(content, "file"));
+    }
     
     InstanceValidator val = vCurr.getValidator(fmt);
     val.setWantCheckSnapshotUnchanged(true);
@@ -238,6 +241,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       val.setValidationLanguage(content.get("language").getAsString());
     else
       val.setValidationLanguage(null);
+    val.setForPublication(content.has("for-publication") && "true".equals(content.get("for-publication").getAsString()));
     if (content.has("default-version")) {
       val.setBaseOptions(val.getBaseOptions().withVersionFlexible(content.get("default-version").getAsBoolean()));
     } else {
