@@ -60,13 +60,14 @@ public class StructureDefinitionValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private boolean wantCheckSnapshotUnchanged;
 
-  public StructureDefinitionValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction) {
+  public StructureDefinitionValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction, boolean forPublication) {
     super(context, xverManager);
     source = Source.InstanceValidator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
     this.wantCheckSnapshotUnchanged = wantCheckSnapshotUnchanged;
     this.jurisdiction = jurisdiction;
+    this.forPublication = forPublication;
   }
   
   public boolean validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
@@ -89,6 +90,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && sd.getType().equals(base.getType()), I18nConstants.SD_CONSTRAINED_TYPE_NO_MATCH, sd.getType(), base.getType());
             List<ValidationMessage> msgs = new ArrayList<>();
             ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
+            pu.setForPublication(forPublication);
             pu.setXver(xverManager);
             pu.setNewSlicingProcessing(!sd.hasFhirVersion() || VersionUtilities.isR4Plus(sd.getFhirVersion().toCode()));
             pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
@@ -121,7 +123,7 @@ public class StructureDefinitionValidator extends BaseValidator {
               I18nConstants.SD_DERIVATION_KIND_MISMATCH, base.getKindElement().primitiveValue(), src.getChildValue("kind")) && ok;
         }
       }
-    } catch (FHIRException | IOException e) {
+    } catch (Exception e) {
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
       ok = false;
     }

@@ -123,6 +123,7 @@ public interface IWorkerContext {
     private String diagnostics;
     private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     private CodeableConcept codeableConcept;
+    private Set<String> unknownSystems;
 
     @Override
     public String toString() {
@@ -239,7 +240,12 @@ public interface IWorkerContext {
       this.message = message;
       return this;
     }
-
+    
+    public ValidationResult addToMessage(String message) {
+      this.message = this.message == null ? message : this.message +"; "+ message; 
+      return this;
+    }
+    
     public ValidationResult setErrorClass(TerminologyServiceErrorClass errorClass) {
       this.errorClass = errorClass;
       return this;
@@ -288,7 +294,16 @@ public interface IWorkerContext {
     public CodeableConcept getCodeableConcept() {
       return codeableConcept;
     }
-    
+
+    public Set<String> getUnknownSystems() {
+      return unknownSystems;
+    }
+
+    public ValidationResult setUnknownSystems(Set<String> unknownSystems) {
+      this.unknownSystems = unknownSystems;
+      return this;
+    }
+
   }
 
   public class CodingValidationRequest {
