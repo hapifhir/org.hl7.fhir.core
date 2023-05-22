@@ -156,6 +156,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
   private ValidationLevel level = ValidationLevel.HINTS;
   protected Coding jurisdiction;
   protected boolean allowExamples;
+  protected boolean forPublication;
 
   public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
     super();
@@ -1242,7 +1243,16 @@ public class BaseValidator implements IValidationContextResourceLoader {
   }
 
   protected boolean isExampleUrl(String url) {
-    return Utilities.containsInList(url, "example.org", "acme.com", "acme.org");
-    
+    return Utilities.containsInList(url, "example.org", "acme.com", "acme.org");    
   }
+  
+  public boolean isForPublication() {
+    return forPublication;
+  }
+  
+  public BaseValidator setForPublication(boolean forPublication) {
+    this.forPublication = forPublication;
+    return this;
+  }
+
 }

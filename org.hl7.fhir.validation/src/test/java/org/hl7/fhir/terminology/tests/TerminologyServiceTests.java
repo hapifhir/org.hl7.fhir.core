@@ -280,6 +280,11 @@ public class TerminologyServiceTests {
     if (vm.getCodeableConcept() != null) {
       res.addParameter("codeableConcept", vm.getCodeableConcept());
     }
+    if (vm.getUnknownSystems() != null) {
+      for (String s : vm.getUnknownSystems()) {
+        res.addParameter("x-caused-by-unknown-system", new UriType(s));
+      }
+    }
     if (vm.getIssues().size() > 0) {
       OperationOutcome oo = new OperationOutcome();
       oo.getIssue().addAll(vm.getIssues());

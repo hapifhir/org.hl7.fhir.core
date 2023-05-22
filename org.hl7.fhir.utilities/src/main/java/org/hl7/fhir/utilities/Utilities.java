@@ -590,7 +590,7 @@ public class Utilities {
   public static boolean isPlural(String word) {
     word = word.toLowerCase();
     if ("restricts".equals(word) || "contains".equals(word) || "data".equals(word) || "specimen".equals(word) || "replaces".equals(word) || "addresses".equals(word)
-      || "supplementalData".equals(word) || "instantiates".equals(word) || "imports".equals(word))
+      || "supplementalData".equals(word) || "instantiates".equals(word) || "imports".equals(word) || "covers".equals(word))
       return false;
     Inflector inf = new Inflector();
     return !inf.singularize(word).equals(word);
@@ -1964,6 +1964,10 @@ public class Utilities {
 
   public static boolean isTxFhirOrgServer(String s) {
     return Utilities.startsWithInList(s.replace("https://", "http://"), FhirSettings.getTxFhirProduction(), FhirSettings.getTxFhirDevelopment(), FhirSettings.getTxFhirLocal());
+  }
+
+  public static String[] splitLines(String txt) {
+    return txt.split("\\r?\\n|\\r");
   }
 
 }
