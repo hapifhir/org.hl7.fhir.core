@@ -2,7 +2,6 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -41,7 +40,6 @@ public class RequirementsRenderer extends ResourceRenderer {
 
   public boolean render(XhtmlNode x, Requirements req) throws FHIRFormatError, DefinitionException, IOException {
     if (req.hasActor()) {
-      x.h3().addText("Actors");
       if (req.getActor().size() == 1) {
         ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, req.getActor().get(0).getValue(), req);
         XhtmlNode p = x.para();
@@ -65,7 +63,6 @@ public class RequirementsRenderer extends ResourceRenderer {
       }
     }
     if (req.hasDerivedFrom()) {
-      x.h3().addText("Derived From");
       if (req.getDerivedFrom().size() == 1) {
         Requirements reqd = context.getWorker().fetchResource(Requirements.class, req.getDerivedFrom().get(0).getValue(), req);
         XhtmlNode p = x.para();
@@ -89,15 +86,9 @@ public class RequirementsRenderer extends ResourceRenderer {
       }
     }
     
-    x.h3().addText("Statements");
-
     XhtmlNode tbl = x.table("grid");
     
-    double statementCount = 0.0;
-    double satisfiedByCount = 0.0;
-
     for (RequirementsStatementComponent stmt : req.getStatement()) {
-      statementCount += 1.0;
       XhtmlNode tr = tbl.tr();
       String lbl = stmt.hasLabel() ? stmt.getLabel() : stmt.getKey();
       XhtmlNode td = tr.td();
@@ -138,7 +129,6 @@ public class RequirementsRenderer extends ResourceRenderer {
           }
         }
         if (stmt.hasSatisfiedBy()) {
-          satisfiedByCount += 1.0;
           XhtmlNode li = ul.li();
           li.tx("Satisfied By: ");
           first = true;
@@ -205,31 +195,6 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
       }
     }
-
-    x.h3().addText("Coverage (calculated)");
-
-    tbl = x.table("grid");
-    XhtmlNode tr = tbl.tr();
-    tr.td().b().addText("Statistic");
-    tr.td().b().addText("Coverage %");
-    tr.td().b().addText("Description");
-
-    tr = tbl.tr();
-    tr.td().addText("Satisfied By");
-    if (statementCount > 0 && satisfiedByCount > 0) {
-      double coverage = (satisfiedByCount / statementCount) * 100;
-      if (coverage < 100.0) {
-        tr.td().style("background-color: #ffff00").tx(String.format("%.2f", new BigDecimal(coverage)) + "%");
-      }
-      else {
-        tr.td().style("background-color: #00ff00").tx(String.format("%.2f", new BigDecimal(coverage)) + "%");
-      }
-    }
-    else {
-      tr.td().style("background-color: #ff0000; color: #ffffff").tx("0.00%");
-    }
-    tr.td().addText("Percent coverage of the satisfied by artifacts against the Requirements statements");
-
     return false;
   }
   
