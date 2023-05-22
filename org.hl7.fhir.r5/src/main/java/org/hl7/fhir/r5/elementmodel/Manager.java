@@ -113,6 +113,9 @@ public class Manager {
   }
 
   public static ParserBase makeParser(IWorkerContext context, FhirFormat format) {
+    if (format == null) {
+      throw new Error("Programming logic error: no format known");
+    }
     switch (format) {
     case JSON : return new JsonParser(context);
     case XML : return new XmlParser(context);
