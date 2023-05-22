@@ -75,6 +75,8 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
   protected BaseLoaderR5 loaderFactory(NpmPackage npm) throws JsonSyntaxException, IOException {
     if (VersionUtilities.isR5Plus(npm.fhirVersion())) {
       return new R5ToR5Loader(types, lkp.forNewPackage(npm));
+    } else if (VersionUtilities.isR4BVer(npm.fhirVersion())) {
+      return new R4BToR5Loader(types, lkp.forNewPackage(npm), npm.version());
     } else if (VersionUtilities.isR4Ver(npm.fhirVersion())) {
       return new R4ToR5Loader(types, lkp.forNewPackage(npm), npm.version());
     } else if (VersionUtilities.isR3Ver(npm.fhirVersion())) {
