@@ -49,6 +49,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ElementRedirection;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.AllowUnknownProfile;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementDefinitionCounter;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.Property;
@@ -56,6 +57,7 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBaseComponent;
@@ -129,6 +131,33 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  *
  */
 public class ProfileUtilities extends TranslatingUtilities {
+
+  public class ElementDefinitionCounter {
+    int count = 0;
+    ElementDefinition focus;
+
+    public ElementDefinitionCounter(ElementDefinition ed) {
+      focus = ed;
+    }
+
+    public int update() {
+      if (count > focus.getMin()) {
+        int was = focus.getMin();
+        focus.setMin(count);
+        return was;
+      }      
+      return -1;
+    }
+
+    public void count(ElementDefinition ed) {
+      count = count + ed.getMin();      
+    }
+
+    public ElementDefinition getFocus() {
+      return focus;
+    }
+
+  }
 
   public enum MappingMergeModeOption {
     DUPLICATE, // if there's more than one mapping for the same URI, just keep them all
@@ -288,6 +317,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private Map<ElementDefinition, SourcedChildDefinitions> childMapCache = new HashMap<>();
   private AllowUnknownProfile allowUnknownProfile = AllowUnknownProfile.ALL_TYPES;
   private MappingMergeModeOption mappingMergeMode = MappingMergeModeOption.APPEND;
+  private boolean forPublication;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
@@ -690,6 +720,49 @@ public class ProfileUtilities extends TranslatingUtilities {
             }
           }
         }
+        // check slicing is ok while we're at it. and while we're doing this. update the minimum count if we need to
+        String tn = derived.getType();
+        if (tn.contains("/")) {
+          tn = tn.substring(tn.lastIndexOf("/")+1);
+        }
+        System.out.println("Check slicing for "+derived.getVersionedUrl());
+        Map<String, ElementDefinitionCounter> slices = new HashMap<>();
+        int i = 0;
+        for (ElementDefinition ed : derived.getSnapshot().getElement()) {
+          if (ed.hasSlicing()) {
+            slices.put(ed.getPath(), new ElementDefinitionCounter(ed));            
+            System.out.println("Entering slicing for "+ed.getPath()+" ["+i+"]");
+          } else {
+            Set<String> toRemove = new HashSet<>();
+            for (String s : slices.keySet()) {
+              if (Utilities.charCount(s, '.') >= Utilities.charCount(ed.getPath(), '.') && !s.equals(ed.getPath())) {
+                toRemove.add(s);
+              }
+            }
+            for (String s : toRemove) {
+              int was = slices.get(s).update();
+              if (was > -1) {
+                String msg = "The slice definition for "+slices.get(s).getFocus().getId()+" had a minimum of "+was+" but the slices added up to a minimum of "+slices.get(s).getFocus().getMin()+" so the value has been adjusted in the snapshot";
+                System.out.println(msg);
+                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, forPublication ? ValidationMessage.IssueSeverity.ERROR : ValidationMessage.IssueSeverity.INFORMATION));                            
+              }
+              System.out.println("Exiting slicing for "+s+" at "+ed.getPath()+" ["+i+"]");
+              slices.remove(s);
+            }            
+          }
+          if (ed.getPath().contains(".") && !ed.getPath().startsWith(tn+".")) {
+            throw new Error("The element "+ed.getId()+" in the profile '"+derived.getVersionedUrl()+" (["+i+"]) doesn't have the right path (should start with "+tn+".");
+          }
+          if (ed.hasSliceName() && !slices.containsKey(ed.getPath())) {
+            String msg = "The element "+ed.getId()+" (["+i+"]) launches straight into slicing without the slicing being set up properly first";
+            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.ERROR));            
+          }
+          if (ed.hasSliceName() && slices.containsKey(ed.getPath())) {
+            slices.get(ed.getPath()).count(ed);
+          }
+          i++;
+        }
+        
         // last, check for wrong profiles or target profiles
         for (ElementDefinition ed : derived.getSnapshot().getElement()) {
           for (TypeRefComponent t : ed.getType()) {
@@ -3978,5 +4051,16 @@ public class ProfileUtilities extends TranslatingUtilities {
     return defn.getIsModifier();
   }
 
-  
+  public boolean isForPublication() {
+    return forPublication;
+  }
+
+  public void setForPublication(boolean forPublication) {
+    this.forPublication = forPublication;
+  }
+
+  public List<ValidationMessage> getMessages() {
+    return messages;
+  }
+
 }

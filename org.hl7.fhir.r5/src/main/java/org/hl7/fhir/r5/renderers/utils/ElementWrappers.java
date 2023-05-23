@@ -167,7 +167,7 @@ public class ElementWrappers {
           Property family = b.getChildByName("family");
           Property given = wrapped.getChildByName("given");
           String s = given != null && given.hasValues() ? given.getValues().get(0).primitiveValue() : "";
-          if (family != null && family.hasValues())
+          if (family != null && family.hasValues() && family.getValues().get(0).primitiveValue() != null)
             s = s + " " + family.getValues().get(0).primitiveValue().toUpperCase();
           return s;
         } else {
