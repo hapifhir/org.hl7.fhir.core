@@ -1413,12 +1413,17 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           , ordered, rules);
       }
 
-  public String fhirType() {
-    return "ElementDefinition.slicing";
+      public String fhirType() {
+        return "ElementDefinition.slicing";
 
-  }
+      }
 
-  }
+      @Override
+      public String toString() {
+        return (ordered == null ? "??" : "true".equals(ordered.asStringValue()) ? "ordered" : "unordered")+"/"+
+            (rules == null ? "??" : rules.asStringValue())+" "+discriminator.toString();
+      }
+    }
 
     @Block()
     public static class ElementDefinitionSlicingDiscriminatorComponent extends Element implements IBaseDatatypeElement {
@@ -1669,6 +1674,11 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   public String fhirType() {
     return "ElementDefinition.slicing.discriminator";
 
+  }
+
+  @Override
+  public String toString() {
+    return (type == null ? "??" : type.getCode()) + "="+(path == null ? "??" : path.asStringValue());
   }
 
   }

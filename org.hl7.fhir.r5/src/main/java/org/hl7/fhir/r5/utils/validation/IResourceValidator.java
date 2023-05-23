@@ -100,7 +100,7 @@ public interface IResourceValidator {
   void setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars);
   
   boolean isForPublication();
-  void setForPublication(boolean forPublication);
+  IResourceValidator setForPublication(boolean forPublication);
   
   /**
    * Whether being unable to resolve a profile in found in Resource.meta.profile or ElementDefinition.type.profile or targetProfile is an error or just a warning
