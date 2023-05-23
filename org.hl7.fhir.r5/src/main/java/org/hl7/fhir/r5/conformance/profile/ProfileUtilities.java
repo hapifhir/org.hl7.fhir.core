@@ -135,6 +135,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   public class ElementDefinitionCounter {
     int count = 0;
     ElementDefinition focus;
+    Set<String> names = new HashSet<>();
 
     public ElementDefinitionCounter(ElementDefinition ed) {
       focus = ed;
@@ -142,15 +143,16 @@ public class ProfileUtilities extends TranslatingUtilities {
 
     public int update() {
       if (count > focus.getMin()) {
-        int was = focus.getMin();
-        focus.setMin(count);
-        return was;
+        return count;
       }      
       return -1;
     }
 
-    public void count(ElementDefinition ed) {
-      count = count + ed.getMin();      
+    public boolean count(ElementDefinition ed, String name) {
+      count = count + ed.getMin();
+      boolean ok = !names.contains(name);
+      names.add(name);
+      return ok;
     }
 
     public ElementDefinition getFocus() {
@@ -725,13 +727,13 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (tn.contains("/")) {
           tn = tn.substring(tn.lastIndexOf("/")+1);
         }
-        System.out.println("Check slicing for "+derived.getVersionedUrl());
+//        System.out.println("Check slicing for "+derived.getVersionedUrl());
         Map<String, ElementDefinitionCounter> slices = new HashMap<>();
         int i = 0;
         for (ElementDefinition ed : derived.getSnapshot().getElement()) {
           if (ed.hasSlicing()) {
             slices.put(ed.getPath(), new ElementDefinitionCounter(ed));            
-            System.out.println("Entering slicing for "+ed.getPath()+" ["+i+"]");
+//            System.out.println("Entering slicing for "+ed.getPath()+" ["+i+"]");
           } else {
             Set<String> toRemove = new HashSet<>();
             for (String s : slices.keySet()) {
@@ -740,13 +742,14 @@ public class ProfileUtilities extends TranslatingUtilities {
               }
             }
             for (String s : toRemove) {
-              int was = slices.get(s).update();
-              if (was > -1) {
-                String msg = "The slice definition for "+slices.get(s).getFocus().getId()+" had a minimum of "+was+" but the slices added up to a minimum of "+slices.get(s).getFocus().getMin()+" so the value has been adjusted in the snapshot";
-                System.out.println(msg);
+              int count = slices.get(s).update();
+              if (count > -1) {
+                String msg = "The slice definition for "+slices.get(s).getFocus().getId()+" has a minimum of "+slices.get(s).getFocus().getMin()+" but the slices add up to a minimum of "+count; 
+                //+" so the value has been adjusted in the snapshot"; we don't adjust it because of downstream effects. But if it's for publication, they better get it right. 
+//                System.out.println(msg);
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, forPublication ? ValidationMessage.IssueSeverity.ERROR : ValidationMessage.IssueSeverity.INFORMATION));                            
               }
-              System.out.println("Exiting slicing for "+s+" at "+ed.getPath()+" ["+i+"]");
+//              System.out.println("Exiting slicing for "+s+" at "+ed.getPath()+" ["+i+"]");
               slices.remove(s);
             }            
           }
@@ -758,7 +761,10 @@ public class ProfileUtilities extends TranslatingUtilities {
             messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.ERROR));            
           }
           if (ed.hasSliceName() && slices.containsKey(ed.getPath())) {
-            slices.get(ed.getPath()).count(ed);
+            if (!slices.get(ed.getPath()).count(ed, ed.getSliceName())) {
+              String msg = "Duplicate slice name "+ed.getSliceName()+" on "+ed.getId()+" (["+i+"])";
+              messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.ERROR));            
+            }
           }
           i++;
         }
@@ -2043,10 +2049,15 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     // Before applying changes, apply them to what's in the profile
     StructureDefinition profile = null;
-    if (base.hasSliceName())
+    if (base.hasSliceName()) {
       profile = base.getType().size() == 1 && base.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, base.getTypeFirstRep().getProfile().get(0).getValue(), srcSD) : null;
-    if (profile==null)
+    }
+    if (profile==null) {
       profile = source.getType().size() == 1 && source.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, source.getTypeFirstRep().getProfile().get(0).getValue(), derivedSrc) : null;
+      if (profile != null && !"Extension".equals(profile.getType())) {
+        profile = null;
+      }
+    }
     if (profile != null) {
       ElementDefinition e = profile.getSnapshot().getElement().get(0);
       String webroot = profile.getUserString("webroot");
@@ -2157,7 +2168,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (derived.hasMinElement()) {
         if (!Base.compareDeep(derived.getMinElement(), base.getMinElement(), false)) {
           if (derived.getMin() < base.getMin() && !derived.hasSliceName()) // in a slice, minimum cardinality rules do not apply
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+source.getPath(), "Element "+base.getPath()+": derived min ("+Integer.toString(derived.getMin())+") cannot be less than base min ("+Integer.toString(base.getMin())+")", ValidationMessage.IssueSeverity.ERROR));
+            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+source.getPath(), "Element "+base.getPath()+": derived min ("+Integer.toString(derived.getMin())+") cannot be less than the base min ("+Integer.toString(base.getMin())+") in "+srcSD.getVersionedUrl(), ValidationMessage.IssueSeverity.ERROR));
           base.setMinElement(derived.getMinElement().copy());
         } else if (trimDifferential)
           derived.setMinElement(null);
@@ -2168,7 +2179,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (derived.hasMaxElement()) {
         if (!Base.compareDeep(derived.getMaxElement(), base.getMaxElement(), false)) {
           if (isLargerMax(derived.getMax(), base.getMax()))
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+source.getPath(), "Element "+base.getPath()+": derived max ("+derived.getMax()+") cannot be greater than base max ("+base.getMax()+")", ValidationMessage.IssueSeverity.ERROR));
+            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+source.getPath(), "Element "+base.getPath()+": derived max ("+derived.getMax()+") cannot be greater than the base max ("+base.getMax()+")", ValidationMessage.IssueSeverity.ERROR));
           base.setMaxElement(derived.getMaxElement().copy());
         } else if (trimDifferential)
           derived.setMaxElement(null);

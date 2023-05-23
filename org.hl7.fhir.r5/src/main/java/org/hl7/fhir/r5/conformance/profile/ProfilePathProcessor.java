@@ -174,17 +174,13 @@ public class ProfilePathProcessor {
       // in the simple case, source is not sliced.
       if (!currentBase.hasSlicing() || currentBasePath.equals(getSlicing().getPath()))
       {
-        ElementDefinition currentRes = processSimplePath(currentBase, currentBasePath, diffMatches, typeList,
-          cursors
-        );
+        ElementDefinition currentRes = processSimplePath(currentBase, currentBasePath, diffMatches, typeList, cursors);
         if (res == null) {
           res = currentRes;
         }
       }
       else {
-        processPathWithSlicedBase(currentBase, currentBasePath, diffMatches, typeList,
-          cursors
-          );
+        processPathWithSlicedBase(currentBase, currentBasePath, diffMatches, typeList, cursors);
       }
     }
 
