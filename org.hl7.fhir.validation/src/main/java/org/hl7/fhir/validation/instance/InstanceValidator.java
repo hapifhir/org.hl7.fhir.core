@@ -5968,14 +5968,30 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
     }
     if (match) {
+      boolean update = true;
       boolean isOk = ei.definition == null || ei.definition == slicer || (ei.definition.getPath().endsWith("[x]") && ed.getPath().startsWith(ei.definition.getPath().replace("[x]", "")));
+      if (!isOk) {
+        // is this a subslice? then we put it in as a replacement
+        String existingName = ei.definition == null || !ei.definition.hasSliceName() ? null : ei.definition.getSliceName();
+        String matchingName = ed.hasSliceName() ? ed.getSliceName() : null; 
+        if (existingName != null && matchingName != null) {
+          if (matchingName.startsWith(existingName+"/")) {
+            isOk = true;
+          } else if (existingName.startsWith(matchingName+"/")) {
+            update = false;
+            isOk = true;
+          }
+        }
+      }
       if (rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), isOk, I18nConstants.VALIDATION_VAL_PROFILE_MATCHMULTIPLE, profile.getVersionedUrl(), (ei.definition == null || !ei.definition.hasSliceName() ? "" : ei.definition.getSliceName()), (ed.hasSliceName() ? ed.getSliceName() : ""))) {
-        ei.definition = ed;
-        if (ei.slice == null) {
-          ei.index = i;
-        } else {
-          ei.index = sliceOffset;
-          ei.sliceindex = i - (sliceOffset + 1);
+        if (update) {
+          ei.definition = ed;
+          if (ei.slice == null) {
+            ei.index = i;
+          } else {
+            ei.index = sliceOffset;
+            ei.sliceindex = i - (sliceOffset + 1);
+          }
         }
       }
     } else if (childUnsupportedSlicing) {
