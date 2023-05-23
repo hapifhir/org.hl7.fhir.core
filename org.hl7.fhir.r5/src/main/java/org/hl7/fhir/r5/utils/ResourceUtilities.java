@@ -127,7 +127,7 @@ public class ResourceUtilities {
 
 	public static String getLink(Bundle feed, String rel) {
 		for (BundleLinkComponent link : feed.getLink()) {
-			if (link.getRelation().equals(rel))
+			if (link.getRelation().toCode().equals(rel))
 				return link.getUrl();
 		}
 	  return null;

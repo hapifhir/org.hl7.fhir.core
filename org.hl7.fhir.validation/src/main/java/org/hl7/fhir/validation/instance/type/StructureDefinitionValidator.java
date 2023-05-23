@@ -127,14 +127,16 @@ public class StructureDefinitionValidator extends BaseValidator {
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
       ok = false;
     }
+     
     List<Element> differentials = src.getChildrenByName("differential");
     List<Element> snapshots = src.getChildrenByName("snapshot");
     boolean logical = "logical".equals(src.getNamedChildValue("kind"));
+    boolean constraint = "constraint".equals(src.getNamedChildValue("derivation"));
     for (Element differential : differentials) {
-      ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical) && ok;
+      ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint) && ok;
     }
     for (Element snapshot : snapshots) {
-      ok = validateElementList(errors, snapshot, stack.push(snapshot, -1, null, null), true, true, sd, typeName, logical) && ok;
+      ok = validateElementList(errors, snapshot, stack.push(snapshot, -1, null, null), true, true, sd, typeName, logical, constraint) && ok;
     }
     return ok;
   }
@@ -174,18 +176,18 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
   }
 
-  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical) {
+  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint) {
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
     for (Element element : elements) {
-      ok = validateElementDefinition(errors, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical) && ok;
+      ok = validateElementDefinition(errors, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint) && ok;
       cc++;
     }    
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint) {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path");
@@ -194,6 +196,8 @@ public class StructureDefinitionValidator extends BaseValidator {
       rule(errors, "2023-01-17", IssueType.INVALID, stack.getLiteralPath(), path.contains(".") || !element.hasChild("slicing"), I18nConstants.SD_NO_SLICING_ON_ROOT, path);
       
     }
+    rule(errors, "2023-05-22", IssueType.NOTFOUND, stack.getLiteralPath(), snapshot || !constraint || !element.hasChild("meaningWhenMissing") || meaningWhenMissingAllowed(element), I18nConstants.SD_ELEMENT_NOT_IN_CONSTRAINT, "meaningWhenMissing", path);
+    
     List<Element> types = element.getChildrenByName("type");
     Set<String> typeCodes = new HashSet<>();
     Set<String> characteristics = new HashSet<>();
@@ -312,6 +316,12 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
   
+  private boolean meaningWhenMissingAllowed(Element element) {
+    // allowed to use meaningWhenMissing on the root of an element to say what it means when the extension
+    // is not present.
+    return "Extension".equals(element.getPath()) || (element.getPath().endsWith(".extension"));
+  }
+
   private boolean addCharacteristics(Set<String> set, String tc) {
     switch (tc) {
     case "boolean" : return addCharacteristicsForType(set);
