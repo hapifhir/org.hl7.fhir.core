@@ -196,7 +196,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       rule(errors, "2023-01-17", IssueType.INVALID, stack.getLiteralPath(), path.contains(".") || !element.hasChild("slicing"), I18nConstants.SD_NO_SLICING_ON_ROOT, path);
       
     }
-    rule(errors, "2023-05-22", IssueType.NOTFOUND, stack.getLiteralPath(), !constraint || !element.hasChild("meaningWhenMissing"), I18nConstants.SD_ELEMENT_NOT_IN_CONSTRAINT, "meaningWhenMissing", path);
+    rule(errors, "2023-05-22", IssueType.NOTFOUND, stack.getLiteralPath(), snapshot || !constraint || !element.hasChild("meaningWhenMissing") || meaningWhenMissingAllowed(element), I18nConstants.SD_ELEMENT_NOT_IN_CONSTRAINT, "meaningWhenMissing", path);
     
     List<Element> types = element.getChildrenByName("type");
     Set<String> typeCodes = new HashSet<>();
@@ -316,6 +316,12 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
   
+  private boolean meaningWhenMissingAllowed(Element element) {
+    // allowed to use meaningWhenMissing on the root of an element to say what it means when the extension
+    // is not present.
+    return "Extension".equals(element.getPath()) || (element.getPath().endsWith(".extension"));
+  }
+
   private boolean addCharacteristics(Set<String> set, String tc) {
     switch (tc) {
     case "boolean" : return addCharacteristicsForType(set);
