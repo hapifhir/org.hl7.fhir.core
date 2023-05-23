@@ -1951,6 +1951,30 @@ public class Utilities {
     return p;
   }
 
+  public static String stripAllPara(String p) {
+    if (noString(p)) {
+      return "";
+    }
+    p = p.trim();
+    if (p.startsWith("<p>")) {
+      p = p.substring(3);
+    }
+    if (p.endsWith("</p>")) {
+      p = p.substring(0, p.length()-4);
+    }
+    p = p.replace("</p>", " ");
+    p = p.replace("<p>", "");
+    while (p.contains("<p ")) {
+      int start = p.indexOf("<p ");
+      int end = start;
+      while (end < p.length() && p.charAt(end) != '>') {
+        end++;
+      }
+      p = p.substring(start, end);
+    }
+    return p;
+  }
+
 
 
 //public static boolean !isWhitespace(String s) {
