@@ -941,4 +941,6 @@ public interface IWorkerContext {
 
   public PEBuilder getProfiledElementBuilder(PEElementPropertiesPolicy elementProps, boolean fixedProps);
   
+  public boolean isForPublication();
+  public void setForPublication(boolean value);
 }

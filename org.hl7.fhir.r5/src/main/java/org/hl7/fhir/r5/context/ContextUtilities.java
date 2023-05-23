@@ -274,6 +274,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       ProfileUtilities pu = new ProfileUtilities(context, msgs, this);
       pu.setAutoFixSliceNames(true);
       pu.setThrowException(false);
+      pu.setForPublication(context.isForPublication());
       if (xverManager == null) {
         xverManager = new XVerExtensionManager(context);
       }
@@ -282,8 +283,9 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
         pu.sortDifferential(sd, p, p.getUrl(), errors, true);
       }
       pu.setDebug(false);
-      for (String err : errors)
+      for (String err : errors) {
         msgs.add(new ValidationMessage(Source.ProfileValidator, IssueType.EXCEPTION, p.getWebPath(), "Error sorting Differential: "+err, ValidationMessage.IssueSeverity.ERROR));
+      }
       pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString("webroot"), p.getName());
       for (ValidationMessage msg : msgs) {
         if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL)
