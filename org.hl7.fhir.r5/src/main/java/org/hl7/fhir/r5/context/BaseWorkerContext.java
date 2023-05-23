@@ -73,6 +73,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
@@ -868,7 +869,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     // if that failed, we try to expand on the server
     if (addDependentResources(p, vs)) {
-      p.addParameter().setName("cache-id").setValue(new StringType(tcc.getCacheId()));              
+      p.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));              
     }
     
     if (noTerminologyServer) {
@@ -1147,7 +1148,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     boolean cached = addDependentResources(p, vs);
     if (cached) {
-      p.addParameter().setName("cache-id").setValue(new StringType(tcc.getCacheId()));
+      p.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));
     }
     return p;
   }
@@ -1276,7 +1277,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       addDependentResources(pin, vs);
     }
     if (cache) {
-      pin.addParameter().setName("cache-id").setValue(new StringType(tcc.getCacheId()));              
+      pin.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));              
     }
     for (ParametersParameterComponent pp : pin.getParameter()) {
       if (pp.getName().equals("profile")) {
@@ -1917,6 +1918,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private Set<String> notCanonical = new HashSet<String>();
 
   protected IWorkerContextManager.IPackageLoadingTracker packageTracker;
+  private boolean forPublication;
 
   @Override
   public Resource fetchResourceById(String type, String uri) {
@@ -2467,4 +2469,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // TODO Auto-generated method stub
     return new PEBuilder(this, elementProps, fixedProps);
   }
+  
+  public boolean isForPublication() {
+    return forPublication;
+  }
+  
+  public void setForPublication(boolean value) {
+    forPublication = value;
+  }
+
 }

@@ -869,6 +869,7 @@ public class I18nConstants {
   public static final String ED_PATH_WRONG_TYPE_MATCH = "ED_PATH_WRONG_TYPE_MATCH";
   public static final String ATTEMPT_TO_CHANGE_SLICING = "ATTEMPT_TO_CHANGE_SLICING";
   public static final String REPEAT_SLICING_IGNORED = "REPEAT_SLICING_IGNORED";
+  public static final String SD_ELEMENT_NOT_IN_CONSTRAINT = "SD_ELEMENT_NOT_IN_CONSTRAINT";
 }
 
 
