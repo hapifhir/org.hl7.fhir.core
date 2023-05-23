@@ -943,6 +943,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (!t.hasResult()) {
           try {
             ValueSetValidator vsc = constructValueSetCheckerSimple(options, vs);
+            vsc.setThrowToServer(options.isUseServer() && tcc.getClient() != null);
             ValidationResult res = vsc.validateCode("Coding", t.getCoding());
             if (txCache != null) {
               txCache.cacheValidation(t.getCacheToken(), res, TerminologyCache.TRANSIENT);
@@ -1059,12 +1060,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+    Set<String> unknownSystems = new HashSet<>();
     
     String localError = null;
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
         ValueSetValidator vsc = constructValueSetCheckerSimple(options, vs, ctxt);
+        vsc.setUnknownSystems(unknownSystems);
+        vsc.setThrowToServer(options.isUseServer() && tcc.getClient() != null);
         if (!ValueSetUtilities.isServerSide(code.getSystem())) {
           res = vsc.validateCode(path, code);
           if (txCache != null) {
@@ -1084,7 +1088,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     if (localError != null && tcc.getClient() == null) {
-      return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.UNKNOWN, issues);
+      if (unknownSystems.size() > 0) {
+        return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues).setUnknownSystems(unknownSystems);
+      } else {
+        return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.UNKNOWN, issues);
+      }
     }
     if (!options.isUseServer()) {
       return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
@@ -1204,11 +1212,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         codeSystemsUsed.add(c.getSystem());
       }
     }
+    Set<String> unknownSystems = new HashSet<>();
 
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
         ValueSetValidator vsc = constructValueSetCheckerSimple(options, vs);
+        vsc.setUnknownSystems(unknownSystems);
+        vsc.setThrowToServer(options.isUseServer() && tcc.getClient() != null);
         res = vsc.validateCode("CodeableConcept", code);
         txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
         return res;
@@ -1349,6 +1360,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           version = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("code")) {
           code = ((PrimitiveType<?>) p.getValue()).asStringValue();
+        } else if (p.getName().equals("x-caused-by-unknown-system")) {
+          err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;         
         } else if (p.getName().equals("cause")) {
           try {
             IssueType it = IssueType.fromCode(((StringType) p.getValue()).getValue());

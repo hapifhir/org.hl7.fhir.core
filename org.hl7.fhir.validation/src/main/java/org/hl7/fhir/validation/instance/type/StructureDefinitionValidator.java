@@ -19,6 +19,8 @@ import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.extensions.ExtensionConstants;
+import org.hl7.fhir.r5.extensions.Extensions;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
@@ -58,13 +60,14 @@ public class StructureDefinitionValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private boolean wantCheckSnapshotUnchanged;
 
-  public StructureDefinitionValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction) {
+  public StructureDefinitionValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction, boolean forPublication) {
     super(context, xverManager);
     source = Source.InstanceValidator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
     this.wantCheckSnapshotUnchanged = wantCheckSnapshotUnchanged;
     this.jurisdiction = jurisdiction;
+    this.forPublication = forPublication;
   }
   
   public boolean validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
@@ -87,6 +90,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && sd.getType().equals(base.getType()), I18nConstants.SD_CONSTRAINED_TYPE_NO_MATCH, sd.getType(), base.getType());
             List<ValidationMessage> msgs = new ArrayList<>();
             ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
+            pu.setForPublication(forPublication);
             pu.setXver(xverManager);
             pu.setNewSlicingProcessing(!sd.hasFhirVersion() || VersionUtilities.isR4Plus(sd.getFhirVersion().toCode()));
             pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
@@ -119,17 +123,18 @@ public class StructureDefinitionValidator extends BaseValidator {
               I18nConstants.SD_DERIVATION_KIND_MISMATCH, base.getKindElement().primitiveValue(), src.getChildValue("kind")) && ok;
         }
       }
-    } catch (FHIRException | IOException e) {
+    } catch (Exception e) {
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
       ok = false;
     }
     List<Element> differentials = src.getChildrenByName("differential");
     List<Element> snapshots = src.getChildrenByName("snapshot");
+    boolean logical = "logical".equals(src.getNamedChildValue("kind"));
     for (Element differential : differentials) {
-      ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName) && ok;
+      ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical) && ok;
     }
     for (Element snapshot : snapshots) {
-      ok = validateElementList(errors, snapshot, stack.push(snapshot, -1, null, null), true, true, sd, typeName) && ok;
+      ok = validateElementList(errors, snapshot, stack.push(snapshot, -1, null, null), true, true, sd, typeName, logical) && ok;
     }
     return ok;
   }
@@ -169,18 +174,18 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
   }
 
-  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName) {
+  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical) {
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
     for (Element element : elements) {
-      ok = validateElementDefinition(errors, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName) && ok;
+      ok = validateElementDefinition(errors, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical) && ok;
       cc++;
     }    
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical) {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path");
@@ -231,7 +236,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
         // check the stated profile - must be a constraint on the type 
         if (snapshot || sd != null) {
-          ok = validateElementType(errors, type, stack.push(type, -1, null, null), sd, path) && ok;
+          ok = validateElementType(errors, type, stack.push(type, -1, null, null), sd, path, logical) && ok;
         }
       }
     }
@@ -479,7 +484,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return vr.getErrorClass() == null;
   }
 
-  private boolean validateElementType(List<ValidationMessage> errors, Element type, NodeStack stack, StructureDefinition sd, String path) {
+  private boolean validateElementType(List<ValidationMessage> errors, Element type, NodeStack stack, StructureDefinition sd, String path, boolean logical) {
     boolean ok = true;
     String code = type.getNamedChildValue("code");
     if (code == null && path != null) {
@@ -498,7 +503,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
         profiles = type.getChildrenByName("targetProfile");
         for (Element profile : profiles) {
-          ok = validateTargetProfile(errors, profile, code, stack.push(profile, -1, null, null), path) && ok;
+          ok = validateTargetProfile(errors, profile, code, stack.push(profile, -1, null, null), path, logical) && ok;
         }
       }
     }
@@ -589,7 +594,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return t.getSnapshot().getElementFirstRep().getIsModifier();
   }
 
-  private boolean validateTargetProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
+  private boolean validateTargetProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path, boolean logical) {
     boolean ok = true;
     String p = profile.primitiveValue();
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
@@ -599,7 +604,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (t == null) {
           ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p) && ok;
         } else {
-          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), sd.getKind() == StructureDefinitionKind.RESOURCE, I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Resource") && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), (sd.getKind() == StructureDefinitionKind.RESOURCE) || (logical && isReferenceableTarget(t)), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Resource") && ok;
         }
       }
     } else if (code.equals("canonical")) {
@@ -617,6 +622,21 @@ public class StructureDefinitionValidator extends BaseValidator {
       ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_NO_TARGET_PROFILE, code) && ok;
     }
     return ok;
+  }
+
+  private boolean isReferenceableTarget(StructureDefinition t) {
+    for (Extension ext : t.getExtensionsByUrl(ExtensionConstants.EXT_SDTYPE_CHARACTERISTICS)) {
+      if (ext.hasValue()) { 
+      String c = ext.getValue().primitiveValue();
+        if ("can-be-target".equals(c)) {
+          return true;
+        }
+      }
+    }
+    if (ToolingExtensions.readBoolExtension(t,  "http://hl7.org/fhir/tools/StructureDefinition/logical-target")) {
+      return true;
+    }
+    return false;
   }
 
   private boolean isInstanceOf(StructureDefinition sd, String code) {

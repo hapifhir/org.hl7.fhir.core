@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>A"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -18,7 +18,7 @@ v: {
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>A"
-}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -34,7 +34,7 @@ v: {
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>AXXX"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -50,7 +50,39 @@ v: {
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>AXXX"
-}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "Error from server: Error parsing HGVS response: Error parsing JSON source: Unexpected char \"<\" in json stream at Line 0 (path=[])",
+  "class" : "SERVER_ERROR"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://varnomen.hgvs.org",
+  "code" : "NC_000019.8:g.1171707G>A"
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs", "version": "1.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "Error from server: Error parsing HGVS response: Error parsing JSON source: Unexpected char \"<\" in json stream at Line 0 (path=[])",
+  "class" : "SERVER_ERROR"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://varnomen.hgvs.org",
+  "code" : "NC_000019.8:g.1171707G>AXXX"
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs", "version": "1.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",

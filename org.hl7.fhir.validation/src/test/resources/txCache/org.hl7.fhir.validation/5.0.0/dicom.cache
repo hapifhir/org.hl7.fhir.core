@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://hl7.org/fhir/animal-species",
-  "code" : "canislf",
-  "display" : "Dog"
+  "system" : "http://dicom.nema.org/resources/ontology/DCM",
+  "code" : "110122",
+  "display" : "Login"
 }, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
@@ -11,9 +11,9 @@
   }]
 }}####
 v: {
-  "display" : "Dog",
-  "code" : "canislf",
-  "system" : "http://hl7.org/fhir/animal-species",
-  "version" : "4.0.1"
+  "display" : "Login",
+  "code" : "110122",
+  "system" : "http://dicom.nema.org/resources/ontology/DCM",
+  "version" : "2023.1.20230123"
 }
 -------------------------------------------------------------------------------------

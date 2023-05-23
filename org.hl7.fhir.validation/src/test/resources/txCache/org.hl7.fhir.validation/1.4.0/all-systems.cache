@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "Foo"
-}, "url": "https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction", "version": "20170626", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false", "profile": {
+}, "url": "https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction", "version": "20170626", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",

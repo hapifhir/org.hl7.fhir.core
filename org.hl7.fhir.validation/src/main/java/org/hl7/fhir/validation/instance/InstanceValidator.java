@@ -466,6 +466,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noUnicodeBiDiControlChars;
   private HtmlInMarkdownCheck htmlInMarkdownCheck;
   private boolean allowComments;
+  private boolean displayWarnings;
  
   private List<ImplementationGuide> igs = new ArrayList<>();
   private List<String> extensionDomains = new ArrayList<String>();
@@ -504,7 +505,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private ValidationOptions baseOptions = new ValidationOptions();
   private Map<String, CanonicalResourceLookupResult> crLookups = new HashMap<>();
   private boolean logProgress;
-  private boolean forPublication;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices, XVerExtensionManager xverManager) {
     super(theContext, xverManager);
@@ -2393,18 +2393,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (type.equals("dateTime")) {
-      warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
-      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
-        e.primitiveValue()
-          .matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, e.primitiveValue()) && ok;
-      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !hasTime(e.primitiveValue()) || hasTimeZone(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && ok;
-      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
-      try {
-        DateTimeType dt = new DateTimeType(e.primitiveValue());
-      } catch (Exception ex) {
-        rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, ex.getMessage());
-        ok = false;
+      boolean dok = ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
+          e.primitiveValue()
+          .matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, "'"+e.primitiveValue()+"' doesn't meet format requirements for dateTime") && ok;
+      dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !hasTime(e.primitiveValue()) || hasTimeZone(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && dok;
+      dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
+      if (dok) {
+        try {
+          DateTimeType dt = new DateTimeType(e.primitiveValue());
+          warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+        } catch (Exception ex) {
+          rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, ex.getMessage());
+          dok = false;
+        }
       }
+      ok = ok && dok;
     }
     if (type.equals("time")) {
       ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
@@ -2418,15 +2421,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (type.equals("date")) {
-      warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
-      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID) && ok;
-      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
-      try {
-        DateType dt = new DateType(e.primitiveValue());
-      } catch (Exception ex) {
-        rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, ex.getMessage());
-        ok = false;
+      boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, "'"+e.primitiveValue()+"' doesn't meet format requirements for date");
+      dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
+      if (dok) {
+        try {
+          DateType dt = new DateType(e.primitiveValue());
+          warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+        } catch (Exception ex) {
+          rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, ex.getMessage());
+          dok = false;
+        }
       }
+      ok = ok && dok;
     }
     if (type.equals("base64Binary")) {
       String encoded = e.primitiveValue();
@@ -2510,15 +2516,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (type.equals("instant")) {
-      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
-        e.primitiveValue().matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX, e.primitiveValue()) && ok;
-      warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
-      try {
-        InstantType dt = new InstantType(e.primitiveValue());
-      } catch (Exception ex) {
-        rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INSTANT_VALID, ex.getMessage());
-        ok = false;
+      boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
+          e.primitiveValue().matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX, "'"+e.primitiveValue()+"' doesn't meet format requirements for instant)");
+      if (dok) {
+        try {
+          InstantType dt = new InstantType(e.primitiveValue());
+          warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+        } catch (Exception ex) {
+          rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INSTANT_VALID, ex.getMessage());
+          dok = false;
+        }
       }
+      ok = ok && dok;
     }
 
     if (type.equals("code") && e.primitiveValue() != null) {
@@ -5039,7 +5048,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("SearchParameter")) {
       return new SearchParameterValidator(context, timeTracker, fpe, xverManager, jurisdiction).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {
-      return new StructureDefinitionValidator(context, timeTracker, fpe, wantCheckSnapshotUnchanged, xverManager, jurisdiction).validateStructureDefinition(errors, element, stack);
+      return new StructureDefinitionValidator(context, timeTracker, fpe, wantCheckSnapshotUnchanged, xverManager, jurisdiction, forPublication).validateStructureDefinition(errors, element, stack);
     } else if (element.getType().equals("StructureMap")) {
       return new StructureMapValidator(context, timeTracker, fpe, xverManager,profileUtilities, jurisdiction).validateStructureMap(errors, element, stack);
     } else if (element.getType().equals("ValueSet")) {
@@ -6526,13 +6535,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.logProgress = logProgress;
   }
 
-  public boolean isForPublication() {
-    return forPublication;
-  }
-  
-  public void setForPublication(boolean forPublication) {
-    this.forPublication = forPublication;
+  public boolean isDisplayWarnings() {
+    return baseOptions.isDisplayWarningMode();
   }
 
-  
+  public void setDisplayWarnings(boolean displayWarnings) {
+    baseOptions.setDisplayWarningMode(displayWarnings);
+  }
+
+
+  public InstanceValidator setForPublication(boolean forPublication) {
+    this.forPublication = forPublication;
+    return this;
+  }
 }

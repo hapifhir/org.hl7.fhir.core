@@ -100,6 +100,8 @@ public class ValueSetValidator {
   private List<CodeSystem> localSystems = new ArrayList<>();
   Parameters expansionProfile;
   private TerminologyCapabilities txCaps;
+  private Set<String> unknownSystems;
+  private boolean throwToServer;
 
   public ValueSetValidator(ValidationOptions options, ValueSet source, IWorkerContext context, Parameters expansionProfile, TerminologyCapabilities txCaps) {
     this.valueset = source;
@@ -118,6 +120,22 @@ public class ValueSetValidator {
     this.expansionProfile = expansionProfile;
     this.txCaps = txCaps;
     analyseValueSet();
+  }
+
+  public Set<String> getUnknownSystems() {
+    return unknownSystems;
+  }
+
+  public void setUnknownSystems(Set<String> unknownSystems) {
+    this.unknownSystems = unknownSystems;
+  }
+
+  public boolean isThrowToServer() {
+    return throwToServer;
+  }
+
+  public void setThrowToServer(boolean throwToServer) {
+    this.throwToServer = throwToServer;
   }
 
   private void analyseValueSet() {
@@ -174,10 +192,16 @@ public class ValueSetValidator {
           if (context.isNoTerminologyServer()) {
             if (c.hasVersion()) {
               String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, c.getSystem(), c.getVersion() , resolveCodeSystemVersions(c.getSystem()).toString());
-              res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg));
+              if (valueSetDependsOn(c.getSystem(), c.getVersion())) {
+                unknownSystems.add(c.getSystem()+"|"+c.getVersion());
+              }
+              res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg)).setUnknownSystems(unknownSystems);
             } else {
               String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, c.getSystem(), c.getVersion());
-              res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg));
+              if (valueSetDependsOn(c.getSystem(), null)) {
+                unknownSystems.add(c.getSystem());
+              }
+              res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg)).setUnknownSystems(unknownSystems);
             }
           } else {
             res = context.validateCode(options.withNoClient(), c, null);
@@ -191,8 +215,9 @@ public class ValueSetValidator {
       }
     }
     Coding foundCoding = null;
+    String msg = null;
+    Boolean result = false;
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
-      Boolean result = false;
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
       
       for (Coding c : code.getCoding()) {
@@ -212,11 +237,11 @@ public class ValueSetValidator {
         }
       }
       if (result == null) {
-        String msg = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), b.toString());
-        info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, msg));
+        msg = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), b.toString());
+        info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, unknownSystems.isEmpty() ? IssueType.INVALID : IssueType.NOTFOUND, path, msg));
       } else if (!result) {
-        String msg = context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), b.toString());
-        info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
+        msg = context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), b.toString());
+        info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, unknownSystems.isEmpty() ? IssueType.INVALID : IssueType.NOTFOUND, path, msg));
       }
     }
     if (info.hasErrors()) {
@@ -229,8 +254,11 @@ public class ValueSetValidator {
         res.setVersion(foundCoding.hasVersion() ? foundCoding.getVersion() : ((CodeSystem) foundCoding.getUserData("cs")).getVersion());
         res.setDisplay(cd.getDisplay());
       }
+      res.setUnknownSystems(unknownSystems);
       res.addCodeableConcept(vcc);
       return res;
+    } else if (result == null) {
+      return new ValidationResult(IssueSeverity.WARNING, info.summary(), info.getIssues());
     } else if (foundCoding == null) {
       return new ValidationResult(IssueSeverity.ERROR, "Internal Error that should not happen", makeIssue(IssueSeverity.FATAL, IssueType.EXCEPTION, path, "Internal Error that should not happen"));
     } else if (info.getIssues().size() > 0) {
@@ -243,6 +271,15 @@ public class ValueSetValidator {
       cd.setDisplay(lookupDisplay(foundCoding));
       return new ValidationResult(foundCoding.getSystem(), getVersion(foundCoding), cd, getPreferredDisplay(cd, null)).addCodeableConcept(vcc);
     }
+  }
+
+  private boolean valueSetDependsOn(String system, String version) {
+    for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
+      if (system.equals(inc.getSystem()) && (version == null || inc.getVersion() == null || version.equals(inc.getVersion()))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private String getVersion(Coding c) {
@@ -329,6 +366,7 @@ public class ValueSetValidator {
     ValidationResult res = null;
     boolean inExpansion = false;
     boolean inInclude = false;
+    List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     VersionInfo vi = new VersionInfo(this);
 
     String system = code.hasSystem() ? code.getSystem() : getValueSetSystemOrNull();
@@ -363,8 +401,10 @@ public class ValueSetValidator {
       if (cs == null) {
         if (wv == null) {
           warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
+          unknownSystems.add(system);
         } else {
           warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, wv, resolveCodeSystemVersions(system).toString());
+          unknownSystems.add(system+"|"+wv);
         }
         if (!inExpansion) {
           if (valueset != null && valueset.hasExpansion()) {
@@ -372,18 +412,18 @@ public class ValueSetValidator {
                 valueset.getUrl(), 
                 code.getSystem(), 
                 code.getCode().toString());
-            List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path, msg));
             throw new VSCheckerException(msg, issues);
           } else {
-            List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".system", warningMessage));
+            res = new ValidationResult(IssueSeverity.WARNING, warningMessage, issues);              
             if (valueset == null) {
               throw new VSCheckerException(warningMessage, issues);
             } else {
-              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), code.toString());
-              issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
-              throw new VSCheckerException(warningMessage+"; "+msg, issues);
+//              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), code.toString());
+//              issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
+              // we don't do this yet
+              // throw new VSCheckerException(warningMessage, issues); 
             }
           }
         }
@@ -407,7 +447,7 @@ public class ValueSetValidator {
               // we'll take it on faith
               String disp = getPreferredDisplay(cc);
               res = new ValidationResult(system, cs.getVersion(), new ConceptDefinitionComponent().setCode(cc.getCode()).setDisplay(disp), disp);
-              res.setMessage("Resolved system "+system+", but the definition is not complete, so assuming value set include is correct");
+              res.addToMessage("Resolved system "+system+", but the definition is not complete, so assuming value set include is correct");
               return res;
             }
           }
@@ -419,12 +459,14 @@ public class ValueSetValidator {
         // we just take the value set as face value then
         res = new ValidationResult(system, wv, new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()), code.getDisplay());
         if (!preferServerSide(system)) {
-          res.setMessage("Code System unknown, so assuming value set expansion is correct ("+warningMessage+")");
+          res.addToMessage("Code System unknown, so assuming value set expansion is correct ("+warningMessage+")");
         }
       } else {
         // well, we didn't find a code system - try the expansion? 
         // disabled waiting for discussion
-        throw new FHIRException("No try the server");
+        if (throwToServer) {
+          throw new FHIRException("No; try the server");
+        }
       }
     } else {
       inExpansion = checkExpansion(code, vi);
@@ -432,7 +474,7 @@ public class ValueSetValidator {
     }
     String wv = vi.getVersion(system, code.getVersion());
 
-    ValidationProcessInfo info = new ValidationProcessInfo();
+    ValidationProcessInfo info = new ValidationProcessInfo(issues);
     
     // then, if we have a value set, we check it's in the value set
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
@@ -446,20 +488,24 @@ public class ValueSetValidator {
             res.setErrorClass(info.getErr());
           }
           if (ok == null) {
-            res.setMessage("Unable to check whether code is in value set "+valueset.getUrl()+": "+info.summary()).setSeverity(IssueSeverity.WARNING);
-            res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.EXCEPTION, path, res.getMessage()));
+            String m = "Unable to check whether the code is in the value set "+valueset.getVersionedUrl();
+            res.addToMessage(m);
+            res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.NOTFOUND, path, m));
+            res.setUnknownSystems(unknownSystems);
+            res.setSeverity(IssueSeverity.ERROR); // back patching for display logic issue
           } else if (!inExpansion && !inInclude) {
-            if (!info.getIssues().isEmpty()) {
-              res.setMessage("Not in value set "+valueset.getUrl()+": "+info.summary()).setSeverity(IssueSeverity.ERROR);              
-              res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, res.getMessage()));
-            } else {
-              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), code.toString());
-              res.setMessage(msg).setSeverity(IssueSeverity.ERROR);
+//            if (!info.getIssues().isEmpty()) {
+//              res.setMessage("Not in value set "+valueset.getUrl()+": "+info.summary()).setSeverity(IssueSeverity.ERROR);              
+//              res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, res.getMessage()));
+//            } else
+//            {
+              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), code.toString());
+              res.addToMessage(msg).setSeverity(IssueSeverity.ERROR);
               res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
               res.setDefinition(null);
               res.setSystem(null);
               res.setDisplay(null);
-            }
+//            }
           } else if (warningMessage!=null) {
             String msg = context.formatMessage(I18nConstants.CODE_FOUND_IN_EXPANSION_HOWEVER_, warningMessage);
             res = new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.EXCEPTION, path, msg));
@@ -472,15 +518,18 @@ public class ValueSetValidator {
           }
         }
       } else if ((res != null && !res.isOk())) {
-        String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), code.toString());
+        String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), code.toString());
         res.setMessage(res.getMessage()+"; "+msg);
         res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
       }
     }
+    if (res != null && res.getSeverity() == IssueSeverity.INFORMATION) {
+      res.setSeverity(IssueSeverity.ERROR); // back patching for display logic issue
+    }
     return res;
   }
 
-  private static final HashSet<String> SERVER_SIDE_LIST = new HashSet<>(Arrays.asList("http://fdasis.nlm.nih.gov", "http://hl7.org/fhir/sid/ndc", "http://loinc.org", "http://snomed.info/sct", "http://unitsofmeasure.org", 
+  private static final Set<String> SERVER_SIDE_LIST = new HashSet<>(Arrays.asList("http://fdasis.nlm.nih.gov", "http://hl7.org/fhir/sid/ndc", "http://loinc.org", "http://snomed.info/sct", "http://unitsofmeasure.org", 
       "http://unstats.un.org/unsd/methods/m49/m49.htm", "http://varnomen.hgvs.org", "http://www.nlm.nih.gov/research/umls/rxnorm", "https://www.usps.com/",
       "urn:ietf:bcp:13","urn:ietf:bcp:47","urn:ietf:rfc:3986", "urn:iso:std:iso:3166","urn:iso:std:iso:4217", "urn:oid:1.2.36.1.2001.1005.17"));
   
@@ -655,10 +704,18 @@ public class ValueSetValidator {
       return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg));      
     } else {
       String msg = context.formatMessagePlural(b.count(), I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
-      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg));
+      return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg));
     }
   }
+
+  private IssueSeverity dispWarning() {
+    return options.isDisplayWarningMode() ? IssueSeverity.WARNING : IssueSeverity.ERROR; 
+  }
   
+  private IssueSeverity dispWarningStatus() {
+    return options.isDisplayWarningMode() ? IssueSeverity.WARNING : IssueSeverity.INFORMATION; // information -> error later
+  }
+
   private boolean isOkLanguage(String language) {
     if (!options.hasLanguages()) {
       return true;
@@ -906,6 +963,7 @@ public class ValueSetValidator {
   public Boolean codeInValueSet(String system, String version, String code, ValidationProcessInfo info) throws FHIRException {
     return codeInValueSet("code", system, version, code, info);
   }
+  
   public Boolean codeInValueSet(String path, String system, String version, String code, ValidationProcessInfo info) throws FHIRException {
     if (valueset == null) {
       return false;
@@ -980,30 +1038,42 @@ public class ValueSetValidator {
     // ok, we need the code system
     CodeSystem cs = resolveCodeSystem(system, version);
     if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
-      // make up a transient value set with
-      ValueSet vs = new ValueSet();
-      vs.setStatus(PublicationStatus.ACTIVE);
-      vs.setUrl(valueset.getUrl()+"--"+vsiIndex);
-      vs.setVersion(valueset.getVersion());
-      vs.getCompose().addInclude(vsi);
-      ValidationResult res = context.validateCode(options.withNoClient(), new Coding(system, code, null), vs);
-      if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
-        if (info != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
-       // server didn't know the code system either - we'll take it face value
-          info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.UNKNOWN, path, context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system)));
-          for (ConceptReferenceComponent cc : vsi.getConcept()) {
-            if (cc.getCode().equals(code)) {
-              return true;
+      if (throwToServer) {
+        // make up a transient value set with
+        ValueSet vs = new ValueSet();
+        vs.setStatus(PublicationStatus.ACTIVE);
+        vs.setUrl(valueset.getUrl()+"--"+vsiIndex);
+        vs.setVersion(valueset.getVersion());
+        vs.getCompose().addInclude(vsi);
+        ValidationResult res = context.validateCode(options.withNoClient(), new Coding(system, code, null), vs);
+        if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
+          if (info != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+            // server didn't know the code system either - we'll take it face value
+            info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.UNKNOWN, path, context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system)));
+            for (ConceptReferenceComponent cc : vsi.getConcept()) {
+              if (cc.getCode().equals(code)) {
+                return true;
+              }
             }
+            info.setErr(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
+            return null;
           }
-          info.setErr(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
+          return false;
         }
-        return false;
+        if (res.getErrorClass() == TerminologyServiceErrorClass.NOSERVICE) {
+          throw new NoTerminologyServiceException();
+        }
+        return res.isOk();
+      } else {
+        if (unknownSystems != null) {
+          if (version == null) {
+            unknownSystems.add(system);
+          } else {
+            unknownSystems.add(system+"|"+version);          
+          }
+        }
+        return null;
       }
-      if (res.getErrorClass() == TerminologyServiceErrorClass.NOSERVICE) {
-        throw new NoTerminologyServiceException();
-      }
-      return res.isOk();
     } else {
       if (vsi.hasFilter()) {
         ok = true;

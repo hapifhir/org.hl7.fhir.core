@@ -426,7 +426,7 @@ public class XmlParser extends ParserBase {
     				}
     			}
       	} else
-          logError(line(child), col(child), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNDEFINED_ELEMENT_, child.getLocalName()), IssueSeverity.ERROR);
+          logError(line(child), col(child), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNDEFINED_ELEMENT_, child.getLocalName(), path), IssueSeverity.ERROR);
     	} else if (child.getNodeType() == Node.CDATA_SECTION_NODE){
         logError(line(child), col(child), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.CDATA_IS_NOT_ALLOWED), IssueSeverity.ERROR);
     	} else if (!Utilities.existsInList(child.getNodeType(), 3, 8)) {
