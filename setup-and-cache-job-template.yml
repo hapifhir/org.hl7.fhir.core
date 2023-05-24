@@ -25,7 +25,7 @@ jobs:
         inputs:
           mavenPomFile: 'pom.xml'
           ${{ if eq(parameters.signArtifacts, true) }}:
-            options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests'
+            options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests -DdeployToSonatype'
           ${{ else }}:
             options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests'
           mavenOptions: '-Xmx3072m'
