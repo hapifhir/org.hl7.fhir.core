@@ -61,7 +61,7 @@ jobs:
           modules:
             ${{ parameters.modulesToTest.modules }}
 
-  - job: deploy_to_sonatype_and_github
+  - job: deploy_to_sonatype
     dependsOn:
       - ${{ each module in parameters.modulesToTest.modules }}:
           - ubuntu_java_11_${{ module }}
@@ -93,6 +93,25 @@ jobs:
           options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToSonatype'
           mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
           publishJUnitResults: false
+
+  - job: deploy_to_github
+    dependsOn:
+      - ${{ each module in parameters.modulesToTest.modules }}:
+          - ubuntu_java_11_${{ module }}
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+      - task: Cache@2
+        displayName: Cache maven artifacts
+        inputs:
+          key: maven | $(Build.BuildId) | artifacts
+          path: $(MAVEN_CACHE_FOLDER)
+      - template: cache-target-tasks-template.yml
+        parameters:
+          modules:
+            ${{ parameters.modulesToCache.modules }}
+
+      - template: setup-signing-tasks-template.yml
 
       # Deploy the SNAPSHOT artifact to GitHub packages.
       # This is done for the master branch merges only.
