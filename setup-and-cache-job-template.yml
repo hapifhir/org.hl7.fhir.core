@@ -24,7 +24,10 @@ jobs:
       - task: Maven@3
         inputs:
           mavenPomFile: 'pom.xml'
-          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests'
+          ${{ if eq(parameters.signArtifacts, true) }}:
+            options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests'
+          ${{ else }}:
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests'
           mavenOptions: '-Xmx3072m'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
