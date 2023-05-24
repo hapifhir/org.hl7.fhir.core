@@ -59,6 +59,8 @@ public class Resource40_50 {
         return Requirements40_50.convertRequirements((org.hl7.fhir.r4.model.Basic) src);
       } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "TestPlan")) {
         return TestPlan40_50.convertTestPlan((org.hl7.fhir.r4.model.Basic) src);
+      } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "SubscriptionTopic")) {
+        return SubscriptionTopic40_50.convertSubscriptionTopic((org.hl7.fhir.r4.model.Basic) src);
       } else {
         return Basic40_50.convertBasic((org.hl7.fhir.r4.model.Basic) src);
       }
@@ -493,6 +495,8 @@ public class Resource40_50 {
       return StructureDefinition40_50.convertStructureDefinition((org.hl7.fhir.r5.model.StructureDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.StructureMap)
       return StructureMap40_50.convertStructureMap((org.hl7.fhir.r5.model.StructureMap) src);
+    if (src instanceof org.hl7.fhir.r5.model.SubscriptionTopic)
+      return SubscriptionTopic40_50.convertSubscriptionTopic((org.hl7.fhir.r5.model.SubscriptionTopic) src);
     if (src instanceof org.hl7.fhir.r5.model.Substance)
       return Substance40_50.convertSubstance((org.hl7.fhir.r5.model.Substance) src);
     if (src instanceof org.hl7.fhir.r5.model.SubstanceNucleicAcid)
