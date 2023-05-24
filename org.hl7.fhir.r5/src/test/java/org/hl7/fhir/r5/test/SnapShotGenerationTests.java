@@ -10,13 +10,12 @@ import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.DiffUtils;
+
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
@@ -47,13 +46,13 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode;
+
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -62,7 +61,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class SnapShotGenerationTests {
-
+  
   public enum TestFetchMode {
     INPUT,
     OUTPUT,

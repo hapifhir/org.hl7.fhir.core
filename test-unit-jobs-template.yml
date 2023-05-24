@@ -1,0 +1,57 @@
+jobs:
+  - ${{ each unit in parameters.testUnits }}:
+    - ${{ each value in unit.modules }}:
+      - job: ${{unit.name}}_${{value}}
+        dependsOn: [ 'setup' ]
+
+        displayName: Test ${{value}} on ${{unit.name}}
+
+        pool:
+          vmImage: ${{unit.vmImage}}
+
+        variables:
+          JAVA_TOOL_OPTIONS: ${{unit.javaToolOptions}}
+          skipJaCoCo: $[eq(${{unit.skipJaCoCo}}, true)]
+
+        steps:
+        - task: Cache@2
+          displayName: Cache maven artifacts
+          inputs:
+            key: maven | $(Build.BuildId) | artifacts
+            path: $(MAVEN_CACHE_FOLDER)
+        - template: cache-target-tasks-template.yml
+          parameters:
+            modules:
+              - org.hl7.fhir.${{ value }}
+          # Runs 'mvn install'
+        - task: Maven@3
+          inputs:
+            mavenPomFile: 'pom.xml'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl org.hl7.fhir.${{value}} -Djacoco.skip=${{unit.skipJaCoCo}} -P JACOCO'
+            mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: '${{unit.jdkVersion}}'
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            goals: 'verify jacoco:report'
+        - task: CopyFiles@2
+          condition: eq(variables.skipJaCoCo, false)
+          inputs:
+            sourceFolder: '$(System.DefaultWorkingDirectory)/'
+            contents: '**/target/*-reports/*.txt'
+            targetFolder: '$(Build.ArtifactStagingDirectory)'
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Full Test Output'
+          condition: eq(variables.skipJaCoCo, false)
+          inputs:
+            targetPath: '$(Build.ArtifactStagingDirectory)/'
+            artifactName: '${{value}}_full_logs_$(Build.BuildId)_$(Build.BuildNumber)_$(System.JobId).zip'
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish generated build files'
+          condition: eq(variables.skipJaCoCo, false)
+          continueOnError: true
+          inputs:
+            pathToPublish: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ value }}/target/'
+            parallel: true
+            artifactName: 'org.hl7.fhir.${{ value }}_target'

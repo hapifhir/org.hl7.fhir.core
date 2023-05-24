@@ -1,0 +1,31 @@
+jobs:
+  - ${{ each unit in parameters.testUnits }}:
+    - job:
+      dependsOn: [ 'setup' ]
+
+      displayName: Test validator-cli.jar execution on ${{unit.name}}
+
+      pool:
+        vmImage: ${{unit.vmImage}}
+
+        steps:
+        - task: Cache@2
+          displayName: Cache maven artifacts
+          inputs:
+            key: maven | $(Build.BuildId) | artifacts
+            path: $(MAVEN_CACHE_FOLDER)
+        - template: cache-target-tasks-template.yml
+          parameters:
+            modules:
+              - org.hl7.fhir.validation.cli
+          # Runs 'mvn exec'
+        - task: Maven@3
+          inputs:
+            mavenPomFile: 'pom.xml'
+            mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: '${{unit.jdkVersion}}'
+            jdkArchitectureOption: 'x64'
+            options: '-pl org.hl7.fhir.validation.cli -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+            publishJUnitResults: false
+            goals: 'exec:exec'
