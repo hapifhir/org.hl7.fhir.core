@@ -1,7 +1,5 @@
 package org.hl7.fhir.validation.tests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -11,7 +9,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -23,7 +21,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
-import org.hl7.fhir.validation.tests.ValidationTests.TestSorter;
+
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
@@ -81,7 +79,6 @@ import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -95,7 +92,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 
-@Ignore
 @RunWith(Parameterized.class)
 public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher, IValidationPolicyAdvisor {
 
