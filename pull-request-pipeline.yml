@@ -132,7 +132,7 @@ jobs:
               targetType: 'inline'
               script: mkdir -p $(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}/target/
           - task: DownloadBuildArtifacts@0
-            displayName: 'Download jacoco test coverage result exec file for org.hl7.fhir.${{ module }}'
+            displayName: 'Download jacoco test coverage results for org.hl7.fhir.${{ module }}'
             continueOnError: true
             inputs:
               buildType: 'current'
