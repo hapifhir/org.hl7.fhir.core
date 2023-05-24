@@ -4,4 +4,4 @@ steps:
     displayName: Cache ${{ value }} target
     inputs:
       key: maven | $(Build.BuildId) | targets | "${{ value }}"
-      path: $(System.DefaultWorkingDirectory)/${{ value }}/target/
+      path: $(System.DefaultWorkingDirectory)/${{ value }}/
