@@ -767,7 +767,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       x.ah(uri.getValue()).addText(uri.getValue().substring(7));
     } else {
       Resource r = context.getContext().fetchResource(Resource.class, uri.getValue());
-      if (r != null) {
+      if (r != null && r.getWebPath() != null) {
         if (r instanceof CanonicalResource) {
           x.ah(r.getWebPath()).addText(((CanonicalResource) r).present());          
         } else {
