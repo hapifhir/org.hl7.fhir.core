@@ -754,6 +754,10 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return setAttribute("colspan", n);
   }
   
+  public XhtmlNode colspan(int n) {
+    return setAttribute("colspan", Integer.toString(n));
+  }
+  
   // differs from tx because it returns the owner node, not the created text
   public XhtmlNode txN(String cnt) {
     addText(cnt);

@@ -223,9 +223,9 @@ public class ValueSetValidator {
       for (Coding c : code.getCoding()) {
         b.append(c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode());
         Boolean ok = codeInValueSet(c.getSystem(), c.getVersion(), c.getCode(), info);
-        if (ok == null && result == false) {
+        if (ok == null && result != null && result == false) {
           result = null;
-        } else if (ok) {
+        } else if (ok != null && ok) {
           result = true;
           foundCoding = c;
           if (options.getValueSetMode() == ValueSetMode.CHECK_MEMERSHIP_ONLY) {
