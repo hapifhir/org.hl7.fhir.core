@@ -765,10 +765,19 @@ public class DataRenderer extends Renderer implements CodeResolver {
   protected void renderUri(XhtmlNode x, UriType uri) {
     if (uri.getValue().startsWith("mailto:")) {
       x.ah(uri.getValue()).addText(uri.getValue().substring(7));
-    } else if (Utilities.isAbsoluteUrlLinkable(uri.getValue()) && !(uri instanceof IdType)) {
-      x.ah(uri.getValue()).addText(uri.getValue());
     } else {
-      x.addText(uri.getValue());
+      Resource r = context.getContext().fetchResource(Resource.class, uri.getValue());
+      if (r != null) {
+        if (r instanceof CanonicalResource) {
+          x.ah(r.getWebPath()).addText(((CanonicalResource) r).present());          
+        } else {
+          x.ah(r.getWebPath()).addText(uri.getValue());          
+        }
+      } else if (Utilities.isAbsoluteUrlLinkable(uri.getValue()) && !(uri instanceof IdType)) {
+        x.ah(uri.getValue()).addText(uri.getValue());
+      } else {
+        x.addText(uri.getValue());
+      }
     }
   }
   
