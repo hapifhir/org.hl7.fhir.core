@@ -13,5 +13,6 @@
 
 * Add support for R4B to loader
 * Change type if cache-id parameter
+* Change snapshot generation to not update documentation from profile for elements with profiled types that are not extensions
 
 
