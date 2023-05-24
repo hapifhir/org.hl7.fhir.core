@@ -5,104 +5,165 @@ pr: none
 trigger:
 - master
 
-pool:
-  vmImage: "ubuntu-22.04"
+parameters:
+  - name: modulesToCache
+    displayName: Module Target Directories to Cache
+    type: object
+    default:
+      modules:
+        - org.hl7.fhir.utilities
+        - org.hl7.fhir.dstu2
+        - org.hl7.fhir.dstu2016may
+        - org.hl7.fhir.dstu3
+        - org.hl7.fhir.r4
+        - org.hl7.fhir.r4b
+        - org.hl7.fhir.r5
+        - org.hl7.fhir.convertors
+        - org.hl7.fhir.validation
+        - org.hl7.fhir.validation.cli
+        - org.hl7.fhir.report
+  - name: modulesToTest
+    displayName: Modules to Test
+    type: object
+    default:
+      modules:
+        - utilities
+        - dstu2
+        - dstu2016may
+        - dstu3
+        - r4
+        - r4b
+        - r5
+        - convertors
+        - validation
 
 variables:
 - group: PGP_VAR_GROUP
 - group: SONATYPE_VAR_GROUP
 - group: GIT_VAR_GROUP
 
-steps:
-  # We need a valid signing key. 
-  # The next two steps download the public and private keys from the
-  # secure library files. 
-  - task: DownloadSecureFile@1
-    displayName: 'Download public key.'
-    inputs:
-      secureFile: public.key
+jobs:
+  - template: setup-and-cache-job-template.yml
+    parameters:
+      modulesToCache:
+        ${{ parameters.modulesToCache.modules }}
+  - template: test-unit-jobs-template.yml
+    parameters:
+      testUnits:
+        - name: ubuntu_java_11
+          vmImage: "ubuntu-latest"
+          javaToolOptions:
+          jdkVersion: 1.11
+          skipJaCoCo: true
+          modules:
+            ${{ parameters.modulesToTest.modules }}
 
-  - task: DownloadSecureFile@1
-    displayName: 'Download private key.'
-    inputs:
-      secureFile: private.key
+  - job: deploy_to_sonatype_and_github
+    dependsOn:
+      - ${{ each module in parameters.modulesToTest.modules }}:
+          - ubuntu_java_11_${{ module }}
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+      - task: Cache@2
+        displayName: Cache maven artifacts
+        inputs:
+          key: maven | $(Build.BuildId) | artifacts
+          path: $(MAVEN_CACHE_FOLDER)
+      - template: cache-target-tasks-template.yml
+        parameters:
+          modules:
+            ${{ parameters.modulesToCache.modules }}
 
-  # Import both the private and public keys into gpg for signing.
-  - bash: |
-      gpg --import --no-tty --batch --yes $(Agent.TempDirectory)/public.key
-      gpg --import --no-tty --batch --yes $(Agent.TempDirectory)/private.key
-      gpg --list-keys --keyid-format LONG
-      gpg --list-secret-keys --keyid-format LONG
-    displayName: 'Import signing keys.'
+      # We need a valid signing key.
+      # The next two steps download the public and private keys from the
+      # secure library files.
+      - task: DownloadSecureFile@1
+        displayName: 'Download public key.'
+        inputs:
+          secureFile: public.key
 
-  # For creating the snapshot release with maven, we need to build a fake settings.xml 
-  # for it to read from. This is done for the master branch merges only.
-  - bash: |
-      cat >$(System.DefaultWorkingDirectory)/settings.xml <<EOL
-      <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                                    https://maven.apache.org/xsd/settings-1.0.0.xsd">
-        <servers>
-          <server>
-            <id>github</id>
-            <username>$(GIT_USER_NAME)</username>
-            <password>$(GIT_PAT)</password>
-          </server>
-          <server>
-            <id>ossrh</id>
-            <username>$(SONATYPE_USER)</username>
-            <password>$(SONATYPE_PASS)</password>
-          </server>
-          <server>
-            <id>$(PGP_KEYNAME)</id>
-            <passphrase>$(PGP_PASSPHRASE)</passphrase>
-          </server>
-          <server>
-            <id>github-releases</id>
-            <username>markiantorno</username>
-            <password>$(GIT_PACKAGE_PAT)</password>
-          </server>
-        </servers>
-        <profiles>
-          <profile>
-            <id>release</id>
-            <activation>
-              <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-              <gpg.keyname>$(PGP_KEYNAME)</gpg.keyname>
-            </properties>
-          </profile>
-        </profiles>
-      </settings>
-      EOL
-    displayName: 'Create .mvn/settings.xml'
+      - task: DownloadSecureFile@1
+        displayName: 'Download private key.'
+        inputs:
+          secureFile: private.key
 
-  # Deploy the SNAPSHOT artifact to sonatype nexus.
-  # This is done for the master branch merges only.
-  - task: Maven@3
-    displayName: 'Deploy to Sonatype staging'
-    inputs:
-      mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
-      goals: deploy
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.11'
-      jdkArchitectureOption: 'x64'
-      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -DdeployToSonatype'
-      mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
-      publishJUnitResults: false
+      # Import both the private and public keys into gpg for signing.
+      - bash: |
+          gpg --import --no-tty --batch --yes $(Agent.TempDirectory)/public.key
+          gpg --import --no-tty --batch --yes $(Agent.TempDirectory)/private.key
+          gpg --list-keys --keyid-format LONG
+          gpg --list-secret-keys --keyid-format LONG
+        displayName: 'Import signing keys.'
 
-  # Deploy the SNAPSHOT artifact to GitHub packages.
-  # This is done for the master branch merges only.
-  - task: Maven@3
-    displayName: 'Deploy to GitHub packages'
-    inputs:
-      mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
-      goals: deploy
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.11'
-      jdkArchitectureOption: 'x64'
-      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToGitHub'
-      mavenOptions: '-Xmx768m  -Dmaven.resolver.transport=wagon'
-      publishJUnitResults: false
+      # For creating the snapshot release with maven, we need to build a fake settings.xml
+      # for it to read from. This is done for the master branch merges only.
+      - bash: |
+          cat >$(System.DefaultWorkingDirectory)/settings.xml <<EOL
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                                        https://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <servers>
+              <server>
+                <id>github</id>
+                <username>$(GIT_USER_NAME)</username>
+                <password>$(GIT_PAT)</password>
+              </server>
+              <server>
+                <id>ossrh</id>
+                <username>$(SONATYPE_USER)</username>
+                <password>$(SONATYPE_PASS)</password>
+              </server>
+              <server>
+                <id>$(PGP_KEYNAME)</id>
+                <passphrase>$(PGP_PASSPHRASE)</passphrase>
+              </server>
+              <server>
+                <id>github-releases</id>
+                <username>markiantorno</username>
+                <password>$(GIT_PACKAGE_PAT)</password>
+              </server>
+            </servers>
+            <profiles>
+              <profile>
+                <id>release</id>
+                <activation>
+                  <activeByDefault>true</activeByDefault>
+                </activation>
+                <properties>
+                  <gpg.keyname>$(PGP_KEYNAME)</gpg.keyname>
+                </properties>
+              </profile>
+            </profiles>
+          </settings>
+          EOL
+        displayName: 'Create .mvn/settings.xml'
+
+      # Deploy the SNAPSHOT artifact to sonatype nexus.
+      # This is done for the master branch merges only.
+      - task: Maven@3
+        displayName: 'Deploy to Sonatype staging'
+        inputs:
+          mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
+          goals: deploy
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -DdeployToSonatype -DskipTests=true'
+          mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
+          publishJUnitResults: false
+
+      # Deploy the SNAPSHOT artifact to GitHub packages.
+      # This is done for the master branch merges only.
+      - task: Maven@3
+        displayName: 'Deploy to GitHub packages'
+        inputs:
+          mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
+          goals: deploy
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToGitHub'
+          mavenOptions: '-Xmx768m  -Dmaven.resolver.transport=wagon'
+          publishJUnitResults: false
