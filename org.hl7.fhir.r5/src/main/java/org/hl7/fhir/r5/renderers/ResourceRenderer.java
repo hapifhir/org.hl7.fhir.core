@@ -1,5 +1,9 @@
 package org.hl7.fhir.r5.renderers;
 
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -576,5 +580,96 @@ public abstract class ResourceRenderer extends DataRenderer {
   
   public RendererType getRendererType() {
     return RendererType.NATIVE;
+  }
+  
+  public class TableRowData {
+    private Map<String, List<DataType>> cols = new HashMap<>();
+    private TableData data;
+    
+    public void value(String name, DataType value) {
+      if (!cols.containsKey(name)) {
+        cols.put(name, new ArrayList<>());
+      }
+      if (!data.columns.contains(name)) {
+        data.columns.add(name);
+      }
+      cols.get(name).add(value);
+    }
+
+    public boolean hasCol(String name) {
+      return cols.containsKey(name);
+    }
+
+    public List<DataType> get(String name) {
+      return cols.get(name);
+    }
+    
+  }
+  public class TableData {
+    private String title;
+    private List<String> columns = new ArrayList<>();
+    private List<TableRowData> rows = new ArrayList<>();
+    public TableData(String title) {
+      this.title = title;
+    }
+    public String getTitle() {
+      return title;
+    }
+    public List<String> getColumns() {
+      return columns;
+    }
+    public List<TableRowData> getRows() {
+      return rows;
+    }
+    public void addColumn(String name) {
+      columns.add(name);
+    }
+    public TableRowData addRow() {
+      TableRowData res = new TableRowData();
+      rows.add(res);
+      res.data = this;
+      return res;
+    }
+  }
+
+
+  public void renderTable(TableData provider, XhtmlNode x) throws FHIRFormatError, DefinitionException, IOException {
+    List<String> columns = new ArrayList<>();
+    for (String name : provider.getColumns()) {
+      boolean hasData = false;
+      for (TableRowData row : provider.getRows()) {
+        if (row.hasCol(name)) {
+          hasData = true;
+        }
+      }
+      if (hasData) {
+        columns.add(name);
+      }
+    }
+    if (columns.size() > 0) {
+      XhtmlNode table = x.table("grid");
+      
+      if (provider.getTitle() != null) {
+        table.tr().td().colspan(columns.size()).b().tx(provider.getTitle());
+      }
+      XhtmlNode tr = table.tr();
+      for (String col : columns) {
+        tr.th().b().tx(col);
+      }
+      for (TableRowData row : provider.getRows()) {
+        tr = table.tr();
+        for (String col : columns) {
+          XhtmlNode td = tr.td();
+          boolean first = true;
+          List<DataType> list = row.get(col);
+          if (list != null) {
+            for (DataType value : list) {
+              if (first) first = false; else td.tx(", ");
+              render(td, value);
+            }
+          }
+        }
+      }      
+    }
   }
 }

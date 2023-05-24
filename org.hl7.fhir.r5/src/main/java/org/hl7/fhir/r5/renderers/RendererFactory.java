@@ -91,6 +91,9 @@ public class RendererFactory {
     if ("Requirements".equals(resourceName)) {
       return new RequirementsRenderer(context);
     }
+    if ("SubscriptionTopic".equals(resourceName)) {
+      return new SubscriptionTopicRenderer(context);
+    }
     if ("StructureMap".equals(resourceName)) {
       return new StructureMapRenderer(context);
     }

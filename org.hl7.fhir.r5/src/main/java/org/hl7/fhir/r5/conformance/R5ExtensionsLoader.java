@@ -62,7 +62,6 @@ public class R5ExtensionsLoader {
   private BasePackageCacheManager pcm;
   private int count;
   private NpmPackage pckCore;
-  private NpmPackage pckExt;
   private Map<String, Loadable<ValueSet>> valueSets;
   private Map<String, Loadable<CodeSystem>> codeSystems;
   private List<Loadable<StructureDefinition>> structures;
@@ -82,8 +81,6 @@ public class R5ExtensionsLoader {
   public void load() throws FHIRException, IOException {
     pckCore = pcm.loadPackage("hl7.fhir.r5.core", "5.0.0");
     loadDetails(pckCore); 
-    pckExt = pcm.loadPackage("hl7.fhir.uv.extensions", "1.0.0");
-    loadDetails(pckExt); 
   }
 
   private void loadDetails(NpmPackage pck) throws IOException {
@@ -103,34 +100,70 @@ public class R5ExtensionsLoader {
     }
   }
   
-  public void loadR5Extensions() throws FHIRException, IOException {
-    count = 0;
-    List<String> typeNames = new ContextUtilities(context).getTypeNames();
-    for (Loadable<StructureDefinition> lsd : structures) {
-      if (lsd.info.getStatedType().equals("Extension") && !context.hasResource(StructureDefinition.class, lsd.info.getUrl())) {
-        StructureDefinition sd = lsd.getResource();
-        if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
-          if (survivesStrippingTypes(sd, context, typeNames)) {
-            count++;
-            sd.setWebPath(Utilities.pathURL(pckExt.getWebLocation(), "extension-"+sd.getId().toLowerCase()+".html"));
-            registerTerminologies(sd);
-            context.cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
-          }
-        }
-      }
-    }
-  }
+//  public void loadR5Extensions() throws FHIRException, IOException {
+//    count = 0;
+//    List<String> typeNames = new ContextUtilities(context).getTypeNames();
+//    for (Loadable<StructureDefinition> lsd : structures) {
+//      if (lsd.info.getStatedType().equals("Extension") && !context.hasResource(StructureDefinition.class, lsd.info.getUrl())) {
+//        StructureDefinition sd = lsd.getResource();
+//        if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
+//          if (survivesStrippingTypes(sd, context, typeNames)) {
+//            count++;
+//            sd.setWebPath(Utilities.pathURL(pckExt.getWebLocation(), "extension-"+sd.getId().toLowerCase()+".html"));
+//            registerTerminologies(sd);
+//            context.cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
+//          }
+//        }
+//      }
+//    }
+//  }
 
   public void loadR5SpecialTypes(List<String> types) throws FHIRException, IOException {
     for (Loadable<StructureDefinition> lsd : structures) {
-      StructureDefinition sd = lsd.getResource();
-      if (Utilities.existsInList(sd.getType(), types)) {
+      if (Utilities.existsInList(lsd.info.getId(), types)) {
+        StructureDefinition sd = lsd.getResource();
         count++;
+        for (ElementDefinition ed : sd.getDifferential().getElement()) {
+          if (!stripTypes(ed, sd, types)) {
+            System.out.println("A problem...");
+          }
+        }
+        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+          if (!stripTypes(ed, sd, types)) {
+            System.out.println("A problem...");
+          }
+        } 
         sd.setWebPath(Utilities.pathURL(lsd.source.getWebLocation(), sd.getId().toLowerCase()+".html"));
         registerTerminologies(sd);
         context.cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
       }
     }    
+  }
+  
+  private boolean stripTypes(ElementDefinition ed, StructureDefinition sd, List<String> types) {
+    if (!ed.getPath().contains(".") || !ed.hasType()) {
+      return true;
+    }
+    ed.getType().removeIf(tr -> context.fetchTypeDefinition(tr.getWorkingCode()) == null);
+    if (!ed.hasType()) {
+      return false;
+    }
+    for (TypeRefComponent tr : ed.getType()) {
+      if (tr.hasTargetProfile()) {
+        tr.getTargetProfile().removeIf(n -> !context.hasResource(StructureDefinition.class, n.asStringValue()) && !n.asStringValue().equals(sd.getUrl()) && !types.contains(tail(n.asStringValue())));
+        if (!tr.hasTargetProfile()) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  private Object tail(String s) {
+    if (s == null || !s.contains("/")) {
+      return s;
+    }
+    return s.substring(s.lastIndexOf("/")+1);
   }
 
   private void registerTerminologies(StructureDefinition sd) throws FHIRFormatError, FileNotFoundException, IOException {
@@ -217,9 +250,6 @@ public class R5ExtensionsLoader {
     return pckCore;
   }
 
-  public NpmPackage getPckExt() {
-    return pckExt;
-  }
 
 
   
