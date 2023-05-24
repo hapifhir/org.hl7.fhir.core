@@ -495,6 +495,11 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
     return getValue();
   }
 
+  @Override
+  public String asStringValue() {
+    return getValue();
+  }
+
   /**
    * Set the value
    * <p>

@@ -410,6 +410,11 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   }
 
   @Override
+  public String asStringValue() {
+    return getValue();
+  }
+
+  @Override
   public String getVersionIdPart() {
     return myUnqualifiedVersionId;
   }
