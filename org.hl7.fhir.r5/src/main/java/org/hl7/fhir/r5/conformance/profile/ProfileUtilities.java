@@ -133,7 +133,8 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
 public class ProfileUtilities extends TranslatingUtilities {
 
   public class ElementDefinitionCounter {
-    int count = 0;
+    int countMin = 0;
+    int countMax = 0;
     ElementDefinition focus;
     Set<String> names = new HashSet<>();
 
@@ -141,15 +142,40 @@ public class ProfileUtilities extends TranslatingUtilities {
       focus = ed;
     }
 
-    public int update() {
-      if (count > focus.getMin()) {
-        return count;
-      }      
-      return -1;
+    public int checkMin() {
+      if (countMin > focus.getMin()) {
+        return countMin;
+      } else {     
+        return -1;
+      }
+    }
+
+    public int checkMax() {
+      if (countMax > max(focus.getMax())) {
+        return countMax;
+      } else {     
+        return -1;
+      }
+    }
+
+    private int max(String max) {
+      if ("*".equals(max)) {
+        return Integer.MAX_VALUE;
+      } else {
+        return Integer.parseInt(max);
+      }
     }
 
     public boolean count(ElementDefinition ed, String name) {
-      count = count + ed.getMin();
+      countMin = countMin + ed.getMin();
+      if (countMax < Integer.MAX_VALUE) {
+        int m = max(ed.getMax());
+        if (m == Integer.MAX_VALUE) {
+          countMax = m;
+        } else {
+          countMax = countMax + m;
+        }
+      }
       boolean ok = !names.contains(name);
       names.add(name);
       return ok;
@@ -159,6 +185,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       return focus;
     }
 
+    public boolean checkMinMax() {
+      return countMin <= countMax;
+    }
   }
 
   public enum MappingMergeModeOption {
@@ -727,13 +756,11 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (tn.contains("/")) {
           tn = tn.substring(tn.lastIndexOf("/")+1);
         }
-//        System.out.println("Check slicing for "+derived.getVersionedUrl());
         Map<String, ElementDefinitionCounter> slices = new HashMap<>();
         int i = 0;
         for (ElementDefinition ed : derived.getSnapshot().getElement()) {
           if (ed.hasSlicing()) {
             slices.put(ed.getPath(), new ElementDefinitionCounter(ed));            
-//            System.out.println("Entering slicing for "+ed.getPath()+" ["+i+"]");
           } else {
             Set<String> toRemove = new HashSet<>();
             for (String s : slices.keySet()) {
@@ -742,14 +769,20 @@ public class ProfileUtilities extends TranslatingUtilities {
               }
             }
             for (String s : toRemove) {
-              int count = slices.get(s).update();
+              int count = slices.get(s).checkMin();
               if (count > -1) {
                 String msg = "The slice definition for "+slices.get(s).getFocus().getId()+" has a minimum of "+slices.get(s).getFocus().getMin()+" but the slices add up to a minimum of "+count; 
-                //+" so the value has been adjusted in the snapshot"; we don't adjust it because of downstream effects. But if it's for publication, they better get it right. 
-//                System.out.println(msg);
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, forPublication ? ValidationMessage.IssueSeverity.ERROR : ValidationMessage.IssueSeverity.INFORMATION));                            
               }
-//              System.out.println("Exiting slicing for "+s+" at "+ed.getPath()+" ["+i+"]");
+              count = slices.get(s).checkMax();
+              if (count > -1) {
+                String msg = "The slice definition for "+slices.get(s).getFocus().getId()+" has a maximum of "+slices.get(s).getFocus().getMax()+" but the slices add up to a maximum of "+count+". Check that this is what is intended"; 
+                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.INFORMATION));                                            
+              }
+              if (!slices.get(s).checkMinMax()) {
+                String msg = "The slice definition for "+slices.get(s).getFocus().getId()+" has a maximum of "+slices.get(s).getFocus().getMin()+" which is less than the minimum of "+slices.get(s).getFocus().getMin(); 
+                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.WARNING));                                                            
+              }
               slices.remove(s);
             }            
           }
