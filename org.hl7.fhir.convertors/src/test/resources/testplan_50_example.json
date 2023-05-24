@@ -1,0 +1,54 @@
+{
+  "resourceType": "TestPlan",
+  "id": "example1",
+  "url": "http://hl7.org/fhir/TestPlan/example1",
+  "name": "ExampleTestPlan1",
+  "title": "Example TestPlan 1",
+  "date": "2023-05-17T23:02:30.239Z",
+  "description": "Example TestPlan for testing",
+  "status": "active",
+  "publisher": "Health Level 7 (HL7) International",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/testscript-scope-phase-codes",
+          "code": "integration"
+        }
+      ]
+    }
+  ],
+  "testCase": [
+    {
+      "sequence": 1,
+      "testRun": [
+        {
+          "narrative": "Read JSON formatted Observation and validate against the Dev Satisfaction IG",
+          "script": {
+            "language": {
+              "coding": [
+                {
+                  "system": "http://example.org/fhir/testplan/language",
+                  "code": "testscript"
+                }
+              ]
+            },
+            "sourceString":  "http://hl7.org/fhir/TestScript/example1"
+          }
+        }
+      ],
+      "testData": [
+        {
+          "type": {
+            "system": "http://example.org/fhir/testplan/testData-type",
+            "code": "example"
+          },
+          "content": {
+            "reference": "Observation/example1"
+          },
+          "sourceString": "http://hl7.org/fhir/Observation/example1"
+        }
+      ]
+    }
+  ]
+}

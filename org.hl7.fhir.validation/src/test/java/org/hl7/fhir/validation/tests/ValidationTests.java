@@ -109,7 +109,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
-  private static final boolean BUILD_NEW = false;
+  private static final boolean BUILD_NEW = true;
   private static final boolean CLONE = true;
 
   @Parameters(name = "{index}: id {0}")

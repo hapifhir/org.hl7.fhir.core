@@ -5307,7 +5307,7 @@ public class Bundle extends Resource implements IBaseBundle {
   public BundleLinkComponent getLink(String theRelation) { 
     org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty"); 
     for (BundleLinkComponent next : getLink()) { 
-      if (theRelation.equals(next.getRelation())) { 
+      if (theRelation.equals(next.getRelation().toCode())) { 
         return next; 
       } 
     } 

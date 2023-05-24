@@ -182,7 +182,7 @@ public class SnapShotGenerationXTests {
       else
         source = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.xml"));
       if (!fail)
-        expected = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-expected.xml"));
+        expected = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-output.xml"));
       if (!Utilities.noString(include))
         included = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", include + ".xml"));
       if (!Utilities.noString(register)) {
@@ -473,8 +473,7 @@ public class SnapShotGenerationXTests {
     pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors, false);
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
-    IOUtils.copy(TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected.xml")));
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-actual.xml")), test.getOutput());
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml")), test.getOutput());
     Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
 
@@ -544,11 +543,10 @@ public class SnapShotGenerationXTests {
     if (!fail) {
       test.output = output;
       UtilitiesXTests.context(version).cacheResource(output);
-      File dst = new File(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected.xml"));
+      File dst = new File(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml"));
       if (dst.exists())
         dst.delete();
-      IOUtils.copy(TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(dst));
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-actual.xml")), output);
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml")), output);
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);
       StructureDefinition t2 = test.output.copy();
