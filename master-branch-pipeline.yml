@@ -49,6 +49,7 @@ jobs:
     parameters:
       modulesToCache:
         ${{ parameters.modulesToCache.modules }}
+      signArtifacts: true
   - template: test-unit-jobs-template.yml
     parameters:
       testUnits:

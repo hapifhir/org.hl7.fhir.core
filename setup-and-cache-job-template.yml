@@ -19,6 +19,8 @@ jobs:
         inputs:
           targetType: 'inline'
           script: mkdir -p $(MAVEN_CACHE_FOLDER); pwd; ls -al $(MAVEN_CACHE_FOLDER)
+      - ${{ if eq(parameters.signArtifacts, true) }}:
+        - template: setup-signing-tasks-template.yml
       - task: Maven@3
         inputs:
           mavenPomFile: 'pom.xml'
