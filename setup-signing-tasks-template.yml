@@ -1,4 +1,4 @@
-tasks:
+steps:
   # We need a valid signing key.
   # The next two steps download the public and private keys from the
   # secure library files.
