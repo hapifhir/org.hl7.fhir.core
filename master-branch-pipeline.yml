@@ -38,9 +38,11 @@ parameters:
         - validation
 
 variables:
-- group: PGP_VAR_GROUP
-- group: SONATYPE_VAR_GROUP
-- group: GIT_VAR_GROUP
+  - group: PGP_VAR_GROUP
+  - group: SONATYPE_VAR_GROUP
+  - group: GIT_VAR_GROUP
+  - name: MAVEN_CACHE_FOLDER
+    value: $(Pipeline.Workspace)/.m2/repository
 
 jobs:
   - template: setup-and-cache-job-template.yml
@@ -87,7 +89,7 @@ jobs:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
-          options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToSonatype'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToSonatype'
           mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
           publishJUnitResults: false
 
@@ -101,6 +103,6 @@ jobs:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
-          options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToGitHub'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToGitHub'
           mavenOptions: '-Xmx768m  -Dmaven.resolver.transport=wagon'
           publishJUnitResults: false
