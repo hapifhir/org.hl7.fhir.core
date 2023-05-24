@@ -94,6 +94,9 @@ public class RendererFactory {
     if ("StructureMap".equals(resourceName)) {
       return new StructureMapRenderer(context);
     }
+    if ("TestPlan".equals(resourceName)) {
+        return new TestPlanRenderer(context);
+      }
     return new ProfileDrivenRenderer(context);    
   }
 
@@ -146,7 +149,7 @@ public class RendererFactory {
     return Utilities.existsInList(rt, 
         "CodeSystem", "ValueSet", "ConceptMap", 
         "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", 
-        "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements");
+        "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements", "TestPlan");
   }
 
   /**
