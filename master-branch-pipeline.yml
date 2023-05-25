@@ -86,7 +86,7 @@ jobs:
         displayName: 'Deploy to Sonatype staging'
         inputs:
           mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
-          goals: deploy:deploy
+          goals: jar:jar deploy:deploy
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
