@@ -23,7 +23,7 @@ steps:
   # For creating the snapshot release with maven, we need to build a fake settings.xml
   # for it to read from. This is done for the master branch merges only.
   - bash: |
-      cat >$(System.DefaultWorkingDirectory)/settings.xml <<EOL
+      cat >$(Agent.TempDirectory)/settings.xml <<EOL
       <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
@@ -62,4 +62,4 @@ steps:
         </profiles>
       </settings>
       EOL
-    displayName: 'Create .mvn/settings.xml'
+    displayName: 'Create settings.xml'

@@ -90,7 +90,7 @@ jobs:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
-          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToSonatype'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(Agent.TempDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToSonatype'
           mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
           publishJUnitResults: false
 
@@ -123,6 +123,6 @@ jobs:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
-          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToGitHub'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(Agent.TempDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToGitHub'
           mavenOptions: '-Xmx768m  -Dmaven.resolver.transport=wagon'
           publishJUnitResults: false
