@@ -322,6 +322,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       locator = other.locator;
       userAgent = other.userAgent;
       tcc.copy(other.tcc);
+      cachingAllowed = other.cachingAllowed;
     }
   }
   
@@ -1050,9 +1051,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       codeSystemsUsed.add(code.getSystem());
     }
 
-    final CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs, expParameters) : null;
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, expParameters) : null;
     ValidationResult res = null;
-    if (txCache != null) {
+    if (cachingAllowed && txCache != null) {
       res = txCache.getValidation(cacheToken);
     }
     if (res != null) {
@@ -1072,7 +1073,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         vsc.setThrowToServer(options.isUseServer() && tcc.getClient() != null);
         if (!ValueSetUtilities.isServerSide(code.getSystem())) {
           res = vsc.validateCode(path, code);
-          if (txCache != null) {
+          if (txCache != null && cachingAllowed) {
             txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
           }
           return res;
@@ -1107,8 +1108,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (noTerminologyServer) {
       return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, issues);
     }
-    String csumm =  txCache != null ? txCache.summary(code) : null;
-    if (txCache != null) {
+    String csumm =cachingAllowed && txCache != null ? txCache.summary(code) : null;
+    if (cachingAllowed && txCache != null) {
       txLog("$validate "+csumm+" for "+ txCache.summary(vs));
     } else {
       txLog("$validate "+csumm+" before cache exists");
@@ -1123,7 +1124,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res.setDiagnostics("Local Error: "+localError.trim()+". Server Error: "+res.getMessage());
     }
     updateUnsupportedCodeSystems(res, code, codeKey);
-    if (txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
+    if (cachingAllowed && txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     }
     return res;
@@ -1204,9 +1205,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, expParameters);
-    ValidationResult res = txCache.getValidation(cacheToken);
-    if (res != null) {
-      return res;
+    ValidationResult res = null;
+    if (cachingAllowed) {
+      res = txCache.getValidation(cacheToken);
+      if (res != null) {
+        return res;
+      }
     }
     for (Coding c : code.getCoding()) {
       if (c.hasSystem()) {
@@ -1222,7 +1226,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         vsc.setUnknownSystems(unknownSystems);
         vsc.setThrowToServer(options.isUseServer() && tcc.getClient() != null);
         res = vsc.validateCode("CodeableConcept", code);
-        txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
+        if (cachingAllowed) {
+          txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
+        }
         return res;
       } catch (Exception e) {
         e.printStackTrace();
@@ -1247,7 +1253,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage(), null).setTxLink(txLog == null ? null : txLog.getLastId());
     }
-    txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
+    if (cachingAllowed) {
+      txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
+    }
     return res;
   }
 
@@ -1919,6 +1927,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected IWorkerContextManager.IPackageLoadingTracker packageTracker;
   private boolean forPublication;
+  private boolean cachingAllowed = true;
 
   @Override
   public Resource fetchResourceById(String type, String uri) {
@@ -2476,6 +2485,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
   public void setForPublication(boolean value) {
     forPublication = value;
+  }
+
+  public boolean isCachingAllowed() {
+    return cachingAllowed;
+  }
+
+  public void setCachingAllowed(boolean cachingAllowed) {
+    this.cachingAllowed = cachingAllowed;
   }
 
 }
