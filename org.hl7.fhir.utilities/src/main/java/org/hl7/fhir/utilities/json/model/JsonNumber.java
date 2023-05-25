@@ -14,6 +14,10 @@ public class JsonNumber extends JsonPrimitive {
     this.value = Integer.toString(value);
   }
 
+  public JsonNumber(long value) {
+    this.value = Long.toString(value);
+  }
+
   private JsonNumber() {
   }
 
