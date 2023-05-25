@@ -119,7 +119,7 @@ jobs:
         displayName: 'Deploy to GitHub packages'
         inputs:
           mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
-          goals: deploy
+          goals: jar:jar deploy:deploy
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
