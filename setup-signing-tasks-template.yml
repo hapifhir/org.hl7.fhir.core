@@ -1,0 +1,65 @@
+steps:
+  # We need a valid signing key.
+  # The next two steps download the public and private keys from the
+  # secure library files.
+  - task: DownloadSecureFile@1
+    displayName: 'Download public key.'
+    inputs:
+      secureFile: public.key
+
+  - task: DownloadSecureFile@1
+    displayName: 'Download private key.'
+    inputs:
+      secureFile: private.key
+
+  # Import both the private and public keys into gpg for signing.
+  - bash: |
+      gpg --import --no-tty --batch --yes $(Agent.TempDirectory)/public.key
+      gpg --import --no-tty --batch --yes $(Agent.TempDirectory)/private.key
+      gpg --list-keys --keyid-format LONG
+      gpg --list-secret-keys --keyid-format LONG
+    displayName: 'Import signing keys.'
+
+  # For creating the snapshot release with maven, we need to build a fake settings.xml
+  # for it to read from. This is done for the master branch merges only.
+  - bash: |
+      cat >$(Agent.TempDirectory)/settings.xml <<EOL
+      <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                                    https://maven.apache.org/xsd/settings-1.0.0.xsd">
+        <servers>
+          <server>
+            <id>github</id>
+            <username>$(GIT_USER_NAME)</username>
+            <password>$(GIT_PAT)</password>
+          </server>
+          <server>
+            <id>ossrh</id>
+            <username>$(SONATYPE_USER)</username>
+            <password>$(SONATYPE_PASS)</password>
+          </server>
+          <server>
+            <id>$(PGP_KEYNAME)</id>
+            <passphrase>$(PGP_PASSPHRASE)</passphrase>
+          </server>
+          <server>
+            <id>github-releases</id>
+            <username>markiantorno</username>
+            <password>$(GIT_PACKAGE_PAT)</password>
+          </server>
+        </servers>
+        <profiles>
+          <profile>
+            <id>release</id>
+            <activation>
+              <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+              <gpg.keyname>$(PGP_KEYNAME)</gpg.keyname>
+            </properties>
+          </profile>
+        </profiles>
+      </settings>
+      EOL
+    displayName: 'Create settings.xml'
