@@ -148,6 +148,11 @@ public class ShexGeneratorTests {
   }
 
   @Test
+  public void testCanonical() throws FHIRException, IOException, UcumException {
+    doTest("canonical", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+  }
+
+  @Test
   public void testTiming() throws FHIRException, IOException, UcumException {
     doTest("Timing", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }

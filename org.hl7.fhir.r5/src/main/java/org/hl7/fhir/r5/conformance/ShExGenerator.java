@@ -1812,7 +1812,7 @@ public class ShExGenerator {
       restriction = "AND {fhir:l \n\t\t\t@<";
 
       String choices = oneOrMoreType.split(ONE_OR_MORE_CHOICES)[1];
-      restriction += choices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> }";
+      restriction += choices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> ?}";
     }
 
     origType = origType.replaceAll(ONE_OR_MORE_PREFIX, "");
