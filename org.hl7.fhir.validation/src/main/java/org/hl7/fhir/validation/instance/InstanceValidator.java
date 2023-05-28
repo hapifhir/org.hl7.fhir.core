@@ -1507,7 +1507,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
                     if (vr != null && !vr.isOk()) {
                       if (vr.IsNoService())
-                        txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
+                        txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER, system+"#"+code);
                       else if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
                         if (binding.getStrength() == BindingStrength.REQUIRED)
                           txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(binding.getValueSet(), valueset), vr.getMessage(), system+"#"+code);
@@ -1680,7 +1680,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
-            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset), vr.getMessage());
+            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset), vr.getMessage(), c.getSystem()+"#"+c.getCode());
           else
             ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_10, describeReference(maxVSUrl, valueset), c.getSystem(), c.getCode()) && ok;
         }
@@ -1709,7 +1709,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         timeTracker.tx(t, "vc "+value);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
-            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset), vr.getMessage());
+            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset), vr.getMessage(), value);
           else {
             ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_11, describeReference(maxVSUrl, valueset), vr.getMessage()) && ok;
           }
@@ -1785,7 +1785,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
                     if (vr != null && !vr.isOk()) {
                       if (vr.IsNoService())
-                        txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
+                        txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER, theSystem+"#"+theCode);
                       else if (vr.getErrorClass() != null && !vr.getErrorClass().isInfrastructure()) {
                         if (binding.getStrength() == BindingStrength.REQUIRED)
                           ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(binding.getValueSet(), valueset), vr.getMessage(), theSystem+"#"+theCode) && ok;
@@ -3020,11 +3020,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             removeTrackedMessagesForLocation(errors, element, path);
           }
           if (vr != null && !vr.isOk()) {
-            if (vr.IsNoService())
+            if (vr.IsNoService()) {
               txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_15, value);
-            else if (binding.getStrength() == BindingStrength.REQUIRED)
+            } else if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+              txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_15A, value, vr.unknownSystems(), describeReference(binding.getValueSet()));
+            } else if (binding.getStrength() == BindingStrength.REQUIRED) {
               ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_16, value, describeReference(binding.getValueSet(), vs), getErrorMessage(vr.getMessage())) && ok;
-            else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
+            } else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
               if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
                 ok = checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), value, stack) && ok;
               else if (!noExtensibleWarnings && !isOkExtension(value, vs))
