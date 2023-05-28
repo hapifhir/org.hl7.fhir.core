@@ -304,7 +304,7 @@ public class ProfilePathProcessor {
         if (profileUtilities.hasInnerDiffMatches(getDifferential(), currentBasePath, cursors.diffCursor, getDiffLimit(), cursors.base.getElement(), false)) {
           if (baseHasChildren(cursors.base, currentBase)) { // not a new type here
             if (cursors.diffCursor == 0) {
-              throw new DefinitionException("Error: The profile has slicing at the root, which is illegal"); 
+              throw new DefinitionException("Error: The profile has slicing at the root ('"+currentBase.getPath()+"'), which is illegal");
             } else {
               throw new Error("This situation is not yet handled (constrain slicing to 1..1 and fix base slice for inline structure - please report issue to grahame@fhir.org along with a test case that reproduces this error (@ " + currentBasePath + " | " + currentBase.getPath() + ")");
             }
@@ -766,6 +766,7 @@ public class ProfilePathProcessor {
     outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
     profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
     profileUtilities.updateConstraintSources(outcome, getSourceStructureDefinition().getUrl());
+    profileUtilities.updateFromObligationProfiles(outcome);
     profileUtilities.updateURLs(url, webUrl, outcome);
     profileUtilities.markDerived(outcome);
     if (cursors.resultPathBase == null)

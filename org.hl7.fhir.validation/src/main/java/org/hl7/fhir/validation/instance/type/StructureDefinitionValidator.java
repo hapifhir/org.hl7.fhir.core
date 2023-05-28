@@ -123,24 +123,178 @@ public class StructureDefinitionValidator extends BaseValidator {
               I18nConstants.SD_DERIVATION_KIND_MISMATCH, base.getKindElement().primitiveValue(), src.getChildValue("kind")) && ok;
         }
       }
+
+      List<Element> differentials = src.getChildrenByName("differential");
+      List<Element> snapshots = src.getChildrenByName("snapshot");
+      boolean logical = "logical".equals(src.getNamedChildValue("kind"));
+      boolean constraint = "constraint".equals(src.getNamedChildValue("derivation"));
+      for (Element differential : differentials) {
+        ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint) && ok;
+      }
+      for (Element snapshotE : snapshots) {
+        ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint) && ok;
+      }
+      
+      // obligation profile support
+      if (src.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) {
+        Element ext = src.getExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG);
+        Element value = ext.getNamedChild("value");
+        if (value != null && "true".equals(value.primitiveValue())) {
+          if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), "constraint".equals(src.getNamedChildValue("derivation")), I18nConstants.SD_OBGLIGATION_PROFILE_DERIVATION)) {
+            if (warning(errors, "2023-05-27", IssueType.NOTFOUND, stack.getLiteralPath(), base != null, I18nConstants.SD_OBGLIGATION_PROFILE_UKNOWN, src.getNamedChildValue("baseDefinition"))) {
+              for (Element differential : differentials) {
+                ok = validateObligationProfile(errors, differential, stack.push(differential, -1, null, null), base) && ok;
+              }
+            }
+          }
+        }
+      }
+      List<Element> extensions = src.getChildren("extension");
+      int c = 0;
+      for (Element extension : extensions) {
+        if (ToolingExtensions.EXT_OBLIGATION_INHERITS.equals(extension.getNamedChildValue("url"))) {
+          ok = validateInheritsObligationProfile(errors, extension, stack.push(extension, c, null, null), src) && ok;
+        }
+        c++;
+      }
     } catch (Exception e) {
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
       ok = false;
     }
-     
-    List<Element> differentials = src.getChildrenByName("differential");
-    List<Element> snapshots = src.getChildrenByName("snapshot");
-    boolean logical = "logical".equals(src.getNamedChildValue("kind"));
-    boolean constraint = "constraint".equals(src.getNamedChildValue("derivation"));
-    for (Element differential : differentials) {
-      ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint) && ok;
-    }
-    for (Element snapshot : snapshots) {
-      ok = validateElementList(errors, snapshot, stack.push(snapshot, -1, null, null), true, true, sd, typeName, logical, constraint) && ok;
-    }
     return ok;
   }
   
+
+  private boolean validateInheritsObligationProfile(List<ValidationMessage> errors, Element extension, NodeStack stack, Element src) {
+    String tgt = extension.getNamedChildValue("value");
+    if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), tgt != null, 
+        I18nConstants.SD_OBGLIGATION_INHERITS_PROFILE_NO_TARGET)) {
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, tgt);
+      if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), src != null, 
+          I18nConstants.SD_OBGLIGATION_INHERITS_PROFILE_TARGET_NOT_FOUND, tgt))  {
+        if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG), 
+            I18nConstants.SD_OBGLIGATION_INHERITS_PROFILE_NOT_RIGHT_TYPE, tgt)) {
+          String base = src.getNamedChildValue("baseDefinition");
+          if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), base != null && base.equals(sd.getBaseDefinition()), 
+              I18nConstants.SD_OBGLIGATION_INHERITS_PROFILE_NOT_RIGHT_BASE, tgt, sd.getBaseDefinition(), base)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean validateObligationProfile(List<ValidationMessage> errors, Element elementList, NodeStack stack, StructureDefinition base) {
+    boolean ok = true;
+    List<Element> elements = elementList.getChildrenByName("element");
+    int cc = 0;
+    for (Element element : elements) {
+      ok = validateObligationProfileElement(errors, element, stack.push(element, cc, null, null), base) && ok;
+      cc++;
+    }    
+    return ok;
+  }
+
+  private boolean validateObligationProfileElement(List<ValidationMessage> errors, Element element, NodeStack push, StructureDefinition base) {
+    // rules: it must exist in the base snapshot 
+    // it must only add must-support, obligations and extra bindings
+    String id = element.getNamedChildValue("id");
+    ElementDefinition bd = base.getSnapshot().getElementById(id);
+    if (rule(errors, "2023-05-27", IssueType.INVALID, push.getLiteralPath(), bd != null, I18nConstants.SD_OBGLIGATION_PROFILE_UNMATCHED, id, base.getVersionedUrl())) {
+      boolean ok = true;
+      String name = null;
+      int c = 0;
+      for (Element child : element.getChildren()) {
+        if (child.getName().equals(name)) {
+          c++;
+        } else {
+          name = child.getName();
+          c = 0;
+        }
+        NodeStack stack = push.push(child, c, null, null);
+        if (child.getName().equals("extension")) {
+          String url = child.getNamedChildValue("url");
+          if ("http://hl7.org/fhir/tools/StructureDefinition/obligation".equals(url)) {
+            // this is ok, and it doesn't matter what's in the obligation
+          } else {
+            ok = false;
+            rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), false, 
+                I18nConstants.SD_OBGLIGATION_PROFILE_ILLEGAL, id, child.getName()+"#"+url);
+          }
+        } else if (child.getName().equals("mustSupport")) {
+          // this is ok, and there's nothing to check 
+        } else if (child.getName().equals("id")) {
+          // this is ok (it must have this), and there's nothing to check 
+        } else if (child.getName().equals("binding")) {
+          if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), bd.hasBinding(), 
+                I18nConstants.SD_OBGLIGATION_PROFILE_ILLEGAL_BINDING, id)) {
+            ok = validateObligationProfileElementBinding(errors, child, stack, id, bd)  && ok;
+          } else {
+            ok = false;
+          }
+        } else if (child.getName().equals("path")) {
+          ok = rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), child.primitiveValue().equals(bd.getPath()), 
+              I18nConstants.SD_OBGLIGATION_PROFILE_PATH_WRONG, id, child.primitiveValue(), bd.getPath()) && ok;
+        } else {
+          ok = false;
+          rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), false, 
+              I18nConstants.SD_OBGLIGATION_PROFILE_ILLEGAL, id, child.getName());
+        }
+      }
+      return ok;
+    } else {
+      return false;
+    }
+  }
+  
+  private boolean validateObligationProfileElementBinding(List<ValidationMessage> errors, Element element, NodeStack nstack, String id, ElementDefinition bd) {
+    // rules can only have additional bindings 
+    boolean ok = true;
+    String name = null;
+    int c = 0;
+    for (Element child : element.getChildren()) {
+      if (child.getName().equals(name)) {
+        c++;
+      } else {
+        name = child.getName();
+        c = 0;
+      }
+      NodeStack stack = nstack.push(child, c, null, null);
+      if (child.getName().equals("extension")) {
+        String url = child.getNamedChildValue("url");
+        if ("http://hl7.org/fhir/tools/StructureDefinition/additional-binding".equals(url) && !VersionUtilities.isR5Plus(context.getVersion())) {
+          Element purpose = child.getExtension("purpose");
+          if (purpose != null) { // should be an error elsewhere
+            String code = purpose.getNamedChildValue("value");
+
+            ok = rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), !Utilities.existsInList(code, "maximum", "required", "extensible"), 
+                I18nConstants.SD_OBGLIGATION_PROFILE_INVALID_BINDING_CODE, id, code) && ok;
+          }
+        } else {
+          ok = false;
+          rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), false, 
+              I18nConstants.SD_OBGLIGATION_PROFILE_ILLEGAL, id, child.getName()+"#"+url);
+        }
+      } else if (child.getName().equals("additional") && VersionUtilities.isR5Plus(context.getVersion())) {
+        String code = child.getNamedChildValue("purpose");
+        ok = rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), !Utilities.existsInList(code, "maximum", "required", "extensible"), 
+            I18nConstants.SD_OBGLIGATION_PROFILE_INVALID_BINDING_CODE, id, code) && ok;
+      } else if (child.getName().equals("strength")) {
+        // this has to be repeated, and has to be the same as the derivation
+        String strengthBase = bd.getBinding().getStrengthElement().asStringValue();
+        String strengthDerived = child.primitiveValue();
+        ok = rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), strengthBase != null && strengthBase.equals(strengthDerived), 
+            I18nConstants.SD_OBGLIGATION_PROFILE_INVALID_BINDING_STRENGTH, id, strengthDerived, strengthBase) && ok;        
+      } else {
+        ok = false;
+        rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), false, 
+            I18nConstants.SD_OBGLIGATION_PROFILE_ILLEGAL_ON_BINDING, id, child.getName());
+      }
+    }
+    return ok;
+  }
+
   private void checkExtensionContext(List<ValidationMessage> errors, Element src, NodeStack stack) {
     String type = src.getNamedChildValue("type");
     List<Element> eclist = src.getChildren("context");
@@ -194,7 +348,6 @@ public class StructureDefinitionValidator extends BaseValidator {
     rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), typeName == null || path == null || path.equals(typeName) || path.startsWith(typeName+"."), I18nConstants.SD_PATH_TYPE_MISMATCH, typeName, path);
     if (!snapshot) {
       rule(errors, "2023-01-17", IssueType.INVALID, stack.getLiteralPath(), path.contains(".") || !element.hasChild("slicing"), I18nConstants.SD_NO_SLICING_ON_ROOT, path);
-      
     }
     rule(errors, "2023-05-22", IssueType.NOTFOUND, stack.getLiteralPath(), snapshot || !constraint || !element.hasChild("meaningWhenMissing") || meaningWhenMissingAllowed(element), I18nConstants.SD_ELEMENT_NOT_IN_CONSTRAINT, "meaningWhenMissing", path);
     

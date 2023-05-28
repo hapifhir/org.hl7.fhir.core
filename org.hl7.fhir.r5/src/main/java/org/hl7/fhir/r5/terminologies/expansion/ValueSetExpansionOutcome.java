@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 
 /**
@@ -73,5 +74,11 @@ public class ValueSetExpansionOutcome {
   
   public boolean isOk() {
     return (allErrors.isEmpty() || (allErrors.size() == 1 && allErrors.get(0) == null)) && error == null;
+  }
+  public int count() {
+    if (valueset == null) {
+      return 0; 
+    }
+    return ValueSetUtilities.countExpansion(valueset);
   }
 }
