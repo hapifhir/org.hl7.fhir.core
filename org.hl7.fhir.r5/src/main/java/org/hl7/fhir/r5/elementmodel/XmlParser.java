@@ -441,8 +441,9 @@ public class XmlParser extends ParserBase {
                 parseChildren(npath, (org.w3c.dom.Element) child, n);
             }
           }
-        } else
+        } else {
           logError(ValidationMessage.NO_RULE_DATE, line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNDEFINED_ELEMENT_, child.getLocalName(), path), IssueSeverity.ERROR);
+        }
       } else if (child.getNodeType() == Node.CDATA_SECTION_NODE){
         logError(ValidationMessage.NO_RULE_DATE, line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.CDATA_IS_NOT_ALLOWED), IssueSeverity.ERROR);
       } else if (!Utilities.existsInList(child.getNodeType(), 3, 8)) {

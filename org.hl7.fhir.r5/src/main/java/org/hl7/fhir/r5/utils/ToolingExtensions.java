@@ -1067,4 +1067,7 @@ public class ToolingExtensions {
     return res;
   }
 
+  public static final String EXT_OBLIGATION_PROFILE_FLAG = "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile";
+  public static final String EXT_OBLIGATION_INHERITS = "http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations";
+
 }
