@@ -1368,7 +1368,9 @@ public class Element extends Base {
     dest.value = value;
     if (children != null) {
       dest.children = new ArrayList<>();
-      dest.children.addAll(children);
+      for (Element child : children) {
+        dest.children.add((Element) child.copy());
+      }
     } else {
       dest.children = null;
     }
