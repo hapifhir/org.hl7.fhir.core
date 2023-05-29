@@ -773,18 +773,20 @@ public class ProfileUtilities extends TranslatingUtilities {
               }
             }
             for (String s : toRemove) {
-              int count = slices.get(s).checkMin();
-              if (count > -1) {
-                String msg = "The slice definition for "+slices.get(s).getFocus().getId()+" has a minimum of "+slices.get(s).getFocus().getMin()+" but the slices add up to a minimum of "+count; 
+              ElementDefinitionCounter slice = slices.get(s);
+              int count = slice.checkMin();
+              boolean repeats = !"1".equals(slice.getFocus().getBase().getMax()); // type slicing if repeats = 1
+              if (count > -1 && repeats) {
+                String msg = "The slice definition for "+slice.getFocus().getId()+" has a minimum of "+slice.getFocus().getMin()+" but the slices add up to a minimum of "+count; 
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, forPublication ? ValidationMessage.IssueSeverity.ERROR : ValidationMessage.IssueSeverity.INFORMATION));                            
               }
-              count = slices.get(s).checkMax();
-              if (count > -1) {
-                String msg = "The slice definition for "+slices.get(s).getFocus().getId()+" has a maximum of "+slices.get(s).getFocus().getMax()+" but the slices add up to a maximum of "+count+". Check that this is what is intended"; 
+              count = slice.checkMax();
+              if (count > -1 && repeats) {
+                String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" but the slices add up to a maximum of "+count+". Check that this is what is intended"; 
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.INFORMATION));                                            
               }
-              if (!slices.get(s).checkMinMax()) {
-                String msg = "The slice definition for "+slices.get(s).getFocus().getId()+" has a maximum of "+slices.get(s).getFocus().getMin()+" which is less than the minimum of "+slices.get(s).getFocus().getMin(); 
+              if (!slice.checkMinMax()) {
+                String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" which is less than the minimum of "+slice.getFocus().getMin(); 
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.WARNING));                                                            
               }
               slices.remove(s);
