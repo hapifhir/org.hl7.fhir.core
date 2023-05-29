@@ -385,5 +385,21 @@ public class ValueSetUtilities {
     return code;  
   }
 
+  public static int countExpansion(ValueSet valueset) {
+    int i = valueset.getExpansion().getContains().size();
+    for (ValueSetExpansionContainsComponent t : valueset.getExpansion().getContains()) {
+      i = i + countExpansion(t);
+    }
+    return i;
+  }
+
+  private static int countExpansion(ValueSetExpansionContainsComponent c) {
+    int i = c.getContains().size();
+    for (ValueSetExpansionContainsComponent t : c.getContains()) {
+      i = i + countExpansion(t);
+    }
+    return i;
+  }
+
 
 }

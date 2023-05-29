@@ -493,6 +493,7 @@ public class ValueSetValidator {
             res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.NOTFOUND, path, m));
             res.setUnknownSystems(unknownSystems);
             res.setSeverity(IssueSeverity.ERROR); // back patching for display logic issue
+            res.setErrorClass(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
           } else if (!inExpansion && !inInclude) {
 //            if (!info.getIssues().isEmpty()) {
 //              res.setMessage("Not in value set "+valueset.getUrl()+": "+info.summary()).setSeverity(IssueSeverity.ERROR);              
