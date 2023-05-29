@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Delete unused package import that breaks downstream JavaDoc
