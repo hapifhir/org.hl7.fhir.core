@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -39,6 +40,8 @@ public class FhirSettingsPOJO {
   private String txFhirDevelopment;
   private String txFhirLocal;
 
+  private List<PackageServerPOJO> packageServers;
+
   protected FhirSettingsPOJO() {
     apiKeys = null;
     npmPath = null;
@@ -50,5 +53,7 @@ public class FhirSettingsPOJO {
     txFhirProduction = TX_SERVER_PROD;
     txFhirDevelopment = TX_SERVER_DEV;
     txFhirLocal = TX_SERVER_LOCAL;
+
+    packageServers = null;
   }
 }

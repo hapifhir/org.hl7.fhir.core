@@ -128,7 +128,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   
   public void init(FilesystemPackageCacheMode mode) throws IOException {
     myPackageServers.addAll(PackageServer.publicServers());
-
+    myPackageServers.addAll(PackageServer.fhirSettingsServers());
     switch (mode) {
     case SYSTEM:
       cacheFolder = Utilities.path("var", "lib", ".fhir", "packages");
