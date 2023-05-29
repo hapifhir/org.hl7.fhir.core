@@ -457,6 +457,17 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     ToolingExtensions.setStandardsStatus(this, status, null);
   }
 
+  public boolean hasExtension(Extension ext) {
+    if (hasExtension()) {
+      for (Extension t : getExtension()) {
+        if (Base.compareDeep(t, ext, false)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
 // end addition
 
 }

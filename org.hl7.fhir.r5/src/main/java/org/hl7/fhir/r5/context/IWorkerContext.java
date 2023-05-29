@@ -304,6 +304,17 @@ public interface IWorkerContext {
       return this;
     }
 
+    public String unknownSystems() {
+      if (unknownSystems == null) {
+        return null;
+      }
+      if (unknownSystems.size() == 1) {
+        return unknownSystems.iterator().next();        
+      } else {
+        return String.join(",", unknownSystems);
+      }
+    }
+
   }
 
   public class CodingValidationRequest {

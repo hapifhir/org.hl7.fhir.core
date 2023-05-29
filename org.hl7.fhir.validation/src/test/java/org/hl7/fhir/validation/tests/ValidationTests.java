@@ -36,6 +36,7 @@ import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -244,6 +245,13 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       val.setBaseOptions(val.getBaseOptions().withVersionFlexible(content.get("default-version").getAsBoolean()));
     } else {
       val.setBaseOptions(val.getBaseOptions().withVersionFlexible(false));
+    }
+    if (content.has("no-tx")) {
+      boolean notx = "true".equals(content.get("no-tx").getAsString());
+      ((SimpleWorkerContext) val.getContext()).setCanRunWithoutTerminology(notx);
+      ((SimpleWorkerContext) val.getContext()).setNoTerminologyServer(notx);
+      ((SimpleWorkerContext) val.getContext()).setCachingAllowed(!notx);
+
     }
     if (content.has("packages")) {
       for (JsonElement e : content.getAsJsonArray("packages")) {

@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBaseComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent;
@@ -349,7 +350,8 @@ public class ProfileUtilities extends TranslatingUtilities {
   private AllowUnknownProfile allowUnknownProfile = AllowUnknownProfile.ALL_TYPES;
   private MappingMergeModeOption mappingMergeMode = MappingMergeModeOption.APPEND;
   private boolean forPublication;
-
+  private List<StructureDefinition> obligationProfiles = new ArrayList<>();
+ 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
     this.context = context;
@@ -627,6 +629,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         checkDifferentialBaseType(derived);
 
         copyInheritedExtensions(base, derived);
+        
+        findInheritedObligationProfiles(derived);
         // so we have two lists - the base list, and the differential list
         // the differential list is only allowed to include things that are in the base list, but
         // is allowed to include them multiple times - thereby slicing them
@@ -850,6 +854,17 @@ public class ProfileUtilities extends TranslatingUtilities {
     } finally {
       derived.clearUserData("profileutils.snapshot.generating");
       snapshotStack.remove(derived.getUrl());
+    }
+  }
+
+  private void findInheritedObligationProfiles(StructureDefinition derived) {
+    for (Extension ext : derived.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS)) {
+      StructureDefinition op = context.fetchResource(StructureDefinition.class, ext.getValueCanonicalType().primitiveValue());
+      if (op != null && ToolingExtensions.readBoolExtension(op, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) {
+        if (derived.getBaseDefinition().equals(op.getBaseDefinition())) {
+          obligationProfiles.add(op);
+        }
+      }
     }
   }
 
@@ -2065,6 +2080,63 @@ public class ProfileUtilities extends TranslatingUtilities {
     return true;
   }
 
+
+  public void updateFromObligationProfiles(ElementDefinition base) {
+    List<ElementDefinition> obligationProfileElements = new ArrayList<>();
+    for (StructureDefinition sd : obligationProfiles) {
+      ElementDefinition ed = sd.getSnapshot().getElementById(base.getId());
+      if (ed != null) {
+        obligationProfileElements.add(ed);
+      }
+    }
+    for (ElementDefinition ed : obligationProfileElements) {
+      for (Extension ext : ed.getExtension()) {
+        if (ToolingExtensions.EXT_OBLIGATION.equals(ext.getUrl())) {
+          base.getExtension().add(ext.copy());
+        }      
+      }
+    }
+    boolean hasMustSupport = false;
+    for (ElementDefinition ed : obligationProfileElements) {
+      hasMustSupport = hasMustSupport || ed.hasMustSupportElement();
+    }
+    if (hasMustSupport) {
+      for (ElementDefinition ed : obligationProfileElements) {
+        mergeExtensions(base.getMustSupportElement(), ed.getMustSupportElement());
+        if (ed.getMustSupport()) {
+          base.setMustSupport(true);
+        }
+      }
+    }
+    boolean hasBinding = false;
+    for (ElementDefinition ed : obligationProfileElements) {
+      hasBinding = hasBinding || ed.hasBinding();
+    }
+    if (hasBinding) {
+      ElementDefinitionBindingComponent binding = base.getBinding();
+      for (ElementDefinition ed : obligationProfileElements) {
+        for (Extension ext : ed.getBinding().getExtension()) {
+          if (ToolingExtensions.EXT_BINDING_ADDITIONAL.equals(ext.getUrl())) {
+            String p = ext.getExtensionString("purpose");
+            if (!Utilities.existsInList(p, "maximum", "required", "extensible")) {
+              if (!binding.hasExtension(ext)) {
+                binding.getExtension().add(ext.copy());
+              }
+            }
+          }
+        }
+        for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditional()) {
+          if (!Utilities.existsInList(ab.getPurpose().toCode(), "maximum", "required", "extensible")) {
+            if (!binding.hasAdditional(ab)) {
+              binding.getAdditional().add(ab.copy());
+            }
+          }
+        }
+      }
+    }
+  }
+
+  
   protected void updateFromDefinition(ElementDefinition dest, ElementDefinition source, String pn, boolean trimDifferential, String purl, StructureDefinition srcSD, StructureDefinition derivedSrc) throws DefinitionException, FHIRException {
     source.setUserData(UD_GENERATED_IN_SNAPSHOT, dest);
     // we start with a clone of the base profile ('dest') and we copy from the profile ('source')
@@ -2073,11 +2145,29 @@ public class ProfileUtilities extends TranslatingUtilities {
     ElementDefinition derived = source;
     derived.setUserData(UD_DERIVATION_POINTER, base);
     boolean isExtension = checkExtensionDoco(base);
-
+    List<ElementDefinition> obligationProfileElements = new ArrayList<>();
+    for (StructureDefinition sd : obligationProfiles) {
+      ElementDefinition ed = sd.getSnapshot().getElementById(base.getId());
+      if (ed != null) {
+        obligationProfileElements.add(ed);
+      }
+    }
 
     for (Extension ext : source.getExtension()) {
       if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !dest.hasExtension(ext.getUrl())) {
         dest.getExtension().add(ext.copy());
+      }      
+    }
+    for (Extension ext : source.getExtension()) {
+      if (ToolingExtensions.EXT_OBLIGATION.equals(ext.getUrl())) {
+        dest.getExtension().add(ext.copy());
+      }      
+    }
+    for (ElementDefinition ed : obligationProfileElements) {
+      for (Extension ext : ed.getExtension()) {
+        if (ToolingExtensions.EXT_OBLIGATION.equals(ext.getUrl())) {
+          dest.getExtension().add(ext.copy());
+        }      
       }
     }
     // Before applying changes, apply them to what's in the profile
@@ -2282,12 +2372,23 @@ public class ProfileUtilities extends TranslatingUtilities {
       // todo: what to do about conditions?
       // condition : id 0..*
 
-      if (derived.hasMustSupportElement()) {
-        if (!(base.hasMustSupportElement() && Base.compareDeep(derived.getMustSupportElement(), base.getMustSupportElement(), false))) {
+      boolean hasMustSupport = derived.hasMustSupportElement();
+      for (ElementDefinition ed : obligationProfileElements) {
+        hasMustSupport = hasMustSupport || ed.hasMustSupportElement();
+      }
+      if (hasMustSupport) {
+        BooleanType mse = derived.getMustSupportElement().copy();
+        for (ElementDefinition ed : obligationProfileElements) {
+          mergeExtensions(mse, ed.getMustSupportElement());
+          if (ed.getMustSupport()) {
+            mse.setValue(true);
+          }
+        }
+        if (!(base.hasMustSupportElement() && Base.compareDeep(base.getMustSupportElement(), mse, false))) {
           if (base.hasMustSupport() && base.getMustSupport() && !derived.getMustSupport()) {
             messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Illegal constraint [must-support = false] when [must-support = true] in the base profile", ValidationMessage.IssueSeverity.ERROR));
           }
-          base.setMustSupportElement(derived.getMustSupportElement().copy());
+          base.setMustSupportElement(mse);
         } else if (trimDifferential)
           derived.setMustSupportElement(null);
         else
@@ -2324,7 +2425,32 @@ public class ProfileUtilities extends TranslatingUtilities {
           derived.getIsModifierReasonElement().setUserData(UD_DERIVATION_EQUALS, true);
       }
 
-      if (derived.hasBinding()) {
+      boolean hasBinding = derived.hasBinding();
+      for (ElementDefinition ed : obligationProfileElements) {
+        hasBinding = hasBinding || ed.hasBinding();
+      }
+      if (hasBinding) {
+        ElementDefinitionBindingComponent binding = derived.getBinding();
+        for (ElementDefinition ed : obligationProfileElements) {
+          for (Extension ext : ed.getBinding().getExtension()) {
+            if (ToolingExtensions.EXT_BINDING_ADDITIONAL.equals(ext.getUrl())) {
+              String p = ext.getExtensionString("purpose");
+              if (!Utilities.existsInList(p, "maximum", "required", "extensible")) {
+                if (!binding.hasExtension(ext)) {
+                  binding.getExtension().add(ext.copy());
+                }
+              }
+            }
+          }
+          for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditional()) {
+            if (!Utilities.existsInList(ab.getPurpose().toCode(), "maximum", "required", "extensible")) {
+              if (binding.hasAdditional(ab)) {
+                binding.getAdditional().add(ab.copy());
+              }
+            }
+          }
+        }
+        
         if (!base.hasBinding() || !Base.compareDeep(derived.getBinding(), base.getBinding(), false)) {
           if (base.hasBinding() && base.getBinding().getStrength() == BindingStrength.REQUIRED && derived.getBinding().getStrength() != BindingStrength.REQUIRED)
             messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "illegal attempt to change the binding on "+derived.getPath()+" from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode(), ValidationMessage.IssueSeverity.ERROR));
@@ -2365,7 +2491,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (d.hasValueSet()) {
             nb.setValueSet(d.getValueSet());
           }
-          base.setBinding(nb);
+          base.setBinding(nb); 
         } else if (trimDifferential)
           derived.setBinding(null);
         else
@@ -2460,6 +2586,10 @@ public class ProfileUtilities extends TranslatingUtilities {
       checkTypeOk(dest, dest.getPattern().fhirType(), srcSD, "pattern");
     }
     //updateURLs(url, webUrl, dest);
+  }
+
+  private void mergeExtensions(Element tgt, Element src) {
+     tgt.getExtension().addAll(src.getExtension());
   }
 
   private void addMappings(List<ElementDefinitionMappingComponent> destination, List<ElementDefinitionMappingComponent> source) {
