@@ -307,7 +307,18 @@ public class PackageList {
     return null;
   }
 
+  public PackageListEntry latest() {
+    for (PackageListEntry e : list) {
+      if (!"ci-build".equals(e.status())) {
+        return e;
+      }
+    }
+    return null;
+  }
+  
   public String intro() {
     return json.asString("introduction");
   }
+
+
 }
