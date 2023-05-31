@@ -720,6 +720,15 @@ public class NpmPackage {
   }
 
   /**
+   *  should only use this when npm == null
+   * 
+   * @param npm
+   */
+  public void setNpm(JsonObject npm) {
+    this.npm = npm;
+  }
+
+  /**
    * convenience method for getting the package name
    * @return
    */
