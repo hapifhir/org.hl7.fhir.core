@@ -9,6 +9,18 @@
   "tempPath": "dummy-temp-path",
   "testIgsPath": "dummy-test-igs-path",
   "unusedField" : "unused",
+  "packageServers" : [
+    {
+      "url" : "http://dummy.org",
+      "authenticationType" : "BASIC",
+      "username" : "joe",
+      "password" : "swordfish"
+    },
+    {
+      "url" : "http://dummy2.com",
+      "goobledy-goo" : 5
+    }
+  ],
   "unusedData" : {
     "unusedDateField" : "unused-data"
   }

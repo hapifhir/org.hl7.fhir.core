@@ -40,6 +40,7 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackag
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.IPackageProvider;
 import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,8 +128,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
   
   public void init(FilesystemPackageCacheMode mode) throws IOException {
+    myPackageServers.addAll(PackageServer.getConfiguredServers());
     myPackageServers.addAll(PackageServer.publicServers());
-    myPackageServers.addAll(PackageServer.fhirSettingsServers());
+
     switch (mode) {
     case SYSTEM:
       cacheFolder = Utilities.path("var", "lib", ".fhir", "packages");

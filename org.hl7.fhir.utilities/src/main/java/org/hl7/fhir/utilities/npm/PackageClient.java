@@ -22,6 +22,8 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
+import javax.annotation.Nonnull;
+
 public class PackageClient {
 
 
@@ -148,12 +150,22 @@ public class PackageClient {
   }
  
   private InputStream fetchUrl(String source, String accept) throws IOException {
-    SimpleHTTPClient http = new SimpleHTTPClient();
+    SimpleHTTPClient http = getSimpleHTTPClient();
     HTTPResult res = http.get(source, accept);
     res.checkThrowException();
     return new ByteArrayInputStream(res.getContent());
   }
-  
+
+  @Nonnull
+  private SimpleHTTPClient getSimpleHTTPClient() {
+    SimpleHTTPClient client = new SimpleHTTPClient();
+    if (server.getMode() == PackageServer.PackageServerAuthenticationMode.BASIC) {
+      client.setUsername(server.getUsername());
+      client.setPassword(server.getPassword());
+    }
+    return client;
+  }
+
   private JsonObject fetchJson(String source) throws IOException {
     String src = TextFile.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);
