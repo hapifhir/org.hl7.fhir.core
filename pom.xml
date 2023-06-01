@@ -27,7 +27,7 @@
         <maven_clean_version>3.1.0</maven_clean_version>
         <okhttp.version>4.9.3</okhttp.version>
         <jacoco_version>0.8.9</jacoco_version>
-        <info_cqframework_version>1.5.1</info_cqframework_version>
+        <info_cqframework_version>1.5.12</info_cqframework_version>
         <lombok_version>1.18.22</lombok_version>
         <byte_buddy_version>1.12.14</byte_buddy_version>
         <apache_poi_version>4.1.1</apache_poi_version>
