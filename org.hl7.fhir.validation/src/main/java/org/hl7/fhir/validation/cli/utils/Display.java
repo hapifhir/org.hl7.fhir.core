@@ -5,9 +5,7 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 /**
  * Class for displaying output to the cli user.
@@ -52,10 +50,11 @@ public class Display {
 
   /**
    * Loads the help details from resources/help.txt, and displays them on the command line to the user.
+   * @param file
    */
-  public static void displayHelpDetails() {
+  public static void displayHelpDetails(String file) {
     ClassLoader classLoader = Display.class.getClassLoader();
-    InputStream help = classLoader.getResourceAsStream("help.txt");
+    InputStream help = classLoader.getResourceAsStream(file);
     try {
       String data = IOUtils.toString(help, "UTF-8");
 
