@@ -23,7 +23,7 @@ public class DisplayTests {
     System.setErr(new PrintStream(errContent));
 
     try {
-      Display.displayHelpDetails();
+      Display.displayHelpDetails("help.txt");
 
       String output = outContent.toString();
 
