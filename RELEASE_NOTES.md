@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Increment CQFramework dependency
