@@ -9,7 +9,7 @@ import org.hl7.fhir.validation.cli.utils.EngineMode;
 
 import java.io.PrintStream;
 
-public class FhirpathTask extends ValidationServiceTask {
+public class FhirpathTask extends ValidationEngineTask {
 
   @Override
   public String getName() {

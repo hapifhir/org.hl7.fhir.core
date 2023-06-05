@@ -9,7 +9,7 @@ import org.hl7.fhir.validation.cli.utils.EngineMode;
 
 import java.io.PrintStream;
 
-public class SnapshotTask extends ValidationServiceTask {
+public class SnapshotTask extends ValidationEngineTask {
 
   @Override
   public String getName() {

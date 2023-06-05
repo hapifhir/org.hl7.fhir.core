@@ -11,7 +11,7 @@ import org.hl7.fhir.validation.cli.utils.Display;
 
 import java.io.PrintStream;
 
-public class ValidateTask extends ValidationServiceTask {
+public class ValidateTask extends ValidationEngineTask {
 
   final static String[][] PLACEHOLDERS = {
     { "XML_AND_JSON_FHIR_VERSIONS", "1.0, 1.4, 3.0, 4.0, " + Constants.VERSION_MM },

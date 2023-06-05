@@ -298,13 +298,13 @@ public class ValidatorCli {
 
     final CliTask cliTask = selectCliTask(cliContext, params);
 
-    if (cliTask instanceof ValidationServiceTask) {
+    if (cliTask instanceof ValidationEngineTask) {
       if (cliContext.getSv() == null) {
         cliContext.setSv(myValidationService.determineVersion(cliContext));
       }
         ValidationEngine validationEngine = getValidationEngine(tt, cliContext);
         tts.end();
-        ((ValidationServiceTask) cliTask).executeTask(myValidationService, validationEngine, cliContext, params, tt, tts);
+        ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, cliContext, params, tt, tts);
       } else if (cliTask instanceof StandaloneTask) {
         ((StandaloneTask) cliTask).executeTask(cliContext,params,tt,tts);
       }
