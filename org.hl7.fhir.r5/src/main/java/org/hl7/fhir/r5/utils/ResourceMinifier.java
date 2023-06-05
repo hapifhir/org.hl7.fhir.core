@@ -32,7 +32,9 @@ import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterCom
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -46,33 +48,32 @@ public class ResourceMinifier {
        "ConceptMap", "NamingSystem", "OperationDefinition", "SearchParameter", "Questionnaire");
   }
   
-  public void minify(Resource res) {
+  public boolean minify(Resource res) {
     if (res instanceof StructureDefinition) {
-      minifySD((StructureDefinition) res);
-    }
-    if (res instanceof ValueSet) {
+      return minifySD((StructureDefinition) res);
+    } else if (res instanceof ValueSet) {
       minifyVS((ValueSet) res);
-    }
-    if (res instanceof CodeSystem) {
+    } else if (res instanceof CodeSystem) {
       minifyCS((CodeSystem) res);
-    }
-    if (res instanceof CapabilityStatement) {
+    } else if (res instanceof CapabilityStatement) {
       minifyCS((CapabilityStatement) res);
-    }
-    if (res instanceof ConceptMap) {
+    } else if (res instanceof ConceptMap) {
       minifyCM((ConceptMap) res);
-    }
-    if (res instanceof NamingSystem) {
+    } else if (res instanceof NamingSystem) {
       minifyNS((NamingSystem) res);
-    }
-
-    if (res instanceof OperationDefinition) {
+    } else if (res instanceof OperationDefinition) {
       minifyOD((OperationDefinition) res);
-    }
-
-    if (res instanceof Questionnaire) {
+    } else if (res instanceof Questionnaire) {
       minifyQ((Questionnaire) res);
+    } else if (res instanceof SearchParameter) {
+      minifySP((SearchParameter) res);
     }
+    return true;
+  }
+
+  private void minifySP(SearchParameter sp) {
+    minCR(sp);
+    // nothing
   }
 
   private void minifyQ(Questionnaire q) {
@@ -242,14 +243,20 @@ public class ResourceMinifier {
     // can't remove anything else
   }
 
-  private void minifySD(StructureDefinition sd) {
+  private boolean minifySD(StructureDefinition sd) {
+    if (sd.getKind() == StructureDefinitionKind.LOGICAL) {
+      return false;
+    }
     minCR(sd);
     sd.setKeyword(null);
-    sd.setMapping(null); 
-    sd.setSnapshot(null);
+    sd.setMapping(null);
+    if (sd.hasDifferential()) {
+      sd.setSnapshot(null);
+    }
     for (ElementDefinition ed : sd.getDifferential().getElement()) {
       minifyED(ed);
     }
+    return true;
   }
 
   private void minifyED(ElementDefinition ed) {
@@ -272,6 +279,7 @@ public class ResourceMinifier {
       abn.setShortDoco(null);
     }
     ed.setMapping(null);
+    ed.setMustSupportElement(null);
   }
 
   private void minCR(CanonicalResource cr) {
