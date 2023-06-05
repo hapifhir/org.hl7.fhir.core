@@ -13,7 +13,7 @@ import org.hl7.fhir.validation.cli.utils.Params;
 import java.io.File;
 import java.io.PrintStream;
 
-public class CompareTask extends ValidationServiceTask{
+public class CompareTask extends ValidationEngineTask {
   @Override
   public String getName() {
     return "compare";

@@ -9,7 +9,7 @@ import org.hl7.fhir.validation.cli.utils.EngineMode;
 
 import java.io.PrintStream;
 
-public class ScanTask extends ValidationServiceTask {
+public class ScanTask extends ValidationEngineTask {
 
 
   @Override

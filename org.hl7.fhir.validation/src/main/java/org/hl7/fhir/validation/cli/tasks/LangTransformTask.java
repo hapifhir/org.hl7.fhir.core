@@ -8,7 +8,7 @@ import org.hl7.fhir.validation.cli.utils.EngineMode;
 
 import java.io.PrintStream;
 
-public class LangTransformTask extends ValidationServiceTask {
+public class LangTransformTask extends ValidationEngineTask {
 
   @Override
   public String getName() {

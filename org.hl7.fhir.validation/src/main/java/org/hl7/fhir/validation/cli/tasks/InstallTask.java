@@ -8,7 +8,7 @@ import org.hl7.fhir.validation.cli.utils.EngineMode;
 
 import java.io.PrintStream;
 
-public class InstallTask extends ValidationServiceTask {
+public class InstallTask extends ValidationEngineTask {
 
   @Override
   public String getName() {
