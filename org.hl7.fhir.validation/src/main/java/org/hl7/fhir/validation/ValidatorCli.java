@@ -1,10 +1,7 @@
 package org.hl7.fhir.validation;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -67,28 +64,17 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonException;
-import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.cli.model.CliContext;
-import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.cli.utils.Display;
-import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.Params;
-import org.hl7.fhir.validation.special.R4R5MapTester;
-import org.hl7.fhir.validation.special.TxTester;
-import org.hl7.fhir.validation.special.TxTester.InternalTxLoader;
-import org.hl7.fhir.validation.testexecutor.TestExecutor;
-import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
 
 /**
  * A executable class that will validate one or more FHIR resources against
@@ -131,7 +117,7 @@ public class ValidatorCli {
 
   protected List<CliTask> getCliTasks() {
     return List.of(
-
+      new CompareTask(),
       new CompileTask(),
       new FhirpathTask(),
       new InstallTask(),
@@ -141,6 +127,8 @@ public class ValidatorCli {
       new SnapshotTask(),
       new SpecialTask(),
       new SpreadsheetTask(),
+      new TestsTask(),
+      new TxTestsTask(),
       new TransformTask(),
       new VersionTask(),
       defaultCliTask);
@@ -163,18 +151,13 @@ public class ValidatorCli {
     FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
 
     if (shouldDisplayHelpToUser(args)) {
+      String helpTarget = Params.getParam(args, Params.HELP);
       Display.displayHelpDetails("help.txt");
-    } else if (Params.hasParam(args, Params.COMPARE)) {
-      if (destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
-        doLeftRightComparison(args, cliContext, tt);
-      }
-    } else if (Params.hasParam(args, Params.TEST) || Params.hasParam(args, Params.TX_TESTS)) {
-      parseTestParamsAndExecute(args);
+      return;
     }
-    else {
-      Display.printCliArgumentsAndInfo(args);
-      doValidation(tt, tts, cliContext, args);
-    }
+
+
+    readParamsAndExecuteTask(tt, tts, cliContext, args);
   }
 
   public static void main(String[] args) throws Exception {
@@ -182,7 +165,7 @@ public class ValidatorCli {
     final CliContext cliContext = Params.loadCliContext(args);
     validatorCli.readParamsAndExecuteTask(cliContext, args);
   }
-  
+
   private static void setJavaSystemProxyParamsFromParams(String[] args) {
 
     setJavaSystemProxyHostFromParams(args, Params.PROXY, HTTP_PROXY_HOST, HTTP_PROXY_PORT);
@@ -232,31 +215,6 @@ public class ValidatorCli {
     }
   }
 
-  protected static void parseTestParamsAndExecute(String[] args) throws IOException, URISyntaxException {
-    if (Params.hasParam(args, Params.TX_TESTS)) {
-      final String source = Params.getParam(args, Params.SOURCE);
-      final String output = Params.getParam(args, Params.OUTPUT);
-      final String version = Params.getParam(args, Params.VERSION);
-      final String tx = Params.getParam(args, Params.TERMINOLOGY);
-      final String filter = Params.getParam(args, Params.FILTER);
-      boolean ok = new TxTester(new InternalTxLoader(source, output), tx).setOutput(output).execute(version, filter);
-      System.exit(ok ? 1 : 0);
-    } else {
-      final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);
-      final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
-      final String testCasesDirectory = Params.getParam(args, Params.TEST);
-      final String txCacheDirectory = Params.getParam(args, Params.TERMINOLOGY_CACHE);
-      assert TestExecutorParams.isValidModuleParam(testModuleParam) : "Invalid test module param: " + testModuleParam;
-      final String[] moduleNamesArg = TestExecutorParams.parseModuleParam(testModuleParam);
-
-      assert TestExecutorParams.isValidClassnameFilterParam(testClassnameFilter) : "Invalid regex for test classname filter: " + testClassnameFilter;
-
-      new TestExecutor(moduleNamesArg).executeTests(testClassnameFilter, txCacheDirectory, testCasesDirectory);
-
-      System.exit(0);
-    }
-  }
-
   private static String[] addAdditionalParamsForIpsParam(String[] args) {
     // ips$branch --> -version 4.0 -ig hl7.fhir.uv.ips#current$connectathon-2 -profile http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips
     List<String> res = new ArrayList<>();
@@ -286,21 +244,9 @@ public class ValidatorCli {
     return r;
   }
 
-  private static boolean destinationDirectoryValid(String dest) {
-    if (dest == null) {
-      System.out.println("no -dest parameter provided");
-      return false;
-    } else if (!new File(dest).isDirectory()) {
-      System.out.println("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
-      return false;
-    } else {
-      System.out.println("Valid destination directory provided: \"" + dest + "\")");
-      return true;
-    }
-  }
+
 
   private static boolean shouldDisplayHelpToUser(String[] args) {
-    String helpTarget = Params.getParam(args, Params.HELP);
     return (args.length == 0
       || Params.hasParam(args, Params.HELP)
       || Params.hasParam(args, "?")
@@ -308,33 +254,16 @@ public class ValidatorCli {
       || Params.hasParam(args, "/?"));
   }
 
-  private static void doLeftRightComparison(String[] args, CliContext cliContext, TimeTracker tt) throws Exception {
-    Display.printCliArgumentsAndInfo(args);
-    if (cliContext.getSv() == null) {
-      cliContext.setSv(validationService.determineVersion(cliContext));
-    }
-    String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
-    String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
-    ValidationEngine validator = validationService.initializeValidator(cliContext, definitions, tt);
-    validator.loadPackage(CommonPackages.ID_PUBPACK, null);
-    ComparisonService.doLeftRightComparison(args, Params.getParam(args, Params.DESTINATION), validator);
-  }
+  private void readParamsAndExecuteTask(TimeTracker tt, TimeTracker.Session tts, CliContext cliContext, String[] params) throws Exception {
+    Display.printCliParamsAndInfo(params);
 
-  private void doValidation(TimeTracker tt, TimeTracker.Session tts, CliContext cliContext, String[] params) throws Exception {
     if (cliContext.getSv() == null) {
       cliContext.setSv(myValidationService.determineVersion(cliContext));
     }
 
-    CliTask cliTask = null;
-    for(CliTask candidateTask : cliTasks) {
-      if (candidateTask.shouldExecuteTask(cliContext, params)) {
-        cliTask = candidateTask;
-      }
-    }
-   if (cliTask == null)
-     cliTask = defaultCliTask;
+    final CliTask cliTask = selectCliTask(cliContext, params);
 
-      if (cliTask instanceof ValidationServiceTask) {
+    if (cliTask instanceof ValidationServiceTask) {
         ValidationEngine validationEngine = getValidationEngine(tt, cliContext);
         tts.end();
         ((ValidationServiceTask) cliTask).executeTask(myValidationService, validationEngine, cliContext, params, tt, tts);
@@ -343,6 +272,18 @@ public class ValidatorCli {
       }
 
     System.out.println("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
+  }
+
+  private CliTask selectCliTask(CliContext cliContext, String[] params) {
+    CliTask cliTask = null;
+    for(CliTask candidateTask : cliTasks) {
+      if (candidateTask.shouldExecuteTask(cliContext, params)) {
+        cliTask = candidateTask;
+      }
+    }
+    if (cliTask == null)
+      cliTask = defaultCliTask;
+    return cliTask;
   }
 
   private ValidationEngine getValidationEngine(TimeTracker tt, CliContext cliContext) throws Exception {
