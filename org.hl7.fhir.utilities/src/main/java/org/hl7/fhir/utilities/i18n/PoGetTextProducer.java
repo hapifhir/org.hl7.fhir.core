@@ -81,10 +81,10 @@ public class PoGetTextProducer extends LanguageFileProducer {
 
     @Override
     public void entry(TextUnit unit) {
-      ln("#: "+unit.getContext());
-      //    if (context != null) {
-      //      ln("#. "+context);
-      //    }
+      ln("#: "+unit.getId());
+      if (unit.getContext1() != null) {
+        ln("#. "+unit.getContext1());
+      }
       ln("msgid \""+unit.getSrcText()+"\"");
       ln("msgstr \""+(unit.getTgtText() == null ? "" : unit.getTgtText())+"\"");
       ln("");
@@ -117,7 +117,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
                lang = p[1].trim();
              }
            } else if (s.startsWith("#:")) {
-             tu = new TranslationUnit(lang, s.substring(2).trim(), null, null);
+             tu = new TranslationUnit(lang, s.substring(2).trim(), null, null, null);
            } else {
              throw new IOException("Encountered unexpected line '"+s+"'");             
            }
@@ -166,10 +166,10 @@ public class PoGetTextProducer extends LanguageFileProducer {
     ln(po, "# "+baseLang+" -> "+targetLang);
     ln(po, "");
     for (TranslationUnit tu : translations) {
-      ln(po, "#: "+tu.getContext());
-      //    if (context != null) {
-      //      ln("#. "+context);
-      //    }
+      ln(po, "#: "+tu.getId());
+      if (tu.getContext1() != null) {
+        ln(po, "#. "+tu.getContext1());
+      }
       ln(po, "msgid \""+tu.getSrcText()+"\"");
       ln(po, "msgstr \""+(tu.getTgtText() == null ? "" : tu.getTgtText())+"\"");
       ln(po, "");

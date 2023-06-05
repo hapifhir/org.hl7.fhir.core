@@ -12,6 +12,8 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.TextFile;
@@ -36,7 +38,7 @@ import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
  */
 public class LanguageUtils {
 
-  public static final List<String> TRANSLATION_SUPPLEMENT_RESOURCE_TYPES = Arrays.asList("CodeSystem", "StructureDefinition");
+  public static final List<String> TRANSLATION_SUPPLEMENT_RESOURCE_TYPES = Arrays.asList("CodeSystem", "StructureDefinition", "Questionnaire");
 
   private static final String ORPHAN_TRANSLATIONS_NAME = "translations.orphans";
 
@@ -64,7 +66,7 @@ public class LanguageUtils {
         if (translation == null) {
           translation = element.getTranslation(langSession.getTargetLang());
         }
-        langSession.entry(new TextUnit(pathForElement(element), base, translation));
+        langSession.entry(new TextUnit(pathForElement(element), contextForElement(element), base, translation));
       }
     }
     for (Element c: element.getChildren()) {
@@ -74,6 +76,10 @@ public class LanguageUtils {
     }
   }
   
+
+  private String contextForElement(Element element) {
+    throw new Error("Not done yet");
+  }
 
   private String getSpecialTranslation(Element parent, Element element, String targetLang) {
     if (parent == null) {
@@ -188,7 +194,7 @@ public class LanguageUtils {
   private Set<TranslationUnit> findTranslations(String path, String src, Set<TranslationUnit> translations) {
     Set<TranslationUnit> res = new HashSet<>();
     for (TranslationUnit translation : translations) {
-      if (path.equals(translation.getContext()) && src.equals(translation.getSrcText())) {
+      if (path.equals(translation.getId()) && src.equals(translation.getSrcText())) {
         res.add(translation);
       }
     }
@@ -202,7 +208,7 @@ public class LanguageUtils {
   public static void fillSupplement(CodeSystem cs, List<TranslationUnit> list) {
     cs.setUserData(SUPPLEMENT_NAME, "true");
     for (TranslationUnit tu : list) {
-      ConceptDefinitionComponent cd = CodeSystemUtilities.getCode(cs, tu.getContext());
+      ConceptDefinitionComponent cd = CodeSystemUtilities.getCode(cs, tu.getId());
       if (cd != null && cd.hasDisplay() && cd.getDisplay().equals(tu.getSrcText())) {
         cd.addDesignation().setLanguage(tu.getLanguage()).setValue(tu.getTgtText());
       } else {
@@ -273,9 +279,18 @@ public class LanguageUtils {
         target = d.getValue();
       }
     }
-    list.add(new TranslationUnit(lang, code, display, target));
+    list.add(new TranslationUnit(lang, code, getDefinition(cd), display, target));
     for (ConceptDefinitionComponent cd1 : cd.getConcept()) {
       generateTranslations(list, cd1, lang);
+    }
+  }
+
+  private static String getDefinition(ConceptDefinitionComponent cd) {
+    ConceptPropertyComponent v = CodeSystemUtilities.getProperty(cd, "translation-context");
+    if (v != null && v.hasValue()) {
+      return v.getValue().primitiveValue();
+    } else {
+      return cd.getDefinition();
     }
   }
 }
