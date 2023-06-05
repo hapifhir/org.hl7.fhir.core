@@ -18,6 +18,16 @@ public class TestsTask extends StandaloneTask{
   }
 
   @Override
+  public String getDisplayName() {
+    return "Tests";
+  }
+
+  @Override
+  public boolean isHidden() {
+    return false;
+  }
+
+  @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
     return Params.hasParam(args, Params.TEST);
   }

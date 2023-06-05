@@ -16,6 +16,16 @@ public class SnapshotTask extends ValidationServiceTask {
   }
 
   @Override
+  public String getDisplayName() {
+    return "Snapshots";
+  }
+
+  @Override
+  public boolean isHidden() {
+    return false;
+  }
+
+  @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
     return cliContext.getMode() == EngineMode.SNAPSHOT;
   }

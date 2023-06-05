@@ -17,6 +17,16 @@ public class ValidateTask extends ValidationServiceTask {
   }
 
   @Override
+  public String getDisplayName() {
+    return "Validation";
+  }
+
+  @Override
+  public boolean isHidden() {
+    return false;
+  }
+
+  @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
     // There is no explicit way to trigger a validation task.
     // It is the default task.

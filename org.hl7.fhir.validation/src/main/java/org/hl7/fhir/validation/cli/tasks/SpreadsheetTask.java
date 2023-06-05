@@ -16,6 +16,16 @@ public class SpreadsheetTask extends ValidationServiceTask {
   }
 
   @Override
+  public String getDisplayName() {
+    return "Spreadsheet";
+  }
+
+  @Override
+  public boolean isHidden() {
+    return true;
+  }
+
+  @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
     return cliContext.getMode() == EngineMode.SPREADSHEET;
   }

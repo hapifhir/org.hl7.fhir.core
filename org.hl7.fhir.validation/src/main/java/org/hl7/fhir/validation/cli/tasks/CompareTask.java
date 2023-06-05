@@ -20,6 +20,16 @@ public class CompareTask extends ValidationServiceTask{
   }
 
   @Override
+  public String getDisplayName() {
+    return "Comparing Profiles";
+  }
+
+  @Override
+  public boolean isHidden() {
+    return false;
+  }
+
+  @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
     return Params.hasParam(args, Params.COMPARE);
   }
