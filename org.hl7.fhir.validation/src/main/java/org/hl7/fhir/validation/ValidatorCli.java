@@ -119,6 +119,7 @@ public class ValidatorCli {
     return List.of(
       new CompareTask(),
       new CompileTask(),
+      new ConvertTask(),
       new FhirpathTask(),
       new InstallTask(),
       new LangTransformTask(),
