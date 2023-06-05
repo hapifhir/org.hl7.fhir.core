@@ -91,7 +91,9 @@ public class ResourceDependencyPackageBuilder {
         ResourceMinifier min = new ResourceMinifier();
         if (min.isMinified(resource.fhirType())) {
           resource = resource.copy();
-          min.minify(resource);
+          if (!min.minify(resource)) {
+            return;
+          }
         } else {
           return;
         }

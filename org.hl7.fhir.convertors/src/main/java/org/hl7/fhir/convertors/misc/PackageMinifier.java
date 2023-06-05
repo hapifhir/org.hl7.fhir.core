@@ -29,8 +29,9 @@ public class PackageMinifier {
     for (PackageResourceInformation pri : src.listIndexedResources()) {
       if (min.isMinified(pri.getResourceType())) {
         Resource res = new JsonParser().parse(src.load(pri));
-        min.minify(res);
-        tgt.addFile("package", res.fhirType()+"-"+res.getIdPart()+".json", new JsonParser().composeBytes(res), null);
+        if (min.minify(res)) {
+          tgt.addFile("package", res.fhirType()+"-"+res.getIdPart()+".json", new JsonParser().composeBytes(res), null);
+        }
       }
     }
     tgt.save(new FileOutputStream(target));

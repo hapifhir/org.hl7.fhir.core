@@ -157,8 +157,7 @@ public class ProfilePathProcessor {
    * @throws DefinitionException, FHIRException
    * @throws Exception
    */
-  private ElementDefinition processPaths(
-                                         final ProfilePathProcessorState cursors) throws FHIRException {
+  private ElementDefinition processPaths(final ProfilePathProcessorState cursors) throws FHIRException {
     debugProcessPathsEntry(cursors);
     ElementDefinition res = null;
     List<TypeSlice> typeList = new ArrayList<>();
@@ -253,9 +252,8 @@ public class ProfilePathProcessor {
           .incrementDebugIndent()
           .withBaseLimit(newBaseLimit)
           .withDiffLimit(newDiffLimit)
-          .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, 0)).withSlicing(new PathSlicingParams(true, null, null)).
-      processPaths(new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor,
-          cursors.contextName, cursors.resultPathBase));
+          .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, 0)).withSlicing(new PathSlicingParams(true, null, null))
+          .processPaths(new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor, cursors.contextName, cursors.resultPathBase));
       if (e == null)
         throw new FHIRException(profileUtilities.getContext().formatMessage(I18nConstants.DID_NOT_FIND_SINGLE_SLICE_, diffMatches.get(0).getPath()));
       e.setSlicing(diffMatches.get(0).getSlicing());
@@ -267,9 +265,10 @@ public class ProfilePathProcessor {
       outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
       profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
 
-      if (!diffMatches.get(0).hasSlicing())
+      if (!diffMatches.get(0).hasSlicing()) {
         outcome.setSlicing(profileUtilities.makeExtensionSlicing());
-      else {
+        outcome.setUserData("auto-added-slicing", true);
+      } else {
         outcome.setSlicing(diffMatches.get(0).getSlicing().copy());
         for (int i = 1; i < diffMatches.size(); i++) {
           if (diffMatches.get(i).hasSlicing()) {
@@ -348,7 +347,8 @@ public class ProfilePathProcessor {
           .withBaseLimit(newBaseLimit)
           .withDiffLimit(newDiffLimit)
           .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, i))
-          .withSlicing(new PathSlicingParams(true, slicerElement, null)).processPaths(new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor, cursors.contextName, cursors.resultPathBase));
+          .withSlicing(new PathSlicingParams(true, slicerElement, null))
+          .processPaths(new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor, cursors.contextName, cursors.resultPathBase));
     }
     // ok, done with that - next in the base list
     cursors.baseCursor = newBaseLimit + 1;
