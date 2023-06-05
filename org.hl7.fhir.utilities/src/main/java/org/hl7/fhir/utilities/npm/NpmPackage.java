@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -60,6 +61,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
+import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
@@ -946,7 +948,9 @@ public class NpmPackage {
 
     OutputStream = new ByteArrayOutputStream();
     bufferedOutputStream = new BufferedOutputStream(OutputStream);
-    gzipOutputStream = new GzipCompressorOutputStream(bufferedOutputStream);
+    GzipParameters gp = new GzipParameters();
+    gp.setCompressionLevel(Deflater.BEST_COMPRESSION);
+    gzipOutputStream = new GzipCompressorOutputStream(stream, gp);
     tar = new TarArchiveOutputStream(gzipOutputStream);
 
 

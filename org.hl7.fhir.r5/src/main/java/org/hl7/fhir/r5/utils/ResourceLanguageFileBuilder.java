@@ -77,7 +77,7 @@ public class ResourceLanguageFileBuilder {
         String ppath = path+"."+p.getName()+(p.isList() ? "["+i+"]" : "");
         i++;
         if (isTranslatable(p, b, pid)) {
-          sess.entry(new TextUnit(ppath, b.primitiveValue(), getTranslation(b, target)));
+          sess.entry(new TextUnit(ppath, getContext(), b.primitiveValue(), getTranslation(b, target)));
         }
         for (Property pp : b.children()) {
           process(sess, pp, pid, ppath);      
@@ -85,6 +85,11 @@ public class ResourceLanguageFileBuilder {
       }
     }  
   }
+
+  private String getContext() {
+    throw new Error("not done yet"); 
+  }
+
 
   private boolean isTranslatable(Property p, Base b, String id) {
     if (new ContextUtilities(context).isPrimitiveDatatype(b.fhirType())) { // never any translations for non-primitives
