@@ -1,0 +1,12 @@
+The validator can convert between versions of FHIR (r2, r3, and r4). To use the validator to convert versions, provide the following parameters:
+
+ java -jar validator_cli.jar c:\temp\observation.xml -version 3.0 -to-version 4.0 -output c:\temp\observation4.json
+The key parameter is "-to-version" which causes the validator to invoke the version conversion routine. 
+
+Technical notes: 
+
+the validator can use either it's own internal routines, or the structure maps found at https://github.com/FHIR/packages/tree/master/interversion.
+By default, the internal routines will be used for resources with a canonical URL (e.g. code system etc) and the structure maps will be used otherwise
+If the internal routines fail, the structure maps will be used anyway 
+you can use the parameter -do-native to get the validator to try the internal routines first for any resource, and the parameter -no-native to tell it not to try them at all
+Issues with the structure maps should be discussed on the chat.fhir.org implementers channel, or submitted as PRs against the github repo above

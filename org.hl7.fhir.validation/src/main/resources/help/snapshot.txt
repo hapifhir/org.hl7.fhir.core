@@ -1,0 +1,16 @@
+You can use the validator to generate a snapshot for a profile. To do this, you
+must provide a specific parameter:
+
+ -snapshot
+
+-snapshot requires the parameters -defn, -txserver, -source, and 
+one of {-output, -outputSuffix}. 
+-ig may be used to provide necessary base profiles. 
+
+The -output/-outputSuffic filetype (xml, json) may imply a conversion.
+
+If the -source maps to one or more profiles, e.g. when using a wildcard, 
+use -outputSuffix <suffix>, to obtain multiple result files with a 
+`<sourcefilename>.<suffix>` filename.
+Example: `-source *.xml -snapshot -outputSuffix snapshot.json` outputs: 
+`source1.xml.snapshot.json`, `source2.xml.snapshot.json`, etc. .
