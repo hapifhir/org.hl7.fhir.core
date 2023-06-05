@@ -123,16 +123,20 @@ public class R5ExtensionsLoader {
       if (Utilities.existsInList(lsd.info.getId(), types)) {
         StructureDefinition sd = lsd.getResource();
         count++;
+        List<ElementDefinition> rl = new ArrayList<>();
         for (ElementDefinition ed : sd.getDifferential().getElement()) {
           if (!stripTypes(ed, sd, types)) {
-            System.out.println("A problem...");
+            rl.add(ed);
           }
         }
+        sd.getDifferential().getElement().removeAll(rl);
+        rl.clear();
         for (ElementDefinition ed : sd.getSnapshot().getElement()) {
           if (!stripTypes(ed, sd, types)) {
-            System.out.println("A problem...");
+            rl.add(ed);
           }
         } 
+        sd.getSnapshot().getElement().removeAll(rl);
         sd.setWebPath(Utilities.pathURL(lsd.source.getWebLocation(), sd.getId().toLowerCase()+".html"));
         registerTerminologies(sd);
         context.cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
