@@ -30,6 +30,8 @@ public class ValidatorCliTests {
   ValidationEngine validationEngine;
 
   @Spy
+  ConvertTask convertTask;
+  @Spy
   CompareTask compareTask;
 
   @Spy
@@ -91,6 +93,7 @@ public class ValidatorCliTests {
         return List.of(
           compareTask,
           compileTask,
+          convertTask,
           fhirpathTask,
           installTask,
           langTransformTask,
@@ -168,6 +171,15 @@ public class ValidatorCliTests {
     Mockito.verify(validationService).compile(same(cliContext), same(validationEngine));
   }
 
+  @Test
+  public void convertTest() throws Exception {
+    final String[] args = new String[]{"-convert"};
+    CliContext cliContext = Params.loadCliContext(args);
+    ValidatorCli cli = mockValidatorCliWithService(cliContext);
+    cli.readParamsAndExecuteTask(cliContext, args);
+    Mockito.verify(validationService).determineVersion(same(cliContext));
+    Mockito.verify(validationService).convertSources(cliContext,validationEngine);
+  }
   @Test
   public void snapshotTest() throws Exception {
     final String[] args = new String[]{"-snapshot"};
