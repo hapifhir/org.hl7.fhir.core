@@ -74,7 +74,10 @@ public class JsonLangFileProducer extends LanguageFileProducer {
     public void entry(TextUnit unit) {
       JsonObject entry = new JsonObject();
       json.forceArray("entries").add(entry);
-      entry.add("context", unit.getContext());
+      entry.add("id", unit.getId());
+      if (unit.getContext1() != null) {
+        entry.add("context", unit.getContext1());
+      }
       entry.add("source", unit.getSrcText());
       entry.add("target", unit.getTgtText());
     }
@@ -88,7 +91,7 @@ public class JsonLangFileProducer extends LanguageFileProducer {
     JsonObject json = JsonParser.parseObject(source);
     for (JsonObject lang : json.forceArray("languages").asJsonObjects()) {
       for (JsonObject entry : lang.forceArray("entries").asJsonObjects()) {
-        list.add(new TranslationUnit(lang.asString("targetLang"), entry.asString("context"), entry.asString("source"), entry.asString("target")));
+        list.add(new TranslationUnit(lang.asString("targetLang"), entry.asString("id"), entry.asString("context"), entry.asString("source"), entry.asString("target")));
       }
     }
     return list;
@@ -118,7 +121,10 @@ public class JsonLangFileProducer extends LanguageFileProducer {
     for (TranslationUnit tu : translations) {
       JsonObject entry = new JsonObject();
       lj.forceArray("entries").add(entry);
-      entry.add("context", tu.getContext());
+      entry.add("id", tu.getId());
+      if (tu.getContext1() != null) { 
+        entry.add("context", tu.getContext1());
+      }
       entry.add("source", tu.getSrcText());
       entry.add("target", tu.getTgtText());
     }

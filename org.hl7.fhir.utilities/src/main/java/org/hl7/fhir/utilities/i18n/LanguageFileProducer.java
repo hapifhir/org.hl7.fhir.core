@@ -18,35 +18,59 @@ import java.util.HashMap;
 public abstract class LanguageFileProducer {
 
   public static class TextUnit {
+    protected String id;
     protected String context;
     protected String srcText;
     protected String tgtText;
-    public TextUnit(String context, String srcText, String tgtText) {
+    public TextUnit(String id, String context, String srcText, String tgtText) {
       super();
+      this.id = id;
       this.context = context;
       this.srcText = srcText;
       this.tgtText = tgtText;
     }
 
-    public String getContext() {
+    /**
+     * The identity of the item being translated
+     * 
+     * @return
+     */
+    public String getId() {
+      return id;
+    }
+    
+    /**
+     * Additional language that helps establish the context
+     * @return
+     */
+    public String getContext1() {
       return context;
     }
 
+    /**
+     * The language that's being translated from
+     * 
+     * @return
+     */
     public String getSrcText() {
       return srcText;
     }
+    
+    /** 
+     * The language that's being translated to
+     * 
+     * @return
+     */
     public String getTgtText() {
       return tgtText;
     }
-
-    
   }
   
   public static class TranslationUnit extends TextUnit {
     private String language;
 
-    public TranslationUnit(String language, String context, String srcText, String tgtText) {
-      super(context, srcText, tgtText);
+    public TranslationUnit(String language, String id, String context, String srcText, String tgtText) {
+      super(id, context, srcText, tgtText);
       this.language = language;
     }
 
