@@ -1,12 +1,10 @@
 package org.hl7.fhir.validation;
 
-import org.apache.commons.compress.archivers.sevenz.CLI;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.cli.utils.Params;
-
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +30,9 @@ public class ValidatorCliTests {
   ValidationEngine validationEngine;
 
   @Spy
+  CompareTask compareTask;
+
+  @Spy
   CompileTask compileTask;
 
   @Spy
@@ -49,6 +50,18 @@ public class ValidatorCliTests {
   SnapshotTask snapshotTask;
   @Spy
   SpreadsheetTask spreadsheetTask;
+
+  @Spy
+  TestsTask testsTask = new TestsTask() {
+      @Override
+      public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
+  };
+
+  @Spy
+  TxTestsTask txTestsTask = new TxTestsTask() {
+    @Override
+    public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
+  };
   @Spy
   TransformTask transformTask;
 
@@ -76,6 +89,7 @@ public class ValidatorCliTests {
 
       protected List<CliTask> getCliTasks() {
         return List.of(
+          compareTask,
           compileTask,
           fhirpathTask,
           installTask,
@@ -85,6 +99,8 @@ public class ValidatorCliTests {
           snapshotTask,
           specialTask,
           spreadsheetTask,
+          testsTask,
+          txTestsTask,
           transformTask,
           versionTask,
           //validate is the default
@@ -240,5 +256,35 @@ public class ValidatorCliTests {
     cli.readParamsAndExecuteTask(cliContext, args);
 
     Mockito.verify(specialTask).executeTask(same(cliContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
+  }
+
+  @Test
+  public void compareTest() throws Exception {
+    final String[] args = new String[]{"-compare"};
+    CliContext cliContext = Params.loadCliContext(args);
+    ValidatorCli cli = mockValidatorCliWithService(cliContext);
+    cli.readParamsAndExecuteTask(cliContext, args);
+    Mockito.verify(validationService).determineVersion(same(cliContext));
+    Mockito.verify(compareTask).executeTask(same(validationService), same(validationEngine), same(cliContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
+  }
+
+  @Test
+  public void txTestsTest() throws Exception {
+    final String[] args = new String[]{"-txTests"};
+    CliContext cliContext = Params.loadCliContext(args);
+    ValidatorCli cli = mockValidatorCli();
+    cli.readParamsAndExecuteTask(cliContext, args);
+
+    Mockito.verify(txTestsTask).executeTask(same(cliContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
+  }
+
+  @Test
+  public void testsTest() throws Exception {
+    final String[] args = new String[]{"-tests"};
+    CliContext cliContext = Params.loadCliContext(args);
+    ValidatorCli cli = mockValidatorCli();
+    cli.readParamsAndExecuteTask(cliContext, args);
+
+    Mockito.verify(testsTask).executeTask(same(cliContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
   }
 }

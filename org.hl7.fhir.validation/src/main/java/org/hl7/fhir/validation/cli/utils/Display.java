@@ -19,7 +19,7 @@ public class Display {
     return Long.toString(maxMemory / (1024 * 1024));
   }
 
-  public static void printCliArgumentsAndInfo(String[] args) throws IOException {
+  public static void printCliParamsAndInfo(String[] args) throws IOException {
     System.out.println("  Paths:  Current = " + System.getProperty("user.dir") + ", Package Cache = " + new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER).getFolder());
     System.out.print("  Params:");
     for (String s : args) {
