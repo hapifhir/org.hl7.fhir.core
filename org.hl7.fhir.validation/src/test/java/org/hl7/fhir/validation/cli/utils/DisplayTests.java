@@ -43,8 +43,8 @@ public class DisplayTests {
 
     final String myTestString = "The {{DUMMY_A}} jumps over the {{DUMMY_B}}.";
     final String[][] placeHolders = {
-      { "\\{\\{DUMMY_A\\}\\}", "quick brown fox"},
-      { "\\{\\{DUMMY_B\\}\\}", "lazy dog"},
+      { "DUMMY_A", "quick brown fox"},
+      { "DUMMY_B", "lazy dog"},
     };
 
     final String expectedOutput = "The quick brown fox jumps over the lazy dog.";
