@@ -16,6 +16,16 @@ public class TransformTask extends ValidationServiceTask {
   }
 
   @Override
+  public String getDisplayName() {
+    return "Transforms";
+  }
+
+  @Override
+  public boolean isHidden() {
+    return false;
+  }
+
+  @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
     return cliContext.getMode() == EngineMode.TRANSFORM;
   }

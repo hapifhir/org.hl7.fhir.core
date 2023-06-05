@@ -16,6 +16,16 @@ public class LangTransformTask extends ValidationServiceTask {
   }
 
   @Override
+  public String getDisplayName() {
+    return "Lang Transform";
+  }
+
+  @Override
+  public boolean isHidden() {
+    return true;
+  }
+
+  @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
     return cliContext.getMode() == EngineMode.LANG_TRANSFORM;
   }

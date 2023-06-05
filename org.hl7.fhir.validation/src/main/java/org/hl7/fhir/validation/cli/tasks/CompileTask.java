@@ -17,6 +17,16 @@ public class CompileTask extends ValidationServiceTask {
   }
 
   @Override
+  public String getDisplayName() {
+    return "Compile";
+  }
+
+  @Override
+  public boolean isHidden() {
+    return true;
+  }
+
+  @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
     return cliContext.getMode() == EngineMode.COMPILE;
   }

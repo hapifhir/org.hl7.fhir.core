@@ -16,6 +16,16 @@ public class TxTestsTask extends StandaloneTask{
   }
 
   @Override
+  public String getDisplayName() {
+    return "Terminology Tests";
+  }
+
+  @Override
+  public boolean isHidden() {
+    return true;
+  }
+
+  @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
     return Params.hasParam(args, Params.TX_TESTS);
   }

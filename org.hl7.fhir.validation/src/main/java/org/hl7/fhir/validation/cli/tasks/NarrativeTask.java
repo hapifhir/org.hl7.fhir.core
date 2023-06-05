@@ -16,6 +16,16 @@ public class NarrativeTask extends ValidationServiceTask {
   }
 
   @Override
+  public String getDisplayName() {
+    return "Narratives";
+  }
+
+  @Override
+  public boolean isHidden() {
+    return false;
+  }
+
+  @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
     return cliContext.getMode() == EngineMode.NARRATIVE;
   }

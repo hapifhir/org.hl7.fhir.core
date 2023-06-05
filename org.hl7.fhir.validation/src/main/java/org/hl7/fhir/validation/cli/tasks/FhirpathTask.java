@@ -16,6 +16,16 @@ public class FhirpathTask extends ValidationServiceTask {
   }
 
   @Override
+  public String getDisplayName() {
+    return "FHIRPath";
+  }
+
+  @Override
+  public boolean isHidden() {
+    return false;
+  }
+
+  @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
     return cliContext.getMode() == EngineMode.FHIRPATH;
   }
