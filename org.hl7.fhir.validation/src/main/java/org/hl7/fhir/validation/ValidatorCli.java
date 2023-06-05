@@ -64,6 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+import org.apache.commons.text.WordUtils;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.utilities.TimeTracker;
@@ -142,8 +143,8 @@ public class ValidatorCli {
     args = addAdditionalParamsForIpsParam(args);
     setJavaSystemProxyParamsFromParams(args);
 
-    Display.displayVersion();
-    Display.displaySystemInfo();
+    Display.displayVersion(System.out);
+    Display.displaySystemInfo(System.out);
 
     if (cliContext.getFhirSettingsFile() != null) {
       FhirSettings.setExplicitFilePath(cliContext.getFhirSettingsFile());
@@ -152,13 +153,47 @@ public class ValidatorCli {
     FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
 
     if (shouldDisplayHelpToUser(args)) {
-      String helpTarget = Params.getParam(args, Params.HELP);
-      Display.displayHelpDetails("help.txt");
-      return;
+      String helpTarget = Params.getParam(args, "-" + Params.HELP);
+      if (helpTarget != null) {
+        cliTasks.stream()
+          .filter(task -> helpTarget.equals(task.getName()))
+          .findFirst()
+          .ifPresent(cliTask -> {
+            displayHelpForTask(cliTask);
+          });
+      } else {
+        displayHelpForDefaultTask();
+      }return;
     }
 
-
     readParamsAndExecuteTask(tt, tts, cliContext, args);
+  }
+
+  private void displayHelpForDefaultTask() {
+    System.out.println();
+    System.out.println(WordUtils.wrap("This is the help text for default usage of the validator. Help for other modes of operation is available by using the parameter '-help [mode]' for one of the following modes:", 80));
+    System.out.println();
+    for (CliTask cliTask : cliTasks) {
+      if (!cliTask.isHidden()) {
+        System.out.println("  " + cliTask.getName());
+      }
+    }
+    System.out.println();
+    System.out.println(defaultCliTask.getDisplayName() + " (default usage)");
+    System.out.println("=".repeat(defaultCliTask.getDisplayName().length()));
+    System.out.println();
+    defaultCliTask.printHelp(System.out);
+  }
+
+  private void displayHelpForTask(CliTask cliTask) {
+    System.out.println();
+
+    System.out.println("This is the help text for '" + cliTask.getName() + "'. To display all available help options, use the '-help' or 'help' parameter.");
+    System.out.println();
+    System.out.println(cliTask.getDisplayName());
+    System.out.println("=".repeat(cliTask.getDisplayName().length()));
+    System.out.println();
+    cliTask.printHelp(System.out);
   }
 
   public static void main(String[] args) throws Exception {
@@ -247,9 +282,10 @@ public class ValidatorCli {
 
 
 
-  private static boolean shouldDisplayHelpToUser(String[] args) {
+  private boolean shouldDisplayHelpToUser(String[] args) {
     return (args.length == 0
       || Params.hasParam(args, Params.HELP)
+      || Params.hasParam(args, "-" + Params.HELP)
       || Params.hasParam(args, "?")
       || Params.hasParam(args, "-?")
       || Params.hasParam(args, "/?"));
@@ -258,13 +294,14 @@ public class ValidatorCli {
   private void readParamsAndExecuteTask(TimeTracker tt, TimeTracker.Session tts, CliContext cliContext, String[] params) throws Exception {
     Display.printCliParamsAndInfo(params);
 
-    if (cliContext.getSv() == null) {
-      cliContext.setSv(myValidationService.determineVersion(cliContext));
-    }
+
 
     final CliTask cliTask = selectCliTask(cliContext, params);
 
     if (cliTask instanceof ValidationServiceTask) {
+      if (cliContext.getSv() == null) {
+        cliContext.setSv(myValidationService.determineVersion(cliContext));
+      }
         ValidationEngine validationEngine = getValidationEngine(tt, cliContext);
         tts.end();
         ((ValidationServiceTask) cliTask).executeTask(myValidationService, validationEngine, cliContext, params, tt, tts);

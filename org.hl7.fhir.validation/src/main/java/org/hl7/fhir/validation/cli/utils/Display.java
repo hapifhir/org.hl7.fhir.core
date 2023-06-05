@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.model.Constants;
@@ -35,30 +36,30 @@ public class Display {
     return CURLY_START + string + CURLY_END;
   }
 
-  final static String[][] PLACEHOLDERS = {
-    { getMoustacheString("XML_AND_JSON_FHIR_VERSIONS"), "1.0, 1.4, 3.0, 4.0," + Constants.VERSION_MM },
-    { getMoustacheString("TURTLE_FHIR_VERSIONS"), "3.0, 4.0, " + Constants.VERSION_MM },
-  };
+
 
   final static String replacePlaceholders(final String input, final String[][] placeholders) {
     String output = input;
     for (String[] placeholder : placeholders) {
-      output = output.replaceAll(placeholder[0], placeholder[1]);
+      output = output.replaceAll(getMoustacheString(placeholder[0]), placeholder[1]);
     }
     return output;
   }
 
+  public static void displayHelpDetails(PrintStream out, String file) {
+    displayHelpDetails(out, file, new String[][]{});
+  }
   /**
-   * Loads the help details from resources/help.txt, and displays them on the command line to the user.
+   * Loads the help details from a file, and displays them on the out stream.
    * @param file
    */
-  public static void displayHelpDetails(String file) {
+  public static void displayHelpDetails(PrintStream out, String file, final String[][] placeholders) {
     ClassLoader classLoader = Display.class.getClassLoader();
     InputStream help = classLoader.getResourceAsStream(file);
     try {
       String data = IOUtils.toString(help, "UTF-8");
 
-      System.out.println(replacePlaceholders(data, PLACEHOLDERS));
+      out.println(replacePlaceholders(data, placeholders));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -69,8 +70,8 @@ public class Display {
   /**
    * Prints out system info to the command line.
    */
-  public static void displaySystemInfo() {
-    System.out.println("  Java:   " + System.getProperty("java.version")
+  public static void displaySystemInfo(PrintStream out) {
+    out.println("  Java:   " + System.getProperty("java.version")
       + " from " + System.getProperty("java.home")
       + " on " + System.getProperty("os.arch")
       + " (" + System.getProperty("sun.arch.data.model") + "bit). "
@@ -80,7 +81,7 @@ public class Display {
   /**
    * Prints current version of the validator.
    */
-  public static void displayVersion() {
-    System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
+  public static void displayVersion(PrintStream out) {
+    out.println("FHIR Validation tool " + VersionUtil.getVersionString());
   }
 }

@@ -1,16 +1,22 @@
 package org.hl7.fhir.validation.cli.tasks;
 
+import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
+import org.hl7.fhir.validation.cli.utils.Display;
 
 import java.io.PrintStream;
 
 public class ValidateTask extends ValidationServiceTask {
 
+  final static String[][] PLACEHOLDERS = {
+    { "XML_AND_JSON_FHIR_VERSIONS", "1.0, 1.4, 3.0, 4.0, " + Constants.VERSION_MM },
+    { "TURTLE_FHIR_VERSIONS", "3.0, 4.0, " + Constants.VERSION_MM },
+  };
   @Override
   public String getName() {
     return "validate";
@@ -35,7 +41,7 @@ public class ValidateTask extends ValidationServiceTask {
 
   @Override
   public void printHelp(PrintStream out) {
-
+    Display.displayHelpDetails(out,"help/validate.txt", PLACEHOLDERS);
   }
 
   @Override

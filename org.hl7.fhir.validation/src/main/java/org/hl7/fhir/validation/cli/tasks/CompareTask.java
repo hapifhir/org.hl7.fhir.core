@@ -36,7 +36,7 @@ public class CompareTask extends ValidationServiceTask{
 
   @Override
   public void printHelp(PrintStream out) {
-
+    Display.displayHelpDetails(out,"help/compare.txt");
   }
 
   @Override

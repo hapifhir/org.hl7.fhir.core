@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.Params;
 import org.hl7.fhir.validation.special.R4R5MapTester;
 import org.hl7.fhir.validation.special.TxTester;
@@ -34,7 +35,7 @@ public class TestsTask extends StandaloneTask{
 
   @Override
   public void printHelp(PrintStream out) {
-
+    Display.displayHelpDetails(out,"help/tests.txt");
   }
 
   @Override
