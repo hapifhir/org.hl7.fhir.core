@@ -4,4 +4,5 @@
 
 ## Other code changes
 
-* no changes
+* Fix bugs in language handling
+
