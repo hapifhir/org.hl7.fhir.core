@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* add clear() to JsonObject
+* no changes
