@@ -118,6 +118,10 @@ public class PoGetTextProducer extends LanguageFileProducer {
              }
            } else if (s.startsWith("#:")) {
              tu = new TranslationUnit(lang, s.substring(2).trim(), null, null, null);
+           } else if (s.startsWith("#.")) {
+             if (tu != null) {
+               tu.setContext(s.substring(2).trim());
+             }
            } else {
              throw new IOException("Encountered unexpected line '"+s+"'");             
            }
