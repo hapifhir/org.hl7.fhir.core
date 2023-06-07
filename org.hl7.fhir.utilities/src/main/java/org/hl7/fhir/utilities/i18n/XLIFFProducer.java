@@ -115,7 +115,7 @@ public class XLIFFProducer extends LanguageFileProducer {
       Element body = XMLUtil.getNamedChild(file, "body");
       for (Element transUnit : XMLUtil.getNamedChildren(body, "trans-unit")) {
         Element notes = XMLUtil.getNamedChild(transUnit, "notes");
-        TranslationUnit tu = new TranslationUnit(file.getAttribute("target-language"), transUnit.getAttribute("id"),
+        TranslationUnit tu = new TranslationUnit(file.getAttribute("target-language"), transUnit.getAttribute("resname"),
             notes == null ? null : XMLUtil.getNamedChildText(notes, "note"),
             XMLUtil.getNamedChildText(transUnit, "source"), XMLUtil.getNamedChildText(transUnit, "target"));
         if (!Utilities.noString(tu.getSrcText()) && !Utilities.noString(tu.getTgtText())) {
