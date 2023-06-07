@@ -204,7 +204,6 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>${apache_poi_version}</version>
             <optional>false</optional>
             <scope>compile</scope>
         </dependency>
@@ -212,7 +211,13 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>${apache_poi_version}</version>
+            <optional>false</optional>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-full</artifactId>
             <optional>false</optional>
             <scope>compile</scope>
         </dependency>
