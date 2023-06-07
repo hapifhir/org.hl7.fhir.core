@@ -19,7 +19,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
-          security-checks: 'vuln,secret,config'
+          vuln-type: 'vuln,secret,config'
           ignore-unfixed: true
           format: 'sarif'
           output: 'trivy-results.sarif'
