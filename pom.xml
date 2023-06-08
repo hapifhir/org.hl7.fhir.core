@@ -176,7 +176,8 @@
                 <artifactId>poi-ooxml</artifactId>
                 <version>${apache_poi_version}</version>
                 <exclusions>
-                    <exclusion>  <!-- declare the exclusion here -->
+                    <!-- exclude this because it collides with the needed poi-ooxml-full-->
+                    <exclusion>
                         <groupId>org.apache.poi</groupId>
                         <artifactId>poi-ooxml-lite</artifactId>
                     </exclusion>

@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Update commons-beanutils and apache.poi dependencies
