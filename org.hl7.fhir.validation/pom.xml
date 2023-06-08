@@ -14,6 +14,7 @@
 
     <properties>
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>
+        <info_cqframework_version>1.5.12</info_cqframework_version>
     </properties>
 
     <dependencies>
@@ -132,6 +133,12 @@
             <groupId>info.cqframework</groupId>
             <artifactId>model</artifactId>
             <version>${info_cqframework_version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>info.cqframework</groupId>
@@ -153,7 +160,11 @@
             <artifactId>qdm</artifactId>
             <version>${info_cqframework_version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.4</version>
+        </dependency>
         <!-- OkHttpDependency -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
