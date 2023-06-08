@@ -30,7 +30,7 @@
         <info_cqframework_version>1.5.12</info_cqframework_version>
         <lombok_version>1.18.22</lombok_version>
         <byte_buddy_version>1.12.14</byte_buddy_version>
-        <apache_poi_version>4.1.1</apache_poi_version>
+        <apache_poi_version>5.2.1</apache_poi_version>
         <saxon_he_version>9.8.0-15</saxon_he_version>
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
@@ -164,7 +164,29 @@
                 <groupId>net.sf.saxon</groupId>
                 <artifactId>Saxon-HE</artifactId>
                 <version>${saxon_he_version}</version>
+            </dependency>
 
+            <!-- Apache POI -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${apache_poi_version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${apache_poi_version}</version>
+                <exclusions>
+                    <exclusion>  <!-- declare the exclusion here -->
+                        <groupId>org.apache.poi</groupId>
+                        <artifactId>poi-ooxml-lite</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml-full</artifactId>
+                <version>${apache_poi_version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
