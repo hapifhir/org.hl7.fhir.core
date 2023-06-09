@@ -33,6 +33,7 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'java' ]
+        module: [ 'org.hl7.fhir.utilities', 'org.hl7.fhir.validation']
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Use only 'java' to analyze code written in Java, Kotlin or both
         # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
@@ -67,7 +68,7 @@ jobs:
     #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
 
     - run: |
-        mvn install -DskipTests -pl org.hl7.fhir.validation
+        mvn install -DskipTests -pl ${{ matrix.module }}
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
