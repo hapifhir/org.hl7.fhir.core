@@ -33,7 +33,7 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'java' ]
-        module: [ 'org.hl7.fhir.utilities', 'org.hl7.fhir.validation']
+        module: [ 'org.hl7.fhir.utilities','org.hl7.fhir.dstu2','org.hl7.fhir.dstu2016may', 'org.hl7.fhir.dstu3', 'org.hl7.fhir.r4', 'org.hl7.fhir.r4b','org.hl7.fhir.r5','org.hl7.fhir.convertors','org.hl7.fhir.validation' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Use only 'java' to analyze code written in Java, Kotlin or both
         # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
