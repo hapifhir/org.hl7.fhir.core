@@ -183,10 +183,31 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+
+            <!-- include this to replace poi-ooxml-lite in poi-ooxml -->
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml-full</artifactId>
                 <version>${apache_poi_version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+                <exclusions>
+                    <!-- Exclude this because older jetbrains pom contains an insecure pom definition-->
+                    <exclusion>
+                        <groupId>org.jetbrains</groupId>
+                        <artifactId>annotations</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- Included because okttp3 used a vulnerable version -->
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>16.0.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
