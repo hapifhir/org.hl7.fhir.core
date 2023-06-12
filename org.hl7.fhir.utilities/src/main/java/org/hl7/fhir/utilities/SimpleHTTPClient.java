@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -13,9 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.SimpleHTTPClient.Header;
-import org.hl7.fhir.utilities.npm.SSLCertTruster;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class SimpleHTTPClient {
@@ -113,12 +109,9 @@ public class SimpleHTTPClient {
   }
 
 
-  private boolean trustAll = false;
+
   
-  public void trustAllhosts() {
-    trustAll  = true;
-    SSLCertTruster.trustAllHosts();    
-  }
+
  
   public HTTPResult get(String url) throws IOException {
     return get(url, null);    
@@ -150,10 +143,7 @@ public class SimpleHTTPClient {
         c.setRequestProperty("Accept", accept);
       }
       setHeaders(c);
-      c.setInstanceFollowRedirects(false); 
-      if (trustAll && url.startsWith("https://")) {
-        ((javax.net.ssl.HttpsURLConnection) c).setHostnameVerifier(SSLCertTruster.DO_NOT_VERIFY);
-      }
+      c.setInstanceFollowRedirects(false);
 
       switch (c.getResponseCode()) {
       case HttpURLConnection.HTTP_MOVED_PERM:
