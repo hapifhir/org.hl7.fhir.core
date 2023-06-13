@@ -58,16 +58,18 @@ public class TxTester {
   private String error;
   private String output;
   private ITerminologyClient tx;
+  private boolean tight;
   
 
-  public TxTester(ITxTesterLoader loader, String server) {
+  public TxTester(ITxTesterLoader loader, String server, boolean tight) {
     super();
     this.server = server;
     this.loader = loader;
+    this.tight = tight;
   }
 
   public static void main(String[] args) throws Exception {
-    new TxTester(new InternalTxLoader(args[0]), args[1]).execute(args[2], args[3]);
+    new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2])).execute(args[2], args[3]);
   }
   
   public boolean execute(String version, String filter) throws IOException, URISyntaxException {
@@ -239,12 +241,12 @@ public class TxTester {
     String vsj;
     try {
       ValueSet vs = tx.expandValueset(null, p, null);
-      TxTesterScrubbers.scrub(vs);
+      TxTesterScrubbers.scrubVS(vs, tight);
       TxTesterSorters.sortValueSet(vs);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);
     } catch (EFhirClientException e) {
       OperationOutcome oo = e.getServerErrors().get(0); 
-      TxTesterScrubbers.scrub(oo);
+      TxTesterScrubbers.scrubOO(oo, tight);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
     String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj);
@@ -263,7 +265,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = tx.validateVS(p);
-      TxTesterScrubbers.scrub(po);
+      TxTesterScrubbers.scrubParams(po);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
     } catch (EFhirClientException e) {

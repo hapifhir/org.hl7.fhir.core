@@ -224,7 +224,7 @@ public class ValidatorCli {
       final String version = Params.getParam(args, Params.VERSION);
       final String tx = Params.getParam(args, Params.TERMINOLOGY);
       final String filter = Params.getParam(args, Params.FILTER);
-      boolean ok = new TxTester(new InternalTxLoader(source, output), tx).setOutput(output).execute(version, filter);
+      boolean ok = new TxTester(new InternalTxLoader(source, output), tx, false).setOutput(output).execute(version, filter);
       System.exit(ok ? 1 : 0);
     } else {
       final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);

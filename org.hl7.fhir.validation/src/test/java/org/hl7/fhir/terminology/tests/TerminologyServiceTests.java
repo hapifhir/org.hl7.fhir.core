@@ -161,7 +161,7 @@ public class TerminologyServiceTests {
           removeParameter(vse.getValueset(), "excludeNested");
         }
         TxTesterSorters.sortValueSet(vse.getValueset());
-        TxTesterScrubbers.scrub(vse.getValueset());
+        TxTesterScrubbers.scrubVS(vse.getValueset(), false);
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
         String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj);
         if (diff != null) {
@@ -205,7 +205,7 @@ public class TerminologyServiceTests {
       }
       e.getDetails().setText(vse.getError());
       oo.addIssue(e);
-      TxTesterScrubbers.scrub(oo);
+      TxTesterScrubbers.scrubOO(oo, false);
       
       String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
       String diff = CompareUtilities.checkJsonSrcIsSame(resp, ooj);
@@ -291,7 +291,7 @@ public class TerminologyServiceTests {
       res.addParameter().setName("issues").setResource(oo);
     }
     TxTesterSorters.sortParameters(res);
-    TxTesterScrubbers.scrub(res);
+    TxTesterScrubbers.scrubParams(res);
     
     String pj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(res);
     String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj);
