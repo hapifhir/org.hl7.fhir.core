@@ -5,6 +5,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 
 public class AsteriskFilter implements FilenameFilter {
+
+
   String dir;
   String regex;
 
@@ -22,6 +24,10 @@ public class AsteriskFilter implements FilenameFilter {
       else
         regex = regex + "\\" + expression.charAt(i);
     }
+    isDirValid();
+  }
+
+  protected void isDirValid() throws IOException {
     File f = new File(dir);
     if (!f.exists()) {
       throw new IOException("Directory " + dir + " does not exist");
