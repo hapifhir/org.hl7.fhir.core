@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.xmlbeans.xml.stream.ReferenceResolver;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.model.Base;

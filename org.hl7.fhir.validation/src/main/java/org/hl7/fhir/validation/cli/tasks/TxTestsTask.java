@@ -42,7 +42,7 @@ public class TxTestsTask extends StandaloneTask{
       final String version = Params.getParam(args, Params.VERSION);
       final String tx = Params.getParam(args, Params.TERMINOLOGY);
       final String filter = Params.getParam(args, Params.FILTER);
-      boolean ok = new TxTester(new TxTester.InternalTxLoader(source, output), tx).setOutput(output).execute(version, filter);
+      boolean ok = new TxTester(new TxTester.InternalTxLoader(source, output), tx, false).setOutput(output).execute(version, filter);
       System.exit(ok ? 1 : 0);
   }
 }

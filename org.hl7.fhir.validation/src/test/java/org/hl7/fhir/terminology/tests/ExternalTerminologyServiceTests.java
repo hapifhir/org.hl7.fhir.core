@@ -93,7 +93,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   public void test() throws Exception {
     if (SERVER != null) {
       if (tester == null) {
-        tester = new TxTester(this, SERVER);
+        tester = new TxTester(this, SERVER, true);
       }
       String err = tester.executeTest(setup.suite, setup.test);
       Assertions.assertTrue(err == null, err);

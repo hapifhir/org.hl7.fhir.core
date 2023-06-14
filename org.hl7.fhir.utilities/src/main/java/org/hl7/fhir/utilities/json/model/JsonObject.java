@@ -389,5 +389,9 @@ public class JsonObject extends JsonElement {
     this.extraComma = extraComma;
   }
   
+  public void clear() {
+    properties.clear();
+    propMap.clear();
+  }
   
 }

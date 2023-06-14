@@ -129,7 +129,7 @@ public abstract class ParserBase {
     if (res == null) {
       throw new FHIRException("Parsing FHIR content failed: "+errors.get(0).summary());      
     } else if (res.size() == 0) {
-      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required");
+      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required because: "+errors.get(0).summary());
     }
     if (res.size() != 1) {
       throw new FHIRException("Parsing FHIR content returned multiple elements in a context where only one element is allowed");
