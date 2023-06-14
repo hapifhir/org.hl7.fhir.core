@@ -24,7 +24,7 @@ public class TxTesterScrubbers {
     }
 
     private boolean isManagedExtension(Extension extension) {
-      return !tight || !Utilities.isAbsoluteUrl(extension.getUrl()) || Utilities.existsInList(extension.getUrl(), 
+      return tight || !Utilities.isAbsoluteUrl(extension.getUrl()) || Utilities.existsInList(extension.getUrl(), 
           "http://hl7.org/fhir/StructureDefinition/codesystem-alternate", 
           "http://hl7.org/fhir/StructureDefinition/codesystem-conceptOrder",
           "http://hl7.org/fhir/StructureDefinition/codesystem-label", 
