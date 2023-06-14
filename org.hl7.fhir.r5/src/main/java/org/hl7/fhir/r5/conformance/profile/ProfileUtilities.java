@@ -777,17 +777,21 @@ public class ProfileUtilities extends TranslatingUtilities {
               int count = slice.checkMin();
               boolean repeats = !"1".equals(slice.getFocus().getBase().getMax()); // type slicing if repeats = 1
               if (count > -1 && repeats) {
-                String msg = "The slice definition for "+slice.getFocus().getId()+" has a minimum of "+slice.getFocus().getMin()+" but the slices add up to a minimum of "+count; 
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, forPublication ? ValidationMessage.IssueSeverity.ERROR : ValidationMessage.IssueSeverity.INFORMATION));                            
+                if (slice.getFocus().hasUserData("auto-added-slicing")) {
+                  slice.getFocus().setMin(count);
+                } else {
+                  String msg = "The slice definition for "+slice.getFocus().getId()+" has a minimum of "+slice.getFocus().getMin()+" but the slices add up to a minimum of "+count; 
+                  messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+slice.getFocus().getId(), msg, forPublication ? ValidationMessage.IssueSeverity.ERROR : ValidationMessage.IssueSeverity.INFORMATION));
+                }
               }
               count = slice.checkMax();
               if (count > -1 && repeats) {
                 String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" but the slices add up to a maximum of "+count+". Check that this is what is intended"; 
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.INFORMATION));                                            
+                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+slice.getFocus().getId(), msg, ValidationMessage.IssueSeverity.INFORMATION));                                            
               }
               if (!slice.checkMinMax()) {
                 String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" which is less than the minimum of "+slice.getFocus().getMin(); 
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.WARNING));                                                            
+                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+slice.getFocus().getId(), msg, ValidationMessage.IssueSeverity.WARNING));                                                            
               }
               slices.remove(s);
             }            

@@ -50,12 +50,12 @@ public class XLIFFProducer extends LanguageFileProducer {
     @Override
     public void entry(TextUnit unit) {
       i++;
-      ln("      <trans-unit id=\""+id+"\" resname=\""+unit.getContext()+"\">");
-//      if (context != null) {
-//        ln("        <notes>");
-//        ln("          <note id=\"n"+i+"\">"+Utilities.escapeXml(context)+"</note>");
-//        ln("        </notes>");
-//      }
+      ln("      <trans-unit id=\""+id+"\" resname=\""+unit.getId()+"\">");
+      if (unit.getContext1() != null) {
+        ln("        <notes>");
+        ln("          <note id=\"n"+i+"\">"+Utilities.escapeXml(unit.getContext1())+"</note>");
+        ln("        </notes>");
+      }
       ln("        <source>"+Utilities.escapeXml(unit.getSrcText())+"</source>");
       ln("        <target>"+Utilities.escapeXml(unit.getTgtText())+"</target>");
       ln("      </trans-unit>");
@@ -114,7 +114,9 @@ public class XLIFFProducer extends LanguageFileProducer {
     for (Element file : XMLUtil.getNamedChildren(xliff, "file")) {
       Element body = XMLUtil.getNamedChild(file, "body");
       for (Element transUnit : XMLUtil.getNamedChildren(body, "trans-unit")) {
-        TranslationUnit tu = new TranslationUnit(file.getAttribute("target-language"), transUnit.getAttribute("id"), 
+        Element notes = XMLUtil.getNamedChild(transUnit, "notes");
+        TranslationUnit tu = new TranslationUnit(file.getAttribute("target-language"), transUnit.getAttribute("resname"),
+            notes == null ? null : XMLUtil.getNamedChildText(notes, "note"),
             XMLUtil.getNamedChildText(transUnit, "source"), XMLUtil.getNamedChildText(transUnit, "target"));
         if (!Utilities.noString(tu.getSrcText()) && !Utilities.noString(tu.getTgtText())) {
           list.add(tu);
@@ -149,7 +151,14 @@ public class XLIFFProducer extends LanguageFileProducer {
       ln(xml, "  <file source-language=\""+baseLang+"\" target-language=\""+targetLang+"\" id=\""+id+"\" original=\"Resource "+id+"\" datatype=\"KEYVALUEJSON\">");
       ln(xml, "    <body>");
       for (TranslationUnit tu : translations) {
-        ln(xml, "      <trans-unit id=\""+id+"\" resname=\""+tu.getContext()+"\">");
+        int i = 0;
+        ln(xml, "      <trans-unit id=\""+id+"\" resname=\""+tu.getId()+"\">");
+        if (tu.getContext1() != null) {
+          i++;
+          ln(xml, "             <notes>");
+          ln(xml, "               <note id=\"n"+i+"\">"+Utilities.escapeXml(tu.getContext1())+"</note>");
+          ln(xml, "             </notes>");
+        }
         ln(xml, "        <source>"+Utilities.escapeXml(tu.getSrcText())+"</source>");
         ln(xml, "        <target>"+Utilities.escapeXml(tu.getTgtText())+"</target>");
         ln(xml, "      </trans-unit>");
