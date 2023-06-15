@@ -1296,6 +1296,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
     }
     pin.addParameter().setName("profile").setResource(expParameters);
+
+    if (options.isDisplayWarningMode()) {
+      pin.addParameter("mode","lenient-display-validation");
+    }
+
     if (txLog != null) {
       txLog.clearLastId();
     }
