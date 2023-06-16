@@ -508,6 +508,7 @@ public interface IWorkerContext {
    * @throws Exception
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
+  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri);
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, Resource sourceOfReference) throws FHIRException;
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
