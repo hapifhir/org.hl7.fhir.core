@@ -523,6 +523,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private Date ruleDate;
   public static final String NO_RULE_DATE = null;
   private boolean matched; // internal use counting matching filters
+  private boolean ignorableError;
 
 
   /**
@@ -849,6 +850,15 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
   public void setMatched(boolean matched) {
     this.matched = matched;
+  }
+
+  public boolean isIgnorableError() {
+    return ignorableError;
+  }
+
+  public ValidationMessage setIgnorableError(boolean ignorableError) {
+    this.ignorableError = ignorableError;
+    return this;
   }
   
   
