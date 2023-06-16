@@ -394,8 +394,9 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
         }
       }
     }
-    sheet.setActiveCell(new CellAddress(sheet.getRow(1).getCell(0)));
-
+    if (sheet.getLastRowNum() > 0) {
+      sheet.setActiveCell(new CellAddress(sheet.getRow(1).getCell(0)));
+    }
   }
 
 }
