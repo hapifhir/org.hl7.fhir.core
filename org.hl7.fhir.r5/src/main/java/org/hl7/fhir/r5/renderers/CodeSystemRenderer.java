@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class CodeSystemRenderer extends TerminologyRenderer {
@@ -141,10 +142,10 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private String sentenceForContent(CodeSystemContentMode mode, CodeSystem cs) {
     switch (mode) {
-    case COMPLETE: return "This code system <param name='cs'/> defines the following code<if test='code-count != 1'>s</if>:";
-    case EXAMPLE: return "This code system <param name='cs'/> provides some example code<if test='code-count != 1'>s</if>:";
-    case FRAGMENT: return "This code system <param name='cs'/> provides a fragment that includes following code<if test='code-count != 1'>s</if>:";
-    case NOTPRESENT: return "This code system <param name='cs'/> defines codes, but no codes are represented here";
+    case COMPLETE: return context.getContext().formatMessage(I18nConstants.RND_CS_CONTENT_COMPLETE);
+    case EXAMPLE: return context.getContext().formatMessage(I18nConstants.RND_CS_CONTENT_EXAMPLE);
+    case FRAGMENT: return context.getContext().formatMessage(I18nConstants.RND_CS_CONTENT_FRAGMENT);
+    case NOTPRESENT: return context.getContext().formatMessage(I18nConstants.RND_CS_CONTENT_NOTPRESENT);
     case SUPPLEMENT:
       boolean properties = CodeSystemUtilities.hasProperties(cs);
       boolean designations = CodeSystemUtilities.hasDesignations(cs); 
@@ -158,7 +159,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       } else {
         features = "features"; // ?
       }
-      return "This code system <param name='cs'/> defines "+features+" on the following code<if test='code-count != 1'>s</if>:";
+      return context.getContext().formatMessage(I18nConstants.RND_CS_CONTENT_SUPPLEMENT, features);
     }
     throw new FHIRException("Unknown CodeSystemContentMode mode");
   }

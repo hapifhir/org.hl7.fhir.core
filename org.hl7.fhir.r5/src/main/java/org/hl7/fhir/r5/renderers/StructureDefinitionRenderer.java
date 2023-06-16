@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.AdditionalBindingsRenderer;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
@@ -59,7 +58,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
-import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.ObligationWrapper;
+import org.hl7.fhir.r5.renderers.ObligationsRenderer.ObligationDetail;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
@@ -86,68 +85,68 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNodeList;
 
 public class StructureDefinitionRenderer extends ResourceRenderer {
 
-  public class ObligationWrapper {
-
-    private Extension ext;
-
-    public ObligationWrapper(Extension ext) {
-      this.ext = ext;
-    }
-
-    public boolean hasActor() {
-      return ext.hasExtension("actor");
-    }
-
-    public boolean hasActor(String id) {
-      return ext.hasExtension("actor") && id.equals(ext.getExtensionByUrl("actor").getValue().primitiveValue());
-    }
-
-    public Coding getCode() {
-      Extension code = ext.getExtensionByUrl("code");
-      if (code != null && code.hasValueCoding()) {
-        return code.getValueCoding();
-      }
-      if (code != null && code.hasValueCodeType()) {
-        return new Coding().setSystem("http://hl7.org/fhir/tools/CodeSystem/obligation").setCode(code.getValueCodeType().primitiveValue());
-      }
-      return null;
-    }
-
-    public boolean hasFilter() {
-      return ext.hasExtension("filter");
-    }
-
-    public String getFilter() {
-      Extension code = ext.getExtensionByUrl("filter");
-      if (code != null && code.getValue() != null) {
-        return code.getValue().primitiveValue();
-      }
-      return null;
-    }
-
-    public boolean hasUsage() {
-      return ext.hasExtension("usage");
-    }
-
-    public String getFilterDocumentation() {
-      Extension code = ext.getExtensionByUrl("filter-desc");
-      if (code != null && code.getValue() != null) {
-        return code.getValue().primitiveValue();
-      }
-      return null;
-    }
-
-    public List<UsageContext> getUsage() {
-      List<UsageContext> usage = new ArrayList<>();
-      for (Extension u : ext.getExtensionsByUrl("usage" )) {
-        if (u.hasValueUsageContext()) {
-          usage.add(u.getValueUsageContext());
-        }
-      }
-      return usage;
-    }
-
-  }
+//  public class ObligationWrapper {
+//
+//    private Extension ext;
+//
+//    public ObligationWrapper(Extension ext) {
+//      this.ext = ext;
+//    }
+//
+//    public boolean hasActor() {
+//      return ext.hasExtension("actor");
+//    }
+//
+//    public boolean hasActor(String id) {
+//      return ext.hasExtension("actor") && id.equals(ext.getExtensionByUrl("actor").getValue().primitiveValue());
+//    }
+//
+//    public Coding getCode() {
+//      Extension code = ext.getExtensionByUrl("obligation");
+//      if (code != null && code.hasValueCoding()) {
+//        return code.getValueCoding();
+//      }
+//      if (code != null && code.hasValueCodeType()) {
+//        return new Coding().setSystem("http://hl7.org/fhir/tools/CodeSystem/obligation").setCode(code.getValueCodeType().primitiveValue());
+//      }
+//      return null;
+//    }
+//
+//    public boolean hasFilter() {
+//      return ext.hasExtension("filter");
+//    }
+//
+//    public String getFilter() {
+//      Extension code = ext.getExtensionByUrl("filter");
+//      if (code != null && code.getValue() != null) {
+//        return code.getValue().primitiveValue();
+//      }
+//      return null;
+//    }
+//
+//    public boolean hasUsage() {
+//      return ext.hasExtension("usage");
+//    }
+//
+//    public String getFilterDocumentation() {
+//      Extension code = ext.getExtensionByUrl("filter-desc");
+//      if (code != null && code.getValue() != null) {
+//        return code.getValue().primitiveValue();
+//      }
+//      return null;
+//    }
+//
+//    public List<UsageContext> getUsage() {
+//      List<UsageContext> usage = new ArrayList<>();
+//      for (Extension u : ext.getExtensionsByUrl("usage" )) {
+//        if (u.hasValueUsageContext()) {
+//          usage.add(u.getValueUsageContext());
+//        }
+//      }
+//      return usage;
+//    }
+//
+//  }
 
 
 
@@ -621,7 +620,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         genElementBindings(gen, element, columns, row, profile, corePath);
         break;
       case OBLIGATIONS:
-        genElementObligations(gen, element, columns, row);
+        genElementObligations(gen, element, columns, row, corePath, profile);
         break;
       case SUMMARY:
         genElementCells(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, nc, mustSupport, true, rc);
@@ -729,90 +728,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return slicingRow;
   }
 
-  private void genElementObligations(HierarchicalTableGenerator gen, ElementDefinition element, List<Column> columns, Row row) throws IOException {
+  private void genElementObligations(HierarchicalTableGenerator gen, ElementDefinition element, List<Column> columns, Row row, String corePath, StructureDefinition profile) throws IOException {
     for (Column col : columns) { 
       Cell gc = gen.new Cell();
       row.getCells().add(gc);
-      List<ObligationWrapper> obligations = collectObligations(element, col.id);
-      if (obligations.size() > 0) {
-        Piece p = gen.new Piece(null);
-        gc.addPiece(p);
-        if (obligations.size() == 1) {
-          renderObligation(p.getChildren(), obligations.get(0));
-        } else {
-          XhtmlNode ul = p.getChildren().ul();
-          for (ObligationWrapper ob : obligations) {
-            renderObligation(ul.li().getChildNodes(), ob);
-          }
-        }
-      }
-      
+      ObligationsRenderer obr = new ObligationsRenderer(corePath, profile, element.getPath(), context, null, this);
+      obr.seeObligations(element, col.id);
+      obr.renderList(gen, gc);      
     }
   }
-
-  private List<ObligationWrapper> collectObligations(ElementDefinition element, String id) {
-    List<ObligationWrapper>  res = new ArrayList<>();
-    for (Extension ext : element.getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinition/obligation")) {
-      ObligationWrapper ob = new ObligationWrapper(ext); 
-      if (("$all".equals(id) && !ob.hasActor()) || (ob.hasActor(id))) {
-        res.add(ob);
-      }
-    }
-    return res;
-  }
-
-  private void renderObligation(XhtmlNodeList children, ObligationWrapper ob) throws IOException {
-    if ("http://hl7.org/fhir/tools/CodeSystem/obligation".equals(ob.getCode().getSystem())) {
-      boolean first = true;
-      String[] codes = ob.getCode().getCode().split("\\+");
-      for (String code : codes) {
-        if (first) first = false; else children.tx(" & ");
-        int i = code.indexOf(":");
-        if (i > -1) {
-          String c = code.substring(0, i);
-          code = code.substring(i+1);
-          children.b().tx(c.toUpperCase());
-          children.tx(":");
-        }
-        CodeResolution cr = resolveCode("http://hl7.org/fhir/tools/CodeSystem/obligation", code);
-        code = code.replace("will-", "").replace("can-", "");
-        if (cr.getLink() != null) {
-          children.ah(cr.getLink(), cr.getHint()).tx(code);          
-        } else {
-          children.span(null, cr.getHint()).tx(code);
-        }
-      }
-      
-    } else {
-      CodeResolution cr = resolveCode(ob.getCode());
-      if (cr.getLink() != null) {
-        children.ah(cr.getLink(), cr.getHint()).tx(cr.getDisplay());        
-      } else {
-        children.span(null, cr.getHint()).tx(cr.getDisplay());
-      }
-    }
-    if (ob.hasFilter() || ob.hasUsage()) {
-      children.tx(" (");
-      boolean ffirst = !ob.hasFilter();
-      if (ob.hasFilter()) {
-        children.span(null, ob.getFilterDocumentation()).code().tx(ob.getFilter());
-      }
-      for (UsageContext uc : ob.getUsage()) {
-        if (ffirst) ffirst = false; else children.tx(",");
-        if (!uc.getCode().is("http://terminology.hl7.org/CodeSystem/usage-context-type", "jurisdiction")) {
-          children.tx(displayForUsage(uc.getCode()));
-          children.tx("=");
-        }
-        CodeResolution ccr = resolveCode(uc.getValueCodeableConcept());
-        children.ah(ccr.getLink(), ccr.getHint()).tx(ccr.getDisplay());
-      }
-      children.tx(")");
-    }
-    // usage
-    // filter
-    // process 
-  }
-
 
   private String displayForUsage(Coding c) {
     if (c.hasDisplay()) {
@@ -1229,7 +1153,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.getPieces().add(gen.new Piece(null, "This type can be bound to a value set using the ", null));
           c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_BINDING_STYLE), null));
           c.getPieces().add(gen.new Piece(null, " binding style", null));            
-          
         }
         if (definition.hasExtension(ToolingExtensions.EXT_IMPLIED_PREFIX)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
@@ -1249,6 +1172,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } else {
               c.getPieces().add(gen.new Piece(ToolingExtensions.WEB_EXTENSION_STYLE, "This element can be extended by named JSON elements", null));                        
             }
+          }
+        }
+        if (definition.hasExtension(ToolingExtensions.EXT_DATE_FORMAT)) {
+          String df = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_DATE_FORMAT);
+          if (df != null) {
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+            c.getPieces().add(gen.new Piece(null, "Date Format: "+df, null));
           }
         }
         if (definition.hasExtension(ToolingExtensions.EXT_ID_EXPECTATION)) {
@@ -1314,7 +1244,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
         if (definition.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-          String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY);
+          String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_PROP_KEY);
           c.getPieces().add(gen.new Piece(null, "JSON: Represented as a single JSON Object with named properties using the value of the "+code+" child as the key", null));     
         }      
         if (definition.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
@@ -1334,6 +1264,34 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.getPieces().add(gen.new Piece("</code>"));          
             } else {
               c.getPieces().add(gen.new Piece(sd.getWebPath(), sd.getTypeName(), null));          
+            }
+          }
+        }
+        if (root) {
+          if (ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) {
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+            c.addPiece(gen.new Piece(null, "This is an obligation profile that only contains obligations and additional bindings", null).addStyle("font-weight:bold"));          
+          }
+          for (Extension ext : profile.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS)) {
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+            String iu = ext.getValue().primitiveValue();
+            c.addPiece(gen.new Piece(null, "This profile picks up obligations and additional bindings from ", null).addStyle("font-weight:bold"));          
+            StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, iu);
+            if (sd == null) {
+              c.addPiece(gen.new Piece(null, iu, null).addStyle("font-weight:bold"));                      
+            } else if (sd.hasWebPath()) {
+              c.addPiece(gen.new Piece(sd.getWebPath(), sd.present(), null).addStyle("font-weight:bold"));                      
+            } else {
+              c.addPiece(gen.new Piece(iu, sd.present(), null).addStyle("font-weight:bold"));                      
+            }
+          }    
+
+          if (profile.getKind() == StructureDefinitionKind.LOGICAL) {
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+            if (ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_LOGICAL_TARGET)) {
+              c.addPiece(gen.new Piece(null, "This logical model can be the target of a reference", null).addStyle("font-weight:bold"));  
+            } else {
+              c.addPiece(gen.new Piece(null, "This logical model cannot be the target of a reference", null).addStyle("font-weight:bold"));                
             }
           }
         }
@@ -1422,6 +1380,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).addStyle("color: darkgreen")));
             }
           }
+
+          ObligationsRenderer obr = new ObligationsRenderer(corePath, profile, definition.getPath(), rc, null, this);
+          if (definition.hasExtension(ToolingExtensions.EXT_OBLIGATION)) {
+            obr.seeObligations(definition.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION));
+          }
+          obr.renderTable(gen, c);
+          
           if (definition.hasMaxLength() && definition.getMaxLength()!=0) {
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, "Max Length: ", null).addStyle("font-weight:bold")));

@@ -227,7 +227,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
             // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
           } catch (Exception e) {
             if (!isSuppressDebugMessages()) {
-              System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+              System.out.println("Unable to generate snapshot @2 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
               if (context.getLogger().isDebugLogging()) {
                 e.printStackTrace();
               }
@@ -288,8 +288,13 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       }
       pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString("webroot"), p.getName());
       for (ValidationMessage msg : msgs) {
-        if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL)
-          throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));
+        if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL) {
+          if (!msg.isIgnorableError()) {
+            throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));
+          } else {
+            System.err.println(msg.getMessage());
+          }
+        }
       }
       if (!p.hasSnapshot())
         throw new FHIRException(context.formatMessage(I18nConstants.PROFILE___ERROR_GENERATING_SNAPSHOT, p.getName(), p.getUrl()));

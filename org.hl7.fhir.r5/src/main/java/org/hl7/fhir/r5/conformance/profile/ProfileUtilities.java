@@ -204,9 +204,19 @@ public class ProfileUtilities extends TranslatingUtilities {
     ALL_TYPES // allow any unknow profile
   }
 
-  private static final List<String> INHERITED_ED_URLS = Arrays.asList(
-      "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style",
-      "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style");
+  private static final List<String> NON_INHERITED_ED_URLS = Arrays.asList(
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status",  
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-category",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-implements",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-security-category",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-wg",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version",
+      "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status-reason",
+      ToolingExtensions.EXT_OBLIGATION);
+
 
   public IWorkerContext getContext() {
     return this.context;
@@ -781,7 +791,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                   slice.getFocus().setMin(count);
                 } else {
                   String msg = "The slice definition for "+slice.getFocus().getId()+" has a minimum of "+slice.getFocus().getMin()+" but the slices add up to a minimum of "+count; 
-                  messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+slice.getFocus().getId(), msg, forPublication ? ValidationMessage.IssueSeverity.ERROR : ValidationMessage.IssueSeverity.INFORMATION));
+                  messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+slice.getFocus().getId(), msg, forPublication ? ValidationMessage.IssueSeverity.ERROR : ValidationMessage.IssueSeverity.INFORMATION).setIgnorableError(true));
                 }
               }
               count = slice.checkMax();
@@ -801,12 +811,12 @@ public class ProfileUtilities extends TranslatingUtilities {
           }
           if (ed.hasSliceName() && !slices.containsKey(ed.getPath())) {
             String msg = "The element "+ed.getId()+" (["+i+"]) launches straight into slicing without the slicing being set up properly first";
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.ERROR));            
+            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.ERROR).setIgnorableError(true));            
           }
           if (ed.hasSliceName() && slices.containsKey(ed.getPath())) {
             if (!slices.get(ed.getPath()).count(ed, ed.getSliceName())) {
               String msg = "Duplicate slice name "+ed.getSliceName()+" on "+ed.getId()+" (["+i+"])";
-              messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.ERROR));            
+              messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.ERROR).setIgnorableError(true));            
             }
           }
           i++;
@@ -886,7 +896,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private void copyInheritedExtensions(StructureDefinition base, StructureDefinition derived) {
     for (Extension ext : base.getExtension()) {
-      if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !derived.hasExtension(ext.getUrl())) {
+      if (!Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) && !derived.hasExtension(ext.getUrl())) {
         derived.getExtension().add(ext.copy());
       }
     }
@@ -905,7 +915,7 @@ public class ProfileUtilities extends TranslatingUtilities {
          } else {
            focus.getConstraint().addAll(ed.getConstraint());
            for (Extension ext : ed.getExtension()) {
-             if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !focus.hasExtension(ext.getUrl())) {
+             if (!Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) && !focus.hasExtension(ext.getUrl())) {
                focus.getExtension().add(ext.copy());
              }
            }
@@ -2159,8 +2169,14 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
 
+    // hack workaround for problem in R5 snapshots
+    List<Extension> elist = dest.getExtensionsByUrl(ToolingExtensions.EXT_TRANSLATABLE);
+    if (elist.size() == 2) {
+      dest.getExtension().remove(elist.get(1));
+    }
+    
     for (Extension ext : source.getExtension()) {
-      if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !dest.hasExtension(ext.getUrl())) {
+      if (!Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) && !dest.hasExtension(ext.getUrl())) {
         dest.getExtension().add(ext.copy());
       }      
     }
@@ -2576,14 +2592,16 @@ public class ProfileUtilities extends TranslatingUtilities {
         dest.setBinding(null);
       }
         
-      // finally, we copy any extensions from source to dest
-      for (Extension ex : derived.getExtension()) {
-        StructureDefinition sd  = context.fetchResource(StructureDefinition.class, ex.getUrl(), derivedSrc);
-        if (sd == null || sd.getSnapshot() == null || sd.getSnapshot().getElementFirstRep().getMax().equals("1")) {
-          ToolingExtensions.removeExtension(dest, ex.getUrl());
-        }
-        dest.addExtension(ex.copy());
-      }
+//      // finally, we copy any extensions from source to dest
+      //no, we already did.
+//      for (Extension ex : derived.getExtension()) {
+//        !
+//        StructureDefinition sd  = context.fetchResource(StructureDefinition.class, ex.getUrl(), derivedSrc);
+//        if (sd == null || sd.getSnapshot() == null || sd.getSnapshot().getElementFirstRep().getMax().equals("1")) {
+//          ToolingExtensions.removeExtension(dest, ex.getUrl());
+//        }
+//        dest.addExtension(ex.copy());
+//      }
     }
     if (dest.hasFixed()) {
       checkTypeOk(dest, dest.getFixed().fhirType(), srcSD, "fixed");

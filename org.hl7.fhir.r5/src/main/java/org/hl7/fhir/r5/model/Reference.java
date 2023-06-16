@@ -489,6 +489,29 @@ The type is the Canonical URL of Resource Definition that is the type this refer
     } 
     return this; 
   }
+  
+
+  public boolean matches(Reference value) {
+    if (value.hasReference() || hasReference()) {
+      if (!(value.hasReference() && hasReference())) {
+        return false;
+      }
+      if (!reference.matches(value.getReference())) {
+        return true;
+      }
+    }
+    if (value.hasIdentifier() || hasIdentifier()) {
+      if (!(value.hasIdentifier() && hasIdentifier())) {
+        return false;
+      }
+      if (!identifier.matches(value.getIdentifier())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
 // end addition
 
 }

@@ -13,10 +13,13 @@ import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
 import org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class CapabilityStatementRenderer extends ResourceRenderer {
@@ -99,20 +102,12 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           if (hasSupProf) {
             profCell.br();
             profCell.addText("Additional supported profiles:");
-            for (CanonicalType sp: r.getSupportedProfile()) { 
-              profCell.br();
-              profCell.nbsp().nbsp();
-              profCell.ah(sp.getValue()).addText(sp.getValue());   
-            }
+            renderSupportedProfiles(profCell, r);
           }
         }
         else {    //Case of only supported profiles
           profCell.addText("Supported profiles:");
-          for (CanonicalType sp: r.getSupportedProfile()) { 
-            profCell.br();
-            profCell.nbsp().nbsp();
-            profCell.ah(sp.getValue()).addText(sp.getValue());   
-          }
+          renderSupportedProfiles(profCell, r);
         }
         //Show capabilities
         tr.td().addText(showOp(r, TypeRestfulInteraction.READ));
@@ -133,6 +128,48 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
 
     return true;
+  }
+
+  private void renderSupportedProfiles(XhtmlNode profCell, CapabilityStatementRestResourceComponent r) throws IOException {
+    for (CanonicalType sp: r.getSupportedProfile()) { 
+      profCell.br();
+      profCell.nbsp().nbsp();
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, sp.getValue());
+      if (sd != null) {
+        profCell.ah(sd.getWebPath()).addText(sd.present());
+      } else {
+        profCell.ah(sp.getValue()).addText(sp.getValue());        
+      }
+    }
+    if (r.hasExtension(ToolingExtensions.EXT_PROFILE_MAPPING)) {
+      profCell.br();
+      profCell.b().tx("Profile Mapping");
+      XhtmlNode tbl = profCell.table("grid");
+      boolean doco = false;
+      for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING)) {
+        doco = doco || ext.hasExtension("documentation");
+      }
+      XhtmlNode tr = tbl.tr();
+      tr.th().tx("Criteria");
+      tr.th().tx("Profile");
+      if (doco) {
+        tr.th().tx("Criteria");
+      }
+      for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING)) {
+        tr = tbl.tr();
+        tr.td().code().tx(ToolingExtensions.readStringExtension(ext, "search"));
+        String url = ToolingExtensions.readStringExtension(ext, "profile");
+        StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
+        if (sd != null) {
+          tr.td().code().ah(sd.getWebPath()).tx(sd.present());
+        } else {
+          tr.td().code().tx(url);
+        }
+        if (doco) {
+          tr.td().code().markdown(ToolingExtensions.readStringExtension(ext, "documentation"), "documentation"); 
+        }
+      }      
+    }
   }
 
   public void describe(XhtmlNode x, CapabilityStatement cs) {
