@@ -242,12 +242,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       return build(context);
     }
 
-    public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws IOException, FHIRException {
+    public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader, boolean genSnapshots) throws IOException, FHIRException {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       context.setAllowLoadingDuplicates(allowLoadingDuplicates);      
       context.version = pi.getNpm().asString("version");
       context.loadFromPackage(pi, loader);
-      context.finishLoading();
+      context.finishLoading(genSnapshots);
       return build(context);
     }
 
@@ -667,12 +667,18 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         new ContextUtilities(this).generateSnapshot(p);
       } catch (Exception e) {
         // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot for "+uri+": "+e.getMessage());
+        System.out.println("Unable to generate snapshot @3 for "+uri+": "+e.getMessage());
         if (logger.isDebugLogging()) {
           e.printStackTrace();          
         }
       }
     }
+    return r;
+  }
+
+  @Override
+  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+    T r = super.fetchResource(class_, uri);
     return r;
   }
 
@@ -697,7 +703,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
           }
         } catch (Exception e) {
           // not sure what to do in this case?
-          System.out.println("Unable to generate snapshot for "+p.getVersionedUrl()+": "+e.getMessage());
+          System.out.println("Unable to generate snapshot @4 for "+p.getVersionedUrl()+": "+e.getMessage());
           if (logger.isDebugLogging()) {
             e.printStackTrace();
           }

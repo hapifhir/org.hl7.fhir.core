@@ -17,15 +17,15 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class Definitions {
 
-  private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<>(true);
-  private CanonicalResourceManager<ValueSet> valuesets = new CanonicalResourceManager<>(true);
-  private CanonicalResourceManager<ConceptMap> conceptMaps = new CanonicalResourceManager<>(true);
+  private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<>(true, false);
+  private CanonicalResourceManager<ValueSet> valuesets = new CanonicalResourceManager<>(true, false);
+  private CanonicalResourceManager<ConceptMap> conceptMaps = new CanonicalResourceManager<>(true, false);
   
-  private CanonicalResourceManager<CapabilityStatement> statements = new CanonicalResourceManager<>(true);
-  private CanonicalResourceManager<StructureDefinition> structures = new CanonicalResourceManager<>(true);
-  private CanonicalResourceManager<OperationDefinition> operations = new CanonicalResourceManager<>(true);
-  private CanonicalResourceManager<SearchParameter> searchParams = new CanonicalResourceManager<>(true);
-  private CanonicalResourceManager<CompartmentDefinition> compartments = new CanonicalResourceManager<>(true);
+  private CanonicalResourceManager<CapabilityStatement> statements = new CanonicalResourceManager<>(true, false);
+  private CanonicalResourceManager<StructureDefinition> structures = new CanonicalResourceManager<>(true, false);
+  private CanonicalResourceManager<OperationDefinition> operations = new CanonicalResourceManager<>(true, false);
+  private CanonicalResourceManager<SearchParameter> searchParams = new CanonicalResourceManager<>(true, false);
+  private CanonicalResourceManager<CompartmentDefinition> compartments = new CanonicalResourceManager<>(true, false);
   
   
   public CanonicalResourceManager<CodeSystem> getCodeSystems() {

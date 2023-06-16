@@ -65,8 +65,10 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.Content;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.ValidationEngine.IValidationEngineLoader;
 import org.hl7.fhir.validation.ValidationRecord;
 import org.hl7.fhir.validation.ValidatorUtils;
+import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationOutcome;
@@ -142,66 +144,86 @@ public class ValidationService {
   }
 
   public void validateSources(CliContext cliContext, ValidationEngine validator) throws Exception {
-    long start = System.currentTimeMillis();
-    List<ValidationRecord> records = new ArrayList<>();
-    Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles(), records);
-    MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
-    System.out.println("Done. " + validator.getContext().clock().report()+". Memory = "+Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed()+mbean.getNonHeapMemoryUsage().getUsed()));
-    System.out.println();
-
-    PrintStream dst = null;
-    ValidationOutputRenderer renderer = makeValidationOutputRenderer(cliContext);
-    renderer.setCrumbTrails(validator.isCrumbTrails());
-    renderer.setRunDate(runDate);
-    if (renderer.isSingleFile()) {
-      if (cliContext.getOutput() == null) {
-        dst = System.out;
-      } else {
-        dst = new PrintStream(new FileOutputStream(cliContext.getOutput()));
-      }
-      renderer.setOutput(dst);
-    } else {
-      File dir = new File(cliContext.getOutput());
-      if (!dir.isDirectory()) {
-        throw new Error("The output location "+dir.getAbsolutePath()+" must be an existing directory for the output style "+renderer.getStyleCode());
-      }
-      renderer.setFolder(dir);
+    if (cliContext.getProfiles().size() > 0) {
+      System.out.println("  Profiles: " + cliContext.getProfiles());
     }
+    ValidatorWatchMode watch = ValidatorWatchMode.NONE;
+    IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion());
+        
+    List<ValidationRecord> records = new ArrayList<>();
+    List<SourceFile> refs = new ArrayList<>();
 
     int ec = 0;
 
-    if (r instanceof Bundle) {
-      if (renderer.handlesBundleDirectly()) {
-        renderer.render((Bundle) r);
-      } else {
-        renderer.start(((Bundle) r).getEntry().size() > 1);
-        for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry()) {
-          OperationOutcome op = (OperationOutcome) e.getResource();
-          ec = ec + countErrors(op);
-          renderer.render(op);
+    do {
+      long start = System.currentTimeMillis();
+      Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles(), refs, records, igLoader, watch == ValidatorWatchMode.ALL);
+      boolean statusNeeded = false;
+      if (r != null) {
+        statusNeeded = true;
+        MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
+        System.out.println("Done. " + validator.getContext().clock().report()+". Memory = "+Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed()+mbean.getNonHeapMemoryUsage().getUsed()));
+        System.out.println();
+
+        PrintStream dst = null;
+        ValidationOutputRenderer renderer = makeValidationOutputRenderer(cliContext);
+        renderer.setCrumbTrails(validator.isCrumbTrails());
+        renderer.setRunDate(runDate);
+        if (renderer.isSingleFile()) {
+          if (cliContext.getOutput() == null) {
+            dst = System.out;
+          } else {
+            dst = new PrintStream(new FileOutputStream(cliContext.getOutput()));
+          }
+          renderer.setOutput(dst);
+        } else {
+          File dir = new File(cliContext.getOutput());
+          if (!dir.isDirectory()) {
+            throw new Error("The output location "+dir.getAbsolutePath()+" must be an existing directory for the output style "+renderer.getStyleCode());
+          }
+          renderer.setFolder(dir);
         }
-        renderer.finish();
+
+        if (r instanceof Bundle) {
+          if (renderer.handlesBundleDirectly()) {
+            renderer.render((Bundle) r);
+          } else {
+            renderer.start(((Bundle) r).getEntry().size() > 1);
+            for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry()) {
+              OperationOutcome op = (OperationOutcome) e.getResource();
+              ec = ec + countErrors(op);
+              renderer.render(op);
+            }
+            renderer.finish();
+          }
+        } else if (r == null) {
+          ec = ec + 1;
+          System.out.println("No output from validation - nothing to validate");
+        } else {
+          renderer.start(false);
+          OperationOutcome op = (OperationOutcome) r;
+          ec = countErrors(op);
+          renderer.render((OperationOutcome) r);
+          renderer.finish();
+        }
+
+        if (cliContext.getOutput() != null && dst != null) {
+          dst.close();
+        }
+
+        if (cliContext.getHtmlOutput() != null) {
+          String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis() - start);
+          TextFile.stringToFile(html, cliContext.getHtmlOutput());
+          System.out.println("HTML Summary in " + cliContext.getHtmlOutput());
+        }
       }
-    } else if (r == null) {
-      ec = ec + 1;
-      System.out.println("No output from validation - nothing to validate");
-    } else {
-      renderer.start(false);
-      OperationOutcome op = (OperationOutcome) r;
-      ec = countErrors(op);
-      renderer.render((OperationOutcome) r);
-      renderer.finish();
-    }
-
-    if (cliContext.getOutput() != null && dst != null) {
-      dst.close();
-    }
-
-    if (cliContext.getHtmlOutput() != null) {
-      String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis() - start);
-      TextFile.stringToFile(html, cliContext.getHtmlOutput());
-      System.out.println("HTML Summary in " + cliContext.getHtmlOutput());
-    }
+      if (watch != ValidatorWatchMode.NONE) {
+        if (statusNeeded) {
+          System.out.println("Watching for changes");
+        }
+        Thread.sleep(1000);
+      }
+    } while (watch != ValidatorWatchMode.NONE);
     System.exit(ec > 0 ? 1 : 0);
   }
 
@@ -552,11 +574,11 @@ public class ValidationService {
     XLIFFProducer xliff = new XLIFFProducer(Utilities.path(dst));
     JsonLangFileProducer jl = new JsonLangFileProducer(Utilities.path(dst));
     
-    List<String> refs = new ArrayList<String>();
+    List<SourceFile> refs = new ArrayList<>();
     ValidatorUtils.parseSources(cliContext.getSources(), refs, validator.getContext());    
-    for (String ref : refs) {
+    for (SourceFile ref : refs) {
       System.out.println("  Extract Translations from " + ref);
-      org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref, "translate", false);
+      org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false);
       Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
       LanguageProducerSession ps = po.startSession(e.fhirType()+"-"+e.getIdBase(), cliContext.getSrcLang());
       LanguageProducerLanguageSession psl = ps.forLang(cliContext.getTgtLang());
@@ -586,15 +608,15 @@ public class ValidationService {
       loadTranslationSource(translations, input);
     }
     
-    List<String> refs = new ArrayList<String>();
+    List<SourceFile> refs = new ArrayList<>();
     ValidatorUtils.parseSources(cliContext.getSources(), refs, validator.getContext()); 
     int t = 0;
-    for (String ref : refs) {
+    for (SourceFile ref : refs) {
       System.out.println("  Inject Translations into " + ref);
-      org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref, "translate", false);
+      org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false);
       Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());      
       t = t + new LanguageUtils(validator.getContext()).importFromTranslations(e, translations);
-      Manager.compose(validator.getContext(), e, new FileOutputStream(Utilities.path(dst, new File(ref).getName())), cnt.getCntType(),
+      Manager.compose(validator.getContext(), e, new FileOutputStream(Utilities.path(dst, new File(ref.getRef()).getName())), cnt.getCntType(),
           OutputStyle.PRETTY, null);
     }
     System.out.println("Done - imported "+t+" translations into "+refs.size()+ " in "+dst);
