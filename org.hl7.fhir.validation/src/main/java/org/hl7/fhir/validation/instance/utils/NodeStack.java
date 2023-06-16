@@ -211,5 +211,13 @@ public class NodeStack {
     this.contained = contained;
   }
 
+  public int line() {
+    return element.line();
+  }
+
+  public int col() {
+    return element.col();
+  }
+
 
 }
