@@ -1,0 +1,24 @@
+The validator can be run in test mode, which executes all JUnit tests for the
+FHIR core library against a set of test cases in a local directory. To do this,
+you must provide a specific parameter with a directory value:
+
+ -test [directory]
+
+The directory must follow the same conventions as the reference test cases found
+at https://github.com/FHIR/fhir-test-cases. This mode must also be executed with
+the Java property java.locale.providers set to COMPAT as below:
+
+  java -Djava.locale.providers=COMPAT -jar validator_cli.jar -tests
+  ./my/path/to/fhir-test-cases
+
+This parameter is compatible with -txCache, -test-modules, and
+-test-classname-filter parameters.
+
+The following test-specific parameters can be used to limit which tests are run:
+-test-modules [module-names] A comma delimited list of Java module names for
+    which to run JUnit tests. By default, all modules are used to run tests.
+    Example: -test-modules org.hl7.fhir.dstu2,org.hl7.fhir.dstu2016may
+
+-test-classname-filter [regex] A regex filter applied to test Java class names
+    for selecting which JUnit tests to run. By default, all tests are run.
+    Example: -test-classname-filter .*ShexGeneratorTests

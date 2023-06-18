@@ -30,11 +30,12 @@ public class TestExecutorParams {
     }
 
     public static boolean isValidClassnameFilterParam(String param) {
+      if (param == null) return true;
       try {
         Pattern.compile(param);
-       return true;
+        return true;
       } catch (PatternSyntaxException e) {
-       return false;
+        return false;
       }
     }
 }

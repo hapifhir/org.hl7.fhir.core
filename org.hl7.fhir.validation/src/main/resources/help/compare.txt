@@ -1,0 +1,13 @@
+The validator can compare profiles. To compare profiles, use the following parameters:
+
+java -jar validator_cli.jar -compare -dest /home/user/work/ig-comparison -version 4.0
+   -ig hl7.fhir.us.carin-bb#1.1.0 -ig hl7.fhir.us.davinci-crd#1.0.0 
+   -left http://hl7.org/fhir/us/carin-bb/StructureDefinition/C4BB-Patient -right http://hl7.org/fhir/us/davinci-crd/StructureDefinition/profile-patient
+
+Parameters:
+
+-compare: tell the validator to run the comparison logic
+-dest: folder in which to produce the output. This must exist, and the validator will overwrite existing content if it needs to. The output isn't simple - see below 
+-version Maj.Min - the version to use. You can leave this out and let the validator infer this, but it's there so that you can compare profiles across versions. E.g. if you specify -version 4.0, the profiles will both be treated as R4 profiles, even if they aren't
+-ig - a repeating parameter that specifies the packages to load, that contain the profiles you want to compare 
+-left and -right - the two profiles to compare. There's no functional difference between left and right, except that the comparison will keep to left and right consistently
