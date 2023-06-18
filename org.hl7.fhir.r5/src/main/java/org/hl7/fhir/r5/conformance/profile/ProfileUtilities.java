@@ -55,6 +55,7 @@ import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.Property;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Element;
@@ -2428,7 +2429,18 @@ public class ProfileUtilities extends TranslatingUtilities {
         else
           derived.getMustHaveValueElement().setUserData(UD_DERIVATION_EQUALS, true);
       }
-
+      if (derived.hasValueAlternatives()) {
+        if (!Base.compareDeep(derived.getValueAlternatives(), base.getValueAlternatives(), false))
+          for (CanonicalType s : derived.getValueAlternatives()) {
+            if (!base.hasValueAlternatives(s.getValue()))
+              base.getValueAlternatives().add(s.copy());
+          }
+        else if (trimDifferential)
+          derived.getValueAlternatives().clear();
+        else
+          for (CanonicalType t : derived.getValueAlternatives())
+            t.setUserData(UD_DERIVATION_EQUALS, true);
+      }
 
       // profiles cannot change : isModifier, defaultValue, meaningWhenMissing
       // but extensions can change isModifier

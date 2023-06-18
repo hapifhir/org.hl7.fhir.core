@@ -2290,6 +2290,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (context.hasBinding()) {
         ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, e.line(), e.col(), path, context.getBinding().getStrength() != BindingStrength.REQUIRED, I18nConstants.Terminology_TX_Code_ValueSet_MISSING) && ok;
       }
+      ok = rule(errors, "2023-06-18", IssueType.INVALID, e.line(), e.col(), path, !context.getMustHaveValue(), I18nConstants.PRIMITIVE_MUSTHAVEVALUE_MESSAGE, context.getId(), profile.getVersionedUrl()) && ok;
+      if (context.hasValueAlternatives()) {
+        boolean found = false;
+        CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+        for (CanonicalType ct : context.getValueAlternatives()) {
+          found = found || e.hasExtension(ct.getValue());
+          b.append(ct.getValue());
+        }
+        ok = rulePlural(errors, "2023-06-18", IssueType.INVALID, e.line(), e.col(), path, found, context.getValueAlternatives().size(), I18nConstants.PRIMITIVE_VALUE_ALTERNATIVES_MESSAGE, context.getId(), profile.getVersionedUrl(), b.toString()) && ok;
+      }
       return ok;
     } else {
       boolean hasBiDiControls = UnicodeUtilities.hasBiDiChars(e.primitiveValue());

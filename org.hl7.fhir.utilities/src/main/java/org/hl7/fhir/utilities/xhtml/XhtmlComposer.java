@@ -37,6 +37,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.List;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
@@ -76,6 +77,15 @@ public class XhtmlComposer {
     StringWriter sdst = new StringWriter();
     dst = sdst;
     writeNode("", node, false);
+    return sdst.toString();
+  }
+
+  public String compose(List<XhtmlNode> nodes) throws IOException  {
+    StringWriter sdst = new StringWriter();
+    dst = sdst;
+    for (XhtmlNode node : nodes) {      
+      writeNode("", node, false);
+    }
     return sdst.toString();
   }
 
@@ -359,6 +369,11 @@ public class XhtmlComposer {
     } catch (IOException e) {
       throw new Error(e);
     }
+  }
+
+  public String compose(XhtmlNodeList childNodes) {
+    // TODO Auto-generated method stub
+    return null;
   }
   
 }
