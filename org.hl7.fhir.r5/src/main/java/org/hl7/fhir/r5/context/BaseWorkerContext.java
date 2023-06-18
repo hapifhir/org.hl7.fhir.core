@@ -1261,7 +1261,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected ValidationResult validateOnServer(ValueSet vs, Parameters pin, ValidationOptions options) throws FHIRException {
-    boolean cache = false;
+
     if (vs != null) {
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
         codeSystemsUsed.add(inc.getSystem());
@@ -1270,33 +1270,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         codeSystemsUsed.add(inc.getSystem());
       }
     }
-    
-    if (vs != null) {
-      if (tcc.isTxCaching() && tcc.getCacheId() != null && vs.getUrl() != null && tcc.getCached().contains(vs.getUrl()+"|"+vs.getVersion())) {
-        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+(vs.hasVersion() ? "|"+vs.getVersion() : "")));        
-      } else if (options.getVsAsUrl()){
-        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()));
-      } else {
-        pin.addParameter().setName("valueSet").setResource(vs);
-        if (vs.getUrl() != null) {
-          tcc.getCached().add(vs.getUrl()+"|"+vs.getVersion());
-        }
-      }
-      cache = true;
-      addDependentResources(pin, vs);
-    }
-    if (cache) {
-      pin.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));              
-    }
-    for (ParametersParameterComponent pp : pin.getParameter()) {
-      if (pp.getName().equals("profile")) {
-        throw new Error(formatMessage(I18nConstants.CAN_ONLY_SPECIFY_PROFILE_IN_THE_CONTEXT));
-      }
-    }
-    if (expParameters == null) {
-      throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
-    }
-    pin.addParameter().setName("profile").setResource(expParameters);
+
+    addServerValidationParameters(vs, pin, options);
+
     if (txLog != null) {
       txLog.clearLastId();
     }
@@ -1310,6 +1286,40 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       pOut = tcc.getClient().validateVS(pin);
     }
     return processValidationResult(pOut);
+  }
+
+  protected void addServerValidationParameters(ValueSet vs, Parameters pin, ValidationOptions options) {
+    boolean cache = false;
+    if (vs != null) {
+      if (tcc.isTxCaching() && tcc.getCacheId() != null && vs.getUrl() != null && tcc.getCached().contains(vs.getUrl()+"|"+ vs.getVersion())) {
+        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+(vs.hasVersion() ? "|"+ vs.getVersion() : "")));
+      } else if (options.getVsAsUrl()){
+        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()));
+      } else {
+        pin.addParameter().setName("valueSet").setResource(vs);
+        if (vs.getUrl() != null) {
+          tcc.getCached().add(vs.getUrl()+"|"+ vs.getVersion());
+        }
+      }
+      cache = true;
+      addDependentResources(pin, vs);
+    }
+    if (cache) {
+      pin.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));
+    }
+    for (ParametersParameterComponent pp : pin.getParameter()) {
+      if (pp.getName().equals("profile")) {
+        throw new Error(formatMessage(I18nConstants.CAN_ONLY_SPECIFY_PROFILE_IN_THE_CONTEXT));
+      }
+    }
+    if (expParameters == null) {
+      throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
+    }
+    pin.addParameter().setName("profile").setResource(expParameters);
+
+    if (options.isDisplayWarningMode()) {
+      pin.addParameter("mode","lenient-display-validation");
+    }
   }
 
   private boolean addDependentResources(Parameters pin, ValueSet vs) {
