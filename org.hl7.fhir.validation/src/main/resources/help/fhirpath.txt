@@ -1,0 +1,9 @@
+You can use the validator to evaluate a FHIRPath expression on a resource or
+logical model. To do this, you must provide a specific parameter:
+
+ -fhirpath [FHIRPath]
+
+* [FHIRPath] the FHIRPath expression to evaluate
+
+-fhirpath requires the parameters -source. ig may be used to provide a logical
+model
