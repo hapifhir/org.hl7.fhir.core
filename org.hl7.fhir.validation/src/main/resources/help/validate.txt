@@ -5,8 +5,8 @@ The validation tool compares a resource against the base definitions and any
 profiles declared in the resource (Resource.meta.profile) or specified on the 
 command line
 
-The FHIR validation tool validates a FHIR resource or bundle. Schema and
-schematron checking is performed, then some additional checks are performed.
+The FHIR validation tool validates a FHIR resource or bundle. Syntax and content is checked 
+against the specification and other profiles as specified. 
 
 * XML & Json (FHIR versions {{XML_AND_JSON_FHIR_VERSIONS}})
 * Turtle (FHIR versions {{TURTLE_FHIR_VERSIONS}})
@@ -72,6 +72,16 @@ The following parameters are supported:
         Default: results are sent to the std out.
 -outputSuffix [string]: used in -convert and -snapshot to deal with
         one or more result files (where -output can only have one)
+-watch-mode [mode]:
+        Specify that the validator remain running and re-validate when any 
+     of the validated files changes. The validator has to be terminated with 
+     ctrl-c etc in this mode.
+     This parameter can have one of the following values:
+      * none: the default - don't wait, just stop when finished
+      * single: when any of the validated files changes, re-validate it
+      * all: when any of the validated files changes, re-validate all of them
+     All is useful when the content includes internal dependencies e.g. 
+     a profile and it's value sets.     
 -debug
         Produce additional information about the loading/validation process
 -recurse

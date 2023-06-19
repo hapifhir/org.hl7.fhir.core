@@ -211,6 +211,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean showMessagesFromReferences;
   @Getter @Setter private boolean doImplicitFHIRPathStringConversion;
   @Getter @Setter private HtmlInMarkdownCheck htmlInMarkdownCheck;
+  @Getter @Setter private boolean allowDoubleQuotesInFHIRPath;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
@@ -262,6 +263,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     showMessagesFromReferences = other.showMessagesFromReferences;
     doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
     htmlInMarkdownCheck = other.htmlInMarkdownCheck;
+    allowDoubleQuotesInFHIRPath = other.allowDoubleQuotesInFHIRPath;
     locale = other.locale;
     igs.addAll(other.igs);
     extensionDomains.addAll(other.extensionDomains);
@@ -471,6 +473,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     context.loadFromPackage(npmX, null);
 
     this.fhirPathEngine = new FHIRPathEngine(context);
+    this.fhirPathEngine.setAllowDoubleQuotes(false);
   }
 
   private String getVersionFromPack(Map<String, byte[]> source) {
@@ -839,6 +842,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setQuestionnaireMode(questionnaireMode);
     validator.setLevel(level);
     validator.setHtmlInMarkdownCheck(htmlInMarkdownCheck);
+    validator.setAllowDoubleQuotesInFHIRPath(allowDoubleQuotesInFHIRPath);
     validator.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
     validator.setDoImplicitFHIRPathStringConversion(doImplicitFHIRPathStringConversion);
     if (format == FhirFormat.SHC) {

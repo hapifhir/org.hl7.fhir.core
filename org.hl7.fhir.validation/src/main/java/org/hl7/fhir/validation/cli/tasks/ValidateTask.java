@@ -7,6 +7,7 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
+import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
 import org.hl7.fhir.validation.cli.utils.Display;
 
 import java.io.PrintStream;
@@ -54,7 +55,7 @@ public class ValidateTask extends ValidationEngineTask {
     }
     System.out.println("Validating");
 
-    validationService.validateSources(cliContext, validationEngine);
+    validationService.validateSources(cliContext, validationEngine, cliContext.getWatchMode());
 
   }
 }
