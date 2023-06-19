@@ -4151,7 +4151,6 @@ public class FHIRPathEngine {
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
-
     if (focus.size() == 1) {
       String cnt = focus.get(0).primitiveValue();
       if ("hex".equals(param)) {
@@ -4164,7 +4163,6 @@ public class FHIRPathEngine {
         result.add(new StringType(new String(enc.decode(cnt))));
       }
     }
-
     return result;  
   }
 

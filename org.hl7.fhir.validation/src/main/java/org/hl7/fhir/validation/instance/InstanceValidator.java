@@ -2037,10 +2037,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       } else if (ctxt.getType() == ExtensionContextType.EXTENSION) {
         contexts.append("x:" + ctxt.getExpression());
-        String ext = stack.getElement().getNamedChildValue("url");
+        String ext = null;
+        if (stack.getElement().getName().startsWith("value")) {
+          NodeStack estack = stack.getParent();
+          if (estack != null && estack.getElement().fhirType().equals("Extension")) {
+            ext = estack.getElement().getNamedChildValue("url");
+          }
+        } else {
+          ext = stack.getElement().getNamedChildValue("url");
+        }
         if (ctxt.getExpression().equals(ext)) {
           ok = true;
-        } else {
+        } else if (ext != null) {
           plist.add(ext);
         }
       } else if (ctxt.getType() == ExtensionContextType.FHIRPATH) {
