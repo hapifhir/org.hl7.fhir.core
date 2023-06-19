@@ -3,6 +3,7 @@ package org.hl7.fhir.validation;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
+import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
 import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.cli.utils.Params;
 
@@ -245,9 +246,10 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"dummyFile.json"};
     CliContext cliContext = Params.loadCliContext(args);
     ValidatorCli cli = mockValidatorCliWithService(cliContext);
+    ValidatorWatchMode watchMode = ValidatorWatchMode.NONE;
     cli.readParamsAndExecuteTask(cliContext, args);
     Mockito.verify(validationService).determineVersion(same(cliContext));
-    Mockito.verify(validationService).validateSources(same(cliContext), same(validationEngine));
+    Mockito.verify(validationService).validateSources(same(cliContext), same(validationEngine), same(watchMode));
   }
 
   @Test
