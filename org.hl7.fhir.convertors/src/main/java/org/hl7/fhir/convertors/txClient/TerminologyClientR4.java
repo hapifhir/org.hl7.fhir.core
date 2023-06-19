@@ -206,7 +206,9 @@ public class TerminologyClientR4 implements ITerminologyClient {
   @Override
   public ITerminologyClient setClientHeaders(ClientHeaders clientHeaders) {
     this.clientHeaders = clientHeaders;
-    this.client.setClientHeaders(this.clientHeaders.headers());
+    if (this.clientHeaders != null) {
+      this.client.setClientHeaders(this.clientHeaders.headers());
+    }
     return this;
   }
 
