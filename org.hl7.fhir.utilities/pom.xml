@@ -55,7 +55,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok_version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -105,7 +104,6 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>${byte_buddy_version}</version>
             <scope>provided</scope>
         </dependency>
 
