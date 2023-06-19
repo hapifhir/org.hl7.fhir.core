@@ -10,6 +10,7 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
+import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
 
 public class Params {
 
@@ -83,6 +84,7 @@ public class Params {
   public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
   public static final String SRC_LANG = "-src-lang";
   public static final String TGT_LANG = "-tgt-lang";
+  public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
   
 
   public static final String RUN_TESTS = "-run-tests";
@@ -96,6 +98,7 @@ public class Params {
   public static final String INPUT = "-input";
   public static final String FILTER = "-filter";
   private static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
+  private static final String WATCH_MODE_PARAM = "-watch-mode";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -240,6 +243,8 @@ public class Params {
         cliContext.setNoInternalCaching(true);
       } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
         cliContext.setNoExtensibleBindingMessages(true);
+      } else if (args[i].equals(ALLOW_DOUBLE_QUOTES)) {
+        cliContext.setAllowDoubleQuotesInFHIRPath(true);        
       } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
         cliContext.setNoUnicodeBiDiControlChars(true);
       } else if (args[i].equals(NO_INVARIANTS)) {
@@ -381,6 +386,12 @@ public class Params {
         } else {
           throw new Exception("Can only nominate a single -map parameter");
         }
+      } else if (args[i].equals(WATCH_MODE_PARAM)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -watch-mode without indicating mode value");
+        } else {
+          cliContext.setWatchMode(readWatchMode(args[++i]));
+        }
       } else if (args[i].startsWith(X)) {
         i++;
       } else if (args[i].equals(CONVERT)) {
@@ -400,6 +411,21 @@ public class Params {
     }
     
     return cliContext;
+  }
+
+  private static ValidatorWatchMode readWatchMode(String s) {
+    if (s == null) {
+      return ValidatorWatchMode.NONE;
+    }
+    switch (s.toLowerCase()) {
+    case "all" : return ValidatorWatchMode.ALL;
+    case "none" : return ValidatorWatchMode.NONE;
+    case "single" : return ValidatorWatchMode.SINGLE;
+    case "a" : return ValidatorWatchMode.ALL;
+    case "n" : return ValidatorWatchMode.NONE;
+    case "s" : return ValidatorWatchMode.SINGLE;
+    }
+    throw new Error("The watch mode ''"+s+"'' is not valid");
   }
 
   private static String processJurisdiction(String s) {

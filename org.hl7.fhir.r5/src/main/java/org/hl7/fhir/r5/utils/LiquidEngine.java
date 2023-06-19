@@ -176,7 +176,7 @@ public class LiquidEngine implements IEvaluationContext {
     @Override
     public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled.size() == 0) {
-        FHIRLexer lexer = new FHIRLexer(statement, "liquid statement");
+        FHIRLexer lexer = new FHIRLexer(statement, "liquid statement", false, true);
         lexer.setLiquidMode(true);
         compiled.add(new LiquidExpressionNode(null, engine.parse(lexer)));
         while (!lexer.done()) {

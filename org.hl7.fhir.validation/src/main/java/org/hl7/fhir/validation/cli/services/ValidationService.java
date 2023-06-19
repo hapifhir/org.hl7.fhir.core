@@ -143,11 +143,10 @@ public class ValidationService {
     return versions;
   }
 
-  public void validateSources(CliContext cliContext, ValidationEngine validator) throws Exception {
+  public void validateSources(CliContext cliContext, ValidationEngine validator, ValidatorWatchMode watch) throws Exception {
     if (cliContext.getProfiles().size() > 0) {
       System.out.println("  Profiles: " + cliContext.getProfiles());
     }
-    ValidatorWatchMode watch = ValidatorWatchMode.NONE;
     IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion());
         
     List<ValidationRecord> records = new ArrayList<>();
@@ -467,6 +466,7 @@ public class ValidationService {
     validationEngine.setShowMessagesFromReferences(cliContext.isShowMessagesFromReferences());
     validationEngine.setDoImplicitFHIRPathStringConversion(cliContext.isDoImplicitFHIRPathStringConversion());
     validationEngine.setHtmlInMarkdownCheck(cliContext.getHtmlInMarkdownCheck());
+    validationEngine.setAllowDoubleQuotesInFHIRPath(cliContext.isAllowDoubleQuotesInFHIRPath());
     validationEngine.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
     validationEngine.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
     validationEngine.setNoInvariantChecks(cliContext.isNoInvariants());
@@ -690,7 +690,7 @@ public class ValidationService {
         if (!sd.hasSnapshot()) {
           StructureDefinition base = validator.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
           cs++;
-          new ProfileUtilities(validator.getContext(), null, null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
+          new ProfileUtilities(validator.getContext(), new ArrayList<ValidationMessage>(), null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
           validator.handleOutput(sd, filename, validator.getVersion());
         }
       }

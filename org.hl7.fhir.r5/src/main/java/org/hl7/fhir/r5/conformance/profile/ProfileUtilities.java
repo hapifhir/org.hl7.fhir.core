@@ -3174,7 +3174,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       if (mandatory) {
         if (prefixLength == 0)
-          errors.add("Differential contains path "+path+" which is not found in the in base "+baseName);
+          errors.add("Differential contains path "+path+" which is not found in the base "+baseName);
         else
           errors.add("Differential contains path "+path+" which is actually "+actual+", which is not found in the in base "+ baseName);
       }
@@ -3293,7 +3293,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       edh.getChildren().get(0).baseIndex = cmp.find(edh.getChildren().get(0).getSelf().getPath(), false);
     else
       Collections.sort(edh.getChildren(), cmp);
-    cmp.checkForErrors(errors);
+    if (debug) {
+      cmp.checkForErrors(errors);
+    }
 
     for (ElementDefinitionHolder child : edh.getChildren()) {
       if (child.getChildren().size() > 0) {

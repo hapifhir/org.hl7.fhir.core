@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -129,10 +131,10 @@ public class StructureDefinitionValidator extends BaseValidator {
       boolean logical = "logical".equals(src.getNamedChildValue("kind"));
       boolean constraint = "constraint".equals(src.getNamedChildValue("derivation"));
       for (Element differential : differentials) {
-        ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint) && ok;
+        ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint, src.getNamedChildValue("type"), src.getNamedChildValue("url")) && ok;
       }
       for (Element snapshotE : snapshots) {
-        ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint) && ok;
+        ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type"), src.getNamedChildValue("url")) && ok;
       }
       
       // obligation profile support
@@ -330,18 +332,19 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
   }
 
-  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint) {
+  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, String profileUrl) {
+    Map<String, String> invariantMap = new HashMap<>();
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
     for (Element element : elements) {
-      ok = validateElementDefinition(errors, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint) && ok;
+      ok = validateElementDefinition(errors, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl) && ok;
       cc++;
     }    
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, String> invariantMap, String rootPath, String profileUrl) {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path");
@@ -466,9 +469,40 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
     }
+    List<Element> constraints = element.getChildrenByName("constraint");
+    int cc = 0;
+    for (Element invariant : constraints) {
+      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, element.getNamedChildValue("path"), rootPath, profileUrl) && ok;
+      cc++;
+    }    
     return ok;
   }
   
+  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, String path, String rootPath, String profileUrl) {
+    boolean ok = true;
+    String key = invariant.getNamedChildValue("key"); 
+    String expression = invariant.getNamedChildValue("expression");
+    String source = invariant.getNamedChildValue("source");
+    if (warning(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(key), I18nConstants.ED_INVARIANT_NO_KEY)) {
+      if (hint(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(expression), I18nConstants.ED_INVARIANT_NO_EXPRESSION, key)) {
+        if (invariantMap.containsKey(key)) {
+          // it's legal - and common - for a list of elemnts to contain the same invariant more than once, but it's not valid if it's not always the same 
+          ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
+        } else {
+          invariantMap.put(key, expression);
+        }
+        if (Utilities.noString(source) || (source.equals(profileUrl))) { // no need to revalidate FHIRPath from elsewhere 
+         try {
+           fpe.check(invariant, rootPath, path, fpe.parse(expression));
+         } catch (Exception e) {
+           ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
+         }         
+        }        
+      }
+    }
+    return ok;
+  }
+
   private boolean meaningWhenMissingAllowed(Element element) {
     // allowed to use meaningWhenMissing on the root of an element to say what it means when the extension
     // is not present.
