@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.context;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
@@ -28,6 +29,11 @@ public class BaseWorkerContextTests {
 
       @Override
       public IResourceValidator newValidator() throws FHIRException {
+        return null;
+      }
+
+      @Override
+      public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
         return null;
       }
 
