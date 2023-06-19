@@ -121,6 +121,26 @@ public abstract class XhtmlFluent {
     return x;
   }
 
+  /**
+   * make it a code if it's not a link
+   * @param href
+   * @param title
+   * @return
+   */
+  public XhtmlNode ahOrCode(String href, String title) {
+    if (href != null) {
+      return ah(href, title);
+    } else if (title != null) {
+      return code().setAttribute("title", title);
+    } else {
+      return code();
+    }
+  }
+  
+  public XhtmlNode ahOrCode(String href) {
+    return ahOrCode(href, null);
+  }
+
   public XhtmlNode img(String src, String alt) {
     return addTag("img").attribute("src", src).attribute("alt", alt);    
   }
