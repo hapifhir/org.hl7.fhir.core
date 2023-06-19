@@ -82,10 +82,6 @@ public class BaseWorkerContextTests {
         return null;
       }
 
-      @Override
-      public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
-        return null;
-      }
     };
     baseWorkerContext.expParameters = new Parameters();
     return baseWorkerContext;
