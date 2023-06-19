@@ -88,6 +88,7 @@ public class FHIRLexer {
   private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
   private SourceLocation commentLocation;
   private boolean metadataFormat;
+  private boolean allowDoubleQuotes;
 
   public FHIRLexer(String source, String name) throws FHIRLexerException {
     this.source = source == null ? "" : source;
@@ -101,10 +102,18 @@ public class FHIRLexer {
     currentLocation = new SourceLocation(1, 1);
     next();
   }
-  public FHIRLexer(String source, String name, boolean metadataFormat) throws FHIRLexerException {
+  public FHIRLexer(String source, int i, boolean allowDoubleQuotes) throws FHIRLexerException {
+    this.source = source;
+    this.cursor = i;
+    this.allowDoubleQuotes =  allowDoubleQuotes;
+    currentLocation = new SourceLocation(1, 1);
+    next();
+  }
+  public FHIRLexer(String source, String name, boolean metadataFormat, boolean allowDoubleQuotes) throws FHIRLexerException {
     this.source = source == null ? "" : source;
     this.name = name == null ? "??" : name;
     this.metadataFormat = metadataFormat;
+    this.allowDoubleQuotes =  allowDoubleQuotes;
     currentLocation = new SourceLocation(1, 1);
     next();
   }
@@ -235,7 +244,7 @@ public class FHIRLexer {
         if (ch == '}')
           cursor++;
         current = source.substring(currentStart, cursor);
-      } else if (ch == '"') {
+      } else if (ch == '"' && allowDoubleQuotes) {
         cursor++;
         boolean escape = false;
         while (cursor < source.length() && (escape || source.charAt(cursor) != '"')) {
@@ -588,5 +597,7 @@ public class FHIRLexer {
       return null;
     }
   }
-
+  public boolean isAllowDoubleQuotes() {
+    return allowDoubleQuotes;
+  }
 }

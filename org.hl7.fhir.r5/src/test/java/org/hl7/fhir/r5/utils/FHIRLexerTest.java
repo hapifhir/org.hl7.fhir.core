@@ -8,7 +8,7 @@ class FHIRLexerTest {
   @Test
   @DisplayName("Test that a 'null' current value returns 'false' when FHIRLexer.isConstant() is called, and not NPE.")
   void getCurrent() {
-    FHIRLexer lexer = new FHIRLexer(null, null);
+    FHIRLexer lexer = new FHIRLexer(null, null, false, true);
     String lexerCurrent = lexer.getCurrent();
     Assertions.assertNull(lexerCurrent);
     Assertions.assertFalse(lexer.isConstant());

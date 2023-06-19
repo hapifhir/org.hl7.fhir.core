@@ -81,6 +81,7 @@ public class BaseWorkerContextTests {
       public String getSpecUrl() {
         return null;
       }
+
     };
     baseWorkerContext.expParameters = new Parameters();
     return baseWorkerContext;
