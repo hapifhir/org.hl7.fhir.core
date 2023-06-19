@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.model;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -158,4 +159,22 @@ public class BaseDateTimeTypeTest {
     assertEquals(param, srcInstance.getValueAsString());
   }
 
+  private static Stream<Arguments> getGetValueAsStringParams() {
+
+    return Stream.of(
+      Arguments.of(new DateTimeType("1933-01-02T12:34:56.789"), TemporalPrecisionEnum.MILLI, "1933-01-02T12:34:56.789"),
+      Arguments.of(new DateTimeType("1933-01-02T12:34:56.789"), TemporalPrecisionEnum.SECOND, "1933-01-02T12:34:56"),
+      Arguments.of(new DateTimeType("1933-01-02T12:34:56.789"), TemporalPrecisionEnum.MINUTE, "1933-01-02T12:34"),
+      Arguments.of(new DateTimeType("1933-01-02T12:34:56.789"), TemporalPrecisionEnum.MINUTE, "1933-01-02T12:34"),
+      Arguments.of(new DateTimeType("1933-01-02T12:34:56.789"), TemporalPrecisionEnum.DAY, "1933-01-02"),
+      Arguments.of(new DateTimeType("1933-01-02T12:34:56.789"), TemporalPrecisionEnum.MONTH, "1933-01"),
+      Arguments.of(new DateTimeType("1933-01-02T12:34:56.789"), TemporalPrecisionEnum.YEAR, "1933")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("getGetValueAsStringParams")
+  public void testGetValueAsString(DateTimeType theType, TemporalPrecisionEnum thePrecision, String expectedStringValue) {
+    assertEquals(expectedStringValue, theType.getValueAsString(thePrecision));
+  }
 }
