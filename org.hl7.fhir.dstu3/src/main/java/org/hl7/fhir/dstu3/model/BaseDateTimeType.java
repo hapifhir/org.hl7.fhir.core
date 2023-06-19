@@ -48,6 +48,8 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.parser.DataFormatException;
 import org.hl7.fhir.utilities.DateTimeUtil;
 
+import javax.annotation.Nullable;
+
 public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
   static final long NANOS_PER_MILLIS = 1000000L;
@@ -167,8 +169,21 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     myTimeZoneZulu = false;
   }
 
+  /**
+   * @param thePrecision
+   * @return the String value of this instance with the specified precision.
+   */
+  public String getValueAsString(TemporalPrecisionEnum thePrecision) {
+    return encode(getValue(), thePrecision);
+  }
+
   @Override
   protected String encode(Date theValue) {
+    return encode(theValue, myPrecision);
+  }
+
+  @Nullable
+  private String encode(Date theValue, TemporalPrecisionEnum thePrecision) {
     if (theValue == null) {
       return null;
     } else {
@@ -184,21 +199,22 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
       StringBuilder b = new StringBuilder();
       leftPadWithZeros(cal.get(Calendar.YEAR), 4, b);
-      if (myPrecision.ordinal() > TemporalPrecisionEnum.YEAR.ordinal()) {
+
+      if (thePrecision.ordinal() > TemporalPrecisionEnum.YEAR.ordinal()) {
         b.append('-');
         leftPadWithZeros(cal.get(Calendar.MONTH) + 1, 2, b);
-        if (myPrecision.ordinal() > TemporalPrecisionEnum.MONTH.ordinal()) {
+        if (thePrecision.ordinal() > TemporalPrecisionEnum.MONTH.ordinal()) {
           b.append('-');
           leftPadWithZeros(cal.get(Calendar.DATE), 2, b);
-          if (myPrecision.ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
+          if (thePrecision.ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
             b.append('T');
             leftPadWithZeros(cal.get(Calendar.HOUR_OF_DAY), 2, b);
             b.append(':');
             leftPadWithZeros(cal.get(Calendar.MINUTE), 2, b);
-            if (myPrecision.ordinal() > TemporalPrecisionEnum.MINUTE.ordinal()) {
+            if (thePrecision.ordinal() > TemporalPrecisionEnum.MINUTE.ordinal()) {
               b.append(':');
               leftPadWithZeros(cal.get(Calendar.SECOND), 2, b);
-              if (myPrecision.ordinal() > TemporalPrecisionEnum.SECOND.ordinal()) {
+              if (thePrecision.ordinal() > TemporalPrecisionEnum.SECOND.ordinal()) {
                 b.append('.');
                 b.append(myFractionalSeconds);
                 for (int i = myFractionalSeconds.length(); i < 3; i++) {
