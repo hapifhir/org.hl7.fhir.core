@@ -177,7 +177,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok_version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -222,7 +221,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.0.1-jre</version>
         </dependency>
         <!-- JUnit Jupiter -->
         <dependency>
@@ -259,7 +257,6 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
-            <version>${junit_platform_launcher_version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -282,7 +279,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven_surefire_version}</version>
+
                 <executions>
                 <execution>
                 <id>default-test</id>

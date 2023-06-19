@@ -33,6 +33,11 @@ public class BaseWorkerContextTests {
       }
 
       @Override
+      public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+        return null;
+      }
+
+      @Override
       public void cachePackage(PackageInformation packageInfo) {
 
       }
