@@ -49,6 +49,8 @@ import ca.uhn.fhir.parser.DataFormatException;
 import org.hl7.fhir.utilities.DateTimeUtil;
 import org.hl7.fhir.utilities.Utilities;
 
+import javax.annotation.Nullable;
+
 public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	static final long NANOS_PER_MILLIS = 1000000L;
@@ -171,72 +173,86 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 		myTimeZoneZulu = false;
 	}
 
+  /**
+   * @param thePrecision
+   * @return the String value of this instance with the specified precision.
+   */
+  public String getValueAsString(TemporalPrecisionEnum thePrecision) {
+    return encode(getValue(), thePrecision);
+  }
+
 	@Override
 	protected String encode(Date theValue) {
-		if (theValue == null) {
-			return null;
-		} else {
-			GregorianCalendar cal;
-			if (myTimeZoneZulu) {
-				cal = new GregorianCalendar(getTimeZone("GMT"));
-			} else if (myTimeZone != null) {
-				cal = new GregorianCalendar(myTimeZone);
-			} else {
-				cal = new GregorianCalendar();
-			}
-			cal.setTime(theValue);
+    return encode(theValue, myPrecision);
+  }
 
-			StringBuilder b = new StringBuilder();
-			leftPadWithZeros(cal.get(Calendar.YEAR), 4, b);
-			if (myPrecision.ordinal() > TemporalPrecisionEnum.YEAR.ordinal()) {
-				b.append('-');
-				leftPadWithZeros(cal.get(Calendar.MONTH) + 1, 2, b);
-				if (myPrecision.ordinal() > TemporalPrecisionEnum.MONTH.ordinal()) {
-					b.append('-');
-					leftPadWithZeros(cal.get(Calendar.DATE), 2, b);
-					if (myPrecision.ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
-						b.append('T');
-						leftPadWithZeros(cal.get(Calendar.HOUR_OF_DAY), 2, b);
-						b.append(':');
-						leftPadWithZeros(cal.get(Calendar.MINUTE), 2, b);
-						if (myPrecision.ordinal() > TemporalPrecisionEnum.MINUTE.ordinal()) {
-							b.append(':');
-							leftPadWithZeros(cal.get(Calendar.SECOND), 2, b);
-							if (myPrecision.ordinal() > TemporalPrecisionEnum.SECOND.ordinal()) {
-								b.append('.');
-								b.append(myFractionalSeconds);
-								for (int i = myFractionalSeconds.length(); i < 3; i++) {
-									b.append('0');
-								}
-							}
-						}
+  @Nullable
+  private String encode(Date theValue, TemporalPrecisionEnum thePrecision) {
+    if (theValue == null) {
+      return null;
+    } else {
+      GregorianCalendar cal;
+      if (myTimeZoneZulu) {
+        cal = new GregorianCalendar(getTimeZone("GMT"));
+      } else if (myTimeZone != null) {
+        cal = new GregorianCalendar(myTimeZone);
+      } else {
+        cal = new GregorianCalendar();
+      }
+      cal.setTime(theValue);
 
-						if (myTimeZoneZulu) {
-							b.append('Z');
-						} else if (myTimeZone != null) {
-							int offset = myTimeZone.getOffset(theValue.getTime());
-							if (offset >= 0) {
-								b.append('+');
-							} else {
-								b.append('-');
-								offset = Math.abs(offset);
-							}
+      StringBuilder b = new StringBuilder();
+      leftPadWithZeros(cal.get(Calendar.YEAR), 4, b);
 
-							int hoursOffset = (int) (offset / DateUtils.MILLIS_PER_HOUR);
-							leftPadWithZeros(hoursOffset, 2, b);
-							b.append(':');
-							int minutesOffset = (int) (offset % DateUtils.MILLIS_PER_HOUR);
-							minutesOffset = (int) (minutesOffset / DateUtils.MILLIS_PER_MINUTE);
-							leftPadWithZeros(minutesOffset, 2, b);
-						}
-					}
-				}
-			}
-			return b.toString();
-		}
-	}
+if (thePrecision.ordinal() > TemporalPrecisionEnum.YEAR.ordinal()) {
+        b.append('-');
+        leftPadWithZeros(cal.get(Calendar.MONTH) + 1, 2, b);
+        if (thePrecision.ordinal() > TemporalPrecisionEnum.MONTH.ordinal()) {
+          b.append('-');
+          leftPadWithZeros(cal.get(Calendar.DATE), 2, b);
+          if (thePrecision.ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
+            b.append('T');
+            leftPadWithZeros(cal.get(Calendar.HOUR_OF_DAY), 2, b);
+            b.append(':');
+            leftPadWithZeros(cal.get(Calendar.MINUTE), 2, b);
+            if (thePrecision.ordinal() > TemporalPrecisionEnum.MINUTE.ordinal()) {
+              b.append(':');
+              leftPadWithZeros(cal.get(Calendar.SECOND), 2, b);
+              if (thePrecision.ordinal() > TemporalPrecisionEnum.SECOND.ordinal()) {
+                b.append('.');
+                b.append(myFractionalSeconds);
+                for (int i = myFractionalSeconds.length(); i < 3; i++) {
+                  b.append('0');
+                }
+              }
+            }
 
-	/**
+            if (myTimeZoneZulu) {
+              b.append('Z');
+            } else if (myTimeZone != null) {
+              int offset = myTimeZone.getOffset(theValue.getTime());
+              if (offset >= 0) {
+                b.append('+');
+              } else {
+                b.append('-');
+                offset = Math.abs(offset);
+              }
+
+              int hoursOffset = (int) (offset / DateUtils.MILLIS_PER_HOUR);
+              leftPadWithZeros(hoursOffset, 2, b);
+              b.append(':');
+              int minutesOffset = (int) (offset % DateUtils.MILLIS_PER_HOUR);
+              minutesOffset = (int) (minutesOffset / DateUtils.MILLIS_PER_MINUTE);
+              leftPadWithZeros(minutesOffset, 2, b);
+            }
+          }
+        }
+      }
+      return b.toString();
+    }
+  }
+
+  /**
 	 * Returns the month with 1-index, e.g. 1=the first day of the month
 	 */
 	public Integer getDay() {

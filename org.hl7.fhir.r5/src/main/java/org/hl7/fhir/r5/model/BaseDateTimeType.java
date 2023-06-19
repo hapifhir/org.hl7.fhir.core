@@ -170,6 +170,10 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 		myTimeZoneZulu = false;
 	}
 
+  /**
+   * @param thePrecision
+   * @return the String value of this instance with the specified precision.
+   */
   public String getValueAsString(TemporalPrecisionEnum thePrecision) {
     return encode(getValue(), thePrecision);
   }
