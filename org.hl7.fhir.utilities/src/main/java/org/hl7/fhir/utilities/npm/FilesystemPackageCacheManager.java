@@ -742,7 +742,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private void loadFromBuildServer() throws IOException {
     SimpleHTTPClient http = new SimpleHTTPClient();
-    http.trustAllhosts();
+
     HTTPResult res = http.get("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
     res.checkThrowException();
 

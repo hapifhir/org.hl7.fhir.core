@@ -31,7 +31,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleNoVersion() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -65,7 +65,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithVersion() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -85,7 +85,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithVersionNotSemVer() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -103,7 +103,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithDuplicateIds1() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -183,7 +183,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithDuplicateIds2() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -246,7 +246,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithVersions1() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -318,7 +318,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithVersions2() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -390,7 +390,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testUTG1() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("234");
     vs1.setUrl("http://terminology.hl7.org/ValueSet/234");
@@ -418,7 +418,7 @@ public class CanonicalResourceManagerTests {
   
   @Test
   public void testUTG2() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("234");
     vs1.setUrl("http://terminology.hl7.org/ValueSet/234");
@@ -444,7 +444,7 @@ public class CanonicalResourceManagerTests {
   
   @Test
   public void testSingleNoVersionDeferredLoad() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -479,7 +479,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithVersionDeferredLoad() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -500,7 +500,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithVersionNotSemVerDeferredLoad() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
     vs.setUrl("http://url/ValueSet/234");
@@ -519,7 +519,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithDuplicateIds1DeferredLoad() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -601,7 +601,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithDuplicateIds2DeferredLoad() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -666,7 +666,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithVersions1DeferredLoad() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -740,7 +740,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSingleWithVersions2DeferredLoad() {
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -815,7 +815,7 @@ public class CanonicalResourceManagerTests {
   @Test
   public void testPackageSpecificResolution1() {
     // we add 2 canonicals to the cache with the same identification, but different package information
-    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false);
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
     vs1.setUrl("http://url/ValueSet/234");
@@ -856,7 +856,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSupplements() {
-    CanonicalResourceManager<CodeSystem> mrm = new CanonicalResourceManager<>(true);
+    CanonicalResourceManager<CodeSystem> mrm = new CanonicalResourceManager<>(true, false);
     CodeSystem csb1 = new CodeSystem();
     csb1.setId("2345");
     csb1.setUrl("http://url/CodeSystem/234");

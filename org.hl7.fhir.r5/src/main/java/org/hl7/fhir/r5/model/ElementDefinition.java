@@ -12853,6 +12853,14 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     return getMin() == 1; 
   }
 
+  public CanonicalType addValueAlternative(CanonicalType t) { 
+    if (this.valueAlternatives == null)
+      this.valueAlternatives = new ArrayList<CanonicalType>();
+    this.valueAlternatives.add(t);
+    return t;
+  }
+
+
 // end addition
 
 }

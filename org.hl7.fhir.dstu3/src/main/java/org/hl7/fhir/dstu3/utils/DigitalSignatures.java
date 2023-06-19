@@ -81,7 +81,7 @@ public class DigitalSignatures {
     
     // create a key pair
     KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-    kpg.initialize(512);
+    kpg.initialize(2048);
     KeyPair kp = kpg.generateKeyPair(); 
     
     // sign the document

@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,33 @@ import org.xml.sax.SAXException;
 //TODO find a home for these and clean it up
 public class ValidatorUtils {
 
+  public static class SourceFile {
+    private String ref;
+    private long date;
+    private boolean process;
+    private Content cnt;
+    
+    public boolean isProcess() {
+      return process;
+    }
+    public void setProcess(boolean process) {
+      this.process = process;
+      this.cnt = null;
+    }
+    public String getRef() {
+      return ref;
+    }
+    public long getDate() {
+      return date;
+    }
+    public Content getCnt() {
+      return cnt;
+    }
+    public void setCnt(Content cnt) {
+      this.cnt = cnt;
+    }
+  }
+  
   protected static void grabNatives(Map<String, byte[]> source, Map<String, byte[]> binaries, String prefix) {
     for (Map.Entry<String, byte[]> e : source.entrySet()) {
       if (e.getKey().endsWith(".zip"))
@@ -129,14 +157,15 @@ public class ValidatorUtils {
    *
    * @return {@link Boolean#TRUE} if more than one reference is found.
    */
-  static boolean extractReferences(String name, List<String> refs, SimpleWorkerContext context) throws IOException {
+  static boolean extractReferences(String name, List<SourceFile> refs, SimpleWorkerContext context) throws IOException {
     if (Common.isNetworkPath(name)) {
-      refs.add(name);
+      SourceFile src = addSourceFile(refs, name);
+      src.date = Long.MAX_VALUE;
     } else if (Common.isWildcardPath(name)) {
       AsteriskFilter filter = new AsteriskFilter(name);
       File[] files = new File(filter.getDir()).listFiles(filter);
       for (File file : files) {
-        refs.add(file.getPath());
+        addSourceFile(refs, file);
       }
     } else {
       File file = new File(name);
@@ -150,16 +179,41 @@ public class ValidatorUtils {
       }
 
       if (file.isFile()) {
-        refs.add(name);
+        addSourceFile(refs, file);
       } else {
         for (int i = 0; i < file.listFiles().length; i++) {
           File[] fileList = file.listFiles();
-          if (fileList[i].isFile())
-            refs.add(fileList[i].getPath());
+          if (fileList[i].isFile()) {
+            if (!Utilities.isIgnorableFile(fileList[i])) {
+              addSourceFile(refs, fileList[i]);
+            }
+          }
         }
       }
     }
     return refs.size() > 1;
+  }
+
+  private static SourceFile addSourceFile(List<SourceFile> refs, File file) {
+    SourceFile src = addSourceFile(refs, file.getPath());
+    Long l = file.lastModified();
+    if (src.date != l) {
+      src.process = true;
+    }
+    src.date = l;
+    return src;
+  }
+
+  private static SourceFile addSourceFile(List<SourceFile> refs, String path) {
+    for (SourceFile t : refs) {
+      if (t.ref.equals(path)) {
+        return t;
+      }
+    }
+    SourceFile src = new SourceFile();
+    src.ref = path;
+    refs.add(src);
+    return src;
   }
 
   /**
@@ -167,7 +221,7 @@ public class ValidatorUtils {
    *
    * @return {@link Boolean#TRUE} if more than one reference is found.
    */
-  public static boolean parseSources(List<String> sources, List<String> refs, SimpleWorkerContext context) throws IOException {
+  public static boolean parseSources(List<String> sources, List<SourceFile> refs, SimpleWorkerContext context) throws IOException {
     boolean multipleRefsFound = sources.size() > 1;
     for (String source : sources) {
       multipleRefsFound |= extractReferences(source, refs, context);

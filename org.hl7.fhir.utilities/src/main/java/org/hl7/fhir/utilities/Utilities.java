@@ -1994,4 +1994,8 @@ public class Utilities {
     return txt.split("\\r?\\n|\\r");
   }
 
+  public static boolean isIgnorableFile(File file) {
+    return Utilities.existsInList(file.getName(), ".DS_Store");
+  }
+
 }

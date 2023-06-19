@@ -665,16 +665,16 @@ public class ValueSetValidator {
     if (code.getDisplay() == null) {
       return new ValidationResult(code.getSystem(), cs.getVersion(), cc, vc.getDisplay());
     }
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ", " or ");
     if (cc.hasDisplay() && isOkLanguage(cs.getLanguage())) {
-      b.append(cc.getDisplay());
+      b.append("'"+cc.getDisplay()+"'");
       if (code.getDisplay().equalsIgnoreCase(cc.getDisplay())) {
         return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs));
       }
     }
     for (ConceptDefinitionDesignationComponent ds : cc.getDesignation()) {
       if (isOkLanguage(ds.getLanguage())) {
-        b.append(ds.getValue());
+        b.append("'"+ds.getValue()+"'");
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
           return new ValidationResult(code.getSystem(),cs.getVersion(),  cc, getPreferredDisplay(cc, cs));
         }
@@ -685,14 +685,14 @@ public class ValueSetValidator {
       ConceptReferencePair vs = findValueSetRef(code.getSystem(), code.getCode());
       if (vs != null && (vs.getCc().hasDisplay() ||vs.getCc().hasDesignation())) {
         if (vs.getCc().hasDisplay() && isOkLanguage(vs.getValueset().getLanguage())) {
-          b.append(vs.getCc().getDisplay());
+          b.append("'"+vs.getCc().getDisplay()+"'");
           if (code.getDisplay().equalsIgnoreCase(vs.getCc().getDisplay())) {
             return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs));
           }
         }
         for (ConceptReferenceDesignationComponent ds : vs.getCc().getDesignation()) {
           if (isOkLanguage(ds.getLanguage())) {
-            b.append(ds.getValue());
+            b.append("'"+ds.getValue()+"'");
             if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
               return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs));
             }

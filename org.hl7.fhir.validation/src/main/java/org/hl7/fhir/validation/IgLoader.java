@@ -39,12 +39,14 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.turtle.Turtle;
+import org.hl7.fhir.validation.ValidationEngine.IValidationEngineLoader;
+import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 
 import lombok.Getter;
 
-public class IgLoader {
+public class IgLoader implements IValidationEngineLoader {
 
   private static final String[] IGNORED_EXTENSIONS = {"md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip"};
   private static final String[] EXEMPT_FILES = {"spec.internals", "version.info", "schematron.zip", "package.json"};
@@ -301,11 +303,11 @@ public class IgLoader {
   }
 
   public void scanForVersions(List<String> sources, VersionSourceInformation versions) throws FHIRException, IOException {
-    List<String> refs = new ArrayList<String>();
+    List<SourceFile> refs = new ArrayList<>();
     ValidatorUtils.parseSources(sources, refs, context);
-    for (String ref : refs) {
-      Content cnt = loadContent(ref, "validate", false);      
-      scanForFhirVersion(versions, ref, cnt.getFocus());
+    for (SourceFile ref : refs) {
+      Content cnt = loadContent(ref.getRef(), "validate", false);      
+      scanForFhirVersion(versions, ref.getRef(), cnt.getFocus());
     }
   }
 
@@ -847,5 +849,11 @@ public class IgLoader {
 
   private void log(String s) {
     if (isDebug()) System.out.println(s);
+  }
+
+  @Override
+  public void load(Content cnt) throws FHIRException, IOException {
+    Resource res = loadResourceByVersion(version, cnt.getFocus(), cnt.getExampleFileName());
+    context.cacheResource(res);
   }
 }

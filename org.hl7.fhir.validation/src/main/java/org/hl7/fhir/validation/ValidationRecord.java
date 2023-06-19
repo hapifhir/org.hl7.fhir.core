@@ -46,4 +46,9 @@ public class ValidationRecord {
     return info;
   }
 
+  public void setMessages(List<ValidationMessage> messages) {
+    this.messages = messages;
+    
+  }
+
 }

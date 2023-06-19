@@ -660,6 +660,10 @@ public class Identifier extends DataType implements ICompositeType {
           , period, assigner);
       }
 
+      public boolean matches(Identifier other) {
+        return hasSystem() && hasValue() && getSystem().matches(other.getSystem()) && getValue().matches(other.getValue());
+      }
+
 
 }
 

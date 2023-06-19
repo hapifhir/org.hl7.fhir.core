@@ -252,4 +252,9 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
   public String fpValue() {
     return primitiveValue();
   }
+  
+  public boolean matches(String other) {
+    return other != null && other.equals(asStringValue());
+  }
+  
 }

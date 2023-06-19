@@ -55,6 +55,7 @@ import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.Property;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Element;
@@ -204,9 +205,19 @@ public class ProfileUtilities extends TranslatingUtilities {
     ALL_TYPES // allow any unknow profile
   }
 
-  private static final List<String> INHERITED_ED_URLS = Arrays.asList(
-      "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style",
-      "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style");
+  private static final List<String> NON_INHERITED_ED_URLS = Arrays.asList(
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status",  
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-category",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-implements",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-security-category",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-wg",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version",
+      "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status-reason",
+      ToolingExtensions.EXT_OBLIGATION);
+
 
   public IWorkerContext getContext() {
     return this.context;
@@ -777,17 +788,21 @@ public class ProfileUtilities extends TranslatingUtilities {
               int count = slice.checkMin();
               boolean repeats = !"1".equals(slice.getFocus().getBase().getMax()); // type slicing if repeats = 1
               if (count > -1 && repeats) {
-                String msg = "The slice definition for "+slice.getFocus().getId()+" has a minimum of "+slice.getFocus().getMin()+" but the slices add up to a minimum of "+count; 
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, forPublication ? ValidationMessage.IssueSeverity.ERROR : ValidationMessage.IssueSeverity.INFORMATION));                            
+                if (slice.getFocus().hasUserData("auto-added-slicing")) {
+                  slice.getFocus().setMin(count);
+                } else {
+                  String msg = "The slice definition for "+slice.getFocus().getId()+" has a minimum of "+slice.getFocus().getMin()+" but the slices add up to a minimum of "+count; 
+                  messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+slice.getFocus().getId(), msg, forPublication ? ValidationMessage.IssueSeverity.ERROR : ValidationMessage.IssueSeverity.INFORMATION).setIgnorableError(true));
+                }
               }
               count = slice.checkMax();
               if (count > -1 && repeats) {
                 String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" but the slices add up to a maximum of "+count+". Check that this is what is intended"; 
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.INFORMATION));                                            
+                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+slice.getFocus().getId(), msg, ValidationMessage.IssueSeverity.INFORMATION));                                            
               }
               if (!slice.checkMinMax()) {
                 String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" which is less than the minimum of "+slice.getFocus().getMin(); 
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.WARNING));                                                            
+                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+slice.getFocus().getId(), msg, ValidationMessage.IssueSeverity.WARNING));                                                            
               }
               slices.remove(s);
             }            
@@ -797,12 +812,12 @@ public class ProfileUtilities extends TranslatingUtilities {
           }
           if (ed.hasSliceName() && !slices.containsKey(ed.getPath())) {
             String msg = "The element "+ed.getId()+" (["+i+"]) launches straight into slicing without the slicing being set up properly first";
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.ERROR));            
+            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.ERROR).setIgnorableError(true));            
           }
           if (ed.hasSliceName() && slices.containsKey(ed.getPath())) {
             if (!slices.get(ed.getPath()).count(ed, ed.getSliceName())) {
               String msg = "Duplicate slice name "+ed.getSliceName()+" on "+ed.getId()+" (["+i+"])";
-              messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.ERROR));            
+              messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), msg, ValidationMessage.IssueSeverity.ERROR).setIgnorableError(true));            
             }
           }
           i++;
@@ -882,7 +897,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private void copyInheritedExtensions(StructureDefinition base, StructureDefinition derived) {
     for (Extension ext : base.getExtension()) {
-      if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !derived.hasExtension(ext.getUrl())) {
+      if (!Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) && !derived.hasExtension(ext.getUrl())) {
         derived.getExtension().add(ext.copy());
       }
     }
@@ -901,7 +916,7 @@ public class ProfileUtilities extends TranslatingUtilities {
          } else {
            focus.getConstraint().addAll(ed.getConstraint());
            for (Extension ext : ed.getExtension()) {
-             if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !focus.hasExtension(ext.getUrl())) {
+             if (!Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) && !focus.hasExtension(ext.getUrl())) {
                focus.getExtension().add(ext.copy());
              }
            }
@@ -2155,8 +2170,14 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
 
+    // hack workaround for problem in R5 snapshots
+    List<Extension> elist = dest.getExtensionsByUrl(ToolingExtensions.EXT_TRANSLATABLE);
+    if (elist.size() == 2) {
+      dest.getExtension().remove(elist.get(1));
+    }
+    
     for (Extension ext : source.getExtension()) {
-      if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !dest.hasExtension(ext.getUrl())) {
+      if (!Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) && !dest.hasExtension(ext.getUrl())) {
         dest.getExtension().add(ext.copy());
       }      
     }
@@ -2408,7 +2429,18 @@ public class ProfileUtilities extends TranslatingUtilities {
         else
           derived.getMustHaveValueElement().setUserData(UD_DERIVATION_EQUALS, true);
       }
-
+      if (derived.hasValueAlternatives()) {
+        if (!Base.compareDeep(derived.getValueAlternatives(), base.getValueAlternatives(), false))
+          for (CanonicalType s : derived.getValueAlternatives()) {
+            if (!base.hasValueAlternatives(s.getValue()))
+              base.getValueAlternatives().add(s.copy());
+          }
+        else if (trimDifferential)
+          derived.getValueAlternatives().clear();
+        else
+          for (CanonicalType t : derived.getValueAlternatives())
+            t.setUserData(UD_DERIVATION_EQUALS, true);
+      }
 
       // profiles cannot change : isModifier, defaultValue, meaningWhenMissing
       // but extensions can change isModifier
@@ -2572,14 +2604,16 @@ public class ProfileUtilities extends TranslatingUtilities {
         dest.setBinding(null);
       }
         
-      // finally, we copy any extensions from source to dest
-      for (Extension ex : derived.getExtension()) {
-        StructureDefinition sd  = context.fetchResource(StructureDefinition.class, ex.getUrl(), derivedSrc);
-        if (sd == null || sd.getSnapshot() == null || sd.getSnapshot().getElementFirstRep().getMax().equals("1")) {
-          ToolingExtensions.removeExtension(dest, ex.getUrl());
-        }
-        dest.addExtension(ex.copy());
-      }
+//      // finally, we copy any extensions from source to dest
+      //no, we already did.
+//      for (Extension ex : derived.getExtension()) {
+//        !
+//        StructureDefinition sd  = context.fetchResource(StructureDefinition.class, ex.getUrl(), derivedSrc);
+//        if (sd == null || sd.getSnapshot() == null || sd.getSnapshot().getElementFirstRep().getMax().equals("1")) {
+//          ToolingExtensions.removeExtension(dest, ex.getUrl());
+//        }
+//        dest.addExtension(ex.copy());
+//      }
     }
     if (dest.hasFixed()) {
       checkTypeOk(dest, dest.getFixed().fhirType(), srcSD, "fixed");
@@ -2645,53 +2679,60 @@ public class ProfileUtilities extends TranslatingUtilities {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     String t = ts.getWorkingCode();
     for (TypeRefComponent td : base.getType()) {;
+      boolean matchType = false;
       String tt = td.getWorkingCode();
       b.append(tt);
       if (td.hasCode() && (tt.equals(t))) {
-        ok = true;
+        matchType = true;
       }
-      if (!ok) {
+      if (!matchType) {
         StructureDefinition sdt = context.fetchTypeDefinition(tt);
         if (sdt != null && (sdt.getAbstract() || sdt.getKind() == StructureDefinitionKind.LOGICAL)) {
           StructureDefinition sdb = context.fetchTypeDefinition(t);
-          while (sdb != null && !ok) {
-            ok = sdb.getType().equals(sdt.getType());
+          while (sdb != null && !matchType) {
+            matchType = sdb.getType().equals(sdt.getType());
             sdb = context.fetchResource(StructureDefinition.class, sdb.getBaseDefinition(), sdb);
           }
         }
       }
      // work around for old badly generated SDs
       if (DONT_DO_THIS && Utilities.existsInList(tt, "Extension", "uri", "string", "Element")) {
-        ok = true;
+        matchType = true;
       }
       if (DONT_DO_THIS && Utilities.existsInList(tt, "Resource","DomainResource") && pkp.isResource(t)) {
-        ok = true;
+        matchType = true;
       }
-      if (ok && ts.hasTargetProfile()) {
-        // check that any derived target has a reference chain back to one of the base target profiles
-        for (UriType u : ts.getTargetProfile()) {
-          String url = u.getValue();
-          boolean tgtOk = !td.hasTargetProfile() || td.hasTargetProfile(url);
-          while (url != null && !tgtOk) {
-            StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
-            if (sd == null) {
-              if (messages != null) {
-                messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, purl+"#"+derived.getPath(), "Cannot check whether the target profile "+url+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
+      if (matchType) {
+        if (ts.hasTargetProfile()) {
+          // check that any derived target has a reference chain back to one of the base target profiles
+          for (UriType u : ts.getTargetProfile()) {
+            String url = u.getValue();
+            boolean tgtOk = !td.hasTargetProfile() || td.hasTargetProfile(url);
+            while (url != null && !tgtOk) {
+              StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+              if (sd == null) {
+                if (messages != null) {
+                  messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, purl + "#" + derived.getPath(), "Cannot check whether the target profile " + url + " is valid constraint on the base because it is not known", IssueSeverity.WARNING));
+                }
+                url = null;
+                tgtOk = true; // suppress error message
+              } else {
+                url = sd.getBaseDefinition();
+                tgtOk = td.hasTargetProfile(url);
               }
-              url = null;
-              tgtOk = true; // suppress error message
-            } else {
-              url = sd.getBaseDefinition();
-              tgtOk = td.hasTargetProfile(url);
+            }
+            if (tgtOk)
+              ok = true;
+            else {
+              if (messages == null) {
+                throw new FHIRException(context.formatMessage(I18nConstants.ERROR_AT__THE_TARGET_PROFILE__IS_NOT__VALID_CONSTRAINT_ON_THE_BASE_, purl, derived.getPath(), url, td.getTargetProfile()));
+              } else {
+                messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, derived.getPath(), "The target profile " + u.getValue() + " is not a valid constraint on the base (" + td.getTargetProfile() + ") at " + derived.getPath(), IssueSeverity.ERROR));
+              }
             }
           }
-          if (!tgtOk) {
-            if (messages == null) {
-              throw new FHIRException(context.formatMessage(I18nConstants.ERROR_AT__THE_TARGET_PROFILE__IS_NOT__VALID_CONSTRAINT_ON_THE_BASE_, purl, derived.getPath(), url, td.getTargetProfile()));
-            } else {
-              messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, derived.getPath(), "The target profile "+u.getValue()+" is not a valid constraint on the base ("+td.getTargetProfile()+") at "+derived.getPath(), IssueSeverity.ERROR));
-            }
-          }
+        } else {
+          ok = true;
         }
       }
     }

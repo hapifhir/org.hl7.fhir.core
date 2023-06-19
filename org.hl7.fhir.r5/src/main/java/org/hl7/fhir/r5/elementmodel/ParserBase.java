@@ -129,7 +129,7 @@ public abstract class ParserBase {
     if (res == null) {
       throw new FHIRException("Parsing FHIR content failed: "+errors.get(0).summary());      
     } else if (res.size() == 0) {
-      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required");
+      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required because: "+errors.get(0).summary());
     }
     if (res.size() != 1) {
       throw new FHIRException("Parsing FHIR content returned multiple elements in a context where only one element is allowed");
@@ -161,7 +161,7 @@ public abstract class ParserBase {
       logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
       return null;
   	}
-	  for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
+	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
 	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
 	      if(name.equals(sd.getType()) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
 	        return sd;

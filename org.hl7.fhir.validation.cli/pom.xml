@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.0.10-SNAPSHOT</version>
+        <version>6.0.16-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -33,7 +33,6 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>${byte_buddy_version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -60,7 +59,6 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
-            <version>${junit_platform_launcher_version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -204,7 +202,6 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>${apache_poi_version}</version>
             <optional>false</optional>
             <scope>compile</scope>
         </dependency>
@@ -212,7 +209,13 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>${apache_poi_version}</version>
+            <optional>false</optional>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-full</artifactId>
             <optional>false</optional>
             <scope>compile</scope>
         </dependency>
@@ -227,7 +230,6 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
-            <version>${okhttp.version}</version>
             <optional>false</optional>
             <scope>compile</scope>
         </dependency>
@@ -275,7 +277,6 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>${okhttp.version}</version>
       </dependency>
         <dependency>
             <groupId>com.atlassian.commonmark</groupId>

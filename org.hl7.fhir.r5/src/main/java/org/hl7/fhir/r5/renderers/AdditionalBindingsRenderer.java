@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.conformance;
+package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,10 +20,7 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.renderers.CodeResolver;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
-import org.hl7.fhir.r5.renderers.DataRenderer;
-import org.hl7.fhir.r5.renderers.IMarkdownProcessor;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.utils.PublicationHacker;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -79,6 +76,7 @@ public class AdditionalBindingsRenderer {
       isUnchanged = isUnchanged && ((purpose==null && compare.purpose==null) || purpose.equals(compare.purpose));
       isUnchanged = isUnchanged && ((valueSet==null && compare.valueSet==null) || valueSet.equals(compare.valueSet));
       isUnchanged = isUnchanged && ((doco==null && compare.doco==null) || doco.equals(compare.doco));
+      isUnchanged = isUnchanged && ((docoShort==null && compare.docoShort==null) || docoShort.equals(compare.docoShort));
       isUnchanged = isUnchanged && ((usage==null && compare.usage==null) || usage.equals(compare.usage));
       return isUnchanged;
     }
