@@ -690,7 +690,7 @@ public class ValidationService {
         if (!sd.hasSnapshot()) {
           StructureDefinition base = validator.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
           cs++;
-          new ProfileUtilities(validator.getContext(), null, null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
+          new ProfileUtilities(validator.getContext(), new ArrayList<ValidationMessage>(), null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
           validator.handleOutput(sd, filename, validator.getVersion());
         }
       }
