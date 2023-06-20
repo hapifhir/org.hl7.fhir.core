@@ -49,15 +49,15 @@ import org.hl7.fhir.utilities.Utilities;
 public class TypeDetails {
   public static final String FHIR_NS = "http://hl7.org/fhir/StructureDefinition/";
   public static final String FP_NS = "http://hl7.org/fhirpath/";
-  public static final String FP_String = "http://hl7.org/fhirpath/System.String";
-  public static final String FP_Boolean = "http://hl7.org/fhirpath/System.Boolean";
-  public static final String FP_Integer = "http://hl7.org/fhirpath/System.Integer";
-  public static final String FP_Decimal = "http://hl7.org/fhirpath/System.Decimal";
-  public static final String FP_Quantity = "http://hl7.org/fhirpath/System.Quantity";
-  public static final String FP_DateTime = "http://hl7.org/fhirpath/System.DateTime";
-  public static final String FP_Time = "http://hl7.org/fhirpath/System.Time";
-  public static final String FP_SimpleTypeInfo = "http://hl7.org/fhirpath/System.SimpleTypeInfo";
-  public static final String FP_ClassInfo = "http://hl7.org/fhirpath/System.ClassInfo";
+  public static final String FP_String = "http://hl7.org/fhirpath/String";
+  public static final String FP_Boolean = "http://hl7.org/fhirpath/Boolean";
+  public static final String FP_Integer = "http://hl7.org/fhirpath/Integer";
+  public static final String FP_Decimal = "http://hl7.org/fhirpath/Decimal";
+  public static final String FP_Quantity = "http://hl7.org/fhirpath/Quantity";
+  public static final String FP_DateTime = "http://hl7.org/fhirpath/DateTime";
+  public static final String FP_Time = "http://hl7.org/fhirpath/Time";
+  public static final String FP_SimpleTypeInfo = "http://hl7.org/fhirpath/SimpleTypeInfo";
+  public static final String FP_ClassInfo = "http://hl7.org/fhirpath/ClassInfo";
   public static final Set<String> FP_NUMBERS = new HashSet<String>(Arrays.asList(FP_Integer, FP_Decimal));
 
   public static class ProfiledType {
@@ -187,7 +187,7 @@ public class TypeDetails {
       if (typesContains(t))
         return true;
       if (Utilities.existsInList(n, "boolean", "string", "integer", "decimal", "Quantity", "dateTime", "time", "ClassInfo", "SimpleTypeInfo")) {
-        t = FP_NS+"System."+Utilities.capitalize(n);
+        t = FP_NS+Utilities.capitalize(n);
         if (typesContains(t))
           return true;
       }
@@ -224,7 +224,7 @@ public class TypeDetails {
     if (url.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
       String code = url.substring(40);
       if (Utilities.existsInList(code, "string",  "boolean", "integer", "decimal", "dateTime", "time", "Quantity"))
-        return FP_NS+"System."+Utilities.capitalize(code);
+        return FP_NS+Utilities.capitalize(code);
     }
     return null;
   }
@@ -299,7 +299,7 @@ public class TypeDetails {
     if (typesContains(t))
       return true;
     if (Utilities.existsInList(n, "boolean", "string", "integer", "decimal", "Quantity", "date", "dateTime", "time", "ClassInfo", "SimpleTypeInfo")) {
-      t = FP_NS+"System."+Utilities.capitalize(n);
+      t = FP_NS+Utilities.capitalize(n);
       if (typesContains(t))
         return true;
     }
@@ -312,7 +312,7 @@ public class TypeDetails {
       if (typesContains(t))
         return true;
       if (Utilities.existsInList(n, "boolean", "string", "integer", "decimal", "Quantity", "dateTime", "time", "ClassInfo", "SimpleTypeInfo")) {
-        t = FP_NS+"System."+Utilities.capitalize(n);
+        t = FP_NS+Utilities.capitalize(n);
         if (typesContains(t))
           return true;
       }
@@ -359,9 +359,5 @@ public class TypeDetails {
     return null;
   }
  
-  
-  public boolean matches(TypeDetails other) {
-    return collectionStatus == other.collectionStatus && types.equals(other.types);    
-  }
   
 }
