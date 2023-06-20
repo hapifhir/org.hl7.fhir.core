@@ -79,6 +79,7 @@ import org.hl7.fhir.r5.model.ExpressionNode.Kind;
 import org.hl7.fhir.r5.model.ExpressionNode.Operation;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.IdType;
+import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -216,6 +217,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version",
       "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile",
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status-reason",
+      ToolingExtensions.EXT_SUMMARY,
       ToolingExtensions.EXT_OBLIGATION);
 
 
@@ -357,6 +359,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private XVerExtensionManager xver;
   private boolean wantFixDifferentialFirstElementType;
   private Set<String> masterSourceFileNames;
+  private Set<String> localFileNames;
   private Map<ElementDefinition, SourcedChildDefinitions> childMapCache = new HashMap<>();
   private AllowUnknownProfile allowUnknownProfile = AllowUnknownProfile.ALL_TYPES;
   private MappingMergeModeOption mappingMergeMode = MappingMergeModeOption.APPEND;
@@ -639,8 +642,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         checkDifferential(derived.getDifferential().getElement(), derived.getTypeName(), derived.getUrl());
         checkDifferentialBaseType(derived);
 
-        copyInheritedExtensions(base, derived);
-        
+        copyInheritedExtensions(base, derived, webUrl);
+
         findInheritedObligationProfiles(derived);
         // so we have two lists - the base list, and the differential list
         // the differential list is only allowed to include things that are in the base list, but
@@ -895,10 +898,16 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
 
-  private void copyInheritedExtensions(StructureDefinition base, StructureDefinition derived) {
+  private void copyInheritedExtensions(StructureDefinition base, StructureDefinition derived, String webUrl) {
     for (Extension ext : base.getExtension()) {
       if (!Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) && !derived.hasExtension(ext.getUrl())) {
-        derived.getExtension().add(ext.copy());
+        Extension next = ext.copy();
+        if (ext.hasValueMarkdownType()) {
+          MarkdownType md = ext.getValueMarkdownType();
+          md.setValue(processRelativeUrls(md.getValue(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+        }
+        derived.getExtension().add(next);
+
       }
     }
     
@@ -1796,79 +1805,137 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (webUrl != null) {
         // also, must touch up the markdown
         if (element.hasDefinition()) {
-          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
+          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
         }
         if (element.hasComment()) {
-          element.setComment(processRelativeUrls(element.getComment(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
+          element.setComment(processRelativeUrls(element.getComment(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
         }
         if (element.hasRequirements()) {
-          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
+          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
         }
         if (element.hasMeaningWhenMissing()) {
-          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
+          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
         }
         if (element.hasBinding() && element.getBinding().hasDescription()) {
-          element.getBinding().setDescription(processRelativeUrls(element.getBinding().getDescription(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
+          element.getBinding().setDescription(processRelativeUrls(element.getBinding().getDescription(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+        }
+        for (Extension ext : element.getExtension()) {
+          if (ext.hasValueMarkdownType()) {
+            MarkdownType md = ext.getValueMarkdownType();
+            md.setValue(processRelativeUrls(md.getValue(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+          }
         }
       }
     }
     return element;
   }
 
+  
   public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, Set<String> baseFilenames, Set<String> localFilenames, boolean processRelatives) {
     if (markdown == null) {
       return "";
     }
+    Set<String> anchorRefs = new HashSet<>();
+    markdown = markdown+" ";
+    
     StringBuilder b = new StringBuilder();
     int i = 0;
+    int left = -1;
+    boolean processingLink = false;
+    int linkLeft = -1;
     while (i < markdown.length()) {
-      if (i < markdown.length()-3 && markdown.substring(i, i+2).equals("](")) {
-        int j = i + 2;
-        while (j < markdown.length() && markdown.charAt(j) != ')')
-          j++;
-        if (j < markdown.length()) {
-          String url = markdown.substring(i+2, j);
-          if (!Utilities.isAbsoluteUrl(url) && !url.startsWith("..")) {
-            // 
-            // In principle, relative URLs are supposed to be converted to absolute URLs in snapshots. 
-            // that's what this code is doing. 
-            // 
-            // But that hasn't always happened and there's packages out there where the snapshots 
-            // contain relative references that actually are references to the main specification 
-            // 
-            // This code is trying to guess which relative references are actually to the
-            // base specification.
-            // 
+      if (markdown.charAt(i) == '[') {
+        if (left == -1) {
+          left = i;
+        } else {
+          left = Integer.MAX_VALUE;
+        }
+      }
+      if (markdown.charAt(i) == ']') {
+        if (left != -1 && left != Integer.MAX_VALUE && markdown.length() > i && markdown.charAt(i+1) != '(') {
+          String n = markdown.substring(left+1, i);
+          if (anchorRefs.contains(n) && markdown.length() > i && markdown.charAt(i+1) == ':') {
+            processingLink = true;            
+          } else {
+            anchorRefs.add(n);
+          }
+        }
+        left = -1;
+      }
+      if (processingLink) {
+        char ch = markdown.charAt(i);
+        if (linkLeft == -1) {
+          if (ch != ']' && ch != ':' && !Character.isWhitespace(ch)) {
+            linkLeft = i;
+          } else {
+            b.append(ch);
+          }
+        } else {
+          if (Character.isWhitespace(ch)) {
+            // found the end of the processible link:
+            String url = markdown.substring(linkLeft, i);
             if (isLikelySourceURLReference(url, resourceNames, baseFilenames, localFilenames)) {
-              b.append("](");
               b.append(basePath);
               if (!Utilities.noString(basePath) && !basePath.endsWith("/")) {
                 b.append("/");
               }
-              i = i + 1;
-            } else {
-              b.append("](");
-              // disabled 7-Dec 2021 GDG - we don't want to fool with relative URLs at all? 
-              // re-enabled 11-Feb 2022 GDG - we do want to do this. At least, $assemble in davinci-dtr, where the markdown comes from the SDC IG, and an SDC local reference must be changed to point to SDC. in this case, it's called when generating snapshots
-              // added processRelatives parameter to deal with this (well, to try)
-              if (processRelatives && webUrl != null && !issLocalFileName(url, localFilenames)) {
-//                System.out.println("Making "+url+" relative to '"+webUrl+"'");
-                b.append(webUrl);
-              } else {
-//                System.out.println("Not making "+url+" relative to '"+webUrl+"'");
-              }
-              i = i + 1;
             }
-          } else
-            b.append(markdown.charAt(i));
-        } else 
-          b.append(markdown.charAt(i));
+            b.append(url);
+            b.append(ch);
+            linkLeft = -1;
+          }
+        }
       } else {
-        b.append(markdown.charAt(i));
+        if (i < markdown.length()-3 && markdown.substring(i, i+2).equals("](")) {
+
+          int j = i + 2;
+          while (j < markdown.length() && markdown.charAt(j) != ')')
+            j++;
+          if (j < markdown.length()) {
+            String url = markdown.substring(i+2, j);
+            if (!Utilities.isAbsoluteUrl(url) && !url.startsWith("..")) {
+              // 
+              // In principle, relative URLs are supposed to be converted to absolute URLs in snapshots. 
+              // that's what this code is doing. 
+              // 
+              // But that hasn't always happened and there's packages out there where the snapshots 
+              // contain relative references that actually are references to the main specification 
+              // 
+              // This code is trying to guess which relative references are actually to the
+              // base specification.
+              // 
+              if (isLikelySourceURLReference(url, resourceNames, baseFilenames, localFilenames)) {
+                b.append("](");
+                b.append(basePath);
+                if (!Utilities.noString(basePath) && !basePath.endsWith("/")) {
+                  b.append("/");
+                }
+                i = i + 1;
+              } else {
+                b.append("](");
+                // disabled 7-Dec 2021 GDG - we don't want to fool with relative URLs at all? 
+                // re-enabled 11-Feb 2022 GDG - we do want to do this. At least, $assemble in davinci-dtr, where the markdown comes from the SDC IG, and an SDC local reference must be changed to point to SDC. in this case, it's called when generating snapshots
+                // added processRelatives parameter to deal with this (well, to try)
+                if (processRelatives && webUrl != null && !issLocalFileName(url, localFilenames)) {
+                  //                System.out.println("Making "+url+" relative to '"+webUrl+"'");
+                  b.append(webUrl);
+                } else {
+                  //                System.out.println("Not making "+url+" relative to '"+webUrl+"'");
+                }
+                i = i + 1;
+              }
+            } else
+              b.append(markdown.charAt(i));
+          } else 
+            b.append(markdown.charAt(i));
+        } else {
+          b.append(markdown.charAt(i));
+        }
       }
       i++;
     }
-    return b.toString();
+    String s = b.toString();
+    return Utilities.rightTrim(s);
   }
 
   private static boolean issLocalFileName(String url, Set<String> localFilenames) {
@@ -2209,7 +2276,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       String webroot = profile.getUserString("webroot");
 
       if (e.hasDefinition()) {
-        base.setDefinition(processRelativeUrls(e.getDefinition(), webroot, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, true));
+        base.setDefinition(processRelativeUrls(e.getDefinition(), webroot, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, true));
       }
       base.setShort(e.getShort());
       if (e.hasCommentElement())
@@ -4215,6 +4282,14 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   
+  public Set<String> getLocalFileNames() {
+    return localFileNames;
+  }
+
+  public void setLocalFileNames(Set<String> localFileNames) {
+    this.localFileNames = localFileNames;
+  }
+
   public ProfileKnowledgeProvider getPkp() {
     return pkp;
   }
