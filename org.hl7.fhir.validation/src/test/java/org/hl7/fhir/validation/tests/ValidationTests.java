@@ -538,7 +538,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       logOutput("");
       logOutput("========================================================");
       logOutput("");  
-      if (BUILD_NEW && actual.getIssue().size() > 0) {
+      if (BUILD_NEW) {
         if (java.has("output")) {
           java.remove("output");
         }
