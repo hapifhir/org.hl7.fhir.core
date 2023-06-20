@@ -936,6 +936,8 @@ public class ProfilePathProcessor {
       profileUtilities.removeStatusExtensions(outcome);
     } else if (!diffMatches.get(0).hasSliceName()) {
       diffMatches.get(0).setUserData(profileUtilities.UD_GENERATED_IN_SNAPSHOT, outcome); // because of updateFromDefinition isn't called
+    } else {
+      outcome.setUserData("auto-added-slicing", true);
     }
 
     debugCheck(outcome);
