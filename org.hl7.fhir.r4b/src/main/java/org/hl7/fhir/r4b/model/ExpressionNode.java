@@ -56,7 +56,7 @@ public class ExpressionNode {
     Encode, Decode, Escape, Unescape, Trim, Split, Join, LowBoundary, HighBoundary, Precision,
     
     // Local extensions to FHIRPath
-    HtmlChecks1, HtmlChecks2, AliasAs, Alias, Comparable;
+    HtmlChecks1, HtmlChecks2, AliasAs, Alias;
 
     public static Function fromCode(String name) {
       if (name.equals("empty")) return Function.Empty;
@@ -118,7 +118,6 @@ public class ExpressionNode {
       if (name.equals("htmlChecks")) return Function.HtmlChecks1;
       if (name.equals("htmlchecks")) return Function.HtmlChecks1; // support change of care from R3
       if (name.equals("htmlChecks2")) return Function.HtmlChecks2;
-      if (name.equals("comparable")) return Function.Comparable;
       if (name.equals("encode")) return Function.Encode;
       if (name.equals("decode")) return Function.Decode;      
       if (name.equals("escape")) return Function.Escape;
@@ -153,7 +152,7 @@ public class ExpressionNode {
       if (name.equals("ln")) return Function.Ln;
       if (name.equals("log")) return Function.Log;
       if (name.equals("power")) return Function.Power;
-      if (name.equals("truncate")) return Function.Truncate;  
+      if (name.equals("truncate")) return Function.Truncate;      
       if (name.equals("lowBoundary")) return Function.LowBoundary;  
       if (name.equals("highBoundary")) return Function.HighBoundary;  
       if (name.equals("precision")) return Function.Precision;  
@@ -227,7 +226,6 @@ public class ExpressionNode {
       case Join : return "join";
       case HtmlChecks1 : return "htmlChecks";
       case HtmlChecks2 : return "htmlChecks2";
-      case Comparable : return "comparable";
       case OfType : return "ofType";
       case Type : return "type";
       case ToInteger : return "toInteger";
