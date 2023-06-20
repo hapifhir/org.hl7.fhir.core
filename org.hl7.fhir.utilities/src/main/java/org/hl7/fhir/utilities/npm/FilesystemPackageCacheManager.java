@@ -407,7 +407,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     if (progress) {
       log("");
-      logn("  Installing: ");
+      logn("Installing "+id+"#"+version);
     }
     
     if ((npm.name() != null && id != null && !id.equalsIgnoreCase(npm.name()))) {
