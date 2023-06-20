@@ -38,6 +38,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.hl7.fhir.utilities.DateTimeUtil;
 import org.hl7.fhir.utilities.Utilities;
 
+import javax.annotation.Nullable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -169,10 +170,23 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 		myTimeZoneZulu = false;
 	}
 
+  /**
+   * @param thePrecision
+   * @return the String value of this instance with the specified precision.
+   */
+  public String getValueAsString(TemporalPrecisionEnum thePrecision) {
+    return encode(getValue(), thePrecision);
+  }
+
 	@Override
 	protected String encode(Date theValue) {
-		if (theValue == null) {
-			return null;
+    return encode(theValue, myPrecision);
+  }
+
+  @Nullable
+  private String encode(Date theValue, TemporalPrecisionEnum thePrecision) {
+    if (theValue == null) {
+      return null;
 		} else {
 			GregorianCalendar cal;
 			if (myTimeZoneZulu) {
@@ -186,21 +200,22 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 			StringBuilder b = new StringBuilder();
 			leftPadWithZeros(cal.get(Calendar.YEAR), 4, b);
-			if (myPrecision.ordinal() > TemporalPrecisionEnum.YEAR.ordinal()) {
+
+      if (thePrecision.ordinal() > TemporalPrecisionEnum.YEAR.ordinal()) {
 				b.append('-');
 				leftPadWithZeros(cal.get(Calendar.MONTH) + 1, 2, b);
-				if (myPrecision.ordinal() > TemporalPrecisionEnum.MONTH.ordinal()) {
+				if (thePrecision.ordinal() > TemporalPrecisionEnum.MONTH.ordinal()) {
 					b.append('-');
 					leftPadWithZeros(cal.get(Calendar.DATE), 2, b);
-					if (myPrecision.ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
+					if (thePrecision.ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
 						b.append('T');
 						leftPadWithZeros(cal.get(Calendar.HOUR_OF_DAY), 2, b);
 						b.append(':');
 						leftPadWithZeros(cal.get(Calendar.MINUTE), 2, b);
-						if (myPrecision.ordinal() > TemporalPrecisionEnum.MINUTE.ordinal()) {
+						if (thePrecision.ordinal() > TemporalPrecisionEnum.MINUTE.ordinal()) {
 							b.append(':');
 							leftPadWithZeros(cal.get(Calendar.SECOND), 2, b);
-							if (myPrecision.ordinal() > TemporalPrecisionEnum.SECOND.ordinal()) {
+							if (thePrecision.ordinal() > TemporalPrecisionEnum.SECOND.ordinal()) {
 								b.append('.');
 								b.append(myFractionalSeconds);
 								for (int i = myFractionalSeconds.length(); i < 3; i++) {
@@ -230,11 +245,11 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 					}
 				}
 			}
-			return b.toString();
+      return b.toString();
 		}
-	}
+  }
 
-	/**
+  /**
 	 * Returns the month with 1-index, e.g. 1=the first day of the month
 	 */
 	public Integer getDay() {

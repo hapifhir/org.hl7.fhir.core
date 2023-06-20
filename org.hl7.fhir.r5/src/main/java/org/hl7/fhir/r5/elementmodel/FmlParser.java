@@ -57,7 +57,7 @@ public class FmlParser extends ParserBase {
   }
 
   public Element parse(String text) throws FHIRException {
-    FHIRLexer lexer = new FHIRLexer(text, "source", true);
+    FHIRLexer lexer = new FHIRLexer(text, "source", true, true);
     if (lexer.done())
       throw lexer.error("Map Input cannot be empty");
     Element result = Manager.build(context, context.fetchTypeDefinition("StructureMap"));

@@ -979,9 +979,9 @@ public class ValueSetValidator {
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
         Boolean ok = inComponent(path, vsi, i, system, version, code, valueset.getCompose().getInclude().size() == 1, info);
         i++;
-        if (ok == null && result == false) {
+        if (ok == null && result != null && result == false) {
           result = null;
-        } else if (ok) {
+        } else if (ok != null && ok) {
           result = true;
           break;
         }
@@ -990,7 +990,7 @@ public class ValueSetValidator {
       for (ConceptSetComponent vsi : valueset.getCompose().getExclude()) {
         Boolean nok = inComponent(path, vsi, i, system, version, code, valueset.getCompose().getInclude().size() == 1, info);
         i++;
-        if (nok == null && result == false) {
+        if (nok == null && result != null && result == false) {
           result = null;
         } else if (nok != null && nok) {
           result = false;
@@ -1200,6 +1200,7 @@ public class ValueSetValidator {
     }
     ValueSet vs = context.fetchResource(ValueSet.class, url, valueset);
     ValueSetValidator vsc = new ValueSetValidator(options, vs, context, localContext, expansionProfile, txCaps);
+    vsc.setThrowToServer(throwToServer);
     inner.put(url, vsc);
     return vsc;
   }

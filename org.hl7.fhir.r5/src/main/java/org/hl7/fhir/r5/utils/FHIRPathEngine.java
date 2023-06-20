@@ -280,6 +280,7 @@ public class FHIRPathEngine {
   private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
   private boolean doNotEnforceAsSingletonRule;
   private boolean doNotEnforceAsCaseSensitive;
+  private boolean allowDoubleQuotes;
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -511,7 +512,7 @@ public class FHIRPathEngine {
   }
 
   public ExpressionNode parse(String path, String name) throws FHIRLexerException {
-    FHIRLexer lexer = new FHIRLexer(path, name);
+    FHIRLexer lexer = new FHIRLexer(path, name, false, allowDoubleQuotes);
     if (lexer.done()) {
       throw lexer.error("Path cannot be empty");
     }
@@ -548,7 +549,7 @@ public class FHIRPathEngine {
    * @throws Exception
    */
   public ExpressionNodeWithOffset parsePartial(String path, int i) throws FHIRLexerException {
-    FHIRLexer lexer = new FHIRLexer(path, i);
+    FHIRLexer lexer = new FHIRLexer(path, i, allowDoubleQuotes);
     if (lexer.done()) {
       throw lexer.error("Path cannot be empty");
     }
@@ -4150,7 +4151,6 @@ public class FHIRPathEngine {
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
-
     if (focus.size() == 1) {
       String cnt = focus.get(0).primitiveValue();
       if ("hex".equals(param)) {
@@ -4163,7 +4163,6 @@ public class FHIRPathEngine {
         result.add(new StringType(new String(enc.decode(cnt))));
       }
     }
-
     return result;  
   }
 
@@ -5816,7 +5815,11 @@ public class FHIRPathEngine {
       String tail = "";
       StructureDefinition sd = worker.fetchResource(StructureDefinition.class, url);
       if (sd == null) {
-        throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, url, "getChildTypesByName");
+        if (url.startsWith(TypeDetails.FP_NS)) {
+          return;
+        } else {
+          throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, url, "getChildTypesByName");          
+        }
       }
       List<StructureDefinition> sdl = new ArrayList<StructureDefinition>();
       ElementDefinitionMatch m = null;
@@ -5826,14 +5829,14 @@ public class FHIRPathEngine {
         if (m.fixedType != null)  {
           StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(m.fixedType, null), sd);
           if (dt == null) {
-            throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ProfileUtilities.sdNs(m.fixedType, null), "getChildTypesByName");
+            throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(m.fixedType, null), "getChildTypesByName");
           }
           sdl.add(dt);
         } else
           for (TypeRefComponent t : m.definition.getType()) {
             StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(t.getCode(), null));
             if (dt == null) {
-              throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ProfileUtilities.sdNs(t.getCode(), null), "getChildTypesByName");
+              throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(t.getCode(), null), "getChildTypesByName");
             }
             addTypeAndDescendents(sdl, dt, cu.allStructures());
             // also add any descendant types
@@ -6392,4 +6395,10 @@ public class FHIRPathEngine {
     return profileUtilities;
   }
 
+  public boolean isAllowDoubleQuotes() {
+    return allowDoubleQuotes;
+  }
+  public void setAllowDoubleQuotes(boolean allowDoubleQuotes) {
+    this.allowDoubleQuotes = allowDoubleQuotes;    
+  }
 }

@@ -103,7 +103,9 @@ public class FhirRequestBuilder {
    * @param headers {@link Headers} to add to request.
    */
   protected static void addHeaders(Request.Builder request, Headers headers) {
-    headers.forEach(header -> request.addHeader(header.getFirst(), header.getSecond()));
+    if (headers != null) {
+      headers.forEach(header -> request.addHeader(header.getFirst(), header.getSecond()));
+    }
   }
 
   /**

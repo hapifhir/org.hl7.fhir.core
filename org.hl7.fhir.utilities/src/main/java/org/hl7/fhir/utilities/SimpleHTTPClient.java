@@ -163,8 +163,10 @@ public class SimpleHTTPClient {
   }
 
   private void setHeaders(HttpURLConnection c) {
-    for (Header h : headers) {
-      c.setRequestProperty(h.getName(), h.getValue());        
+    if (headers != null) {
+      for (Header h : headers) {
+        c.setRequestProperty(h.getName(), h.getValue());        
+      }
     }
     c.setConnectTimeout(15000);
     c.setReadTimeout(15000);

@@ -399,7 +399,7 @@ public class AdditionalBindingsRenderer {
       return; // what should happen?
     }
     BindingResolution br = pkp.resolveBinding(profile, b.getValueSet(), corePath);
-    XhtmlNode a = children.ah(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, b.hasDocumentation() ? b.getDocumentation() : null);
+    XhtmlNode a = children.ahOrCode(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, b.hasDocumentation() ? b.getDocumentation() : null);
     if (b.hasDocumentation()) {
       a.attribute("title", b.getDocumentation());
     } 
