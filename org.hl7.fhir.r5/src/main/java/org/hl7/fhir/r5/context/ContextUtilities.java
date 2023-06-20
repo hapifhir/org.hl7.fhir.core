@@ -422,5 +422,22 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return res;
   }
 
+  public StructureDefinition findType(String typeName) {
+    StructureDefinition t = context.fetchTypeDefinition(typeName);
+    if (t != null) {
+      return t;
+    }
+    List<StructureDefinition> candidates = new ArrayList<>();
+    for (StructureDefinition sd : getStructures()) {
+      if (sd.getType().equals(typeName)) {
+        candidates.add(sd);
+      }
+    }
+    if (candidates.size() == 1) {
+      return candidates.get(0);
+    }
+    return null;
+  }
+
 }
 
