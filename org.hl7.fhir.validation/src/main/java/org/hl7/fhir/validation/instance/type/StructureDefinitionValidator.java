@@ -493,6 +493,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
         if (Utilities.noString(source) || (source.equals(profileUrl))) { // no need to revalidate FHIRPath from elsewhere 
          try {
+//           String upath = profileUrl+"#"+path;
            fpe.check(invariant, rootPath, path, fpe.parse(expression));
          } catch (Exception e) {
            ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
@@ -506,7 +507,8 @@ public class StructureDefinitionValidator extends BaseValidator {
   private boolean meaningWhenMissingAllowed(Element element) {
     // allowed to use meaningWhenMissing on the root of an element to say what it means when the extension
     // is not present.
-    return "Extension".equals(element.getPath()) || (element.getPath().endsWith(".extension"));
+    String path = element.getNamedChildValue("path");
+    return path != null && ("Extension".equals(path) || (path.endsWith(".extension")));
   }
 
   private boolean addCharacteristics(Set<String> set, String tc) {
