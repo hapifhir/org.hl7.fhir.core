@@ -1142,7 +1142,7 @@ public class ShExGenerator {
   private String positionParts(String funCall, String mainTxt, String nextText, int depth, boolean complete){
     if (funCall.indexOf("CALLER") != -1) {
       if (depth == 0) {
-        String toReturn = funCall.replaceFirst("CALLER", mainTxt);
+        String toReturn = funCall.replaceFirst("CALLER", mainTxt + "");
         if (complete)
           toReturn =  toReturn ;
 
@@ -1152,7 +1152,12 @@ public class ShExGenerator {
       else{
         String mT = (mainTxt != null) ? mainTxt.trim() : "";
         String dR = (mT.startsWith(".") || mT.startsWith("{") || mT.startsWith("[")) ? "" : ".";
-        return  postProcessing(funCall.replaceFirst("CALLER", Matcher.quoteReplacement("CALLER" + dR + mT )), nextText) ;
+
+        String replacement = "CALLER" + dR + mT;
+        if (".".equals(mT))
+          replacement = "CALLER " + dR + mT;
+
+        return  postProcessing(funCall.replaceFirst("CALLER", Matcher.quoteReplacement(replacement)), nextText) ;
       }
     }
 

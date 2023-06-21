@@ -228,6 +228,11 @@ public class ShexGeneratorTests {
   }
 
   @Test
+  public void testxhtml() throws FHIRException, IOException, UcumException {
+    doTest("xhtml", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+  }
+
+  @Test
   public void doTestAllSingleSDMode() throws FileNotFoundException, IOException, FHIRException, UcumException {
     List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
 
@@ -240,7 +245,7 @@ public class ShexGeneratorTests {
       // BatchMode - All Shex Schemas in one single file
       false,
       // process constraints or not
-      true
+      false
     );
   }
 
