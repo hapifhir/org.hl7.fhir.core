@@ -158,7 +158,7 @@ public class PathBuilder {
       return;
     }
     if (args[0] == null || Utilities.noString(args[0].trim())) {
-      throw new RuntimeException("First entry cannot be null or empty");
+      throw new RuntimeException("First path entry cannot be null or empty");
     }
   }
 
