@@ -90,8 +90,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
 
   public enum FilesystemPackageCacheMode {
-    USER, SYSTEM, TESTING
-
+    USER, SYSTEM, TESTING, CUSTOM
   }
 
   // When running in testing mode, some packages are provided from the test case repository rather than by the normal means
@@ -116,6 +115,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private Map<String, String> ciList = new HashMap<String, String>();
   private JsonArray buildInfo;
   private boolean suppressErrors;
+  private boolean minimalMemory;
  
   
   public FilesystemPackageCacheManager(boolean userMode) throws IOException {
@@ -125,6 +125,18 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public FilesystemPackageCacheManager(FilesystemPackageCacheMode mode) throws IOException {
     init(mode);
   }
+  
+  /**
+   * Defined for use on Android
+   * 
+   * @param customFolder
+   * @throws IOException
+   */
+  public FilesystemPackageCacheManager(String customFolder) throws IOException {
+    this.cacheFolder = customFolder;
+    init(FilesystemPackageCacheMode.CUSTOM);  
+  }
+  
   
   public void init(FilesystemPackageCacheMode mode) throws IOException {
     myPackageServers.addAll(PackageServer.publicServers());
@@ -139,6 +151,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     case TESTING:
       cacheFolder = Utilities.path("[tmp]", ".fhir", "packages");
       break;
+    case CUSTOM:
+      if (!new File(cacheFolder).exists()) {
+        throw new FHIRException("The folder ''"+cacheFolder+"' could not be found");
+      }
     default:
       break;    
     }
@@ -150,7 +166,22 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     createIniFile();
   }
 
+  public boolean isMinimalMemory() {
+    return minimalMemory;
+  }
+
+  public void setMinimalMemory(boolean minimalMemory) {
+    this.minimalMemory = minimalMemory;
+  }
+
+  /**
+   * do not use this in minimal memory mode
+   * @param packagesFolder
+   * @throws IOException
+   */
   public void loadFromFolder(String packagesFolder) throws IOException {
+    assert !minimalMemory;
+    
     File[] files = new File(packagesFolder).listFiles();
     if (files != null) {
       for (File f : files) {
@@ -163,19 +194,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   public String getFolder() {
     return cacheFolder;
-  }
-
-  private List<String> sorted(String[] keys) {
-    List<String> names = new ArrayList<String>();
-    for (String s : keys)
-      names.add(s);
-    Collections.sort(names);
-    return names;
-  }
-
-  private List<String> reverseSorted(String[] keys) {
-    Arrays.sort(keys, Collections.reverseOrder());
-    return Arrays.asList(keys);
   }
 
   private NpmPackage loadPackageInfo(String path) throws IOException {
@@ -284,7 +302,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   public String getLatestVersionFromCache(String id) throws IOException {
-    for (String f : reverseSorted(new File(cacheFolder).list())) {
+    for (String f : Utilities.reverseSorted(new File(cacheFolder).list())) {
       File cf = new File(Utilities.path(cacheFolder, f));
       if (cf.isDirectory()) {
         if (f.startsWith(id + "#")) {
@@ -372,7 +390,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
     String foundPackage = null;
     String foundVersion = null;
-    for (String f : reverseSorted(new File(cacheFolder).list())) {
+    for (String f : Utilities.reverseSorted(new File(cacheFolder).list())) {
       File cf = new File(Utilities.path(cacheFolder, f));
       if (cf.isDirectory()) {
         if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
@@ -1017,7 +1035,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       }
     }
 
-    for (String f : sorted(new File(cacheFolder).list())) {
+    for (String f : Utilities.sorted(new File(cacheFolder).list())) {
       if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
         return true;
       }
