@@ -197,7 +197,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private NpmPackage loadPackageInfo(String path) throws IOException {
-    NpmPackage pi = NpmPackage.fromFolder(path);
+    NpmPackage pi = minimalMemory ?  NpmPackage.fromFolderMinimal(path) : NpmPackage.fromFolder(path);
     return pi;
   }
 
