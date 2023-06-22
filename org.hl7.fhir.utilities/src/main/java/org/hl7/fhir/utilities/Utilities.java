@@ -1286,7 +1286,34 @@ public class Utilities {
     Collections.sort(list);
     return list;
   }
+  
+  public static List<String> sorted(String[] set) {
+    List<String> list = new ArrayList<>();
+    for (String s : set) {
+      list.add(s);
+    }
+    Collections.sort(list);
+    return list;
+  }
 
+
+  public static List<String> reverseSorted(Collection<String> set) {
+    List<String> list = new ArrayList<>();
+    list.addAll(set);
+    Collections.sort(list, Collections.reverseOrder());
+    return list;
+  }
+
+  public static List<String> reverseSorted(String[] set) {
+    List<String> list = new ArrayList<>();
+    for (String s : set) {
+      list.add(s);
+    }
+    Collections.sort(list, Collections.reverseOrder());
+    return list;
+  }
+
+  
   public static void analyseStringDiffs(Set<String> source, Set<String> target, Set<String> missed, Set<String> extra) {
     for (String s : source)
       if (!target.contains(s))
