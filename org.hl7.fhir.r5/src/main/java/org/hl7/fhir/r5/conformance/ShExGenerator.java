@@ -138,7 +138,7 @@ public class ShExGenerator {
   private List<String> shortIdException = Arrays.asList(
     "base64Binary", "boolean",
     "date", "dateTime", "decimal", "instant", "integer64",
-    "integer", "string", "time", "uri"
+    "integer", "string", "time", "uri", "xhtml"
   );
 
   private List<String> mappedFunctions = Arrays.asList(
@@ -636,6 +636,11 @@ public class ShExGenerator {
    * @return ShEx definition
    */
   private String genShapeDefinition(StructureDefinition sd, boolean top_level) {
+    // xhtml is treated as an atom
+    //if("xhtml".equals(sd.getName()) || (completeModel && "Resource".equals(sd.getName())))
+    // if(completeModel && "Resource".equals(sd.getName()))
+    //   return "";
+
     ST shape_defn;
     // Resources are either incomplete items or consist of everything that is defined as a resource (completeModel)
     //    if (sd.getName().equals("ActivityDefinition")){
@@ -1412,7 +1417,7 @@ public class ShExGenerator {
     } else {
       if (ed.getType().size() == 1) {
         // Single entry
-        if ((defn.isEmpty())||(typ.equals(sd.getName())))
+        if ((defn.isEmpty())||(typ.equals(sd.getName()))||("xhtml".equals(sd.getName())))
           defn = genTypeRef(sd, ed, id, ed.getType().get(0));
       } else if (ed.getContentReference() != null) {
         // Reference to another element
@@ -1624,6 +1629,9 @@ public class ShExGenerator {
 
     } else if (typ.getCode().startsWith(Constants.NS_SYSTEM_TYPE)) {
       String xt = getShexCode(typ.getWorkingCode());
+
+      if ("xhtml.value".equals(id))
+        xt = "rdf:XMLLiteral";
 
       // TODO: Remove the next line when the type of token gets switched to string
       // TODO: Add a rdf-type entry for valueInteger to xsd:integer (instead of int)
