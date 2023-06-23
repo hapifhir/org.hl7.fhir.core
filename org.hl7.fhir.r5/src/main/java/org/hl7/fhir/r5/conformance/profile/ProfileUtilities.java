@@ -2267,7 +2267,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     if (profile==null) {
       profile = source.getType().size() == 1 && source.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, source.getTypeFirstRep().getProfile().get(0).getValue(), derivedSrc) : null;
-      if (profile != null && !"Extension".equals(profile.getType())) {
+      if (profile != null && !"Extension".equals(profile.getType()) && profile.getKind() != StructureDefinitionKind.RESOURCE) {
         profile = null;
       }
     }
