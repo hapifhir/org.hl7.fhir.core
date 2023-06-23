@@ -81,10 +81,7 @@ public class PackageCacheTests {
     Assertions.assertEquals(uscore.list("package").size(), uscoreMin.list("package").size());
     byte[] b1 = TextFile.streamToBytes(uscore.load(uscore.list("package").get(1)));
     byte[] b2 = TextFile.streamToBytes(uscoreMin.load(uscore.list("package").get(1)));
-//    TextFile.bytesToFile(b1, "/Users/grahamegrieve/temp/b1.json");
-//    TextFile.bytesToFile(b2, "/Users/grahamegrieve/temp/b2.json");
-    Assertions.assertArrayEquals(b1, b2);
-    
-    
+    Assertions.assertArrayEquals(b1, b2);    
   }
+  
 }
