@@ -55,7 +55,7 @@ public class ValidateTask extends ValidationEngineTask {
     }
     System.out.println("Validating");
 
-    validationService.validateSources(cliContext, validationEngine, cliContext.getWatchMode());
+    validationService.validateSources(cliContext, validationEngine, cliContext.getWatchMode(), cliContext.getWatchScanDelay(), cliContext.getWatchSettleTime());
 
   }
 }

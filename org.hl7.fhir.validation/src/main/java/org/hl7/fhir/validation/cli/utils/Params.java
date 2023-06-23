@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
@@ -99,6 +100,8 @@ public class Params {
   public static final String FILTER = "-filter";
   private static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
   private static final String WATCH_MODE_PARAM = "-watch-mode";
+  private static final String WATCH_SCAN_DELAY = "-watch-scan-delay";
+  private static final String WATCH_SETTLE_TIME = "-watch-settle-time";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -392,7 +395,18 @@ public class Params {
         } else {
           cliContext.setWatchMode(readWatchMode(args[++i]));
         }
-      } else if (args[i].startsWith(X)) {
+      } else if (args[i].equals(WATCH_SCAN_DELAY)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -watch-scan-delay without indicating mode value");
+        } else {
+          cliContext.setWatchScanDelay(readInteger(WATCH_SCAN_DELAY, args[++i]));
+        }
+      } else if (args[i].equals(WATCH_SETTLE_TIME)) {
+          if (i + 1 == args.length) {
+            throw new Error("Specified -watch-mode without indicating mode value");
+          } else {
+            cliContext.setWatchSettleTime(readInteger(WATCH_SETTLE_TIME, args[++i]));
+          }      } else if (args[i].startsWith(X)) {
         i++;
       } else if (args[i].equals(CONVERT)) {
         cliContext.setMode(EngineMode.CONVERT);
@@ -411,6 +425,13 @@ public class Params {
     }
     
     return cliContext;
+  }
+
+  private static int readInteger(String n, String v) {
+    if (!Utilities.isInteger(v)) {
+      throw new Error("Unable to read "+v+" provided for '"+n+"' - must be an integer");
+    }
+    return Integer.parseInt(n);
   }
 
   private static ValidatorWatchMode readWatchMode(String s) {
