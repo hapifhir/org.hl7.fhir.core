@@ -33,6 +33,8 @@ package org.hl7.fhir.r4.terminologies;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -52,6 +54,7 @@ import org.hl7.fhir.r4.model.Meta;
 import org.hl7.fhir.r4.model.Type;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
+import org.hl7.fhir.r4.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -286,6 +289,29 @@ public class CodeSystemUtilities {
   public static void addOtherChild(CodeSystem cs, ConceptDefinitionComponent owner, String code) {
     defineChildProperty(cs);
     owner.addProperty().setCode("child").setValue(new CodeType(code));
+  }
+
+
+  public static class ConceptDefinitionComponentSorter implements Comparator<ConceptDefinitionComponent> {
+
+    @Override
+    public int compare(ConceptDefinitionComponent o1, ConceptDefinitionComponent o2) {
+      return o1.getCode().compareToIgnoreCase(o2.getCode());
+    }
+
+  }
+
+  public static void sortAllCodes(CodeSystem cs) {
+    sortAllCodes(cs.getConcept());
+  }
+
+  public static void sortAllCodes(List<ConceptDefinitionComponent> list) {
+    Collections.sort(list, new ConceptDefinitionComponentSorter());
+    for (ConceptDefinitionComponent cd : list) {
+      if (cd.hasConcept()) {
+        sortAllCodes(cd.getConcept());
+      }
+    }    
   }
 
 }
