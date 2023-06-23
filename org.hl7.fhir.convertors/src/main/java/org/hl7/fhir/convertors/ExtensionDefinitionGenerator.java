@@ -361,7 +361,7 @@ public class ExtensionDefinitionGenerator {
     npm.addProperty("version", targetVersion.toCode().substring(0, 3));
     npm.addProperty("tools-version", ToolsVersion.TOOLS_VERSION);
     npm.addProperty("type", PackageType.IG.getCode());
-    npm.addProperty("license", SPDXLicense.CC01_0.toCode());
+    npm.addProperty("license", SPDXLicense.CC0_1_0.toCode());
     npm.addProperty("canonical", "http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/extensions/" + targetVersion.toCode().substring(0, 3));
     npm.addProperty("url", "http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/extensions/" + targetVersion.toCode().substring(0, 3));
     npm.addProperty("title", "Extension Definitions for representing elements from " + sourceVersion.toCode() + " in " + targetVersion.toCode());
