@@ -251,7 +251,7 @@ public class ValidatorCliTests {
     int watchSettleTime = 100;
     cli.readParamsAndExecuteTask(cliContext, args);
     Mockito.verify(validationService).determineVersion(same(cliContext));
-    Mockito.verify(validationService).validateSources(same(cliContext), same(validationEngine), same(watchMode), same(watchScanDelay), same(watchSettleTime));
+    Mockito.verify(validationService).validateSources(same(cliContext), same(validationEngine), eq(watchMode), eq(watchScanDelay), eq(watchSettleTime));
   }
 
   @Test
