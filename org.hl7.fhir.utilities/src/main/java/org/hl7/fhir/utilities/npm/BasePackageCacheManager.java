@@ -76,6 +76,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
           if (version.endsWith(".x")) {
             version = packageClient.getLatestVersion(id, version);
           }
+          //FIXME This stream is potentially a JSON document describing a package, not a tgz.
           InputStream stream = packageClient.fetch(id, version);
           String url = packageClient.url(id, version);
           return new InputStreamWithSrc(stream, url, version);
