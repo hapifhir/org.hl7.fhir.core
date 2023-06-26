@@ -15,6 +15,8 @@ public class PackageServerPOJO {
 
     String authenticationType;
 
+    String serverType;
+
     String username;
 
     String password;

@@ -15,16 +15,25 @@ public class PackageServer {
     NONE,
     BASIC
   }
-  
+
+  public enum PackageServerType {
+    FHIR,
+    NPM
+  }
+
   public PackageServer(String url) {
     this.url = url;
     mode = PackageServerAuthenticationMode.NONE;
+    serverType = PackageServerType.FHIR;
   }
 
   private String url;
 
   @Getter
   private PackageServerAuthenticationMode mode;
+
+  @Getter
+  private PackageServerType serverType;
 
   @Getter
   private String username;
@@ -59,6 +68,9 @@ public class PackageServer {
         new PackageServer(pojo.getUrl())
           .withMode(pojo.getAuthenticationType() != null && pojo.getAuthenticationType().equalsIgnoreCase("basic") ?
             PackageServer.PackageServerAuthenticationMode.BASIC : null)
+          .withServerType(
+            pojo.getServerType() != null && pojo.getServerType().equalsIgnoreCase("npm") ? PackageServerType.NPM : PackageServerType.FHIR
+          )
           .withUsername(pojo.getUsername())
           .withPassword(pojo.getPassword())
     ).collect(Collectors.toList());
@@ -72,6 +84,7 @@ public class PackageServer {
   public PackageServer copy() {
     PackageServer packageServer = new PackageServer(url);
     packageServer.mode = this.mode;
+    packageServer.serverType = this.serverType;
     packageServer.username = this.username;
     packageServer.password = this.password;
     return packageServer;
@@ -80,6 +93,12 @@ public class PackageServer {
   public PackageServer withMode(PackageServerAuthenticationMode mode) {
     PackageServer packageServer = this.copy();
     packageServer.mode = mode;
+    return packageServer;
+  }
+
+  public PackageServer withServerType(PackageServerType serverType) {
+    PackageServer packageServer = this.copy();
+    packageServer.serverType = serverType;
     return packageServer;
   }
 
