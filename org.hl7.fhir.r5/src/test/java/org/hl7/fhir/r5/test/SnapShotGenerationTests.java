@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -571,11 +572,11 @@ public class SnapShotGenerationTests {
     if (!fail) {
       test.output = output;
       TestingUtilities.getSharedWorkerContext().cacheResource(output);
-      File dst = new File(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml"));
-      if (dst.exists())
-        dst.delete();
-//      IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(dst));
-      String actualFilePath = TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml");
+      File expectedFile = new File(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml"));
+      if (expectedFile.exists())
+        expectedFile.delete();
+      IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(expectedFile));
+      String actualFilePath = TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml");
       new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(actualFilePath), output);
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);
