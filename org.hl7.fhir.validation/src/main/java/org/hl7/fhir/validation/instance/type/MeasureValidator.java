@@ -44,8 +44,8 @@ import org.w3c.dom.Document;
 public class MeasureValidator extends BaseValidator {
 
   private InstanceValidator parent;
-  public MeasureValidator(IWorkerContext context, TimeTracker timeTracker, XVerExtensionManager xverManager, Coding jurisdiction, InstanceValidator parent) {
-    super(context, xverManager);
+  public MeasureValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, XVerExtensionManager xverManager, Coding jurisdiction, InstanceValidator parent) {
+    super(context, xverManager, debug);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
     this.jurisdiction = jurisdiction;

@@ -23,8 +23,8 @@ public class CodeSystemValidator  extends BaseValidator {
 
   private InstanceValidator parent;
 
-  public CodeSystemValidator(IWorkerContext context, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction) {
-    super(context, xverManager);
+  public CodeSystemValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction) {
+    super(context, xverManager, debug);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
     this.jurisdiction = jurisdiction;
