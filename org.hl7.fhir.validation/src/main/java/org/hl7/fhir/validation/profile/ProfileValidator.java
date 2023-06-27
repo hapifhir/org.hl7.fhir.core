@@ -55,7 +55,7 @@ public class ProfileValidator extends BaseValidator {
   private FHIRPathEngine fpe;
 
   public ProfileValidator(IWorkerContext context, XVerExtensionManager xverManager) {
-    super(context, xverManager);
+    super(context, xverManager, false);
     fpe = new FHIRPathEngine(context);
     fpe.setAllowDoubleQuotes(allowDoubleQuotesInFHIRPath);
   }

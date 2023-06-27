@@ -54,8 +54,8 @@ public class ConceptMapValidator  extends BaseValidator {
 
   private InstanceValidator parent;
 
-  public ConceptMapValidator(IWorkerContext context, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction) {
-    super(context, xverManager);
+  public ConceptMapValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction) {
+    super(context, xverManager, debug);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
     this.jurisdiction = jurisdiction;

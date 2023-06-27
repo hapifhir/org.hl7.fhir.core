@@ -479,7 +479,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   // time tracking
   private boolean noBindingMsgSuppressed;
-  private boolean debug;
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
   private IValidatorResourceFetcher fetcher;
@@ -507,7 +506,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean logProgress;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices, XVerExtensionManager xverManager) {
-    super(theContext, xverManager);
+    super(theContext, xverManager, false);
     start = System.currentTimeMillis();
     this.externalHostServices = hostServices;
     this.profileUtilities = new ProfileUtilities(theContext, null, null);
@@ -5048,31 +5047,31 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public boolean checkSpecials(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode) {
     // specific known special validations
     if (element.getType().equals(BUNDLE)) {
-      return new BundleValidator(context, serverBase, this, xverManager, jurisdiction).validateBundle(errors, element, stack, checkSpecials, hostContext, pct, mode);
+      return new BundleValidator(context, debug, serverBase, this, xverManager, jurisdiction).validateBundle(errors, element, stack, checkSpecials, hostContext, pct, mode);
     } else if (element.getType().equals("Observation")) {
       return validateObservation(errors, element, stack);
     } else if (element.getType().equals("Questionnaire")) {
-      return new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaire(errors, element, element, stack);
+      return new QuestionnaireValidator(context, debug, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaire(errors, element, element, stack);
     } else if (element.getType().equals("QuestionnaireResponse")) {
-      return new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaireResponse(hostContext, errors, element, stack);
+      return new QuestionnaireValidator(context, debug, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaireResponse(hostContext, errors, element, stack);
     } else if (element.getType().equals("Measure")) {
-      return new MeasureValidator(context, timeTracker, xverManager, jurisdiction, this).validateMeasure(hostContext, errors, element, stack);      
+      return new MeasureValidator(context, debug, timeTracker, xverManager, jurisdiction, this).validateMeasure(hostContext, errors, element, stack);      
     } else if (element.getType().equals("MeasureReport")) {
-      return new MeasureValidator(context, timeTracker, xverManager, jurisdiction, this).validateMeasureReport(hostContext, errors, element, stack);
+      return new MeasureValidator(context, debug, timeTracker, xverManager, jurisdiction, this).validateMeasureReport(hostContext, errors, element, stack);
     } else if (element.getType().equals("CapabilityStatement")) {
       return validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
-      return new CodeSystemValidator(context, timeTracker, this, xverManager, jurisdiction).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
+      return new CodeSystemValidator(context, debug, timeTracker, this, xverManager, jurisdiction).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("ConceptMap")) {
-      return new ConceptMapValidator(context, timeTracker, this, xverManager, jurisdiction).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
+      return new ConceptMapValidator(context, debug, timeTracker, this, xverManager, jurisdiction).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("SearchParameter")) {
-      return new SearchParameterValidator(context, timeTracker, fpe, xverManager, jurisdiction).validateSearchParameter(errors, element, stack);
+      return new SearchParameterValidator(context, debug, timeTracker, fpe, xverManager, jurisdiction).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {
-      return new StructureDefinitionValidator(context, timeTracker, fpe, wantCheckSnapshotUnchanged, xverManager, jurisdiction, forPublication).validateStructureDefinition(errors, element, stack);
+      return new StructureDefinitionValidator(context, debug, timeTracker, fpe, wantCheckSnapshotUnchanged, xverManager, jurisdiction, forPublication).validateStructureDefinition(errors, element, stack);
     } else if (element.getType().equals("StructureMap")) {
-      return new StructureMapValidator(context, timeTracker, fpe, xverManager,profileUtilities, jurisdiction).validateStructureMap(errors, element, stack);
+      return new StructureMapValidator(context, debug, timeTracker, fpe, xverManager,profileUtilities, jurisdiction).validateStructureMap(errors, element, stack);
     } else if (element.getType().equals("ValueSet")) {
-      return new ValueSetValidator(context, timeTracker, this, xverManager, jurisdiction, allowExamples).validateValueSet(errors, element, stack);
+      return new ValueSetValidator(context, debug, timeTracker, this, xverManager, jurisdiction, allowExamples).validateValueSet(errors, element, stack);
     } else {
       return true;
     }
@@ -6399,13 +6398,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  public boolean isDebug() {
-    return debug;
-  }
-
-  public void setDebug(boolean debug) {
-    this.debug = debug;
-  }
+ 
   private String tail(String path) {
     return path.substring(path.lastIndexOf(".") + 1);
   }

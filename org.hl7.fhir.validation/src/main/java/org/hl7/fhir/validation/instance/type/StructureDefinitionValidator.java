@@ -62,8 +62,8 @@ public class StructureDefinitionValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private boolean wantCheckSnapshotUnchanged;
 
-  public StructureDefinitionValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction, boolean forPublication) {
-    super(context, xverManager);
+  public StructureDefinitionValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction, boolean forPublication) {
+    super(context, xverManager, debug);
     source = Source.InstanceValidator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
@@ -496,6 +496,9 @@ public class StructureDefinitionValidator extends BaseValidator {
 //           String upath = profileUrl+"#"+path;
            fpe.check(invariant, rootPath, path, fpe.parse(expression));
          } catch (Exception e) {
+           if (debug) {
+             e.printStackTrace();
+           }
            ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
          }         
         }        
