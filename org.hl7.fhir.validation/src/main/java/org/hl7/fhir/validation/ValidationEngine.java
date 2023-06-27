@@ -598,7 +598,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if (ref.isProcess() || all) {
         TimeTracker.Session tts = context.clock().start("validation");
         context.clock().milestone();
-        System.out.println("  Validate " + ref);
+        System.out.println("  Validate " + ref.getRef());
         
         try {
           OperationOutcome outcome = validate(ref.getRef(), ref.getCnt().getFocus(), ref.getCnt().getCntType(), profiles, record);
