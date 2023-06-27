@@ -198,7 +198,7 @@ public class ValidatorUtils {
     SourceFile src = addSourceFile(refs, file.getPath());
     Long l = file.lastModified();
     if (src.date != l) {
-      src.process = true;
+      src.setProcess(true);
     }
     src.date = l;
     return src;

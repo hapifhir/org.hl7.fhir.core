@@ -487,7 +487,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       if (hint(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(expression), I18nConstants.ED_INVARIANT_NO_EXPRESSION, key)) {
         if (invariantMap.containsKey(key)) {
           // it's legal - and common - for a list of elemnts to contain the same invariant more than once, but it's not valid if it's not always the same 
-          ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
+          ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
         } else {
           invariantMap.put(key, expression);
         }

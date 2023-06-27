@@ -575,7 +575,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     if (!found) {
       return null;
-    } else if (!first) {
+    } else if (!first && delay != 0) {
       Thread.sleep(delay);
     }
     
