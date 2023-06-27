@@ -19,8 +19,8 @@ public class ValidateTask extends ValidationEngineTask {
   final static String[][] PLACEHOLDERS = {
     { "XML_AND_JSON_FHIR_VERSIONS", "1.0, 1.4, 3.0, 4.0, " + Constants.VERSION_MM + ", 6.0" },
     { "TURTLE_FHIR_VERSIONS", "3.0, 4.0, " + Constants.VERSION_MM },
-    { "FHIR_MAJOR_VERSIONS", "1.0, 1.4, 3.0, 4.0, " + Constants.VERSION_MM, "6.0"},
-    { "FHIR_MINOR_VERSIONS", "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, 5.0.0, 6.0.0" },
+    { "FHIR_MAJOR_VERSIONS", VersionUtilities.listSupportedMajorVersions()},
+    { "FHIR_MINOR_VERSIONS", VersionUtilities.listSupportedVersions() },
     { "FHIR_CURRENT_VERSION", Constants.VERSION_MM}
   };
 
