@@ -676,14 +676,19 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           for (ElementDefinition e : diff.getElement()) {
             if (!e.hasUserData(UD_GENERATED_IN_SNAPSHOT) && e.getPath().contains(".")) {
-              ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
-              e.setUserData(UD_GENERATED_IN_SNAPSHOT, outcome);
-              derived.getSnapshot().addElement(outcome);
-              if (walksInto(diff.getElement(), e)) {
-                if (e.getType().size() > 1) {
-                  throw new DefinitionException("Unsupported scenario: specialization walks into multiple types at "+e.getId()); 
-                } else {
-                  addInheritedElementsForSpecialization(derived.getSnapshot(), outcome, outcome.getTypeFirstRep().getWorkingCode(), outcome.getPath(), url, webUrl);
+              ElementDefinition existing = getElementInCurrentContext(e.getPath(), derived.getSnapshot().getElement());
+              if (existing != null) {
+                updateFromDefinition(existing, e, profileName, false, url, base, derived);
+              } else {
+                ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
+                e.setUserData(UD_GENERATED_IN_SNAPSHOT, outcome);
+                derived.getSnapshot().addElement(outcome);
+                if (walksInto(diff.getElement(), e)) {
+                  if (e.getType().size() > 1) {
+                    throw new DefinitionException("Unsupported scenario: specialization walks into multiple types at "+e.getId()); 
+                  } else {
+                    addInheritedElementsForSpecialization(derived.getSnapshot(), outcome, outcome.getTypeFirstRep().getWorkingCode(), outcome.getPath(), url, webUrl);
+                  }
                 }
               }
             }
@@ -875,6 +880,22 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.clearUserData("profileutils.snapshot.generating");
       snapshotStack.remove(derived.getUrl());
     }
+  }
+
+  private ElementDefinition getElementInCurrentContext(String path, List<ElementDefinition> list) {
+    for (int i = list.size() -1; i >= 0; i--) {
+      ElementDefinition t = list.get(i);
+      if (t.getPath().equals(path)) {
+        return t;
+      } else if (!path.startsWith(head(t.getPath()))) {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  private String head(String path) {
+    return path.contains(".") ? path.substring(0, path.lastIndexOf(".")+1) : path;
   }
 
   private void findInheritedObligationProfiles(StructureDefinition derived) {
