@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -125,11 +126,14 @@ public abstract class ParserBase {
   public abstract List<NamedElement> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException;
   
   public Element parseSingle(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+    if (errors == null) {
+      errors = new ArrayList<>();
+    }
     List<NamedElement> res = parse(stream);
     if (res == null) {
-      throw new FHIRException("Parsing FHIR content failed: "+errors.get(0).summary());      
+      throw new FHIRException("Parsing FHIR content failed: "+errorSummary());      
     } else if (res.size() == 0) {
-      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required because: "+errors.get(0).summary());
+      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required because: "+errorSummary());
     }
     if (res.size() != 1) {
       throw new FHIRException("Parsing FHIR content returned multiple elements in a context where only one element is allowed");
@@ -137,7 +141,15 @@ public abstract class ParserBase {
     return res.get(0).getElement();
   }
 
-	public abstract void compose(Element e, OutputStream destination, OutputStyle style, String base)  throws FHIRException, IOException;
+	private String errorSummary() {
+	  if (errors == null || errors.size() == 0) {
+	    return "(no error description)";
+	  } else {
+	    return errors.get(0).summary();
+	  }
+  }
+
+  public abstract void compose(Element e, OutputStream destination, OutputStyle style, String base)  throws FHIRException, IOException;
 
 	//FIXME: i18n should be done here
 	public void logError(String ruleDate, int line, int col, String path, IssueType type, String message, IssueSeverity level) throws FHIRFormatError {
