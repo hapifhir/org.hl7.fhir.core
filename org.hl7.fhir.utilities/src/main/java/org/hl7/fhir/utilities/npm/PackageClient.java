@@ -49,24 +49,34 @@ public class PackageClient {
   }
 
   public InputStream fetch(String id, String ver) throws IOException {
-    return fetchCached(Utilities.pathURL(address, id, ver));
+    return fetchCached(getPackageTarballUrl(id, ver));
+  }
+
+  private String getPackageTarballUrl(String id, String ver) {
+    if (server.getServerType() == PackageServer.PackageServerType.NPM) {
+      return getNpmServerTarballUrl(id, ver);
+    }
+    return Utilities.pathURL(address, id, ver);
+  }
+
+  private String getNpmServerTarballUrl(String id, String ver) {
+    String packageDescriptorUrl = Utilities.pathURL(address, id, ver);
+    JsonObject json;
+    try {
+      json = fetchJson(packageDescriptorUrl);
+      JsonObject dist = json.getJsonObject("dist");
+      return dist.getJsonString("tarball").asString();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public InputStream fetch(PackageInfo info) throws IOException {
-    return fetchCached(Utilities.pathURL(address, info.getId(), info.getVersion()));
-  }
-
-  public InputStream fetchNpm(String id, String ver) throws IOException {
-    return fetchCached(Utilities.pathURL(address, id, "-", id+"-"+ver+".tgz"));
+    return fetchCached(getPackageTarballUrl(info.getId(), info.getVersion()));
   }
 
   public InputStream fetchCached(String url) throws IOException, FileNotFoundException {
     return fetchUrl(url, null);
-  }
-
-  protected String fn(String url) {
-    String[] p = url.split("\\/");
-    return p[2]+"-"+p[p.length-2]+"-"+p[p.length-1]+".tgz";
   }
 
   public List<PackageInfo> getVersions(String id) throws IOException {
