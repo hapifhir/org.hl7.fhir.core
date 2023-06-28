@@ -361,10 +361,10 @@ public class NpmPackage {
             d = Utilities.path("package", d);
           }
           File ij = new File(Utilities.path(f.getAbsolutePath(), ".index.json"));
+          NpmPackageFolder folder = this.new NpmPackageFolder(d);
+          folder.folder = f;
+          this.folders.put(d, folder);
           if (ij.exists() || !minimalMemory) {
-            NpmPackageFolder folder = this.new NpmPackageFolder(d);
-            folder.folder = f;
-            this.folders.put(d, folder);
             if (!minimalMemory) {
               try {
                 if (!ij.exists() || !folder.readIndex(JsonParser.parseObject(ij), folder.getTypes())) {
@@ -397,19 +397,17 @@ public class NpmPackage {
         if (!d.startsWith("package")) {
           d = Utilities.path("package", d);
         }
+        NpmPackageFolder folder = this.new NpmPackageFolder(d);
+        folder.folder = f;
+        this.folders.put(d, folder);
         File ij = new File(Utilities.path(f.getAbsolutePath(), ".index.json"));
-        if (ij.exists()) {
-          NpmPackageFolder folder = this.new NpmPackageFolder(d);
-          folder.folder = f;
-          this.folders.put(d, folder);
-          if (!minimalMemory) {
-            try {
-              if (!folder.readIndex(JsonParser.parseObject(ij), folder.getTypes())) {
-                indexFolder(folder.getFolderName(), folder);
-              }
-            } catch (Exception e) {
-              throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
+        if (ij.exists() || !minimalMemory) {
+          try {
+            if (!ij.exists() || !folder.readIndex(JsonParser.parseObject(ij), folder.getTypes())) {
+              indexFolder(folder.getFolderName(), folder);
             }
+          } catch (Exception e) {
+            throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
           }
         }
         loadSubFolders(rootPath, f);        
