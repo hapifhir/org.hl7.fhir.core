@@ -1086,6 +1086,7 @@ public class ProfileUtilities extends TranslatingUtilities {
    */
   private void checkDifferential(List<ElementDefinition> elements, String type, String url) {
     boolean first = true;
+    String t = urlTail(type);
     for (ElementDefinition ed : elements) {
       if (!ed.hasPath()) {
         throw new FHIRException(context.formatMessage(I18nConstants.NO_PATH_ON_ELEMENT_IN_DIFFERENTIAL_IN_, url));
@@ -1094,8 +1095,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (p == null) {
         throw new FHIRException(context.formatMessage(I18nConstants.NO_PATH_VALUE_ON_ELEMENT_IN_DIFFERENTIAL_IN_, url));
       }
-      if (!((first && type.equals(p)) || p.startsWith(type+"."))) {
-        throw new FHIRException(context.formatMessage(I18nConstants.ILLEGAL_PATH__IN_DIFFERENTIAL_IN__MUST_START_WITH_, p, url, type, (first ? " (or be '"+type+"')" : "")));
+      if (!((first && t.equals(p)) || p.startsWith(t+"."))) {
+        throw new FHIRException(context.formatMessage(I18nConstants.ILLEGAL_PATH__IN_DIFFERENTIAL_IN__MUST_START_WITH_, p, url, t, (first ? " (or be '"+t+"')" : "")));
       }
       if (p.contains(".")) {
         // Element names (the parts of a path delineated by the '.' character) SHALL NOT contain whitespace (i.e. Unicode characters marked as whitespace)
