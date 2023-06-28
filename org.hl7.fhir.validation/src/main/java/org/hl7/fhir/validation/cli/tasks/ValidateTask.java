@@ -1,9 +1,11 @@
 package org.hl7.fhir.validation.cli.tasks;
 
+import ca.uhn.fhir.context.FhirVersionEnum;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
@@ -15,9 +17,13 @@ import java.io.PrintStream;
 public class ValidateTask extends ValidationEngineTask {
 
   final static String[][] PLACEHOLDERS = {
-    { "XML_AND_JSON_FHIR_VERSIONS", "1.0, 1.4, 3.0, 4.0, " + Constants.VERSION_MM },
+    { "XML_AND_JSON_FHIR_VERSIONS", "1.0, 1.4, 3.0, 4.0, " + Constants.VERSION_MM + ", 6.0" },
     { "TURTLE_FHIR_VERSIONS", "3.0, 4.0, " + Constants.VERSION_MM },
+    { "FHIR_MAJOR_VERSIONS", VersionUtilities.listSupportedMajorVersions()},
+    { "FHIR_MINOR_VERSIONS", VersionUtilities.listSupportedVersions() },
+    { "FHIR_CURRENT_VERSION", Constants.VERSION_MM}
   };
+
   @Override
   public String getName() {
     return "validate";
