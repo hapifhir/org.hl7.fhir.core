@@ -36,8 +36,8 @@ public class SearchParameterValidator extends BaseValidator {
 
   private FHIRPathEngine fpe;
 
-  public SearchParameterValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, XVerExtensionManager xverManager, Coding jurisdiction) {
-    super(context, xverManager);
+  public SearchParameterValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, FHIRPathEngine fpe, XVerExtensionManager xverManager, Coding jurisdiction) {
+    super(context, xverManager, debug);
     source = Source.InstanceValidator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;

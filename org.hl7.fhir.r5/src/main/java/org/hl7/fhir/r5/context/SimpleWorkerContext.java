@@ -72,6 +72,7 @@ import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.CSFileInputStream;
+import org.hl7.fhir.utilities.MagicResources;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
@@ -232,6 +233,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       context.initTS(terminologyCachePath);
       context.setUserAgent(userAgent);
       context.setLogger(loggingService);
+      context.cacheResource(new org.hl7.fhir.r5.formats.JsonParser().parse(MagicResources.spdxCodesAsData()));
       return context;
     }
 

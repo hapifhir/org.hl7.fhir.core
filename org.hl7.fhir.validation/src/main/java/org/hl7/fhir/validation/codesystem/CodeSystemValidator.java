@@ -47,7 +47,7 @@ import org.hl7.fhir.validation.BaseValidator;
 public class CodeSystemValidator extends BaseValidator {
 
   public CodeSystemValidator(IWorkerContext context, XVerExtensionManager xverManager) {
-    super(context, xverManager);
+    super(context, xverManager, false);
   }
 
   public List<ValidationMessage> validate(CodeSystem cs, boolean forBuild) {

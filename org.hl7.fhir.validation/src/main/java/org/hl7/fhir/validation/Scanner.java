@@ -82,7 +82,7 @@ public class Scanner {
     List<ScanOutputItem> res = new ArrayList<>();
 
     for (SourceFile ref : refs) {
-      Content cnt = getIgLoader().loadContent(ref.getRef(), "validate", false);
+      Content cnt = getIgLoader().loadContent(ref.getRef(), "validate", false, true);
       List<ValidationMessage> messages = new ArrayList<>();
       Element e = null;
       try {

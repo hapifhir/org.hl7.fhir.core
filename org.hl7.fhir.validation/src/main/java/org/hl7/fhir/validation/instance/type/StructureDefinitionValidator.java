@@ -62,8 +62,8 @@ public class StructureDefinitionValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private boolean wantCheckSnapshotUnchanged;
 
-  public StructureDefinitionValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction, boolean forPublication) {
-    super(context, xverManager);
+  public StructureDefinitionValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction, boolean forPublication) {
+    super(context, xverManager, debug);
     source = Source.InstanceValidator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
@@ -487,7 +487,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       if (hint(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(expression), I18nConstants.ED_INVARIANT_NO_EXPRESSION, key)) {
         if (invariantMap.containsKey(key)) {
           // it's legal - and common - for a list of elemnts to contain the same invariant more than once, but it's not valid if it's not always the same 
-          ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
+          ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
         } else {
           invariantMap.put(key, expression);
         }
@@ -496,6 +496,9 @@ public class StructureDefinitionValidator extends BaseValidator {
 //           String upath = profileUrl+"#"+path;
            fpe.check(invariant, rootPath, path, fpe.parse(expression));
          } catch (Exception e) {
+           if (debug) {
+             e.printStackTrace();
+           }
            ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
          }         
         }        

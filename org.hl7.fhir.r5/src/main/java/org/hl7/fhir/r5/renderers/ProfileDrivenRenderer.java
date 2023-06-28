@@ -491,7 +491,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof ElementDefinition) {
       x.tx("todo-bundle");
     } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta) && !(e instanceof ProductShelfLife)  && !(e instanceof RelatedArtifact)) {
-      throw new NotImplementedException("type "+e.getClass().getName()+" not handled - should not be here");
+      throw new NotImplementedException("type "+e.fhirType()+" not handled. This may be due to unresolved inter-version compatibility issues");
     }
   }
 
