@@ -303,8 +303,8 @@ public class StructureMapValidator extends BaseValidator {
   private ContextUtilities cu;
   private List<StructureMap> imports = new ArrayList<>();
 
-  public StructureMapValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, XVerExtensionManager xverManager, ProfileUtilities profileUtilities, Coding jurisdiction) {
-    super(context, xverManager);
+  public StructureMapValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, FHIRPathEngine fpe, XVerExtensionManager xverManager, ProfileUtilities profileUtilities, Coding jurisdiction) {
+    super(context, xverManager, debug);
     source = Source.InstanceValidator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
@@ -1143,7 +1143,7 @@ public class StructureMapValidator extends BaseValidator {
             String iType = resolveType(grp, input, src);
             String pname = input.getName();
             VariableDefn v = getParameter(errors, param, pstack, variables, input.getMode());
-            if (v != null) {
+            if (rule(errors, "2023-06-27", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), v != null, I18nConstants.SM_DEPENDENT_PARAM_NOT_FOUND, pname, input.getMode().toCode())) {
               if (rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), v.mode.equals(input.getMode().toCode()), I18nConstants.SM_DEPENDENT_PARAM_MODE_MISMATCH, param.getChildValue("name"), v.mode, input.getMode().toCode(), grp.getTargetGroup().getName()) &&
                 rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), typesMatch(v, iType), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH, 
                     pname, v.summary(), input.getType(), grp.getTargetGroup().getName(), input.getType(), grp.getTargetMap() == null ? "$this" : grp.getTargetMap().getVersionedUrl())) {

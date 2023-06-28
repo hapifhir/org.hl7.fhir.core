@@ -200,6 +200,8 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
       } else {
         return pi.isCore() && Utilities.tail(pri.getUrl()).equals(pri.getStatedType());
       }
+    } else if (pi.isCore() && "spdx-license".equals(pri.getId())) {
+      return false;
     } else {
       return true;
     }

@@ -158,15 +158,16 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected Coding jurisdiction;
   protected boolean allowExamples;
   protected boolean forPublication;
+  protected boolean debug;
 
-  public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
+  public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug) {
     super();
     this.context = context;
     this.xverManager = xverManager;
     if (this.xverManager == null) {
       this.xverManager = new XVerExtensionManager(context);
     }
-
+    this.debug = debug;
   }
   
   private boolean doingLevel(IssueSeverity error) {
@@ -1272,4 +1273,12 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return this;
   }
 
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public void setDebug(boolean debug) {
+    this.debug = debug;
+  }
+  
 }

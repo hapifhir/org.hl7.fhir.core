@@ -676,14 +676,19 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           for (ElementDefinition e : diff.getElement()) {
             if (!e.hasUserData(UD_GENERATED_IN_SNAPSHOT) && e.getPath().contains(".")) {
-              ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
-              e.setUserData(UD_GENERATED_IN_SNAPSHOT, outcome);
-              derived.getSnapshot().addElement(outcome);
-              if (walksInto(diff.getElement(), e)) {
-                if (e.getType().size() > 1) {
-                  throw new DefinitionException("Unsupported scenario: specialization walks into multiple types at "+e.getId()); 
-                } else {
-                  addInheritedElementsForSpecialization(derived.getSnapshot(), outcome, outcome.getTypeFirstRep().getWorkingCode(), outcome.getPath(), url, webUrl);
+              ElementDefinition existing = getElementInCurrentContext(e.getPath(), derived.getSnapshot().getElement());
+              if (existing != null) {
+                updateFromDefinition(existing, e, profileName, false, url, base, derived);
+              } else {
+                ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
+                e.setUserData(UD_GENERATED_IN_SNAPSHOT, outcome);
+                derived.getSnapshot().addElement(outcome);
+                if (walksInto(diff.getElement(), e)) {
+                  if (e.getType().size() > 1) {
+                    throw new DefinitionException("Unsupported scenario: specialization walks into multiple types at "+e.getId()); 
+                  } else {
+                    addInheritedElementsForSpecialization(derived.getSnapshot(), outcome, outcome.getTypeFirstRep().getWorkingCode(), outcome.getPath(), url, webUrl);
+                  }
                 }
               }
             }
@@ -877,6 +882,22 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
   }
 
+  private ElementDefinition getElementInCurrentContext(String path, List<ElementDefinition> list) {
+    for (int i = list.size() -1; i >= 0; i--) {
+      ElementDefinition t = list.get(i);
+      if (t.getPath().equals(path)) {
+        return t;
+      } else if (!path.startsWith(head(t.getPath()))) {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  private String head(String path) {
+    return path.contains(".") ? path.substring(0, path.lastIndexOf(".")+1) : path;
+  }
+
   private void findInheritedObligationProfiles(StructureDefinition derived) {
     for (Extension ext : derived.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS)) {
       StructureDefinition op = context.fetchResource(StructureDefinition.class, ext.getValueCanonicalType().primitiveValue());
@@ -1065,6 +1086,7 @@ public class ProfileUtilities extends TranslatingUtilities {
    */
   private void checkDifferential(List<ElementDefinition> elements, String type, String url) {
     boolean first = true;
+    String t = urlTail(type);
     for (ElementDefinition ed : elements) {
       if (!ed.hasPath()) {
         throw new FHIRException(context.formatMessage(I18nConstants.NO_PATH_ON_ELEMENT_IN_DIFFERENTIAL_IN_, url));
@@ -1073,8 +1095,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (p == null) {
         throw new FHIRException(context.formatMessage(I18nConstants.NO_PATH_VALUE_ON_ELEMENT_IN_DIFFERENTIAL_IN_, url));
       }
-      if (!((first && type.equals(p)) || p.startsWith(type+"."))) {
-        throw new FHIRException(context.formatMessage(I18nConstants.ILLEGAL_PATH__IN_DIFFERENTIAL_IN__MUST_START_WITH_, p, url, type, (first ? " (or be '"+type+"')" : "")));
+      if (!((first && t.equals(p)) || p.startsWith(t+"."))) {
+        throw new FHIRException(context.formatMessage(I18nConstants.ILLEGAL_PATH__IN_DIFFERENTIAL_IN__MUST_START_WITH_, p, url, t, (first ? " (or be '"+t+"')" : "")));
       }
       if (p.contains(".")) {
         // Element names (the parts of a path delineated by the '.' character) SHALL NOT contain whitespace (i.e. Unicode characters marked as whitespace)
@@ -2267,7 +2289,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     if (profile==null) {
       profile = source.getType().size() == 1 && source.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, source.getTypeFirstRep().getProfile().get(0).getValue(), derivedSrc) : null;
-      if (profile != null && !"Extension".equals(profile.getType())) {
+      if (profile != null && !"Extension".equals(profile.getType()) && profile.getKind() != StructureDefinitionKind.RESOURCE) {
         profile = null;
       }
     }

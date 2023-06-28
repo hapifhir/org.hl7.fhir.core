@@ -174,9 +174,12 @@ public class IgLoader implements IValidationEngineLoader {
    *    * @see IgLoader#loadIgSource(String, boolean, boolean) loadIgSource for detailed description of the src parameter
    */
 
-  public Content loadContent(String source, String opName, boolean asIg) throws FHIRException, IOException {
+  public Content loadContent(String source, String opName, boolean asIg, boolean mustLoad) throws FHIRException, IOException {
     Map<String, byte[]> s = loadIgSource(source, false, asIg);
     Content res = new Content();
+    if (!mustLoad && s.size() == 0) {
+      return null;
+    }
     if (s.size() != 1)
       throw new FHIRException("Unable to find resource " + source + " to " + opName);
     for (Map.Entry<String, byte[]> t : s.entrySet()) {
@@ -306,7 +309,7 @@ public class IgLoader implements IValidationEngineLoader {
     List<SourceFile> refs = new ArrayList<>();
     ValidatorUtils.parseSources(sources, refs, context);
     for (SourceFile ref : refs) {
-      Content cnt = loadContent(ref.getRef(), "validate", false);      
+      Content cnt = loadContent(ref.getRef(), "validate", false, true);      
       scanForFhirVersion(versions, ref.getRef(), cnt.getFocus());
     }
   }

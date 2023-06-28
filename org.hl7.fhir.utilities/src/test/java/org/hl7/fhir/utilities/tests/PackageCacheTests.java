@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -66,4 +68,20 @@ public class PackageCacheTests {
     Assertions.assertEquals("0.0.8", cache.loadPackage(CommonPackages.ID_PUBPACK, "0.0.8").version());
     Assertions.assertEquals(CommonPackages.VER_PUBPACK, cache.loadPackage(CommonPackages.ID_PUBPACK).version());    
   }
+  
+  @Test
+  public void testMinimal() throws IOException {
+    FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager(FilesystemPackageCacheMode.TESTING);
+    cache.clear();  
+    NpmPackage uscore = cache.loadPackage("hl7.fhir.us.core", "3.1.0");
+    cache.setMinimalMemory(true);
+    NpmPackage uscoreMin = cache.loadPackage("hl7.fhir.us.core", "3.1.0");
+    Assertions.assertEquals(uscore.version(), uscoreMin.version());
+    Assertions.assertEquals(uscore.getFolders().size(), uscoreMin.getFolders().size());
+    Assertions.assertEquals(uscore.list("package").size(), uscoreMin.list("package").size());
+    byte[] b1 = TextFile.streamToBytes(uscore.load(uscore.list("package").get(1)));
+    byte[] b2 = TextFile.streamToBytes(uscoreMin.load(uscore.list("package").get(1)));
+    Assertions.assertArrayEquals(b1, b2);    
+  }
+  
 }

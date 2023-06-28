@@ -81,7 +81,14 @@ The following parameters are supported:
       * single: when any of the validated files changes, re-validate it
       * all: when any of the validated files changes, re-validate all of them
      All is useful when the content includes internal dependencies e.g. 
-     a profile and it's value sets.     
+     a profile and it's value sets. Watch Mode has two additional parameters:
+-watch-scan-delay (ms)
+       Control how often the validator looks at the content to decide to run again
+     Default 1000 
+-watch-settle-time (ms)
+       Control how long the validator waits before seeing a change, and revalidating
+     Default 100
+         
 -debug
         Produce additional information about the loading/validation process
 -recurse
