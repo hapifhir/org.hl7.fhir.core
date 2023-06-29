@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -421,7 +422,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public NpmPackage addPackageToCache(String id, String version, InputStream packageTgzInputStream, String sourceDesc) throws IOException {
     checkValidVersionString(version, id);
     
-    NpmPackage npm = NpmPackage.fromPackage(packageTgzInputStream, sourceDesc, true);
+    String uuid = UUID.randomUUID().toString().toLowerCase();
+    String tempDir = Utilities.path(cacheFolder, uuid);
+    NpmPackage npm =  NpmPackage.extractFromTgz(packageTgzInputStream, sourceDesc, tempDir, minimalMemory);
 
     if (progress) {
       log("");
@@ -450,40 +453,18 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           } catch (Throwable t) {
             log("Unable to clear directory: "+packRoot+": "+t.getMessage()+" - this may cause problems later");
           }
-
-          int i = 0;
-          int c = 0;
-          int size = 0;
-          for (Entry<String, NpmPackageFolder> e : npm.getFolders().entrySet()) {
-            String dir = e.getKey().equals("package") ? Utilities.path(packRoot, "package") : Utilities.path(packRoot, "package", e.getKey());
-            if (!(new File(dir).exists()))
-              Utilities.createDirectory(dir);
-            for (Entry<String, byte[]> fe : e.getValue().getContent().entrySet()) {
-              String fn = Utilities.path(dir, Utilities.cleanFileName(fe.getKey()));
-              byte[] cnt = fe.getValue();
-              TextFile.bytesToFile(cnt, fn);
-              size = size + cnt.length;
-              i++;
-              if (progress && i % 50 == 0) {
-                c++;
-                logn(".");
-                if (c == 120) {
-                  log("");
-                  logn("  ");
-                  c = 2;
-                }
-              }
-            }
-          }
-
+          new File(tempDir).renameTo(new File(packRoot));
 
           IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
           ini.setTimeStampFormat("yyyyMMddhhmmss");
           ini.setTimestampProperty("packages", id + "#" + v, Timestamp.from(Instant.now()), null);
-          ini.setIntegerProperty("package-sizes", id + "#" + v, size, null);
+          ini.setIntegerProperty("package-sizes", id + "#" + v, npm.getSize(), null);
           ini.save();
           if (progress)
             log(" done.");
+        } else {
+          Utilities.clearDirectory(tempDir);
+          new File(tempDir).delete();
         }
         if (!id.equals(npm.getNpm().asString("name")) || !v.equals(npm.getNpm().asString("version"))) {
           if (!id.equals(npm.getNpm().asString("name"))) {
