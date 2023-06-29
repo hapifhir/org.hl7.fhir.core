@@ -2648,7 +2648,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String d = sd.getChildValue("derivation"); 
     String k = sd.getChildValue("kind"); 
     if (Utilities.isAbsoluteUrl(v)) {
-      warning(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, ns(v).equals(ns(url)) || ns(v).equals(ns(url).replace("StructureDefinition/", "")), I18nConstants.SD_TYPE_NOT_MATCH_NS, v, url);
+      warning(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, d.equals("constraint") || ns(v).equals(ns(url)) || ns(v).equals(ns(url).replace("StructureDefinition/", "")), I18nConstants.SD_TYPE_NOT_MATCH_NS, v, url);
       return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, "logical".equals(k), I18nConstants.SD_TYPE_NOT_LOGICAL, v, k);
     } else {
       boolean tok = false;
