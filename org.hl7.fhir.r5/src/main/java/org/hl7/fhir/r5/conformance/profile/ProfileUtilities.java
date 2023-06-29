@@ -621,7 +621,14 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (!base.getType().equals(derived.getType()) && derived.getDerivation() == TypeDerivationRule.CONSTRAINT) {
       throw new DefinitionException(context.formatMessage(I18nConstants.BASE__DERIVED_PROFILES_HAVE_DIFFERENT_TYPES____VS___, base.getUrl(), base.getType(), derived.getUrl(), derived.getType()));
     }
+    if (!base.hasSnapshot()) {
+      StructureDefinition sdb = context.fetchResource(StructureDefinition.class, base.getBaseDefinition());
+      if (sdb == null)
+        throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, base.getBaseDefinition(), base.getUrl()));
+      checkNotGenerating(sdb, "an extension base");
+      generateSnapshot(sdb, base, base.getUrl(), (sdb.hasWebPath()) ? Utilities.extractBaseUrl(sdb.getWebPath()) : webUrl, base.getName());
 
+    }
     fixTypeOfResourceId(base);
     
     if (snapshotStack.contains(derived.getUrl())) {
@@ -810,7 +817,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               }
               if (!slice.checkMinMax()) {
                 String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" which is less than the minimum of "+slice.getFocus().getMin(); 
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+slice.getFocus().getId(), msg, ValidationMessage.IssueSeverity.WARNING));                                                            
+                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+"#"+slice.getFocus().getId(), msg, ValidationMessage.IssueSeverity.WARNING));                                                            
               }
               slices.remove(s);
             }            
@@ -2289,7 +2296,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     if (profile==null) {
       profile = source.getType().size() == 1 && source.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, source.getTypeFirstRep().getProfile().get(0).getValue(), derivedSrc) : null;
-      if (profile != null && !"Extension".equals(profile.getType()) && profile.getKind() != StructureDefinitionKind.RESOURCE) {
+      if (profile != null && !"Extension".equals(profile.getType()) && profile.getKind() != StructureDefinitionKind.RESOURCE && profile.getKind() != StructureDefinitionKind.LOGICAL) {
         profile = null;
       }
     }
@@ -4377,6 +4384,10 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public List<ValidationMessage> getMessages() {
     return messages;
+  }
+
+  public static boolean isResourceBoundary(ElementDefinition ed) {
+    return ed.getType().size() == 1 && "Resource".equals(ed.getTypeFirstRep().getCode());
   }
 
 }

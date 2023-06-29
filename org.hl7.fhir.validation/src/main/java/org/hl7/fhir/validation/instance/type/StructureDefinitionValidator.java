@@ -484,7 +484,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     String expression = invariant.getNamedChildValue("expression");
     String source = invariant.getNamedChildValue("source");
     if (warning(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(key), I18nConstants.ED_INVARIANT_NO_KEY)) {
-      if (hint(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(expression), I18nConstants.ED_INVARIANT_NO_EXPRESSION, key)) {
+      if (hint(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(expression) || VersionUtilities.isR5Plus(context.getVersion()), I18nConstants.ED_INVARIANT_NO_EXPRESSION, key)) { // not for R5 - there's an invariant
         if (invariantMap.containsKey(key)) {
           // it's legal - and common - for a list of elemnts to contain the same invariant more than once, but it's not valid if it's not always the same 
           ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));

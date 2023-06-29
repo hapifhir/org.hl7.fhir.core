@@ -134,7 +134,7 @@ public class ProfilePathProcessor {
       null);
 
 
-      getInstance(profileUtilities)
+       getInstance(profileUtilities)
         .withResult(derived.getSnapshot())
         .withDifferential(differential)
         .withBaseLimit(baseSnapshot.getElement().size() - 1)
@@ -607,8 +607,13 @@ public class ProfilePathProcessor {
           }
           if (src == null)
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT__IN_, eid, firstTypeProfile.getValue()));
-        } else
-          src = firstTypeStructureDefinition.getSnapshot().getElement().get(0);
+        } else {
+          if (firstTypeStructureDefinition.getSnapshot().getElement().isEmpty()) {
+            throw new FHIRException(profileUtilities.getContext().formatMessage(I18nConstants.SNAPSHOT_IS_EMPTY, firstTypeStructureDefinition.getVersionedUrl(), "Source for first element"));
+          } else {
+            src = firstTypeStructureDefinition.getSnapshot().getElement().get(0);
+          }
+        }
         template = src.copy().setPath(currentBase.getPath());
         template.setSliceName(null);
         // temporary work around

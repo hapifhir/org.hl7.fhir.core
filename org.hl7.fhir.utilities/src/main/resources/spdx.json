@@ -60,6 +60,10 @@
     "type" : "string"
   }],
   "concept" : [{
+    "code": "not-open-source",
+    "display": "Not open source",
+    "definition": "Not an open source license."
+  }, {
     "code" : "0BSD",
     "display" : "BSD Zero Clause License",
     "property" : [{

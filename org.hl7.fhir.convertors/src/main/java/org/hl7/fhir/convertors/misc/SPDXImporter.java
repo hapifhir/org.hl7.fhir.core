@@ -37,8 +37,12 @@ public class SPDXImporter {
     cs.addProperty().setCode("status").setType(PropertyType.CODE).setUri("http://hl7.org/fhir/concept-properties#status");
     cs.addProperty().setCode("seeAlso").setType(PropertyType.STRING);
     cs.setVersion(json.asString("licenseListVersion"));
+    ConceptDefinitionComponent cc = cs.addConcept();
+    cc.setCode("not-open-source");
+    cc.setDisplay("Not open source");
+    cc.setDefinition("Not an open source license.");
     for (JsonObject l : json.getJsonObjects("licenses")) {
-      ConceptDefinitionComponent cc = cs.addConcept();
+      cc = cs.addConcept();
       cc.setCode(l.asString("licenseId"));
       cc.setDisplay(l.asString("name"));
       cc.setDefinition(l.asString("name"));
