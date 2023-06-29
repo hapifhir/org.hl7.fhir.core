@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -295,6 +296,7 @@ public class NpmPackage {
   private boolean changedByLoader; // internal qa only!
   private Map<String, Object> userData;
   private boolean minimalMemory;
+  private int size;
 
   /**
    * Constructor
@@ -443,7 +445,64 @@ public class NpmPackage {
     res.readStream(tgz, desc, progress);
     return res;
   }
+  
+  public static NpmPackage extractFromTgz(InputStream tgz, String desc, String tempDir, boolean minimal) throws IOException {
+    String dest =  Utilities.path(tempDir, "package");
+    Utilities.createDirectory(dest);
 
+    int size = 0;
+    
+    GzipCompressorInputStream gzipIn;
+    try {
+      gzipIn = new GzipCompressorInputStream(tgz);
+    } catch (Exception e) {
+      throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);      
+    }
+    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
+      TarArchiveEntry entry;
+
+      while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
+        String n = entry.getName();
+        if (n.startsWith("package/")) {
+          n = n.substring(8);
+        }
+        if (n.contains("..")) {
+          throw new RuntimeException("Entry with an illegal name: " + n);
+        }
+        if (entry.isDirectory()) {
+          if (!Utilities.noString(n)) {
+            String dir = n.substring(0, n.length()-1);
+            Utilities.createDirectory(Utilities.path(dest, dir));
+          }
+        } else {
+          int count;
+          byte data[] = new byte[BUFFER_SIZE];
+          String filename = Utilities.path(dest, n);
+          String folder = Utilities.getDirectoryForFile(filename);
+          Utilities.createDirectory(folder);
+          FileOutputStream fos = new FileOutputStream(filename);
+          try (BufferedOutputStream dst = new BufferedOutputStream(fos, BUFFER_SIZE)) {
+            while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
+              dst.write(data, 0, count);
+              size = size + count;
+            }
+          }
+          fos.close();
+        }
+      }
+    } 
+    try {
+      NpmPackage npm = NpmPackage.fromFolderMinimal(tempDir);
+      npm.setSize(size);
+      if (!minimal) {
+        npm.checkIndexed(desc);
+      }
+      return npm;
+    } catch (Exception e) {
+      throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/package.json: "+e.getMessage(), e);
+    } 
+  }
+  
   public void readStream(InputStream tgz, String desc, boolean progress) throws IOException {
     GzipCompressorInputStream gzipIn;
     try {
@@ -1302,6 +1361,17 @@ public class NpmPackage {
   public String getFilePath(String d) throws IOException {
     return Utilities.path(path, "package", d);
   }
-  
+
+  public boolean isMinimalMemory() {
+    return minimalMemory;
+  }
+
+  public int getSize() {
+    return size;
+  }
+
+  public void setSize(int size) {
+    this.size = size;
+  }
   
 }
