@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.0.19-SNAPSHOT</version>
+    <version>6.0.20-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
