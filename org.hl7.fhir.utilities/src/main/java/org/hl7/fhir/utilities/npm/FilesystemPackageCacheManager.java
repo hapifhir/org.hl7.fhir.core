@@ -187,7 +187,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (files != null) {
       for (File f : files) {
         if (f.getName().endsWith(".tgz")) {
-          temporaryPackages.add(NpmPackage.fromPackage(new FileInputStream(f)));
+          FileInputStream fs = new FileInputStream(f);
+          try {
+            temporaryPackages.add(NpmPackage.fromPackage(fs));
+          } finally {
+            fs.close();
+          }
         }
       }
     }
