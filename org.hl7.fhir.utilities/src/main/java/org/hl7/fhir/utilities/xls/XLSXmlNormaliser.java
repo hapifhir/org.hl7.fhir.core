@@ -117,7 +117,12 @@ public class XLSXmlNormaliser {
     if (!hasComment)
       root.appendChild(xml.createComment("canonicalized"));
     try {
-      saveXml(new FileOutputStream(dest));
+      FileOutputStream fs = new FileOutputStream(dest);
+      try {
+        saveXml(fs);
+      } finally {
+        fs.close();
+      }
       String s = TextFile.fileToString(dest);
       s = s.replaceAll("\r\n","\n");
       s = replaceSignificantEoln(s);

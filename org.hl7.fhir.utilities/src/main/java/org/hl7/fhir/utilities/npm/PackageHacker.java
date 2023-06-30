@@ -37,7 +37,13 @@ public class PackageHacker {
     if (!f.exists())
       throw new Error("Unable to find "+f.getAbsolutePath());
     
-    NpmPackage pck = NpmPackage.fromPackage(new FileInputStream(f));
+    NpmPackage pck = null;
+    FileInputStream fs = new FileInputStream(f);
+    try {
+      pck = NpmPackage.fromPackage(fs);
+    } finally {
+      fs.close();
+    }
     System.out.println("Altering Package "+f.getAbsolutePath());
     System.out.println(nice(pck.getNpm()));
     
@@ -51,7 +57,12 @@ public class PackageHacker {
     int r = System.in.read();
     if (r == 'y') {
       f.renameTo(new File(Utilities.changeFileExt(name, ".tgz.bak")));
-      pck.save(new FileOutputStream(f));
+      FileOutputStream fso = new FileOutputStream(f);
+      try {
+        pck.save(fso);
+      } finally {
+        fso.close();
+      }
     }   
   }
 
