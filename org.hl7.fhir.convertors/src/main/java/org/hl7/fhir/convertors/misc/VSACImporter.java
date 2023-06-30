@@ -57,6 +57,19 @@ public class VSACImporter extends OIDBasedValueSetImporter {
             errs.put(oid, "Expansion: " +e.getMessage());
             System.out.println(e.getMessage());
           }
+          if (vs.hasTitle()) {
+            if (vs.getTitle().equals(vs.getDescription())) {
+              vs.setTitle(vs.getName());              
+            } else {
+              System.out.println(oid);
+              System.out.println("  name: "+vs.getName());
+              System.out.println("  title: "+vs.getTitle());
+              System.out.println("  desc: "+vs.getDescription());
+            }
+          } else {
+            vs.setTitle(vs.getName());
+          }
+          vs.setName(makeValidName(vs.getName()));
           new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
         }
         i++;
@@ -74,5 +87,33 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     }
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json")), oo);
     System.out.println("Done. " + i + " ValueSets");
+  }
+
+  private String makeValidName(String name) {
+    StringBuilder b = new StringBuilder();
+    boolean upper = true;
+    for (char ch : name.toCharArray()) {
+      if (ch == ' ') {
+        upper = true;
+      } else if (Character.isAlphabetic(ch)) {
+        if (upper) {
+          b.append(Character.toUpperCase(ch));
+        } else {
+          b.append(ch);
+        }
+        upper = false;
+      } else if (Character.isDigit(ch)) {
+        if (b.length() == 0) {
+          b.append('N');
+        }
+        b.append(ch);
+      } else if (ch == '_' && b.length() != 0) {
+        b.append(ch);
+      } else {
+        upper = true;
+      }
+    }
+    System.out.println(b.toString()+" from "+name);
+    return b.toString();
   }
 }
