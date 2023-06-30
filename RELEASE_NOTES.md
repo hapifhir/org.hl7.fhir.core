@@ -4,6 +4,4 @@
 
 ## Other code changes
 
-* Fix for SPDR not-open-source in code 
-* fix name and title in VSAC import process
-* More work on Android support 
+* no changes
