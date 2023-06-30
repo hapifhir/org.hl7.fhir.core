@@ -453,7 +453,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           } catch (Throwable t) {
             log("Unable to clear directory: "+packRoot+": "+t.getMessage()+" - this may cause problems later");
           }
-          new File(tempDir).renameTo(new File(packRoot));
+          Utilities.renameDirectory(tempDir, packRoot);          
 
           IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
           ini.setTimeStampFormat("yyyyMMddhhmmss");
