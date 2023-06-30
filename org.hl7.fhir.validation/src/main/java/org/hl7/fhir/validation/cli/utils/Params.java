@@ -427,11 +427,11 @@ public class Params {
     return cliContext;
   }
 
-  private static int readInteger(String n, String v) {
-    if (!Utilities.isInteger(v)) {
-      throw new Error("Unable to read "+v+" provided for '"+n+"' - must be an integer");
+  private static int readInteger(String name, String value) {
+    if (!Utilities.isInteger(value)) {
+      throw new Error("Unable to read "+value+" provided for '"+name+"' - must be an integer");
     }
-    return Integer.parseInt(n);
+    return Integer.parseInt(value);
   }
 
   private static ValidatorWatchMode readWatchMode(String s) {
