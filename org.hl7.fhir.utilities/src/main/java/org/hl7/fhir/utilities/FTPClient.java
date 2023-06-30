@@ -258,8 +258,11 @@ public class FTPClient {
   private void attemptUpload(String source, String resolvedPath) throws IOException {
     final long startTime = System.nanoTime();
     FileInputStream localStream = new FileInputStream(source);
-    clientImpl.storeFile(resolvedPath, localStream);
-    localStream.close();
+    try {
+      clientImpl.storeFile(resolvedPath, localStream);
+    } finally {
+      localStream.close();
+    }
     this.storeFileTimeNanos += System.nanoTime() - startTime;
   }
 

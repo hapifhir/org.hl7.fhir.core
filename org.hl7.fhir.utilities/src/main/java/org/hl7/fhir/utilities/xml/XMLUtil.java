@@ -55,6 +55,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -458,14 +459,24 @@ public class XMLUtil {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    return builder.parse(new FileInputStream(filename));
+    FileInputStream fs = new FileInputStream(filename);
+    try {
+      return builder.parse(fs);
+    } finally {
+      fs.close();
+    }  
   }
 
   public static Document parseFileToDom(String filename, boolean ns) throws ParserConfigurationException, SAXException, IOException  {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(ns);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    return builder.parse(new FileInputStream(filename));
+    FileInputStream fs = new FileInputStream(filename);
+    try {
+      return builder.parse(fs);
+    } finally {
+      fs.close();
+    }
   }
 
   public static Element getLastChild(Element e) {
