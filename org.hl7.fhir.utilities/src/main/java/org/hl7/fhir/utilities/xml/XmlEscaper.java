@@ -27,7 +27,12 @@ public class XmlEscaper {
   }
   
   public static void convert(String source, String target) throws IOException {
-    convertAndClose(new FileInputStream(source), new FileOutputStream(target));
+    FileOutputStream fs = new FileOutputStream(target);
+    try {
+      convertAndClose(new FileInputStream(source), fs);
+    } finally {
+      fs.close();
+    }
   }
   
   public static void convertAndClose(InputStream source, OutputStream target) throws IOException {

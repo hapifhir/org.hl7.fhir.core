@@ -447,8 +447,7 @@ public class NpmPackage {
   }
   
   public static NpmPackage extractFromTgz(InputStream tgz, String desc, String tempDir, boolean minimal) throws IOException {
-    String dest =  Utilities.path(tempDir, "package");
-    Utilities.createDirectory(dest);
+    Utilities.createDirectory(tempDir);
 
     int size = 0;
     
@@ -463,21 +462,18 @@ public class NpmPackage {
 
       while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
         String n = entry.getName();
-        if (n.startsWith("package/")) {
-          n = n.substring(8);
-        }
         if (n.contains("..")) {
           throw new RuntimeException("Entry with an illegal name: " + n);
         }
         if (entry.isDirectory()) {
           if (!Utilities.noString(n)) {
             String dir = n.substring(0, n.length()-1);
-            Utilities.createDirectory(Utilities.path(dest, dir));
+            Utilities.createDirectory(Utilities.path(tempDir, dir));
           }
         } else {
           int count;
           byte data[] = new byte[BUFFER_SIZE];
-          String filename = Utilities.path(dest, n);
+          String filename = Utilities.path(tempDir, n);
           String folder = Utilities.getDirectoryForFile(filename);
           Utilities.createDirectory(folder);
           FileOutputStream fos = new FileOutputStream(filename);

@@ -74,7 +74,11 @@ public class XmlGenerator {
   
 	public void generate(Element element, File file) throws IOException, FHIRException  {
 		OutputStream stream = new FileOutputStream(file);
-		generate(element, stream);
+		try {
+		  generate(element, stream);
+    } finally {
+      stream.close();
+    }
 	}	
 	
 	public void generate(Element element, OutputStream stream) throws IOException, FHIRException  {

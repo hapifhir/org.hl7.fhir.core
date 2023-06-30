@@ -628,6 +628,15 @@ public class Utilities {
     return PathBuilder.getPathBuilder().buildPath(args);
   }
 
+  public static String path(File f, String... args) throws IOException {
+    String[] a = new String[args.length+1];
+    a[0] = f.getAbsolutePath();
+    for (int i = 0; i < args.length; i++) {
+      a[i+1] = args[i];
+    }
+    return PathBuilder.getPathBuilder().buildPath(a);
+  }
+
   /**
    * Composes a path string using by concatenating the passed arguments.
    *

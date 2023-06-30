@@ -49,7 +49,12 @@ public class JsonLangFileProducer extends LanguageFileProducer {
 
     @Override
     public void finish() throws IOException {
-      JsonParser.compose(json, new FileOutputStream(getFileName(id, baseLang)));
+      FileOutputStream fs = new FileOutputStream(getFileName(id, baseLang));
+      try {
+        JsonParser.compose(json, fs);
+      } finally {
+        fs.close();
+      }
     }
   }
 
