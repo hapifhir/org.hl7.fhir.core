@@ -356,6 +356,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
     }
 
+    public ValidationEngineBuilder withNoTerminologyServer() {
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, timeTracker, true, loggingService, THO);
+    }
+    
     public ValidationEngine fromNothing() throws IOException {
       ValidationEngine engine = new ValidationEngine();
       SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder().withLoggingService(loggingService);
