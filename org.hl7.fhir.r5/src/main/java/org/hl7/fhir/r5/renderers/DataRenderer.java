@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.BackboneType;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Base64BinaryType;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -99,7 +100,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
   // -- 2. Markdown support -------------------------------------------------------
-  
+   
   public static String processRelativeUrls(String markdown, String path) {
     if (markdown == null) {
       return "";
@@ -726,6 +727,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
       }
     } else if (type instanceof MarkdownType) {
       addMarkdown(x, ((MarkdownType) type).asStringValue());
+    } else if (type instanceof Base64BinaryType) {
+      x.tx("(base64 data)");
     } else if (type.isPrimitive()) {
       x.tx(type.primitiveValue());
     } else {
