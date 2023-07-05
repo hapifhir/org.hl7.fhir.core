@@ -628,6 +628,15 @@ public class Utilities {
     return PathBuilder.getPathBuilder().buildPath(args);
   }
 
+  public static String path(File f, String... args) throws IOException {
+    String[] a = new String[args.length+1];
+    a[0] = f.getAbsolutePath();
+    for (int i = 0; i < args.length; i++) {
+      a[i+1] = args[i];
+    }
+    return PathBuilder.getPathBuilder().buildPath(a);
+  }
+
   /**
    * Composes a path string using by concatenating the passed arguments.
    *
@@ -1286,7 +1295,34 @@ public class Utilities {
     Collections.sort(list);
     return list;
   }
+  
+  public static List<String> sorted(String[] set) {
+    List<String> list = new ArrayList<>();
+    for (String s : set) {
+      list.add(s);
+    }
+    Collections.sort(list);
+    return list;
+  }
 
+
+  public static List<String> reverseSorted(Collection<String> set) {
+    List<String> list = new ArrayList<>();
+    list.addAll(set);
+    Collections.sort(list, Collections.reverseOrder());
+    return list;
+  }
+
+  public static List<String> reverseSorted(String[] set) {
+    List<String> list = new ArrayList<>();
+    for (String s : set) {
+      list.add(s);
+    }
+    Collections.sort(list, Collections.reverseOrder());
+    return list;
+  }
+
+  
   public static void analyseStringDiffs(Set<String> source, Set<String> target, Set<String> missed, Set<String> extra) {
     for (String s : source)
       if (!target.contains(s))
@@ -1997,5 +2033,39 @@ public class Utilities {
   public static boolean isIgnorableFile(File file) {
     return Utilities.existsInList(file.getName(), ".DS_Store");
   }
+
+  public static String rightTrim(String s) {
+    int i = s.length()-1;
+    while (i > 0 && Character.isWhitespace(s.charAt(i))) {
+      i--;
+    }
+    return i == 0 ? "" : s.substring(0, i+1);
+  }
+
+public static void renameDirectory(String source, String dest) throws FHIRException, IOException {
+	File src = new File(source);
+	File dst = new File(dest);
+	if (!src.renameTo(dst)) {
+	  int i = 0;
+	  do {
+	    try {
+		  Thread.sleep(20);
+        } catch (Exception e) {
+          // nothing
+        }
+		System.gc();
+		i++;
+	  } while (!src.renameTo(dst) && i < 10);
+	  if (src.exists()) {
+		copyDirectory(source, dest, null);
+		try {
+		  src.delete();	
+		} catch (Exception e) {
+		  // nothing
+		}
+	  }
+	}
+	
+}
 
 }

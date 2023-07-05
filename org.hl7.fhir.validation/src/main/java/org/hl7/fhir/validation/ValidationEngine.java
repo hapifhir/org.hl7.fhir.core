@@ -555,14 +555,14 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return list;
   }
 
-  public OperationOutcome validate(String source, List<String> profiles, IValidationEngineLoader loader, boolean all) throws FHIRException, IOException {
+  public OperationOutcome validate(String source, List<String> profiles, IValidationEngineLoader loader, boolean all) throws FHIRException, IOException, InterruptedException {
     List<String> l = new ArrayList<String>();
     List<SourceFile> refs = new ArrayList<>();
     l.add(source);
-    return (OperationOutcome) validate(l, profiles, refs, null, loader, all);
+    return (OperationOutcome) validate(l, profiles, refs, null, loader, all, 0, true);
   }
 
-  public Resource validate(List<String> sources, List<String> profiles, List<SourceFile> refs, List<ValidationRecord> record, IValidationEngineLoader loader, boolean all) throws FHIRException, IOException {
+  public Resource validate(List<String> sources, List<String> profiles, List<SourceFile> refs, List<ValidationRecord> record, IValidationEngineLoader loader, boolean all, int delay, boolean first) throws FHIRException, IOException, InterruptedException {
     boolean asBundle = ValidatorUtils.parseSources(sources, refs, context);
     Bundle results = new Bundle();
     results.setType(Bundle.BundleType.COLLECTION);
@@ -575,6 +575,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     if (!found) {
       return null;
+    } else if (!first && delay != 0) {
+      Thread.sleep(delay);
     }
     
     // round one: try to read them all natively
@@ -583,8 +585,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     // something that should've been loaded
     for (SourceFile ref : refs) {
       if (ref.isProcess() || all) {
-        ref.setCnt(igLoader.loadContent(ref.getRef(), "validate", false));
-        if (loader != null) {
+        ref.setCnt(igLoader.loadContent(ref.getRef(), "validate", false, first));
+        if (loader != null && ref.getCnt() != null) {
           try {
             loader.load(ref.getCnt());
           } catch (Throwable t) {
@@ -595,10 +597,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     
     for (SourceFile ref : refs) {
-      if (ref.isProcess() || all) {
+      if ((ref.isProcess() || all) && ref.getCnt() != null) {
         TimeTracker.Session tts = context.clock().start("validation");
         context.clock().milestone();
-        System.out.println("  Validate " + ref);
+        System.out.println("  Validate " + ref.getRef());
         
         try {
           OperationOutcome outcome = validate(ref.getRef(), ref.getCnt().getFocus(), ref.getCnt().getCntType(), profiles, record);
@@ -666,7 +668,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public org.hl7.fhir.r5.elementmodel.Element transform(String source, String map) throws FHIRException, IOException {
-    Content cnt = igLoader.loadContent(source, "validate", false);
+    Content cnt = igLoader.loadContent(source, "validate", false, true);
     return transform(cnt.getFocus(), cnt.getCntType(), map);
   }
 
@@ -750,7 +752,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
 
   public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
-    Content cnt = igLoader.loadContent(source, "validate", false);
+    Content cnt = igLoader.loadContent(source, "validate", false, true);
     Resource res = igLoader.loadResourceByVersion(version, cnt.getFocus(), source);
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     genResource(res, rc);
@@ -771,13 +773,13 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public void convert(String source, String output) throws FHIRException, IOException {
-    Content cnt = igLoader.loadContent(source, "validate", false);
+    Content cnt = igLoader.loadContent(source, "validate", false, true);
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
     Manager.compose(context, e, new FileOutputStream(output), (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
   }
 
   public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
-    Content cnt = igLoader.loadContent(source, "validate", false);
+    Content cnt = igLoader.loadContent(source, "validate", false, true);
     FHIRPathEngine fpe = this.getValidator(null).getFHIRPathEngine();
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
     ExpressionNode exp = fpe.parse(expression);
@@ -785,7 +787,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public StructureDefinition snapshot(String source, String version) throws FHIRException, IOException {
-    Content cnt = igLoader.loadContent(source, "validate", false);
+    Content cnt = igLoader.loadContent(source, "validate", false, true);
     Resource res = igLoader.loadResourceByVersion(version, cnt.getFocus(), Utilities.getFileNameForName(source));
 
     if (!(res instanceof StructureDefinition))
@@ -798,7 +800,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public CanonicalResource loadCanonicalResource(String source, String version) throws FHIRException, IOException {
-    Content cnt = igLoader.loadContent(source, "validate", false);
+    Content cnt = igLoader.loadContent(source, "validate", false, true);
     Resource res = igLoader.loadResourceByVersion(version, cnt.getFocus(), Utilities.getFileNameForName(source));
 
     if (!(res instanceof CanonicalResource))
@@ -944,7 +946,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public byte[] transformVersion(String source, String targetVer, FhirFormat format, Boolean canDoNative) throws FHIRException, IOException, Exception {
-    Content cnt = igLoader.loadContent(source, "validate", false);
+    Content cnt = igLoader.loadContent(source, "validate", false, true);
     org.hl7.fhir.r5.elementmodel.Element src = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
 
     // if the src has a url, we try to use the java code 

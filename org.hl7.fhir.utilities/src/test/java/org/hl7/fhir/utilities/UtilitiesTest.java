@@ -384,7 +384,7 @@ class UtilitiesTest {
     RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
       Utilities.path(pathsStrings);
     });
-    assertEquals("First entry cannot be null or empty",thrown.getMessage());
+    assertEquals("First path entry cannot be null or empty",thrown.getMessage());
   }
 
   @Test

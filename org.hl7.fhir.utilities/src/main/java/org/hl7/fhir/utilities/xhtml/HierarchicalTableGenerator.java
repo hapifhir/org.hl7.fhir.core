@@ -1008,9 +1008,13 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         }
         newFile.createNewFile();
         FileOutputStream stream = new FileOutputStream(file);
-        genImage(indents, hasChildren, lineColor, stream);
-        if (outputTracker!=null)
-          outputTracker.add(file);
+        try {
+          genImage(indents, hasChildren, lineColor, stream);
+          if (outputTracker!=null)
+            outputTracker.add(file);
+        } finally {
+          stream.close();
+        }
       }
       return b.toString();
     }

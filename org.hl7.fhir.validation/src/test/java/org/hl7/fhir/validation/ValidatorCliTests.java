@@ -247,9 +247,11 @@ public class ValidatorCliTests {
     CliContext cliContext = Params.loadCliContext(args);
     ValidatorCli cli = mockValidatorCliWithService(cliContext);
     ValidatorWatchMode watchMode = ValidatorWatchMode.NONE;
+    int watchScanDelay = 1000;
+    int watchSettleTime = 100;
     cli.readParamsAndExecuteTask(cliContext, args);
     Mockito.verify(validationService).determineVersion(same(cliContext));
-    Mockito.verify(validationService).validateSources(same(cliContext), same(validationEngine), same(watchMode));
+    Mockito.verify(validationService).validateSources(same(cliContext), same(validationEngine), eq(watchMode), eq(watchScanDelay), eq(watchSettleTime));
   }
 
   @Test

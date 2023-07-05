@@ -2238,7 +2238,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
     List<StructureDefinition> res = new ArrayList<>();
     structures.listAll(res);
-    res.removeIf(sd -> !sd.getType().equals(typeName));
+    res.removeIf(sd -> !sd.hasType() || !sd.getType().equals(typeName));
     return res;
   }
 

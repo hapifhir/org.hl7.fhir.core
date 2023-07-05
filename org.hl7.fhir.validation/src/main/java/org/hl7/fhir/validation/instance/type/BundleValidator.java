@@ -35,8 +35,8 @@ public class BundleValidator extends BaseValidator {
   private String serverBase;
   private InstanceValidator validator;
 
-  public BundleValidator(IWorkerContext context, String serverBase, InstanceValidator validator, XVerExtensionManager xverManager, Coding jurisdiction) {
-    super(context, xverManager);
+  public BundleValidator(IWorkerContext context, boolean debug, String serverBase, InstanceValidator validator, XVerExtensionManager xverManager, Coding jurisdiction) {
+    super(context, xverManager, debug);
     this.serverBase = serverBase;
     this.validator = validator;
     this.jurisdiction = jurisdiction;

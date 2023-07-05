@@ -143,6 +143,13 @@ public class CliContext {
 
   @JsonProperty("watchMode")
   private ValidatorWatchMode watchMode = ValidatorWatchMode.NONE;
+  
+  @JsonProperty("watchScanDelay")
+  private int watchScanDelay = 1000;
+  
+  @JsonProperty("watchSettleTime")
+  private int watchSettleTime = 100;
+  
 
   @JsonProperty("map")
   public String getMap() {
@@ -751,14 +758,16 @@ public class CliContext {
       Objects.equals(outputStyle, that.outputStyle) &&
       Objects.equals(jurisdiction, that.jurisdiction) &&
       Objects.equals(locations, that.locations) &&
-      Objects.equals(watchMode, that.watchMode) ;
+      Objects.equals(watchMode, that.watchMode) &&
+      Objects.equals(watchScanDelay, that.watchScanDelay) &&
+      Objects.equals(watchSettleTime, that.watchSettleTime) ;
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
             noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
-            targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars, watchMode,
+            targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars, watchMode, watchScanDelay, watchSettleTime,
             htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath);
   }
 
@@ -813,6 +822,8 @@ public class CliContext {
       ", htmlInMarkdownCheck=" + htmlInMarkdownCheck +
       ", allowDoubleQuotesInFHIRPath=" + allowDoubleQuotesInFHIRPath +
       ", watchMode=" + watchMode +
+      ", watchSettleTime=" + watchSettleTime +
+      ", watchScanDelay=" + watchScanDelay +
       '}';
   }
 
@@ -836,6 +847,26 @@ public class CliContext {
   public CliContext setWatchMode(ValidatorWatchMode watchMode) {
     this.watchMode = watchMode;
     return this;
+  }
+
+  @JsonProperty("watchScanDelay")
+  public int getWatchScanDelay() {
+    return watchScanDelay;
+  }
+
+  @JsonProperty("watchScanDelay")
+  public void setWatchScanDelay(int watchScanDelay) {
+    this.watchScanDelay = watchScanDelay;
+  }
+
+  @JsonProperty("watchSettleTime")
+  public int getWatchSettleTime() {
+    return watchSettleTime;
+  }
+
+  @JsonProperty("watchSettleTime")
+  public void setWatchSettleTime(int watchSettleTime) {
+    this.watchSettleTime = watchSettleTime;
   }
   
   

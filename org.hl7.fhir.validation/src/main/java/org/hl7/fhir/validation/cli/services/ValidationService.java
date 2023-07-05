@@ -143,7 +143,7 @@ public class ValidationService {
     return versions;
   }
 
-  public void validateSources(CliContext cliContext, ValidationEngine validator, ValidatorWatchMode watch) throws Exception {
+  public void validateSources(CliContext cliContext, ValidationEngine validator, ValidatorWatchMode watch, int watchScanDelay, int watchSettleTime) throws Exception {
     if (cliContext.getProfiles().size() > 0) {
       System.out.println("  Profiles: " + cliContext.getProfiles());
     }
@@ -153,10 +153,12 @@ public class ValidationService {
     List<SourceFile> refs = new ArrayList<>();
 
     int ec = 0;
+    boolean first = true;
 
     do {
       long start = System.currentTimeMillis();
-      Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles(), refs, records, igLoader, watch == ValidatorWatchMode.ALL);
+      Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles(), refs, records, igLoader, watch == ValidatorWatchMode.ALL, watchSettleTime, first);
+      first = false;
       boolean statusNeeded = false;
       if (r != null) {
         statusNeeded = true;
@@ -218,9 +220,9 @@ public class ValidationService {
       }
       if (watch != ValidatorWatchMode.NONE) {
         if (statusNeeded) {
-          System.out.println("Watching for changes");
+          System.out.println("Watching for changes ("+Integer.toString(watchScanDelay)+"ms cycle)");
         }
-        Thread.sleep(1000);
+        Thread.sleep(watchScanDelay);
       }
     } while (watch != ValidatorWatchMode.NONE);
     System.exit(ec > 0 ? 1 : 0);
@@ -578,7 +580,7 @@ public class ValidationService {
     ValidatorUtils.parseSources(cliContext.getSources(), refs, validator.getContext());    
     for (SourceFile ref : refs) {
       System.out.println("  Extract Translations from " + ref);
-      org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false);
+      org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
       Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
       LanguageProducerSession ps = po.startSession(e.fhirType()+"-"+e.getIdBase(), cliContext.getSrcLang());
       LanguageProducerLanguageSession psl = ps.forLang(cliContext.getTgtLang());
@@ -613,7 +615,7 @@ public class ValidationService {
     int t = 0;
     for (SourceFile ref : refs) {
       System.out.println("  Inject Translations into " + ref);
-      org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false);
+      org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
       Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());      
       t = t + new LanguageUtils(validator.getContext()).importFromTranslations(e, translations);
       Manager.compose(validator.getContext(), e, new FileOutputStream(Utilities.path(dst, new File(ref.getRef()).getName())), cnt.getCntType(),

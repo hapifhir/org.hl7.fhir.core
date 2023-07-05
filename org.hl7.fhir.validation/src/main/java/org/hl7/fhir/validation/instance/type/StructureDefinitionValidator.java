@@ -62,8 +62,8 @@ public class StructureDefinitionValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private boolean wantCheckSnapshotUnchanged;
 
-  public StructureDefinitionValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction, boolean forPublication) {
-    super(context, xverManager);
+  public StructureDefinitionValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction, boolean forPublication) {
+    super(context, xverManager, debug);
     source = Source.InstanceValidator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
@@ -484,17 +484,21 @@ public class StructureDefinitionValidator extends BaseValidator {
     String expression = invariant.getNamedChildValue("expression");
     String source = invariant.getNamedChildValue("source");
     if (warning(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(key), I18nConstants.ED_INVARIANT_NO_KEY)) {
-      if (hint(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(expression), I18nConstants.ED_INVARIANT_NO_EXPRESSION, key)) {
+      if (hint(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(expression) || VersionUtilities.isR5Plus(context.getVersion()), I18nConstants.ED_INVARIANT_NO_EXPRESSION, key)) { // not for R5 - there's an invariant
         if (invariantMap.containsKey(key)) {
           // it's legal - and common - for a list of elemnts to contain the same invariant more than once, but it's not valid if it's not always the same 
-          ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
+          ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
         } else {
           invariantMap.put(key, expression);
         }
         if (Utilities.noString(source) || (source.equals(profileUrl))) { // no need to revalidate FHIRPath from elsewhere 
          try {
+//           String upath = profileUrl+"#"+path;
            fpe.check(invariant, rootPath, path, fpe.parse(expression));
          } catch (Exception e) {
+           if (debug) {
+             e.printStackTrace();
+           }
            ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
          }         
         }        
@@ -506,7 +510,8 @@ public class StructureDefinitionValidator extends BaseValidator {
   private boolean meaningWhenMissingAllowed(Element element) {
     // allowed to use meaningWhenMissing on the root of an element to say what it means when the extension
     // is not present.
-    return "Extension".equals(element.getPath()) || (element.getPath().endsWith(".extension"));
+    String path = element.getNamedChildValue("path");
+    return path != null && ("Extension".equals(path) || (path.endsWith(".extension")));
   }
 
   private boolean addCharacteristics(Set<String> set, String tc) {
