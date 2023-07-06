@@ -4,12 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
@@ -23,6 +23,7 @@ import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class PackageClient {
 
@@ -90,7 +91,7 @@ public class PackageClient {
       if (versions != null) {
         for (JsonProperty v : versions.getProperties()) {
           JsonObject obj = versions.getJsonObject(v.getName());
-          Instant d = obj.hasString("date") ? obj.asDate("date") : null;
+          Instant d = getInstantFromPackageDate(obj);
           if (d == null) {
             hasDates = false;
           }
@@ -113,7 +114,21 @@ public class PackageClient {
     }
     return res;    
   }
-   
+
+  @Nullable
+  private static Instant getInstantFromPackageDate(JsonObject obj) {
+    try {
+      return obj.hasString("date") ? obj.asDate("date") : null;
+    } catch (DateTimeParseException e) {
+      //FIXME Some IGs use an older date format:
+      try {
+        return new SimpleDateFormat("yyyyMMddhhmmss").parse(obj.getJsonString("date").asString()).toInstant();
+      } catch (ParseException ex) {
+        throw new RuntimeException(ex);
+      }
+    }
+  }
+
   public List<PackageInfo> search(String name, String canonical, String fhirVersion, boolean preRelease) throws IOException {
     CommaSeparatedStringBuilder params = new CommaSeparatedStringBuilder("&");
     if (!Utilities.noString(name)) {
