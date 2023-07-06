@@ -25,6 +25,6 @@ jobs:
         id: bidi_check
         uses: HL7/bidi-checker-action@v1.9
         env:
-          IGNORE: \.tgz$
+          IGNORE: \dummy-package.tgz$
       - name: Get the output time
         run: echo "The time was ${{ steps.bidi_check.outputs.time }}"
