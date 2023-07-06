@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.settings.PackageServerPOJO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,17 +63,20 @@ public class PackageServer {
     return servers;
   }
 
+  public static PackageServer getPackageServerFromPOJO(PackageServerPOJO pojo) {
+    return new PackageServer(pojo.getUrl())
+      .withMode(pojo.getAuthenticationType() != null && pojo.getAuthenticationType().equalsIgnoreCase("basic") ?
+        PackageServer.PackageServerAuthenticationMode.BASIC : null)
+      .withServerType(
+        pojo.getServerType() != null && pojo.getServerType().equalsIgnoreCase("npm") ? PackageServerType.NPM : PackageServerType.FHIR
+      )
+      .withUsername(pojo.getUsername())
+      .withPassword(pojo.getPassword());
+  }
+
   public static List<PackageServer> getConfiguredServers() {
     return FhirSettings.getPackageServers().stream().map(
-      pojo ->
-        new PackageServer(pojo.getUrl())
-          .withMode(pojo.getAuthenticationType() != null && pojo.getAuthenticationType().equalsIgnoreCase("basic") ?
-            PackageServer.PackageServerAuthenticationMode.BASIC : null)
-          .withServerType(
-            pojo.getServerType() != null && pojo.getServerType().equalsIgnoreCase("npm") ? PackageServerType.NPM : PackageServerType.FHIR
-          )
-          .withUsername(pojo.getUsername())
-          .withPassword(pojo.getPassword())
+      PackageServer::getPackageServerFromPOJO
     ).collect(Collectors.toList());
   }
 

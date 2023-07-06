@@ -127,7 +127,6 @@ public class PackageServerTest {
     assertEquals("Dummy IG For Testing", npmPackage.title())
     ;
     assertEquals("Dummy IG description (built Thu, Jul 6, 2023 15:16-0400-04:00)", npmPackage.description());
-
   }
 
 
