@@ -854,12 +854,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           XhtmlNode tbl = new XhtmlNode(NodeType.Element, "table"); 
           tbl.setAttribute("class", "grid");
           XhtmlNode tr = tbl.tr();
-          tr.td().style("display: hidden").tx("-"); // work around problem with empty table rows
+          tr.td().style("display: none").tx("-"); // work around problem with empty table rows
           boolean add = addColumnHeadings(tr, grandChildren);          
           for (BaseWrapper v : p.getValues()) {
             if (v != null) {
               tr = tbl.tr();
-              tr.td().style("display: hidden").tx("*"); // work around problem with empty table rows
+              tr.td().style("display: none").tx("*"); // work around problem with empty table rows
               add = addColumnValues(res, tr, grandChildren, v, showCodeDetails, displayHints, path, indent) || add;
             }
           }
