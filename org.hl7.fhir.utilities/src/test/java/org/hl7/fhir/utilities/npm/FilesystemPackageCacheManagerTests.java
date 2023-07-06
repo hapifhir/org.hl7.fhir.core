@@ -7,6 +7,8 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class FilesystemPackageCacheManagerTests {
 
   @Test
@@ -27,7 +29,18 @@ public class FilesystemPackageCacheManagerTests {
         return null;
       }
     };
-    PackageServer testServer = new PackageServer("http://localhost:4873").withServerType(PackageServer.PackageServerType.NPM).withMode(PackageServer.PackageServerAuthenticationMode.BASIC).withUsername("alfred").withPassword("numan");
+
+    MockPackageServer server = new MockPackageServer();
+    String packageServerUrl = server.getPackageServerUrl();
+
+    server.enqueueDummyPackageDescription();
+    server.enqueueDummyPackage();
+
+    PackageServer testServer = new PackageServer(packageServerUrl)
+      .withMode(PackageServer.PackageServerAuthenticationMode.BASIC)
+      .withServerType(PackageServer.PackageServerType.NPM)
+      .withUsername(MockPackageServer.DUMMY_USERNAME)
+      .withPassword(MockPackageServer.DUMMY_PASSWORD);
 
     basePackageCacheManager.addPackageServer(testServer);
     basePackageCacheManager.myPackageServers.addAll(PackageServer.publicServers());
@@ -35,8 +48,11 @@ public class FilesystemPackageCacheManagerTests {
     BasePackageCacheManager.InputStreamWithSrc inputWithSrc = basePackageCacheManager.loadFromPackageServer("example.fhir.uv.myig", "0.2.0");
 
 
-    NpmPackage npm = NpmPackage.fromPackage(inputWithSrc.stream, inputWithSrc.url, false);
+    NpmPackage npmPackage = NpmPackage.fromPackage(inputWithSrc.stream, inputWithSrc.url, false);
 
-    System.out.println(npm.description());
+    assertEquals("Dummy IG For Testing", npmPackage.title())
+    ;
+    assertEquals("Dummy IG description (built Thu, Jul 6, 2023 15:16-0400-04:00)", npmPackage.description());
+    server.shutdown();
   }
 }

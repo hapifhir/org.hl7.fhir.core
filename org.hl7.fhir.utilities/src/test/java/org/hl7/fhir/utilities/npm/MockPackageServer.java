@@ -8,6 +8,10 @@ import okio.Buffer;
 import java.io.IOException;
 
 public class MockPackageServer {
+  public static final String DUMMY_PACKAGE_NAME = "example.fhir.uv.myig";
+  public static final String DUMMY_PACKAGE_VERSION = "0.2.0";
+  public static final String DUMMY_USERNAME = "alfred";
+  public static final String DUMMY_PASSWORD = "numan";
   MockWebServer server = new MockWebServer();
   HttpUrl httpUrl;
 
