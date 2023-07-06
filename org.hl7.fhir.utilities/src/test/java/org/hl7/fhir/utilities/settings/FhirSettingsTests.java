@@ -90,6 +90,7 @@ public class FhirSettingsTests implements ResourceLoaderTests {
     assertEquals(2, packageServers.size());
 
     assertEquals("http://dummy.org", packageServers.get(0).url);
+    assertEquals("npm", packageServers.get(0).serverType);
     assertEquals("joe", packageServers.get(0).username);
     assertEquals("swordfish", packageServers.get(0).password);
     assertEquals("BASIC", packageServers.get(0).authenticationType);

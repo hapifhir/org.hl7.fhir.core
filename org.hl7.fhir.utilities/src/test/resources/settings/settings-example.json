@@ -12,6 +12,7 @@
   "packageServers" : [
     {
       "url" : "http://dummy.org",
+      "serverType" : "npm",
       "authenticationType" : "BASIC",
       "username" : "joe",
       "password" : "swordfish"
