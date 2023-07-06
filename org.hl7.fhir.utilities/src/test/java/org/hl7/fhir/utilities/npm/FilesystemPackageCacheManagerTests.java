@@ -27,7 +27,7 @@ public class FilesystemPackageCacheManagerTests {
         return null;
       }
     };
-    PackageServer testServer = new PackageServer("http://localhost:4873").withMode(PackageServer.PackageServerAuthenticationMode.BASIC).withUsername("alfred").withPassword("numan");
+    PackageServer testServer = new PackageServer("http://localhost:4873").withServerType(PackageServer.PackageServerType.NPM).withMode(PackageServer.PackageServerAuthenticationMode.BASIC).withUsername("alfred").withPassword("numan");
 
     basePackageCacheManager.addPackageServer(testServer);
     basePackageCacheManager.myPackageServers.addAll(PackageServer.publicServers());
