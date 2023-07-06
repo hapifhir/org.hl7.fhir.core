@@ -373,7 +373,7 @@ public class Property {
                 ok = true;
               if (Utilities.isAbsoluteUrl(tr.getWorkingCode())) {
                 StructureDefinition sdt = context.fetchResource(StructureDefinition.class, tr.getWorkingCode());
-                if (sdt != null && sdt.getType().equals(t)) {
+                if (sdt != null && sdt.getTypeTail().equals(t)) {
                   url = tr.getWorkingCode();
                   ok = true;
                 }
