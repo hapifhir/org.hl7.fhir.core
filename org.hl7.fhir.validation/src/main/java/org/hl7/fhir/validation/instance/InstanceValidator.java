@@ -6334,7 +6334,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
       // validate
-      if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), resourceName.equals(defn.getTypeTail()), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE,
+      if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), resourceName.equals(defn.getType()) || resourceName.equals(defn.getTypeTail()), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE,
           defn.getType(), resourceName, defn.getVersionedUrl())) {
         ok = start(hostContext, errors, element, element, defn, stack, pct, mode); // root is both definition and type
       } else {
