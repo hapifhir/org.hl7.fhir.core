@@ -69,6 +69,9 @@ public class ValidatorUtils {
     public void setCnt(Content cnt) {
       this.cnt = cnt;
     }
+    public boolean isKnownToBeMissing () { 
+      return date == 0;  // File::lastModified() returns 0 if the file is missing
+    }
   }
   
   protected static void grabNatives(Map<String, byte[]> source, Map<String, byte[]> binaries, String prefix) {
@@ -181,11 +184,10 @@ public class ValidatorUtils {
       if (file.isFile()) {
         addSourceFile(refs, file);
       } else {
-        for (int i = 0; i < file.listFiles().length; i++) {
-          File[] fileList = file.listFiles();
-          if (fileList[i].isFile()) {
-            if (!Utilities.isIgnorableFile(fileList[i])) {
-              addSourceFile(refs, fileList[i]);
+        for (File fileInDirectory : file.listFiles()) {
+          if (fileInDirectory.isFile()) {
+            if (!Utilities.isIgnorableFile(fileInDirectory)) {
+              addSourceFile(refs, fileInDirectory);
             }
           }
         }
@@ -196,9 +198,9 @@ public class ValidatorUtils {
 
   private static SourceFile addSourceFile(List<SourceFile> refs, File file) {
     SourceFile src = addSourceFile(refs, file.getPath());
-    Long l = file.lastModified();
+    long l = file.lastModified();  // returns 0 if the file is missing
     if (src.date != l) {
-      src.setProcess(true);
+      src.setProcess(l != 0);  // process only if not missing
     }
     src.date = l;
     return src;
