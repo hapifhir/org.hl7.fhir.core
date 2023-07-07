@@ -1066,6 +1066,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Set<String> unknownSystems = new HashSet<>();
     
     String localError = null;
+    String localWarning = null;
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
@@ -1080,7 +1081,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           return res;
         }
       } catch (VSCheckerException e) {
-        localError = e.getMessage();
+        if (e.isWarning()) {
+          localWarning = e.getMessage();
+        } else {
+          localError = e.getMessage();
+        }
         if (e.getIssues() != null) {
           issues.addAll(e.getIssues());
         }
@@ -1097,8 +1102,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.UNKNOWN, issues);
       }
     }
+    if (localWarning != null && tcc.getClient() == null) {
+      return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localWarning), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);       
+    }
     if (!options.isUseServer()) {
-      return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
+      if (localWarning != null) {
+        return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localWarning), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);       
+      } else {
+        return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
+      }
     }
     String codeKey = getCodeKey(code);
     if (unsupportedCodeSystems.contains(codeKey)) {

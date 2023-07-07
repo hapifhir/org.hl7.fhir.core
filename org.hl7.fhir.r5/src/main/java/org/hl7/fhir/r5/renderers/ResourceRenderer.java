@@ -250,7 +250,13 @@ public abstract class ResourceRenderer extends DataRenderer {
     String name = tr != null && tr.getResource() != null ? tr.getResource().getNameFromResource() : null; 
     
     if (display == null && (tr == null || tr.getResource() == null)) {
-      c.addText(r.getReference());
+      if (!Utilities.noString(r.getReference())) {
+        c.addText(r.getReference());
+      } else if (r.hasIdentifier()) {
+        renderIdentifier(c, r.getIdentifier());
+      } else {
+        c.addText("??");        
+      }
     } else if (context.isTechnicalMode()) {
       c.addText(r.getReference());
       if (display != null) {

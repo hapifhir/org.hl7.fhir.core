@@ -47,6 +47,7 @@ public class VersionConvertorConstants {
   public static final String EXT_NAMINGSYSTEM_TITLE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.title";
   public static final String EXT_NAMINGSYSTEM_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url";
   public static final String EXT_NAMINGSYSTEM_VERSION = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version";
+  public static final String EXT_OPDEF_ORIGINAL_TYPE = "http://hl7.org/fhir/4.0/StructureDefinition/extension-OperationDefinition.parameter.type";
 
   public static String refToVS(String url) {
     if (url == null)

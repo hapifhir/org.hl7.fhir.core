@@ -175,15 +175,20 @@ public abstract class ParserBase {
   	}
 	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
 	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
-	      if(name.equals(sd.getType()) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
+	      String type = urlTail(sd.getType());
+        if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
 	        return sd;
 	      String sns = ToolingExtensions.readStringExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
-	      if ((name.equals(sd.getType()) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
+	      if ((name.equals(type) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
 	        return sd;
 	    }
 	  }
 	  logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAMESPACENAME_, ns, name), IssueSeverity.FATAL);
 	  return null;
+  }
+
+  private String urlTail(String type) {
+    return type == null || !type.contains("/") ? type : type.substring(type.lastIndexOf("/")+1);
   }
 
   protected StructureDefinition getDefinition(int line, int col, String name) throws FHIRFormatError {
