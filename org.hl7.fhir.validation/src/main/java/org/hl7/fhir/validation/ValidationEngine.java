@@ -356,6 +356,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
     }
 
+    public ValidationEngineBuilder withNoTerminologyServer() {
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, timeTracker, true, loggingService, THO);
+    }
+    
     public ValidationEngine fromNothing() throws IOException {
       ValidationEngine engine = new ValidationEngine();
       SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder().withLoggingService(loggingService);
@@ -584,7 +588,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     // available for other resources to depend on. if it fails to load, there'll be an error if there's
     // something that should've been loaded
     for (SourceFile ref : refs) {
-      if (ref.isProcess() || all) {
+      if ((ref.isProcess() || all) && !ref.isKnownToBeMissing()) {
         ref.setCnt(igLoader.loadContent(ref.getRef(), "validate", false, first));
         if (loader != null && ref.getCnt() != null) {
           try {

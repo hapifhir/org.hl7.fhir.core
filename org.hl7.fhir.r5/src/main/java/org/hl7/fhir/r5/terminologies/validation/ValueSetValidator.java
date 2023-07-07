@@ -435,7 +435,7 @@ public class ValueSetValidator {
       if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
         warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition is not complete";
         if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment
-          throw new VSCheckerException(warningMessage, null);
+          throw new VSCheckerException(warningMessage, null, true);
         }
       }
 
