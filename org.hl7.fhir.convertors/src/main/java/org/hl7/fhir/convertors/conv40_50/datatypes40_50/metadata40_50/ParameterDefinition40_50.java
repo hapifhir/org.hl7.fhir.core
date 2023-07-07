@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Utilities40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
@@ -17,7 +18,9 @@ public class ParameterDefinition40_50 {
     if (src.hasMin()) tgt.setMinElement(Integer40_50.convertInteger(src.getMinElement()));
     if (src.hasMax()) tgt.setMaxElement(String40_50.convertString(src.getMaxElement()));
     if (src.hasDocumentation()) tgt.setDocumentationElement(String40_50.convertString(src.getDocumentationElement()));
-    if (src.hasType()) tgt.setType(org.hl7.fhir.r5.model.Enumerations.FHIRTypes.fromCode(src.getType()));
+    if (src.hasType()) {
+      Utilities40_50.convertType(src.getTypeElement(), tgt.getTypeElement());   
+    }
     if (src.hasProfile()) tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
     return tgt;
   }
@@ -31,7 +34,9 @@ public class ParameterDefinition40_50 {
     if (src.hasMin()) tgt.setMinElement(Integer40_50.convertInteger(src.getMinElement()));
     if (src.hasMax()) tgt.setMaxElement(String40_50.convertString(src.getMaxElement()));
     if (src.hasDocumentation()) tgt.setDocumentationElement(String40_50.convertString(src.getDocumentationElement()));
-    if (src.hasType()) tgt.setType(src.getType().toCode());
+    if (src.hasType()) {
+      Utilities40_50.convertType(src.getTypeElement(), tgt.getTypeElement());   
+    }
     if (src.hasProfile()) tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
     return tgt;
   }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OperationDefinition xmlns="http://hl7.org/fhir">
+  <url value="http:://false.com/OperationDefinition/operation-DiagnosticReport-addMedia" />
+  <name value="operation-DiagnosticReport-addMedia" />
+  <status value="active" />
+  <kind value="operation" />
+  <experimental value="false" />
+  <affectsState value="true" />
+  <code value="addMedia" />
+  <system value="false" />
+  <type value="false" />
+  <instance value="true" />
+  <parameter>
+    <name value="mediaInstance" />
+    <use value="in" />
+    <min value="1" />
+    <max value="1" />
+    <documentation value="Instance of media that should be attached to the diagnosticreport" />
+    <type value="Media" />
+    <targetProfile value="http://false.com/StructureDefinition/Media" />
+  </parameter>
+</OperationDefinition>

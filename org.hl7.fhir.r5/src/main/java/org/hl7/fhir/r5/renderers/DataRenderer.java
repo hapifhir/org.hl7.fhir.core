@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.BackboneType;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Base64BinaryType;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -99,7 +100,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
   // -- 2. Markdown support -------------------------------------------------------
-  
+   
   public static String processRelativeUrls(String markdown, String path) {
     if (markdown == null) {
       return "";
@@ -419,7 +420,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   
   private String getExtensionLabel(Extension ext) {
     StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.getUrl());
-    if (sd != null && ext.getValue().isPrimitive() && sd.hasSnapshot()) {
+    if (sd != null && ext.hasValue() && ext.getValue().isPrimitive() && sd.hasSnapshot()) {
       for (ElementDefinition ed : sd.getSnapshot().getElement()) {
         if (Utilities.existsInList(ed.getPath(), "Extension", "Extension.value[x]") && ed.hasLabel()) {
           return ed.getLabel();
@@ -726,6 +727,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
       }
     } else if (type instanceof MarkdownType) {
       addMarkdown(x, ((MarkdownType) type).asStringValue());
+    } else if (type instanceof Base64BinaryType) {
+      Base64BinaryType b64 = (Base64BinaryType) type;
+      x.tx("(base64 data - "+(b64.getValue() == null ? "0" : b64.getValue().length)+" bytes)");
     } else if (type.isPrimitive()) {
       x.tx(type.primitiveValue());
     } else {
