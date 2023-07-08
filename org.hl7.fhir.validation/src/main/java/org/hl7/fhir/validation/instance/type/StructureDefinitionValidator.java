@@ -16,6 +16,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -338,13 +339,13 @@ public class StructureDefinitionValidator extends BaseValidator {
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
     for (Element element : elements) {
-      ok = validateElementDefinition(errors, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl) && ok;
+      ok = validateElementDefinition(errors, elements, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl) && ok;
       cc++;
     }    
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, String> invariantMap, String rootPath, String profileUrl) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, String> invariantMap, String rootPath, String profileUrl) {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path");
@@ -472,13 +473,13 @@ public class StructureDefinitionValidator extends BaseValidator {
     List<Element> constraints = element.getChildrenByName("constraint");
     int cc = 0;
     for (Element invariant : constraints) {
-      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, element.getNamedChildValue("path"), rootPath, profileUrl) && ok;
+      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path"), rootPath, profileUrl) && ok;
       cc++;
     }    
     return ok;
   }
   
-  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, String path, String rootPath, String profileUrl) {
+  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, List<Element> elements, Element element, String path, String rootPath, String profileUrl) {
     boolean ok = true;
     String key = invariant.getNamedChildValue("key"); 
     String expression = invariant.getNamedChildValue("expression");
@@ -494,8 +495,23 @@ public class StructureDefinitionValidator extends BaseValidator {
           }
           if (Utilities.noString(source) || (source.equals(profileUrl))) { // no need to revalidate FHIRPath from elsewhere 
             try {
-              //           String upath = profileUrl+"#"+path;
-              fpe.check(invariant, rootPath, path, fpe.parse(expression));
+              // we have to figure out the context, and we might be in type slicing. 
+              String exp = expression;
+              Element te = element;
+              List<String> types = getTypesForElement(elements, te);
+              while (types.size() == 0 && te != null) {
+                Element oldte = te;
+                te = getParent(elements, te);
+                if (te != null) {
+                  exp = tail(oldte, te)+"."+exp;
+                  types = getTypesForElement(elements, te);
+                }
+              }
+              if (types.size() == 0) {
+                // we got to the root before finding anything typed
+                types.add(elements.get(0).getNamedChildValue("path"));
+              }
+              fpe.checkOnTypes(invariant, rootPath, types, fpe.parse(exp));
             } catch (Exception e) {
               if (debug) {
                 e.printStackTrace();
@@ -507,6 +523,57 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  private String tail(Element te, Element newte) {
+    String p = te.getNamedChildValue("path");
+    String pn = newte.getNamedChildValue("path");
+    return p.substring(pn.length()+1);
+  }
+
+  private Element getParent(List<Element> elements, Element te) {
+   int i = elements.indexOf(te) - 1;
+   String path = te.getNamedChildValue("path");
+   while (i >= 0) {
+     String p = elements.get(i).getNamedChildValue("path");
+     if (path.startsWith(p+".")) {
+       return elements.get(i);
+     }
+     i--;
+   }
+   return null;
+  }
+
+  private List<String> getTypesForElement(List<Element> elements, Element element) {
+    List<String> types = new ArrayList<>();
+    for (Element tr : element.getChildrenByName("type")) {
+      String t = tr.getNamedChildValue("code");
+      if (t != null) {
+        if (isAbstractType(t) && hasChildren(element, elements) ) {
+          types.add(element.getNamedChildValue("path"));
+        } else {
+          types.add(t);
+        }
+      }
+    }
+    return types;
+  }
+
+  private boolean hasChildren(Element element, List<Element> elements) {
+    int i = elements.indexOf(element);
+    String path = element.getNamedChildValue("path")+".";
+    while (i < elements.size()) {
+      String p = elements.get(i).getNamedChildValue("path")+".";
+      if (p.startsWith(path)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean isAbstractType(String t) {
+    StructureDefinition sd = context.fetchTypeDefinition(t);
+    return sd != null && sd.getAbstract();
   }
 
   private boolean meaningWhenMissingAllowed(Element element) {
