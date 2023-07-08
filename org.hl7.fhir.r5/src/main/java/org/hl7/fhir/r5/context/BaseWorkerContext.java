@@ -501,7 +501,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public Map<String, NamingSystem> getNSUrlMap() {
     if (systemUrlMap == null) {
       systemUrlMap = new HashMap<>();
-      List<NamingSystem> nsl = new ArrayList<>();
+      List<NamingSystem> nsl = systems.getList();
       for (NamingSystem ns : nsl) {
         for (NamingSystemUniqueIdComponent uid : ns.getUniqueId()) {
           if (uid.getType() == NamingSystemIdentifierType.URI && uid.hasValue()) {
