@@ -225,7 +225,7 @@ public class ExampleScenario40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasKey())
       tgt.setResourceIdElement(String40_50.convertString(src.getKeyElement()));
-    if (src.hasType())
+    if (src.hasStructureType())
       tgt.setResourceType(FHIRResourceType.fromCode(src.getStructureType().getCode()));
     if (src.hasTitle())
       tgt.setNameElement(String40_50.convertString(src.getTitleElement()));
@@ -343,6 +343,8 @@ public class ExampleScenario40_50 {
       return null;
     org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepComponent tgt = new org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+    if (src.hasOperation())
+      tgt.setNumber(src.getOperation().getNumber());
     for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess())
       tgt.setProcess(convertExampleScenarioProcessComponent(t));
     if (src.hasPause())
@@ -363,7 +365,7 @@ public class ExampleScenario40_50 {
     if (src.hasPause())
       tgt.setPauseElement(Boolean40_50.convertBoolean(src.getPauseElement()));
     if (src.hasOperation())
-      tgt.setOperation(convertExampleScenarioProcessStepOperationComponent(src.getOperation()));
+      tgt.setOperation(convertExampleScenarioProcessStepOperationComponent(src.getOperation(), src.getNumber()));
     for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepAlternativeComponent t : src.getAlternative())
       tgt.addAlternative(convertExampleScenarioProcessStepAlternativeComponent(t));
     return tgt;
@@ -397,13 +399,15 @@ public class ExampleScenario40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepOperationComponent convertExampleScenarioProcessStepOperationComponent(org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepOperationComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepOperationComponent convertExampleScenarioProcessStepOperationComponent(org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepOperationComponent src, String stepPosition) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepOperationComponent tgt = new org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepOperationComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-//    if (src.hasNumber())
-//      tgt.setNumberElement(String40_50.convertString(src.getNumberElement()));
+    if (src.hasExtension("http://hl7.org/fhir/4.0/StructureDefinition/extension-ExampleScenario.process.step.operation.number"))
+      tgt.setNumber(src.getExtensionByUrl("http://hl7.org/fhir/4.0/StructureDefinition/extension-ExampleScenario.process.step.operation.number").getValueStringType().toString());
+    else
+      tgt.setNumber(stepPosition);
     if (src.hasType())
       tgt.setType(src.getType().getCode());
     if (src.hasTitle())
