@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* no changes
+* no changes 
 
 ## Other code changes
 
