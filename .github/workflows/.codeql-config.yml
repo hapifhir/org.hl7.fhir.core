@@ -2,4 +2,4 @@ name: "Code scanning CodeQL config"
 
 query-filters:
   - exclude:
-      id: codeql/java-queries/Security/CWE/CWE-730/ReDoS
+      id: codeql/java-queries/Security/CWE/CWE-730/ReDoS.ql
