@@ -2,4 +2,4 @@ name: "Code scanning CodeQL config"
 
 query-filters:
   - exclude:
-      id: java/redos
+      id: java/polynomial-redos
