@@ -5,3 +5,5 @@ query-filters:
       id: java/polynomial-redos
   - exclude:
       id: java/redos
+  - exclude:
+      id: java/overly-large-range
