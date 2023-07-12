@@ -2,16 +2,14 @@ package org.hl7.fhir.utilities.settings;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.npm.PackageServer;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class FhirSettings {
@@ -213,8 +211,19 @@ public class FhirSettings {
     return Utilities.path(System.getProperty("user.home"), ".fhir", "fhir-settings.json");
   }
 
+  public static boolean isIgnoreDefaultPackageServers() {
+    getInstance();
+    if (instance.fhirSettings.getPackageManagement() == null) {
+      return false;
+    }
+    return instance.fhirSettings.getPackageManagement().getIgnoreDefaultServers();
+  }
+
   public static List<PackageServerPOJO> getPackageServers() {
     getInstance();
-    return List.of(instance.fhirSettings.getPackageServers().toArray(new PackageServerPOJO[]{}));
+    if (instance.fhirSettings.getPackageManagement() == null) {
+      return Collections.emptyList();
+    }
+    return List.of(instance.fhirSettings.getPackageManagement().getServers().toArray(new PackageServerPOJO[]{}));
   }
 }

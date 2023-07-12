@@ -41,7 +41,7 @@ public class FhirSettingsPOJO {
   private String txFhirDevelopment;
   private String txFhirLocal;
 
-  private List<PackageServerPOJO> packageServers;
+  private PackageManagementPOJO packageManagement;
 
   protected FhirSettingsPOJO() {
     apiKeys = null;
@@ -55,6 +55,6 @@ public class FhirSettingsPOJO {
     txFhirDevelopment = TX_SERVER_DEV;
     txFhirLocal = TX_SERVER_LOCAL;
 
-    packageServers = new ArrayList<>();
+    packageManagement = null;
   }
 }

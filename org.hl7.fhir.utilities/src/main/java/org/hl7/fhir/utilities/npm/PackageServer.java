@@ -1,8 +1,6 @@
 package org.hl7.fhir.utilities.npm;
 
 import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.PackageServerPOJO;
 
@@ -56,7 +54,7 @@ public class PackageServer {
     return new PackageServer(SECONDARY_SERVER);
   }
   
-  public static List<PackageServer> publicServers() {
+  public static List<PackageServer> defaultServers() {
     List<PackageServer> servers = new ArrayList<>();
     servers.add(primaryServer());
     servers.add(secondaryServer());

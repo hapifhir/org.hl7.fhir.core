@@ -85,7 +85,9 @@ public class FhirSettingsTests implements ResourceLoaderTests {
     assertEquals("dummy-temp-path", fhirSettings.getTempPath());
     assertEquals("dummy-test-igs-path", fhirSettings.getTestIgsPath());
 
-    List<PackageServerPOJO> packageServers = fhirSettings.getPackageServers();
+    assertTrue(fhirSettings.getPackageManagement().getIgnoreDefaultServers());
+
+    List<PackageServerPOJO> packageServers = fhirSettings.getPackageManagement().getServers();
 
     assertEquals(2, packageServers.size());
 

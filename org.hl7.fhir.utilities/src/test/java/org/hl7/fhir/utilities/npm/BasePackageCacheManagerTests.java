@@ -9,7 +9,7 @@ import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FilesystemPackageCacheManagerTests {
+public class BasePackageCacheManagerTests {
 
   @Test
   public void testPrivatePackage() throws IOException {
@@ -43,7 +43,7 @@ public class FilesystemPackageCacheManagerTests {
       .withPassword(MockPackageServer.DUMMY_PASSWORD);
 
     basePackageCacheManager.addPackageServer(testServer);
-    basePackageCacheManager.myPackageServers.addAll(PackageServer.publicServers());
+    basePackageCacheManager.myPackageServers.addAll(PackageServer.defaultServers());
 
     BasePackageCacheManager.InputStreamWithSrc inputWithSrc = basePackageCacheManager.loadFromPackageServer("example.fhir.uv.myig", "0.2.0");
 
