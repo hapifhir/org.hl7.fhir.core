@@ -286,6 +286,18 @@
                         <redirectTestOutputToFile>false</redirectTestOutputToFile>
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>8.2.1</version>
+                    <configuration>
+                        <suppressionFiles>
+                            <suppressionFile>cve-suppression.xml</suppressionFile>
+                        </suppressionFiles>
+                        <format>sarif</format>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -680,5 +692,42 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>OWASP_CHECK</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                                <configuration>
+                                    <failBuildOnCVSS>10</failBuildOnCVSS>
+                                    <skipTestScope>true</skipTestScope>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
