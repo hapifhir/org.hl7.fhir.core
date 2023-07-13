@@ -295,7 +295,7 @@
                         <suppressionFiles>
                             <suppressionFile>cve-suppression.xml</suppressionFile>
                         </suppressionFiles>
-                        <format>sarif,html</format>
+                        <formats>sarif,html</formats>
                     </configuration>
                 </plugin>
             </plugins>
