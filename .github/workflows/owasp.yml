@@ -1,4 +1,3 @@
-
 name: "OWASP Security Scans"
 
 on:
@@ -8,6 +7,7 @@ on:
     branches: [ "master" ]
 
   workflow_dispatch:
+
 jobs:
   analyze:
     name: Analyze
@@ -30,6 +30,6 @@ jobs:
         sarif_file: target/dependency-check-report.sarif
         # Optional category for the results
         # Used to differentiate multiple results for one commit
-        category: OWASP-dependency-check
 
+        category: OWASP-dependency-check
 
