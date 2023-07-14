@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.weso.shex.Schema;
-import es.weso.shex.validator.ShExsValidator;
-import es.weso.shex.validator.ShExsValidatorBuilder;
+import es.weso.shexsjena.ShExsJenaValidator;
+import es.weso.shexsjena.ShExsJenaValidatorBuilder;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
@@ -353,7 +353,7 @@ public class ShexGeneratorTests {
 
         if (validateShEx) {
           try {
-            ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
+            ShExsJenaValidator validator =ShExsJenaValidatorBuilder.fromStringSync(schema, "ShexC");
             Schema sch = validator.schema();
 
             Assert.assertNotNull(sch);
@@ -405,7 +405,7 @@ public class ShexGeneratorTests {
       if (!schema.isEmpty()) {
         if (validateShEx) {
           try {
-            ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
+            ShExsJenaValidator validator = ShExsJenaValidatorBuilder.fromStringSync(schema, "ShexC");
             Schema sch = validator.schema();
 
             Assert.assertNotNull(sch);
