@@ -1,9 +1,10 @@
-
-name: "OWASP"
+name: "OWASP Security Scans"
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
   workflow_dispatch:
 
@@ -29,4 +30,6 @@ jobs:
         sarif_file: target/dependency-check-report.sarif
         # Optional category for the results
         # Used to differentiate multiple results for one commit
-        category: OWASP-analysis
+
+        category: OWASP-dependency-check
+
