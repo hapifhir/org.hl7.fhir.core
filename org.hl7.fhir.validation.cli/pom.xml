@@ -415,6 +415,24 @@
                         <skip>true</skip>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <configuration>
+                        <suppressionFiles>
+                            <suppressionFile>cve-suppression.xml</suppressionFile>
+                        </suppressionFiles>
+                        <excludes>
+                            <!-- These are our own modules, and contain test archives for zip-slip, which break owasp
+                            archive extraction -->
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.convertors</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.r4b</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.r5</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.utilities</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.validation</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
         	</plugins>
         </pluginManagement>
     </build>
