@@ -655,13 +655,18 @@ public class HumanName extends Type implements ICompositeType {
   }
 
   /**
-   * Returns all of the components of the name (prefix, given, family, suffix) as a single string with a single spaced
-   * string separating each part.
-   * <p>
-   * If none of the parts are populated, returns the {@link #getTextElement() text} element value instead.
-   * </p>
+   * <p>Returns the {@link #getTextElement() text} element value if it is not null.</p>
+
+   * <p>If the {@link #getTextElement() text} element value is null, returns all the components of the name (prefix,
+   * given, family, suffix) as a single string with a single spaced string separating each part. </p>
+   *
+   * @return the human name as a single string
    */
   public String getNameAsSingleString() {
+    if (hasText()) {
+      return getText().toString();
+    }
+
     List<StringType> nameParts = new ArrayList<StringType>();
     nameParts.addAll(getPrefix());
     nameParts.addAll(getGiven());
