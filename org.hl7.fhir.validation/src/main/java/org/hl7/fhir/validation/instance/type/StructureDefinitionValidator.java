@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Resource;
@@ -760,6 +761,9 @@ public class StructureDefinitionValidator extends BaseValidator {
     String code = type.getNamedChildValue("code");
     if (code == null && path != null) {
       code = getTypeCodeFromSD(sd, path);
+    } else {
+      Set<String> types = getTypeCodesFromSD(sd, path);
+      ok = rulePlural(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), types.isEmpty() || types.contains(code), types.size(), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TYPE, code, types.toString(), sd.getVersionedUrl());
     }
     if (code != null) {
       List<Element> profiles = type.getChildrenByName("profile");
@@ -778,7 +782,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     }
-    return true;
+    return ok;
   }
 
   private boolean validateProfileTypeOrTarget(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
@@ -831,6 +835,18 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     return ed != null && ed.getType().size() == 1 ? ed.getTypeFirstRep().getCode() : null;
+  }
+
+  private Set<String> getTypeCodesFromSD(StructureDefinition sd, String path) {
+    Set<String> codes = new HashSet<>();
+    for (ElementDefinition t : sd.getSnapshot().getElement()) {
+      if (t.hasPath() && t.getPath().equals(path)) {
+        for (TypeRefComponent tr : t.getType()) {
+          codes.add(tr.getCode());
+        }
+      }
+    }
+    return codes;
   }
 
   private boolean validateTypeProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
