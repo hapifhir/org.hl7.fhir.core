@@ -1,0 +1,35 @@
+name: "OWASP Security Scans"
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - run: |
+        mvn -DskipTests install -P OWASP_CHECK
+
+    - run: |
+        mvn -DskipTests dependency-check:aggregate -P OWASP_CHECK
+
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        # Path to SARIF file relative to the root of the repository
+        sarif_file: target/dependency-check-report.sarif
+        # Optional category for the results
+        # Used to differentiate multiple results for one commit
+
+        category: OWASP-dependency-check
+

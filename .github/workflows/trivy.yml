@@ -1,4 +1,4 @@
-name: Trivy Security Scans
+name: "Trivy Security Scans"
 
 on:
   push:
@@ -32,4 +32,4 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: 'trivy-results.sarif'
-          category: 'code'
+          category: 'Trivy-security-scan'

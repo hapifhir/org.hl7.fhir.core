@@ -96,6 +96,15 @@ public class BaseWorkerContextTests {
   }
 
   @Test
+  public void testAddServerValidationParametersVsAsUrl() throws IOException {
+    BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
+    Parameters pin = new Parameters();
+    baseWorkerContext.addServerValidationParameters(new ValueSet().setUrl("http://dummy.org/vs"), pin, new ValidationOptions().setVsAsUrl(true));
+    assertEquals("uri", pin.getParameter("url").getValue().fhirType());
+    assertEquals("http://dummy.org/vs", pin.getParameter("url").getValue().primitiveValue());
+  }
+
+  @Test
   public void testAddServerValidationParametersDisplayError() throws IOException {
     BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
 
