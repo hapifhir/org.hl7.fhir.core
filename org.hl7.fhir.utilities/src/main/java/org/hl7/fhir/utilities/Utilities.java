@@ -1373,6 +1373,21 @@ public class Utilities {
     }
   }
 
+  public static String describeDuration(long ms) {
+    long days = ms / (1000 * 60 * 60 * 24);
+    long hours = ms / (1000 * 60 * 60) % 24;
+    long mins = ms / (1000 * 60) % 60;
+    long secs = ms / (1000) % 60;
+    ms = ms % 1000;
+    if (days > 0) {
+      return ""+days+"d "+hours+":"+mins+":"+secs+"."+ms;      
+    } else {
+      return ""+hours+":"+mins+":"+secs+"."+ms;
+    }
+    
+
+  }
+
   public static boolean startsWithInList(String s, String... list) {
     if (s == null) {
       return false;
@@ -1650,9 +1665,23 @@ public class Utilities {
     if (b.length() == 19) {
       b.append(".000");
     }
-    return applyDatePrecision(b.toString(), precision)+res[1];
+    String tz;
+    if (precision <= 10) {
+      tz = "";
+    } else {
+      tz = Utilities.noString(res[1]) ? defLowTimezone(b.toString()) : res[1];
+    }
+    return applyDatePrecision(b.toString(), precision)+tz;
   }
 
+  private static String defLowTimezone(String string) {
+    return "+14:00"; // Kiribati permanent timezone since 1994 and we don't worry about before then 
+  }
+
+  private static String defHighTimezone(String string) {
+    return "-12:00"; // Parts of Russia, Antarctica, Baker Island and Midway Atoll 
+  }
+  
   public static String lowBoundaryForTime(String value, int precision) {
     String[] res = splitTimezone(value);
     StringBuilder b = new StringBuilder(res[0]);
@@ -1748,7 +1777,13 @@ public class Utilities {
     if (b.length() == 19) {
       b.append(".999");
     }
-    return applyDatePrecision(b.toString(), precision)+res[1];
+    String tz;
+    if (precision <= 10) {
+      tz = "";
+    } else {
+      tz = Utilities.noString(res[1]) ? defHighTimezone(b.toString()) : res[1];
+    }
+    return applyDatePrecision(b.toString(), precision)+tz;
   }
 
   private static String dayCount(int y, int m) {
