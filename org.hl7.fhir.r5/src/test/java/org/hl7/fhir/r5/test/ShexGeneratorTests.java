@@ -7,9 +7,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.weso.shex.Schema;
-import es.weso.shex.validator.ShExsValidator;
-import es.weso.shex.validator.ShExsValidatorBuilder;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
@@ -353,12 +350,13 @@ public class ShexGeneratorTests {
 
         if (validateShEx) {
           try {
-            ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
-            Schema sch = validator.schema();
-
-            Assert.assertNotNull(sch);
-
-            System.out.println("VALIDATION PASSED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
+            throw new Error("Not supported while ShEx library support is re-investigated");
+//            ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
+//            Schema sch = validator.schema();
+//
+//            Assert.assertNotNull(sch);
+//
+//            System.out.println("VALIDATION PASSED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
           } catch (Exception e) {
             System.out.println("VALIDATION FAILED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
             e.printStackTrace();
@@ -405,11 +403,13 @@ public class ShexGeneratorTests {
       if (!schema.isEmpty()) {
         if (validateShEx) {
           try {
-            ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
-            Schema sch = validator.schema();
+            throw new Error("Not supported while ShEx library support is re-investigated");
 
-            Assert.assertNotNull(sch);
-            System.out.println("VALIDATION PASSED for ShEx Schema ALL SHEX STRUCTURES");
+//            ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
+//            Schema sch = validator.schema();
+//
+//            Assert.assertNotNull(sch);
+//            System.out.println("VALIDATION PASSED for ShEx Schema ALL SHEX STRUCTURES");
           } catch (Exception e) {
             System.out.println("VALIDATION FAILED for ShEx Schema ALL SHEX STRUCTURES");
             e.printStackTrace();
