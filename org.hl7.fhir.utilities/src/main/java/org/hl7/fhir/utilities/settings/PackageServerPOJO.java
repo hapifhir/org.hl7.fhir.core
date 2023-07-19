@@ -21,4 +21,6 @@ public class PackageServerPOJO {
 
     String password;
 
+    String token;
+
 }

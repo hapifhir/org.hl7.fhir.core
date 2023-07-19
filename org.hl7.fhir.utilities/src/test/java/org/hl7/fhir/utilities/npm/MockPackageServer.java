@@ -12,6 +12,8 @@ public class MockPackageServer {
   public static final String DUMMY_PACKAGE_VERSION = "0.2.0";
   public static final String DUMMY_USERNAME = "alfred";
   public static final String DUMMY_PASSWORD = "numan";
+
+  public static final String DUMMY_TOKEN = "dummyTokenValue";
   MockWebServer server = new MockWebServer();
   HttpUrl httpUrl;
 

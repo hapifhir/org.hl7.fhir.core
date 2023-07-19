@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
@@ -26,8 +25,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class PackageClient {
-
-
 
   private PackageServer server;
   private String address;
@@ -184,10 +181,10 @@ public class PackageClient {
   @Nonnull
   private SimpleHTTPClient getSimpleHTTPClient() {
     SimpleHTTPClient client = new SimpleHTTPClient();
-    if (server.getMode() == PackageServer.PackageServerAuthenticationMode.BASIC) {
-      client.setUsername(server.getUsername());
-      client.setPassword(server.getPassword());
-    }
+    client.setAuthenticationMode(server.getAuthenticationMode());
+    client.setUsername(server.getUsername());
+    client.setPassword(server.getPassword());
+    client.setToken(server.getToken());
     return client;
   }
 

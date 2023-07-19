@@ -1,19 +1,17 @@
 package org.hl7.fhir.utilities.npm;
 
 import lombok.Getter;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.PackageServerPOJO;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PackageServer {
 
-  public enum PackageServerAuthenticationMode {
-    NONE,
-    BASIC
-  }
 
   public enum PackageServerType {
     FHIR,
@@ -22,14 +20,14 @@ public class PackageServer {
 
   public PackageServer(String url) {
     this.url = url;
-    mode = PackageServerAuthenticationMode.NONE;
+    authenticationMode = SimpleHTTPClient.AuthenticationMode.NONE;
     serverType = PackageServerType.FHIR;
   }
 
   private String url;
 
   @Getter
-  private PackageServerAuthenticationMode mode;
+  private  SimpleHTTPClient.AuthenticationMode authenticationMode;
 
   @Getter
   private PackageServerType serverType;
@@ -39,6 +37,9 @@ public class PackageServer {
 
   @Getter
   private String password;
+
+  @Getter
+  private String token;
   public String getUrl() {
     return url;
   }
@@ -63,13 +64,20 @@ public class PackageServer {
 
   public static PackageServer getPackageServerFromPOJO(PackageServerPOJO pojo) {
     return new PackageServer(pojo.getUrl())
-      .withMode(pojo.getAuthenticationType() != null && pojo.getAuthenticationType().equalsIgnoreCase("basic") ?
-        PackageServer.PackageServerAuthenticationMode.BASIC : null)
+      .withAuthenticationMode(getModeFromPOJO(pojo))
       .withServerType(
         pojo.getServerType() != null && pojo.getServerType().equalsIgnoreCase("npm") ? PackageServerType.NPM : PackageServerType.FHIR
       )
       .withUsername(pojo.getUsername())
-      .withPassword(pojo.getPassword());
+      .withPassword(pojo.getPassword())
+      .withToken(pojo.getToken());
+  }
+
+  @Nullable
+  private static SimpleHTTPClient.AuthenticationMode getModeFromPOJO(PackageServerPOJO pojo) {
+    if (pojo.getAuthenticationType().equalsIgnoreCase("basic")) return  SimpleHTTPClient.AuthenticationMode.BASIC;
+    if (pojo.getAuthenticationType().equalsIgnoreCase("token")) return  SimpleHTTPClient.AuthenticationMode.TOKEN;
+    return null;
   }
 
   public static List<PackageServer> getConfiguredServers() {
@@ -85,16 +93,17 @@ public class PackageServer {
 
   public PackageServer copy() {
     PackageServer packageServer = new PackageServer(url);
-    packageServer.mode = this.mode;
+    packageServer.authenticationMode = this.authenticationMode;
     packageServer.serverType = this.serverType;
     packageServer.username = this.username;
     packageServer.password = this.password;
+    packageServer.token = this.token;
     return packageServer;
   }
 
-  public PackageServer withMode(PackageServerAuthenticationMode mode) {
+  public PackageServer withAuthenticationMode( SimpleHTTPClient.AuthenticationMode mode) {
     PackageServer packageServer = this.copy();
-    packageServer.mode = mode;
+    packageServer.authenticationMode = mode;
     return packageServer;
   }
 
@@ -113,6 +122,12 @@ public class PackageServer {
   public PackageServer withUsername(String username) {
     PackageServer packageServer = this.copy();
     packageServer.username = username;
+    return packageServer;
+  }
+
+  public PackageServer withToken(String token) {
+    PackageServer packageServer = this.copy();
+    packageServer.token = token;
     return packageServer;
   }
 }
