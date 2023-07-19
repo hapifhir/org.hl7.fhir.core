@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -243,7 +244,13 @@ public class TerminologyServiceTests {
     }
     if (p.hasParameter("mode") && "lenient-display-validation".equals(p.getParameterString("mode"))) {
       options = options.setDisplayWarningMode(true);
-   }
+    }
+    engine.getContext().getExpansionParameters().clearParameters("alternateCodes");
+    for (ParametersParameterComponent pp : p.getParameter()) {
+      if ("alternateCodes".equals(pp.getName())) {
+        engine.getContext().getExpansionParameters().addParameter(pp.copy());
+      }
+    }
     ValidationResult vm;
     if (p.hasParameter("code")) {
       vm = engine.getContext().validateCode(options.withGuessSystem(), p.getParameterString("system"), p.getParameterString("systemVersion"), p.getParameterString("code"), p.getParameterString("display"), vs);
