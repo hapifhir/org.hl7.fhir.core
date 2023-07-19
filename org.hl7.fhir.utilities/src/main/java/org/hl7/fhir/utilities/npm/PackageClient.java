@@ -50,23 +50,21 @@ public class PackageClient {
     return fetchCached(getPackageTarballUrl(id, ver));
   }
 
-  private String getPackageTarballUrl(String id, String ver) {
+  private String getPackageTarballUrl(String id, String ver) throws IOException {
     if (server.getServerType() == PackageServer.PackageServerType.NPM) {
       return getNpmServerTarballUrl(id, ver);
     }
     return Utilities.pathURL(address, id, ver);
   }
 
-  private String getNpmServerTarballUrl(String id, String ver) {
+  private String getNpmServerTarballUrl(String id, String ver) throws IOException {
     String packageDescriptorUrl = Utilities.pathURL(address, id, ver);
     JsonObject json;
-    try {
+
       json = fetchJson(packageDescriptorUrl);
       JsonObject dist = json.getJsonObject("dist");
       return dist.getJsonString("tarball").asString();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+
   }
 
   public InputStream fetch(PackageInfo info) throws IOException {

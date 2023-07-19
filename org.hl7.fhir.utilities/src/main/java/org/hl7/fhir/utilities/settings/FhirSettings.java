@@ -213,7 +213,7 @@ public class FhirSettings {
 
   public static boolean isIgnoreDefaultPackageServers() {
     getInstance();
-    if (instance.fhirSettings.getPackageManagement() == null) {
+    if (instance.fhirSettings.getPackageManagement() == null || instance.fhirSettings.getPackageManagement().getIgnoreDefaultServers() == null) {
       return false;
     }
     return instance.fhirSettings.getPackageManagement().getIgnoreDefaultServers();

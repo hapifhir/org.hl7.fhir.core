@@ -48,6 +48,10 @@ public class MockPackageServer {
     server.enqueue(new MockResponse().setBody(getDummyPackageAsBuffer()));
   }
 
+  public void enqueueResponseCode(int code) throws IOException {
+    server.enqueue(new MockResponse().setResponseCode(code));
+  }
+
   private Buffer getDummyPackageAsBuffer() throws IOException {
 
     byte[] fileData = this.getClass().getResourceAsStream("/npm/dummy-package.tgz").readAllBytes();

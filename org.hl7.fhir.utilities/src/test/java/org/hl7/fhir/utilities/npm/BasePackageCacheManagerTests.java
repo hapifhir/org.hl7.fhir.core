@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.npm;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Nonnull;
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BasePackageCacheManagerTests {
 
   @Test
-  public void testPrivatePackageBasicAuth() throws IOException {
+  public void testPackageBasicAuth() throws IOException {
     BasePackageCacheManager basePackageCacheManager = getFakeBasePackageCacheManager();
 
     MockPackageServer server = new MockPackageServer();
@@ -34,13 +35,51 @@ public class BasePackageCacheManagerTests {
 
     BasePackageCacheManager.InputStreamWithSrc inputWithSrc = basePackageCacheManager.loadFromPackageServer("example.fhir.uv.myig", "0.2.0");
 
+    assertCorrectPackageContent(inputWithSrc);
+    server.shutdown();
+  }
 
+  @Test
+  @DisplayName("Test that package management moves to next server after 404")
+  public void testPackageWithConfiguredServer404() throws IOException {
+    BasePackageCacheManager basePackageCacheManager = getFakeBasePackageCacheManager();
+
+    MockPackageServer serverA = new MockPackageServer();
+    serverA.enqueueResponseCode(404);
+
+    MockPackageServer serverB = new MockPackageServer();
+
+    serverB.enqueueDummyPackageDescription();
+    serverB.enqueueDummyPackage();
+
+    String packageServerAUrl = serverA.getPackageServerUrl();
+    String packageServerBUrl = serverB.getPackageServerUrl();
+
+    PackageServer testServerA = new PackageServer(packageServerAUrl)
+      .withAuthenticationMode(SimpleHTTPClient.AuthenticationMode.BASIC)
+      .withServerType(PackageServer.PackageServerType.NPM);
+
+    PackageServer testServerB = new PackageServer(packageServerBUrl)
+      .withAuthenticationMode(SimpleHTTPClient.AuthenticationMode.BASIC)
+      .withServerType(PackageServer.PackageServerType.NPM);
+
+    basePackageCacheManager.addPackageServer(testServerA);
+    basePackageCacheManager.addPackageServer(testServerB);
+    basePackageCacheManager.myPackageServers.addAll(PackageServer.defaultServers());
+
+    BasePackageCacheManager.InputStreamWithSrc inputWithSrc = basePackageCacheManager.loadFromPackageServer("example.fhir.uv.myig", "0.2.0");
+
+    assertCorrectPackageContent(inputWithSrc);
+    serverA.shutdown();
+    serverB.shutdown();
+  }
+
+  private static void assertCorrectPackageContent(BasePackageCacheManager.InputStreamWithSrc inputWithSrc) throws IOException {
     NpmPackage npmPackage = NpmPackage.fromPackage(inputWithSrc.stream, inputWithSrc.url, false);
 
     assertEquals("Dummy IG For Testing", npmPackage.title())
     ;
     assertEquals("Dummy IG description (built Thu, Jul 6, 2023 15:16-0400-04:00)", npmPackage.description());
-    server.shutdown();
   }
 
   @Nonnull
