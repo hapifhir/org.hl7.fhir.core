@@ -114,14 +114,15 @@ import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProvider;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProviderExtension;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
-public class ValueSetExpander {
+public class ValueSetExpander extends ValueSetProcessBase {
 
 
-  private static final boolean REPORT_VERSION_ANYWAY = false;
+  private static final boolean REPORT_VERSION_ANYWAY = true;
   
   private IWorkerContext context;
   private ValueSet focus;
@@ -247,14 +248,14 @@ public class ValueSetExpander {
         if (csProps != null && p.hasValue()) {
           for (ConceptPropertyComponent cp : csProps) {
             if (p.getValue().primitiveValue().equals(cp.getCode())) {
-              n.addProperty().setCode(cp.getCode()).setValue(cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-metadata");
+              n.addProperty().setCode(cp.getCode()).setValue(cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
             }
           }
         }
         if (expProps != null && p.hasValue()) {
           for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent cp : expProps) {
             if (p.getValue().primitiveValue().equals(cp.getCode())) {
-              n.addProperty(cp).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-metadata");
+              n.addProperty(cp).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
             }
           }
         }        
@@ -327,40 +328,15 @@ public class ValueSetExpander {
   
   private List<String> getCodesForConcept(ValueSetExpansionContainsComponent focus, Parameters expParams) {
     List<String> codes = new ArrayList<>();
-    List<String> uses = new ArrayList<>();
     codes.add(focus.getCode());
-    boolean all = false;
-    for (ParametersParameterComponent p : expParams.getParameter()) {
-      if ("alternateCodes".equals(p.getName())) {
-        if (p.hasValueBooleanType()) {
-          all = p.getValueBooleanType().booleanValue();
-        } else if (p.getValue().isPrimitive()) {
-          String s = p.getValue().primitiveValue();
-          if (!Utilities.noString(s)) {
-            uses.add(s);
-          }
-        }
-      }
-    }
     for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent p : focus.getProperty()) {
-      if ("alternateCode".equals(p.getCode()) && (all || hasUse(p, uses)) && p.getValue().isPrimitive()) {
+      if ("alternateCode".equals(p.getCode()) && (altCodeParams.passes(p.getExtension())) && p.getValue().isPrimitive()) {
         codes.add(p.getValue().primitiveValue());        
       }
     }
     return codes;
   }
 
-  private static boolean hasUse(org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent p, List<String> uses) {
-    for (Extension ext : p.getExtensionsByUrl(ToolingExtensions.EXT_CS_ALTERNATE_METADATA)) {
-      Extension se = ext.getExtensionByUrl("use");
-      if (se != null && se.hasValueCoding() && Utilities.existsInList(se.getValueCoding().getCode(), uses)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  
   private List<ConceptDefinitionDesignationComponent> convert(List<ConceptReferenceDesignationComponent> designations) {
     List<ConceptDefinitionDesignationComponent> list = new ArrayList<ConceptDefinitionDesignationComponent>();
     for (ConceptReferenceDesignationComponent d : designations) {
@@ -405,23 +381,9 @@ public class ValueSetExpander {
 
   private List<String> getCodesForConcept(ConceptDefinitionComponent focus, Parameters expParams) {
     List<String> codes = new ArrayList<>();
-    List<String> uses = new ArrayList<>();
     codes.add(focus.getCode());
-    boolean all = false;
-    for (ParametersParameterComponent p : expParams.getParameter()) {
-      if ("alternateCodes".equals(p.getName())) {
-        if (p.hasValueBooleanType()) {
-          all = p.getValueBooleanType().booleanValue();
-        } else if (p.getValue().isPrimitive()) {
-          String s = p.getValue().primitiveValue();
-          if (!Utilities.noString(s)) {
-            uses.add(s);
-          }
-        }
-      }
-    }
     for (ConceptPropertyComponent p : focus.getProperty()) {
-      if ("alternateCode".equals(p.getCode()) && (all || hasUse(p, uses)) && p.getValue().isPrimitive()) {
+      if ("alternateCode".equals(p.getCode()) && (altCodeParams.passes(p.getExtension())) && p.getValue().isPrimitive()) {
         codes.add(p.getValue().primitiveValue());        
       }
     }
@@ -429,9 +391,8 @@ public class ValueSetExpander {
   }
 
   private static boolean hasUse(ConceptPropertyComponent p, List<String> uses) {
-    for (Extension ext : p.getExtensionsByUrl(ToolingExtensions.EXT_CS_ALTERNATE_METADATA)) {
-      Extension se = ext.getExtensionByUrl("use");
-      if (se != null && se.hasValueCoding() && Utilities.existsInList(se.getValueCoding().getCode(), uses)) {
+    for (Extension ext : p.getExtensionsByUrl(ToolingExtensions.EXT_CS_ALTERNATE_USE)) {
+      if (ext.hasValueCoding() && Utilities.existsInList(ext.getValueCoding().getCode(), uses)) {
         return true;
       }
     }
@@ -533,6 +494,9 @@ public class ValueSetExpander {
   public ValueSetExpansionOutcome doExpand(ValueSet source, Parameters expParams) throws FHIRException, ETooCostly, FileNotFoundException, IOException, CodeSystemProviderExtension {
     if (expParams == null)
       expParams = makeDefaultExpansion();
+    altCodeParams.seeParameters(expParams);
+    altCodeParams.seeValueSet(source);
+    
     source.checkNoModifiers("ValueSet", "expanding");
     focus = source.copy();
     focus.setIdBase(null);
@@ -838,6 +802,13 @@ public class ValueSetExpander {
       UriType u = new UriType(cs.getUrl() + (cs.hasVersion() ? "|"+cs.getVersion() : ""));
       if (!existsInParams(exp.getParameter(), "version", u))
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
+      if (cs.hasUserData("supplements.installed")) {
+        for (String s : cs.getUserString("supplements.installed").split("\\,")) {
+          u = new UriType(s);
+          if (!existsInParams(exp.getParameter(), "version", u))
+            exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
+        }
+      }
     }
     if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
       // special case - add all the code system
