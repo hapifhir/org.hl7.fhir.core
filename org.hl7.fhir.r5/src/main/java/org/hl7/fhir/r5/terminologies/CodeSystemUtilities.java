@@ -483,9 +483,8 @@ public class CodeSystemUtilities {
   }
 
   private static boolean hasUse(ConceptPropertyComponent p, String use) {
-    for (Extension ext : p.getExtensionsByUrl(ToolingExtensions.EXT_CS_ALTERNATE_METADATA)) {
-      Extension se = ext.getExtensionByUrl("use");
-      if (se != null && se.hasValueCoding() && use.equals(se.getValueCoding().getCode())) {
+    for (Extension ext : p.getExtensionsByUrl(ToolingExtensions.EXT_CS_ALTERNATE_USE)) {
+      if (ext.hasValueCoding() && use.equals(ext.getValueCoding().getCode())) {
         return true;
       }
     }
@@ -781,7 +780,7 @@ public class CodeSystemUtilities {
           } else {
             code = defineProperty(ret, p.getCode(), propertyTypeForType(p.getValue()));
           }
-          fdef.addProperty().setCode(code).setValue(p.getValue()).copyExtensions(p, "http://hl7.org/fhir/StructureDefinition/alternate-code-metadata");
+          fdef.addProperty().setCode(code).setValue(p.getValue()).copyExtensions(p, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
         }
       }
       for (ConceptDefinitionComponent t : fdef.getConcept()) {

@@ -123,6 +123,7 @@ public class TerminologyServiceTests {
     }
     ValidationEngine engine = new ValidationEngine(this.baseEngine);
     for (String s : setup.suite.forceArray("setup").asStrings()) {
+      // System.out.println(s);
       Resource res = loadResource(s);
       engine.seeResource(res);
     }
@@ -245,9 +246,9 @@ public class TerminologyServiceTests {
     if (p.hasParameter("mode") && "lenient-display-validation".equals(p.getParameterString("mode"))) {
       options = options.setDisplayWarningMode(true);
     }
-    engine.getContext().getExpansionParameters().clearParameters("alternateCodes");
+    engine.getContext().getExpansionParameters().clearParameters("includeAlternateCodes");
     for (ParametersParameterComponent pp : p.getParameter()) {
-      if ("alternateCodes".equals(pp.getName())) {
+      if ("includeAlternateCodes".equals(pp.getName())) {
         engine.getContext().getExpansionParameters().addParameter(pp.copy());
       }
     }
