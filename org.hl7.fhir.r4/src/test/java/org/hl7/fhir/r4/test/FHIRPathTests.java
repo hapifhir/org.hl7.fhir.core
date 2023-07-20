@@ -306,5 +306,12 @@ public class FHIRPathTests {
 
   }
 
-
+  @Test
+  public void testEvaluate_Id() {
+    Patient input = new Patient();
+    input.setId(new IdType("http://base/Patient/123/_history/222"));
+    List<Base> results = fp.evaluate(input, "Patient.id");
+    assertEquals(1, results.size());
+    assertEquals("123", results.get(0).toString());
+  }
 }
