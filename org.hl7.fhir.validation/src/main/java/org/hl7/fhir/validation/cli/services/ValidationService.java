@@ -48,6 +48,7 @@ import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
@@ -225,7 +226,9 @@ public class ValidationService {
         Thread.sleep(watchScanDelay);
       }
     } while (watch != ValidatorWatchMode.NONE);
-    System.exit(ec > 0 ? 1 : 0);
+    if (ec > 0) {
+      SystemExitManager.setError(1);
+    }
   }
 
   private int countErrors(OperationOutcome oo) {
