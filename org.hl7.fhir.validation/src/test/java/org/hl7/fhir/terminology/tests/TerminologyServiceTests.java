@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -290,7 +291,7 @@ public class TerminologyServiceTests {
     }
     if (vm.getUnknownSystems() != null) {
       for (String s : vm.getUnknownSystems()) {
-        res.addParameter("x-caused-by-unknown-system", new UriType(s));
+        res.addParameter("x-caused-by-unknown-system", new CanonicalType(s));
       }
     }
     if (vm.getIssues().size() > 0) {
