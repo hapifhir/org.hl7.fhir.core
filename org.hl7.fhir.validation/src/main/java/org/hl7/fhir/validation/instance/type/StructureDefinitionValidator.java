@@ -549,13 +549,17 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   private List<String> getTypesForElement(List<Element> elements, Element element) {
     List<String> types = new ArrayList<>();
-    for (Element tr : element.getChildrenByName("type")) {
-      String t = tr.getNamedChildValue("code");
-      if (t != null) {
-        if (isAbstractType(t) && hasChildren(element, elements) ) {
-          types.add(element.getNamedChildValue("path"));
-        } else {
-          types.add(t);
+    if (element.hasChild("path") && !element.getNamedChildValue("path").contains(".")) {
+      types.add(element.getNamedChildValue("path"));
+    } else {
+      for (Element tr : element.getChildrenByName("type")) {
+        String t = tr.getNamedChildValue("code");
+        if (t != null) {
+          if (isAbstractType(t) && hasChildren(element, elements) ) {
+            types.add(element.getNamedChildValue("path"));
+          } else {
+            types.add(t);
+          }
         }
       }
     }
