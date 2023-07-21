@@ -447,12 +447,19 @@ public class FHIRPathEngine {
     if (list != null) {
       for (Base v : list) {
         if (v != null && (tn == null || v.fhirType().equalsIgnoreCase(tn))) {
-          result.add(v);
+          result.add(filterIdType(v));
         }
       }
     }
   }
 
+
+  private Base filterIdType(Base v) {
+    if (v instanceof IIdType) {
+      return (Base) ((IIdType) v).toUnqualifiedVersionless().withResourceType(null);
+    }
+    return v;
+  }
 
   public boolean isLegacyMode() {
     return legacyMode;
