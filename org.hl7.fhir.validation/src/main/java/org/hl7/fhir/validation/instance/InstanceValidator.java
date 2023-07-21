@@ -368,10 +368,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       if (externalHostServices != null) {
-        return externalHostServices.resolveReference(c.getAppContext(), url, refContext);
+        return setParentsBase(externalHostServices.resolveReference(c.getAppContext(), url, refContext));
       } else if (fetcher != null) {
         try {
-          return fetcher.fetch(InstanceValidator.this, c.getAppContext(), url);
+          return setParents(fetcher.fetch(InstanceValidator.this, c.getAppContext(), url));
         } catch (IOException e) {
           throw new FHIRException(e);
         }
@@ -5620,11 +5620,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean checkDisplay = true;
 
     SpecialElement special = ei.getElement().getSpecial();
-    if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.BUNDLE_ISSUES || special == SpecialElement.PARAMETER) {
-      ok = checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, ei.getElement(), ei.getElement(), localStack, false) && ok;
-    } else {
-      ok = checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, resource, ei.getElement(), localStack, false) && ok;
-    }
+    // this used to say
+    //   if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.BUNDLE_ISSUES || special == SpecialElement.PARAMETER) {
+    //      ok = checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, ei.getElement(), ei.getElement(), localStack, false) && ok;
+    // but this isn't correct - when the invariant is on the element, the invariant is in the context of the resource that contains the element.
+    // changed 18-Jul 2023 - see https://chat.fhir.org/#narrow/stream/179266-fhirpath/topic/FHIRPath.20.25resource.20variable
+    ok = checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, resource, ei.getElement(), localStack, false) && ok;
 
     ei.getElement().markValidation(profile, checkDefn);
     boolean elementValidated = false;
@@ -5770,8 +5771,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       int index = profile.getSnapshot().getElement().indexOf(checkDefn);
       if (index < profile.getSnapshot().getElement().size() - 1) {
         String nextPath = profile.getSnapshot().getElement().get(index + 1).getPath();
-        if (!nextPath.equals(checkDefn.getPath()) && nextPath.startsWith(checkDefn.getPath()))
-          ok = validateElement(hostContext, errors, profile, checkDefn, null, null, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension, pct, mode) && ok;
+        if (!nextPath.equals(checkDefn.getPath()) && nextPath.startsWith(checkDefn.getPath())) {
+          if (ei.getElement().getSpecial() == SpecialElement.BUNDLE_ENTRY || ei.getElement().getSpecial() == SpecialElement.BUNDLE_OUTCOME || ei.getElement().getSpecial() == SpecialElement.PARAMETER) {
+            ok = validateElement(hostContext.forEntry(ei.getElement(), null), errors, profile, checkDefn, null, null, ei.getElement(), ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension, pct, mode) && ok;                        
+          } else if (ei.getElement().getSpecial() == SpecialElement.CONTAINED) {
+            ok = validateElement(hostContext.forContained(ei.getElement()), errors, profile, checkDefn, null, null, ei.getElement(), ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension, pct, mode) && ok;            
+          } else {
+            ok = validateElement(hostContext, errors, profile, checkDefn, null, null, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension, pct, mode) && ok;            
+          }
+        }
       }
     }
     return ok;
@@ -6560,11 +6568,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
   }
 
-  public static void setParents(Element element) {
+  public static Element setParents(Element element) {
     if (element != null && !element.hasParentForValidator()) {
       element.setParentForValidator(null);
       setParentsInner(element);
     }
+    return element;
+  }
+  
+  public static Base setParentsBase(Base element) {
+    if (element instanceof Element) {
+      setParents((Element) element);
+    }
+    return element;
   }
   
   public static void setParentsInner(Element element) {

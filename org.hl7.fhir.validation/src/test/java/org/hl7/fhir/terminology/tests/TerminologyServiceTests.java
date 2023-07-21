@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -122,6 +123,7 @@ public class TerminologyServiceTests {
     }
     ValidationEngine engine = new ValidationEngine(this.baseEngine);
     for (String s : setup.suite.forceArray("setup").asStrings()) {
+      // System.out.println(s);
       Resource res = loadResource(s);
       engine.seeResource(res);
     }
@@ -243,7 +245,13 @@ public class TerminologyServiceTests {
     }
     if (p.hasParameter("mode") && "lenient-display-validation".equals(p.getParameterString("mode"))) {
       options = options.setDisplayWarningMode(true);
-   }
+    }
+    engine.getContext().getExpansionParameters().clearParameters("includeAlternateCodes");
+    for (ParametersParameterComponent pp : p.getParameter()) {
+      if ("includeAlternateCodes".equals(pp.getName())) {
+        engine.getContext().getExpansionParameters().addParameter(pp.copy());
+      }
+    }
     ValidationResult vm;
     if (p.hasParameter("code")) {
       vm = engine.getContext().validateCode(options.withGuessSystem(), p.getParameterString("system"), p.getParameterString("systemVersion"), p.getParameterString("code"), p.getParameterString("display"), vs);

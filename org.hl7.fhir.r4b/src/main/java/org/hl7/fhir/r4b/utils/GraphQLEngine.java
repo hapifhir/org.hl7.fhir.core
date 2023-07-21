@@ -119,6 +119,13 @@ public class GraphQLEngine implements IGraphQLEngine {
       default: return super.getNamedProperty(_hash, _name, _checkValid);
       }
     }
+    
+
+    @Override
+    public Base copy() {
+      throw new Error("Not Implemented");
+    }
+
   }
 
   public static class SearchWrapper extends Base {
@@ -206,6 +213,12 @@ public class GraphQLEngine implements IGraphQLEngine {
         }
       }
       return null;
+    }
+
+
+    @Override
+    public Base copy() {
+      throw new Error("Not Implemented");
     }
 
   }

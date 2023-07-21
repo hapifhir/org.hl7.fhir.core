@@ -47,6 +47,8 @@ public class TxTesterScrubbers {
           "http://hl7.org/fhir/test/ValueSet/extensions-bad-supplement", 
           "http://hl7.org/fhir/test/ValueSet/simple-all", 
           "http://hl7.org/fhir/test/ValueSet/simple-enumerated", 
+          "http://hl7.org/fhir/StructureDefinition/alternate-code-use",
+          "http://hl7.org/fhir/StructureDefinition/alternate-code-status",
           "http://hl7.org/fhir/test/ValueSet/simple-filter-isa");
     }
     

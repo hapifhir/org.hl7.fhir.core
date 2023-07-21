@@ -57,8 +57,18 @@ public class UnicodeUtilities {
       return list.isEmpty();
     }
 
-    public String summary() {
-      return "Unicode Character "+describe(list.get(list.size()-1).c)+" at index "+list.get(list.size()-1).i+" has no terminating match";
+    public String summary(String src) {
+      char ch = list.get(list.size()-1).c;
+      int i = list.get(list.size()-1).i;
+      String pt;
+      if (i == 0) {
+        pt = "";
+      } else if (i < 5) {
+        pt = " (preceding text = '"+src.substring(0, i)+"')";
+      } else {
+        pt = " (preceding text = '"+src.substring(i-5, i)+"')";
+      }
+      return "Unicode Character "+describe(ch)+" at index "+i+" has no terminating match"+pt;
     }
 
   
@@ -148,7 +158,7 @@ public class UnicodeUtilities {
     if (ss.empty()) {
       return null;      
     } else {
-      return ss.summary();
+      return ss.summary(src);
     }
   }
 

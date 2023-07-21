@@ -98,5 +98,11 @@ public class Tuple extends Base {
       return getProperty(name.hashCode(), name, checkValid);
   }
 
+  @Override
+  public Base copy() {
+    Tuple tuple = new Tuple();
+    copyValues(tuple);
+    return tuple;
+  }
 
 }

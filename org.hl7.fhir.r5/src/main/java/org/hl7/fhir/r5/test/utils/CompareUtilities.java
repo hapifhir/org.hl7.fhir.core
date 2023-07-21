@@ -351,8 +351,16 @@ public class CompareUtilities extends BaseTestingUtilities {
   private static boolean matches(String actualJsonString, String expectedJsonString) {
     if (expectedJsonString.startsWith("$") && expectedJsonString.endsWith("$")) {
       if (expectedJsonString.startsWith("$choice:")) {
-        return Utilities.existsInList(actualJsonString, readChoices(expectedJsonString));
+        return Utilities.existsInList(actualJsonString, readChoices(8, expectedJsonString));
 
+      } else if (expectedJsonString.startsWith("$fragments:")) {
+        List<String> fragments = readChoices(11, expectedJsonString);
+        for (String f : fragments) {
+          if (!actualJsonString.toLowerCase().contains(f.toLowerCase())) {
+            return false;
+          }
+        }
+        return true;
       } else {
         switch (expectedJsonString) {
         case "$$" : return true;
@@ -367,9 +375,9 @@ public class CompareUtilities extends BaseTestingUtilities {
     }
   }
 
-  private static List<String> readChoices(String s) {
+  private static List<String> readChoices(int offset, String s) {
     List<String> list = new ArrayList<>();
-    s = s.substring(8, s.length()-1);
+    s = s.substring(offset, s.length()-1);
     for (String p : s.split("\\|")) {
       list.add(p);
     }
