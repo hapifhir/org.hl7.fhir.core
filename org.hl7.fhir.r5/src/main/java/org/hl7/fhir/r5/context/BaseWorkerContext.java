@@ -2242,7 +2242,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (Utilities.isAbsoluteUrl(typeName)) {
       return fetchResource(StructureDefinition.class, typeName);
     } else {
-      return fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+typeName);
+      Set<StructureDefinition> types = new HashSet<>();
+      types.addAll(fetchTypeDefinitions(typeName));
+      types.removeIf(sd -> sd.getDerivation() == TypeDerivationRule.CONSTRAINT);
+      if (types.size() == 1) {
+        return types.iterator().next(); 
+      } else if (types.size() > 1) {
+        throw new FHIRException("Ambiguous type "+typeName);
+      } else {
+        return fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+typeName);
+      }
     }
   }
 
@@ -2250,7 +2259,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
     List<StructureDefinition> res = new ArrayList<>();
     structures.listAll(res);
-    res.removeIf(sd -> !sd.hasType() || !sd.getType().equals(typeName));
+    res.removeIf(sd -> !sd.hasType() || !(sd.getType().equals(typeName) || sd.getTypeTail().equals(typeName)));
     return res;
   }
 
