@@ -146,6 +146,11 @@ public class FHIRPathEngine {
     public String primitiveValue() {
       return value;
     }
+
+    @Override
+    public Base copy() {
+      throw new Error("Not Implemented");
+    }
   }
 
   private class ClassTypeInfo extends Base {
@@ -204,6 +209,12 @@ public class FHIRPathEngine {
         return instance.fhirType();
       }
     }
+
+    @Override
+    public Base copy() {
+      throw new Error("Not Implemented");
+    }
+
   }
 
   public static class TypedElementDefinition {
@@ -1400,6 +1411,7 @@ public class FHIRPathEngine {
     case Join: return checkParamCount(lexer, location, exp, 1);    
     case HtmlChecks1: return checkParamCount(lexer, location, exp, 0);
     case HtmlChecks2: return checkParamCount(lexer, location, exp, 0);
+    case Comparable: return checkParamCount(lexer, location, exp, 1);
     case ToInteger: return checkParamCount(lexer, location, exp, 0);
     case ToDecimal: return checkParamCount(lexer, location, exp, 0);
     case ToString: return checkParamCount(lexer, location, exp, 0);
@@ -3332,6 +3344,8 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case HtmlChecks2 : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    case Comparable : 
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Alias : 
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return anything(CollectionStatus.SINGLETON); 
@@ -3548,7 +3562,7 @@ public class FHIRPathEngine {
   }
 
   private void checkContextContinuous(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
-    if (!focus.hasNoTypes() && !focus.hasType("decimal") && !focus.hasType("date") && !focus.hasType("dateTime") && !focus.hasType("time")) {
+    if (!focus.hasNoTypes() && !focus.hasType("decimal") && !focus.hasType("date") && !focus.hasType("dateTime") && !focus.hasType("time") && !focus.hasType("Quantity")) {
       throw makeException(expr, I18nConstants.FHIRPATH_CONTINUOUS_ONLY, name, focus.describe());
     }    
   }
@@ -3638,6 +3652,7 @@ public class FHIRPathEngine {
     case Alias : return funcAlias(context, focus, exp);
     case HtmlChecks1 : return funcHtmlChecks1(context, focus, exp);
     case HtmlChecks2 : return funcHtmlChecks2(context, focus, exp);
+    case Comparable : return funcComparable(context, focus, exp);
     case ToInteger : return funcToInteger(context, focus, exp);
     case ToDecimal : return funcToDecimal(context, focus, exp);
     case ToString : return funcToString(context, focus, exp);
@@ -3876,8 +3891,19 @@ public class FHIRPathEngine {
     return result;
   }
 
+  private String getNamedValue(Base base, String name) {
+    Property p = base.getChildByName(name);
+    if (p.hasValues() && p.getValues().size() == 1) {
+      return p.getValues().get(0).primitiveValue();
+    }
+    return null;
+  }
+
   private List<Base> funcLowBoundary(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-    if (focus.size() != 1) {
+    if (focus.size() == 0) {
+      return makeNull();
+    }
+    if (focus.size() > 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "lowBoundary", focus.size());
     }
     int precision = 0;
@@ -3900,6 +3926,11 @@ public class FHIRPathEngine {
       result.add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == 0 ? 17 : precision)));
     } else if (base.hasType("time")) {
       result.add(new TimeType(Utilities.lowBoundaryForTime(base.primitiveValue(), precision == 0 ? 9 : precision)));
+    } else if (base.hasType("Quantity")) {
+      String value = getNamedValue(base, "value");
+      Base v = base.copy();
+      v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == 0 ? 8 : precision)));
+      result.add(v);
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
     }
@@ -3907,7 +3938,10 @@ public class FHIRPathEngine {
   }
   
   private List<Base> funcHighBoundary(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-    if (focus.size() != 1) {
+    if (focus.size() == 0) {
+      return makeNull();
+    }
+    if (focus.size() > 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "highBoundary", focus.size());
     }
     int precision = 0;
@@ -3930,6 +3964,11 @@ public class FHIRPathEngine {
       result.add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == 0 ? 17 : precision)));
     } else if (base.hasType("time")) {
       result.add(new TimeType(Utilities.highBoundaryForTime(base.primitiveValue(), precision == 0 ? 9 : precision)));
+    } else if (base.hasType("Quantity")) {
+      String value = getNamedValue(base, "value");
+      Base v = base.copy();
+      v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == 0 ? 8 : precision)));
+      result.add(v);
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
     }
@@ -4090,7 +4129,8 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1) {
       String cnt = focus.get(0).primitiveValue();
-      for (String s : cnt.split(param)) {
+      String[] sl = Pattern.compile(param, Pattern.LITERAL).split(cnt);
+      for (String s : sl) {
         result.add(new StringType(s));
       }
     }
@@ -4100,9 +4140,14 @@ public class FHIRPathEngine {
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
-
+    String param2 = param;
+    if (exp.getParameters().size() == 2) {
+      nl = execute(context, focus, exp.getParameters().get(1), true);
+      param2 = nl.get(0).primitiveValue();
+    }
+    
     List<Base> result = new ArrayList<Base>();
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(param);
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(param, param2);
     for (Base i : focus) {
       b.append(i.primitiveValue());    
     }
@@ -4164,6 +4209,38 @@ public class FHIRPathEngine {
     return false;
   }
 
+  private List<Base> funcComparable(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    if (focus.size() != 1 || !(focus.get(0).fhirType().equals("Quantity"))) {
+      return makeBoolean(false);          
+    }
+    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    if (nl.size() != 1 || !(nl.get(0).fhirType().equals("Quantity"))) {
+      return makeBoolean(false);          
+    }
+    String s1 = getNamedValue(focus.get(0), "system");
+    String u1 = getNamedValue(focus.get(0), "code");
+    String s2 = getNamedValue(nl.get(0), "system");
+    String u2 = getNamedValue(nl.get(0), "code");
+    
+    if (s1 == null || s2 == null || !s1.equals(s2)) {
+      return makeBoolean(false);                
+    }
+    if (u1 == null || u2 == null) {
+      return makeBoolean(false);                
+    }
+    if (u1.equals(u2)) {
+      return makeBoolean(true);
+    }
+    if (s1.equals("http://unitsofmeasure.org") && worker.getUcumService() != null) {
+      try {
+        return makeBoolean(worker.getUcumService().isComparable(u1, u2));
+      } catch (UcumException e) {
+        return makeBoolean(false);  
+      }  
+    } else {
+      return makeBoolean(false);  
+    }
+  }
 
   private boolean checkHtmlNames(XhtmlNode node) {
     if (node.getNodeType() == NodeType.Comment) {
