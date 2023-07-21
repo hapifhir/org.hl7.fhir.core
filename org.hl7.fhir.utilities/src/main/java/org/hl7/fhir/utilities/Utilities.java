@@ -34,19 +34,19 @@ import java.util.zip.ZipInputStream;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
+
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
+
+ * Redistributions of source code must retain the above copyright notice, this 
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
+ * Redistributions in binary form must reproduce the above copyright notice, 
      this list of conditions and the following disclaimer in the documentation 
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
+ * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
@@ -57,7 +57,7 @@ import java.util.zip.ZipInputStream;
   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
-  
+
  */
 
 
@@ -376,7 +376,7 @@ public class Utilities {
   }
 
   public static boolean checkFolder(String dir, List<String> errors)
-    throws IOException {
+      throws IOException {
     if (!new CSFile(dir).exists()) {
       errors.add("Unable to find directory " + dir);
       return false;
@@ -386,7 +386,7 @@ public class Utilities {
   }
 
   public static boolean checkFile(String purpose, String dir, String file, List<String> errors)
-    throws IOException {
+      throws IOException {
     if (!new CSFile(dir + file).exists()) {
       if (errors != null)
         errors.add("Unable to find " + purpose + " file " + file + " in " + dir);
@@ -436,8 +436,8 @@ public class Utilities {
                 clearDirectory(fh.getAbsolutePath());
               fh.delete();
             }
-            }
           }
+        }
       }
     }
   }
@@ -548,36 +548,36 @@ public class Utilities {
         i++;
         char ch = json.charAt(i);
         switch (ch) {
-          case '"':
-            b.append('b');
-            break;
-          case '\\':
-            b.append('\\');
-            break;
-          case '/':
-            b.append('/');
-            break;
-          case 'b':
-            b.append('\b');
-            break;
-          case 'f':
-            b.append('\f');
-            break;
-          case 'n':
-            b.append('\n');
-            break;
-          case 'r':
-            b.append('\r');
-            break;
-          case 't':
-            b.append('\t');
-            break;
-          case 'u':
-            String hex = json.substring(i + 1, i + 5);
-            b.append((char) Integer.parseInt(hex, 16));
-            break;
-          default:
-            throw new FHIRException("Unknown JSON escape \\" + ch);
+        case '"':
+          b.append('b');
+          break;
+        case '\\':
+          b.append('\\');
+          break;
+        case '/':
+          b.append('/');
+          break;
+        case 'b':
+          b.append('\b');
+          break;
+        case 'f':
+          b.append('\f');
+          break;
+        case 'n':
+          b.append('\n');
+          break;
+        case 'r':
+          b.append('\r');
+          break;
+        case 't':
+          b.append('\t');
+          break;
+        case 'u':
+          String hex = json.substring(i + 1, i + 5);
+          b.append((char) Integer.parseInt(hex, 16));
+          break;
+        default:
+          throw new FHIRException("Unknown JSON escape \\" + ch);
         }
       } else
         b.append(json.charAt(i));
@@ -590,7 +590,7 @@ public class Utilities {
   public static boolean isPlural(String word) {
     word = word.toLowerCase();
     if ("restricts".equals(word) || "contains".equals(word) || "data".equals(word) || "specimen".equals(word) || "replaces".equals(word) || "addresses".equals(word)
-      || "supplementalData".equals(word) || "instantiates".equals(word) || "imports".equals(word) || "covers".equals(word))
+        || "supplementalData".equals(word) || "instantiates".equals(word) || "imports".equals(word) || "covers".equals(word))
       return false;
     Inflector inf = new Inflector();
     return !inf.singularize(word).equals(word);
@@ -653,10 +653,10 @@ public class Utilities {
   @Deprecated
   public static String uncheckedPath(String... args) {
     return PathBuilder.getPathBuilder()
-      .withRequireNonRootFirstEntry(false)
-      .withRequireNonNullNonEmptyFirstEntry(false)
-      .withRequirePathIsChildOfTarget(false)
-      .buildPath(args);
+        .withRequireNonRootFirstEntry(false)
+        .withRequireNonNullNonEmptyFirstEntry(false)
+        .withRequirePathIsChildOfTarget(false)
+        .buildPath(args);
   }
 
 
@@ -703,7 +703,7 @@ public class Utilities {
   public static boolean isTokenChar(char ch) {
     return isAlphabetic(ch) || (ch == '_'); 
   }
-  
+
   public static boolean isDigit(char c) {
     return (c >= '0') && (c <= '9');
   }
@@ -1118,7 +1118,7 @@ public class Utilities {
     }
     return false; 
   }
-  
+
   public static boolean isAbsoluteUrlLinkable(String ref) {
     if (ref != null && ref.contains(":")) {
       String scheme = ref.substring(0, ref.indexOf(":"));
@@ -1173,7 +1173,7 @@ public class Utilities {
     }
     return b.toString();
   }
-  
+
   public static String unCamelCase(String name) {
     StringBuilder b = new StringBuilder();
     boolean first = true;
@@ -1295,7 +1295,7 @@ public class Utilities {
     Collections.sort(list);
     return list;
   }
-  
+
   public static List<String> sorted(String[] set) {
     List<String> list = new ArrayList<>();
     for (String s : set) {
@@ -1322,7 +1322,7 @@ public class Utilities {
     return list;
   }
 
-  
+
   public static void analyseStringDiffs(Set<String> source, Set<String> target, Set<String> missed, Set<String> extra) {
     for (String s : source)
       if (!target.contains(s))
@@ -1373,6 +1373,21 @@ public class Utilities {
     }
   }
 
+  public static String describeDuration(long ms) {
+    long days = ms / (1000 * 60 * 60 * 24);
+    long hours = ms / (1000 * 60 * 60) % 24;
+    long mins = ms / (1000 * 60) % 60;
+    long secs = ms / (1000) % 60;
+    ms = ms % 1000;
+    if (days > 0) {
+      return ""+days+"d "+hours+":"+mins+":"+secs+"."+ms;      
+    } else {
+      return ""+hours+":"+mins+":"+secs+"."+ms;
+    }
+
+
+  }
+
   public static boolean startsWithInList(String s, String... list) {
     if (s == null) {
       return false;
@@ -1410,7 +1425,7 @@ public class Utilities {
     }
     return false;
   }
-  
+
   public static boolean endsWithInList(String s, Collection<String> list) {
     if (s == null) {
       return false;
@@ -1493,15 +1508,15 @@ public class Utilities {
   public static void unzip(InputStream zip, String target) throws IOException {
     unzip(zip, Path.of(target));
   }
-  
+
   public static void unzip(InputStream zip, Path target) throws IOException {
     try (ZipInputStream zis = new ZipInputStream(zip)) {
       ZipEntry zipEntry = zis.getNextEntry();
       while (zipEntry != null) {
         boolean isDirectory = false;
-        
+
         String n = makeOSSafe(zipEntry.getName());
-      
+
         if (n.endsWith(File.separator)) {
           isDirectory = true;
         }
@@ -1545,7 +1560,7 @@ public class Utilities {
   }
 
   final static int[] illegalChars = {34, 60, 62, 124, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 58, 42, 63, 92, 47};
-  
+
   static {
     Arrays.sort(illegalChars);
   }
@@ -1650,7 +1665,21 @@ public class Utilities {
     if (b.length() == 19) {
       b.append(".000");
     }
-    return applyDatePrecision(b.toString(), precision)+res[1];
+    String tz;
+    if (precision <= 10) {
+      tz = "";
+    } else {
+      tz = Utilities.noString(res[1]) ? defLowTimezone(b.toString()) : res[1];
+    }
+    return applyDatePrecision(b.toString(), precision)+tz;
+  }
+
+  private static String defLowTimezone(String string) {
+    return "+14:00"; // Kiribati permanent timezone since 1994 and we don't worry about before then 
+  }
+
+  private static String defHighTimezone(String string) {
+    return "-12:00"; // Parts of Russia, Antarctica, Baker Island and Midway Atoll 
   }
 
   public static String lowBoundaryForTime(String value, int precision) {
@@ -1683,7 +1712,7 @@ public class Utilities {
     return applyTimePrecision(b.toString(), precision)+res[1];
   }
 
-  
+
   private static Object applyDatePrecision(String v, int precision) {
     switch (precision) {
     case 4: return v.substring(0, 4);
@@ -1748,7 +1777,13 @@ public class Utilities {
     if (b.length() == 19) {
       b.append(".999");
     }
-    return applyDatePrecision(b.toString(), precision)+res[1];
+    String tz;
+    if (precision <= 10) {
+      tz = "";
+    } else {
+      tz = Utilities.noString(res[1]) ? defHighTimezone(b.toString()) : res[1];
+    }
+    return applyDatePrecision(b.toString(), precision)+tz;
   }
 
   private static String dayCount(int y, int m) {
@@ -1780,10 +1815,10 @@ public class Utilities {
     }
   }
 
-  
+
   private static String[] splitTimezone(String value) {
     String[] res = new String[2];
-    
+
     if (value.contains("+")) {
       res[0] = value.substring(0, value.indexOf("+"));
       res[1] = value.substring(value.indexOf("+"));
@@ -1799,7 +1834,7 @@ public class Utilities {
     }
     return res;
   }
-  
+
   public static Integer getDatePrecision(String value) {
     return splitTimezone(value)[0].replace("-", "").replace("T", "").replace(":", "").replace(".", "").length();
   }
@@ -1841,7 +1876,7 @@ public class Utilities {
    * @return The resulting text.
    */
   public static String appendDerivedTextToBase(@Nullable final String baseText,
-                                               final String derivedText) {
+      final String derivedText) {
     if (baseText == null) {
       return derivedText.substring(3);
     }
@@ -1888,13 +1923,13 @@ public class Utilities {
         }
       }
     }
-    
+
   }
 
   public static boolean isValidCRName(String name) {
     return name != null && name.matches("[A-Z]([A-Za-z0-9_]){1,254}");
   }
-  
+
   public static boolean isAllWhitespace(String s) {
     if (Utilities.noString(s)) {
       return true;
@@ -1906,7 +1941,7 @@ public class Utilities {
     }
     return true;
   }
-  
+
   public static String trimWS(String s) {
     if (Utilities.noString(s)) {
       return s;
@@ -1927,7 +1962,7 @@ public class Utilities {
     }
     return s.substring(start, end+1);    
   }
-  
+
   // from https://en.wikipedia.org/wiki/Whitespace_character#Unicode  
   public static boolean isWhitespace(int ch) {
     return Utilities.existsInList(ch, '\u0009', '\n', '\u000B','\u000C','\r','\u0020','\u0085','\u00A0',
@@ -2013,13 +2048,13 @@ public class Utilities {
 
 
 
-//public static boolean !isWhitespace(String s) {
-//boolean ok = true;
-//for (int i = 0; i < s.length(); i++)
-//  ok = ok && Character.isWhitespace(s.charAt(i));
-//return ok;
-//
-//}
+  //public static boolean !isWhitespace(String s) {
+  //boolean ok = true;
+  //for (int i = 0; i < s.length(); i++)
+  //  ok = ok && Character.isWhitespace(s.charAt(i));
+  //return ok;
+  //
+  //}
 
 
   public static boolean isTxFhirOrgServer(String s) {
@@ -2042,30 +2077,37 @@ public class Utilities {
     return i == 0 ? "" : s.substring(0, i+1);
   }
 
-public static void renameDirectory(String source, String dest) throws FHIRException, IOException {
-	File src = new File(source);
-	File dst = new File(dest);
-	if (!src.renameTo(dst)) {
-	  int i = 0;
-	  do {
-	    try {
-		  Thread.sleep(20);
+  public static void renameDirectory(String source, String dest) throws FHIRException, IOException {
+    File src = new File(source);
+    File dst = new File(dest);
+    if (!src.renameTo(dst)) {
+      int i = 0;
+      do {
+        try {
+          Thread.sleep(20);
         } catch (Exception e) {
           // nothing
         }
-		System.gc();
-		i++;
-	  } while (!src.renameTo(dst) && i < 10);
-	  if (src.exists()) {
-		copyDirectory(source, dest, null);
-		try {
-		  src.delete();	
-		} catch (Exception e) {
-		  // nothing
-		}
-	  }
-	}
-	
-}
+        System.gc();
+        i++;
+      } while (!src.renameTo(dst) && i < 10);
+      if (src.exists()) {
+        copyDirectory(source, dest, null);
+        try {
+          src.delete();	
+        } catch (Exception e) {
+          // nothing
+        }
+      }
+    }
+
+  }
+
+  public static String urlTail(String url) {
+    if (url == null) {
+      return null;
+    }
+    return url.contains("/") ? url.substring(url.lastIndexOf("/")+1) : url;
+  }
 
 }
