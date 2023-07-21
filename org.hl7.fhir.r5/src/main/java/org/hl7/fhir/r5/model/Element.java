@@ -468,6 +468,15 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     return false;
   }
   
+  public void copyExtensions(org.hl7.fhir.r5.model.Element src, String... urls) {
+    for (Extension e : src.getExtension()) {
+      if (Utilities.existsInList(e.getUrl(), urls)) {
+        addExtension(e.copy());
+      }
+    }    
+  }
+
+  
 // end addition
 
 }

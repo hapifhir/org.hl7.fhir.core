@@ -921,6 +921,7 @@ public class I18nConstants {
   public static final String EXTENSION_CONTEXT_UNABLE_TO_FIND_PROFILE = "EXTENSION_CONTEXT_UNABLE_TO_FIND_PROFILE";
   public static final String TERMINOLOGY_TX_HINT = "TERMINOLOGY_TX_HINT";
   public static final String TERMINOLOGY_TX_WARNING = "TERMINOLOGY_TX_WARNING";
+  public static final String SD_ED_TYPE_PROFILE_WRONG_TYPE = "SD_ED_TYPE_PROFILE_WRONG_TYPE";
 
 }
 
