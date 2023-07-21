@@ -99,9 +99,6 @@
 		<structureProfileCanonical value="http://example.org/StructureDefinition/someProfile"/>
 		<title value="Initial Prescription"/>
 		<description value="The initial prescription which describes &quot;medication X, 3 times per day&quot; - the exact scheduling is not   in the initial prescription (it is left for the care teams to decide on the schedule)."/>
-		<content>
-      <reference value="http://example.org/MedicationRequest/someResource"/>
-		</content>
 		<version>
       <extension url="http://example.org/StructureDefinition/someExtension">
         <valueBoolean value="true"/>
@@ -132,6 +129,9 @@
 			<code value="MedicationRequest"/>
 		</structureType>
 		<title value="Request for day 1, morning"/>
+		<content>
+      <reference value="http://example.org/MedicationRequest/someResource"/>
+		</content>
 		<containedInstance>
       <instanceReference value="iherx001"/>
       <versionReference value="iherx001v1"/>
@@ -226,10 +226,12 @@
                 <initiatorActive value="false"/>
                 <receiverActive value="true"/>
                 <request>
-                  <instanceReference value="iherx002"/>
+                  <instanceReference value="iherx001"/>
+                  <versionReference value="iherx001v1"/>
                 </request>
                 <response>
-                  <instanceReference value="iherx002"/>                
+                  <instanceReference value="iherx001"/>
+                  <versionReference value="iherx001v2"/>
                 </response>
               </operation>
               <alternative>
@@ -249,10 +251,10 @@
 				<receiver value="Nurse"/>
 				<description value="Query for medication administration orders,\n- For today's shifts\n- For today's patients"/>
 				<request>
-					<instanceReference value="iherx002"/>
+					<instanceReference value="iherx001.001"/>
 				</request>
 				<response>
-					<instanceReference value="iherx002"/>
+					<instanceReference value="iherx001.001"/>
 				</response>
 			</operation>
 			<pause value="true"/>
