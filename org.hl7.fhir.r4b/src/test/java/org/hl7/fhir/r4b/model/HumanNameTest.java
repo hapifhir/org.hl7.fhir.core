@@ -25,4 +25,14 @@ public class HumanNameTest {
     String actual = humanName.getNameAsSingleString();
     assertEquals(expected, actual);
   }
+
+  @Test
+  public void getNameAsSingleStringPreferText() {
+    final String expected = "dummy value";
+    HumanName humanName = new HumanName()
+      .setTextElement(new StringType(expected)).setFamily("wrong value");
+
+    String actual = humanName.getNameAsSingleString();
+    assertEquals(expected, actual);
+  }
 }

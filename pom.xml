@@ -238,6 +238,12 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok_version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson_version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
