@@ -48,12 +48,14 @@ public class ValueSetProcessBase {
     }
 
     public void seeValueSet(ValueSet vs) {
-      for (Extension ext : vs.getCompose().getExtension()) {
-        if ("http://hl7.org/fhir/tools/StructureDefinion/valueset-expansion-param".equals(ext.getUrl())) {
-          String name = ext.getExtensionString("name");
-          Extension value = ext.getExtensionByUrl("value");
-          if ("includeAlternateCodes".equals(name) && value != null && value.hasValue()) {
-            seeParameter(value.getValue());
+      if (vs != null) {
+        for (Extension ext : vs.getCompose().getExtension()) {
+          if ("http://hl7.org/fhir/tools/StructureDefinion/valueset-expansion-param".equals(ext.getUrl())) {
+            String name = ext.getExtensionString("name");
+            Extension value = ext.getExtensionByUrl("value");
+            if ("includeAlternateCodes".equals(name) && value != null && value.hasValue()) {
+              seeParameter(value.getValue());
+            }
           }
         }
       }
