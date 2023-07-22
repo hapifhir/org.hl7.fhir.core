@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.tasks;
 
+import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.utils.Params;
@@ -43,6 +44,7 @@ public class TxTestsTask extends StandaloneTask{
       final String tx = Params.getParam(args, Params.TERMINOLOGY);
       final String filter = Params.getParam(args, Params.FILTER);
       boolean ok = new TxTester(new TxTester.InternalTxLoader(source, output), tx, false).setOutput(output).execute(version, filter);
-      System.exit(ok ? 1 : 0);
+      SystemExitManager.setError(ok ? 1 : 0);
+      SystemExitManager.finish();
   }
 }

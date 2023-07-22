@@ -2242,15 +2242,29 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (Utilities.isAbsoluteUrl(typeName)) {
       return fetchResource(StructureDefinition.class, typeName);
     } else {
-      return fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+typeName);
+      Set<StructureDefinition> types = new HashSet<>();
+      types.addAll(fetchTypeDefinitions(typeName));
+      types.removeIf(sd -> sd.getDerivation() == TypeDerivationRule.CONSTRAINT);
+       if (types.size() == 0) {
+        return null; // throw new FHIRException("Unresolved type "+typeName+" (0)");
+      } else if (types.size() == 1) {
+        return types.iterator().next(); 
+      } else { 
+        types.removeIf(sd -> !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/"));
+        if (types.size() != 1) {
+          throw new FHIRException("Ambiguous type "+typeName+" ("+types.toString()+") (contact Grahame Grieve for investigation)");
+        } else  {
+          return types.iterator().next(); 
+        } 
+      }
     }
   }
-
+  
   @Override
   public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
     List<StructureDefinition> res = new ArrayList<>();
     structures.listAll(res);
-    res.removeIf(sd -> !sd.hasType() || !sd.getType().equals(typeName));
+    res.removeIf(sd -> !sd.hasType() || !(sd.getType().equals(typeName) || sd.getTypeTail().equals(typeName)));
     return res;
   }
 

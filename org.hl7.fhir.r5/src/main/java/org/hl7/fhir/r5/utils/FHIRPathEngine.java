@@ -680,7 +680,7 @@ public class FHIRPathEngine {
         if (ed.fixedType != null) { 
           types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
         } else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) { 
-          types = new TypeDetails(CollectionStatus.SINGLETON, ctxt+"#"+t);
+          types = new TypeDetails(CollectionStatus.SINGLETON, sd.getType()+"#"+t);
         } else {
           types = new TypeDetails(CollectionStatus.SINGLETON);
           for (TypeRefComponent tt : ed.getDefinition().getType()) { 

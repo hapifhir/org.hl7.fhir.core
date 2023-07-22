@@ -471,12 +471,14 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
     }
-    List<Element> constraints = element.getChildrenByName("constraint");
-    int cc = 0;
-    for (Element invariant : constraints) {
-      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path"), rootPath, profileUrl) && ok;
-      cc++;
-    }    
+    if (snapshot) { // we just don't have enough information to figure out the context in a differential
+      List<Element> constraints = element.getChildrenByName("constraint");
+      int cc = 0;
+      for (Element invariant : constraints) {
+        ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path"), rootPath, profileUrl) && ok;
+        cc++;
+      }    
+    }
     return ok;
   }
   
@@ -504,7 +506,7 @@ public class StructureDefinitionValidator extends BaseValidator {
                 Element oldte = te;
                 te = getParent(elements, te);
                 if (te != null) {
-                  exp = tail(oldte, te)+"."+exp;
+                  exp = tail(oldte, te)+".all("+exp+")";
                   types = getTypesForElement(elements, te);
                 }
               }
@@ -547,13 +549,17 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   private List<String> getTypesForElement(List<Element> elements, Element element) {
     List<String> types = new ArrayList<>();
-    for (Element tr : element.getChildrenByName("type")) {
-      String t = tr.getNamedChildValue("code");
-      if (t != null) {
-        if (isAbstractType(t) && hasChildren(element, elements) ) {
-          types.add(element.getNamedChildValue("path"));
-        } else {
-          types.add(t);
+    if (element.hasChild("path") && !element.getNamedChildValue("path").contains(".")) {
+      types.add(element.getNamedChildValue("path"));
+    } else {
+      for (Element tr : element.getChildrenByName("type")) {
+        String t = tr.getNamedChildValue("code");
+        if (t != null) {
+          if (isAbstractType(t) && hasChildren(element, elements) ) {
+            types.add(element.getNamedChildValue("path"));
+          } else {
+            types.add(t);
+          }
         }
       }
     }
