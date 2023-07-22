@@ -2245,16 +2245,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       Set<StructureDefinition> types = new HashSet<>();
       types.addAll(fetchTypeDefinitions(typeName));
       types.removeIf(sd -> sd.getDerivation() == TypeDerivationRule.CONSTRAINT);
-      if (types.size() == 1) {
+       if (types.size() == 0) {
+        return null; // throw new FHIRException("Unresolved type "+typeName+" (0)");
+      } else if (types.size() == 1) {
         return types.iterator().next(); 
-      } else if (types.size() > 1) {
-        throw new FHIRException("Ambiguous type "+typeName);
-      } else {
-        return fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+typeName);
+      } else { 
+        types.removeIf(sd -> !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/"));
+        if (types.size() != 1) {
+          throw new FHIRException("Ambiguous type "+typeName+" ("+types.toString()+") (contact Grahame Grieve for investigation)");
+        } else  {
+          return types.iterator().next(); 
+        } 
       }
     }
   }
-
+  
   @Override
   public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
     List<StructureDefinition> res = new ArrayList<>();
