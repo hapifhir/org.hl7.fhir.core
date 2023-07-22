@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* Add support for private NPM registries reqiuring authentication
+* Add support for private NPM registries requiring authentication
 * Don't check FHIRPaths on differentials - not enough type info to test reliably
 * Fix bugs in FHIRPath handling of logical models
 * Fix minor bugs in type handling for Logical Models and R3 Profile validation
