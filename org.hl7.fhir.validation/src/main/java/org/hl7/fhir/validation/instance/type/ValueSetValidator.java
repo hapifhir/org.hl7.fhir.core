@@ -22,10 +22,79 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.type.ValueSetValidator.SystemLevelValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class ValueSetValidator extends BaseValidator {
 
+  public class SystemLevelValidator {
+    protected List<ValidationMessage> errors; 
+    protected Element inc;
+    protected NodeStack stack;
+    
+    private boolean noDisplay = false;
+    private boolean hasDisplay = false;
+    protected SystemLevelValidator(List<ValidationMessage> errors, Element inc, NodeStack stack) {
+      super();
+      this.errors = errors;
+      this.inc = inc;
+      this.stack = stack;
+    }
+    
+    public void checkConcept(String code, String display) {
+      if (Utilities.noString(display)) {
+        noDisplay = true;
+      } else {
+        hasDisplay = true;
+      }      
+    }
+    
+    public void finish() {
+      hint(errors, "2023-07-21", IssueType.BUSINESSRULE, inc.line(), inc.col(), stack.getLiteralPath(), !(noDisplay && hasDisplay), I18nConstants.VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED);           
+    } 
+  }
+
+  public class SnomedCTValidator extends SystemLevelValidator {
+    private boolean noTag = false;
+    private boolean hasTag = false;
+    
+    protected SnomedCTValidator(List<ValidationMessage> errors, Element inc, NodeStack stack) {
+      super(errors, inc, stack);
+    }
+    public void checkConcept(String code, String display) {
+      super.checkConcept(code, display);
+      if (!Utilities.noString(display)) {
+        boolean tagged = display.endsWith(")") && display.indexOf("(") > display.length() - 20;
+        if (tagged) {
+          hasTag = true;
+        } else {
+          noTag = true;
+        }      
+      }
+    }
+    public void finish() {
+      hint(errors, "2023-07-21", IssueType.BUSINESSRULE, inc.line(), inc.col(), stack.getLiteralPath(), !(noTag && hasTag), I18nConstants.VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED);           
+    }
+  }
+
+  public class GeneralValidator extends SystemLevelValidator {
+
+    protected GeneralValidator(List<ValidationMessage> errors, Element inc, NodeStack stack) {
+      super(errors, inc, stack);
+    }
+
+  }
+
+  private SystemLevelValidator getSystemValidator(String system, List<ValidationMessage> errors, Element inc, NodeStack stack) {
+    if (system == null) {
+      return new GeneralValidator(errors, inc, stack);
+    }
+    switch (system) {
+    case "http://snomed.info/sct" :return new SnomedCTValidator(errors, inc, stack);
+    default: return new GeneralValidator(errors, inc, stack);
+    }
+  }
+  
   public class VSCodingValidationRequest extends CodingValidationRequest {
 
     private NodeStack stack;
@@ -139,6 +208,8 @@ public class ValueSetValidator extends BaseValidator {
     }
     List<Element> concepts = include.getChildrenByName("concept");
     List<Element> filters = include.getChildrenByName("filter");
+
+    SystemLevelValidator slv = getSystemValidator(system, errors, include, stack);
     if (!Utilities.noString(system)) {
       boolean systemOk = true;
       int cc = 0;
@@ -147,10 +218,10 @@ public class ValueSetValidator extends BaseValidator {
       for (Element concept : concepts) {
         // we treat the first differently because we want to know if tbe system is worth validating. if it is, then we batch the rest
         if (first) {
-          systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version);
+          systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, slv);
           first = false;
         } else if (systemOk) {
-          batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version));
+          batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, slv));
         }
         cc++;
       }    
@@ -180,19 +251,24 @@ public class ValueSetValidator extends BaseValidator {
       
       int cf = 0;
       for (Element filter : filters) {
-        if (systemOk && !validateValueSetIncludeFilter(errors, include, stack.push(filter, cf, null, null), system, version)) {
+        if (systemOk && !validateValueSetIncludeFilter(errors, include, stack.push(filter, cf, null, null), system, version, slv)) {
           systemOk = false;          
         }
         cf++;
       }    
+      slv.finish();
     } else {
       warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), filters.size() == 0 && concepts.size() == 0, I18nConstants.VALUESET_NO_SYSTEM_WARNING);      
     }
     return ok;
   }
 
-  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version) {
+
+  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version, SystemLevelValidator slv) {
     String code = concept.getChildValue("code");
+    String display = concept.getChildValue("display");
+    slv.checkConcept(code, display);
+    
     if (version == null) {
       ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null), null);
       if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
@@ -229,8 +305,11 @@ public class ValueSetValidator extends BaseValidator {
     return true;
   }
 
-  private VSCodingValidationRequest prepareValidateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String system, String version) {
+  private VSCodingValidationRequest prepareValidateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String system, String version, SystemLevelValidator slv) {
     String code = concept.getChildValue("code");
+    String display = concept.getChildValue("display");
+    slv.checkConcept(code, display);
+    
     Coding c = new Coding(system, code, null);
     if (version != null) {
        c.setVersion(version);
@@ -238,7 +317,11 @@ public class ValueSetValidator extends BaseValidator {
     return new VSCodingValidationRequest(stack, c);
   }
 
-  private boolean validateValueSetIncludeFilter(List<ValidationMessage> errors, Element include, NodeStack push, String system, String version) {
+  private boolean validateValueSetIncludeFilter(List<ValidationMessage> errors, Element filter, NodeStack push, String system, String version, SystemLevelValidator slv) {
+//
+//    String display = concept.getChildValue("display");
+//    slv.checkConcept(code, display);
+    
     return true;
   }
 }

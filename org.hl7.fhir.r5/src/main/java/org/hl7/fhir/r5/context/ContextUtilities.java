@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -156,8 +157,10 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public Set<String> getTypeNameSet() {
     Set<String> result = new HashSet<String>();
     for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
-      if (sd.getKind() != StructureDefinitionKind.LOGICAL && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
+      if (sd.getKind() != StructureDefinitionKind.LOGICAL && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && 
+          VersionUtilities.versionsCompatible(context.getVersion(), sd.getFhirVersion().toCode())) {
         result.add(sd.getName());
+      }
     }
     return result;
   }
