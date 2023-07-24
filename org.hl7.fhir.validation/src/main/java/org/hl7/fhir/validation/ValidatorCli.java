@@ -254,14 +254,20 @@ public class ValidatorCli {
   }
 
   private static String[] addAdditionalParamsForIpsParam(String[] args) {
-    // ips$branch --> -version 4.0 -ig hl7.fhir.uv.ips#current$connectathon-2 -profile http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips
     List<String> res = new ArrayList<>();
     for (String a : args) {
       if (a.equals("-ips")) {
         res.add("-version");
         res.add("4.0");
         res.add("-ig");
-        res.add("hl7.fhir.uv.ips#current");
+        res.add("hl7.fhir.uv.ips#1.1.0");
+        res.add("-profile");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
+      } else if (a.equals("-ips#")) {
+        res.add("-version");
+        res.add("4.0");
+        res.add("-ig");
+        res.add("hl7.fhir.uv.ips#"+a.substring(5));
         res.add("-profile");
         res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
       } else if (a.startsWith("-ips$")) {
