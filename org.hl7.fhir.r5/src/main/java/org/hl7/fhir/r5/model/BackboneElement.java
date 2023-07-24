@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
@@ -303,6 +304,17 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
      }
      return java.util.Collections.unmodifiableList(retVal);
    }
+   
+   public void copyExtensions(org.hl7.fhir.r5.model.BackboneElement src, String... urls) {
+     super.copyExtensions(src,urls);
+     for (Extension e : src.getModifierExtension()) {
+       if (Utilities.existsInList(e.getUrl(), urls)) {
+         addModifierExtension(e.copy());
+       }
+     }    
+   }
+
+
    
 // end addition
 

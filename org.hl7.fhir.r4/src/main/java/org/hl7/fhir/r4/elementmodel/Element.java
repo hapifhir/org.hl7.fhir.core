@@ -325,6 +325,40 @@ public class Element extends Base {
 	  }
 	}
 	
+	@Override
+  public Base copy() {
+    Element element = new Element(this);
+    this.copyValues(element);
+    return element;
+  }
+
+  @Override
+  public void copyValues(Base dst) {
+    super.copyValues(dst);
+    
+    Element dest = (Element) dst;
+    if (comments != null) {
+      dest.comments = new ArrayList<>();
+      dest.comments.addAll(comments);
+    } else {
+      dest.comments = null;
+    }
+    dest.value = value;
+    if (children != null) {
+      dest.children = new ArrayList<>();
+      for (Element child : children) {
+        dest.children.add((Element) child.copy());
+      }
+    } else {
+      dest.children = null;
+    }
+    dest.line = line;
+    dest.col = col;
+    dest.xhtml = xhtml;
+    dest.explicitType = explicitType;
+  }
+  
+  
   @Override
   public Base setProperty(int hash, String name, Base value) throws FHIRException {
     if ("xhtml".equals(getType()) && (hash == "value".hashCode())) {

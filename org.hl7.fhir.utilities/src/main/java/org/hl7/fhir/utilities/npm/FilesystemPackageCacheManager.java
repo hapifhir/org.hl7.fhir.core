@@ -14,7 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -22,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -37,12 +35,12 @@ import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.IPackageProvider;
-import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nonnull;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -137,10 +135,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     this.cacheFolder = new File(customFolder);
     init(FilesystemPackageCacheMode.CUSTOM);  
   }
-  
-  
-  public void init(FilesystemPackageCacheMode mode) throws IOException {
-    myPackageServers.addAll(PackageServer.publicServers());
+
+
+
+  protected void init(FilesystemPackageCacheMode mode) throws IOException {
+    initPackageServers();
 
     switch (mode) {
     case SYSTEM:
@@ -171,6 +170,26 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         f.delete();
       }
     }
+  }
+
+  private void initPackageServers() {
+    myPackageServers.addAll(getConfiguredServers());
+    if (!isIgnoreDefaultPackageServers()) {
+      myPackageServers.addAll(getDefaultServers());
+    }
+  }
+
+  protected boolean isIgnoreDefaultPackageServers() {
+    return FhirSettings.isIgnoreDefaultPackageServers();
+  }
+
+  @Nonnull
+  protected List<PackageServer> getDefaultServers() {
+    return PackageServer.defaultServers();
+  }
+
+  protected List<PackageServer> getConfiguredServers() {
+    return PackageServer.getConfiguredServers();
   }
 
   public boolean isMinimalMemory() {

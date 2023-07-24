@@ -10,6 +10,7 @@ import org.junit.jupiter.api.parallel.Isolated;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -83,5 +84,20 @@ public class FhirSettingsTests implements ResourceLoaderTests {
     assertEquals("dummy-diff-tool-path", fhirSettings.getDiffToolPath());
     assertEquals("dummy-temp-path", fhirSettings.getTempPath());
     assertEquals("dummy-test-igs-path", fhirSettings.getTestIgsPath());
+
+    assertTrue(fhirSettings.getPackageManagement().getIgnoreDefaultServers());
+
+    List<PackageServerPOJO> packageServers = fhirSettings.getPackageManagement().getServers();
+
+    assertEquals(2, packageServers.size());
+
+    assertEquals("http://dummy.org", packageServers.get(0).url);
+    assertEquals("npm", packageServers.get(0).serverType);
+    assertEquals("joe", packageServers.get(0).username);
+    assertEquals("swordfish", packageServers.get(0).password);
+    assertEquals("BASIC", packageServers.get(0).authenticationType);
+
+    assertEquals("http://dummy2.com", packageServers.get(1).url);
+
   }
 }

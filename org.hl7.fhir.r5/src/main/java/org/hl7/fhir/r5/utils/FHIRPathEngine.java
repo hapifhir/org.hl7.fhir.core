@@ -457,13 +457,18 @@ public class FHIRPathEngine {
     if (list != null) {
       for (Base v : list) {
         if (v != null && (tn == null || v.fhirType().equalsIgnoreCase(tn))) {
-          result.add(v);
+          result.add(filterIdType(v));
         }
       }
     }
   }
 
-
+  private Base filterIdType(Base v) {
+    if (v instanceof IIdType) {
+      return (Base) ((IIdType) v).toUnqualifiedVersionless().withResourceType(null);
+    }
+    return v;
+  }
   public boolean isLegacyMode() {
     return legacyMode;
   }
@@ -637,6 +642,54 @@ public class FHIRPathEngine {
     }
 
     return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, elementDependencies, true, false);
+  }
+  
+  /**
+   * check that paths referred to in the ExpressionNode are valid
+   * 
+   * xPathStartsWithValueRef is a hack work around for the fact that FHIR Path sometimes needs a different starting point than the xpath
+   * 
+   * returns a list of the possible types that might be returned by executing the ExpressionNode against a particular context
+   * 
+   * @param context - the logical type against which this path is applied
+   * @throws DefinitionException
+   * @throws PathEngineException 
+   * @if the path is not valid
+   */
+  public TypeDetails checkOnTypes(Object appContext, String resourceType, List<String> typeList, ExpressionNode expr) throws FHIRLexerException, PathEngineException, DefinitionException {
+
+    // if context is a path that refers to a type, do that conversion now 
+    TypeDetails types = new TypeDetails(CollectionStatus.SINGLETON);
+    for (String t : typeList) {
+      if (!t.contains(".")) {
+        StructureDefinition sd = worker.fetchTypeDefinition(t);
+        if (sd == null) {
+          throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT, t);        
+        }
+        types = new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl());
+      } else {
+        String ctxt = t.substring(0, t.indexOf('.'));
+        StructureDefinition sd = cu.findType(ctxt);
+        if (sd == null) {
+          throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT, t);
+        }
+        ElementDefinitionMatch ed = getElementDefinition(sd, t, true, expr);
+        if (ed == null) {
+          throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT_ELEMENT, t);
+        }
+        if (ed.fixedType != null) { 
+          types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
+        } else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) { 
+          types = new TypeDetails(CollectionStatus.SINGLETON, sd.getType()+"#"+t);
+        } else {
+          types = new TypeDetails(CollectionStatus.SINGLETON);
+          for (TypeRefComponent tt : ed.getDefinition().getType()) { 
+            types.addType(tt.getCode());
+          }
+        }
+      }
+    }
+    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false);
   }
   
   /**

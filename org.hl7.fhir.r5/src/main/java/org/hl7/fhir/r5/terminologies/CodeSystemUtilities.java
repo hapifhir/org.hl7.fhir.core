@@ -466,6 +466,31 @@ public class CodeSystemUtilities {
     return null;
   }
 
+  public static ConceptDefinitionComponent findCodeOrAltCode(List<ConceptDefinitionComponent> list, String code, String use) {
+    for (ConceptDefinitionComponent c : list) {
+      if (c.getCode().equals(code))
+        return c;
+      for (ConceptPropertyComponent p : c.getProperty()) {
+        if ("alternateCode".equals(p.getCode()) && (use == null || hasUse(p, use)) && p.hasValue() && p.getValue().isPrimitive() && code.equals(p.getValue().primitiveValue())) {
+          return c;
+        }
+      }
+      ConceptDefinitionComponent s = findCodeOrAltCode(c.getConcept(), code, use);
+      if (s != null)
+        return s;
+    }
+    return null;
+  }
+
+  private static boolean hasUse(ConceptPropertyComponent p, String use) {
+    for (Extension ext : p.getExtensionsByUrl(ToolingExtensions.EXT_CS_ALTERNATE_USE)) {
+      if (ext.hasValueCoding() && use.equals(ext.getValueCoding().getCode())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static void markStatus(CodeSystem cs, String wg, StandardsStatus status, String pckage, String fmm, String normativeVersion) throws FHIRException {
     if (wg != null) {
       if (!ToolingExtensions.hasExtension(cs, ToolingExtensions.EXT_WORKGROUP) || 
@@ -755,7 +780,7 @@ public class CodeSystemUtilities {
           } else {
             code = defineProperty(ret, p.getCode(), propertyTypeForType(p.getValue()));
           }
-          fdef.addProperty().setCode(code).setValue(p.getValue());
+          fdef.addProperty().setCode(code).setValue(p.getValue()).copyExtensions(p, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
         }
       }
       for (ConceptDefinitionComponent t : fdef.getConcept()) {
