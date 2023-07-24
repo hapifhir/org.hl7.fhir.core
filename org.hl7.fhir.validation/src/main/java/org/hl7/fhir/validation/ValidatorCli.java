@@ -67,6 +67,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import org.apache.commons.text.WordUtils;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.FileFormat;
+import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -163,7 +164,8 @@ public class ValidatorCli {
           });
       } else {
         displayHelpForDefaultTask();
-      }return;
+      }
+      return;
     }
 
     readParamsAndExecuteTask(tt, tts, cliContext, args);
@@ -310,6 +312,7 @@ public class ValidatorCli {
       }
 
     System.out.println("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
+    SystemExitManager.finish();
   }
 
   private CliTask selectCliTask(CliContext cliContext, String[] params) {

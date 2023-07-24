@@ -30,14 +30,23 @@ public class ValidatorHostContext {
       this.appContext = appContext;
       this.resource = element;
       this.rootResource = element;
+      check();
+      
       // no groupingResource (Bundle or Parameters)
       dump("creating");
   }
+
+    private void check() {
+      if (!rootResource.hasParentForValidator()) {
+        throw new Error("No parent on root resource");
+      }
+    }
 
     public ValidatorHostContext(Object appContext, Element element, Element root) {
       this.appContext = appContext;
       this.resource = element;
       this.rootResource = root;
+      check();
       // no groupingResource (Bundle or Parameters)
       dump("creating");
   }
@@ -47,6 +56,7 @@ public class ValidatorHostContext {
       this.resource = element;
       this.rootResource = root;
       this.groupingResource = groupingResource;
+      check();
       dump("creating");
   }
 

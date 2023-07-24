@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.0.21</version>
+        <version>6.0.23-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -413,6 +413,24 @@
                     <artifactId>maven-deploy-plugin</artifactId>
                     <configuration>
                         <skip>true</skip>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <configuration>
+                        <suppressionFiles>
+                            <suppressionFile>cve-suppression.xml</suppressionFile>
+                        </suppressionFiles>
+                        <excludes>
+                            <!-- These are our own modules, and contain test archives for zip-slip, which break owasp
+                            archive extraction -->
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.convertors</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.r4b</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.r5</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.utilities</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.validation</exclude>
+                        </excludes>
                     </configuration>
                 </plugin>
         	</plugins>

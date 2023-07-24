@@ -22,7 +22,7 @@ public class UnicodeUtilitiesTests {
     Assertions.assertNull(UnicodeUtilities.checkUnicodeWellFormed(UnicodeUtilities.RLI + " "+ UnicodeUtilities.LRI + "a b c "+ 
        UnicodeUtilities.PDI+" "+UnicodeUtilities.LRI+" d e f "+UnicodeUtilities.PDI+" "+UnicodeUtilities.PDI));
     Assertions.assertEquals(UnicodeUtilities.checkUnicodeWellFormed("'''subject funds from back account then "+UnicodeUtilities.RLI + "''' ;return"),
-        "Unicode Character RLI at index 40 has no terminating match");
+        "Unicode Character RLI at index 40 has no terminating match (preceding text = 'then ')");
   }
     
 }

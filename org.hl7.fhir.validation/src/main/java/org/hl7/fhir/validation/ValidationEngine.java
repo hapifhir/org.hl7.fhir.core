@@ -594,7 +594,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
           try {
             loader.load(ref.getCnt());
           } catch (Throwable t) {
-            System.out.println(t.getMessage());
+            if (debug) {
+               System.out.println("Error during round 1 scanning: "+t.getMessage());
+            }
           }
         }
       }
