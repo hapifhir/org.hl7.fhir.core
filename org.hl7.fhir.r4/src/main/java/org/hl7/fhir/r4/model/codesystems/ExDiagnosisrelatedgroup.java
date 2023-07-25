@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExDiagnosisrelatedgroup {
 
-        /**
-         * Normal Vaginal Delivery.
-         */
-        _100, 
-        /**
-         * Appendectomy without rupture or other complications.
-         */
-        _101, 
-        /**
-         * Emergency department treatment of a tooth abscess.
-         */
-        _300, 
-        /**
-         * Head trauma - concussion.
-         */
-        _400, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ExDiagnosisrelatedgroup fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("100".equals(codeString))
-          return _100;
-        if ("101".equals(codeString))
-          return _101;
-        if ("300".equals(codeString))
-          return _300;
-        if ("400".equals(codeString))
-          return _400;
-        throw new FHIRException("Unknown ExDiagnosisrelatedgroup code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _100: return "100";
-            case _101: return "101";
-            case _300: return "300";
-            case _400: return "400";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/ex-diagnosisrelatedgroup";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _100: return "Normal Vaginal Delivery.";
-            case _101: return "Appendectomy without rupture or other complications.";
-            case _300: return "Emergency department treatment of a tooth abscess.";
-            case _400: return "Head trauma - concussion.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _100: return "Normal Vaginal Delivery";
-            case _101: return "Appendectomy - uncomplicated";
-            case _300: return "Tooth abscess";
-            case _400: return "Head trauma - concussion";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Normal Vaginal Delivery.
+   */
+  _100,
+  /**
+   * Appendectomy without rupture or other complications.
+   */
+  _101,
+  /**
+   * Emergency department treatment of a tooth abscess.
+   */
+  _300,
+  /**
+   * Head trauma - concussion.
+   */
+  _400,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ExDiagnosisrelatedgroup fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("100".equals(codeString))
+      return _100;
+    if ("101".equals(codeString))
+      return _101;
+    if ("300".equals(codeString))
+      return _300;
+    if ("400".equals(codeString))
+      return _400;
+    throw new FHIRException("Unknown ExDiagnosisrelatedgroup code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case _100:
+      return "100";
+    case _101:
+      return "101";
+    case _300:
+      return "300";
+    case _400:
+      return "400";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/ex-diagnosisrelatedgroup";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case _100:
+      return "Normal Vaginal Delivery.";
+    case _101:
+      return "Appendectomy without rupture or other complications.";
+    case _300:
+      return "Emergency department treatment of a tooth abscess.";
+    case _400:
+      return "Head trauma - concussion.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case _100:
+      return "Normal Vaginal Delivery";
+    case _101:
+      return "Appendectomy - uncomplicated";
+    case _300:
+      return "Tooth abscess";
+    case _400:
+      return "Head trauma - concussion";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

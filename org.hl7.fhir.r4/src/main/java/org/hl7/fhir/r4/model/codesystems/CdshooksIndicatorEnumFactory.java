@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class CdshooksIndicatorEnumFactory implements EnumFactory<CdshooksIndicator> {
@@ -48,7 +44,7 @@ public class CdshooksIndicatorEnumFactory implements EnumFactory<CdshooksIndicat
       return CdshooksIndicator.WARNING;
     if ("critical".equals(codeString))
       return CdshooksIndicator.CRITICAL;
-    throw new IllegalArgumentException("Unknown CdshooksIndicator code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown CdshooksIndicator code '" + codeString + "'");
   }
 
   public String toCode(CdshooksIndicator code) {
@@ -61,8 +57,8 @@ public class CdshooksIndicatorEnumFactory implements EnumFactory<CdshooksIndicat
     return "?";
   }
 
-    public String toSystem(CdshooksIndicator code) {
-      return code.getSystem();
-      }
+  public String toSystem(CdshooksIndicator code) {
+    return code.getSystem();
+  }
 
 }

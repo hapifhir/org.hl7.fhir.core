@@ -1,11 +1,16 @@
 package org.hl7.fhir.utilities.tests;
 
-import org.apache.commons.io.IOUtils;
-import org.hl7.fhir.utilities.*;
-import org.hl7.fhir.utilities.settings.FhirSettings;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
+
+import org.apache.commons.io.IOUtils;
+import org.hl7.fhir.utilities.CSFile;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class BaseTestingUtilities {
 

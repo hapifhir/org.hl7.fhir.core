@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,131 +31,171 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum FlagCategory {
 
-        /**
-         * Flags related to the subject's dietary needs.
-         */
-        DIET, 
-        /**
-         * Flags related to the subject's medications.
-         */
-        DRUG, 
-        /**
-         * Flags related to performing laboratory tests and related processes (e.g. phlebotomy).
-         */
-        LAB, 
-        /**
-         * Flags related to administrative and financial processes.
-         */
-        ADMIN, 
-        /**
-         * Flags related to coming into contact with the patient.
-         */
-        CONTACT, 
-        /**
-         * Flags related to the subject's clinical data.
-         */
-        CLINICAL, 
-        /**
-         * Flags related to behavior.
-         */
-        BEHAVIORAL, 
-        /**
-         * Flags related to research.
-         */
-        RESEARCH, 
-        /**
-         * Flags related to subject's advance directives.
-         */
-        ADVANCEDIRECTIVE, 
-        /**
-         * Flags related to safety precautions.
-         */
-        SAFETY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static FlagCategory fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("diet".equals(codeString))
-          return DIET;
-        if ("drug".equals(codeString))
-          return DRUG;
-        if ("lab".equals(codeString))
-          return LAB;
-        if ("admin".equals(codeString))
-          return ADMIN;
-        if ("contact".equals(codeString))
-          return CONTACT;
-        if ("clinical".equals(codeString))
-          return CLINICAL;
-        if ("behavioral".equals(codeString))
-          return BEHAVIORAL;
-        if ("research".equals(codeString))
-          return RESEARCH;
-        if ("advance-directive".equals(codeString))
-          return ADVANCEDIRECTIVE;
-        if ("safety".equals(codeString))
-          return SAFETY;
-        throw new FHIRException("Unknown FlagCategory code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DIET: return "diet";
-            case DRUG: return "drug";
-            case LAB: return "lab";
-            case ADMIN: return "admin";
-            case CONTACT: return "contact";
-            case CLINICAL: return "clinical";
-            case BEHAVIORAL: return "behavioral";
-            case RESEARCH: return "research";
-            case ADVANCEDIRECTIVE: return "advance-directive";
-            case SAFETY: return "safety";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/flag-category";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DIET: return "Flags related to the subject's dietary needs.";
-            case DRUG: return "Flags related to the subject's medications.";
-            case LAB: return "Flags related to performing laboratory tests and related processes (e.g. phlebotomy).";
-            case ADMIN: return "Flags related to administrative and financial processes.";
-            case CONTACT: return "Flags related to coming into contact with the patient.";
-            case CLINICAL: return "Flags related to the subject's clinical data.";
-            case BEHAVIORAL: return "Flags related to behavior.";
-            case RESEARCH: return "Flags related to research.";
-            case ADVANCEDIRECTIVE: return "Flags related to subject's advance directives.";
-            case SAFETY: return "Flags related to safety precautions.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DIET: return "Diet";
-            case DRUG: return "Drug";
-            case LAB: return "Lab";
-            case ADMIN: return "Administrative";
-            case CONTACT: return "Subject Contact";
-            case CLINICAL: return "Clinical";
-            case BEHAVIORAL: return "Behavioral";
-            case RESEARCH: return "Research";
-            case ADVANCEDIRECTIVE: return "Advance Directive";
-            case SAFETY: return "Safety";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Flags related to the subject's dietary needs.
+   */
+  DIET,
+  /**
+   * Flags related to the subject's medications.
+   */
+  DRUG,
+  /**
+   * Flags related to performing laboratory tests and related processes (e.g.
+   * phlebotomy).
+   */
+  LAB,
+  /**
+   * Flags related to administrative and financial processes.
+   */
+  ADMIN,
+  /**
+   * Flags related to coming into contact with the patient.
+   */
+  CONTACT,
+  /**
+   * Flags related to the subject's clinical data.
+   */
+  CLINICAL,
+  /**
+   * Flags related to behavior.
+   */
+  BEHAVIORAL,
+  /**
+   * Flags related to research.
+   */
+  RESEARCH,
+  /**
+   * Flags related to subject's advance directives.
+   */
+  ADVANCEDIRECTIVE,
+  /**
+   * Flags related to safety precautions.
+   */
+  SAFETY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static FlagCategory fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("diet".equals(codeString))
+      return DIET;
+    if ("drug".equals(codeString))
+      return DRUG;
+    if ("lab".equals(codeString))
+      return LAB;
+    if ("admin".equals(codeString))
+      return ADMIN;
+    if ("contact".equals(codeString))
+      return CONTACT;
+    if ("clinical".equals(codeString))
+      return CLINICAL;
+    if ("behavioral".equals(codeString))
+      return BEHAVIORAL;
+    if ("research".equals(codeString))
+      return RESEARCH;
+    if ("advance-directive".equals(codeString))
+      return ADVANCEDIRECTIVE;
+    if ("safety".equals(codeString))
+      return SAFETY;
+    throw new FHIRException("Unknown FlagCategory code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DIET:
+      return "diet";
+    case DRUG:
+      return "drug";
+    case LAB:
+      return "lab";
+    case ADMIN:
+      return "admin";
+    case CONTACT:
+      return "contact";
+    case CLINICAL:
+      return "clinical";
+    case BEHAVIORAL:
+      return "behavioral";
+    case RESEARCH:
+      return "research";
+    case ADVANCEDIRECTIVE:
+      return "advance-directive";
+    case SAFETY:
+      return "safety";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/flag-category";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DIET:
+      return "Flags related to the subject's dietary needs.";
+    case DRUG:
+      return "Flags related to the subject's medications.";
+    case LAB:
+      return "Flags related to performing laboratory tests and related processes (e.g. phlebotomy).";
+    case ADMIN:
+      return "Flags related to administrative and financial processes.";
+    case CONTACT:
+      return "Flags related to coming into contact with the patient.";
+    case CLINICAL:
+      return "Flags related to the subject's clinical data.";
+    case BEHAVIORAL:
+      return "Flags related to behavior.";
+    case RESEARCH:
+      return "Flags related to research.";
+    case ADVANCEDIRECTIVE:
+      return "Flags related to subject's advance directives.";
+    case SAFETY:
+      return "Flags related to safety precautions.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DIET:
+      return "Diet";
+    case DRUG:
+      return "Drug";
+    case LAB:
+      return "Lab";
+    case ADMIN:
+      return "Administrative";
+    case CONTACT:
+      return "Subject Contact";
+    case CLINICAL:
+      return "Clinical";
+    case BEHAVIORAL:
+      return "Behavioral";
+    case RESEARCH:
+      return "Research";
+    case ADVANCEDIRECTIVE:
+      return "Advance Directive";
+    case SAFETY:
+      return "Safety";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,6 +1,10 @@
 package org.hl7.fhir.r4.test;
 
-import org.fhir.ucum.UcumException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.DomainResource;
@@ -12,11 +16,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 @Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -30,11 +29,13 @@ public class NarrativeGeneratorTests {
   }
 
   @Test
-  public void test() throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
+  public void test()
+      throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
     process(TestingUtilities.resourceNameToFile("questionnaireresponse-example-f201-lifelines.xml"));
   }
 
-  private void process(String path) throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
+  private void process(String path)
+      throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
     XmlParser p = new XmlParser();
     DomainResource r = (DomainResource) p.parse(new FileInputStream(path));
     gen.generate(r, null);

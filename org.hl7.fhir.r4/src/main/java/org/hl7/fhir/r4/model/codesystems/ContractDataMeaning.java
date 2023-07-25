@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,100 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractDataMeaning {
 
-        /**
-         * The consent applies directly to the instance of the resource.
-         */
-        INSTANCE, 
-        /**
-         * The consent applies directly to the instance of the resource and instances it refers to.
-         */
-        RELATED, 
-        /**
-         * The consent applies directly to the instance of the resource and instances that refer to it.
-         */
-        DEPENDENTS, 
-        /**
-         * The consent applies to instances of resources that are authored by.
-         */
-        AUTHOREDBY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ContractDataMeaning fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("instance".equals(codeString))
-          return INSTANCE;
-        if ("related".equals(codeString))
-          return RELATED;
-        if ("dependents".equals(codeString))
-          return DEPENDENTS;
-        if ("authoredby".equals(codeString))
-          return AUTHOREDBY;
-        throw new FHIRException("Unknown ContractDataMeaning code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INSTANCE: return "instance";
-            case RELATED: return "related";
-            case DEPENDENTS: return "dependents";
-            case AUTHOREDBY: return "authoredby";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/contract-data-meaning";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INSTANCE: return "The consent applies directly to the instance of the resource.";
-            case RELATED: return "The consent applies directly to the instance of the resource and instances it refers to.";
-            case DEPENDENTS: return "The consent applies directly to the instance of the resource and instances that refer to it.";
-            case AUTHOREDBY: return "The consent applies to instances of resources that are authored by.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INSTANCE: return "Instance";
-            case RELATED: return "Related";
-            case DEPENDENTS: return "Dependents";
-            case AUTHOREDBY: return "AuthoredBy";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The consent applies directly to the instance of the resource.
+   */
+  INSTANCE,
+  /**
+   * The consent applies directly to the instance of the resource and instances it
+   * refers to.
+   */
+  RELATED,
+  /**
+   * The consent applies directly to the instance of the resource and instances
+   * that refer to it.
+   */
+  DEPENDENTS,
+  /**
+   * The consent applies to instances of resources that are authored by.
+   */
+  AUTHOREDBY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ContractDataMeaning fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("instance".equals(codeString))
+      return INSTANCE;
+    if ("related".equals(codeString))
+      return RELATED;
+    if ("dependents".equals(codeString))
+      return DEPENDENTS;
+    if ("authoredby".equals(codeString))
+      return AUTHOREDBY;
+    throw new FHIRException("Unknown ContractDataMeaning code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INSTANCE:
+      return "instance";
+    case RELATED:
+      return "related";
+    case DEPENDENTS:
+      return "dependents";
+    case AUTHOREDBY:
+      return "authoredby";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/contract-data-meaning";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INSTANCE:
+      return "The consent applies directly to the instance of the resource.";
+    case RELATED:
+      return "The consent applies directly to the instance of the resource and instances it refers to.";
+    case DEPENDENTS:
+      return "The consent applies directly to the instance of the resource and instances that refer to it.";
+    case AUTHOREDBY:
+      return "The consent applies to instances of resources that are authored by.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INSTANCE:
+      return "Instance";
+    case RELATED:
+      return "Related";
+    case DEPENDENTS:
+      return "Dependents";
+    case AUTHOREDBY:
+      return "AuthoredBy";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

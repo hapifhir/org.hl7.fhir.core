@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ProcessOutcomeEnumFactory implements EnumFactory<ProcessOutcome> {
@@ -48,7 +44,7 @@ public class ProcessOutcomeEnumFactory implements EnumFactory<ProcessOutcome> {
       return ProcessOutcome.PENDED;
     if ("error".equals(codeString))
       return ProcessOutcome.ERROR;
-    throw new IllegalArgumentException("Unknown ProcessOutcome code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ProcessOutcome code '" + codeString + "'");
   }
 
   public String toCode(ProcessOutcome code) {
@@ -61,8 +57,8 @@ public class ProcessOutcomeEnumFactory implements EnumFactory<ProcessOutcome> {
     return "?";
   }
 
-    public String toSystem(ProcessOutcome code) {
-      return code.getSystem();
-      }
+  public String toSystem(ProcessOutcome code) {
+    return code.getSystem();
+  }
 
 }

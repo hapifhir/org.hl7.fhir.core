@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class FlagCategoryEnumFactory implements EnumFactory<FlagCategory> {
@@ -62,7 +58,7 @@ public class FlagCategoryEnumFactory implements EnumFactory<FlagCategory> {
       return FlagCategory.ADVANCEDIRECTIVE;
     if ("safety".equals(codeString))
       return FlagCategory.SAFETY;
-    throw new IllegalArgumentException("Unknown FlagCategory code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown FlagCategory code '" + codeString + "'");
   }
 
   public String toCode(FlagCategory code) {
@@ -89,8 +85,8 @@ public class FlagCategoryEnumFactory implements EnumFactory<FlagCategory> {
     return "?";
   }
 
-    public String toSystem(FlagCategory code) {
-      return code.getSystem();
-      }
+  public String toSystem(FlagCategory code) {
+    return code.getSystem();
+  }
 
 }

@@ -53,10 +53,8 @@ import com.microsoft.schemas.office.visio.x2012.main.ShapeSheetType;
 
  */
 
-
-
 public class SpreadsheetGenerator {
-    
+
   private static final int MAX_SENSITIVE_SHEET_NAME_LEN = 31;
 
   protected IWorkerContext context;
@@ -66,7 +64,7 @@ public class SpreadsheetGenerator {
 
   protected DataRenderer dr;
   private List<String> sheetNames = new ArrayList<>();
-  
+
   public SpreadsheetGenerator(IWorkerContext context) {
     super();
     this.context = context;
@@ -79,7 +77,7 @@ public class SpreadsheetGenerator {
     outStream.flush();
     outStream.close();
   }
-  
+
   protected Sheet makeSheet(String name) {
     if (name.length() > MAX_SENSITIVE_SHEET_NAME_LEN - 2) {
       name = name.substring(0, MAX_SENSITIVE_SHEET_NAME_LEN - 2);
@@ -89,7 +87,7 @@ public class SpreadsheetGenerator {
       int i = 1;
       do {
         i++;
-        s = name+" "+Integer.toString(i);
+        s = name + " " + Integer.toString(i);
       } while (sheetNames.contains(s));
     }
     sheetNames.add(s);
@@ -100,23 +98,23 @@ public class SpreadsheetGenerator {
     StringBuilder b = new StringBuilder();
     for (char ch : name.toCharArray()) {
       switch (ch) {
-        case '/':
-        case '\\':
-        case '?':
-        case '*':
-        case ']':
-        case '[':
-        case ':':
-          b.append('_');
-          break;
-        default:
-          b.append(ch);
+      case '/':
+      case '\\':
+      case '?':
+      case '*':
+      case ']':
+      case '[':
+      case ':':
+        b.append('_');
+        break;
+      default:
+        b.append(ch);
       }
     }
     return b.toString();
   }
 
-  private static Map<String, CellStyle> createStyles(Workbook wb){
+  private static Map<String, CellStyle> createStyles(Workbook wb) {
     Map<String, CellStyle> styles = new HashMap<>();
 
     CellStyle style;
@@ -132,13 +130,13 @@ public class SpreadsheetGenerator {
 
     style = createBorderedStyle(wb);
     style.setVerticalAlignment(VerticalAlignment.TOP);
-    style.setWrapText(true);    
+    style.setWrapText(true);
     styles.put("body", style);
 
     return styles;
   }
 
-  private static CellStyle createBorderedStyle(Workbook wb){
+  private static CellStyle createBorderedStyle(Workbook wb) {
     BorderStyle thin = BorderStyle.THIN;
     short black = IndexedColors.GREY_50_PERCENT.getIndex();
 
@@ -175,22 +173,22 @@ public class SpreadsheetGenerator {
   protected int columnPixels(double columns) {
     double WIDTH_FACTOR = 256;
     double PADDING = 180;
-    return (int)Math.floor(columns*WIDTH_FACTOR + PADDING);
+    return (int) Math.floor(columns * WIDTH_FACTOR + PADDING);
   }
 
   protected void addHeaders(Sheet sheet, String... titles) {
-    Row headerRow = sheet.createRow(sheet.getRow(0) == null ? 0 : sheet.getLastRowNum()+1);
+    Row headerRow = sheet.createRow(sheet.getRow(0) == null ? 0 : sheet.getLastRowNum() + 1);
     for (int i = 0; i < titles.length; i++) {
       addCell(headerRow, i, titles[i], styles.get("header"));
-    }   
+    }
   }
-  
+
   protected void addRow(Sheet sheet, String... values) {
-    Row row = sheet.createRow(sheet.getLastRowNum()+1);
-    
+    Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+
     for (int i = 0; i < values.length; i++) {
       addCell(row, i, values[i], styles.get("body"));
     }
   }
-  
+
 }

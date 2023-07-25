@@ -1,23 +1,24 @@
 package org.hl7.fhir.r4.terminologies;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.context.SimpleWorkerContext;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.ConceptMap;
-import org.hl7.fhir.r4.model.Enumerations;
-import javax.annotation.Nonnull;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import javax.annotation.Nonnull;
+
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.context.SimpleWorkerContext;
+import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.ConceptMap;
+import org.hl7.fhir.r4.model.Enumerations;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class ConceptMapEngineTest {
 
@@ -45,9 +46,8 @@ class ConceptMapEngineTest {
 
     final ConceptMap.SourceElementComponent sourceElementComponent = getSourceElementComponent();
 
-    final ConceptMapEngine conceptMapEngine = getConceptMapEngine(Arrays.asList(sourceElementComponent,
-                                                sourceElementComponent
-                                              ));
+    final ConceptMapEngine conceptMapEngine = getConceptMapEngine(
+        Arrays.asList(sourceElementComponent, sourceElementComponent));
     Coding coding = new Coding(null, SOURCE_CODE_STRING, "Body Weight");
 
     assertThrows(FHIRException.class, () -> {
@@ -56,7 +56,8 @@ class ConceptMapEngineTest {
   }
 
   @Nonnull
-  private ConceptMapEngine getConceptMapEngine(Collection<ConceptMap.SourceElementComponent> elements) throws IOException {
+  private ConceptMapEngine getConceptMapEngine(Collection<ConceptMap.SourceElementComponent> elements)
+      throws IOException {
     ConceptMap conceptMap = getConceptMap(elements);
 
     SimpleWorkerContext simpleWorkerContext = mock(SimpleWorkerContext.class);
@@ -85,8 +86,6 @@ class ConceptMapEngineTest {
     for (ConceptMap.SourceElementComponent element : elements) {
       conceptMapGroupComponent.addElement(element);
     }
-    return new ConceptMap()
-      .addGroup(conceptMapGroupComponent)
-      .setUrl(CONCEPT_MAP_URL);
+    return new ConceptMap().addGroup(conceptMapGroupComponent).setUrl(CONCEPT_MAP_URL);
   }
 }

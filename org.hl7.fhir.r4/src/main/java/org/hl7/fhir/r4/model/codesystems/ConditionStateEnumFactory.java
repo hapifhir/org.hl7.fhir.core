@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ConditionStateEnumFactory implements EnumFactory<ConditionState> {
@@ -48,7 +44,7 @@ public class ConditionStateEnumFactory implements EnumFactory<ConditionState> {
       return ConditionState.INACTIVE;
     if ("resolved".equals(codeString))
       return ConditionState.RESOLVED;
-    throw new IllegalArgumentException("Unknown ConditionState code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ConditionState code '" + codeString + "'");
   }
 
   public String toCode(ConditionState code) {
@@ -61,8 +57,8 @@ public class ConditionStateEnumFactory implements EnumFactory<ConditionState> {
     return "?";
   }
 
-    public String toSystem(ConditionState code) {
-      return code.getSystem();
-      }
+  public String toSystem(ConditionState code) {
+    return code.getSystem();
+  }
 
 }

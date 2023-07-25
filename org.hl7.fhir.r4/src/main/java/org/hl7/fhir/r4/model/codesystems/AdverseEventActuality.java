@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,75 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AdverseEventActuality {
 
-        /**
-         * The adverse event actually happened regardless of whether anyone was affected or harmed.
-         */
-        ACTUAL, 
-        /**
-         * A potential adverse event.
-         */
-        POTENTIAL, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static AdverseEventActuality fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("actual".equals(codeString))
-          return ACTUAL;
-        if ("potential".equals(codeString))
-          return POTENTIAL;
-        throw new FHIRException("Unknown AdverseEventActuality code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACTUAL: return "actual";
-            case POTENTIAL: return "potential";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/adverse-event-actuality";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACTUAL: return "The adverse event actually happened regardless of whether anyone was affected or harmed.";
-            case POTENTIAL: return "A potential adverse event.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACTUAL: return "Adverse Event";
-            case POTENTIAL: return "Potential Adverse Event";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The adverse event actually happened regardless of whether anyone was affected
+   * or harmed.
+   */
+  ACTUAL,
+  /**
+   * A potential adverse event.
+   */
+  POTENTIAL,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static AdverseEventActuality fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("actual".equals(codeString))
+      return ACTUAL;
+    if ("potential".equals(codeString))
+      return POTENTIAL;
+    throw new FHIRException("Unknown AdverseEventActuality code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ACTUAL:
+      return "actual";
+    case POTENTIAL:
+      return "potential";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/adverse-event-actuality";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ACTUAL:
+      return "The adverse event actually happened regardless of whether anyone was affected or harmed.";
+    case POTENTIAL:
+      return "A potential adverse event.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ACTUAL:
+      return "Adverse Event";
+    case POTENTIAL:
+      return "Potential Adverse Event";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

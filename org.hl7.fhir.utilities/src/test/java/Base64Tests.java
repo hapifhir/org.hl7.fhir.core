@@ -1,9 +1,8 @@
-import org.junit.jupiter.api.Test;
-
-import org.hl7.fhir.utilities.Base64;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.hl7.fhir.utilities.Base64;
+import org.junit.jupiter.api.Test;
 
 public class Base64Tests {
   @Test

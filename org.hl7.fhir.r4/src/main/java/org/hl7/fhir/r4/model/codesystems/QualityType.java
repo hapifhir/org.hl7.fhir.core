@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QualityType {
 
-        /**
-         * INDEL Comparison.
-         */
-        INDEL, 
-        /**
-         * SNP Comparison.
-         */
-        SNP, 
-        /**
-         * UNKNOWN Comparison.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static QualityType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("indel".equals(codeString))
-          return INDEL;
-        if ("snp".equals(codeString))
-          return SNP;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        throw new FHIRException("Unknown QualityType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INDEL: return "indel";
-            case SNP: return "snp";
-            case UNKNOWN: return "unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/quality-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INDEL: return "INDEL Comparison.";
-            case SNP: return "SNP Comparison.";
-            case UNKNOWN: return "UNKNOWN Comparison.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INDEL: return "INDEL Comparison";
-            case SNP: return "SNP Comparison";
-            case UNKNOWN: return "UNKNOWN Comparison";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * INDEL Comparison.
+   */
+  INDEL,
+  /**
+   * SNP Comparison.
+   */
+  SNP,
+  /**
+   * UNKNOWN Comparison.
+   */
+  UNKNOWN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static QualityType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("indel".equals(codeString))
+      return INDEL;
+    if ("snp".equals(codeString))
+      return SNP;
+    if ("unknown".equals(codeString))
+      return UNKNOWN;
+    throw new FHIRException("Unknown QualityType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INDEL:
+      return "indel";
+    case SNP:
+      return "snp";
+    case UNKNOWN:
+      return "unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/quality-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INDEL:
+      return "INDEL Comparison.";
+    case SNP:
+      return "SNP Comparison.";
+    case UNKNOWN:
+      return "UNKNOWN Comparison.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INDEL:
+      return "INDEL Comparison";
+    case SNP:
+      return "SNP Comparison";
+    case UNKNOWN:
+      return "UNKNOWN Comparison";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

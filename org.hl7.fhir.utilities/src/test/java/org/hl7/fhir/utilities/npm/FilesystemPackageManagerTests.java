@@ -1,12 +1,13 @@
 package org.hl7.fhir.utilities.npm;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import javax.annotation.Nonnull;
+
+import org.junit.jupiter.api.Test;
 
 public class FilesystemPackageManagerTests {
 

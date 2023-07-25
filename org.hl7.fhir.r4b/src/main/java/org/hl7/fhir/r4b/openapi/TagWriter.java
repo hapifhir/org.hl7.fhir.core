@@ -29,12 +29,9 @@ package org.hl7.fhir.r4b.openapi;
   
  */
 
-
-
 import com.google.gson.JsonObject;
 
 public class TagWriter extends BaseWriter {
-
 
   public TagWriter(JsonObject object) {
     super(object);
@@ -42,11 +39,11 @@ public class TagWriter extends BaseWriter {
 
   public TagWriter description(String value) {
     object.addProperty("description", value);
-    return this;            
+    return this;
   }
-  
+
   public ExternalDocsWriter variable(String name) {
-    return new ExternalDocsWriter(ensureObject("externalDocs"));            
+    return new ExternalDocsWriter(ensureObject("externalDocs"));
   }
 
 }

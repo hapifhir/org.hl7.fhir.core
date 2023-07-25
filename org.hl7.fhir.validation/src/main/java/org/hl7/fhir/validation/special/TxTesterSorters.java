@@ -5,8 +5,8 @@ import java.util.Comparator;
 
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;

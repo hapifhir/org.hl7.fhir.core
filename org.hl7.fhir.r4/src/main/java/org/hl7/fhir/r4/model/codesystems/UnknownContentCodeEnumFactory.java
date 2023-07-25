@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class UnknownContentCodeEnumFactory implements EnumFactory<UnknownContentCode> {
@@ -50,7 +46,7 @@ public class UnknownContentCodeEnumFactory implements EnumFactory<UnknownContent
       return UnknownContentCode.ELEMENTS;
     if ("both".equals(codeString))
       return UnknownContentCode.BOTH;
-    throw new IllegalArgumentException("Unknown UnknownContentCode code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown UnknownContentCode code '" + codeString + "'");
   }
 
   public String toCode(UnknownContentCode code) {
@@ -65,8 +61,8 @@ public class UnknownContentCodeEnumFactory implements EnumFactory<UnknownContent
     return "?";
   }
 
-    public String toSystem(UnknownContentCode code) {
-      return code.getSystem();
-      }
+  public String toSystem(UnknownContentCode code) {
+    return code.getSystem();
+  }
 
 }

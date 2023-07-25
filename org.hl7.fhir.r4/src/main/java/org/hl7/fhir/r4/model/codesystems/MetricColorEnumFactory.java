@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class MetricColorEnumFactory implements EnumFactory<MetricColor> {
@@ -58,7 +54,7 @@ public class MetricColorEnumFactory implements EnumFactory<MetricColor> {
       return MetricColor.CYAN;
     if ("white".equals(codeString))
       return MetricColor.WHITE;
-    throw new IllegalArgumentException("Unknown MetricColor code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown MetricColor code '" + codeString + "'");
   }
 
   public String toCode(MetricColor code) {
@@ -81,8 +77,8 @@ public class MetricColorEnumFactory implements EnumFactory<MetricColor> {
     return "?";
   }
 
-    public String toSystem(MetricColor code) {
-      return code.getSystem();
-      }
+  public String toSystem(MetricColor code) {
+    return code.getSystem();
+  }
 
 }

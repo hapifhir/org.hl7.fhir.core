@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,87 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum FlagStatus {
 
-        /**
-         * A current flag that should be displayed to a user. A system may use the category to determine which user roles should view the flag.
-         */
-        ACTIVE, 
-        /**
-         * The flag no longer needs to be displayed.
-         */
-        INACTIVE, 
-        /**
-         * The flag was added in error and should no longer be displayed.
-         */
-        ENTEREDINERROR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static FlagStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("inactive".equals(codeString))
-          return INACTIVE;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        throw new FHIRException("Unknown FlagStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACTIVE: return "active";
-            case INACTIVE: return "inactive";
-            case ENTEREDINERROR: return "entered-in-error";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/flag-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACTIVE: return "A current flag that should be displayed to a user. A system may use the category to determine which user roles should view the flag.";
-            case INACTIVE: return "The flag no longer needs to be displayed.";
-            case ENTEREDINERROR: return "The flag was added in error and should no longer be displayed.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACTIVE: return "Active";
-            case INACTIVE: return "Inactive";
-            case ENTEREDINERROR: return "Entered in Error";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * A current flag that should be displayed to a user. A system may use the
+   * category to determine which user roles should view the flag.
+   */
+  ACTIVE,
+  /**
+   * The flag no longer needs to be displayed.
+   */
+  INACTIVE,
+  /**
+   * The flag was added in error and should no longer be displayed.
+   */
+  ENTEREDINERROR,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static FlagStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("active".equals(codeString))
+      return ACTIVE;
+    if ("inactive".equals(codeString))
+      return INACTIVE;
+    if ("entered-in-error".equals(codeString))
+      return ENTEREDINERROR;
+    throw new FHIRException("Unknown FlagStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ACTIVE:
+      return "active";
+    case INACTIVE:
+      return "inactive";
+    case ENTEREDINERROR:
+      return "entered-in-error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/flag-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ACTIVE:
+      return "A current flag that should be displayed to a user. A system may use the category to determine which user roles should view the flag.";
+    case INACTIVE:
+      return "The flag no longer needs to be displayed.";
+    case ENTEREDINERROR:
+      return "The flag was added in error and should no longer be displayed.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ACTIVE:
+      return "Active";
+    case INACTIVE:
+      return "Inactive";
+    case ENTEREDINERROR:
+      return "Entered in Error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

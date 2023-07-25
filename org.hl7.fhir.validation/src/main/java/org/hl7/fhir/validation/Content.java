@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation;
 
 import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 
 public class Content {
   private byte[] focus = null;

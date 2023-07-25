@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,75 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum RelatedClaimRelationship {
 
-        /**
-         * A prior claim instance for the same intended suite of services.
-         */
-        PRIOR, 
-        /**
-         * A claim for a different suite of services which is related the the suite claimed here.
-         */
-        ASSOCIATED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static RelatedClaimRelationship fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("prior".equals(codeString))
-          return PRIOR;
-        if ("associated".equals(codeString))
-          return ASSOCIATED;
-        throw new FHIRException("Unknown RelatedClaimRelationship code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PRIOR: return "prior";
-            case ASSOCIATED: return "associated";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/ex-relatedclaimrelationship";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PRIOR: return "A prior claim instance for the same intended suite of services.";
-            case ASSOCIATED: return "A claim for a different suite of services which is related the the suite claimed here.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PRIOR: return "Prior Claim";
-            case ASSOCIATED: return "Associated Claim";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * A prior claim instance for the same intended suite of services.
+   */
+  PRIOR,
+  /**
+   * A claim for a different suite of services which is related the the suite
+   * claimed here.
+   */
+  ASSOCIATED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static RelatedClaimRelationship fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("prior".equals(codeString))
+      return PRIOR;
+    if ("associated".equals(codeString))
+      return ASSOCIATED;
+    throw new FHIRException("Unknown RelatedClaimRelationship code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PRIOR:
+      return "prior";
+    case ASSOCIATED:
+      return "associated";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/ex-relatedclaimrelationship";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PRIOR:
+      return "A prior claim instance for the same intended suite of services.";
+    case ASSOCIATED:
+      return "A claim for a different suite of services which is related the the suite claimed here.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PRIOR:
+      return "Prior Claim";
+    case ASSOCIATED:
+      return "Associated Claim";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

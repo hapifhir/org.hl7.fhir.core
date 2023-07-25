@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,125 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConceptPropertyType {
 
-        /**
-         * The property value is a code that identifies a concept defined in the code system
-         */
-        CODE, 
-        /**
-         * The property  value is a code defined in an external code system. This may be used for translations, but is not the intent
-         */
-        CODING, 
-        /**
-         * The property value is a string
-         */
-        STRING, 
-        /**
-         * The property value is a string (often used to assign ranking values to concepts for supporting score assessments)
-         */
-        INTEGER, 
-        /**
-         * The property value is a boolean true | false
-         */
-        BOOLEAN, 
-        /**
-         * The property is a date or a date + time
-         */
-        DATETIME, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ConceptPropertyType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("code".equals(codeString))
-          return CODE;
-        if ("Coding".equals(codeString))
-          return CODING;
-        if ("string".equals(codeString))
-          return STRING;
-        if ("integer".equals(codeString))
-          return INTEGER;
-        if ("boolean".equals(codeString))
-          return BOOLEAN;
-        if ("dateTime".equals(codeString))
-          return DATETIME;
-        throw new FHIRException("Unknown ConceptPropertyType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CODE: return "code";
-            case CODING: return "Coding";
-            case STRING: return "string";
-            case INTEGER: return "integer";
-            case BOOLEAN: return "boolean";
-            case DATETIME: return "dateTime";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/concept-property-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CODE: return "The property value is a code that identifies a concept defined in the code system";
-            case CODING: return "The property  value is a code defined in an external code system. This may be used for translations, but is not the intent";
-            case STRING: return "The property value is a string";
-            case INTEGER: return "The property value is a string (often used to assign ranking values to concepts for supporting score assessments)";
-            case BOOLEAN: return "The property value is a boolean true | false";
-            case DATETIME: return "The property is a date or a date + time";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CODE: return "code (internal reference)";
-            case CODING: return "Coding (external reference)";
-            case STRING: return "string";
-            case INTEGER: return "integer";
-            case BOOLEAN: return "boolean";
-            case DATETIME: return "dateTime";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The property value is a code that identifies a concept defined in the code
+   * system
+   */
+  CODE,
+  /**
+   * The property value is a code defined in an external code system. This may be
+   * used for translations, but is not the intent
+   */
+  CODING,
+  /**
+   * The property value is a string
+   */
+  STRING,
+  /**
+   * The property value is a string (often used to assign ranking values to
+   * concepts for supporting score assessments)
+   */
+  INTEGER,
+  /**
+   * The property value is a boolean true | false
+   */
+  BOOLEAN,
+  /**
+   * The property is a date or a date + time
+   */
+  DATETIME,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ConceptPropertyType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("code".equals(codeString))
+      return CODE;
+    if ("Coding".equals(codeString))
+      return CODING;
+    if ("string".equals(codeString))
+      return STRING;
+    if ("integer".equals(codeString))
+      return INTEGER;
+    if ("boolean".equals(codeString))
+      return BOOLEAN;
+    if ("dateTime".equals(codeString))
+      return DATETIME;
+    throw new FHIRException("Unknown ConceptPropertyType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case CODE:
+      return "code";
+    case CODING:
+      return "Coding";
+    case STRING:
+      return "string";
+    case INTEGER:
+      return "integer";
+    case BOOLEAN:
+      return "boolean";
+    case DATETIME:
+      return "dateTime";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/concept-property-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case CODE:
+      return "The property value is a code that identifies a concept defined in the code system";
+    case CODING:
+      return "The property  value is a code defined in an external code system. This may be used for translations, but is not the intent";
+    case STRING:
+      return "The property value is a string";
+    case INTEGER:
+      return "The property value is a string (often used to assign ranking values to concepts for supporting score assessments)";
+    case BOOLEAN:
+      return "The property value is a boolean true | false";
+    case DATETIME:
+      return "The property is a date or a date + time";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case CODE:
+      return "code (internal reference)";
+    case CODING:
+      return "Coding (external reference)";
+    case STRING:
+      return "string";
+    case INTEGER:
+      return "integer";
+    case BOOLEAN:
+      return "boolean";
+    case DATETIME:
+      return "dateTime";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

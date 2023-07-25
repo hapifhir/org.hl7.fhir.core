@@ -1,5 +1,11 @@
 package org.hl7.fhir.r4.test;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
@@ -9,8 +15,6 @@ import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.utilities.Utilities;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.io.*;
 
 @Disabled
 public class JsonDirectTests {

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,50 +31,63 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MaritalStatus {
 
-        /**
-         * The person is not presently married. The marital history is not known or stated.
-         */
-        U, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MaritalStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("U".equals(codeString))
-          return U;
-        throw new FHIRException("Unknown MaritalStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case U: return "U";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/marital-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case U: return "The person is not presently married. The marital history is not known or stated.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case U: return "Unmarried";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The person is not presently married. The marital history is not known or
+   * stated.
+   */
+  U,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MaritalStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("U".equals(codeString))
+      return U;
+    throw new FHIRException("Unknown MaritalStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case U:
+      return "U";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/marital-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case U:
+      return "The person is not presently married. The marital history is not known or stated.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case U:
+      return "Unmarried";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

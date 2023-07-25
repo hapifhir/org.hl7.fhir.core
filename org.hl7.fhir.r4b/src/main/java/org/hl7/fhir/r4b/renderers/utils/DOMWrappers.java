@@ -30,7 +30,6 @@ import org.w3c.dom.Element;
 
 public class DOMWrappers {
 
-
   public static class BaseWrapperElement extends WrapperBaseImpl implements BaseWrapper {
     private Element element;
     private String type;
@@ -39,7 +38,8 @@ public class DOMWrappers {
     private List<ElementDefinition> children;
     private List<PropertyWrapper> list;
 
-    public BaseWrapperElement(RenderingContext context, Element element, String type, StructureDefinition structure, ElementDefinition definition) {
+    public BaseWrapperElement(RenderingContext context, Element element, String type, StructureDefinition structure,
+        ElementDefinition definition) {
       super(context);
       this.element = element;
       this.type = type;
@@ -49,7 +49,8 @@ public class DOMWrappers {
 
     @Override
     public Base getBase() throws UnsupportedEncodingException, IOException, FHIRException {
-      if (Utilities.noString(type) || type.equals("Resource") || type.equals("BackboneElement") || type.equals("Element"))
+      if (Utilities.noString(type) || type.equals("Resource") || type.equals("BackboneElement")
+          || type.equals("Element"))
         return null;
 
       String xml;
@@ -67,7 +68,7 @@ public class DOMWrappers {
         children = context.getProfileUtilities().getChildList(structure, definition);
         if (children.isEmpty() && type != null) {
           StructureDefinition sdt = context.getWorker().fetchTypeDefinition(type);
-          children = context.getProfileUtilities().getChildList(sdt, sdt.getSnapshot().getElementFirstRep());          
+          children = context.getProfileUtilities().getChildList(sdt, sdt.getSnapshot().getElementFirstRep());
         }
         list = new ArrayList<PropertyWrapper>();
         for (ElementDefinition child : children) {
@@ -101,7 +102,8 @@ public class DOMWrappers {
     private List<Element> values;
     private List<BaseWrapper> list;
 
-    public PropertyWrapperElement(RenderingContext context, StructureDefinition structure, ElementDefinition definition, List<Element> values) {
+    public PropertyWrapperElement(RenderingContext context, StructureDefinition structure, ElementDefinition definition,
+        List<Element> values) {
       super(context);
       this.structure = structure;
       this.definition = definition;
@@ -127,15 +129,17 @@ public class DOMWrappers {
       }
       return list;
     }
+
     private String determineType(Element e) {
       if (definition.getType().isEmpty())
         return null;
       if (definition.getType().size() == 1) {
-        if (definition.getType().get(0).getWorkingCode().equals("Element") || definition.getType().get(0).getWorkingCode().equals("BackboneElement"))
+        if (definition.getType().get(0).getWorkingCode().equals("Element")
+            || definition.getType().get(0).getWorkingCode().equals("BackboneElement"))
           return null;
         return definition.getType().get(0).getWorkingCode();
       }
-      String t = e.getNodeName().substring(tail(definition.getPath()).length()-3);
+      String t = e.getNodeName().substring(tail(definition.getPath()).length() - 3);
 
       if (isPrimitive(Utilities.uncapitalize(t)))
         return Utilities.uncapitalize(t);
@@ -193,13 +197,13 @@ public class DOMWrappers {
     @Override
     public BaseWrapper value() {
       if (getValues().size() != 1)
-        throw new Error("Access single value, but value count is "+getValues().size());
+        throw new Error("Access single value, but value count is " + getValues().size());
       return getValues().get(0);
     }
 
     @Override
     public ResourceWrapper getAsResource() {
-     throw new Error("Not implemented yet");
+      throw new Error("Not implemented yet");
     }
 
     @Override
@@ -294,7 +298,8 @@ public class DOMWrappers {
     @Override
     public List<PropertyWrapper> children() {
       if (list2 == null) {
-        List<ElementDefinition> children = context.getProfileUtilities().getChildList(definition, definition.getSnapshot().getElement().get(0));
+        List<ElementDefinition> children = context.getProfileUtilities().getChildList(definition,
+            definition.getSnapshot().getElement().get(0));
         list2 = new ArrayList<PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<Element> elements = new ArrayList<Element>();
@@ -305,11 +310,9 @@ public class DOMWrappers {
       return list2;
     }
 
-
-
     @Override
     public void describe(XhtmlNode x) {
-      throw new Error("Not done yet");      
+      throw new Error("Not done yet");
     }
 
     @Override
@@ -327,7 +330,8 @@ public class DOMWrappers {
       if (txt == null) {
         txt = wrapped.getOwnerDocument().createElementNS(FormatUtilities.FHIR_NS, "text");
         Element n = XMLUtil.getFirstChild(wrapped);
-        while (n != null && (n.getNodeName().equals("id") || n.getNodeName().equals("meta") || n.getNodeName().equals("implicitRules") || n.getNodeName().equals("language")))
+        while (n != null && (n.getNodeName().equals("id") || n.getNodeName().equals("meta")
+            || n.getNodeName().equals("implicitRules") || n.getNodeName().equals("language")))
           n = XMLUtil.getNextSibling(n);
         if (n == null)
           wrapped.appendChild(txt);
@@ -357,7 +361,8 @@ public class DOMWrappers {
 
     @Override
     public BaseWrapper root() {
-      return new BaseWrapperElement(context, wrapped, getName(), definition, definition.getSnapshot().getElementFirstRep());
+      return new BaseWrapperElement(context, wrapped, getName(), definition,
+          definition.getSnapshot().getElementFirstRep());
     }
 
     @Override
@@ -386,7 +391,7 @@ public class DOMWrappers {
     public String fhirType() {
       return wrapped.getNodeName();
     }
-    
+
     @Override
     public PropertyWrapper getChildByName(String name) {
       for (PropertyWrapper p : children())
@@ -394,7 +399,6 @@ public class DOMWrappers {
           return p;
       return null;
     }
-
 
   }
 

@@ -29,13 +29,11 @@ package org.hl7.fhir.r4b.utils;
   
  */
 
-
 import org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDefinitionComponent;
 import org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent;
 
 public class IGHelper {
 
-  
   public static final String EXT_SPREADSHEET = ToolingExtensions.EXT_IGP_SPREADSHEET;
   public static final String EXT_MAPPING_CSV = ToolingExtensions.EXT_IGP_MAPPING_CSV;
   public static final String EXT_BUNDLE = ToolingExtensions.EXT_IGP_BUNDLE;
@@ -52,7 +50,8 @@ public class IGHelper {
     return null;
   }
 
-  public static boolean getBooleanParameter(ImplementationGuideDefinitionComponent ig, String name, boolean defaultValue) {
+  public static boolean getBooleanParameter(ImplementationGuideDefinitionComponent ig, String name,
+      boolean defaultValue) {
     String v = readStringParameter(ig, name);
     return v == null ? false : Boolean.parseBoolean(v);
   }
@@ -68,13 +67,13 @@ public class IGHelper {
     p.setCode(name);
     p.setValue(value);
   }
-  
+
   public static void addParameter(ImplementationGuideDefinitionComponent ig, String name, String value) {
     ImplementationGuideDefinitionParameterComponent p = ig.addParameter();
     p.setCode(name);
     p.setValue(value);
   }
-  
+
   public static void setParameter(ImplementationGuideDefinitionComponent ig, String name, boolean value) {
     setParameter(ig, name, Boolean.toString(value));
   }

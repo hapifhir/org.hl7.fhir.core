@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum DefinitionTopic {
 
-        /**
-         * The definition is related to treatment of the patient.
-         */
-        TREATMENT, 
-        /**
-         * The definition is related to education of the patient.
-         */
-        EDUCATION, 
-        /**
-         * The definition is related to assessment of the patient.
-         */
-        ASSESSMENT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static DefinitionTopic fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("treatment".equals(codeString))
-          return TREATMENT;
-        if ("education".equals(codeString))
-          return EDUCATION;
-        if ("assessment".equals(codeString))
-          return ASSESSMENT;
-        throw new FHIRException("Unknown DefinitionTopic code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case TREATMENT: return "treatment";
-            case EDUCATION: return "education";
-            case ASSESSMENT: return "assessment";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/definition-topic";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case TREATMENT: return "The definition is related to treatment of the patient.";
-            case EDUCATION: return "The definition is related to education of the patient.";
-            case ASSESSMENT: return "The definition is related to assessment of the patient.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case TREATMENT: return "Treatment";
-            case EDUCATION: return "Education";
-            case ASSESSMENT: return "Assessment";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The definition is related to treatment of the patient.
+   */
+  TREATMENT,
+  /**
+   * The definition is related to education of the patient.
+   */
+  EDUCATION,
+  /**
+   * The definition is related to assessment of the patient.
+   */
+  ASSESSMENT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static DefinitionTopic fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("treatment".equals(codeString))
+      return TREATMENT;
+    if ("education".equals(codeString))
+      return EDUCATION;
+    if ("assessment".equals(codeString))
+      return ASSESSMENT;
+    throw new FHIRException("Unknown DefinitionTopic code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case TREATMENT:
+      return "treatment";
+    case EDUCATION:
+      return "education";
+    case ASSESSMENT:
+      return "assessment";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/definition-topic";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case TREATMENT:
+      return "The definition is related to treatment of the patient.";
+    case EDUCATION:
+      return "The definition is related to education of the patient.";
+    case ASSESSMENT:
+      return "The definition is related to assessment of the patient.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case TREATMENT:
+      return "Treatment";
+    case EDUCATION:
+      return "Education";
+    case ASSESSMENT:
+      return "Assessment";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

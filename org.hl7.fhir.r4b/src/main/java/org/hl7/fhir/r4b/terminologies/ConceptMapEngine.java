@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.terminologies;
   
  */
 
-
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.context.SimpleWorkerContext;
 import org.hl7.fhir.r4b.model.Coding;
@@ -52,8 +50,8 @@ public class ConceptMapEngine {
   public Coding translate(Coding source, String url) throws FHIRException {
     ConceptMap cm = context.fetchResource(ConceptMap.class, url);
     if (cm == null)
-      throw new FHIRException("Unable to find ConceptMap '"+url+"'");
-    if (source.hasSystem()) 
+      throw new FHIRException("Unable to find ConceptMap '" + url + "'");
+    if (source.hasSystem())
       return translateBySystem(cm, source.getSystem(), source.getCode());
     else
       return translateByJustCode(cm, source.getCode());
@@ -66,7 +64,8 @@ public class ConceptMapEngine {
       for (SourceElementComponent e : g.getElement()) {
         if (code.equals(e.getCode())) {
           if (e != null)
-            throw new FHIRException("Unable to process translate "+code+" because multiple candidate matches were found in concept map "+cm.getUrl());
+            throw new FHIRException("Unable to process translate " + code
+                + " because multiple candidate matches were found in concept map " + cm.getUrl());
           ct = e;
           cg = g;
         }
@@ -78,18 +77,21 @@ public class ConceptMapEngine {
     for (TargetElementComponent t : ct.getTarget()) {
       if (!t.hasDependsOn() && !t.hasProduct() && isOkEquivalence(t.getEquivalence())) {
         if (tt != null)
-          throw new FHIRException("Unable to process translate "+code+" because multiple targets were found in concept map "+cm.getUrl());
-        tt = t;       
+          throw new FHIRException("Unable to process translate " + code
+              + " because multiple targets were found in concept map " + cm.getUrl());
+        tt = t;
       }
     }
     if (tt == null)
       return null;
     CanonicalPair cp = new CanonicalPair(cg.getTarget());
-    return new Coding().setSystem(cp.getUrl()).setVersion(cp.getVersion()).setCode(tt.getCode()).setDisplay(tt.getDisplay());      
+    return new Coding().setSystem(cp.getUrl()).setVersion(cp.getVersion()).setCode(tt.getCode())
+        .setDisplay(tt.getDisplay());
   }
-  
+
   private boolean isOkEquivalence(ConceptMapEquivalence equivalence) {
-    return equivalence != null && equivalence != ConceptMapEquivalence.DISJOINT && equivalence != ConceptMapEquivalence.UNMATCHED;
+    return equivalence != null && equivalence != ConceptMapEquivalence.DISJOINT
+        && equivalence != ConceptMapEquivalence.UNMATCHED;
   }
 
   private Coding translateBySystem(ConceptMap cm, String system, String code) {

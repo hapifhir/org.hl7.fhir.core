@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class NameUseEnumFactory implements EnumFactory<NameUse> {
@@ -56,7 +52,7 @@ public class NameUseEnumFactory implements EnumFactory<NameUse> {
       return NameUse.OLD;
     if ("maiden".equals(codeString))
       return NameUse.MAIDEN;
-    throw new IllegalArgumentException("Unknown NameUse code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown NameUse code '" + codeString + "'");
   }
 
   public String toCode(NameUse code) {
@@ -77,8 +73,8 @@ public class NameUseEnumFactory implements EnumFactory<NameUse> {
     return "?";
   }
 
-    public String toSystem(NameUse code) {
-      return code.getSystem();
-      }
+  public String toSystem(NameUse code) {
+    return code.getSystem();
+  }
 
 }

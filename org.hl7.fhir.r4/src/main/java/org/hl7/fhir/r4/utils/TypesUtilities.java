@@ -29,13 +29,10 @@ package org.hl7.fhir.r4.utils;
   
  */
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.utilities.Utilities;
-
 
 public class TypesUtilities {
 
@@ -44,10 +41,14 @@ public class TypesUtilities {
 
     public String toDisplay() {
       switch (this) {
-      case DATATYPE: return "Data Type";
-      case METADATATYPE: return "MetaDataType";
-      case PRIMITIVE: return "Primitive Type";
-      case SPECIAL: return "Special Type";
+      case DATATYPE:
+        return "Data Type";
+      case METADATATYPE:
+        return "MetaDataType";
+      case PRIMITIVE:
+        return "Primitive Type";
+      case SPECIAL:
+        return "Special Type";
       }
       return "??";
     }
@@ -57,41 +58,47 @@ public class TypesUtilities {
     private TypeClassification classification;
     private String typeName;
     private String comment;
+
     public WildcardInformation(String typeName, String comment, TypeClassification classification) {
       super();
       this.typeName = typeName;
       this.comment = comment;
       this.classification = classification;
     }
+
     public WildcardInformation(String typeName, TypeClassification classification) {
       super();
       this.typeName = typeName;
       this.classification = classification;
     }
+
     public String getTypeName() {
       return typeName;
     }
+
     public String getComment() {
       return comment;
     }
+
     public TypeClassification getClassification() {
       return classification;
     }
-    
+
   }
-  
+
   public static List<String> wildcardTypes() {
     List<String> res = new ArrayList<String>();
     for (WildcardInformation wi : wildcards())
       res.add(wi.getTypeName());
     return res;
   }
-  
+
   // this is the master list for what data types are allowed where the types = *
-  // that this list is incomplete means that the following types cannot have fixed values in a profile:
-  //   Narrative
-  //   Meta
-  //   Any of the IDMP data types
+  // that this list is incomplete means that the following types cannot have fixed
+  // values in a profile:
+  // Narrative
+  // Meta
+  // Any of the IDMP data types
   // You have to walk into them to profile them.
   //
   public static List<WildcardInformation> wildcards() {
@@ -101,7 +108,9 @@ public class TypesUtilities {
     res.add(new WildcardInformation("base64Binary", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("boolean", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("canonical", TypeClassification.PRIMITIVE));
-    res.add(new WildcardInformation("code", "(only if the extension definition provides a <a href=\"terminologies.html#code\">fixed</a> binding to a suitable set of codes)", TypeClassification.PRIMITIVE));
+    res.add(new WildcardInformation("code",
+        "(only if the extension definition provides a <a href=\"terminologies.html#code\">fixed</a> binding to a suitable set of codes)",
+        TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("date", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("dateTime", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("decimal", TypeClassification.PRIMITIVE));
@@ -140,7 +149,7 @@ public class TypesUtilities {
     res.add(new WildcardInformation("SampledData", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("Signature", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("Timing", TypeClassification.DATATYPE));
-    
+
     // metadata types
     res.add(new WildcardInformation("ContactDetail", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("Contributor", TypeClassification.METADATATYPE));
@@ -150,7 +159,7 @@ public class TypesUtilities {
     res.add(new WildcardInformation("RelatedArtifact", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("TriggerDefinition", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("UsageContext", TypeClassification.METADATATYPE));
-    
+
     // special cases
     res.add(new WildcardInformation("Dosage", TypeClassification.SPECIAL));
     res.add(new WildcardInformation("Meta", TypeClassification.SPECIAL));
@@ -158,6 +167,8 @@ public class TypesUtilities {
   }
 
   public static boolean isPrimitive(String code) {
-    return Utilities.existsInList(code, "boolean", "integer", "string", "decimal", "uri", "url", "canonical", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "xhtml");
+    return Utilities.existsInList(code, "boolean", "integer", "string", "decimal", "uri", "url", "canonical",
+        "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt",
+        "positiveInt", "xhtml");
   }
 }

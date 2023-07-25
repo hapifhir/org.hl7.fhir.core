@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcBpmeasmethoddevice {
 
-        /**
-         * A blood pressure cuff that is sized to use on pediatric paitents
-         */
-        _2102, 
-        /**
-         * A blood pressure cuff designed to be used on an individual's thigh
-         */
-        _2162, 
-        /**
-         * A blood pressure cuff that is sized to use on an adult upper arm
-         */
-        _31163, 
-        /**
-         * A blood pressure cuff designed to be used on an individual's ankle
-         */
-        _50577434, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static HspcBpmeasmethoddevice fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("2102".equals(codeString))
-          return _2102;
-        if ("2162".equals(codeString))
-          return _2162;
-        if ("31163".equals(codeString))
-          return _31163;
-        if ("50577434".equals(codeString))
-          return _50577434;
-        throw new FHIRException("Unknown HspcBpmeasmethoddevice code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _2102: return "2102";
-            case _2162: return "2162";
-            case _31163: return "31163";
-            case _50577434: return "50577434";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/hspc-bpmeasmethoddevice";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _2102: return "A blood pressure cuff that is sized to use on pediatric paitents";
-            case _2162: return "A blood pressure cuff designed to be used on an individual's thigh";
-            case _31163: return "A blood pressure cuff that is sized to use on an adult upper arm";
-            case _50577434: return "A blood pressure cuff designed to be used on an individual's ankle";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _2102: return "Pediatric cuff";
-            case _2162: return "Thigh cuff (24 cm)";
-            case _31163: return "Adult Arm Cuff";
-            case _50577434: return "Ankle Cuff";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * A blood pressure cuff that is sized to use on pediatric paitents
+   */
+  _2102,
+  /**
+   * A blood pressure cuff designed to be used on an individual's thigh
+   */
+  _2162,
+  /**
+   * A blood pressure cuff that is sized to use on an adult upper arm
+   */
+  _31163,
+  /**
+   * A blood pressure cuff designed to be used on an individual's ankle
+   */
+  _50577434,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static HspcBpmeasmethoddevice fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("2102".equals(codeString))
+      return _2102;
+    if ("2162".equals(codeString))
+      return _2162;
+    if ("31163".equals(codeString))
+      return _31163;
+    if ("50577434".equals(codeString))
+      return _50577434;
+    throw new FHIRException("Unknown HspcBpmeasmethoddevice code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case _2102:
+      return "2102";
+    case _2162:
+      return "2162";
+    case _31163:
+      return "31163";
+    case _50577434:
+      return "50577434";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/hspc-bpmeasmethoddevice";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case _2102:
+      return "A blood pressure cuff that is sized to use on pediatric paitents";
+    case _2162:
+      return "A blood pressure cuff designed to be used on an individual's thigh";
+    case _31163:
+      return "A blood pressure cuff that is sized to use on an adult upper arm";
+    case _50577434:
+      return "A blood pressure cuff designed to be used on an individual's ankle";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case _2102:
+      return "Pediatric cuff";
+    case _2162:
+      return "Thigh cuff (24 cm)";
+    case _31163:
+      return "Adult Arm Cuff";
+    case _50577434:
+      return "Ankle Cuff";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

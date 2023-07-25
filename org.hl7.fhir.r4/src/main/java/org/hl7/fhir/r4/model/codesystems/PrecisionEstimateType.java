@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum PrecisionEstimateType {
 
-        /**
-         * confidence interval.
-         */
-        CI, 
-        /**
-         * interquartile range.
-         */
-        IQR, 
-        /**
-         * standard deviation.
-         */
-        SD, 
-        /**
-         * standard error.
-         */
-        SE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static PrecisionEstimateType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("CI".equals(codeString))
-          return CI;
-        if ("IQR".equals(codeString))
-          return IQR;
-        if ("SD".equals(codeString))
-          return SD;
-        if ("SE".equals(codeString))
-          return SE;
-        throw new FHIRException("Unknown PrecisionEstimateType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CI: return "CI";
-            case IQR: return "IQR";
-            case SD: return "SD";
-            case SE: return "SE";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/precision-estimate-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CI: return "confidence interval.";
-            case IQR: return "interquartile range.";
-            case SD: return "standard deviation.";
-            case SE: return "standard error.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CI: return "confidence interval";
-            case IQR: return "interquartile range";
-            case SD: return "standard deviation";
-            case SE: return "standard error";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * confidence interval.
+   */
+  CI,
+  /**
+   * interquartile range.
+   */
+  IQR,
+  /**
+   * standard deviation.
+   */
+  SD,
+  /**
+   * standard error.
+   */
+  SE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static PrecisionEstimateType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("CI".equals(codeString))
+      return CI;
+    if ("IQR".equals(codeString))
+      return IQR;
+    if ("SD".equals(codeString))
+      return SD;
+    if ("SE".equals(codeString))
+      return SE;
+    throw new FHIRException("Unknown PrecisionEstimateType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case CI:
+      return "CI";
+    case IQR:
+      return "IQR";
+    case SD:
+      return "SD";
+    case SE:
+      return "SE";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/precision-estimate-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case CI:
+      return "confidence interval.";
+    case IQR:
+      return "interquartile range.";
+    case SD:
+      return "standard deviation.";
+    case SE:
+      return "standard error.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case CI:
+      return "confidence interval";
+    case IQR:
+      return "interquartile range";
+    case SD:
+      return "standard deviation";
+    case SE:
+      return "standard error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

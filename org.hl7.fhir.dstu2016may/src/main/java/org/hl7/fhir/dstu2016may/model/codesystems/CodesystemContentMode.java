@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,100 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CodesystemContentMode {
 
-        /**
-         * None of the concepts defined by the code system are included in the code system resource
-         */
-        NOTPRESENT, 
-        /**
-         * A few representative concepts are included in the code system resource
-         */
-        EXAMPLAR, 
-        /**
-         * A subset of the code system concepts are included in the code system resource
-         */
-        FRAGMENT, 
-        /**
-         * All the concepts defined by the code system are included in the code system resource
-         */
-        COMPLETE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static CodesystemContentMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("not-present".equals(codeString))
-          return NOTPRESENT;
-        if ("examplar".equals(codeString))
-          return EXAMPLAR;
-        if ("fragment".equals(codeString))
-          return FRAGMENT;
-        if ("complete".equals(codeString))
-          return COMPLETE;
-        throw new FHIRException("Unknown CodesystemContentMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NOTPRESENT: return "not-present";
-            case EXAMPLAR: return "examplar";
-            case FRAGMENT: return "fragment";
-            case COMPLETE: return "complete";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/codesystem-content-mode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NOTPRESENT: return "None of the concepts defined by the code system are included in the code system resource";
-            case EXAMPLAR: return "A few representative concepts are included in the code system resource";
-            case FRAGMENT: return "A subset of the code system concepts are included in the code system resource";
-            case COMPLETE: return "All the concepts defined by the code system are included in the code system resource";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NOTPRESENT: return "Not Present";
-            case EXAMPLAR: return "Examplar";
-            case FRAGMENT: return "Fragment";
-            case COMPLETE: return "Complete";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * None of the concepts defined by the code system are included in the code
+   * system resource
+   */
+  NOTPRESENT,
+  /**
+   * A few representative concepts are included in the code system resource
+   */
+  EXAMPLAR,
+  /**
+   * A subset of the code system concepts are included in the code system resource
+   */
+  FRAGMENT,
+  /**
+   * All the concepts defined by the code system are included in the code system
+   * resource
+   */
+  COMPLETE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static CodesystemContentMode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("not-present".equals(codeString))
+      return NOTPRESENT;
+    if ("examplar".equals(codeString))
+      return EXAMPLAR;
+    if ("fragment".equals(codeString))
+      return FRAGMENT;
+    if ("complete".equals(codeString))
+      return COMPLETE;
+    throw new FHIRException("Unknown CodesystemContentMode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case NOTPRESENT:
+      return "not-present";
+    case EXAMPLAR:
+      return "examplar";
+    case FRAGMENT:
+      return "fragment";
+    case COMPLETE:
+      return "complete";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/codesystem-content-mode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case NOTPRESENT:
+      return "None of the concepts defined by the code system are included in the code system resource";
+    case EXAMPLAR:
+      return "A few representative concepts are included in the code system resource";
+    case FRAGMENT:
+      return "A subset of the code system concepts are included in the code system resource";
+    case COMPLETE:
+      return "All the concepts defined by the code system are included in the code system resource";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case NOTPRESENT:
+      return "Not Present";
+    case EXAMPLAR:
+      return "Examplar";
+    case FRAGMENT:
+      return "Fragment";
+    case COMPLETE:
+      return "Complete";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

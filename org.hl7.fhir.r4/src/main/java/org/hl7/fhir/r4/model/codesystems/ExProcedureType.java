@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,76 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExProcedureType {
 
-        /**
-         * The first procedure in a series required to produce and overall patient outcome.
-         */
-        PRIMARY, 
-        /**
-         * The second procedure in a series required to produce and overall patient outcome.
-         */
-        SECONDARY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ExProcedureType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("primary".equals(codeString))
-          return PRIMARY;
-        if ("secondary".equals(codeString))
-          return SECONDARY;
-        throw new FHIRException("Unknown ExProcedureType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PRIMARY: return "primary";
-            case SECONDARY: return "secondary";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/ex-procedure-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PRIMARY: return "The first procedure in a series required to produce and overall patient outcome.";
-            case SECONDARY: return "The second procedure in a series required to produce and overall patient outcome.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PRIMARY: return "Primary procedure";
-            case SECONDARY: return "Secondary procedure";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The first procedure in a series required to produce and overall patient
+   * outcome.
+   */
+  PRIMARY,
+  /**
+   * The second procedure in a series required to produce and overall patient
+   * outcome.
+   */
+  SECONDARY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ExProcedureType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("primary".equals(codeString))
+      return PRIMARY;
+    if ("secondary".equals(codeString))
+      return SECONDARY;
+    throw new FHIRException("Unknown ExProcedureType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PRIMARY:
+      return "primary";
+    case SECONDARY:
+      return "secondary";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/ex-procedure-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PRIMARY:
+      return "The first procedure in a series required to produce and overall patient outcome.";
+    case SECONDARY:
+      return "The second procedure in a series required to produce and overall patient outcome.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PRIMARY:
+      return "Primary procedure";
+    case SECONDARY:
+      return "Secondary procedure";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

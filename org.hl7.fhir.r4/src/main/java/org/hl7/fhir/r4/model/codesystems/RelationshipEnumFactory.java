@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class RelationshipEnumFactory implements EnumFactory<Relationship> {
@@ -52,7 +48,7 @@ public class RelationshipEnumFactory implements EnumFactory<Relationship> {
       return Relationship._4;
     if ("5".equals(codeString))
       return Relationship._5;
-    throw new IllegalArgumentException("Unknown Relationship code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown Relationship code '" + codeString + "'");
   }
 
   public String toCode(Relationship code) {
@@ -69,8 +65,8 @@ public class RelationshipEnumFactory implements EnumFactory<Relationship> {
     return "?";
   }
 
-    public String toSystem(Relationship code) {
-      return code.getSystem();
-      }
+  public String toSystem(Relationship code) {
+    return code.getSystem();
+  }
 
 }

@@ -21,11 +21,11 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
-import org.hl7.fhir.validation.instance.InstanceValidator;
-import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.codesystem.CodeSystemChecker;
 import org.hl7.fhir.validation.codesystem.GeneralCodeSystemChecker;
 import org.hl7.fhir.validation.codesystem.SnomedCTChecker;
+import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class ValueSetValidator extends BaseValidator {
 

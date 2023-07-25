@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class NamingsystemIdentifierTypeEnumFactory implements EnumFactory<NamingsystemIdentifierType> {
@@ -50,7 +46,7 @@ public class NamingsystemIdentifierTypeEnumFactory implements EnumFactory<Naming
       return NamingsystemIdentifierType.URI;
     if ("other".equals(codeString))
       return NamingsystemIdentifierType.OTHER;
-    throw new IllegalArgumentException("Unknown NamingsystemIdentifierType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown NamingsystemIdentifierType code '" + codeString + "'");
   }
 
   public String toCode(NamingsystemIdentifierType code) {
@@ -65,8 +61,8 @@ public class NamingsystemIdentifierTypeEnumFactory implements EnumFactory<Naming
     return "?";
   }
 
-    public String toSystem(NamingsystemIdentifierType code) {
-      return code.getSystem();
-      }
+  public String toSystem(NamingsystemIdentifierType code) {
+    return code.getSystem();
+  }
 
 }

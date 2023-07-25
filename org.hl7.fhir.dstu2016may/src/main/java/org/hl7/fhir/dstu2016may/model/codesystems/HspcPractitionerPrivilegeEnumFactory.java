@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class HspcPractitionerPrivilegeEnumFactory implements EnumFactory<HspcPractitionerPrivilege> {
@@ -52,7 +48,7 @@ public class HspcPractitionerPrivilegeEnumFactory implements EnumFactory<HspcPra
       return HspcPractitionerPrivilege._5750552B25D44EB886F98233756449F0;
     if ("45fc874f-d787-43f2-a2aa-5954446b163d".equals(codeString))
       return HspcPractitionerPrivilege._45FC874FD78743F2A2AA5954446B163D;
-    throw new IllegalArgumentException("Unknown HspcPractitionerPrivilege code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown HspcPractitionerPrivilege code '" + codeString + "'");
   }
 
   public String toCode(HspcPractitionerPrivilege code) {
@@ -69,8 +65,8 @@ public class HspcPractitionerPrivilegeEnumFactory implements EnumFactory<HspcPra
     return "?";
   }
 
-    public String toSystem(HspcPractitionerPrivilege code) {
-      return code.getSystem();
-      }
+  public String toSystem(HspcPractitionerPrivilege code) {
+    return code.getSystem();
+  }
 
 }

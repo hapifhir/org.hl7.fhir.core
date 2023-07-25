@@ -29,71 +29,68 @@ package org.hl7.fhir.r4.model;
   
  */
 
-
-
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
  * Primitive type "integer" in FHIR: A signed 32-bit integer
  */
-@DatatypeDef(name = "positiveInt", profileOf=IntegerType.class)
+@DatatypeDef(name = "positiveInt", profileOf = IntegerType.class)
 public class PositiveIntType extends IntegerType {
 
-	/**
-	 * 
-	 */
+  /**
+   * 
+   */
   private static final long serialVersionUID = 1686497884249402429L;
 
-	/**
-	 * Constructor
-	 */
-	public PositiveIntType() {
-		// nothing
-	}
+  /**
+   * Constructor
+   */
+  public PositiveIntType() {
+    // nothing
+  }
 
-	/**
-	 * Constructor
-	 */
-	public PositiveIntType(int theInteger) {
-		setValue(theInteger);
-	}
+  /**
+   * Constructor
+   */
+  public PositiveIntType(int theInteger) {
+    setValue(theInteger);
+  }
 
-	/**
-	 * Constructor
-	 * 
-	 * @param theIntegerAsString
-	 *            A string representation of an integer
-	 * @throws IllegalArgumentException
-	 *             If the string is not a valid integer representation
-	 */
-	public PositiveIntType(String theIntegerAsString) {
-		setValueAsString(theIntegerAsString);
-	}
+  /**
+   * Constructor
+   * 
+   * @param theIntegerAsString A string representation of an integer
+   * @throws IllegalArgumentException If the string is not a valid integer
+   *                                  representation
+   */
+  public PositiveIntType(String theIntegerAsString) {
+    setValueAsString(theIntegerAsString);
+  }
 
-	/**
-	 * Constructor
-	 * 
-	 * @param theValue The value
-	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
-	 */
-	public PositiveIntType(Long theValue) {
-	    if (theValue < 1 || theValue > java.lang.Integer.MAX_VALUE) {
-	        throw new IllegalArgumentException
-	            (theValue + " cannot be cast to int without changing its value.");
-	    }
-	    if(theValue!=null) {
-	    	setValue((int)theValue.longValue());
-	    }
-	}
+  /**
+   * Constructor
+   * 
+   * @param theValue The value
+   * @throws IllegalArgumentException If the value is too large to fit in a signed
+   *                                  integer
+   */
+  public PositiveIntType(Long theValue) {
+    if (theValue < 1 || theValue > java.lang.Integer.MAX_VALUE) {
+      throw new IllegalArgumentException(theValue + " cannot be cast to int without changing its value.");
+    }
+    if (theValue != null) {
+      setValue((int) theValue.longValue());
+    }
+  }
 
-	@Override
-	public PositiveIntType copy() {
+  @Override
+  public PositiveIntType copy() {
     PositiveIntType ret = getValue() == null ? new PositiveIntType() : new PositiveIntType(getValue());
     copyValues(ret);
     return ret;
-	}
+  }
 
-	public String fhirType() {
-		return "positiveInt";		
-	}
+  public String fhirType() {
+    return "positiveInt";
+  }
 }

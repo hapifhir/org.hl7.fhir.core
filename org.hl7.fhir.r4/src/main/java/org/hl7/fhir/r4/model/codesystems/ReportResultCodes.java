@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ReportResultCodes {
 
-        /**
-         * All test operations successfully passed all asserts.
-         */
-        PASS, 
-        /**
-         * One or more test operations failed one or more asserts.
-         */
-        FAIL, 
-        /**
-         * One or more test operations is pending execution completion.
-         */
-        PENDING, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ReportResultCodes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("pass".equals(codeString))
-          return PASS;
-        if ("fail".equals(codeString))
-          return FAIL;
-        if ("pending".equals(codeString))
-          return PENDING;
-        throw new FHIRException("Unknown ReportResultCodes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PASS: return "pass";
-            case FAIL: return "fail";
-            case PENDING: return "pending";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/report-result-codes";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PASS: return "All test operations successfully passed all asserts.";
-            case FAIL: return "One or more test operations failed one or more asserts.";
-            case PENDING: return "One or more test operations is pending execution completion.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PASS: return "Pass";
-            case FAIL: return "Fail";
-            case PENDING: return "Pending";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * All test operations successfully passed all asserts.
+   */
+  PASS,
+  /**
+   * One or more test operations failed one or more asserts.
+   */
+  FAIL,
+  /**
+   * One or more test operations is pending execution completion.
+   */
+  PENDING,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ReportResultCodes fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("pass".equals(codeString))
+      return PASS;
+    if ("fail".equals(codeString))
+      return FAIL;
+    if ("pending".equals(codeString))
+      return PENDING;
+    throw new FHIRException("Unknown ReportResultCodes code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PASS:
+      return "pass";
+    case FAIL:
+      return "fail";
+    case PENDING:
+      return "pending";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/report-result-codes";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PASS:
+      return "All test operations successfully passed all asserts.";
+    case FAIL:
+      return "One or more test operations failed one or more asserts.";
+    case PENDING:
+      return "One or more test operations is pending execution completion.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PASS:
+      return "Pass";
+    case FAIL:
+      return "Fail";
+    case PENDING:
+      return "Pending";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,87 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MapGroupTypeMode {
 
-        /**
-         * This group is not a default group for the types.
-         */
-        NONE, 
-        /**
-         * This group is a default mapping group for the specified types and for the primary source type.
-         */
-        TYPES, 
-        /**
-         * This group is a default mapping group for the specified types.
-         */
-        TYPEANDTYPES, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MapGroupTypeMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("none".equals(codeString))
-          return NONE;
-        if ("types".equals(codeString))
-          return TYPES;
-        if ("type-and-types".equals(codeString))
-          return TYPEANDTYPES;
-        throw new FHIRException("Unknown MapGroupTypeMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NONE: return "none";
-            case TYPES: return "types";
-            case TYPEANDTYPES: return "type-and-types";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/map-group-type-mode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NONE: return "This group is not a default group for the types.";
-            case TYPES: return "This group is a default mapping group for the specified types and for the primary source type.";
-            case TYPEANDTYPES: return "This group is a default mapping group for the specified types.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NONE: return "Not a Default";
-            case TYPES: return "Default for Type Combination";
-            case TYPEANDTYPES: return "Default for type + combination";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * This group is not a default group for the types.
+   */
+  NONE,
+  /**
+   * This group is a default mapping group for the specified types and for the
+   * primary source type.
+   */
+  TYPES,
+  /**
+   * This group is a default mapping group for the specified types.
+   */
+  TYPEANDTYPES,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MapGroupTypeMode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("none".equals(codeString))
+      return NONE;
+    if ("types".equals(codeString))
+      return TYPES;
+    if ("type-and-types".equals(codeString))
+      return TYPEANDTYPES;
+    throw new FHIRException("Unknown MapGroupTypeMode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case NONE:
+      return "none";
+    case TYPES:
+      return "types";
+    case TYPEANDTYPES:
+      return "type-and-types";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/map-group-type-mode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case NONE:
+      return "This group is not a default group for the types.";
+    case TYPES:
+      return "This group is a default mapping group for the specified types and for the primary source type.";
+    case TYPEANDTYPES:
+      return "This group is a default mapping group for the specified types.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case NONE:
+      return "Not a Default";
+    case TYPES:
+      return "Default for Type Combination";
+    case TYPEANDTYPES:
+      return "Default for type + combination";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

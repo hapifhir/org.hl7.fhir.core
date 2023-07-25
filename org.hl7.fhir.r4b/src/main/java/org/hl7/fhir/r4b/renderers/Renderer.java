@@ -10,39 +10,47 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 /**
  * Rendering framework:
  * 
- *   * boolean render(DomainResource) : produce an HTML representation suitable for runtime / documentation, and insert it into the resource. Return true of any extensions encountered
- *   * boolean render(XhtmlNode, Resource: produce an HTML representation, and fill out the provided node with it. Return true of any extensions encountered
- *   * XhtmlNode build(DomainResource): same as render(DomainResource) but also return the XHtmlNode 
- *   
- *   * String display(Base) : produce a plan text concise representation that serves to describe the resource
- *   * void display(XhtmlNode, Base) : produce a plan text concise representation that serves to describe the resource
- *   
- *   * void describe(XhtmlNode, Resource) : produce a short summary of the resource with key details presented (potentially more verbose than display, but still suitable for a single line)  
- *   
- * if not specific code for rendering a resource has been provided, and there's no liquid script to guide it, a generic rendering based onthe profile will be performed
- *   
+ * * boolean render(DomainResource) : produce an HTML representation suitable
+ * for runtime / documentation, and insert it into the resource. Return true of
+ * any extensions encountered * boolean render(XhtmlNode, Resource: produce an
+ * HTML representation, and fill out the provided node with it. Return true of
+ * any extensions encountered * XhtmlNode build(DomainResource): same as
+ * render(DomainResource) but also return the XHtmlNode
+ * 
+ * * String display(Base) : produce a plan text concise representation that
+ * serves to describe the resource * void display(XhtmlNode, Base) : produce a
+ * plan text concise representation that serves to describe the resource
+ * 
+ * * void describe(XhtmlNode, Resource) : produce a short summary of the
+ * resource with key details presented (potentially more verbose than display,
+ * but still suitable for a single line)
+ * 
+ * if not specific code for rendering a resource has been provided, and there's
+ * no liquid script to guide it, a generic rendering based onthe profile will be
+ * performed
+ * 
  * @author graha
  *
  */
 public class Renderer {
 
   protected RenderingContext context;
-  
+
   public Renderer(RenderingContext context) {
     this.context = context;
   }
 
   public Renderer(IWorkerContext worker) {
-    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R5", "", null, ResourceRendererMode.END_USER);
+    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK),
+        ValidationOptions.defaults(), "http://hl7.org/fhir/R5", "", null, ResourceRendererMode.END_USER);
   }
-
 
   protected static final String RENDER_BUNDLE_HEADER_ROOT = "RENDER_BUNDLE_HEADER_ROOT";
   protected static final String RENDER_BUNDLE_HEADER_ENTRY = "RENDER_BUNDLE_HEADER_ENTRY";
   protected static final String RENDER_BUNDLE_HEADER_ENTRY_URL = "RENDER_BUNDLE_HEADER_ENTRY_URL";
   protected static final String RENDER_BUNDLE_RESOURCE = "RENDER_BUNDLE_RESOURCE";
   protected static final String RENDER_BUNDLE_SEARCH = "RENDER_BUNDLE_SEARCH";
-  protected static final String RENDER_BUNDLE_SEARCH_MODE = "RENDER_BUNDLE_SEARCH_MODE"; 
+  protected static final String RENDER_BUNDLE_SEARCH_MODE = "RENDER_BUNDLE_SEARCH_MODE";
   protected static final String RENDER_BUNDLE_SEARCH_SCORE = "RENDER_BUNDLE_SEARCH_SCORE";
   protected static final String RENDER_BUNDLE_RESPONSE = "RENDER_BUNDLE_RESPONSE";
   protected static final String RENDER_BUNDLE_LOCATION = "RENDER_BUNDLE_LOCATION";
@@ -58,8 +66,10 @@ public class Renderer {
   protected static final String RENDER_BUNDLE_HEADER_DOC_ENTRY_U = "RENDER_BUNDLE_HEADER_DOC_ENTRY_U";
   protected static final String RENDER_BUNDLE_HEADER_DOC_ENTRY_RD = "RENDER_BUNDLE_HEADER_DOC_ENTRY_RD";
 
-  /** the plan here is to make this have it's own implementation of messages, rather than using the 
-   * validator messages, for better alignment with publisher I18n strategy
+  /**
+   * the plan here is to make this have it's own implementation of messages,
+   * rather than using the validator messages, for better alignment with publisher
+   * I18n strategy
    * 
    * @param theMessage
    * @param theMessageArguments

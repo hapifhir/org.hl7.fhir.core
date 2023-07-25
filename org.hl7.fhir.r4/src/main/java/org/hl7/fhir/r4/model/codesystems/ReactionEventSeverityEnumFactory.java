@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ReactionEventSeverityEnumFactory implements EnumFactory<ReactionEventSeverity> {
@@ -48,7 +44,7 @@ public class ReactionEventSeverityEnumFactory implements EnumFactory<ReactionEve
       return ReactionEventSeverity.MODERATE;
     if ("severe".equals(codeString))
       return ReactionEventSeverity.SEVERE;
-    throw new IllegalArgumentException("Unknown ReactionEventSeverity code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ReactionEventSeverity code '" + codeString + "'");
   }
 
   public String toCode(ReactionEventSeverity code) {
@@ -61,8 +57,8 @@ public class ReactionEventSeverityEnumFactory implements EnumFactory<ReactionEve
     return "?";
   }
 
-    public String toSystem(ReactionEventSeverity code) {
-      return code.getSystem();
-      }
+  public String toSystem(ReactionEventSeverity code) {
+    return code.getSystem();
+  }
 
 }

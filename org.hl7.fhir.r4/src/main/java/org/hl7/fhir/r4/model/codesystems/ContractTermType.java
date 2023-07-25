@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,75 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractTermType {
 
-        /**
-         * Based on specialized statutes that deal with particular subjects.
-         */
-        STATUTORY, 
-        /**
-         * Execution of the term in the contract is conditional on the execution of other actions.
-         */
-        SUBJECTTO, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ContractTermType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("statutory".equals(codeString))
-          return STATUTORY;
-        if ("subject-to".equals(codeString))
-          return SUBJECTTO;
-        throw new FHIRException("Unknown ContractTermType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case STATUTORY: return "statutory";
-            case SUBJECTTO: return "subject-to";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/contracttermtypecodes";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case STATUTORY: return "Based on specialized statutes that deal with particular subjects.";
-            case SUBJECTTO: return "Execution of the term in the contract is conditional on the execution of other actions.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case STATUTORY: return "Statutory";
-            case SUBJECTTO: return "Subject To";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Based on specialized statutes that deal with particular subjects.
+   */
+  STATUTORY,
+  /**
+   * Execution of the term in the contract is conditional on the execution of
+   * other actions.
+   */
+  SUBJECTTO,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ContractTermType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("statutory".equals(codeString))
+      return STATUTORY;
+    if ("subject-to".equals(codeString))
+      return SUBJECTTO;
+    throw new FHIRException("Unknown ContractTermType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case STATUTORY:
+      return "statutory";
+    case SUBJECTTO:
+      return "subject-to";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/contracttermtypecodes";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case STATUTORY:
+      return "Based on specialized statutes that deal with particular subjects.";
+    case SUBJECTTO:
+      return "Execution of the term in the contract is conditional on the execution of other actions.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case STATUTORY:
+      return "Statutory";
+    case SUBJECTTO:
+      return "Subject To";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

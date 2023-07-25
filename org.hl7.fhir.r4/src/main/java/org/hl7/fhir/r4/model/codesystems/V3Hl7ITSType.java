@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3Hl7ITSType {
 
-        /**
-         * Description: ITS based on the Universal Modeling Language.
-         */
-        UML, 
-        /**
-         * Description: ITS based on the Extensible Markup Language.
-         */
-        XML, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static V3Hl7ITSType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("UML".equals(codeString))
-          return UML;
-        if ("XML".equals(codeString))
-          return XML;
-        throw new FHIRException("Unknown V3Hl7ITSType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case UML: return "UML";
-            case XML: return "XML";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/v3-hl7ITSType";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case UML: return "Description: ITS based on the Universal Modeling Language.";
-            case XML: return "Description: ITS based on the Extensible Markup Language.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case UML: return "universal modeling language";
-            case XML: return "extensible markup language";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Description: ITS based on the Universal Modeling Language.
+   */
+  UML,
+  /**
+   * Description: ITS based on the Extensible Markup Language.
+   */
+  XML,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static V3Hl7ITSType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("UML".equals(codeString))
+      return UML;
+    if ("XML".equals(codeString))
+      return XML;
+    throw new FHIRException("Unknown V3Hl7ITSType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case UML:
+      return "UML";
+    case XML:
+      return "XML";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/v3-hl7ITSType";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case UML:
+      return "Description: ITS based on the Universal Modeling Language.";
+    case XML:
+      return "Description: ITS based on the Extensible Markup Language.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case UML:
+      return "universal modeling language";
+    case XML:
+      return "extensible markup language";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

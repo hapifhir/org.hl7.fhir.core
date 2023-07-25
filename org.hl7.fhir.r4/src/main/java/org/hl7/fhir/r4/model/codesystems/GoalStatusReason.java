@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,122 +31,159 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum GoalStatusReason {
 
-        /**
-         * Goal suspended or ended because of a surgical procedure.
-         */
-        SURGERY, 
-        /**
-         * Goal suspended or ended because of a significant life event (marital change, bereavement, etc.).
-         */
-        LIFEEVENT, 
-        /**
-         * Goal has been superseded by a new goal.
-         */
-        REPLACED, 
-        /**
-         * Patient wishes the goal to be set aside, at least temporarily.
-         */
-        PATIENTREQUEST, 
-        /**
-         * Goal cannot be reached temporarily.
-         */
-        TEMPNOTATTAINABLE, 
-        /**
-         * Goal cannot be reached permanently.
-         */
-        PERMANENTNOTATTAINABLE, 
-        /**
-         * Goal cannot be reached due to financial barrier or reason.
-         */
-        FINANCIALBARRIER, 
-        /**
-         * Goal cannot be reached due to a lack of transportation.
-         */
-        LACKOFTRANSPORTATION, 
-        /**
-         * Goal cannot be reached due to a lack of social support.
-         */
-        LACKOFSOCIALSUPPORT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static GoalStatusReason fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("surgery".equals(codeString))
-          return SURGERY;
-        if ("life-event".equals(codeString))
-          return LIFEEVENT;
-        if ("replaced".equals(codeString))
-          return REPLACED;
-        if ("patient-request".equals(codeString))
-          return PATIENTREQUEST;
-        if ("temp-not-attainable".equals(codeString))
-          return TEMPNOTATTAINABLE;
-        if ("permanent-not-attainable".equals(codeString))
-          return PERMANENTNOTATTAINABLE;
-        if ("financial-barrier".equals(codeString))
-          return FINANCIALBARRIER;
-        if ("lack-of-transportation".equals(codeString))
-          return LACKOFTRANSPORTATION;
-        if ("lack-of-social-support".equals(codeString))
-          return LACKOFSOCIALSUPPORT;
-        throw new FHIRException("Unknown GoalStatusReason code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SURGERY: return "surgery";
-            case LIFEEVENT: return "life-event";
-            case REPLACED: return "replaced";
-            case PATIENTREQUEST: return "patient-request";
-            case TEMPNOTATTAINABLE: return "temp-not-attainable";
-            case PERMANENTNOTATTAINABLE: return "permanent-not-attainable";
-            case FINANCIALBARRIER: return "financial-barrier";
-            case LACKOFTRANSPORTATION: return "lack-of-transportation";
-            case LACKOFSOCIALSUPPORT: return "lack-of-social-support";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/goal-status-reason";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SURGERY: return "Goal suspended or ended because of a surgical procedure.";
-            case LIFEEVENT: return "Goal suspended or ended because of a significant life event (marital change, bereavement, etc.).";
-            case REPLACED: return "Goal has been superseded by a new goal.";
-            case PATIENTREQUEST: return "Patient wishes the goal to be set aside, at least temporarily.";
-            case TEMPNOTATTAINABLE: return "Goal cannot be reached temporarily.";
-            case PERMANENTNOTATTAINABLE: return "Goal cannot be reached permanently.";
-            case FINANCIALBARRIER: return "Goal cannot be reached due to financial barrier or reason.";
-            case LACKOFTRANSPORTATION: return "Goal cannot be reached due to a lack of transportation.";
-            case LACKOFSOCIALSUPPORT: return "Goal cannot be reached due to a lack of social support.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SURGERY: return "Surgery";
-            case LIFEEVENT: return "Life Event";
-            case REPLACED: return "Replaced";
-            case PATIENTREQUEST: return "Patient Request";
-            case TEMPNOTATTAINABLE: return "Goal Not Attainable Temporarily";
-            case PERMANENTNOTATTAINABLE: return "Goal Not Attainable Permanently";
-            case FINANCIALBARRIER: return "Financial Reason";
-            case LACKOFTRANSPORTATION: return "Lack Of Transportation";
-            case LACKOFSOCIALSUPPORT: return "Lack Of Social Support";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Goal suspended or ended because of a surgical procedure.
+   */
+  SURGERY,
+  /**
+   * Goal suspended or ended because of a significant life event (marital change,
+   * bereavement, etc.).
+   */
+  LIFEEVENT,
+  /**
+   * Goal has been superseded by a new goal.
+   */
+  REPLACED,
+  /**
+   * Patient wishes the goal to be set aside, at least temporarily.
+   */
+  PATIENTREQUEST,
+  /**
+   * Goal cannot be reached temporarily.
+   */
+  TEMPNOTATTAINABLE,
+  /**
+   * Goal cannot be reached permanently.
+   */
+  PERMANENTNOTATTAINABLE,
+  /**
+   * Goal cannot be reached due to financial barrier or reason.
+   */
+  FINANCIALBARRIER,
+  /**
+   * Goal cannot be reached due to a lack of transportation.
+   */
+  LACKOFTRANSPORTATION,
+  /**
+   * Goal cannot be reached due to a lack of social support.
+   */
+  LACKOFSOCIALSUPPORT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static GoalStatusReason fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("surgery".equals(codeString))
+      return SURGERY;
+    if ("life-event".equals(codeString))
+      return LIFEEVENT;
+    if ("replaced".equals(codeString))
+      return REPLACED;
+    if ("patient-request".equals(codeString))
+      return PATIENTREQUEST;
+    if ("temp-not-attainable".equals(codeString))
+      return TEMPNOTATTAINABLE;
+    if ("permanent-not-attainable".equals(codeString))
+      return PERMANENTNOTATTAINABLE;
+    if ("financial-barrier".equals(codeString))
+      return FINANCIALBARRIER;
+    if ("lack-of-transportation".equals(codeString))
+      return LACKOFTRANSPORTATION;
+    if ("lack-of-social-support".equals(codeString))
+      return LACKOFSOCIALSUPPORT;
+    throw new FHIRException("Unknown GoalStatusReason code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SURGERY:
+      return "surgery";
+    case LIFEEVENT:
+      return "life-event";
+    case REPLACED:
+      return "replaced";
+    case PATIENTREQUEST:
+      return "patient-request";
+    case TEMPNOTATTAINABLE:
+      return "temp-not-attainable";
+    case PERMANENTNOTATTAINABLE:
+      return "permanent-not-attainable";
+    case FINANCIALBARRIER:
+      return "financial-barrier";
+    case LACKOFTRANSPORTATION:
+      return "lack-of-transportation";
+    case LACKOFSOCIALSUPPORT:
+      return "lack-of-social-support";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/goal-status-reason";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SURGERY:
+      return "Goal suspended or ended because of a surgical procedure.";
+    case LIFEEVENT:
+      return "Goal suspended or ended because of a significant life event (marital change, bereavement, etc.).";
+    case REPLACED:
+      return "Goal has been superseded by a new goal.";
+    case PATIENTREQUEST:
+      return "Patient wishes the goal to be set aside, at least temporarily.";
+    case TEMPNOTATTAINABLE:
+      return "Goal cannot be reached temporarily.";
+    case PERMANENTNOTATTAINABLE:
+      return "Goal cannot be reached permanently.";
+    case FINANCIALBARRIER:
+      return "Goal cannot be reached due to financial barrier or reason.";
+    case LACKOFTRANSPORTATION:
+      return "Goal cannot be reached due to a lack of transportation.";
+    case LACKOFSOCIALSUPPORT:
+      return "Goal cannot be reached due to a lack of social support.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SURGERY:
+      return "Surgery";
+    case LIFEEVENT:
+      return "Life Event";
+    case REPLACED:
+      return "Replaced";
+    case PATIENTREQUEST:
+      return "Patient Request";
+    case TEMPNOTATTAINABLE:
+      return "Goal Not Attainable Temporarily";
+    case PERMANENTNOTATTAINABLE:
+      return "Goal Not Attainable Permanently";
+    case FINANCIALBARRIER:
+      return "Financial Reason";
+    case LACKOFTRANSPORTATION:
+      return "Lack Of Transportation";
+    case LACKOFSOCIALSUPPORT:
+      return "Lack Of Social Support";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

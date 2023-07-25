@@ -1,11 +1,11 @@
 package org.hl7.fhir.utilities.tests.execution.junit4;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.utilities.tests.execution.CliTestException;
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
 import org.junit.runner.Result;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class JUnit4TestSummaryAdapter implements CliTestSummary {
 

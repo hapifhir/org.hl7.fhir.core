@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VerificationresultPushTypeAvailable {
 
-        /**
-         * null
-         */
-        SPECIFIC, 
-        /**
-         * null
-         */
-        ANY, 
-        /**
-         * null
-         */
-        SOURCE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static VerificationresultPushTypeAvailable fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("specific".equals(codeString))
-          return SPECIFIC;
-        if ("any".equals(codeString))
-          return ANY;
-        if ("source".equals(codeString))
-          return SOURCE;
-        throw new FHIRException("Unknown VerificationresultPushTypeAvailable code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SPECIFIC: return "specific";
-            case ANY: return "any";
-            case SOURCE: return "source";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/push-type-available";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SPECIFIC: return "";
-            case ANY: return "";
-            case SOURCE: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SPECIFIC: return "Specific requested changes";
-            case ANY: return "Any changes";
-            case SOURCE: return "As defined by source";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  SPECIFIC,
+  /**
+   * null
+   */
+  ANY,
+  /**
+   * null
+   */
+  SOURCE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static VerificationresultPushTypeAvailable fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("specific".equals(codeString))
+      return SPECIFIC;
+    if ("any".equals(codeString))
+      return ANY;
+    if ("source".equals(codeString))
+      return SOURCE;
+    throw new FHIRException("Unknown VerificationresultPushTypeAvailable code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SPECIFIC:
+      return "specific";
+    case ANY:
+      return "any";
+    case SOURCE:
+      return "source";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/push-type-available";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SPECIFIC:
+      return "";
+    case ANY:
+      return "";
+    case SOURCE:
+      return "";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SPECIFIC:
+      return "Specific requested changes";
+    case ANY:
+      return "Any changes";
+    case SOURCE:
+      return "As defined by source";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -42,310 +39,334 @@ import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+
 /**
- * A  text note which also  contains information about who made the statement and when.
+ * A text note which also contains information about who made the statement and
+ * when.
  */
-@DatatypeDef(name="Annotation")
+@DatatypeDef(name = "Annotation")
 public class Annotation extends Type implements ICompositeType {
 
-    /**
-     * The individual responsible for making the annotation.
-     */
-    @Child(name = "author", type = {Practitioner.class, Patient.class, RelatedPerson.class, StringType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Individual responsible for the annotation", formalDefinition="The individual responsible for making the annotation." )
-    protected Type author;
+  /**
+   * The individual responsible for making the annotation.
+   */
+  @Child(name = "author", type = { Practitioner.class, Patient.class, RelatedPerson.class,
+      StringType.class }, order = 0, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Individual responsible for the annotation", formalDefinition = "The individual responsible for making the annotation.")
+  protected Type author;
 
-    /**
-     * Indicates when this particular annotation was made.
-     */
-    @Child(name = "time", type = {DateTimeType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="When the annotation was made", formalDefinition="Indicates when this particular annotation was made." )
-    protected DateTimeType time;
+  /**
+   * Indicates when this particular annotation was made.
+   */
+  @Child(name = "time", type = { DateTimeType.class }, order = 1, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "When the annotation was made", formalDefinition = "Indicates when this particular annotation was made.")
+  protected DateTimeType time;
 
-    /**
-     * The text of the annotation.
-     */
-    @Child(name = "text", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The annotation  - text content", formalDefinition="The text of the annotation." )
-    protected StringType text;
+  /**
+   * The text of the annotation.
+   */
+  @Child(name = "text", type = { StringType.class }, order = 2, min = 1, max = 1, modifier = false, summary = false)
+  @Description(shortDefinition = "The annotation  - text content", formalDefinition = "The text of the annotation.")
+  protected StringType text;
 
-    private static final long serialVersionUID = -575590381L;
+  private static final long serialVersionUID = -575590381L;
 
   /**
    * Constructor
    */
-    public Annotation() {
-      super();
-    }
+  public Annotation() {
+    super();
+  }
 
   /**
    * Constructor
    */
-    public Annotation(StringType text) {
-      super();
-      this.text = text;
-    }
+  public Annotation(StringType text) {
+    super();
+    this.text = text;
+  }
 
-    /**
-     * @return {@link #author} (The individual responsible for making the annotation.)
-     */
-    public Type getAuthor() { 
-      return this.author;
-    }
+  /**
+   * @return {@link #author} (The individual responsible for making the
+   *         annotation.)
+   */
+  public Type getAuthor() {
+    return this.author;
+  }
 
-    /**
-     * @return {@link #author} (The individual responsible for making the annotation.)
-     */
-    public Reference getAuthorReference() throws FHIRException { 
-      if (!(this.author instanceof Reference))
-        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.author.getClass().getName()+" was encountered");
-      return (Reference) this.author;
-    }
+  /**
+   * @return {@link #author} (The individual responsible for making the
+   *         annotation.)
+   */
+  public Reference getAuthorReference() throws FHIRException {
+    if (!(this.author instanceof Reference))
+      throw new FHIRException("Type mismatch: the type Reference was expected, but " + this.author.getClass().getName()
+          + " was encountered");
+    return (Reference) this.author;
+  }
 
-    public boolean hasAuthorReference() { 
-      return this.author instanceof Reference;
-    }
+  public boolean hasAuthorReference() {
+    return this.author instanceof Reference;
+  }
 
-    /**
-     * @return {@link #author} (The individual responsible for making the annotation.)
-     */
-    public StringType getAuthorStringType() throws FHIRException { 
-      if (!(this.author instanceof StringType))
-        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.author.getClass().getName()+" was encountered");
-      return (StringType) this.author;
-    }
+  /**
+   * @return {@link #author} (The individual responsible for making the
+   *         annotation.)
+   */
+  public StringType getAuthorStringType() throws FHIRException {
+    if (!(this.author instanceof StringType))
+      throw new FHIRException("Type mismatch: the type StringType was expected, but " + this.author.getClass().getName()
+          + " was encountered");
+    return (StringType) this.author;
+  }
 
-    public boolean hasAuthorStringType() { 
-      return this.author instanceof StringType;
-    }
+  public boolean hasAuthorStringType() {
+    return this.author instanceof StringType;
+  }
 
-    public boolean hasAuthor() { 
-      return this.author != null && !this.author.isEmpty();
-    }
+  public boolean hasAuthor() {
+    return this.author != null && !this.author.isEmpty();
+  }
 
-    /**
-     * @param value {@link #author} (The individual responsible for making the annotation.)
-     */
-    public Annotation setAuthor(Type value) { 
-      this.author = value;
-      return this;
-    }
+  /**
+   * @param value {@link #author} (The individual responsible for making the
+   *              annotation.)
+   */
+  public Annotation setAuthor(Type value) {
+    this.author = value;
+    return this;
+  }
 
-    /**
-     * @return {@link #time} (Indicates when this particular annotation was made.). This is the underlying object with id, value and extensions. The accessor "getTime" gives direct access to the value
-     */
-    public DateTimeType getTimeElement() { 
+  /**
+   * @return {@link #time} (Indicates when this particular annotation was made.).
+   *         This is the underlying object with id, value and extensions. The
+   *         accessor "getTime" gives direct access to the value
+   */
+  public DateTimeType getTimeElement() {
+    if (this.time == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create Annotation.time");
+      else if (Configuration.doAutoCreate())
+        this.time = new DateTimeType(); // bb
+    return this.time;
+  }
+
+  public boolean hasTimeElement() {
+    return this.time != null && !this.time.isEmpty();
+  }
+
+  public boolean hasTime() {
+    return this.time != null && !this.time.isEmpty();
+  }
+
+  /**
+   * @param value {@link #time} (Indicates when this particular annotation was
+   *              made.). This is the underlying object with id, value and
+   *              extensions. The accessor "getTime" gives direct access to the
+   *              value
+   */
+  public Annotation setTimeElement(DateTimeType value) {
+    this.time = value;
+    return this;
+  }
+
+  /**
+   * @return Indicates when this particular annotation was made.
+   */
+  public Date getTime() {
+    return this.time == null ? null : this.time.getValue();
+  }
+
+  /**
+   * @param value Indicates when this particular annotation was made.
+   */
+  public Annotation setTime(Date value) {
+    if (value == null)
+      this.time = null;
+    else {
       if (this.time == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Annotation.time");
-        else if (Configuration.doAutoCreate())
-          this.time = new DateTimeType(); // bb
-      return this.time;
+        this.time = new DateTimeType();
+      this.time.setValue(value);
+    }
+    return this;
+  }
+
+  /**
+   * @return {@link #text} (The text of the annotation.). This is the underlying
+   *         object with id, value and extensions. The accessor "getText" gives
+   *         direct access to the value
+   */
+  public StringType getTextElement() {
+    if (this.text == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create Annotation.text");
+      else if (Configuration.doAutoCreate())
+        this.text = new StringType(); // bb
+    return this.text;
+  }
+
+  public boolean hasTextElement() {
+    return this.text != null && !this.text.isEmpty();
+  }
+
+  public boolean hasText() {
+    return this.text != null && !this.text.isEmpty();
+  }
+
+  /**
+   * @param value {@link #text} (The text of the annotation.). This is the
+   *              underlying object with id, value and extensions. The accessor
+   *              "getText" gives direct access to the value
+   */
+  public Annotation setTextElement(StringType value) {
+    this.text = value;
+    return this;
+  }
+
+  /**
+   * @return The text of the annotation.
+   */
+  public String getText() {
+    return this.text == null ? null : this.text.getValue();
+  }
+
+  /**
+   * @param value The text of the annotation.
+   */
+  public Annotation setText(String value) {
+    if (this.text == null)
+      this.text = new StringType();
+    this.text.setValue(value);
+    return this;
+  }
+
+  protected void listChildren(List<Property> childrenList) {
+    super.listChildren(childrenList);
+    childrenList.add(new Property("author[x]", "Reference(Practitioner|Patient|RelatedPerson)|string",
+        "The individual responsible for making the annotation.", 0, java.lang.Integer.MAX_VALUE, author));
+    childrenList.add(new Property("time", "dateTime", "Indicates when this particular annotation was made.", 0,
+        java.lang.Integer.MAX_VALUE, time));
+    childrenList
+        .add(new Property("text", "string", "The text of the annotation.", 0, java.lang.Integer.MAX_VALUE, text));
+  }
+
+  @Override
+  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+    switch (hash) {
+    case -1406328437:
+      /* author */ return this.author == null ? new Base[0] : new Base[] { this.author }; // Type
+    case 3560141:
+      /* time */ return this.time == null ? new Base[0] : new Base[] { this.time }; // DateTimeType
+    case 3556653:
+      /* text */ return this.text == null ? new Base[0] : new Base[] { this.text }; // StringType
+    default:
+      return super.getProperty(hash, name, checkValid);
     }
 
-    public boolean hasTimeElement() { 
-      return this.time != null && !this.time.isEmpty();
+  }
+
+  @Override
+  public void setProperty(int hash, String name, Base value) throws FHIRException {
+    switch (hash) {
+    case -1406328437: // author
+      this.author = (Type) value; // Type
+      break;
+    case 3560141: // time
+      this.time = castToDateTime(value); // DateTimeType
+      break;
+    case 3556653: // text
+      this.text = castToString(value); // StringType
+      break;
+    default:
+      super.setProperty(hash, name, value);
     }
 
-    public boolean hasTime() { 
-      return this.time != null && !this.time.isEmpty();
+  }
+
+  @Override
+  public void setProperty(String name, Base value) throws FHIRException {
+    if (name.equals("author[x]"))
+      this.author = (Type) value; // Type
+    else if (name.equals("time"))
+      this.time = castToDateTime(value); // DateTimeType
+    else if (name.equals("text"))
+      this.text = castToString(value); // StringType
+    else
+      super.setProperty(name, value);
+  }
+
+  @Override
+  public Base makeProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+    case 1475597077:
+      return getAuthor(); // Type
+    case 3560141:
+      throw new FHIRException("Cannot make property time as it is not a complex type"); // DateTimeType
+    case 3556653:
+      throw new FHIRException("Cannot make property text as it is not a complex type"); // StringType
+    default:
+      return super.makeProperty(hash, name);
     }
 
-    /**
-     * @param value {@link #time} (Indicates when this particular annotation was made.). This is the underlying object with id, value and extensions. The accessor "getTime" gives direct access to the value
-     */
-    public Annotation setTimeElement(DateTimeType value) { 
-      this.time = value;
-      return this;
-    }
+  }
 
-    /**
-     * @return Indicates when this particular annotation was made.
-     */
-    public Date getTime() { 
-      return this.time == null ? null : this.time.getValue();
-    }
-
-    /**
-     * @param value Indicates when this particular annotation was made.
-     */
-    public Annotation setTime(Date value) { 
-      if (value == null)
-        this.time = null;
-      else {
-        if (this.time == null)
-          this.time = new DateTimeType();
-        this.time.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #text} (The text of the annotation.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
-     */
-    public StringType getTextElement() { 
-      if (this.text == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Annotation.text");
-        else if (Configuration.doAutoCreate())
-          this.text = new StringType(); // bb
-      return this.text;
-    }
-
-    public boolean hasTextElement() { 
-      return this.text != null && !this.text.isEmpty();
-    }
-
-    public boolean hasText() { 
-      return this.text != null && !this.text.isEmpty();
-    }
-
-    /**
-     * @param value {@link #text} (The text of the annotation.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
-     */
-    public Annotation setTextElement(StringType value) { 
-      this.text = value;
-      return this;
-    }
-
-    /**
-     * @return The text of the annotation.
-     */
-    public String getText() { 
-      return this.text == null ? null : this.text.getValue();
-    }
-
-    /**
-     * @param value The text of the annotation.
-     */
-    public Annotation setText(String value) { 
-        if (this.text == null)
-          this.text = new StringType();
-        this.text.setValue(value);
-      return this;
-    }
-
-      protected void listChildren(List<Property> childrenList) {
-        super.listChildren(childrenList);
-        childrenList.add(new Property("author[x]", "Reference(Practitioner|Patient|RelatedPerson)|string", "The individual responsible for making the annotation.", 0, java.lang.Integer.MAX_VALUE, author));
-        childrenList.add(new Property("time", "dateTime", "Indicates when this particular annotation was made.", 0, java.lang.Integer.MAX_VALUE, time));
-        childrenList.add(new Property("text", "string", "The text of the annotation.", 0, java.lang.Integer.MAX_VALUE, text));
-      }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1406328437: /*author*/ return this.author == null ? new Base[0] : new Base[] {this.author}; // Type
-        case 3560141: /*time*/ return this.time == null ? new Base[0] : new Base[] {this.time}; // DateTimeType
-        case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // StringType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public void setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1406328437: // author
-          this.author = (Type) value; // Type
-          break;
-        case 3560141: // time
-          this.time = castToDateTime(value); // DateTimeType
-          break;
-        case 3556653: // text
-          this.text = castToString(value); // StringType
-          break;
-        default: super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public void setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("author[x]"))
-          this.author = (Type) value; // Type
-        else if (name.equals("time"))
-          this.time = castToDateTime(value); // DateTimeType
-        else if (name.equals("text"))
-          this.text = castToString(value); // StringType
-        else
-          super.setProperty(name, value);
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 1475597077:  return getAuthor(); // Type
-        case 3560141: throw new FHIRException("Cannot make property time as it is not a complex type"); // DateTimeType
-        case 3556653: throw new FHIRException("Cannot make property text as it is not a complex type"); // StringType
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("authorReference")) {
-          this.author = new Reference();
-          return this.author;
-        }
-        else if (name.equals("authorString")) {
-          this.author = new StringType();
-          return this.author;
-        }
-        else if (name.equals("time")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Annotation.time");
-        }
-        else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Annotation.text");
-        }
-        else
-          return super.addChild(name);
-      }
+  @Override
+  public Base addChild(String name) throws FHIRException {
+    if (name.equals("authorReference")) {
+      this.author = new Reference();
+      return this.author;
+    } else if (name.equals("authorString")) {
+      this.author = new StringType();
+      return this.author;
+    } else if (name.equals("time")) {
+      throw new FHIRException("Cannot call addChild on a primitive type Annotation.time");
+    } else if (name.equals("text")) {
+      throw new FHIRException("Cannot call addChild on a primitive type Annotation.text");
+    } else
+      return super.addChild(name);
+  }
 
   public String fhirType() {
     return "Annotation";
 
   }
 
-      public Annotation copy() {
-        Annotation dst = new Annotation();
-        copyValues(dst);
-        dst.author = author == null ? null : author.copy();
-        dst.time = time == null ? null : time.copy();
-        dst.text = text == null ? null : text.copy();
-        return dst;
-      }
+  public Annotation copy() {
+    Annotation dst = new Annotation();
+    copyValues(dst);
+    dst.author = author == null ? null : author.copy();
+    dst.time = time == null ? null : time.copy();
+    dst.text = text == null ? null : text.copy();
+    return dst;
+  }
 
-      protected Annotation typedCopy() {
-        return copy();
-      }
+  protected Annotation typedCopy() {
+    return copy();
+  }
 
-      @Override
-      public boolean equalsDeep(Base other) {
-        if (!super.equalsDeep(other))
-          return false;
-        if (!(other instanceof Annotation))
-          return false;
-        Annotation o = (Annotation) other;
-        return compareDeep(author, o.author, true) && compareDeep(time, o.time, true) && compareDeep(text, o.text, true)
-          ;
-      }
+  @Override
+  public boolean equalsDeep(Base other) {
+    if (!super.equalsDeep(other))
+      return false;
+    if (!(other instanceof Annotation))
+      return false;
+    Annotation o = (Annotation) other;
+    return compareDeep(author, o.author, true) && compareDeep(time, o.time, true) && compareDeep(text, o.text, true);
+  }
 
-      @Override
-      public boolean equalsShallow(Base other) {
-        if (!super.equalsShallow(other))
-          return false;
-        if (!(other instanceof Annotation))
-          return false;
-        Annotation o = (Annotation) other;
-        return compareValues(time, o.time, true) && compareValues(text, o.text, true);
-      }
+  @Override
+  public boolean equalsShallow(Base other) {
+    if (!super.equalsShallow(other))
+      return false;
+    if (!(other instanceof Annotation))
+      return false;
+    Annotation o = (Annotation) other;
+    return compareValues(time, o.time, true) && compareValues(text, o.text, true);
+  }
 
-      public boolean isEmpty() {
-        return super.isEmpty() && (author == null || author.isEmpty()) && (time == null || time.isEmpty())
-           && (text == null || text.isEmpty());
-      }
-
+  public boolean isEmpty() {
+    return super.isEmpty() && (author == null || author.isEmpty()) && (time == null || time.isEmpty())
+        && (text == null || text.isEmpty());
+  }
 
 }

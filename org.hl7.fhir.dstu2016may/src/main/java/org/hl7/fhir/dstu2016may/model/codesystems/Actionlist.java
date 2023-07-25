@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Actionlist {
 
-        /**
-         * Cancel, reverse or nullify the target resource.
-         */
-        CANCEL, 
-        /**
-         * Check for previously un-read/ not-retrieved resources.
-         */
-        POLL, 
-        /**
-         * Re-process the target resource.
-         */
-        REPROCESS, 
-        /**
-         * Retrieve the processing status of the target resource.
-         */
-        STATUS, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static Actionlist fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("cancel".equals(codeString))
-          return CANCEL;
-        if ("poll".equals(codeString))
-          return POLL;
-        if ("reprocess".equals(codeString))
-          return REPROCESS;
-        if ("status".equals(codeString))
-          return STATUS;
-        throw new FHIRException("Unknown Actionlist code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CANCEL: return "cancel";
-            case POLL: return "poll";
-            case REPROCESS: return "reprocess";
-            case STATUS: return "status";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/actionlist";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CANCEL: return "Cancel, reverse or nullify the target resource.";
-            case POLL: return "Check for previously un-read/ not-retrieved resources.";
-            case REPROCESS: return "Re-process the target resource.";
-            case STATUS: return "Retrieve the processing status of the target resource.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CANCEL: return "Cancel, Reverse or Nullify";
-            case POLL: return "Poll";
-            case REPROCESS: return "Re-Process";
-            case STATUS: return "Status Check";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Cancel, reverse or nullify the target resource.
+   */
+  CANCEL,
+  /**
+   * Check for previously un-read/ not-retrieved resources.
+   */
+  POLL,
+  /**
+   * Re-process the target resource.
+   */
+  REPROCESS,
+  /**
+   * Retrieve the processing status of the target resource.
+   */
+  STATUS,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static Actionlist fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("cancel".equals(codeString))
+      return CANCEL;
+    if ("poll".equals(codeString))
+      return POLL;
+    if ("reprocess".equals(codeString))
+      return REPROCESS;
+    if ("status".equals(codeString))
+      return STATUS;
+    throw new FHIRException("Unknown Actionlist code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case CANCEL:
+      return "cancel";
+    case POLL:
+      return "poll";
+    case REPROCESS:
+      return "reprocess";
+    case STATUS:
+      return "status";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/actionlist";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case CANCEL:
+      return "Cancel, reverse or nullify the target resource.";
+    case POLL:
+      return "Check for previously un-read/ not-retrieved resources.";
+    case REPROCESS:
+      return "Re-process the target resource.";
+    case STATUS:
+      return "Retrieve the processing status of the target resource.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case CANCEL:
+      return "Cancel, Reverse or Nullify";
+    case POLL:
+      return "Poll";
+    case REPROCESS:
+      return "Re-Process";
+    case STATUS:
+      return "Status Check";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

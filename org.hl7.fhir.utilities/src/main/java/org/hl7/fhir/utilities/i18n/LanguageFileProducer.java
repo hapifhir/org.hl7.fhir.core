@@ -1,18 +1,14 @@
 package org.hl7.fhir.utilities.i18n;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
-import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
 import org.xml.sax.SAXException;
-
-import java.util.HashMap;
 
 
 public abstract class LanguageFileProducer {

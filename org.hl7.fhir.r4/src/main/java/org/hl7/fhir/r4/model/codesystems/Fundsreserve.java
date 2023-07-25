@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,90 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Fundsreserve {
 
-        /**
-         * The payor is requested to reserve funds for the provision of the named services by any provider for settlement of future claims related to this request.
-         */
-        PATIENT, 
-        /**
-         * The payor is requested to reserve funds solely for the named provider for settlement of future claims related to this request.
-         */
-        PROVIDER, 
-        /**
-         * The payor is not being requested to reserve any funds for the settlement of future claims.
-         */
-        NONE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static Fundsreserve fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("patient".equals(codeString))
-          return PATIENT;
-        if ("provider".equals(codeString))
-          return PROVIDER;
-        if ("none".equals(codeString))
-          return NONE;
-        throw new FHIRException("Unknown Fundsreserve code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PATIENT: return "patient";
-            case PROVIDER: return "provider";
-            case NONE: return "none";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/fundsreserve";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PATIENT: return "The payor is requested to reserve funds for the provision of the named services by any provider for settlement of future claims related to this request.";
-            case PROVIDER: return "The payor is requested to reserve funds solely for the named provider for settlement of future claims related to this request.";
-            case NONE: return "The payor is not being requested to reserve any funds for the settlement of future claims.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PATIENT: return "Patient";
-            case PROVIDER: return "Provider";
-            case NONE: return "None";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The payor is requested to reserve funds for the provision of the named
+   * services by any provider for settlement of future claims related to this
+   * request.
+   */
+  PATIENT,
+  /**
+   * The payor is requested to reserve funds solely for the named provider for
+   * settlement of future claims related to this request.
+   */
+  PROVIDER,
+  /**
+   * The payor is not being requested to reserve any funds for the settlement of
+   * future claims.
+   */
+  NONE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static Fundsreserve fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("patient".equals(codeString))
+      return PATIENT;
+    if ("provider".equals(codeString))
+      return PROVIDER;
+    if ("none".equals(codeString))
+      return NONE;
+    throw new FHIRException("Unknown Fundsreserve code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PATIENT:
+      return "patient";
+    case PROVIDER:
+      return "provider";
+    case NONE:
+      return "none";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/fundsreserve";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PATIENT:
+      return "The payor is requested to reserve funds for the provision of the named services by any provider for settlement of future claims related to this request.";
+    case PROVIDER:
+      return "The payor is requested to reserve funds solely for the named provider for settlement of future claims related to this request.";
+    case NONE:
+      return "The payor is not being requested to reserve any funds for the settlement of future claims.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PATIENT:
+      return "Patient";
+    case PROVIDER:
+      return "Provider";
+    case NONE:
+      return "None";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }
