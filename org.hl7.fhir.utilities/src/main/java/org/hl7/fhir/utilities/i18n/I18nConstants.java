@@ -225,6 +225,7 @@ public class I18nConstants {
   public static final String MEASURE_MR_GRP_POP_NO_COUNT = "MEASURE_MR_GRP_POP_NO_COUNT";
   public static final String MEASURE_MR_GRP_POP_NO_SUBJECTS = "MEASURE_MR_GRP_POP_NO_SUBJECTS";
   public static final String MEASURE_MR_GRP_POP_UNK_CODE = "MEASURE_MR_GRP_POP_UNK_CODE";
+  public static final String MEASURE_MR_GRPST_POP_UNK_CODE = "MEASURE_MR_GRPST_POP_UNK_CODE";
   public static final String MEASURE_MR_GRP_UNK_CODE = "MEASURE_MR_GRP_UNK_CODE";
   public static final String MEASURE_MR_M_NONE = "Measure_MR_M_None";
   public static final String MEASURE_MR_M_NOTFOUND = "Measure_MR_M_NotFound";
@@ -924,6 +925,7 @@ public class I18nConstants {
   public static final String SD_ED_TYPE_PROFILE_WRONG_TYPE = "SD_ED_TYPE_PROFILE_WRONG_TYPE";
   public static final String VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED = "VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED";
   public static final String VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED = "VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED";
+  public static final String CS_SCT_IPS_NOT_IPS = "CS_SCT_IPS_NOT_IPS";
 
 }
 
