@@ -29,7 +29,6 @@ package org.hl7.fhir.r4.formats;
   
  */
 
-
 /*
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
@@ -88,14 +87,18 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 /**
- * General parser for XML content. You instantiate an XmlParser of these, but you 
- * actually use parse or parseGeneral defined on this class
+ * General parser for XML content. You instantiate an XmlParser of these, but
+ * you actually use parse or parseGeneral defined on this class
  * 
- * The two classes are separated to keep generated and manually maintained code apart.
+ * The two classes are separated to keep generated and manually maintained code
+ * apart.
  */
 public abstract class XmlParserBase extends ParserBase implements IParser {
-  
-  public enum XmlVersion { V1_0, V1_1  }
+
+  public enum XmlVersion {
+    V1_0, V1_1
+  }
+
   private XmlVersion version;
 
   public XmlParserBase(XmlVersion ver) {
@@ -103,65 +106,70 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     version = ver;
   }
 
-
   public XmlParserBase() {
     super();
     version = XmlVersion.V1_0;
   }
-  
-	@Override
-	public ParserType getType() {
-		return ParserType.XML;
-	}
-
-	// -- in descendent generated code --------------------------------------
-
-	abstract protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError ;
-  abstract protected Type parseType(XmlPullParser xml, String type) throws XmlPullParserException, IOException, FHIRFormatError ;
-  abstract protected Type parseAnyType(XmlPullParser xml, String type) throws XmlPullParserException, IOException, FHIRFormatError ;
-	abstract protected void composeType(String prefix, Type type) throws IOException ;
-
-	/* -- entry points --------------------------------------------------- */
-
-	/**
-	 * Parse content that is known to be a resource
-	 * @ 
-	 */
-	@Override
-	public Resource parse(InputStream input) throws IOException, FHIRFormatError {
-		try {
-			XmlPullParser xpp = loadXml(input);
-			return parse(xpp);
-		} catch (XmlPullParserException e) {
-			throw new FHIRFormatError(e.getMessage(), e);
-		}
-	}
-
-	/**
-	 * parse xml that is known to be a resource, and that is already being read by an XML Pull Parser
-	 * This is if a resource is in a bigger piece of XML.   
-	 * @ 
-	 */
-	public Resource parse(XmlPullParser xpp)  throws IOException, FHIRFormatError, XmlPullParserException {
-		if (xpp.getNamespace() == null)
-			throw new FHIRFormatError("This does not appear to be a FHIR resource (no namespace '"+xpp.getNamespace()+"') (@ /) "+Integer.toString(xpp.getEventType()));
-		if (!xpp.getNamespace().equals(FHIR_NS))
-			throw new FHIRFormatError("This does not appear to be a FHIR resource (wrong namespace '"+xpp.getNamespace()+"') (@ /)");
-		return parseResource(xpp);
-	}
-
-	@Override
-	public Type parseType(InputStream input, String knownType) throws IOException, FHIRFormatError  {
-		try {
-			XmlPullParser xml = loadXml(input);
-			return parseType(xml, knownType);
-		} catch (XmlPullParserException e) {
-			throw new FHIRFormatError(e.getMessage(), e);
-		}
-	}
 
   @Override
-  public Type parseAnyType(InputStream input, String knownType) throws IOException, FHIRFormatError  {
+  public ParserType getType() {
+    return ParserType.XML;
+  }
+
+  // -- in descendent generated code --------------------------------------
+
+  abstract protected Resource parseResource(XmlPullParser xpp)
+      throws XmlPullParserException, IOException, FHIRFormatError;
+
+  abstract protected Type parseType(XmlPullParser xml, String type)
+      throws XmlPullParserException, IOException, FHIRFormatError;
+
+  abstract protected Type parseAnyType(XmlPullParser xml, String type)
+      throws XmlPullParserException, IOException, FHIRFormatError;
+
+  abstract protected void composeType(String prefix, Type type) throws IOException;
+
+  /* -- entry points --------------------------------------------------- */
+
+  /**
+   * Parse content that is known to be a resource @
+   */
+  @Override
+  public Resource parse(InputStream input) throws IOException, FHIRFormatError {
+    try {
+      XmlPullParser xpp = loadXml(input);
+      return parse(xpp);
+    } catch (XmlPullParserException e) {
+      throw new FHIRFormatError(e.getMessage(), e);
+    }
+  }
+
+  /**
+   * parse xml that is known to be a resource, and that is already being read by
+   * an XML Pull Parser This is if a resource is in a bigger piece of XML. @
+   */
+  public Resource parse(XmlPullParser xpp) throws IOException, FHIRFormatError, XmlPullParserException {
+    if (xpp.getNamespace() == null)
+      throw new FHIRFormatError("This does not appear to be a FHIR resource (no namespace '" + xpp.getNamespace()
+          + "') (@ /) " + Integer.toString(xpp.getEventType()));
+    if (!xpp.getNamespace().equals(FHIR_NS))
+      throw new FHIRFormatError(
+          "This does not appear to be a FHIR resource (wrong namespace '" + xpp.getNamespace() + "') (@ /)");
+    return parseResource(xpp);
+  }
+
+  @Override
+  public Type parseType(InputStream input, String knownType) throws IOException, FHIRFormatError {
+    try {
+      XmlPullParser xml = loadXml(input);
+      return parseType(xml, knownType);
+    } catch (XmlPullParserException e) {
+      throw new FHIRFormatError(e.getMessage(), e);
+    }
+  }
+
+  @Override
+  public Type parseAnyType(InputStream input, String knownType) throws IOException, FHIRFormatError {
     try {
       XmlPullParser xml = loadXml(input);
       return parseAnyType(xml, knownType);
@@ -170,287 +178,286 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     }
   }
 
-	/**
-	 * Compose a resource to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
-	 * @ 
-	 */
-	@Override
-	public void compose(OutputStream stream, Resource resource)  throws IOException {
-		XMLWriter writer = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
-		writer.setPretty(style == OutputStyle.PRETTY);
-		writer.start();
-		compose(writer, resource, writer.isPretty());
-		writer.end();
-	}
+  /**
+   * Compose a resource to a stream, possibly using pretty presentation for a
+   * human reader (used in the spec, for example, but not normally in
+   * production) @
+   */
+  @Override
+  public void compose(OutputStream stream, Resource resource) throws IOException {
+    XMLWriter writer = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
+    writer.setPretty(style == OutputStyle.PRETTY);
+    writer.start();
+    compose(writer, resource, writer.isPretty());
+    writer.end();
+  }
 
-	/**
-	 * Compose a resource to a stream, possibly using pretty presentation for a human reader, and maybe a different choice in the xhtml narrative (used in the spec in one place, but should not be used in production)
-	 * @ 
-	 */
-	public void compose(OutputStream stream, Resource resource, boolean htmlPretty)  throws IOException {
-		XMLWriter writer = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
-		writer.setPretty(style == OutputStyle.PRETTY);
-		writer.start();
-		compose(writer, resource, htmlPretty);
-		writer.end();
-	}
+  /**
+   * Compose a resource to a stream, possibly using pretty presentation for a
+   * human reader, and maybe a different choice in the xhtml narrative (used in
+   * the spec in one place, but should not be used in production) @
+   */
+  public void compose(OutputStream stream, Resource resource, boolean htmlPretty) throws IOException {
+    XMLWriter writer = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
+    writer.setPretty(style == OutputStyle.PRETTY);
+    writer.start();
+    compose(writer, resource, htmlPretty);
+    writer.end();
+  }
 
+  /**
+   * Compose a type to a stream (used in the spec, for example, but not normally
+   * in production) @
+   */
+  public void compose(OutputStream stream, String rootName, Type type) throws IOException {
+    xml = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
+    xml.setPretty(style == OutputStyle.PRETTY);
+    xml.start();
+    xml.setDefaultNamespace(FHIR_NS);
+    composeType(Utilities.noString(rootName) ? "value" : rootName, type);
+    xml.end();
+  }
 
-	/**
-	 * Compose a type to a stream (used in the spec, for example, but not normally in production)
-	 * @ 
-	 */
-	public void compose(OutputStream stream, String rootName, Type type)  throws IOException {
-		xml = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
-		xml.setPretty(style == OutputStyle.PRETTY);
-		xml.start();
-		xml.setDefaultNamespace(FHIR_NS);
-		composeType(Utilities.noString(rootName) ? "value" : rootName, type);
-		xml.end();
-	}
+  @Override
+  public void compose(OutputStream stream, Type type, String rootName) throws IOException {
+    xml = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
+    xml.setPretty(style == OutputStyle.PRETTY);
+    xml.start();
+    xml.setDefaultNamespace(FHIR_NS);
+    composeType(Utilities.noString(rootName) ? "value" : rootName, type);
+    xml.end();
+  }
 
-	@Override
-	public void compose(OutputStream stream, Type type, String rootName)  throws IOException {
-		xml = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
-		xml.setPretty(style == OutputStyle.PRETTY);
-		xml.start();
-		xml.setDefaultNamespace(FHIR_NS);
-		composeType(Utilities.noString(rootName) ? "value" : rootName, type);
-		xml.end();
-	}
+  /* -- xml routines --------------------------------------------------- */
 
+  protected XmlPullParser loadXml(String source)
+      throws UnsupportedEncodingException, XmlPullParserException, IOException {
+    return loadXml(new ByteArrayInputStream(source.getBytes("UTF-8")));
+  }
 
+  protected XmlPullParser loadXml(InputStream stream) throws XmlPullParserException, IOException {
+    BufferedInputStream input = new BufferedInputStream(stream);
+    XmlPullParserFactory factory = XmlPullParserFactory
+        .newInstance(System.getProperty(XmlPullParserFactory.PROPERTY_NAME), null);
+    factory.setNamespaceAware(true);
+    factory.setFeature(XmlPullParser.FEATURE_PROCESS_DOCDECL, false);
+    XmlPullParser xpp = factory.newPullParser();
+    xpp.setInput(input, "UTF-8");
+    next(xpp);
+    nextNoWhitespace(xpp);
 
-	/* -- xml routines --------------------------------------------------- */
+    return xpp;
+  }
 
-	protected XmlPullParser loadXml(String source) throws UnsupportedEncodingException, XmlPullParserException, IOException {
-		return loadXml(new ByteArrayInputStream(source.getBytes("UTF-8")));
-	}
+  protected int next(XmlPullParser xpp) throws XmlPullParserException, IOException {
+    if (handleComments)
+      return xpp.nextToken();
+    else
+      return xpp.next();
+  }
 
-	protected XmlPullParser loadXml(InputStream stream) throws XmlPullParserException, IOException {
-		BufferedInputStream input = new BufferedInputStream(stream);
-		XmlPullParserFactory factory = XmlPullParserFactory.newInstance(System.getProperty(XmlPullParserFactory.PROPERTY_NAME), null);
-		factory.setNamespaceAware(true);
-		factory.setFeature(XmlPullParser.FEATURE_PROCESS_DOCDECL, false);
-		XmlPullParser xpp = factory.newPullParser();
-		xpp.setInput(input, "UTF-8");
-		next(xpp);
-		nextNoWhitespace(xpp);
+  protected List<String> comments = new ArrayList<String>();
 
-		return xpp;
-	}
+  protected int nextNoWhitespace(XmlPullParser xpp) throws XmlPullParserException, IOException {
+    int eventType = xpp.getEventType();
+    while ((eventType == XmlPullParser.TEXT && xpp.isWhitespace()) || (eventType == XmlPullParser.COMMENT)
+        || (eventType == XmlPullParser.CDSECT) || (eventType == XmlPullParser.IGNORABLE_WHITESPACE)
+        || (eventType == XmlPullParser.PROCESSING_INSTRUCTION) || (eventType == XmlPullParser.DOCDECL)) {
+      if (eventType == XmlPullParser.COMMENT) {
+        comments.add(xpp.getText());
+      } else if (eventType == XmlPullParser.DOCDECL) {
+        throw new XmlPullParserException("DTD declarations are not allowed");
+      }
+      eventType = next(xpp);
+    }
+    return eventType;
+  }
 
-	protected int next(XmlPullParser xpp) throws XmlPullParserException, IOException {
-		if (handleComments)
-			return xpp.nextToken();
-		else
-			return xpp.next();    
-	}
-
-	protected List<String> comments = new ArrayList<String>();
-
-	protected int nextNoWhitespace(XmlPullParser xpp) throws XmlPullParserException, IOException {
-		int eventType = xpp.getEventType();
-		while ((eventType == XmlPullParser.TEXT && xpp.isWhitespace()) || (eventType == XmlPullParser.COMMENT) 
-				|| (eventType == XmlPullParser.CDSECT) || (eventType == XmlPullParser.IGNORABLE_WHITESPACE)
-				|| (eventType == XmlPullParser.PROCESSING_INSTRUCTION) || (eventType == XmlPullParser.DOCDECL)) {
-			if (eventType == XmlPullParser.COMMENT) {
-				comments.add(xpp.getText());
-			} else if (eventType == XmlPullParser.DOCDECL) {
-	      throw new XmlPullParserException("DTD declarations are not allowed"); 
-      }  
-			eventType = next(xpp);
-		}
-		return eventType;
-	}
-
-
-	protected void skipElementWithContent(XmlPullParser xpp) throws XmlPullParserException, IOException  {
-		// when this is called, we are pointing an element that may have content
-		while (xpp.getEventType() != XmlPullParser.END_TAG) {
-			next(xpp);
-			if (xpp.getEventType() == XmlPullParser.START_TAG) 
-				skipElementWithContent(xpp);
-		}
-		next(xpp);
-	}
-
-	protected void skipEmptyElement(XmlPullParser xpp) throws XmlPullParserException, IOException {
-		while (xpp.getEventType() != XmlPullParser.END_TAG) 
-			next(xpp);
-		next(xpp);
-	}
-
-	protected IXMLWriter xml;
-	protected boolean htmlPretty;
-
-
-
-	/* -- worker routines --------------------------------------------------- */
-
-	protected void parseTypeAttributes(XmlPullParser xpp, Type t) {
-		parseElementAttributes(xpp, t);
-	}
-
-	protected void parseElementAttributes(XmlPullParser xpp, Element e) {
-		if (xpp.getAttributeValue(null, "id") != null) {
-			e.setId(xpp.getAttributeValue(null, "id"));
-			idMap.put(e.getId(), e);
-		}
-		if (!comments.isEmpty()) {
-			e.getFormatCommentsPre().addAll(comments);
-			comments.clear();
-		}
-	}
-
-	protected void parseElementClose(Base e) {
-		if (!comments.isEmpty()) {
-			e.getFormatCommentsPost().addAll(comments);
-			comments.clear();
-		}
-	}
-
-	protected void parseBackboneAttributes(XmlPullParser xpp, Element e) {
-		parseElementAttributes(xpp, e);
-	}
-
-	private String pathForLocation(XmlPullParser xpp) {
-		return xpp.getPositionDescription();
-	}
-
-
-	protected void unknownContent(XmlPullParser xpp) throws FHIRFormatError, XmlPullParserException, IOException {
-		if (!isAllowUnknownContent()) {
-			throw new FHIRFormatError("Unknown Content "+xpp.getName()+" @ "+pathForLocation(xpp));
-		}
-		// otherwise, read over whatever element this is 
-		int count = 1;
-		do {
-	    xpp.next();
-		  if (xpp.getEventType() == XmlPullParser.END_TAG)
-		    count--;
+  protected void skipElementWithContent(XmlPullParser xpp) throws XmlPullParserException, IOException {
+    // when this is called, we are pointing an element that may have content
+    while (xpp.getEventType() != XmlPullParser.END_TAG) {
+      next(xpp);
       if (xpp.getEventType() == XmlPullParser.START_TAG)
-        count++;		  
-		} while (count > 0);
+        skipElementWithContent(xpp);
+    }
+    next(xpp);
+  }
+
+  protected void skipEmptyElement(XmlPullParser xpp) throws XmlPullParserException, IOException {
+    while (xpp.getEventType() != XmlPullParser.END_TAG)
+      next(xpp);
+    next(xpp);
+  }
+
+  protected IXMLWriter xml;
+  protected boolean htmlPretty;
+
+  /* -- worker routines --------------------------------------------------- */
+
+  protected void parseTypeAttributes(XmlPullParser xpp, Type t) {
+    parseElementAttributes(xpp, t);
+  }
+
+  protected void parseElementAttributes(XmlPullParser xpp, Element e) {
+    if (xpp.getAttributeValue(null, "id") != null) {
+      e.setId(xpp.getAttributeValue(null, "id"));
+      idMap.put(e.getId(), e);
+    }
+    if (!comments.isEmpty()) {
+      e.getFormatCommentsPre().addAll(comments);
+      comments.clear();
+    }
+  }
+
+  protected void parseElementClose(Base e) {
+    if (!comments.isEmpty()) {
+      e.getFormatCommentsPost().addAll(comments);
+      comments.clear();
+    }
+  }
+
+  protected void parseBackboneAttributes(XmlPullParser xpp, Element e) {
+    parseElementAttributes(xpp, e);
+  }
+
+  private String pathForLocation(XmlPullParser xpp) {
+    return xpp.getPositionDescription();
+  }
+
+  protected void unknownContent(XmlPullParser xpp) throws FHIRFormatError, XmlPullParserException, IOException {
+    if (!isAllowUnknownContent()) {
+      throw new FHIRFormatError("Unknown Content " + xpp.getName() + " @ " + pathForLocation(xpp));
+    }
+    // otherwise, read over whatever element this is
+    int count = 1;
+    do {
+      xpp.next();
+      if (xpp.getEventType() == XmlPullParser.END_TAG)
+        count--;
+      if (xpp.getEventType() == XmlPullParser.START_TAG)
+        count++;
+    } while (count > 0);
     xpp.next();
-	}
+  }
 
-	protected XhtmlNode parseXhtml(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-		XhtmlParser prsr = new XhtmlParser();
-		try {
-			return prsr.parseHtmlNode(xpp);
-		} catch (org.hl7.fhir.exceptions.FHIRFormatError e) {
-			throw new FHIRFormatError(e.getMessage(), e);
-		}
-	}
+  protected XhtmlNode parseXhtml(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    XhtmlParser prsr = new XhtmlParser();
+    try {
+      return prsr.parseHtmlNode(xpp);
+    } catch (org.hl7.fhir.exceptions.FHIRFormatError e) {
+      throw new FHIRFormatError(e.getMessage(), e);
+    }
+  }
 
-	private String parseString(XmlPullParser xpp) throws XmlPullParserException, FHIRFormatError, IOException {
-		StringBuilder res = new StringBuilder();
-		next(xpp);
-		while (xpp.getEventType() == XmlPullParser.TEXT || xpp.getEventType() == XmlPullParser.IGNORABLE_WHITESPACE || xpp.getEventType() == XmlPullParser.ENTITY_REF) {
-			res.append(xpp.getText());
-			next(xpp);
-		}
-		if (xpp.getEventType() != XmlPullParser.END_TAG)
-			throw new FHIRFormatError("Bad String Structure - parsed "+res.toString()+" now found "+Integer.toString(xpp.getEventType()));
-		next(xpp);
-		return res.length() == 0 ? null : res.toString();
-	}
+  private String parseString(XmlPullParser xpp) throws XmlPullParserException, FHIRFormatError, IOException {
+    StringBuilder res = new StringBuilder();
+    next(xpp);
+    while (xpp.getEventType() == XmlPullParser.TEXT || xpp.getEventType() == XmlPullParser.IGNORABLE_WHITESPACE
+        || xpp.getEventType() == XmlPullParser.ENTITY_REF) {
+      res.append(xpp.getText());
+      next(xpp);
+    }
+    if (xpp.getEventType() != XmlPullParser.END_TAG)
+      throw new FHIRFormatError(
+          "Bad String Structure - parsed " + res.toString() + " now found " + Integer.toString(xpp.getEventType()));
+    next(xpp);
+    return res.length() == 0 ? null : res.toString();
+  }
 
-	private int parseInt(XmlPullParser xpp) throws FHIRFormatError, XmlPullParserException, IOException {
-		int res = -1;
-		String textNode = parseString(xpp);
-		res = java.lang.Integer.parseInt(textNode);
-		return res;
-	}
+  private int parseInt(XmlPullParser xpp) throws FHIRFormatError, XmlPullParserException, IOException {
+    int res = -1;
+    String textNode = parseString(xpp);
+    res = java.lang.Integer.parseInt(textNode);
+    return res;
+  }
 
-	protected DomainResource parseDomainResourceContained(XmlPullParser xpp)  throws IOException, FHIRFormatError, XmlPullParserException {
-		next(xpp);
-		int eventType = nextNoWhitespace(xpp);
-		if (eventType == XmlPullParser.START_TAG) { 
-			DomainResource dr = (DomainResource) parseResource(xpp);
-			nextNoWhitespace(xpp);
-			next(xpp);
-			return dr;
-		} else {
-			unknownContent(xpp);
-			return null;
-		}
-	} 
-	protected Resource parseResourceContained(XmlPullParser xpp) throws IOException, FHIRFormatError, XmlPullParserException  {
-		next(xpp);
-		int eventType = nextNoWhitespace(xpp);
-		if (eventType == XmlPullParser.START_TAG) { 
-			Resource r = (Resource) parseResource(xpp);
-			nextNoWhitespace(xpp);
-			next(xpp);
-			return r;
-		} else {
-			unknownContent(xpp);
-			return null;
-		}
-	}
+  protected DomainResource parseDomainResourceContained(XmlPullParser xpp)
+      throws IOException, FHIRFormatError, XmlPullParserException {
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    if (eventType == XmlPullParser.START_TAG) {
+      DomainResource dr = (DomainResource) parseResource(xpp);
+      nextNoWhitespace(xpp);
+      next(xpp);
+      return dr;
+    } else {
+      unknownContent(xpp);
+      return null;
+    }
+  }
 
-	public void compose(IXMLWriter writer, Resource resource, boolean htmlPretty)  throws IOException   {
-		this.htmlPretty = htmlPretty;
-		xml = writer;
-		xml.setDefaultNamespace(FHIR_NS);
-		composeResource(resource);
-	}
+  protected Resource parseResourceContained(XmlPullParser xpp)
+      throws IOException, FHIRFormatError, XmlPullParserException {
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    if (eventType == XmlPullParser.START_TAG) {
+      Resource r = (Resource) parseResource(xpp);
+      nextNoWhitespace(xpp);
+      next(xpp);
+      return r;
+    } else {
+      unknownContent(xpp);
+      return null;
+    }
+  }
 
-	protected abstract void composeResource(Resource resource) throws IOException ;
+  public void compose(IXMLWriter writer, Resource resource, boolean htmlPretty) throws IOException {
+    this.htmlPretty = htmlPretty;
+    xml = writer;
+    xml.setDefaultNamespace(FHIR_NS);
+    composeResource(resource);
+  }
 
-	protected void composeElementAttributes(Element element) throws IOException {
-		if (style != OutputStyle.CANONICAL)
-			for (String comment : element.getFormatCommentsPre())
-				xml.comment(comment, getOutputStyle() == OutputStyle.PRETTY);
-		if (element.getId() != null) 
-			xml.attribute("id", element.getId());
-	}
+  protected abstract void composeResource(Resource resource) throws IOException;
 
-	protected void composeElementClose(Base base) throws IOException {
-		if (style != OutputStyle.CANONICAL)
-			for (String comment : base.getFormatCommentsPost())
-				xml.comment(comment, getOutputStyle() == OutputStyle.PRETTY);
-	}
-	protected void composeTypeAttributes(Type type) throws IOException {
-		composeElementAttributes(type);
-	}
+  protected void composeElementAttributes(Element element) throws IOException {
+    if (style != OutputStyle.CANONICAL)
+      for (String comment : element.getFormatCommentsPre())
+        xml.comment(comment, getOutputStyle() == OutputStyle.PRETTY);
+    if (element.getId() != null)
+      xml.attribute("id", element.getId());
+  }
 
-	protected void composeXhtml(String name, XhtmlNode html) throws IOException {
-		if (!Utilities.noString(xhtmlMessage)) {
-			xml.enter(XhtmlComposer.XHTML_NS, name);
-			xml.comment(xhtmlMessage, false);
-			xml.exit(XhtmlComposer.XHTML_NS, name);
-		} else {
-			XhtmlComposer comp = new XhtmlComposer(XhtmlComposer.XML, htmlPretty);
-			// name is also found in the html and should the same
-			// ? check that
-			boolean oldPretty = xml.isPretty();
-			xml.setPretty(htmlPretty);
-			if (html.getNodeType() != NodeType.Text && html.getNsDecl() == null)
-				xml.namespace(XhtmlComposer.XHTML_NS, null);
-			comp.compose(xml, html);
-			xml.setPretty(oldPretty);
-		}
-	}
+  protected void composeElementClose(Base base) throws IOException {
+    if (style != OutputStyle.CANONICAL)
+      for (String comment : base.getFormatCommentsPost())
+        xml.comment(comment, getOutputStyle() == OutputStyle.PRETTY);
+  }
 
+  protected void composeTypeAttributes(Type type) throws IOException {
+    composeElementAttributes(type);
+  }
 
-	abstract protected void composeString(String name, StringType value) throws IOException ;
+  protected void composeXhtml(String name, XhtmlNode html) throws IOException {
+    if (!Utilities.noString(xhtmlMessage)) {
+      xml.enter(XhtmlComposer.XHTML_NS, name);
+      xml.comment(xhtmlMessage, false);
+      xml.exit(XhtmlComposer.XHTML_NS, name);
+    } else {
+      XhtmlComposer comp = new XhtmlComposer(XhtmlComposer.XML, htmlPretty);
+      // name is also found in the html and should the same
+      // ? check that
+      boolean oldPretty = xml.isPretty();
+      xml.setPretty(htmlPretty);
+      if (html.getNodeType() != NodeType.Text && html.getNsDecl() == null)
+        xml.namespace(XhtmlComposer.XHTML_NS, null);
+      comp.compose(xml, html);
+      xml.setPretty(oldPretty);
+    }
+  }
 
-	protected void composeString(String name, IIdType value) throws IOException  {
-		composeString(name, new StringType(value.getValue()));
-	}    
+  abstract protected void composeString(String name, StringType value) throws IOException;
 
+  protected void composeString(String name, IIdType value) throws IOException {
+    composeString(name, new StringType(value.getValue()));
+  }
 
-	protected void composeDomainResource(String name, DomainResource res) throws IOException  {
-		xml.enter(FHIR_NS, name);
-		composeResource(res.getResourceType().toString(), res);
-		xml.exit(FHIR_NS, name);
-	}
+  protected void composeDomainResource(String name, DomainResource res) throws IOException {
+    xml.enter(FHIR_NS, name);
+    composeResource(res.getResourceType().toString(), res);
+    xml.exit(FHIR_NS, name);
+  }
 
-	
-
-	protected abstract void composeResource(String name, Resource res) throws IOException ;
+  protected abstract void composeResource(String name, Resource res) throws IOException;
 
 }

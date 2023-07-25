@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,110 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MapSourceListMode {
 
-        /**
-         * Only process this rule for the first in the list.
-         */
-        FIRST, 
-        /**
-         * Process this rule for all but the first.
-         */
-        NOTFIRST, 
-        /**
-         * Only process this rule for the last in the list.
-         */
-        LAST, 
-        /**
-         * Process this rule for all but the last.
-         */
-        NOTLAST, 
-        /**
-         * Only process this rule is there is only item.
-         */
-        ONLYONE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MapSourceListMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("first".equals(codeString))
-          return FIRST;
-        if ("not_first".equals(codeString))
-          return NOTFIRST;
-        if ("last".equals(codeString))
-          return LAST;
-        if ("not_last".equals(codeString))
-          return NOTLAST;
-        if ("only_one".equals(codeString))
-          return ONLYONE;
-        throw new FHIRException("Unknown MapSourceListMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case FIRST: return "first";
-            case NOTFIRST: return "not_first";
-            case LAST: return "last";
-            case NOTLAST: return "not_last";
-            case ONLYONE: return "only_one";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/map-source-list-mode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case FIRST: return "Only process this rule for the first in the list.";
-            case NOTFIRST: return "Process this rule for all but the first.";
-            case LAST: return "Only process this rule for the last in the list.";
-            case NOTLAST: return "Process this rule for all but the last.";
-            case ONLYONE: return "Only process this rule is there is only item.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case FIRST: return "First";
-            case NOTFIRST: return "All but the first";
-            case LAST: return "Last";
-            case NOTLAST: return "All but the last";
-            case ONLYONE: return "Enforce only one";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Only process this rule for the first in the list.
+   */
+  FIRST,
+  /**
+   * Process this rule for all but the first.
+   */
+  NOTFIRST,
+  /**
+   * Only process this rule for the last in the list.
+   */
+  LAST,
+  /**
+   * Process this rule for all but the last.
+   */
+  NOTLAST,
+  /**
+   * Only process this rule is there is only item.
+   */
+  ONLYONE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MapSourceListMode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("first".equals(codeString))
+      return FIRST;
+    if ("not_first".equals(codeString))
+      return NOTFIRST;
+    if ("last".equals(codeString))
+      return LAST;
+    if ("not_last".equals(codeString))
+      return NOTLAST;
+    if ("only_one".equals(codeString))
+      return ONLYONE;
+    throw new FHIRException("Unknown MapSourceListMode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case FIRST:
+      return "first";
+    case NOTFIRST:
+      return "not_first";
+    case LAST:
+      return "last";
+    case NOTLAST:
+      return "not_last";
+    case ONLYONE:
+      return "only_one";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/map-source-list-mode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case FIRST:
+      return "Only process this rule for the first in the list.";
+    case NOTFIRST:
+      return "Process this rule for all but the first.";
+    case LAST:
+      return "Only process this rule for the last in the list.";
+    case NOTLAST:
+      return "Process this rule for all but the last.";
+    case ONLYONE:
+      return "Only process this rule is there is only item.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case FIRST:
+      return "First";
+    case NOTFIRST:
+      return "All but the first";
+    case LAST:
+      return "Last";
+    case NOTLAST:
+      return "All but the last";
+    case ONLYONE:
+      return "Enforce only one";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

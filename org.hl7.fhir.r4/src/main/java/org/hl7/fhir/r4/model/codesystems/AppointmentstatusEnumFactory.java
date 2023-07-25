@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class AppointmentstatusEnumFactory implements EnumFactory<Appointmentstatus> {
@@ -62,7 +58,7 @@ public class AppointmentstatusEnumFactory implements EnumFactory<Appointmentstat
       return Appointmentstatus.CHECKEDIN;
     if ("waitlist".equals(codeString))
       return Appointmentstatus.WAITLIST;
-    throw new IllegalArgumentException("Unknown Appointmentstatus code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown Appointmentstatus code '" + codeString + "'");
   }
 
   public String toCode(Appointmentstatus code) {
@@ -89,8 +85,8 @@ public class AppointmentstatusEnumFactory implements EnumFactory<Appointmentstat
     return "?";
   }
 
-    public String toSystem(Appointmentstatus code) {
-      return code.getSystem();
-      }
+  public String toSystem(Appointmentstatus code) {
+    return code.getSystem();
+  }
 
 }

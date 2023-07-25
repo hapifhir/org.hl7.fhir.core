@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,109 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CodesystemHierarchyMeaning {
 
-        /**
-         * No particular relationship between the concepts can be assumed, except what can be determined by inspection of the definitions of the elements (possible reasons to use this: importing from a source where this is not defined, or where various parts of the hierarchy have different meanings).
-         */
-        GROUPEDBY, 
-        /**
-         * A hierarchy where the child concepts have an IS-A relationship with the parents - that is, all the properties of the parent are also true for its child concepts. Not that is-a is a property of the concepts, so additional subsumption relationships may be defined using properties or the [subsumes](extension-codesystem-subsumes.html) extension.
-         */
-        ISA, 
-        /**
-         * Child elements list the individual parts of a composite whole (e.g. body site).
-         */
-        PARTOF, 
-        /**
-         * Child concepts in the hierarchy may have only one parent, and there is a presumption that the code system is a "closed world" meaning all things must be in the hierarchy. This results in concepts such as "not otherwise classified.".
-         */
-        CLASSIFIEDWITH, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static CodesystemHierarchyMeaning fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("grouped-by".equals(codeString))
-          return GROUPEDBY;
-        if ("is-a".equals(codeString))
-          return ISA;
-        if ("part-of".equals(codeString))
-          return PARTOF;
-        if ("classified-with".equals(codeString))
-          return CLASSIFIEDWITH;
-        throw new FHIRException("Unknown CodesystemHierarchyMeaning code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case GROUPEDBY: return "grouped-by";
-            case ISA: return "is-a";
-            case PARTOF: return "part-of";
-            case CLASSIFIEDWITH: return "classified-with";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/codesystem-hierarchy-meaning";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case GROUPEDBY: return "No particular relationship between the concepts can be assumed, except what can be determined by inspection of the definitions of the elements (possible reasons to use this: importing from a source where this is not defined, or where various parts of the hierarchy have different meanings).";
-            case ISA: return "A hierarchy where the child concepts have an IS-A relationship with the parents - that is, all the properties of the parent are also true for its child concepts. Not that is-a is a property of the concepts, so additional subsumption relationships may be defined using properties or the [subsumes](extension-codesystem-subsumes.html) extension.";
-            case PARTOF: return "Child elements list the individual parts of a composite whole (e.g. body site).";
-            case CLASSIFIEDWITH: return "Child concepts in the hierarchy may have only one parent, and there is a presumption that the code system is a \"closed world\" meaning all things must be in the hierarchy. This results in concepts such as \"not otherwise classified.\".";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case GROUPEDBY: return "Grouped By";
-            case ISA: return "Is-A";
-            case PARTOF: return "Part Of";
-            case CLASSIFIEDWITH: return "Classified With";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * No particular relationship between the concepts can be assumed, except what
+   * can be determined by inspection of the definitions of the elements (possible
+   * reasons to use this: importing from a source where this is not defined, or
+   * where various parts of the hierarchy have different meanings).
+   */
+  GROUPEDBY,
+  /**
+   * A hierarchy where the child concepts have an IS-A relationship with the
+   * parents - that is, all the properties of the parent are also true for its
+   * child concepts. Not that is-a is a property of the concepts, so additional
+   * subsumption relationships may be defined using properties or the
+   * [subsumes](extension-codesystem-subsumes.html) extension.
+   */
+  ISA,
+  /**
+   * Child elements list the individual parts of a composite whole (e.g. body
+   * site).
+   */
+  PARTOF,
+  /**
+   * Child concepts in the hierarchy may have only one parent, and there is a
+   * presumption that the code system is a "closed world" meaning all things must
+   * be in the hierarchy. This results in concepts such as "not otherwise
+   * classified.".
+   */
+  CLASSIFIEDWITH,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static CodesystemHierarchyMeaning fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("grouped-by".equals(codeString))
+      return GROUPEDBY;
+    if ("is-a".equals(codeString))
+      return ISA;
+    if ("part-of".equals(codeString))
+      return PARTOF;
+    if ("classified-with".equals(codeString))
+      return CLASSIFIEDWITH;
+    throw new FHIRException("Unknown CodesystemHierarchyMeaning code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case GROUPEDBY:
+      return "grouped-by";
+    case ISA:
+      return "is-a";
+    case PARTOF:
+      return "part-of";
+    case CLASSIFIEDWITH:
+      return "classified-with";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/codesystem-hierarchy-meaning";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case GROUPEDBY:
+      return "No particular relationship between the concepts can be assumed, except what can be determined by inspection of the definitions of the elements (possible reasons to use this: importing from a source where this is not defined, or where various parts of the hierarchy have different meanings).";
+    case ISA:
+      return "A hierarchy where the child concepts have an IS-A relationship with the parents - that is, all the properties of the parent are also true for its child concepts. Not that is-a is a property of the concepts, so additional subsumption relationships may be defined using properties or the [subsumes](extension-codesystem-subsumes.html) extension.";
+    case PARTOF:
+      return "Child elements list the individual parts of a composite whole (e.g. body site).";
+    case CLASSIFIEDWITH:
+      return "Child concepts in the hierarchy may have only one parent, and there is a presumption that the code system is a \"closed world\" meaning all things must be in the hierarchy. This results in concepts such as \"not otherwise classified.\".";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case GROUPEDBY:
+      return "Grouped By";
+    case ISA:
+      return "Is-A";
+    case PARTOF:
+      return "Part Of";
+    case CLASSIFIEDWITH:
+      return "Classified With";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

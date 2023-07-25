@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,89 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QuestionnaireAnswersStatus {
 
-        /**
-         * This QuestionnaireResponse has been partially filled out with answers, but changes or additions are still expected to be made to it.
-         */
-        INPROGRESS, 
-        /**
-         * This QuestionnaireResponse has been filled out with answers, and the current content is regarded as definitive.
-         */
-        COMPLETED, 
-        /**
-         * This QuestionnaireResponse has been filled out with answers, then marked as complete, yet changes or additions have been made to it afterwards.
-         */
-        AMENDED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static QuestionnaireAnswersStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("in-progress".equals(codeString))
-          return INPROGRESS;
-        if ("completed".equals(codeString))
-          return COMPLETED;
-        if ("amended".equals(codeString))
-          return AMENDED;
-        throw new FHIRException("Unknown QuestionnaireAnswersStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INPROGRESS: return "in-progress";
-            case COMPLETED: return "completed";
-            case AMENDED: return "amended";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/questionnaire-answers-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INPROGRESS: return "This QuestionnaireResponse has been partially filled out with answers, but changes or additions are still expected to be made to it.";
-            case COMPLETED: return "This QuestionnaireResponse has been filled out with answers, and the current content is regarded as definitive.";
-            case AMENDED: return "This QuestionnaireResponse has been filled out with answers, then marked as complete, yet changes or additions have been made to it afterwards.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INPROGRESS: return "In Progress";
-            case COMPLETED: return "Completed";
-            case AMENDED: return "Amended";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * This QuestionnaireResponse has been partially filled out with answers, but
+   * changes or additions are still expected to be made to it.
+   */
+  INPROGRESS,
+  /**
+   * This QuestionnaireResponse has been filled out with answers, and the current
+   * content is regarded as definitive.
+   */
+  COMPLETED,
+  /**
+   * This QuestionnaireResponse has been filled out with answers, then marked as
+   * complete, yet changes or additions have been made to it afterwards.
+   */
+  AMENDED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static QuestionnaireAnswersStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("in-progress".equals(codeString))
+      return INPROGRESS;
+    if ("completed".equals(codeString))
+      return COMPLETED;
+    if ("amended".equals(codeString))
+      return AMENDED;
+    throw new FHIRException("Unknown QuestionnaireAnswersStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INPROGRESS:
+      return "in-progress";
+    case COMPLETED:
+      return "completed";
+    case AMENDED:
+      return "amended";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/questionnaire-answers-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INPROGRESS:
+      return "This QuestionnaireResponse has been partially filled out with answers, but changes or additions are still expected to be made to it.";
+    case COMPLETED:
+      return "This QuestionnaireResponse has been filled out with answers, and the current content is regarded as definitive.";
+    case AMENDED:
+      return "This QuestionnaireResponse has been filled out with answers, then marked as complete, yet changes or additions have been made to it afterwards.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INPROGRESS:
+      return "In Progress";
+    case COMPLETED:
+      return "Completed";
+    case AMENDED:
+      return "Amended";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

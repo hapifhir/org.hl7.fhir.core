@@ -1,16 +1,16 @@
 package org.hl7.fhir.dstu3.utils.client.network;
 
-import org.hl7.fhir.dstu3.formats.IParser;
-import org.hl7.fhir.dstu3.formats.JsonParser;
-import org.hl7.fhir.dstu3.formats.XmlParser;
-import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.dstu3.utils.client.EFhirClientException;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+
+import org.hl7.fhir.dstu3.formats.IParser;
+import org.hl7.fhir.dstu3.formats.JsonParser;
+import org.hl7.fhir.dstu3.formats.XmlParser;
+import org.hl7.fhir.dstu3.model.Resource;
+import org.hl7.fhir.dstu3.utils.client.EFhirClientException;
 
 public class ByteUtils {
 

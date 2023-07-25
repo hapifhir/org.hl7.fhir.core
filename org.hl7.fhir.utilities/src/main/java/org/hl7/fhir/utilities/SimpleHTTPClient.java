@@ -11,10 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class SimpleHTTPClient {
 

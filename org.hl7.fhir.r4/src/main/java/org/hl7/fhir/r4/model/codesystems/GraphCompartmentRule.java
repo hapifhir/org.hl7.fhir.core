@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,99 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum GraphCompartmentRule {
 
-        /**
-         * The compartment must be identical (the same literal reference).
-         */
-        IDENTICAL, 
-        /**
-         * The compartment must be the same - the record must be about the same patient, but the reference may be different.
-         */
-        MATCHING, 
-        /**
-         * The compartment must be different.
-         */
-        DIFFERENT, 
-        /**
-         * The compartment rule is defined in the accompanying FHIRPath expression.
-         */
-        CUSTOM, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static GraphCompartmentRule fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("identical".equals(codeString))
-          return IDENTICAL;
-        if ("matching".equals(codeString))
-          return MATCHING;
-        if ("different".equals(codeString))
-          return DIFFERENT;
-        if ("custom".equals(codeString))
-          return CUSTOM;
-        throw new FHIRException("Unknown GraphCompartmentRule code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case IDENTICAL: return "identical";
-            case MATCHING: return "matching";
-            case DIFFERENT: return "different";
-            case CUSTOM: return "custom";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/graph-compartment-rule";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case IDENTICAL: return "The compartment must be identical (the same literal reference).";
-            case MATCHING: return "The compartment must be the same - the record must be about the same patient, but the reference may be different.";
-            case DIFFERENT: return "The compartment must be different.";
-            case CUSTOM: return "The compartment rule is defined in the accompanying FHIRPath expression.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case IDENTICAL: return "Identical";
-            case MATCHING: return "Matching";
-            case DIFFERENT: return "Different";
-            case CUSTOM: return "Custom";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The compartment must be identical (the same literal reference).
+   */
+  IDENTICAL,
+  /**
+   * The compartment must be the same - the record must be about the same patient,
+   * but the reference may be different.
+   */
+  MATCHING,
+  /**
+   * The compartment must be different.
+   */
+  DIFFERENT,
+  /**
+   * The compartment rule is defined in the accompanying FHIRPath expression.
+   */
+  CUSTOM,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static GraphCompartmentRule fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("identical".equals(codeString))
+      return IDENTICAL;
+    if ("matching".equals(codeString))
+      return MATCHING;
+    if ("different".equals(codeString))
+      return DIFFERENT;
+    if ("custom".equals(codeString))
+      return CUSTOM;
+    throw new FHIRException("Unknown GraphCompartmentRule code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case IDENTICAL:
+      return "identical";
+    case MATCHING:
+      return "matching";
+    case DIFFERENT:
+      return "different";
+    case CUSTOM:
+      return "custom";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/graph-compartment-rule";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case IDENTICAL:
+      return "The compartment must be identical (the same literal reference).";
+    case MATCHING:
+      return "The compartment must be the same - the record must be about the same patient, but the reference may be different.";
+    case DIFFERENT:
+      return "The compartment must be different.";
+    case CUSTOM:
+      return "The compartment rule is defined in the accompanying FHIRPath expression.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case IDENTICAL:
+      return "Identical";
+    case MATCHING:
+      return "Matching";
+    case DIFFERENT:
+      return "Different";
+    case CUSTOM:
+      return "Custom";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

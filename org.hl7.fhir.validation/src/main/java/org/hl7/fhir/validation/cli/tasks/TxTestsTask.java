@@ -1,14 +1,12 @@
 package org.hl7.fhir.validation.cli.tasks;
 
+import java.io.PrintStream;
+
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.utils.Params;
 import org.hl7.fhir.validation.special.TxTester;
-import org.hl7.fhir.validation.testexecutor.TestExecutor;
-import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
-
-import java.io.PrintStream;
 
 public class TxTestsTask extends StandaloneTask{
   @Override

@@ -1,8 +1,8 @@
 package org.hl7.fhir.dstu3.model;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class HumanNameTest {
 

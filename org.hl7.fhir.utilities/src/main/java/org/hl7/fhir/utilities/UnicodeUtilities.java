@@ -1,7 +1,7 @@
 package org.hl7.fhir.utilities;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UnicodeUtilities {
 

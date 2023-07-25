@@ -29,8 +29,6 @@ package org.hl7.fhir.r4.model;
   
  */
 
-
-
 import java.net.URI;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -38,41 +36,41 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 @DatatypeDef(name = "uuid", profileOf = UriType.class)
 public class UuidType extends UriType {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	/**
-	 * Constructor
-	 */
-	public UuidType() {
-		super();
-	}
+  /**
+   * Constructor
+   */
+  public UuidType() {
+    super();
+  }
 
-	/**
-	 * Constructor
-	 */
-	public UuidType(String theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public UuidType(String theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	public UuidType(URI theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public UuidType(URI theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	@Override
-	public UuidType copy() {
-		UuidType ret = new UuidType(getValue());
-		copyValues(ret);
+  /**
+   * Constructor
+   */
+  @Override
+  public UuidType copy() {
+    UuidType ret = new UuidType(getValue());
+    copyValues(ret);
     return ret;
-	}
-	
-	public String fhirType() {
-		return "uuid";		
-	}
+  }
+
+  public String fhirType() {
+    return "uuid";
+  }
 
 }

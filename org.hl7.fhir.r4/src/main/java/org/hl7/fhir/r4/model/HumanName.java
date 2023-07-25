@@ -1,7 +1,5 @@
 package org.hl7.fhir.r4.model;
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,179 +29,233 @@ package org.hl7.fhir.r4.model;
   
 */
 
-
 // Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.*;
-
-import org.hl7.fhir.utilities.Utilities;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-import ca.uhn.fhir.model.api.annotation.Block;
-import org.hl7.fhir.instance.model.api.*;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.instance.model.api.IPrimitiveType;
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.util.DatatypeUtil;
+
 /**
  * A human's name with the ability to identify parts and usage.
  */
-@DatatypeDef(name="HumanName")
+@DatatypeDef(name = "HumanName")
 public class HumanName extends Type implements ICompositeType {
 
-    public enum NameUse {
-        /**
-         * Known as/conventional/the one you normally use.
-         */
-        USUAL, 
-        /**
-         * The formal name as registered in an official (government) registry, but which name might not be commonly used. May be called "legal name".
-         */
-        OFFICIAL, 
-        /**
-         * A temporary name. Name.period can provide more detailed information. This may also be used for temporary names assigned at birth or in emergency situations.
-         */
-        TEMP, 
-        /**
-         * A name that is used to address the person in an informal manner, but is not part of their formal or usual name.
-         */
-        NICKNAME, 
-        /**
-         * Anonymous assigned name, alias, or pseudonym (used to protect a person's identity for privacy reasons).
-         */
-        ANONYMOUS, 
-        /**
-         * This name is no longer in use (or was never correct, but retained for records).
-         */
-        OLD, 
-        /**
-         * A name used prior to changing name because of marriage. This name use is for use by applications that collect and store names that were used prior to a marriage. Marriage naming customs vary greatly around the world, and are constantly changing. This term is not gender specific. The use of this term does not imply any particular history for a person's name.
-         */
-        MAIDEN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static NameUse fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("usual".equals(codeString))
-          return USUAL;
-        if ("official".equals(codeString))
-          return OFFICIAL;
-        if ("temp".equals(codeString))
-          return TEMP;
-        if ("nickname".equals(codeString))
-          return NICKNAME;
-        if ("anonymous".equals(codeString))
-          return ANONYMOUS;
-        if ("old".equals(codeString))
-          return OLD;
-        if ("maiden".equals(codeString))
-          return MAIDEN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown NameUse code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case USUAL: return "usual";
-            case OFFICIAL: return "official";
-            case TEMP: return "temp";
-            case NICKNAME: return "nickname";
-            case ANONYMOUS: return "anonymous";
-            case OLD: return "old";
-            case MAIDEN: return "maiden";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case USUAL: return "http://hl7.org/fhir/name-use";
-            case OFFICIAL: return "http://hl7.org/fhir/name-use";
-            case TEMP: return "http://hl7.org/fhir/name-use";
-            case NICKNAME: return "http://hl7.org/fhir/name-use";
-            case ANONYMOUS: return "http://hl7.org/fhir/name-use";
-            case OLD: return "http://hl7.org/fhir/name-use";
-            case MAIDEN: return "http://hl7.org/fhir/name-use";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case USUAL: return "Known as/conventional/the one you normally use.";
-            case OFFICIAL: return "The formal name as registered in an official (government) registry, but which name might not be commonly used. May be called \"legal name\".";
-            case TEMP: return "A temporary name. Name.period can provide more detailed information. This may also be used for temporary names assigned at birth or in emergency situations.";
-            case NICKNAME: return "A name that is used to address the person in an informal manner, but is not part of their formal or usual name.";
-            case ANONYMOUS: return "Anonymous assigned name, alias, or pseudonym (used to protect a person's identity for privacy reasons).";
-            case OLD: return "This name is no longer in use (or was never correct, but retained for records).";
-            case MAIDEN: return "A name used prior to changing name because of marriage. This name use is for use by applications that collect and store names that were used prior to a marriage. Marriage naming customs vary greatly around the world, and are constantly changing. This term is not gender specific. The use of this term does not imply any particular history for a person's name.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case USUAL: return "Usual";
-            case OFFICIAL: return "Official";
-            case TEMP: return "Temp";
-            case NICKNAME: return "Nickname";
-            case ANONYMOUS: return "Anonymous";
-            case OLD: return "Old";
-            case MAIDEN: return "Name changed for Marriage";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
+  public enum NameUse {
+    /**
+     * Known as/conventional/the one you normally use.
+     */
+    USUAL,
+    /**
+     * The formal name as registered in an official (government) registry, but which
+     * name might not be commonly used. May be called "legal name".
+     */
+    OFFICIAL,
+    /**
+     * A temporary name. Name.period can provide more detailed information. This may
+     * also be used for temporary names assigned at birth or in emergency
+     * situations.
+     */
+    TEMP,
+    /**
+     * A name that is used to address the person in an informal manner, but is not
+     * part of their formal or usual name.
+     */
+    NICKNAME,
+    /**
+     * Anonymous assigned name, alias, or pseudonym (used to protect a person's
+     * identity for privacy reasons).
+     */
+    ANONYMOUS,
+    /**
+     * This name is no longer in use (or was never correct, but retained for
+     * records).
+     */
+    OLD,
+    /**
+     * A name used prior to changing name because of marriage. This name use is for
+     * use by applications that collect and store names that were used prior to a
+     * marriage. Marriage naming customs vary greatly around the world, and are
+     * constantly changing. This term is not gender specific. The use of this term
+     * does not imply any particular history for a person's name.
+     */
+    MAIDEN,
+    /**
+     * added to help the parsers with the generic types
+     */
+    NULL;
+
+    public static NameUse fromCode(String codeString) throws FHIRException {
+      if (codeString == null || "".equals(codeString))
+        return null;
+      if ("usual".equals(codeString))
+        return USUAL;
+      if ("official".equals(codeString))
+        return OFFICIAL;
+      if ("temp".equals(codeString))
+        return TEMP;
+      if ("nickname".equals(codeString))
+        return NICKNAME;
+      if ("anonymous".equals(codeString))
+        return ANONYMOUS;
+      if ("old".equals(codeString))
+        return OLD;
+      if ("maiden".equals(codeString))
+        return MAIDEN;
+      if (Configuration.isAcceptInvalidEnums())
+        return null;
+      else
+        throw new FHIRException("Unknown NameUse code '" + codeString + "'");
     }
+
+    public String toCode() {
+      switch (this) {
+      case USUAL:
+        return "usual";
+      case OFFICIAL:
+        return "official";
+      case TEMP:
+        return "temp";
+      case NICKNAME:
+        return "nickname";
+      case ANONYMOUS:
+        return "anonymous";
+      case OLD:
+        return "old";
+      case MAIDEN:
+        return "maiden";
+      case NULL:
+        return null;
+      default:
+        return "?";
+      }
+    }
+
+    public String getSystem() {
+      switch (this) {
+      case USUAL:
+        return "http://hl7.org/fhir/name-use";
+      case OFFICIAL:
+        return "http://hl7.org/fhir/name-use";
+      case TEMP:
+        return "http://hl7.org/fhir/name-use";
+      case NICKNAME:
+        return "http://hl7.org/fhir/name-use";
+      case ANONYMOUS:
+        return "http://hl7.org/fhir/name-use";
+      case OLD:
+        return "http://hl7.org/fhir/name-use";
+      case MAIDEN:
+        return "http://hl7.org/fhir/name-use";
+      case NULL:
+        return null;
+      default:
+        return "?";
+      }
+    }
+
+    public String getDefinition() {
+      switch (this) {
+      case USUAL:
+        return "Known as/conventional/the one you normally use.";
+      case OFFICIAL:
+        return "The formal name as registered in an official (government) registry, but which name might not be commonly used. May be called \"legal name\".";
+      case TEMP:
+        return "A temporary name. Name.period can provide more detailed information. This may also be used for temporary names assigned at birth or in emergency situations.";
+      case NICKNAME:
+        return "A name that is used to address the person in an informal manner, but is not part of their formal or usual name.";
+      case ANONYMOUS:
+        return "Anonymous assigned name, alias, or pseudonym (used to protect a person's identity for privacy reasons).";
+      case OLD:
+        return "This name is no longer in use (or was never correct, but retained for records).";
+      case MAIDEN:
+        return "A name used prior to changing name because of marriage. This name use is for use by applications that collect and store names that were used prior to a marriage. Marriage naming customs vary greatly around the world, and are constantly changing. This term is not gender specific. The use of this term does not imply any particular history for a person's name.";
+      case NULL:
+        return null;
+      default:
+        return "?";
+      }
+    }
+
+    public String getDisplay() {
+      switch (this) {
+      case USUAL:
+        return "Usual";
+      case OFFICIAL:
+        return "Official";
+      case TEMP:
+        return "Temp";
+      case NICKNAME:
+        return "Nickname";
+      case ANONYMOUS:
+        return "Anonymous";
+      case OLD:
+        return "Old";
+      case MAIDEN:
+        return "Name changed for Marriage";
+      case NULL:
+        return null;
+      default:
+        return "?";
+      }
+    }
+  }
 
   public static class NameUseEnumFactory implements EnumFactory<NameUse> {
     public NameUse fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("usual".equals(codeString))
-          return NameUse.USUAL;
-        if ("official".equals(codeString))
-          return NameUse.OFFICIAL;
-        if ("temp".equals(codeString))
-          return NameUse.TEMP;
-        if ("nickname".equals(codeString))
-          return NameUse.NICKNAME;
-        if ("anonymous".equals(codeString))
-          return NameUse.ANONYMOUS;
-        if ("old".equals(codeString))
-          return NameUse.OLD;
-        if ("maiden".equals(codeString))
-          return NameUse.MAIDEN;
-        throw new IllegalArgumentException("Unknown NameUse code '"+codeString+"'");
-        }
-        public Enumeration<NameUse> fromType(PrimitiveType<?> code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<NameUse>(this, NameUse.NULL, code);
-          String codeString = code.asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return new Enumeration<NameUse>(this, NameUse.NULL, code);
-        if ("usual".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.USUAL, code);
-        if ("official".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.OFFICIAL, code);
-        if ("temp".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.TEMP, code);
-        if ("nickname".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.NICKNAME, code);
-        if ("anonymous".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.ANONYMOUS, code);
-        if ("old".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.OLD, code);
-        if ("maiden".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.MAIDEN, code);
-        throw new FHIRException("Unknown NameUse code '"+codeString+"'");
-        }
+        if (codeString == null || "".equals(codeString))
+          return null;
+      if ("usual".equals(codeString))
+        return NameUse.USUAL;
+      if ("official".equals(codeString))
+        return NameUse.OFFICIAL;
+      if ("temp".equals(codeString))
+        return NameUse.TEMP;
+      if ("nickname".equals(codeString))
+        return NameUse.NICKNAME;
+      if ("anonymous".equals(codeString))
+        return NameUse.ANONYMOUS;
+      if ("old".equals(codeString))
+        return NameUse.OLD;
+      if ("maiden".equals(codeString))
+        return NameUse.MAIDEN;
+      throw new IllegalArgumentException("Unknown NameUse code '" + codeString + "'");
+    }
+
+    public Enumeration<NameUse> fromType(PrimitiveType<?> code) throws FHIRException {
+      if (code == null)
+        return null;
+      if (code.isEmpty())
+        return new Enumeration<NameUse>(this, NameUse.NULL, code);
+      String codeString = code.asStringValue();
+      if (codeString == null || "".equals(codeString))
+        return new Enumeration<NameUse>(this, NameUse.NULL, code);
+      if ("usual".equals(codeString))
+        return new Enumeration<NameUse>(this, NameUse.USUAL, code);
+      if ("official".equals(codeString))
+        return new Enumeration<NameUse>(this, NameUse.OFFICIAL, code);
+      if ("temp".equals(codeString))
+        return new Enumeration<NameUse>(this, NameUse.TEMP, code);
+      if ("nickname".equals(codeString))
+        return new Enumeration<NameUse>(this, NameUse.NICKNAME, code);
+      if ("anonymous".equals(codeString))
+        return new Enumeration<NameUse>(this, NameUse.ANONYMOUS, code);
+      if ("old".equals(codeString))
+        return new Enumeration<NameUse>(this, NameUse.OLD, code);
+      if ("maiden".equals(codeString))
+        return new Enumeration<NameUse>(this, NameUse.MAIDEN, code);
+      throw new FHIRException("Unknown NameUse code '" + codeString + "'");
+    }
+
     public String toCode(NameUse code) {
       if (code == NameUse.USUAL)
         return "usual";
@@ -220,428 +272,483 @@ public class HumanName extends Type implements ICompositeType {
       if (code == NameUse.MAIDEN)
         return "maiden";
       return "?";
-      }
-    public String toSystem(NameUse code) {
-      return code.getSystem();
-      }
     }
 
-    /**
-     * Identifies the purpose for this name.
-     */
-    @Child(name = "use", type = {CodeType.class}, order=0, min=0, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="usual | official | temp | nickname | anonymous | old | maiden", formalDefinition="Identifies the purpose for this name." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/name-use")
-    protected Enumeration<NameUse> use;
+    public String toSystem(NameUse code) {
+      return code.getSystem();
+    }
+  }
 
-    /**
-     * Specifies the entire name as it should be displayed e.g. on an application UI. This may be provided instead of or as well as the specific parts.
-     */
-    @Child(name = "text", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Text representation of the full name", formalDefinition="Specifies the entire name as it should be displayed e.g. on an application UI. This may be provided instead of or as well as the specific parts." )
-    protected StringType text;
+  /**
+   * Identifies the purpose for this name.
+   */
+  @Child(name = "use", type = { CodeType.class }, order = 0, min = 0, max = 1, modifier = true, summary = true)
+  @Description(shortDefinition = "usual | official | temp | nickname | anonymous | old | maiden", formalDefinition = "Identifies the purpose for this name.")
+  @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/name-use")
+  protected Enumeration<NameUse> use;
 
-    /**
-     * The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father.
-     */
-    @Child(name = "family", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Family name (often called 'Surname')", formalDefinition="The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father." )
-    protected StringType family;
+  /**
+   * Specifies the entire name as it should be displayed e.g. on an application
+   * UI. This may be provided instead of or as well as the specific parts.
+   */
+  @Child(name = "text", type = { StringType.class }, order = 1, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Text representation of the full name", formalDefinition = "Specifies the entire name as it should be displayed e.g. on an application UI. This may be provided instead of or as well as the specific parts.")
+  protected StringType text;
 
-    /**
-     * Given name.
-     */
-    @Child(name = "given", type = {StringType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Given names (not always 'first'). Includes middle names", formalDefinition="Given name." )
-    protected List<StringType> given;
+  /**
+   * The part of a name that links to the genealogy. In some cultures (e.g.
+   * Eritrea) the family name of a son is the first name of his father.
+   */
+  @Child(name = "family", type = { StringType.class }, order = 2, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Family name (often called 'Surname')", formalDefinition = "The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father.")
+  protected StringType family;
 
-    /**
-     * Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name.
-     */
-    @Child(name = "prefix", type = {StringType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Parts that come before the name", formalDefinition="Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name." )
-    protected List<StringType> prefix;
+  /**
+   * Given name.
+   */
+  @Child(name = "given", type = {
+      StringType.class }, order = 3, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
+  @Description(shortDefinition = "Given names (not always 'first'). Includes middle names", formalDefinition = "Given name.")
+  protected List<StringType> given;
 
-    /**
-     * Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.
-     */
-    @Child(name = "suffix", type = {StringType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Parts that come after the name", formalDefinition="Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name." )
-    protected List<StringType> suffix;
+  /**
+   * Part of the name that is acquired as a title due to academic, legal,
+   * employment or nobility status, etc. and that appears at the start of the
+   * name.
+   */
+  @Child(name = "prefix", type = {
+      StringType.class }, order = 4, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
+  @Description(shortDefinition = "Parts that come before the name", formalDefinition = "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name.")
+  protected List<StringType> prefix;
 
-    /**
-     * Indicates the period of time when this name was valid for the named person.
-     */
-    @Child(name = "period", type = {Period.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Time period when name was/is in use", formalDefinition="Indicates the period of time when this name was valid for the named person." )
-    protected Period period;
+  /**
+   * Part of the name that is acquired as a title due to academic, legal,
+   * employment or nobility status, etc. and that appears at the end of the name.
+   */
+  @Child(name = "suffix", type = {
+      StringType.class }, order = 5, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
+  @Description(shortDefinition = "Parts that come after the name", formalDefinition = "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.")
+  protected List<StringType> suffix;
 
-    private static final long serialVersionUID = -507469160L;
+  /**
+   * Indicates the period of time when this name was valid for the named person.
+   */
+  @Child(name = "period", type = { Period.class }, order = 6, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Time period when name was/is in use", formalDefinition = "Indicates the period of time when this name was valid for the named person.")
+  protected Period period;
+
+  private static final long serialVersionUID = -507469160L;
 
   /**
    * Constructor
    */
-    public HumanName() {
-      super();
-    }
+  public HumanName() {
+    super();
+  }
 
-    /**
-     * @return {@link #use} (Identifies the purpose for this name.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
-     */
-    public Enumeration<NameUse> getUseElement() { 
-      if (this.use == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create HumanName.use");
-        else if (Configuration.doAutoCreate())
-          this.use = new Enumeration<NameUse>(new NameUseEnumFactory()); // bb
-      return this.use;
-    }
-
-    public boolean hasUseElement() { 
-      return this.use != null && !this.use.isEmpty();
-    }
-
-    public boolean hasUse() { 
-      return this.use != null && !this.use.isEmpty();
-    }
-
-    /**
-     * @param value {@link #use} (Identifies the purpose for this name.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
-     */
-    public HumanName setUseElement(Enumeration<NameUse> value) { 
-      this.use = value;
-      return this;
-    }
-
-    /**
-     * @return Identifies the purpose for this name.
-     */
-    public NameUse getUse() { 
-      return this.use == null ? null : this.use.getValue();
-    }
-
-    /**
-     * @param value Identifies the purpose for this name.
-     */
-    public HumanName setUse(NameUse value) { 
-      if (value == null)
-        this.use = null;
-      else {
-        if (this.use == null)
-          this.use = new Enumeration<NameUse>(new NameUseEnumFactory());
-        this.use.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #text} (Specifies the entire name as it should be displayed e.g. on an application UI. This may be provided instead of or as well as the specific parts.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
-     */
-    public StringType getTextElement() { 
-      if (this.text == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create HumanName.text");
-        else if (Configuration.doAutoCreate())
-          this.text = new StringType(); // bb
-      return this.text;
-    }
-
-    public boolean hasTextElement() { 
-      return this.text != null && !this.text.isEmpty();
-    }
-
-    public boolean hasText() { 
-      return this.text != null && !this.text.isEmpty();
-    }
-
-    /**
-     * @param value {@link #text} (Specifies the entire name as it should be displayed e.g. on an application UI. This may be provided instead of or as well as the specific parts.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
-     */
-    public HumanName setTextElement(StringType value) { 
-      this.text = value;
-      return this;
-    }
-
-    /**
-     * @return Specifies the entire name as it should be displayed e.g. on an application UI. This may be provided instead of or as well as the specific parts.
-     */
-    public String getText() { 
-      return this.text == null ? null : this.text.getValue();
-    }
-
-    /**
-     * @param value Specifies the entire name as it should be displayed e.g. on an application UI. This may be provided instead of or as well as the specific parts.
-     */
-    public HumanName setText(String value) { 
-      if (Utilities.noString(value))
-        this.text = null;
-      else {
-        if (this.text == null)
-          this.text = new StringType();
-        this.text.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #family} (The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father.). This is the underlying object with id, value and extensions. The accessor "getFamily" gives direct access to the value
-     */
-    public StringType getFamilyElement() { 
-      if (this.family == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create HumanName.family");
-        else if (Configuration.doAutoCreate())
-          this.family = new StringType(); // bb
-      return this.family;
-    }
-
-    public boolean hasFamilyElement() { 
-      return this.family != null && !this.family.isEmpty();
-    }
-
-    public boolean hasFamily() { 
-      return this.family != null && !this.family.isEmpty();
-    }
-
-    /**
-     * @param value {@link #family} (The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father.). This is the underlying object with id, value and extensions. The accessor "getFamily" gives direct access to the value
-     */
-    public HumanName setFamilyElement(StringType value) { 
-      this.family = value;
-      return this;
-    }
-
-    /**
-     * @return The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father.
-     */
-    public String getFamily() { 
-      return this.family == null ? null : this.family.getValue();
-    }
-
-    /**
-     * @param value The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father.
-     */
-    public HumanName setFamily(String value) { 
-      if (Utilities.noString(value))
-        this.family = null;
-      else {
-        if (this.family == null)
-          this.family = new StringType();
-        this.family.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #given} (Given name.)
-     */
-    public List<StringType> getGiven() { 
-      if (this.given == null)
-        this.given = new ArrayList<StringType>();
-      return this.given;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public HumanName setGiven(List<StringType> theGiven) { 
-      this.given = theGiven;
-      return this;
-    }
-
-    public boolean hasGiven() { 
-      if (this.given == null)
-        return false;
-      for (StringType item : this.given)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #given} (Given name.)
-     */
-    public StringType addGivenElement() {//2 
-      StringType t = new StringType();
-      if (this.given == null)
-        this.given = new ArrayList<StringType>();
-      this.given.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #given} (Given name.)
-     */
-    public HumanName addGiven(String value) { //1
-      StringType t = new StringType();
-      t.setValue(value);
-      if (this.given == null)
-        this.given = new ArrayList<StringType>();
-      this.given.add(t);
-      return this;
-    }
-
-    /**
-     * @param value {@link #given} (Given name.)
-     */
-    public boolean hasGiven(String value) { 
-      if (this.given == null)
-        return false;
-      for (StringType v : this.given)
-        if (v.getValue().equals(value)) // string
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #prefix} (Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name.)
-     */
-    public List<StringType> getPrefix() { 
-      if (this.prefix == null)
-        this.prefix = new ArrayList<StringType>();
-      return this.prefix;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public HumanName setPrefix(List<StringType> thePrefix) { 
-      this.prefix = thePrefix;
-      return this;
-    }
-
-    public boolean hasPrefix() { 
-      if (this.prefix == null)
-        return false;
-      for (StringType item : this.prefix)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #prefix} (Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name.)
-     */
-    public StringType addPrefixElement() {//2 
-      StringType t = new StringType();
-      if (this.prefix == null)
-        this.prefix = new ArrayList<StringType>();
-      this.prefix.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #prefix} (Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name.)
-     */
-    public HumanName addPrefix(String value) { //1
-      StringType t = new StringType();
-      t.setValue(value);
-      if (this.prefix == null)
-        this.prefix = new ArrayList<StringType>();
-      this.prefix.add(t);
-      return this;
-    }
-
-    /**
-     * @param value {@link #prefix} (Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name.)
-     */
-    public boolean hasPrefix(String value) { 
-      if (this.prefix == null)
-        return false;
-      for (StringType v : this.prefix)
-        if (v.getValue().equals(value)) // string
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #suffix} (Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.)
-     */
-    public List<StringType> getSuffix() { 
-      if (this.suffix == null)
-        this.suffix = new ArrayList<StringType>();
-      return this.suffix;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public HumanName setSuffix(List<StringType> theSuffix) { 
-      this.suffix = theSuffix;
-      return this;
-    }
-
-    public boolean hasSuffix() { 
-      if (this.suffix == null)
-        return false;
-      for (StringType item : this.suffix)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #suffix} (Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.)
-     */
-    public StringType addSuffixElement() {//2 
-      StringType t = new StringType();
-      if (this.suffix == null)
-        this.suffix = new ArrayList<StringType>();
-      this.suffix.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #suffix} (Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.)
-     */
-    public HumanName addSuffix(String value) { //1
-      StringType t = new StringType();
-      t.setValue(value);
-      if (this.suffix == null)
-        this.suffix = new ArrayList<StringType>();
-      this.suffix.add(t);
-      return this;
-    }
-
-    /**
-     * @param value {@link #suffix} (Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.)
-     */
-    public boolean hasSuffix(String value) { 
-      if (this.suffix == null)
-        return false;
-      for (StringType v : this.suffix)
-        if (v.getValue().equals(value)) // string
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #period} (Indicates the period of time when this name was valid for the named person.)
-     */
-    public Period getPeriod() { 
-      if (this.period == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create HumanName.period");
-        else if (Configuration.doAutoCreate())
-          this.period = new Period(); // cc
-      return this.period;
-    }
-
-    public boolean hasPeriod() { 
-      return this.period != null && !this.period.isEmpty();
-    }
-
-    /**
-     * @param value {@link #period} (Indicates the period of time when this name was valid for the named person.)
-     */
-    public HumanName setPeriod(Period value) { 
-      this.period = value;
-      return this;
-    }
-
- /**
   /**
-   * Returns all repetitions of {@link #getGiven() given name} as a space separated string
+   * @return {@link #use} (Identifies the purpose for this name.). This is the
+   *         underlying object with id, value and extensions. The accessor
+   *         "getUse" gives direct access to the value
+   */
+  public Enumeration<NameUse> getUseElement() {
+    if (this.use == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create HumanName.use");
+      else if (Configuration.doAutoCreate())
+        this.use = new Enumeration<NameUse>(new NameUseEnumFactory()); // bb
+    return this.use;
+  }
+
+  public boolean hasUseElement() {
+    return this.use != null && !this.use.isEmpty();
+  }
+
+  public boolean hasUse() {
+    return this.use != null && !this.use.isEmpty();
+  }
+
+  /**
+   * @param value {@link #use} (Identifies the purpose for this name.). This is
+   *              the underlying object with id, value and extensions. The
+   *              accessor "getUse" gives direct access to the value
+   */
+  public HumanName setUseElement(Enumeration<NameUse> value) {
+    this.use = value;
+    return this;
+  }
+
+  /**
+   * @return Identifies the purpose for this name.
+   */
+  public NameUse getUse() {
+    return this.use == null ? null : this.use.getValue();
+  }
+
+  /**
+   * @param value Identifies the purpose for this name.
+   */
+  public HumanName setUse(NameUse value) {
+    if (value == null)
+      this.use = null;
+    else {
+      if (this.use == null)
+        this.use = new Enumeration<NameUse>(new NameUseEnumFactory());
+      this.use.setValue(value);
+    }
+    return this;
+  }
+
+  /**
+   * @return {@link #text} (Specifies the entire name as it should be displayed
+   *         e.g. on an application UI. This may be provided instead of or as well
+   *         as the specific parts.). This is the underlying object with id, value
+   *         and extensions. The accessor "getText" gives direct access to the
+   *         value
+   */
+  public StringType getTextElement() {
+    if (this.text == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create HumanName.text");
+      else if (Configuration.doAutoCreate())
+        this.text = new StringType(); // bb
+    return this.text;
+  }
+
+  public boolean hasTextElement() {
+    return this.text != null && !this.text.isEmpty();
+  }
+
+  public boolean hasText() {
+    return this.text != null && !this.text.isEmpty();
+  }
+
+  /**
+   * @param value {@link #text} (Specifies the entire name as it should be
+   *              displayed e.g. on an application UI. This may be provided
+   *              instead of or as well as the specific parts.). This is the
+   *              underlying object with id, value and extensions. The accessor
+   *              "getText" gives direct access to the value
+   */
+  public HumanName setTextElement(StringType value) {
+    this.text = value;
+    return this;
+  }
+
+  /**
+   * @return Specifies the entire name as it should be displayed e.g. on an
+   *         application UI. This may be provided instead of or as well as the
+   *         specific parts.
+   */
+  public String getText() {
+    return this.text == null ? null : this.text.getValue();
+  }
+
+  /**
+   * @param value Specifies the entire name as it should be displayed e.g. on an
+   *              application UI. This may be provided instead of or as well as
+   *              the specific parts.
+   */
+  public HumanName setText(String value) {
+    if (Utilities.noString(value))
+      this.text = null;
+    else {
+      if (this.text == null)
+        this.text = new StringType();
+      this.text.setValue(value);
+    }
+    return this;
+  }
+
+  /**
+   * @return {@link #family} (The part of a name that links to the genealogy. In
+   *         some cultures (e.g. Eritrea) the family name of a son is the first
+   *         name of his father.). This is the underlying object with id, value
+   *         and extensions. The accessor "getFamily" gives direct access to the
+   *         value
+   */
+  public StringType getFamilyElement() {
+    if (this.family == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create HumanName.family");
+      else if (Configuration.doAutoCreate())
+        this.family = new StringType(); // bb
+    return this.family;
+  }
+
+  public boolean hasFamilyElement() {
+    return this.family != null && !this.family.isEmpty();
+  }
+
+  public boolean hasFamily() {
+    return this.family != null && !this.family.isEmpty();
+  }
+
+  /**
+   * @param value {@link #family} (The part of a name that links to the genealogy.
+   *              In some cultures (e.g. Eritrea) the family name of a son is the
+   *              first name of his father.). This is the underlying object with
+   *              id, value and extensions. The accessor "getFamily" gives direct
+   *              access to the value
+   */
+  public HumanName setFamilyElement(StringType value) {
+    this.family = value;
+    return this;
+  }
+
+  /**
+   * @return The part of a name that links to the genealogy. In some cultures
+   *         (e.g. Eritrea) the family name of a son is the first name of his
+   *         father.
+   */
+  public String getFamily() {
+    return this.family == null ? null : this.family.getValue();
+  }
+
+  /**
+   * @param value The part of a name that links to the genealogy. In some cultures
+   *              (e.g. Eritrea) the family name of a son is the first name of his
+   *              father.
+   */
+  public HumanName setFamily(String value) {
+    if (Utilities.noString(value))
+      this.family = null;
+    else {
+      if (this.family == null)
+        this.family = new StringType();
+      this.family.setValue(value);
+    }
+    return this;
+  }
+
+  /**
+   * @return {@link #given} (Given name.)
+   */
+  public List<StringType> getGiven() {
+    if (this.given == null)
+      this.given = new ArrayList<StringType>();
+    return this.given;
+  }
+
+  /**
+   * @return Returns a reference to <code>this</code> for easy method chaining
+   */
+  public HumanName setGiven(List<StringType> theGiven) {
+    this.given = theGiven;
+    return this;
+  }
+
+  public boolean hasGiven() {
+    if (this.given == null)
+      return false;
+    for (StringType item : this.given)
+      if (!item.isEmpty())
+        return true;
+    return false;
+  }
+
+  /**
+   * @return {@link #given} (Given name.)
+   */
+  public StringType addGivenElement() {// 2
+    StringType t = new StringType();
+    if (this.given == null)
+      this.given = new ArrayList<StringType>();
+    this.given.add(t);
+    return t;
+  }
+
+  /**
+   * @param value {@link #given} (Given name.)
+   */
+  public HumanName addGiven(String value) { // 1
+    StringType t = new StringType();
+    t.setValue(value);
+    if (this.given == null)
+      this.given = new ArrayList<StringType>();
+    this.given.add(t);
+    return this;
+  }
+
+  /**
+   * @param value {@link #given} (Given name.)
+   */
+  public boolean hasGiven(String value) {
+    if (this.given == null)
+      return false;
+    for (StringType v : this.given)
+      if (v.getValue().equals(value)) // string
+        return true;
+    return false;
+  }
+
+  /**
+   * @return {@link #prefix} (Part of the name that is acquired as a title due to
+   *         academic, legal, employment or nobility status, etc. and that appears
+   *         at the start of the name.)
+   */
+  public List<StringType> getPrefix() {
+    if (this.prefix == null)
+      this.prefix = new ArrayList<StringType>();
+    return this.prefix;
+  }
+
+  /**
+   * @return Returns a reference to <code>this</code> for easy method chaining
+   */
+  public HumanName setPrefix(List<StringType> thePrefix) {
+    this.prefix = thePrefix;
+    return this;
+  }
+
+  public boolean hasPrefix() {
+    if (this.prefix == null)
+      return false;
+    for (StringType item : this.prefix)
+      if (!item.isEmpty())
+        return true;
+    return false;
+  }
+
+  /**
+   * @return {@link #prefix} (Part of the name that is acquired as a title due to
+   *         academic, legal, employment or nobility status, etc. and that appears
+   *         at the start of the name.)
+   */
+  public StringType addPrefixElement() {// 2
+    StringType t = new StringType();
+    if (this.prefix == null)
+      this.prefix = new ArrayList<StringType>();
+    this.prefix.add(t);
+    return t;
+  }
+
+  /**
+   * @param value {@link #prefix} (Part of the name that is acquired as a title
+   *              due to academic, legal, employment or nobility status, etc. and
+   *              that appears at the start of the name.)
+   */
+  public HumanName addPrefix(String value) { // 1
+    StringType t = new StringType();
+    t.setValue(value);
+    if (this.prefix == null)
+      this.prefix = new ArrayList<StringType>();
+    this.prefix.add(t);
+    return this;
+  }
+
+  /**
+   * @param value {@link #prefix} (Part of the name that is acquired as a title
+   *              due to academic, legal, employment or nobility status, etc. and
+   *              that appears at the start of the name.)
+   */
+  public boolean hasPrefix(String value) {
+    if (this.prefix == null)
+      return false;
+    for (StringType v : this.prefix)
+      if (v.getValue().equals(value)) // string
+        return true;
+    return false;
+  }
+
+  /**
+   * @return {@link #suffix} (Part of the name that is acquired as a title due to
+   *         academic, legal, employment or nobility status, etc. and that appears
+   *         at the end of the name.)
+   */
+  public List<StringType> getSuffix() {
+    if (this.suffix == null)
+      this.suffix = new ArrayList<StringType>();
+    return this.suffix;
+  }
+
+  /**
+   * @return Returns a reference to <code>this</code> for easy method chaining
+   */
+  public HumanName setSuffix(List<StringType> theSuffix) {
+    this.suffix = theSuffix;
+    return this;
+  }
+
+  public boolean hasSuffix() {
+    if (this.suffix == null)
+      return false;
+    for (StringType item : this.suffix)
+      if (!item.isEmpty())
+        return true;
+    return false;
+  }
+
+  /**
+   * @return {@link #suffix} (Part of the name that is acquired as a title due to
+   *         academic, legal, employment or nobility status, etc. and that appears
+   *         at the end of the name.)
+   */
+  public StringType addSuffixElement() {// 2
+    StringType t = new StringType();
+    if (this.suffix == null)
+      this.suffix = new ArrayList<StringType>();
+    this.suffix.add(t);
+    return t;
+  }
+
+  /**
+   * @param value {@link #suffix} (Part of the name that is acquired as a title
+   *              due to academic, legal, employment or nobility status, etc. and
+   *              that appears at the end of the name.)
+   */
+  public HumanName addSuffix(String value) { // 1
+    StringType t = new StringType();
+    t.setValue(value);
+    if (this.suffix == null)
+      this.suffix = new ArrayList<StringType>();
+    this.suffix.add(t);
+    return this;
+  }
+
+  /**
+   * @param value {@link #suffix} (Part of the name that is acquired as a title
+   *              due to academic, legal, employment or nobility status, etc. and
+   *              that appears at the end of the name.)
+   */
+  public boolean hasSuffix(String value) {
+    if (this.suffix == null)
+      return false;
+    for (StringType v : this.suffix)
+      if (v.getValue().equals(value)) // string
+        return true;
+    return false;
+  }
+
+  /**
+   * @return {@link #period} (Indicates the period of time when this name was
+   *         valid for the named person.)
+   */
+  public Period getPeriod() {
+    if (this.period == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create HumanName.period");
+      else if (Configuration.doAutoCreate())
+        this.period = new Period(); // cc
+    return this.period;
+  }
+
+  public boolean hasPeriod() {
+    return this.period != null && !this.period.isEmpty();
+  }
+
+  /**
+   * @param value {@link #period} (Indicates the period of time when this name was
+   *              valid for the named person.)
+   */
+  public HumanName setPeriod(Period value) {
+    this.period = value;
+    return this;
+  }
+
+  /**
+   * /** Returns all repetitions of {@link #getGiven() given name} as a space
+   * separated string
    * 
    * @see DatatypeUtil#joinStringsSpaceSeparated(List)
    */
@@ -650,7 +757,8 @@ public class HumanName extends Type implements ICompositeType {
   }
 
   /**
-   * Returns all repetitions of {@link #getPrefix() prefix name} as a space separated string
+   * Returns all repetitions of {@link #getPrefix() prefix name} as a space
+   * separated string
    * 
    * @see DatatypeUtil#joinStringsSpaceSeparated(List)
    */
@@ -659,7 +767,8 @@ public class HumanName extends Type implements ICompositeType {
   }
 
   /**
-   * Returns all repetitions of {@link #getSuffix() suffix} as a space separated string
+   * Returns all repetitions of {@link #getSuffix() suffix} as a space separated
+   * string
    * 
    * @see DatatypeUtil#joinStringsSpaceSeparated(List)
    */
@@ -668,10 +777,15 @@ public class HumanName extends Type implements ICompositeType {
   }
 
   /**
-   * <p>Returns the {@link #getTextElement() text} element value if it is not null.</p>
-
-   * <p>If the {@link #getTextElement() text} element value is null, returns all the components of the name (prefix,
-   * given, family, suffix) as a single string with a single spaced string separating each part. </p>
+   * <p>
+   * Returns the {@link #getTextElement() text} element value if it is not null.
+   * </p>
+   * 
+   * <p>
+   * If the {@link #getTextElement() text} element value is null, returns all the
+   * components of the name (prefix, given, family, suffix) as a single string
+   * with a single spaced string separating each part.
+   * </p>
    *
    * @return the human name as a single string
    */
@@ -697,7 +811,9 @@ public class HumanName extends Type implements ICompositeType {
   /**
    * Joins a list of strings with a single space (' ') between each string
    * 
-   * TODO: replace with call to ca.uhn.fhir.util.DatatypeUtil.joinStringsSpaceSeparated when HAPI upgrades to 1.4
+   * TODO: replace with call to
+   * ca.uhn.fhir.util.DatatypeUtil.joinStringsSpaceSeparated when HAPI upgrades to
+   * 1.4
    */
   private static String joinStringsSpaceSeparated(List<? extends IPrimitiveType<String>> theStrings) {
     StringBuilder stringBuilder = new StringBuilder();
@@ -712,223 +828,269 @@ public class HumanName extends Type implements ICompositeType {
     }
     return stringBuilder.toString();
   }
-      protected void listChildren(List<Property> children) {
-        super.listChildren(children);
-        children.add(new Property("use", "code", "Identifies the purpose for this name.", 0, 1, use));
-        children.add(new Property("text", "string", "Specifies the entire name as it should be displayed e.g. on an application UI. This may be provided instead of or as well as the specific parts.", 0, 1, text));
-        children.add(new Property("family", "string", "The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father.", 0, 1, family));
-        children.add(new Property("given", "string", "Given name.", 0, java.lang.Integer.MAX_VALUE, given));
-        children.add(new Property("prefix", "string", "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name.", 0, java.lang.Integer.MAX_VALUE, prefix));
-        children.add(new Property("suffix", "string", "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.", 0, java.lang.Integer.MAX_VALUE, suffix));
-        children.add(new Property("period", "Period", "Indicates the period of time when this name was valid for the named person.", 0, 1, period));
-      }
 
-      @Override
-      public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-        switch (_hash) {
-        case 116103: /*use*/  return new Property("use", "code", "Identifies the purpose for this name.", 0, 1, use);
-        case 3556653: /*text*/  return new Property("text", "string", "Specifies the entire name as it should be displayed e.g. on an application UI. This may be provided instead of or as well as the specific parts.", 0, 1, text);
-        case -1281860764: /*family*/  return new Property("family", "string", "The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father.", 0, 1, family);
-        case 98367357: /*given*/  return new Property("given", "string", "Given name.", 0, java.lang.Integer.MAX_VALUE, given);
-        case -980110702: /*prefix*/  return new Property("prefix", "string", "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name.", 0, java.lang.Integer.MAX_VALUE, prefix);
-        case -891422895: /*suffix*/  return new Property("suffix", "string", "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.", 0, java.lang.Integer.MAX_VALUE, suffix);
-        case -991726143: /*period*/  return new Property("period", "Period", "Indicates the period of time when this name was valid for the named person.", 0, 1, period);
-        default: return super.getNamedProperty(_hash, _name, _checkValid);
-        }
+  protected void listChildren(List<Property> children) {
+    super.listChildren(children);
+    children.add(new Property("use", "code", "Identifies the purpose for this name.", 0, 1, use));
+    children.add(new Property("text", "string",
+        "Specifies the entire name as it should be displayed e.g. on an application UI. This may be provided instead of or as well as the specific parts.",
+        0, 1, text));
+    children.add(new Property("family", "string",
+        "The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father.",
+        0, 1, family));
+    children.add(new Property("given", "string", "Given name.", 0, java.lang.Integer.MAX_VALUE, given));
+    children.add(new Property("prefix", "string",
+        "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name.",
+        0, java.lang.Integer.MAX_VALUE, prefix));
+    children.add(new Property("suffix", "string",
+        "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.",
+        0, java.lang.Integer.MAX_VALUE, suffix));
+    children.add(new Property("period", "Period",
+        "Indicates the period of time when this name was valid for the named person.", 0, 1, period));
+  }
 
-      }
+  @Override
+  public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+    switch (_hash) {
+    case 116103:
+      /* use */ return new Property("use", "code", "Identifies the purpose for this name.", 0, 1, use);
+    case 3556653:
+      /* text */ return new Property("text", "string",
+          "Specifies the entire name as it should be displayed e.g. on an application UI. This may be provided instead of or as well as the specific parts.",
+          0, 1, text);
+    case -1281860764:
+      /* family */ return new Property("family", "string",
+          "The part of a name that links to the genealogy. In some cultures (e.g. Eritrea) the family name of a son is the first name of his father.",
+          0, 1, family);
+    case 98367357:
+      /* given */ return new Property("given", "string", "Given name.", 0, java.lang.Integer.MAX_VALUE, given);
+    case -980110702:
+      /* prefix */ return new Property("prefix", "string",
+          "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the start of the name.",
+          0, java.lang.Integer.MAX_VALUE, prefix);
+    case -891422895:
+      /* suffix */ return new Property("suffix", "string",
+          "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.",
+          0, java.lang.Integer.MAX_VALUE, suffix);
+    case -991726143:
+      /* period */ return new Property("period", "Period",
+          "Indicates the period of time when this name was valid for the named person.", 0, 1, period);
+    default:
+      return super.getNamedProperty(_hash, _name, _checkValid);
+    }
 
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 116103: /*use*/ return this.use == null ? new Base[0] : new Base[] {this.use}; // Enumeration<NameUse>
-        case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // StringType
-        case -1281860764: /*family*/ return this.family == null ? new Base[0] : new Base[] {this.family}; // StringType
-        case 98367357: /*given*/ return this.given == null ? new Base[0] : this.given.toArray(new Base[this.given.size()]); // StringType
-        case -980110702: /*prefix*/ return this.prefix == null ? new Base[0] : this.prefix.toArray(new Base[this.prefix.size()]); // StringType
-        case -891422895: /*suffix*/ return this.suffix == null ? new Base[0] : this.suffix.toArray(new Base[this.suffix.size()]); // StringType
-        case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
-        default: return super.getProperty(hash, name, checkValid);
-        }
+  }
 
-      }
+  @Override
+  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+    switch (hash) {
+    case 116103:
+      /* use */ return this.use == null ? new Base[0] : new Base[] { this.use }; // Enumeration<NameUse>
+    case 3556653:
+      /* text */ return this.text == null ? new Base[0] : new Base[] { this.text }; // StringType
+    case -1281860764:
+      /* family */ return this.family == null ? new Base[0] : new Base[] { this.family }; // StringType
+    case 98367357:
+      /* given */ return this.given == null ? new Base[0] : this.given.toArray(new Base[this.given.size()]); // StringType
+    case -980110702:
+      /* prefix */ return this.prefix == null ? new Base[0] : this.prefix.toArray(new Base[this.prefix.size()]); // StringType
+    case -891422895:
+      /* suffix */ return this.suffix == null ? new Base[0] : this.suffix.toArray(new Base[this.suffix.size()]); // StringType
+    case -991726143:
+      /* period */ return this.period == null ? new Base[0] : new Base[] { this.period }; // Period
+    default:
+      return super.getProperty(hash, name, checkValid);
+    }
 
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 116103: // use
-          value = new NameUseEnumFactory().fromType(castToCode(value));
-          this.use = (Enumeration) value; // Enumeration<NameUse>
-          return value;
-        case 3556653: // text
-          this.text = castToString(value); // StringType
-          return value;
-        case -1281860764: // family
-          this.family = castToString(value); // StringType
-          return value;
-        case 98367357: // given
-          this.getGiven().add(castToString(value)); // StringType
-          return value;
-        case -980110702: // prefix
-          this.getPrefix().add(castToString(value)); // StringType
-          return value;
-        case -891422895: // suffix
-          this.getSuffix().add(castToString(value)); // StringType
-          return value;
-        case -991726143: // period
-          this.period = castToPeriod(value); // Period
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
+  }
 
-      }
+  @Override
+  public Base setProperty(int hash, String name, Base value) throws FHIRException {
+    switch (hash) {
+    case 116103: // use
+      value = new NameUseEnumFactory().fromType(castToCode(value));
+      this.use = (Enumeration) value; // Enumeration<NameUse>
+      return value;
+    case 3556653: // text
+      this.text = castToString(value); // StringType
+      return value;
+    case -1281860764: // family
+      this.family = castToString(value); // StringType
+      return value;
+    case 98367357: // given
+      this.getGiven().add(castToString(value)); // StringType
+      return value;
+    case -980110702: // prefix
+      this.getPrefix().add(castToString(value)); // StringType
+      return value;
+    case -891422895: // suffix
+      this.getSuffix().add(castToString(value)); // StringType
+      return value;
+    case -991726143: // period
+      this.period = castToPeriod(value); // Period
+      return value;
+    default:
+      return super.setProperty(hash, name, value);
+    }
 
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("use")) {
-          value = new NameUseEnumFactory().fromType(castToCode(value));
-          this.use = (Enumeration) value; // Enumeration<NameUse>
-        } else if (name.equals("text")) {
-          this.text = castToString(value); // StringType
-        } else if (name.equals("family")) {
-          this.family = castToString(value); // StringType
-        } else if (name.equals("given")) {
-          this.getGiven().add(castToString(value));
-        } else if (name.equals("prefix")) {
-          this.getPrefix().add(castToString(value));
-        } else if (name.equals("suffix")) {
-          this.getSuffix().add(castToString(value));
-        } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
+  }
 
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 116103:  return getUseElement();
-        case 3556653:  return getTextElement();
-        case -1281860764:  return getFamilyElement();
-        case 98367357:  return addGivenElement();
-        case -980110702:  return addPrefixElement();
-        case -891422895:  return addSuffixElement();
-        case -991726143:  return getPeriod(); 
-        default: return super.makeProperty(hash, name);
-        }
+  @Override
+  public Base setProperty(String name, Base value) throws FHIRException {
+    if (name.equals("use")) {
+      value = new NameUseEnumFactory().fromType(castToCode(value));
+      this.use = (Enumeration) value; // Enumeration<NameUse>
+    } else if (name.equals("text")) {
+      this.text = castToString(value); // StringType
+    } else if (name.equals("family")) {
+      this.family = castToString(value); // StringType
+    } else if (name.equals("given")) {
+      this.getGiven().add(castToString(value));
+    } else if (name.equals("prefix")) {
+      this.getPrefix().add(castToString(value));
+    } else if (name.equals("suffix")) {
+      this.getSuffix().add(castToString(value));
+    } else if (name.equals("period")) {
+      this.period = castToPeriod(value); // Period
+    } else
+      return super.setProperty(name, value);
+    return value;
+  }
 
-      }
+  @Override
+  public Base makeProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+    case 116103:
+      return getUseElement();
+    case 3556653:
+      return getTextElement();
+    case -1281860764:
+      return getFamilyElement();
+    case 98367357:
+      return addGivenElement();
+    case -980110702:
+      return addPrefixElement();
+    case -891422895:
+      return addSuffixElement();
+    case -991726143:
+      return getPeriod();
+    default:
+      return super.makeProperty(hash, name);
+    }
 
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 116103: /*use*/ return new String[] {"code"};
-        case 3556653: /*text*/ return new String[] {"string"};
-        case -1281860764: /*family*/ return new String[] {"string"};
-        case 98367357: /*given*/ return new String[] {"string"};
-        case -980110702: /*prefix*/ return new String[] {"string"};
-        case -891422895: /*suffix*/ return new String[] {"string"};
-        case -991726143: /*period*/ return new String[] {"Period"};
-        default: return super.getTypesForProperty(hash, name);
-        }
+  }
 
-      }
+  @Override
+  public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+    case 116103:
+      /* use */ return new String[] { "code" };
+    case 3556653:
+      /* text */ return new String[] { "string" };
+    case -1281860764:
+      /* family */ return new String[] { "string" };
+    case 98367357:
+      /* given */ return new String[] { "string" };
+    case -980110702:
+      /* prefix */ return new String[] { "string" };
+    case -891422895:
+      /* suffix */ return new String[] { "string" };
+    case -991726143:
+      /* period */ return new String[] { "Period" };
+    default:
+      return super.getTypesForProperty(hash, name);
+    }
 
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("use")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.use");
-        }
-        else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.text");
-        }
-        else if (name.equals("family")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.family");
-        }
-        else if (name.equals("given")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.given");
-        }
-        else if (name.equals("prefix")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.prefix");
-        }
-        else if (name.equals("suffix")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.suffix");
-        }
-        else if (name.equals("period")) {
-          this.period = new Period();
-          return this.period;
-        }
-        else
-          return super.addChild(name);
-      }
+  }
+
+  @Override
+  public Base addChild(String name) throws FHIRException {
+    if (name.equals("use")) {
+      throw new FHIRException("Cannot call addChild on a primitive type HumanName.use");
+    } else if (name.equals("text")) {
+      throw new FHIRException("Cannot call addChild on a primitive type HumanName.text");
+    } else if (name.equals("family")) {
+      throw new FHIRException("Cannot call addChild on a primitive type HumanName.family");
+    } else if (name.equals("given")) {
+      throw new FHIRException("Cannot call addChild on a primitive type HumanName.given");
+    } else if (name.equals("prefix")) {
+      throw new FHIRException("Cannot call addChild on a primitive type HumanName.prefix");
+    } else if (name.equals("suffix")) {
+      throw new FHIRException("Cannot call addChild on a primitive type HumanName.suffix");
+    } else if (name.equals("period")) {
+      this.period = new Period();
+      return this.period;
+    } else
+      return super.addChild(name);
+  }
 
   public String fhirType() {
     return "HumanName";
 
   }
 
-      public HumanName copy() {
-        HumanName dst = new HumanName();
-        copyValues(dst);
-        return dst;
-      }
+  public HumanName copy() {
+    HumanName dst = new HumanName();
+    copyValues(dst);
+    return dst;
+  }
 
-      public void copyValues(HumanName dst) {
-        super.copyValues(dst);
-        dst.use = use == null ? null : use.copy();
-        dst.text = text == null ? null : text.copy();
-        dst.family = family == null ? null : family.copy();
-        if (given != null) {
-          dst.given = new ArrayList<StringType>();
-          for (StringType i : given)
-            dst.given.add(i.copy());
-        };
-        if (prefix != null) {
-          dst.prefix = new ArrayList<StringType>();
-          for (StringType i : prefix)
-            dst.prefix.add(i.copy());
-        };
-        if (suffix != null) {
-          dst.suffix = new ArrayList<StringType>();
-          for (StringType i : suffix)
-            dst.suffix.add(i.copy());
-        };
-        dst.period = period == null ? null : period.copy();
-      }
+  public void copyValues(HumanName dst) {
+    super.copyValues(dst);
+    dst.use = use == null ? null : use.copy();
+    dst.text = text == null ? null : text.copy();
+    dst.family = family == null ? null : family.copy();
+    if (given != null) {
+      dst.given = new ArrayList<StringType>();
+      for (StringType i : given)
+        dst.given.add(i.copy());
+    }
+    ;
+    if (prefix != null) {
+      dst.prefix = new ArrayList<StringType>();
+      for (StringType i : prefix)
+        dst.prefix.add(i.copy());
+    }
+    ;
+    if (suffix != null) {
+      dst.suffix = new ArrayList<StringType>();
+      for (StringType i : suffix)
+        dst.suffix.add(i.copy());
+    }
+    ;
+    dst.period = period == null ? null : period.copy();
+  }
 
-      protected HumanName typedCopy() {
-        return copy();
-      }
+  protected HumanName typedCopy() {
+    return copy();
+  }
 
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof HumanName))
-          return false;
-        HumanName o = (HumanName) other_;
-        return compareDeep(use, o.use, true) && compareDeep(text, o.text, true) && compareDeep(family, o.family, true)
-           && compareDeep(given, o.given, true) && compareDeep(prefix, o.prefix, true) && compareDeep(suffix, o.suffix, true)
-           && compareDeep(period, o.period, true);
-      }
+  @Override
+  public boolean equalsDeep(Base other_) {
+    if (!super.equalsDeep(other_))
+      return false;
+    if (!(other_ instanceof HumanName))
+      return false;
+    HumanName o = (HumanName) other_;
+    return compareDeep(use, o.use, true) && compareDeep(text, o.text, true) && compareDeep(family, o.family, true)
+        && compareDeep(given, o.given, true) && compareDeep(prefix, o.prefix, true)
+        && compareDeep(suffix, o.suffix, true) && compareDeep(period, o.period, true);
+  }
 
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof HumanName))
-          return false;
-        HumanName o = (HumanName) other_;
-        return compareValues(use, o.use, true) && compareValues(text, o.text, true) && compareValues(family, o.family, true)
-           && compareValues(given, o.given, true) && compareValues(prefix, o.prefix, true) && compareValues(suffix, o.suffix, true)
-          ;
-      }
+  @Override
+  public boolean equalsShallow(Base other_) {
+    if (!super.equalsShallow(other_))
+      return false;
+    if (!(other_ instanceof HumanName))
+      return false;
+    HumanName o = (HumanName) other_;
+    return compareValues(use, o.use, true) && compareValues(text, o.text, true) && compareValues(family, o.family, true)
+        && compareValues(given, o.given, true) && compareValues(prefix, o.prefix, true)
+        && compareValues(suffix, o.suffix, true);
+  }
 
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(use, text, family, given
-          , prefix, suffix, period);
-      }
-
+  public boolean isEmpty() {
+    return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(use, text, family, given, prefix, suffix, period);
+  }
 
 }

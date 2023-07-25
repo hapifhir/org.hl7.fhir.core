@@ -1,6 +1,5 @@
 package org.hl7.fhir.r4b.model;
 
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -45,39 +44,38 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for Distance Type: A length - a value with a unit that is a physical distance.
+ * Base StructureDefinition for Distance Type: A length - a value with a unit
+ * that is a physical distance.
  */
-@DatatypeDef(name="Distance")
+@DatatypeDef(name = "Distance")
 public class Distance extends Quantity implements ICompositeType {
 
-    private static final long serialVersionUID = 0L;
+  private static final long serialVersionUID = 0L;
 
   /**
    * Constructor
    */
-    public Distance() {
-      super();
-    }
+  public Distance() {
+    super();
+  }
 
   public String fhirType() {
     return "Distance";
 
   }
 
-      public Distance copy() {
-        Distance dst = new Distance();
-        copyValues(dst);
-        return dst;
-      }
+  public Distance copy() {
+    Distance dst = new Distance();
+    copyValues(dst);
+    return dst;
+  }
 
-      public void copyValues(Distance dst) {
-        super.copyValues(dst);
-      }
+  public void copyValues(Distance dst) {
+    super.copyValues(dst);
+  }
 
-      protected Distance typedCopy() {
-        return copy();
-      }
-
+  protected Distance typedCopy() {
+    return copy();
+  }
 
 }
-

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcLocationCondition {
 
-        /**
-         * The assigned service delivery location is currently dirty, awaiting cleaning.
-         */
-        _182845, 
-        /**
-         * The assigned service delivery location has been cleaned, awaiting occupancy.
-         */
-        _528112801, 
-        /**
-         * The assigned service delivery location is currently occupied.
-         */
-        _182843, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static HspcLocationCondition fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("182845".equals(codeString))
-          return _182845;
-        if ("528112801".equals(codeString))
-          return _528112801;
-        if ("182843".equals(codeString))
-          return _182843;
-        throw new FHIRException("Unknown HspcLocationCondition code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _182845: return "182845";
-            case _528112801: return "528112801";
-            case _182843: return "182843";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/hspc-locationCondition";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _182845: return "The assigned service delivery location is currently dirty, awaiting cleaning.";
-            case _528112801: return "The assigned service delivery location has been cleaned, awaiting occupancy.";
-            case _182843: return "The assigned service delivery location is currently occupied.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _182845: return "Contaminated";
-            case _528112801: return "Clean";
-            case _182843: return "Occupied";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The assigned service delivery location is currently dirty, awaiting cleaning.
+   */
+  _182845,
+  /**
+   * The assigned service delivery location has been cleaned, awaiting occupancy.
+   */
+  _528112801,
+  /**
+   * The assigned service delivery location is currently occupied.
+   */
+  _182843,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static HspcLocationCondition fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("182845".equals(codeString))
+      return _182845;
+    if ("528112801".equals(codeString))
+      return _528112801;
+    if ("182843".equals(codeString))
+      return _182843;
+    throw new FHIRException("Unknown HspcLocationCondition code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case _182845:
+      return "182845";
+    case _528112801:
+      return "528112801";
+    case _182843:
+      return "182843";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/hspc-locationCondition";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case _182845:
+      return "The assigned service delivery location is currently dirty, awaiting cleaning.";
+    case _528112801:
+      return "The assigned service delivery location has been cleaned, awaiting occupancy.";
+    case _182843:
+      return "The assigned service delivery location is currently occupied.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case _182845:
+      return "Contaminated";
+    case _528112801:
+      return "Clean";
+    case _182843:
+      return "Occupied";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

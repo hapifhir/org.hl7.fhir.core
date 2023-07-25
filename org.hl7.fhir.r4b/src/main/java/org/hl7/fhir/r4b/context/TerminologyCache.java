@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.context;
   
  */
 
-
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -68,11 +66,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 /**
- * This implements a two level cache. 
- *  - a temporary cache for remmbering previous local operations
- *  - a persistent cache for rembering tx server operations
- *  
- * the cache is a series of pairs: a map, and a list. the map is the loaded cache, the list is the persiistent cache, carefully maintained in order for version control consistency
+ * This implements a two level cache. - a temporary cache for remmbering
+ * previous local operations - a persistent cache for rembering tx server
+ * operations
+ * 
+ * the cache is a series of pairs: a map, and a list. the map is the loaded
+ * cache, the list is the persiistent cache, carefully maintained in order for
+ * version control consistency
  * 
  * @author graha
  *
@@ -109,7 +109,7 @@ public class TerminologyCache {
 
     public String getNameForSystem(String system) {
       final int lastPipe = system.lastIndexOf('|');
-      final String systemBaseName = lastPipe == -1 ? system : system.substring(0,lastPipe);
+      final String systemBaseName = lastPipe == -1 ? system : system.substring(0, lastPipe);
       final String systemVersion = lastPipe == -1 ? null : system.substring(lastPipe + 1);
 
       if (systemBaseName.equals(SNOMED_SCT_CODESYSTEM_URL))
@@ -125,7 +125,8 @@ public class TerminologyCache {
       if (systemBaseName.equals(_11073_CODESYSTEM_URN))
         return getVersionedSystem("11073", systemVersion);
       if (systemBaseName.startsWith(ISO_CODESYSTEM_URN))
-        return getVersionedSystem("iso"+systemBaseName.substring(ISO_CODESYSTEM_URN.length()).replace(":", ""), systemVersion);
+        return getVersionedSystem("iso" + systemBaseName.substring(ISO_CODESYSTEM_URN.length()).replace(":", ""),
+            systemVersion);
       if (systemBaseName.startsWith(HL7_TERMINOLOGY_CODESYSTEM_BASE_URL))
         return getVersionedSystem(normalizeBaseURL(HL7_TERMINOLOGY_CODESYSTEM_BASE_URL, systemBaseName), systemVersion);
       if (systemBaseName.startsWith(HL7_FHIR_CODESYSTEM_BASE_URL))
@@ -136,7 +137,8 @@ public class TerminologyCache {
         return getVersionedSystem("mimetypes", systemVersion);
       if (systemBaseName.equals(DICOM_CODESYSTEM_URL))
         return getVersionedSystem("dicom", systemVersion);
-      return getVersionedSystem(systemBaseName.replace("/", "_").replace(":", "_").replace("?", "X").replace("#", "X"), systemVersion);
+      return getVersionedSystem(systemBaseName.replace("/", "_").replace(":", "_").replace("?", "X").replace("#", "X"),
+          systemVersion);
     }
 
     public String normalizeBaseURL(String baseUrl, String fullUrl) {
@@ -155,6 +157,7 @@ public class TerminologyCache {
     private String name;
     private String key;
     private String request;
+
     public void setName(String n) {
       String systemName = getSystemNameKeyGenerator().getNameForSystem(n);
       if (name == null)
@@ -174,19 +177,18 @@ public class TerminologyCache {
     private ValidationResult v;
     private ValueSetExpansionOutcome e;
   }
-  
+
   private class NamedCache {
-    private String name; 
+    private String name;
     private List<CacheEntry> list = new ArrayList<CacheEntry>(); // persistent entries
     private Map<String, CacheEntry> map = new HashMap<String, CacheEntry>();
   }
-  
 
   private Object lock;
   private String folder;
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
   private static boolean noCaching;
-  
+
   // use lock from the context
   public TerminologyCache(Object lock, String folder) throws FileNotFoundException, IOException, FHIRException {
     super();
@@ -195,10 +197,11 @@ public class TerminologyCache {
     if (folder != null)
       load();
   }
-  
+
   public void clear() {
     caches.clear();
   }
+
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     if (code.hasSystem())
@@ -209,7 +212,8 @@ public class TerminologyCache {
     json.setOutputStyle(OutputStyle.PRETTY);
     ValueSet vsc = getVSEssense(vs);
     try {
-      ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+"}";
+      ct.request = "{\"code\" : " + json.composeString(code, "code") + ", \"valueSet\" :"
+          + (vsc == null ? "null" : extracted(json, vsc)) + (options == null ? "" : ", " + options.toJson()) + "}";
     } catch (IOException e) {
       throw new Error(e);
     }
@@ -219,7 +223,8 @@ public class TerminologyCache {
 
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
     String s = null;
-    if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {      
+    if (vsc.getExpansion().getContains().size() > 1000
+        || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {
       s = Integer.toString(vsc.hashCode()); // turn caching off - hack efficiency optimisation
     } else {
       s = json.composeString(vsc);
@@ -237,14 +242,15 @@ public class TerminologyCache {
     json.setOutputStyle(OutputStyle.PRETTY);
     ValueSet vsc = getVSEssense(vs);
     try {
-      ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+(options == null ? "" : ", "+options.toJson())+"}";
+      ct.request = "{\"code\" : " + json.composeString(code, "codeableConcept") + ", \"valueSet\" :"
+          + extracted(json, vsc) + (options == null ? "" : ", " + options.toJson()) + "}";
     } catch (IOException e) {
       throw new Error(e);
     }
     ct.key = String.valueOf(hashNWS(ct.request));
     return ct;
   }
-  
+
   public ValueSet getVSEssense(ValueSet vs) {
     if (vs == null)
       return null;
@@ -272,15 +278,14 @@ public class TerminologyCache {
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
     try {
-      ct.request = "{\"hierarchical\" : "+(heirarchical ? "true" : "false")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
+      ct.request = "{\"hierarchical\" : " + (heirarchical ? "true" : "false") + ", \"valueSet\" :"
+          + extracted(json, vsc) + "}\r\n";
     } catch (IOException e) {
       throw new Error(e);
     }
     ct.key = String.valueOf(hashNWS(ct.request));
     return ct;
   }
-
-
 
   public NamedCache getNamedCache(CacheToken cacheToken) {
     NamedCache nc = caches.get(cacheToken.name);
@@ -291,7 +296,7 @@ public class TerminologyCache {
     }
     return nc;
   }
-  
+
   public ValueSetExpansionOutcome getExpansion(CacheToken cacheToken) {
     synchronized (lock) {
       NamedCache nc = getNamedCache(cacheToken);
@@ -304,14 +309,14 @@ public class TerminologyCache {
   }
 
   public void cacheExpansion(CacheToken cacheToken, ValueSetExpansionOutcome res, boolean persistent) {
-    synchronized (lock) {      
+    synchronized (lock) {
       NamedCache nc = getNamedCache(cacheToken);
       CacheEntry e = new CacheEntry();
       e.request = cacheToken.request;
       e.persistent = persistent;
       e.e = res;
       store(cacheToken, persistent, nc, e);
-    }    
+    }
   }
 
   public void store(CacheToken cacheToken, boolean persistent, NamedCache nc, CacheEntry e) {
@@ -322,14 +327,14 @@ public class TerminologyCache {
     nc.map.put(cacheToken.key, e);
     if (persistent) {
       if (n) {
-        for (int i = nc.list.size()- 1; i>= 0; i--) {
+        for (int i = nc.list.size() - 1; i >= 0; i--) {
           if (nc.list.get(i).request.equals(e.request)) {
             nc.list.remove(i);
           }
         }
       }
       nc.list.add(e);
-      save(nc);  
+      save(nc);
     }
   }
 
@@ -349,79 +354,100 @@ public class TerminologyCache {
 
   public void cacheValidation(CacheToken cacheToken, ValidationResult res, boolean persistent) {
     if (cacheToken.key != null) {
-      synchronized (lock) {      
+      synchronized (lock) {
         NamedCache nc = getNamedCache(cacheToken);
         CacheEntry e = new CacheEntry();
         e.request = cacheToken.request;
         e.persistent = persistent;
         e.v = res;
         store(cacheToken, persistent, nc, e);
-      }    
+      }
     }
   }
 
-  
   // persistence
-  
+
   public void save() {
-    
+
   }
-  
+
   private void save(NamedCache nc) {
     if (folder == null)
       return;
-    
+
     try {
-      OutputStreamWriter sw = new OutputStreamWriter(new FileOutputStream(Utilities.path(folder, nc.name+".cache")), "UTF-8");
-      sw.write(ENTRY_MARKER+"\r\n");
+      OutputStreamWriter sw = new OutputStreamWriter(new FileOutputStream(Utilities.path(folder, nc.name + ".cache")),
+          "UTF-8");
+      sw.write(ENTRY_MARKER + "\r\n");
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
       for (CacheEntry ce : nc.list) {
         sw.write(ce.request.trim());
-        sw.write(BREAK+"\r\n");
+        sw.write(BREAK + "\r\n");
         if (ce.e != null) {
           sw.write("e: {\r\n");
           if (ce.e.getValueset() != null)
-            sw.write("  \"valueSet\" : "+json.composeString(ce.e.getValueset()).trim()+",\r\n");
-          sw.write("  \"error\" : \""+Utilities.escapeJson(ce.e.getError()).trim()+"\"\r\n}\r\n");
+            sw.write("  \"valueSet\" : " + json.composeString(ce.e.getValueset()).trim() + ",\r\n");
+          sw.write("  \"error\" : \"" + Utilities.escapeJson(ce.e.getError()).trim() + "\"\r\n}\r\n");
         } else {
           sw.write("v: {\r\n");
           boolean first = true;
-          if (ce.v.getDisplay() != null) {            
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"display\" : \""+Utilities.escapeJson(ce.v.getDisplay()).trim()+"\"");
+          if (ce.v.getDisplay() != null) {
+            if (first)
+              first = false;
+            else
+              sw.write(",\r\n");
+            sw.write("  \"display\" : \"" + Utilities.escapeJson(ce.v.getDisplay()).trim() + "\"");
           }
           if (ce.v.getCode() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"code\" : \""+Utilities.escapeJson(ce.v.getCode()).trim()+"\"");
+            if (first)
+              first = false;
+            else
+              sw.write(",\r\n");
+            sw.write("  \"code\" : \"" + Utilities.escapeJson(ce.v.getCode()).trim() + "\"");
           }
           if (ce.v.getSystem() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"system\" : \""+Utilities.escapeJson(ce.v.getSystem()).trim()+"\"");
+            if (first)
+              first = false;
+            else
+              sw.write(",\r\n");
+            sw.write("  \"system\" : \"" + Utilities.escapeJson(ce.v.getSystem()).trim() + "\"");
           }
           if (ce.v.getSeverity() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"severity\" : "+"\""+ce.v.getSeverity().toCode().trim()+"\""+"");
+            if (first)
+              first = false;
+            else
+              sw.write(",\r\n");
+            sw.write("  \"severity\" : " + "\"" + ce.v.getSeverity().toCode().trim() + "\"" + "");
           }
           if (ce.v.getMessage() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"error\" : \""+Utilities.escapeJson(ce.v.getMessage()).trim()+"\"");
+            if (first)
+              first = false;
+            else
+              sw.write(",\r\n");
+            sw.write("  \"error\" : \"" + Utilities.escapeJson(ce.v.getMessage()).trim() + "\"");
           }
           if (ce.v.getErrorClass() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"class\" : \""+Utilities.escapeJson(ce.v.getErrorClass().toString())+"\"");
+            if (first)
+              first = false;
+            else
+              sw.write(",\r\n");
+            sw.write("  \"class\" : \"" + Utilities.escapeJson(ce.v.getErrorClass().toString()) + "\"");
           }
           if (ce.v.getDefinition() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"definition\" : \""+Utilities.escapeJson(ce.v.getDefinition()).trim()+"\"");
+            if (first)
+              first = false;
+            else
+              sw.write(",\r\n");
+            sw.write("  \"definition\" : \"" + Utilities.escapeJson(ce.v.getDefinition()).trim() + "\"");
           }
           sw.write("\r\n}\r\n");
         }
-        sw.write(ENTRY_MARKER+"\r\n");
-      }      
+        sw.write(ENTRY_MARKER + "\r\n");
+      }
       sw.close();
     } catch (Exception e) {
-      System.out.println("error saving "+nc.name+": "+e.getMessage());
+      System.out.println("error saving " + nc.name + ": " + e.getMessage());
     }
   }
 
@@ -437,16 +463,16 @@ public class TerminologyCache {
           String src = TextFile.fileToString(Utilities.path(folder, fn));
           if (src.startsWith("?"))
             src = src.substring(1);
-          int i = src.indexOf(ENTRY_MARKER); 
+          int i = src.indexOf(ENTRY_MARKER);
           while (i > -1) {
             c++;
             String s = src.substring(0, i);
-            src = src.substring(i+ENTRY_MARKER.length()+1);
+            src = src.substring(i + ENTRY_MARKER.length() + 1);
             i = src.indexOf(ENTRY_MARKER);
             if (!Utilities.noString(s)) {
               int j = s.indexOf(BREAK);
               String q = s.substring(0, j);
-              String p = s.substring(j+BREAK.length()+1).trim();
+              String p = s.substring(j + BREAK.length() + 1).trim();
               CacheEntry ce = new CacheEntry();
               ce.persistent = true;
               ce.request = q;
@@ -456,31 +482,34 @@ public class TerminologyCache {
               String error = loadJS(o.get("error"));
               if (e) {
                 if (o.has("valueSet"))
-                  ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN);
+                  ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")),
+                      error, TerminologyServiceErrorClass.UNKNOWN);
                 else
                   ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
               } else {
                 String t = loadJS(o.get("severity"));
-                IssueSeverity severity = t == null ? null :  IssueSeverity.fromCode(t);
+                IssueSeverity severity = t == null ? null : IssueSeverity.fromCode(t);
                 String display = loadJS(o.get("display"));
                 String code = loadJS(o.get("code"));
                 String system = loadJS(o.get("system"));
                 String definition = loadJS(o.get("definition"));
                 t = loadJS(o.get("class"));
-                TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
-                ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code)).setErrorClass(errorClass);
+                TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t);
+                ce.v = new ValidationResult(severity, error, system,
+                    new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code))
+                        .setErrorClass(errorClass);
               }
               nc.map.put(String.valueOf(hashNWS(ce.request)), ce);
               nc.list.add(ce);
             }
-          }        
+          }
         } catch (Exception e) {
-          throw new FHIRException("Error loading "+fn+": "+e.getMessage()+" entry "+c, e);
+          throw new FHIRException("Error loading " + fn + ": " + e.getMessage() + " entry " + c, e);
         }
       }
     }
   }
-  
+
   private String loadJS(JsonElement e) {
     if (e == null)
       return null;
@@ -500,21 +529,21 @@ public class TerminologyCache {
   }
 
   // management
-  
+
   public TerminologyCache copy() {
     // TODO Auto-generated method stub
     return null;
   }
-  
+
   public String summary(ValueSet vs) {
     if (vs == null)
       return "null";
-    
+
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (ConceptSetComponent cc : vs.getCompose().getInclude())
-      b.append("Include "+getIncSummary(cc));
+      b.append("Include " + getIncSummary(cc));
     for (ConceptSetComponent cc : vs.getCompose().getExclude())
-      b.append("Exclude "+getIncSummary(cc));
+      b.append("Exclude " + getIncSummary(cc));
     return b.toString();
   }
 
@@ -522,24 +551,24 @@ public class TerminologyCache {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (UriType vs : cc.getValueSet())
       b.append(vs.asStringValue());
-    String vsd = b.length() > 0 ? " where the codes are in the value sets ("+b.toString()+")" : "";
+    String vsd = b.length() > 0 ? " where the codes are in the value sets (" + b.toString() + ")" : "";
     String system = cc.getSystem();
     if (cc.hasConcept())
-      return Integer.toString(cc.getConcept().size())+" codes from "+system+vsd;
+      return Integer.toString(cc.getConcept().size()) + " codes from " + system + vsd;
     if (cc.hasFilter()) {
       String s = "";
       for (ConceptSetFilterComponent f : cc.getFilter()) {
         if (!Utilities.noString(s))
           s = s + " & ";
-        s = s + f.getProperty()+" "+(f.hasOp() ? f.getOp().toCode() : "?")+" "+f.getValue();
+        s = s + f.getProperty() + " " + (f.hasOp() ? f.getOp().toCode() : "?") + " " + f.getValue();
       }
-      return "from "+system+" where "+s+vsd;
+      return "from " + system + " where " + s + vsd;
     }
-    return "All codes from "+system+vsd;
+    return "All codes from " + system + vsd;
   }
 
   public String summary(Coding code) {
-    return code.getSystem()+"#"+code.getCode()+": \""+code.getDisplay()+"\"";
+    return code.getSystem() + "#" + code.getCode() + ": \"" + code.getDisplay() + "\"";
   }
 
   public String summary(CodeableConcept code) {
@@ -547,7 +576,10 @@ public class TerminologyCache {
     b.append("{");
     boolean first = true;
     for (Coding c : code.getCoding()) {
-      if (first) first = false; else b.append(",");
+      if (first)
+        first = false;
+      else
+        b.append(",");
       b.append(summary(c));
     }
     b.append("}: \"");
@@ -570,12 +602,11 @@ public class TerminologyCache {
       if (caches.containsKey(name)) {
         caches.remove(name);
       }
-    }   
+    }
   }
 
   public String getFolder() {
     return folder;
   }
- 
-  
+
 }

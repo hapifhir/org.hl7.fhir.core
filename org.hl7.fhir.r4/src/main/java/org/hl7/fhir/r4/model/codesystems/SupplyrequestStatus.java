@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,104 +31,142 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SupplyrequestStatus {
 
-        /**
-         * The request has been created but is not yet complete or ready for action.
-         */
-        DRAFT, 
-        /**
-         * The request is ready to be acted upon.
-         */
-        ACTIVE, 
-        /**
-         * The authorization/request to act has been temporarily withdrawn but is expected to resume in the future.
-         */
-        SUSPENDED, 
-        /**
-         * The authorization/request to act has been terminated prior to the full completion of the intended actions.  No further activity should occur.
-         */
-        CANCELLED, 
-        /**
-         * Activity against the request has been sufficiently completed to the satisfaction of the requester.
-         */
-        COMPLETED, 
-        /**
-         * This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be "cancelled" rather than "entered-in-error".).
-         */
-        ENTEREDINERROR, 
-        /**
-         * The authoring/source system does not know which of the status values currently applies for this observation. Note: This concept is not to be used for "other" - one of the listed statuses is presumed to apply, but the authoring/source system does not know which.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static SupplyrequestStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("suspended".equals(codeString))
-          return SUSPENDED;
-        if ("cancelled".equals(codeString))
-          return CANCELLED;
-        if ("completed".equals(codeString))
-          return COMPLETED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        throw new FHIRException("Unknown SupplyrequestStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DRAFT: return "draft";
-            case ACTIVE: return "active";
-            case SUSPENDED: return "suspended";
-            case CANCELLED: return "cancelled";
-            case COMPLETED: return "completed";
-            case ENTEREDINERROR: return "entered-in-error";
-            case UNKNOWN: return "unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/supplyrequest-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DRAFT: return "The request has been created but is not yet complete or ready for action.";
-            case ACTIVE: return "The request is ready to be acted upon.";
-            case SUSPENDED: return "The authorization/request to act has been temporarily withdrawn but is expected to resume in the future.";
-            case CANCELLED: return "The authorization/request to act has been terminated prior to the full completion of the intended actions.  No further activity should occur.";
-            case COMPLETED: return "Activity against the request has been sufficiently completed to the satisfaction of the requester.";
-            case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
-            case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this observation. Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, but the authoring/source system does not know which.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DRAFT: return "Draft";
-            case ACTIVE: return "Active";
-            case SUSPENDED: return "Suspended";
-            case CANCELLED: return "Cancelled";
-            case COMPLETED: return "Completed";
-            case ENTEREDINERROR: return "Entered in Error";
-            case UNKNOWN: return "Unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The request has been created but is not yet complete or ready for action.
+   */
+  DRAFT,
+  /**
+   * The request is ready to be acted upon.
+   */
+  ACTIVE,
+  /**
+   * The authorization/request to act has been temporarily withdrawn but is
+   * expected to resume in the future.
+   */
+  SUSPENDED,
+  /**
+   * The authorization/request to act has been terminated prior to the full
+   * completion of the intended actions. No further activity should occur.
+   */
+  CANCELLED,
+  /**
+   * Activity against the request has been sufficiently completed to the
+   * satisfaction of the requester.
+   */
+  COMPLETED,
+  /**
+   * This electronic record should never have existed, though it is possible that
+   * real-world decisions were based on it. (If real-world activity has occurred,
+   * the status should be "cancelled" rather than "entered-in-error".).
+   */
+  ENTEREDINERROR,
+  /**
+   * The authoring/source system does not know which of the status values
+   * currently applies for this observation. Note: This concept is not to be used
+   * for "other" - one of the listed statuses is presumed to apply, but the
+   * authoring/source system does not know which.
+   */
+  UNKNOWN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static SupplyrequestStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("draft".equals(codeString))
+      return DRAFT;
+    if ("active".equals(codeString))
+      return ACTIVE;
+    if ("suspended".equals(codeString))
+      return SUSPENDED;
+    if ("cancelled".equals(codeString))
+      return CANCELLED;
+    if ("completed".equals(codeString))
+      return COMPLETED;
+    if ("entered-in-error".equals(codeString))
+      return ENTEREDINERROR;
+    if ("unknown".equals(codeString))
+      return UNKNOWN;
+    throw new FHIRException("Unknown SupplyrequestStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DRAFT:
+      return "draft";
+    case ACTIVE:
+      return "active";
+    case SUSPENDED:
+      return "suspended";
+    case CANCELLED:
+      return "cancelled";
+    case COMPLETED:
+      return "completed";
+    case ENTEREDINERROR:
+      return "entered-in-error";
+    case UNKNOWN:
+      return "unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/supplyrequest-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DRAFT:
+      return "The request has been created but is not yet complete or ready for action.";
+    case ACTIVE:
+      return "The request is ready to be acted upon.";
+    case SUSPENDED:
+      return "The authorization/request to act has been temporarily withdrawn but is expected to resume in the future.";
+    case CANCELLED:
+      return "The authorization/request to act has been terminated prior to the full completion of the intended actions.  No further activity should occur.";
+    case COMPLETED:
+      return "Activity against the request has been sufficiently completed to the satisfaction of the requester.";
+    case ENTEREDINERROR:
+      return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
+    case UNKNOWN:
+      return "The authoring/source system does not know which of the status values currently applies for this observation. Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, but the authoring/source system does not know which.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DRAFT:
+      return "Draft";
+    case ACTIVE:
+      return "Active";
+    case SUSPENDED:
+      return "Suspended";
+    case CANCELLED:
+      return "Cancelled";
+    case COMPLETED:
+      return "Completed";
+    case ENTEREDINERROR:
+      return "Entered in Error";
+    case UNKNOWN:
+      return "Unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

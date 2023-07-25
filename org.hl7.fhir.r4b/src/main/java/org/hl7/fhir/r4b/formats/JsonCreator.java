@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.formats;
   
  */
 
-
-
 import java.io.IOException;
 import java.math.BigDecimal;
 
@@ -57,6 +55,7 @@ public interface JsonCreator {
   void value(Boolean value) throws IOException;
 
   void value(BigDecimal value) throws IOException;
+
   void valueNum(String value) throws IOException; // allow full control of representation
 
   void value(Integer value) throws IOException;
@@ -69,5 +68,6 @@ public interface JsonCreator {
 
   // only used by an creator that actually produces xhtml
   void link(String href);
+
   void anchor(String string);
 }

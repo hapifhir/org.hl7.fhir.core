@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,110 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum InvoiceStatus {
 
-        /**
-         * the invoice has been prepared but not yet finalized.
-         */
-        DRAFT, 
-        /**
-         * the invoice has been finalized and sent to the recipient.
-         */
-        ISSUED, 
-        /**
-         * the invoice has been balaced / completely paid.
-         */
-        BALANCED, 
-        /**
-         * the invoice was cancelled.
-         */
-        CANCELLED, 
-        /**
-         * the invoice was determined as entered in error before it was issued.
-         */
-        ENTEREDINERROR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static InvoiceStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("issued".equals(codeString))
-          return ISSUED;
-        if ("balanced".equals(codeString))
-          return BALANCED;
-        if ("cancelled".equals(codeString))
-          return CANCELLED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        throw new FHIRException("Unknown InvoiceStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DRAFT: return "draft";
-            case ISSUED: return "issued";
-            case BALANCED: return "balanced";
-            case CANCELLED: return "cancelled";
-            case ENTEREDINERROR: return "entered-in-error";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/invoice-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DRAFT: return "the invoice has been prepared but not yet finalized.";
-            case ISSUED: return "the invoice has been finalized and sent to the recipient.";
-            case BALANCED: return "the invoice has been balaced / completely paid.";
-            case CANCELLED: return "the invoice was cancelled.";
-            case ENTEREDINERROR: return "the invoice was determined as entered in error before it was issued.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DRAFT: return "draft";
-            case ISSUED: return "issued";
-            case BALANCED: return "balanced";
-            case CANCELLED: return "cancelled";
-            case ENTEREDINERROR: return "entered in error";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * the invoice has been prepared but not yet finalized.
+   */
+  DRAFT,
+  /**
+   * the invoice has been finalized and sent to the recipient.
+   */
+  ISSUED,
+  /**
+   * the invoice has been balaced / completely paid.
+   */
+  BALANCED,
+  /**
+   * the invoice was cancelled.
+   */
+  CANCELLED,
+  /**
+   * the invoice was determined as entered in error before it was issued.
+   */
+  ENTEREDINERROR,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static InvoiceStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("draft".equals(codeString))
+      return DRAFT;
+    if ("issued".equals(codeString))
+      return ISSUED;
+    if ("balanced".equals(codeString))
+      return BALANCED;
+    if ("cancelled".equals(codeString))
+      return CANCELLED;
+    if ("entered-in-error".equals(codeString))
+      return ENTEREDINERROR;
+    throw new FHIRException("Unknown InvoiceStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DRAFT:
+      return "draft";
+    case ISSUED:
+      return "issued";
+    case BALANCED:
+      return "balanced";
+    case CANCELLED:
+      return "cancelled";
+    case ENTEREDINERROR:
+      return "entered-in-error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/invoice-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DRAFT:
+      return "the invoice has been prepared but not yet finalized.";
+    case ISSUED:
+      return "the invoice has been finalized and sent to the recipient.";
+    case BALANCED:
+      return "the invoice has been balaced / completely paid.";
+    case CANCELLED:
+      return "the invoice was cancelled.";
+    case ENTEREDINERROR:
+      return "the invoice was determined as entered in error before it was issued.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DRAFT:
+      return "draft";
+    case ISSUED:
+      return "issued";
+    case BALANCED:
+      return "balanced";
+    case CANCELLED:
+      return "cancelled";
+    case ENTEREDINERROR:
+      return "entered in error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

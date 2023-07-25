@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.model;
   
  */
 
-
-
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 import org.hl7.fhir.utilities.Utilities;
@@ -41,18 +39,18 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 /**
  * Primitive type "code" in FHIR, when not bound to an enumerated list of codes
  */
-@DatatypeDef(name="code", profileOf=StringType.class)
-public class CodeType extends StringType implements Comparable<CodeType>, ICoding  {
+@DatatypeDef(name = "code", profileOf = StringType.class)
+public class CodeType extends StringType implements Comparable<CodeType>, ICoding {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	public CodeType() {
-		super();
-	}
+  public CodeType() {
+    super();
+  }
 
-	public CodeType(String theCode) {
-		setValue(theCode);
-	}
+  public CodeType(String theCode) {
+    setValue(theCode);
+  }
 
   public CodeType(String theCode, Element source) {
     setValue(theCode);
@@ -60,37 +58,36 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
     getExtension().addAll(source.getExtension());
   }
 
+  public int compareTo(CodeType theCode) {
+    if (theCode == null) {
+      return 1;
+    }
+    return defaultString(getValue()).compareTo(defaultString(theCode.getValue()));
+  }
 
-	public int compareTo(CodeType theCode) {
-		if (theCode == null) {
-			return 1;
-		}
-		return defaultString(getValue()).compareTo(defaultString(theCode.getValue()));
-	}	
+  @Override
+  protected String parse(String theValue) {
+    return theValue.trim();
+  }
 
-	@Override
-	protected String parse(String theValue) {
-		return theValue.trim();
-	}
+  @Override
+  protected String encode(String theValue) {
+    return theValue;
+  }
 
-	@Override
-	protected String encode(String theValue) {
-		return theValue;
-	}
-
-	@Override
-	public CodeType copy() {
-		CodeType ret = new CodeType(getValue());
+  @Override
+  public CodeType copy() {
+    CodeType ret = new CodeType(getValue());
     copyValues(ret);
     return ret;
-	}
+  }
 
-	public String fhirType() {
-		return "code";		
-	}
+  public String fhirType() {
+    return "code";
+  }
 
   private String system;
-  
+
   @Override
   public String getSystem() {
     return system;
@@ -100,7 +97,7 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
   public boolean hasSystem() {
     return system != null;
   }
-  
+
   public CodeType setSystem(String system) {
     this.system = system;
     return this;
@@ -115,7 +112,7 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
   public boolean hasVersion() {
     return false;
   }
-  
+
   @Override
   public String getDisplay() {
     return null;

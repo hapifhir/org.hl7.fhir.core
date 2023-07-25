@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaDysplasia {
 
-        /**
-         * Indicates the presence of dysplasia
-         */
-        WITHDYSPLASIA, 
-        /**
-         * Indicates the absence of dysplasia
-         */
-        WITHOUTDYSPLASIA, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static NehtaNehtaDysplasia fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("with_dysplasia".equals(codeString))
-          return WITHDYSPLASIA;
-        if ("without_dysplasia".equals(codeString))
-          return WITHOUTDYSPLASIA;
-        throw new FHIRException("Unknown NehtaNehtaDysplasia code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case WITHDYSPLASIA: return "with_dysplasia";
-            case WITHOUTDYSPLASIA: return "without_dysplasia";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/nehta-dysplasia";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case WITHDYSPLASIA: return "Indicates the presence of dysplasia";
-            case WITHOUTDYSPLASIA: return "Indicates the absence of dysplasia";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case WITHDYSPLASIA: return "With dysplasia";
-            case WITHOUTDYSPLASIA: return "Without dysplasia";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Indicates the presence of dysplasia
+   */
+  WITHDYSPLASIA,
+  /**
+   * Indicates the absence of dysplasia
+   */
+  WITHOUTDYSPLASIA,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static NehtaNehtaDysplasia fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("with_dysplasia".equals(codeString))
+      return WITHDYSPLASIA;
+    if ("without_dysplasia".equals(codeString))
+      return WITHOUTDYSPLASIA;
+    throw new FHIRException("Unknown NehtaNehtaDysplasia code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case WITHDYSPLASIA:
+      return "with_dysplasia";
+    case WITHOUTDYSPLASIA:
+      return "without_dysplasia";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/nehta-dysplasia";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case WITHDYSPLASIA:
+      return "Indicates the presence of dysplasia";
+    case WITHOUTDYSPLASIA:
+      return "Indicates the absence of dysplasia";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case WITHDYSPLASIA:
+      return "With dysplasia";
+    case WITHOUTDYSPLASIA:
+      return "Without dysplasia";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

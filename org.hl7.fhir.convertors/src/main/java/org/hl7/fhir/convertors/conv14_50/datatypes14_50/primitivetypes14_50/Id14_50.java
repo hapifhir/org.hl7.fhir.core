@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext14_50;
-import org.hl7.fhir.convertors.context.ConversionContext14_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Id14_50 {

@@ -1,7 +1,5 @@
 package org.hl7.fhir.r4.model;
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,281 +29,303 @@ package org.hl7.fhir.r4.model;
   
 */
 
-
 // Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.*;
-
-import org.hl7.fhir.utilities.Utilities;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-import ca.uhn.fhir.model.api.annotation.Block;
-import org.hl7.fhir.instance.model.api.*;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Description;
+
 /**
  * Specifies contact information for a person or organization.
  */
-@DatatypeDef(name="ContactDetail")
+@DatatypeDef(name = "ContactDetail")
 public class ContactDetail extends Type implements ICompositeType {
 
-    /**
-     * The name of an individual to contact.
-     */
-    @Child(name = "name", type = {StringType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of an individual to contact", formalDefinition="The name of an individual to contact." )
-    protected StringType name;
+  /**
+   * The name of an individual to contact.
+   */
+  @Child(name = "name", type = { StringType.class }, order = 0, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Name of an individual to contact", formalDefinition = "The name of an individual to contact.")
+  protected StringType name;
 
-    /**
-     * The contact details for the individual (if a name was provided) or the organization.
-     */
-    @Child(name = "telecom", type = {ContactPoint.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Contact details for individual or organization", formalDefinition="The contact details for the individual (if a name was provided) or the organization." )
-    protected List<ContactPoint> telecom;
+  /**
+   * The contact details for the individual (if a name was provided) or the
+   * organization.
+   */
+  @Child(name = "telecom", type = {
+      ContactPoint.class }, order = 1, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
+  @Description(shortDefinition = "Contact details for individual or organization", formalDefinition = "The contact details for the individual (if a name was provided) or the organization.")
+  protected List<ContactPoint> telecom;
 
-    private static final long serialVersionUID = 816838773L;
+  private static final long serialVersionUID = 816838773L;
 
   /**
    * Constructor
    */
-    public ContactDetail() {
-      super();
-    }
+  public ContactDetail() {
+    super();
+  }
 
-    /**
-     * @return {@link #name} (The name of an individual to contact.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-     */
-    public StringType getNameElement() { 
+  /**
+   * @return {@link #name} (The name of an individual to contact.). This is the
+   *         underlying object with id, value and extensions. The accessor
+   *         "getName" gives direct access to the value
+   */
+  public StringType getNameElement() {
+    if (this.name == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create ContactDetail.name");
+      else if (Configuration.doAutoCreate())
+        this.name = new StringType(); // bb
+    return this.name;
+  }
+
+  public boolean hasNameElement() {
+    return this.name != null && !this.name.isEmpty();
+  }
+
+  public boolean hasName() {
+    return this.name != null && !this.name.isEmpty();
+  }
+
+  /**
+   * @param value {@link #name} (The name of an individual to contact.). This is
+   *              the underlying object with id, value and extensions. The
+   *              accessor "getName" gives direct access to the value
+   */
+  public ContactDetail setNameElement(StringType value) {
+    this.name = value;
+    return this;
+  }
+
+  /**
+   * @return The name of an individual to contact.
+   */
+  public String getName() {
+    return this.name == null ? null : this.name.getValue();
+  }
+
+  /**
+   * @param value The name of an individual to contact.
+   */
+  public ContactDetail setName(String value) {
+    if (Utilities.noString(value))
+      this.name = null;
+    else {
       if (this.name == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ContactDetail.name");
-        else if (Configuration.doAutoCreate())
-          this.name = new StringType(); // bb
-      return this.name;
+        this.name = new StringType();
+      this.name.setValue(value);
     }
+    return this;
+  }
 
-    public boolean hasNameElement() { 
-      return this.name != null && !this.name.isEmpty();
-    }
+  /**
+   * @return {@link #telecom} (The contact details for the individual (if a name
+   *         was provided) or the organization.)
+   */
+  public List<ContactPoint> getTelecom() {
+    if (this.telecom == null)
+      this.telecom = new ArrayList<ContactPoint>();
+    return this.telecom;
+  }
 
-    public boolean hasName() { 
-      return this.name != null && !this.name.isEmpty();
-    }
+  /**
+   * @return Returns a reference to <code>this</code> for easy method chaining
+   */
+  public ContactDetail setTelecom(List<ContactPoint> theTelecom) {
+    this.telecom = theTelecom;
+    return this;
+  }
 
-    /**
-     * @param value {@link #name} (The name of an individual to contact.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-     */
-    public ContactDetail setNameElement(StringType value) { 
-      this.name = value;
-      return this;
-    }
-
-    /**
-     * @return The name of an individual to contact.
-     */
-    public String getName() { 
-      return this.name == null ? null : this.name.getValue();
-    }
-
-    /**
-     * @param value The name of an individual to contact.
-     */
-    public ContactDetail setName(String value) { 
-      if (Utilities.noString(value))
-        this.name = null;
-      else {
-        if (this.name == null)
-          this.name = new StringType();
-        this.name.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #telecom} (The contact details for the individual (if a name was provided) or the organization.)
-     */
-    public List<ContactPoint> getTelecom() { 
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      return this.telecom;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ContactDetail setTelecom(List<ContactPoint> theTelecom) { 
-      this.telecom = theTelecom;
-      return this;
-    }
-
-    public boolean hasTelecom() { 
-      if (this.telecom == null)
-        return false;
-      for (ContactPoint item : this.telecom)
-        if (!item.isEmpty())
-          return true;
+  public boolean hasTelecom() {
+    if (this.telecom == null)
       return false;
-    }
+    for (ContactPoint item : this.telecom)
+      if (!item.isEmpty())
+        return true;
+    return false;
+  }
 
-    public ContactPoint addTelecom() { //3
-      ContactPoint t = new ContactPoint();
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      this.telecom.add(t);
-      return t;
-    }
+  public ContactPoint addTelecom() { // 3
+    ContactPoint t = new ContactPoint();
+    if (this.telecom == null)
+      this.telecom = new ArrayList<ContactPoint>();
+    this.telecom.add(t);
+    return t;
+  }
 
-    public ContactDetail addTelecom(ContactPoint t) { //3
-      if (t == null)
-        return this;
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      this.telecom.add(t);
+  public ContactDetail addTelecom(ContactPoint t) { // 3
+    if (t == null)
       return this;
+    if (this.telecom == null)
+      this.telecom = new ArrayList<ContactPoint>();
+    this.telecom.add(t);
+    return this;
+  }
+
+  /**
+   * @return The first repetition of repeating field {@link #telecom}, creating it
+   *         if it does not already exist
+   */
+  public ContactPoint getTelecomFirstRep() {
+    if (getTelecom().isEmpty()) {
+      addTelecom();
+    }
+    return getTelecom().get(0);
+  }
+
+  protected void listChildren(List<Property> children) {
+    super.listChildren(children);
+    children.add(new Property("name", "string", "The name of an individual to contact.", 0, 1, name));
+    children.add(new Property("telecom", "ContactPoint",
+        "The contact details for the individual (if a name was provided) or the organization.", 0,
+        java.lang.Integer.MAX_VALUE, telecom));
+  }
+
+  @Override
+  public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+    switch (_hash) {
+    case 3373707:
+      /* name */ return new Property("name", "string", "The name of an individual to contact.", 0, 1, name);
+    case -1429363305:
+      /* telecom */ return new Property("telecom", "ContactPoint",
+          "The contact details for the individual (if a name was provided) or the organization.", 0,
+          java.lang.Integer.MAX_VALUE, telecom);
+    default:
+      return super.getNamedProperty(_hash, _name, _checkValid);
     }
 
-    /**
-     * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist
-     */
-    public ContactPoint getTelecomFirstRep() { 
-      if (getTelecom().isEmpty()) {
-        addTelecom();
-      }
-      return getTelecom().get(0);
+  }
+
+  @Override
+  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+    switch (hash) {
+    case 3373707:
+      /* name */ return this.name == null ? new Base[0] : new Base[] { this.name }; // StringType
+    case -1429363305:
+      /* telecom */ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
+    default:
+      return super.getProperty(hash, name, checkValid);
     }
 
-      protected void listChildren(List<Property> children) {
-        super.listChildren(children);
-        children.add(new Property("name", "string", "The name of an individual to contact.", 0, 1, name));
-        children.add(new Property("telecom", "ContactPoint", "The contact details for the individual (if a name was provided) or the organization.", 0, java.lang.Integer.MAX_VALUE, telecom));
-      }
+  }
 
-      @Override
-      public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-        switch (_hash) {
-        case 3373707: /*name*/  return new Property("name", "string", "The name of an individual to contact.", 0, 1, name);
-        case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "The contact details for the individual (if a name was provided) or the organization.", 0, java.lang.Integer.MAX_VALUE, telecom);
-        default: return super.getNamedProperty(_hash, _name, _checkValid);
-        }
+  @Override
+  public Base setProperty(int hash, String name, Base value) throws FHIRException {
+    switch (hash) {
+    case 3373707: // name
+      this.name = castToString(value); // StringType
+      return value;
+    case -1429363305: // telecom
+      this.getTelecom().add(castToContactPoint(value)); // ContactPoint
+      return value;
+    default:
+      return super.setProperty(hash, name, value);
+    }
 
-      }
+  }
 
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
-        case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
-        default: return super.getProperty(hash, name, checkValid);
-        }
+  @Override
+  public Base setProperty(String name, Base value) throws FHIRException {
+    if (name.equals("name")) {
+      this.name = castToString(value); // StringType
+    } else if (name.equals("telecom")) {
+      this.getTelecom().add(castToContactPoint(value));
+    } else
+      return super.setProperty(name, value);
+    return value;
+  }
 
-      }
+  @Override
+  public Base makeProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+    case 3373707:
+      return getNameElement();
+    case -1429363305:
+      return addTelecom();
+    default:
+      return super.makeProperty(hash, name);
+    }
 
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 3373707: // name
-          this.name = castToString(value); // StringType
-          return value;
-        case -1429363305: // telecom
-          this.getTelecom().add(castToContactPoint(value)); // ContactPoint
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
+  }
 
-      }
+  @Override
+  public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+    case 3373707:
+      /* name */ return new String[] { "string" };
+    case -1429363305:
+      /* telecom */ return new String[] { "ContactPoint" };
+    default:
+      return super.getTypesForProperty(hash, name);
+    }
 
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("name")) {
-          this.name = castToString(value); // StringType
-        } else if (name.equals("telecom")) {
-          this.getTelecom().add(castToContactPoint(value));
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
+  }
 
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3373707:  return getNameElement();
-        case -1429363305:  return addTelecom(); 
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3373707: /*name*/ return new String[] {"string"};
-        case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ContactDetail.name");
-        }
-        else if (name.equals("telecom")) {
-          return addTelecom();
-        }
-        else
-          return super.addChild(name);
-      }
+  @Override
+  public Base addChild(String name) throws FHIRException {
+    if (name.equals("name")) {
+      throw new FHIRException("Cannot call addChild on a primitive type ContactDetail.name");
+    } else if (name.equals("telecom")) {
+      return addTelecom();
+    } else
+      return super.addChild(name);
+  }
 
   public String fhirType() {
     return "ContactDetail";
 
   }
 
-      public ContactDetail copy() {
-        ContactDetail dst = new ContactDetail();
-        copyValues(dst);
-        return dst;
-      }
+  public ContactDetail copy() {
+    ContactDetail dst = new ContactDetail();
+    copyValues(dst);
+    return dst;
+  }
 
-      public void copyValues(ContactDetail dst) {
-        super.copyValues(dst);
-        dst.name = name == null ? null : name.copy();
-        if (telecom != null) {
-          dst.telecom = new ArrayList<ContactPoint>();
-          for (ContactPoint i : telecom)
-            dst.telecom.add(i.copy());
-        };
-      }
+  public void copyValues(ContactDetail dst) {
+    super.copyValues(dst);
+    dst.name = name == null ? null : name.copy();
+    if (telecom != null) {
+      dst.telecom = new ArrayList<ContactPoint>();
+      for (ContactPoint i : telecom)
+        dst.telecom.add(i.copy());
+    }
+    ;
+  }
 
-      protected ContactDetail typedCopy() {
-        return copy();
-      }
+  protected ContactDetail typedCopy() {
+    return copy();
+  }
 
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof ContactDetail))
-          return false;
-        ContactDetail o = (ContactDetail) other_;
-        return compareDeep(name, o.name, true) && compareDeep(telecom, o.telecom, true);
-      }
+  @Override
+  public boolean equalsDeep(Base other_) {
+    if (!super.equalsDeep(other_))
+      return false;
+    if (!(other_ instanceof ContactDetail))
+      return false;
+    ContactDetail o = (ContactDetail) other_;
+    return compareDeep(name, o.name, true) && compareDeep(telecom, o.telecom, true);
+  }
 
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof ContactDetail))
-          return false;
-        ContactDetail o = (ContactDetail) other_;
-        return compareValues(name, o.name, true);
-      }
+  @Override
+  public boolean equalsShallow(Base other_) {
+    if (!super.equalsShallow(other_))
+      return false;
+    if (!(other_ instanceof ContactDetail))
+      return false;
+    ContactDetail o = (ContactDetail) other_;
+    return compareValues(name, o.name, true);
+  }
 
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, telecom);
-      }
-
+  public boolean isEmpty() {
+    return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, telecom);
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class HspcDepartureTransportModeEnumFactory implements EnumFactory<HspcDepartureTransportMode> {
@@ -44,7 +40,7 @@ public class HspcDepartureTransportModeEnumFactory implements EnumFactory<HspcDe
       return null;
     if ("14586425".equals(codeString))
       return HspcDepartureTransportMode._14586425;
-    throw new IllegalArgumentException("Unknown HspcDepartureTransportMode code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown HspcDepartureTransportMode code '" + codeString + "'");
   }
 
   public String toCode(HspcDepartureTransportMode code) {
@@ -53,8 +49,8 @@ public class HspcDepartureTransportModeEnumFactory implements EnumFactory<HspcDe
     return "?";
   }
 
-    public String toSystem(HspcDepartureTransportMode code) {
-      return code.getSystem();
-      }
+  public String toSystem(HspcDepartureTransportMode code) {
+    return code.getSystem();
+  }
 
 }

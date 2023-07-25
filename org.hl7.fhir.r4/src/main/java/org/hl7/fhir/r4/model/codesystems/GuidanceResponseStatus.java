@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,124 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum GuidanceResponseStatus {
 
-        /**
-         * The request was processed successfully.
-         */
-        SUCCESS, 
-        /**
-         * The request was processed successfully, but more data may result in a more complete evaluation.
-         */
-        DATAREQUESTED, 
-        /**
-         * The request was processed, but more data is required to complete the evaluation.
-         */
-        DATAREQUIRED, 
-        /**
-         * The request is currently being processed.
-         */
-        INPROGRESS, 
-        /**
-         * The request was not processed successfully.
-         */
-        FAILURE, 
-        /**
-         * The response was entered in error.
-         */
-        ENTEREDINERROR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static GuidanceResponseStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("success".equals(codeString))
-          return SUCCESS;
-        if ("data-requested".equals(codeString))
-          return DATAREQUESTED;
-        if ("data-required".equals(codeString))
-          return DATAREQUIRED;
-        if ("in-progress".equals(codeString))
-          return INPROGRESS;
-        if ("failure".equals(codeString))
-          return FAILURE;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        throw new FHIRException("Unknown GuidanceResponseStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SUCCESS: return "success";
-            case DATAREQUESTED: return "data-requested";
-            case DATAREQUIRED: return "data-required";
-            case INPROGRESS: return "in-progress";
-            case FAILURE: return "failure";
-            case ENTEREDINERROR: return "entered-in-error";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/guidance-response-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SUCCESS: return "The request was processed successfully.";
-            case DATAREQUESTED: return "The request was processed successfully, but more data may result in a more complete evaluation.";
-            case DATAREQUIRED: return "The request was processed, but more data is required to complete the evaluation.";
-            case INPROGRESS: return "The request is currently being processed.";
-            case FAILURE: return "The request was not processed successfully.";
-            case ENTEREDINERROR: return "The response was entered in error.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SUCCESS: return "Success";
-            case DATAREQUESTED: return "Data Requested";
-            case DATAREQUIRED: return "Data Required";
-            case INPROGRESS: return "In Progress";
-            case FAILURE: return "Failure";
-            case ENTEREDINERROR: return "Entered In Error";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The request was processed successfully.
+   */
+  SUCCESS,
+  /**
+   * The request was processed successfully, but more data may result in a more
+   * complete evaluation.
+   */
+  DATAREQUESTED,
+  /**
+   * The request was processed, but more data is required to complete the
+   * evaluation.
+   */
+  DATAREQUIRED,
+  /**
+   * The request is currently being processed.
+   */
+  INPROGRESS,
+  /**
+   * The request was not processed successfully.
+   */
+  FAILURE,
+  /**
+   * The response was entered in error.
+   */
+  ENTEREDINERROR,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static GuidanceResponseStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("success".equals(codeString))
+      return SUCCESS;
+    if ("data-requested".equals(codeString))
+      return DATAREQUESTED;
+    if ("data-required".equals(codeString))
+      return DATAREQUIRED;
+    if ("in-progress".equals(codeString))
+      return INPROGRESS;
+    if ("failure".equals(codeString))
+      return FAILURE;
+    if ("entered-in-error".equals(codeString))
+      return ENTEREDINERROR;
+    throw new FHIRException("Unknown GuidanceResponseStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SUCCESS:
+      return "success";
+    case DATAREQUESTED:
+      return "data-requested";
+    case DATAREQUIRED:
+      return "data-required";
+    case INPROGRESS:
+      return "in-progress";
+    case FAILURE:
+      return "failure";
+    case ENTEREDINERROR:
+      return "entered-in-error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/guidance-response-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SUCCESS:
+      return "The request was processed successfully.";
+    case DATAREQUESTED:
+      return "The request was processed successfully, but more data may result in a more complete evaluation.";
+    case DATAREQUIRED:
+      return "The request was processed, but more data is required to complete the evaluation.";
+    case INPROGRESS:
+      return "The request is currently being processed.";
+    case FAILURE:
+      return "The request was not processed successfully.";
+    case ENTEREDINERROR:
+      return "The response was entered in error.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SUCCESS:
+      return "Success";
+    case DATAREQUESTED:
+      return "Data Requested";
+    case DATAREQUIRED:
+      return "Data Required";
+    case INPROGRESS:
+      return "In Progress";
+    case FAILURE:
+      return "Failure";
+    case ENTEREDINERROR:
+      return "Entered In Error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,50 +31,62 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcDepartureTransportMode {
 
-        /**
-         * The subject departed by means of a law enforcement vehicle.
-         */
-        _14586425, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static HspcDepartureTransportMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("14586425".equals(codeString))
-          return _14586425;
-        throw new FHIRException("Unknown HspcDepartureTransportMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _14586425: return "14586425";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/hspc-departureTransportationMode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _14586425: return "The subject departed by means of a law enforcement vehicle.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _14586425: return "Left w/ Law Enforcement";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The subject departed by means of a law enforcement vehicle.
+   */
+  _14586425,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static HspcDepartureTransportMode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("14586425".equals(codeString))
+      return _14586425;
+    throw new FHIRException("Unknown HspcDepartureTransportMode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case _14586425:
+      return "14586425";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/hspc-departureTransportationMode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case _14586425:
+      return "The subject departed by means of a law enforcement vehicle.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case _14586425:
+      return "Left w/ Law Enforcement";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,111 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ImmunizationRecommendationStatus {
 
-        /**
-         * The patient is due for their next vaccination.
-         */
-        DUE, 
-        /**
-         * The patient is considered overdue for their next vaccination.
-         */
-        OVERDUE, 
-        /**
-         * The patient is immune to the target disease and further immunization against the disease is not likely to provide benefit.
-         */
-        IMMUNE, 
-        /**
-         * The patient is contraindicated for futher doses.
-         */
-        CONTRAINDICATED, 
-        /**
-         * The patient is fully protected and no further doses are recommended.
-         */
-        COMPLETE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ImmunizationRecommendationStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("due".equals(codeString))
-          return DUE;
-        if ("overdue".equals(codeString))
-          return OVERDUE;
-        if ("immune".equals(codeString))
-          return IMMUNE;
-        if ("contraindicated".equals(codeString))
-          return CONTRAINDICATED;
-        if ("complete".equals(codeString))
-          return COMPLETE;
-        throw new FHIRException("Unknown ImmunizationRecommendationStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DUE: return "due";
-            case OVERDUE: return "overdue";
-            case IMMUNE: return "immune";
-            case CONTRAINDICATED: return "contraindicated";
-            case COMPLETE: return "complete";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/immunization-recommendation-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DUE: return "The patient is due for their next vaccination.";
-            case OVERDUE: return "The patient is considered overdue for their next vaccination.";
-            case IMMUNE: return "The patient is immune to the target disease and further immunization against the disease is not likely to provide benefit.";
-            case CONTRAINDICATED: return "The patient is contraindicated for futher doses.";
-            case COMPLETE: return "The patient is fully protected and no further doses are recommended.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DUE: return "Due";
-            case OVERDUE: return "Overdue";
-            case IMMUNE: return "Immune";
-            case CONTRAINDICATED: return "Contraindicated";
-            case COMPLETE: return "Complete";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The patient is due for their next vaccination.
+   */
+  DUE,
+  /**
+   * The patient is considered overdue for their next vaccination.
+   */
+  OVERDUE,
+  /**
+   * The patient is immune to the target disease and further immunization against
+   * the disease is not likely to provide benefit.
+   */
+  IMMUNE,
+  /**
+   * The patient is contraindicated for futher doses.
+   */
+  CONTRAINDICATED,
+  /**
+   * The patient is fully protected and no further doses are recommended.
+   */
+  COMPLETE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ImmunizationRecommendationStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("due".equals(codeString))
+      return DUE;
+    if ("overdue".equals(codeString))
+      return OVERDUE;
+    if ("immune".equals(codeString))
+      return IMMUNE;
+    if ("contraindicated".equals(codeString))
+      return CONTRAINDICATED;
+    if ("complete".equals(codeString))
+      return COMPLETE;
+    throw new FHIRException("Unknown ImmunizationRecommendationStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DUE:
+      return "due";
+    case OVERDUE:
+      return "overdue";
+    case IMMUNE:
+      return "immune";
+    case CONTRAINDICATED:
+      return "contraindicated";
+    case COMPLETE:
+      return "complete";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/immunization-recommendation-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DUE:
+      return "The patient is due for their next vaccination.";
+    case OVERDUE:
+      return "The patient is considered overdue for their next vaccination.";
+    case IMMUNE:
+      return "The patient is immune to the target disease and further immunization against the disease is not likely to provide benefit.";
+    case CONTRAINDICATED:
+      return "The patient is contraindicated for futher doses.";
+    case COMPLETE:
+      return "The patient is fully protected and no further doses are recommended.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DUE:
+      return "Due";
+    case OVERDUE:
+      return "Overdue";
+    case IMMUNE:
+      return "Immune";
+    case CONTRAINDICATED:
+      return "Contraindicated";
+    case COMPLETE:
+      return "Complete";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

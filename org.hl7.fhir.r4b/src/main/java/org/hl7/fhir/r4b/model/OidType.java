@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.model;
   
  */
 
-
-
 import java.net.URI;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -38,43 +36,43 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 /**
  * Primitive type "oid" in FHIR: an OID represented as urn:oid:0.1.2.3.4...
  */
-@DatatypeDef(name="oid", profileOf=UriType.class)
+@DatatypeDef(name = "oid", profileOf = UriType.class)
 public class OidType extends UriType {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	/**
-	 * Constructor
-	 */
-	public OidType() {
-		super();
-	}
+  /**
+   * Constructor
+   */
+  public OidType() {
+    super();
+  }
 
-	/**
-	 * Constructor
-	 */
-	public OidType(String theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public OidType(String theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	public OidType(URI theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public OidType(URI theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	@Override
-	public OidType copy() {
-		OidType ret = new OidType(getValue());
+  /**
+   * Constructor
+   */
+  @Override
+  public OidType copy() {
+    OidType ret = new OidType(getValue());
     copyValues(ret);
     return ret;
-	}
+  }
 
-	public String fhirType() {
-		return "oid";		
-	}
+  public String fhirType() {
+    return "oid";
+  }
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Forms {
 
-        /**
-         * Example: The #1 form to be used when printing this information.
-         */
-        _1, 
-        /**
-         * Example: The #2 form to be used when printing this information.
-         */
-        _2, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static Forms fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("1".equals(codeString))
-          return _1;
-        if ("2".equals(codeString))
-          return _2;
-        throw new FHIRException("Unknown Forms code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _1: return "1";
-            case _2: return "2";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/forms-codes";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _1: return "Example: The #1 form to be used when printing this information.";
-            case _2: return "Example: The #2 form to be used when printing this information.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _1: return "Form #1";
-            case _2: return "Form #1";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Example: The #1 form to be used when printing this information.
+   */
+  _1,
+  /**
+   * Example: The #2 form to be used when printing this information.
+   */
+  _2,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static Forms fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("1".equals(codeString))
+      return _1;
+    if ("2".equals(codeString))
+      return _2;
+    throw new FHIRException("Unknown Forms code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case _1:
+      return "1";
+    case _2:
+      return "2";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/forms-codes";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case _1:
+      return "Example: The #1 form to be used when printing this information.";
+    case _2:
+      return "Example: The #2 form to be used when printing this information.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case _1:
+      return "Form #1";
+    case _2:
+      return "Form #1";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,115 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum FinancialTaskcode {
 
-        /**
-         * Cancel or reverse a resource, such as a claim or preauthorization, which is in-process or complete.
-         */
-        CANCEL, 
-        /**
-         * Retrieve selected or all queued resources or messages.
-         */
-        POLL, 
-        /**
-         * Release any reserved funds or material obligations associated with a resource. For example, any unused but reserved funds or treatment allowance associated with a preauthorization once treatment is complete.
-         */
-        RELEASE, 
-        /**
-         * Indication that the processing of a resource, such as a claim, for some or all of the required work is now being requested.
-         */
-        REPROCESS, 
-        /**
-         * Check on the processing status of a resource such as the adjudication of a claim.
-         */
-        STATUS, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static FinancialTaskcode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("cancel".equals(codeString))
-          return CANCEL;
-        if ("poll".equals(codeString))
-          return POLL;
-        if ("release".equals(codeString))
-          return RELEASE;
-        if ("reprocess".equals(codeString))
-          return REPROCESS;
-        if ("status".equals(codeString))
-          return STATUS;
-        throw new FHIRException("Unknown FinancialTaskcode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CANCEL: return "cancel";
-            case POLL: return "poll";
-            case RELEASE: return "release";
-            case REPROCESS: return "reprocess";
-            case STATUS: return "status";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/financialtaskcode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CANCEL: return "Cancel or reverse a resource, such as a claim or preauthorization, which is in-process or complete.";
-            case POLL: return "Retrieve selected or all queued resources or messages.";
-            case RELEASE: return "Release any reserved funds or material obligations associated with a resource. For example, any unused but reserved funds or treatment allowance associated with a preauthorization once treatment is complete.";
-            case REPROCESS: return "Indication that the processing of a resource, such as a claim, for some or all of the required work is now being requested.";
-            case STATUS: return "Check on the processing status of a resource such as the adjudication of a claim.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CANCEL: return "Cancel";
-            case POLL: return "Poll";
-            case RELEASE: return "Release";
-            case REPROCESS: return "Reprocess";
-            case STATUS: return "Status check";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Cancel or reverse a resource, such as a claim or preauthorization, which is
+   * in-process or complete.
+   */
+  CANCEL,
+  /**
+   * Retrieve selected or all queued resources or messages.
+   */
+  POLL,
+  /**
+   * Release any reserved funds or material obligations associated with a
+   * resource. For example, any unused but reserved funds or treatment allowance
+   * associated with a preauthorization once treatment is complete.
+   */
+  RELEASE,
+  /**
+   * Indication that the processing of a resource, such as a claim, for some or
+   * all of the required work is now being requested.
+   */
+  REPROCESS,
+  /**
+   * Check on the processing status of a resource such as the adjudication of a
+   * claim.
+   */
+  STATUS,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static FinancialTaskcode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("cancel".equals(codeString))
+      return CANCEL;
+    if ("poll".equals(codeString))
+      return POLL;
+    if ("release".equals(codeString))
+      return RELEASE;
+    if ("reprocess".equals(codeString))
+      return REPROCESS;
+    if ("status".equals(codeString))
+      return STATUS;
+    throw new FHIRException("Unknown FinancialTaskcode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case CANCEL:
+      return "cancel";
+    case POLL:
+      return "poll";
+    case RELEASE:
+      return "release";
+    case REPROCESS:
+      return "reprocess";
+    case STATUS:
+      return "status";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/financialtaskcode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case CANCEL:
+      return "Cancel or reverse a resource, such as a claim or preauthorization, which is in-process or complete.";
+    case POLL:
+      return "Retrieve selected or all queued resources or messages.";
+    case RELEASE:
+      return "Release any reserved funds or material obligations associated with a resource. For example, any unused but reserved funds or treatment allowance associated with a preauthorization once treatment is complete.";
+    case REPROCESS:
+      return "Indication that the processing of a resource, such as a claim, for some or all of the required work is now being requested.";
+    case STATUS:
+      return "Check on the processing status of a resource such as the adjudication of a claim.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case CANCEL:
+      return "Cancel";
+    case POLL:
+      return "Poll";
+    case RELEASE:
+      return "Release";
+    case REPROCESS:
+      return "Reprocess";
+    case STATUS:
+      return "Status check";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

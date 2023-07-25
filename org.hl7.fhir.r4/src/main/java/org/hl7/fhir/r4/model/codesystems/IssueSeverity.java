@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,100 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum IssueSeverity {
 
-        /**
-         * The issue caused the action to fail and no further checking could be performed.
-         */
-        FATAL, 
-        /**
-         * The issue is sufficiently important to cause the action to fail.
-         */
-        ERROR, 
-        /**
-         * The issue is not important enough to cause the action to fail but may cause it to be performed suboptimally or in a way that is not as desired.
-         */
-        WARNING, 
-        /**
-         * The issue has no relation to the degree of success of the action.
-         */
-        INFORMATION, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static IssueSeverity fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("fatal".equals(codeString))
-          return FATAL;
-        if ("error".equals(codeString))
-          return ERROR;
-        if ("warning".equals(codeString))
-          return WARNING;
-        if ("information".equals(codeString))
-          return INFORMATION;
-        throw new FHIRException("Unknown IssueSeverity code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case FATAL: return "fatal";
-            case ERROR: return "error";
-            case WARNING: return "warning";
-            case INFORMATION: return "information";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/issue-severity";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case FATAL: return "The issue caused the action to fail and no further checking could be performed.";
-            case ERROR: return "The issue is sufficiently important to cause the action to fail.";
-            case WARNING: return "The issue is not important enough to cause the action to fail but may cause it to be performed suboptimally or in a way that is not as desired.";
-            case INFORMATION: return "The issue has no relation to the degree of success of the action.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case FATAL: return "Fatal";
-            case ERROR: return "Error";
-            case WARNING: return "Warning";
-            case INFORMATION: return "Information";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The issue caused the action to fail and no further checking could be
+   * performed.
+   */
+  FATAL,
+  /**
+   * The issue is sufficiently important to cause the action to fail.
+   */
+  ERROR,
+  /**
+   * The issue is not important enough to cause the action to fail but may cause
+   * it to be performed suboptimally or in a way that is not as desired.
+   */
+  WARNING,
+  /**
+   * The issue has no relation to the degree of success of the action.
+   */
+  INFORMATION,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static IssueSeverity fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("fatal".equals(codeString))
+      return FATAL;
+    if ("error".equals(codeString))
+      return ERROR;
+    if ("warning".equals(codeString))
+      return WARNING;
+    if ("information".equals(codeString))
+      return INFORMATION;
+    throw new FHIRException("Unknown IssueSeverity code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case FATAL:
+      return "fatal";
+    case ERROR:
+      return "error";
+    case WARNING:
+      return "warning";
+    case INFORMATION:
+      return "information";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/issue-severity";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case FATAL:
+      return "The issue caused the action to fail and no further checking could be performed.";
+    case ERROR:
+      return "The issue is sufficiently important to cause the action to fail.";
+    case WARNING:
+      return "The issue is not important enough to cause the action to fail but may cause it to be performed suboptimally or in a way that is not as desired.";
+    case INFORMATION:
+      return "The issue has no relation to the degree of success of the action.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case FATAL:
+      return "Fatal";
+    case ERROR:
+      return "Error";
+    case WARNING:
+      return "Warning";
+    case INFORMATION:
+      return "Information";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

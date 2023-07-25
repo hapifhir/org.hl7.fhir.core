@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,110 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ReportActionResultCodes {
 
-        /**
-         * The action was successful.
-         */
-        PASS, 
-        /**
-         * The action was skipped.
-         */
-        SKIP, 
-        /**
-         * The action failed.
-         */
-        FAIL, 
-        /**
-         * The action passed but with warnings.
-         */
-        WARNING, 
-        /**
-         * The action encountered a fatal error and the engine was unable to process.
-         */
-        ERROR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ReportActionResultCodes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("pass".equals(codeString))
-          return PASS;
-        if ("skip".equals(codeString))
-          return SKIP;
-        if ("fail".equals(codeString))
-          return FAIL;
-        if ("warning".equals(codeString))
-          return WARNING;
-        if ("error".equals(codeString))
-          return ERROR;
-        throw new FHIRException("Unknown ReportActionResultCodes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PASS: return "pass";
-            case SKIP: return "skip";
-            case FAIL: return "fail";
-            case WARNING: return "warning";
-            case ERROR: return "error";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/report-action-result-codes";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PASS: return "The action was successful.";
-            case SKIP: return "The action was skipped.";
-            case FAIL: return "The action failed.";
-            case WARNING: return "The action passed but with warnings.";
-            case ERROR: return "The action encountered a fatal error and the engine was unable to process.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PASS: return "Pass";
-            case SKIP: return "Skip";
-            case FAIL: return "Fail";
-            case WARNING: return "Warning";
-            case ERROR: return "Error";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The action was successful.
+   */
+  PASS,
+  /**
+   * The action was skipped.
+   */
+  SKIP,
+  /**
+   * The action failed.
+   */
+  FAIL,
+  /**
+   * The action passed but with warnings.
+   */
+  WARNING,
+  /**
+   * The action encountered a fatal error and the engine was unable to process.
+   */
+  ERROR,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ReportActionResultCodes fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("pass".equals(codeString))
+      return PASS;
+    if ("skip".equals(codeString))
+      return SKIP;
+    if ("fail".equals(codeString))
+      return FAIL;
+    if ("warning".equals(codeString))
+      return WARNING;
+    if ("error".equals(codeString))
+      return ERROR;
+    throw new FHIRException("Unknown ReportActionResultCodes code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PASS:
+      return "pass";
+    case SKIP:
+      return "skip";
+    case FAIL:
+      return "fail";
+    case WARNING:
+      return "warning";
+    case ERROR:
+      return "error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/report-action-result-codes";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PASS:
+      return "The action was successful.";
+    case SKIP:
+      return "The action was skipped.";
+    case FAIL:
+      return "The action failed.";
+    case WARNING:
+      return "The action passed but with warnings.";
+    case ERROR:
+      return "The action encountered a fatal error and the engine was unable to process.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PASS:
+      return "Pass";
+    case SKIP:
+      return "Skip";
+    case FAIL:
+      return "Fail";
+    case WARNING:
+      return "Warning";
+    case ERROR:
+      return "Error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

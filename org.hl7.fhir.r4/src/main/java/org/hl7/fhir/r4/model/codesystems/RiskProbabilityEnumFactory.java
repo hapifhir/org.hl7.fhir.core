@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class RiskProbabilityEnumFactory implements EnumFactory<RiskProbability> {
@@ -52,7 +48,7 @@ public class RiskProbabilityEnumFactory implements EnumFactory<RiskProbability> 
       return RiskProbability.HIGH;
     if ("certain".equals(codeString))
       return RiskProbability.CERTAIN;
-    throw new IllegalArgumentException("Unknown RiskProbability code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown RiskProbability code '" + codeString + "'");
   }
 
   public String toCode(RiskProbability code) {
@@ -69,8 +65,8 @@ public class RiskProbabilityEnumFactory implements EnumFactory<RiskProbability> 
     return "?";
   }
 
-    public String toSystem(RiskProbability code) {
-      return code.getSystem();
-      }
+  public String toSystem(RiskProbability code) {
+    return code.getSystem();
+  }
 
 }

@@ -11,7 +11,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class EncounterRenderer extends ResourceRenderer {
 
-
   public EncounterRenderer(RenderingContext context) {
     super(context);
   }
@@ -29,6 +28,5 @@ public class EncounterRenderer extends ResourceRenderer {
   public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return "Not done yet";
   }
-
 
 }

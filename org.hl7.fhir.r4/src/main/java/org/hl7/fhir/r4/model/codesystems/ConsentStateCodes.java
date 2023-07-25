@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,124 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConsentStateCodes {
 
-        /**
-         * The consent is in development or awaiting use but is not yet intended to be acted upon.
-         */
-        DRAFT, 
-        /**
-         * The consent has been proposed but not yet agreed to by all parties. The negotiation stage.
-         */
-        PROPOSED, 
-        /**
-         * The consent is to be followed and enforced.
-         */
-        ACTIVE, 
-        /**
-         * The consent has been rejected by one or more of the parties.
-         */
-        REJECTED, 
-        /**
-         * The consent is terminated or replaced.
-         */
-        INACTIVE, 
-        /**
-         * The consent was created wrongly (e.g. wrong patient) and should be ignored.
-         */
-        ENTEREDINERROR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ConsentStateCodes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("proposed".equals(codeString))
-          return PROPOSED;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("rejected".equals(codeString))
-          return REJECTED;
-        if ("inactive".equals(codeString))
-          return INACTIVE;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        throw new FHIRException("Unknown ConsentStateCodes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DRAFT: return "draft";
-            case PROPOSED: return "proposed";
-            case ACTIVE: return "active";
-            case REJECTED: return "rejected";
-            case INACTIVE: return "inactive";
-            case ENTEREDINERROR: return "entered-in-error";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/consent-state-codes";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DRAFT: return "The consent is in development or awaiting use but is not yet intended to be acted upon.";
-            case PROPOSED: return "The consent has been proposed but not yet agreed to by all parties. The negotiation stage.";
-            case ACTIVE: return "The consent is to be followed and enforced.";
-            case REJECTED: return "The consent has been rejected by one or more of the parties.";
-            case INACTIVE: return "The consent is terminated or replaced.";
-            case ENTEREDINERROR: return "The consent was created wrongly (e.g. wrong patient) and should be ignored.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DRAFT: return "Pending";
-            case PROPOSED: return "Proposed";
-            case ACTIVE: return "Active";
-            case REJECTED: return "Rejected";
-            case INACTIVE: return "Inactive";
-            case ENTEREDINERROR: return "Entered in Error";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The consent is in development or awaiting use but is not yet intended to be
+   * acted upon.
+   */
+  DRAFT,
+  /**
+   * The consent has been proposed but not yet agreed to by all parties. The
+   * negotiation stage.
+   */
+  PROPOSED,
+  /**
+   * The consent is to be followed and enforced.
+   */
+  ACTIVE,
+  /**
+   * The consent has been rejected by one or more of the parties.
+   */
+  REJECTED,
+  /**
+   * The consent is terminated or replaced.
+   */
+  INACTIVE,
+  /**
+   * The consent was created wrongly (e.g. wrong patient) and should be ignored.
+   */
+  ENTEREDINERROR,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ConsentStateCodes fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("draft".equals(codeString))
+      return DRAFT;
+    if ("proposed".equals(codeString))
+      return PROPOSED;
+    if ("active".equals(codeString))
+      return ACTIVE;
+    if ("rejected".equals(codeString))
+      return REJECTED;
+    if ("inactive".equals(codeString))
+      return INACTIVE;
+    if ("entered-in-error".equals(codeString))
+      return ENTEREDINERROR;
+    throw new FHIRException("Unknown ConsentStateCodes code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DRAFT:
+      return "draft";
+    case PROPOSED:
+      return "proposed";
+    case ACTIVE:
+      return "active";
+    case REJECTED:
+      return "rejected";
+    case INACTIVE:
+      return "inactive";
+    case ENTEREDINERROR:
+      return "entered-in-error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/consent-state-codes";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DRAFT:
+      return "The consent is in development or awaiting use but is not yet intended to be acted upon.";
+    case PROPOSED:
+      return "The consent has been proposed but not yet agreed to by all parties. The negotiation stage.";
+    case ACTIVE:
+      return "The consent is to be followed and enforced.";
+    case REJECTED:
+      return "The consent has been rejected by one or more of the parties.";
+    case INACTIVE:
+      return "The consent is terminated or replaced.";
+    case ENTEREDINERROR:
+      return "The consent was created wrongly (e.g. wrong patient) and should be ignored.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DRAFT:
+      return "Pending";
+    case PROPOSED:
+      return "Proposed";
+    case ACTIVE:
+      return "Active";
+    case REJECTED:
+      return "Rejected";
+    case INACTIVE:
+      return "Inactive";
+    case ENTEREDINERROR:
+      return "Entered in Error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

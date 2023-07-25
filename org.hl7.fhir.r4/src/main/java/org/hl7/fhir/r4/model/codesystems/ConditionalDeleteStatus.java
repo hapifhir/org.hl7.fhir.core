@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,87 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConditionalDeleteStatus {
 
-        /**
-         * No support for conditional deletes.
-         */
-        NOTSUPPORTED, 
-        /**
-         * Conditional deletes are supported, but only single resources at a time.
-         */
-        SINGLE, 
-        /**
-         * Conditional deletes are supported, and multiple resources can be deleted in a single interaction.
-         */
-        MULTIPLE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ConditionalDeleteStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("not-supported".equals(codeString))
-          return NOTSUPPORTED;
-        if ("single".equals(codeString))
-          return SINGLE;
-        if ("multiple".equals(codeString))
-          return MULTIPLE;
-        throw new FHIRException("Unknown ConditionalDeleteStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NOTSUPPORTED: return "not-supported";
-            case SINGLE: return "single";
-            case MULTIPLE: return "multiple";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/conditional-delete-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NOTSUPPORTED: return "No support for conditional deletes.";
-            case SINGLE: return "Conditional deletes are supported, but only single resources at a time.";
-            case MULTIPLE: return "Conditional deletes are supported, and multiple resources can be deleted in a single interaction.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NOTSUPPORTED: return "Not Supported";
-            case SINGLE: return "Single Deletes Supported";
-            case MULTIPLE: return "Multiple Deletes Supported";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * No support for conditional deletes.
+   */
+  NOTSUPPORTED,
+  /**
+   * Conditional deletes are supported, but only single resources at a time.
+   */
+  SINGLE,
+  /**
+   * Conditional deletes are supported, and multiple resources can be deleted in a
+   * single interaction.
+   */
+  MULTIPLE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ConditionalDeleteStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("not-supported".equals(codeString))
+      return NOTSUPPORTED;
+    if ("single".equals(codeString))
+      return SINGLE;
+    if ("multiple".equals(codeString))
+      return MULTIPLE;
+    throw new FHIRException("Unknown ConditionalDeleteStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case NOTSUPPORTED:
+      return "not-supported";
+    case SINGLE:
+      return "single";
+    case MULTIPLE:
+      return "multiple";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/conditional-delete-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case NOTSUPPORTED:
+      return "No support for conditional deletes.";
+    case SINGLE:
+      return "Conditional deletes are supported, but only single resources at a time.";
+    case MULTIPLE:
+      return "Conditional deletes are supported, and multiple resources can be deleted in a single interaction.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case NOTSUPPORTED:
+      return "Not Supported";
+    case SINGLE:
+      return "Single Deletes Supported";
+    case MULTIPLE:
+      return "Multiple Deletes Supported";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

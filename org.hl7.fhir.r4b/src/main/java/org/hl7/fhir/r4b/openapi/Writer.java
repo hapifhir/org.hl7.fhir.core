@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.openapi;
   
  */
 
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -47,19 +45,19 @@ import com.google.gson.JsonSyntaxException;
 public class Writer extends BaseWriter {
 
   private OutputStream stream;
-  
+
   public Writer(OutputStream stream) {
-    super( new JsonObject());
+    super(new JsonObject());
     this.stream = stream;
     object.addProperty("openapi", "3.0.2");
   }
-  
+
   public Writer(OutputStream stream, InputStream template) throws JsonSyntaxException, IOException {
     super(parse(template));
     this.stream = stream;
     object.addProperty("openapi", "3.0.2");
   }
-  
+
   private static JsonObject parse(InputStream template) throws JsonSyntaxException, IOException {
     JsonParser parser = new com.google.gson.JsonParser();
     return parser.parse(TextFile.streamToString(template)).getAsJsonObject();
@@ -69,11 +67,11 @@ public class Writer extends BaseWriter {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(object);
     OutputStreamWriter sw = new OutputStreamWriter(stream, "UTF-8");
-    sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
+    sw.write('\ufeff'); // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
     sw.write(json);
     sw.flush();
     sw.close();
-  }  
+  }
 
   public InfoWriter info() {
     return new InfoWriter(ensureObject("info"));
@@ -88,20 +86,17 @@ public class Writer extends BaseWriter {
     return this;
   }
 
-
   public ServerWriter server(String url) {
-    return new ServerWriter(ensureArrayObject("servers", "url", url)); 
+    return new ServerWriter(ensureArrayObject("servers", "url", url));
   }
-   
 
   public TagWriter tag(String name) {
-    return new TagWriter(ensureArrayObject("tags", "name", name)); 
-  }
-   
-  public ExternalDocsWriter externalDocs() {
-    return new ExternalDocsWriter(ensureObject("externalDocs"));            
+    return new TagWriter(ensureArrayObject("tags", "name", name));
   }
 
+  public ExternalDocsWriter externalDocs() {
+    return new ExternalDocsWriter(ensureObject("externalDocs"));
+  }
 
   public ComponentsWriter components() {
     return new ComponentsWriter(ensureObject("components"));

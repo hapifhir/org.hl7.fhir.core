@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,10 +31,10 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
-public class NehtaNehtaCancerPrimaryOrRecurrenceEnumFactory implements EnumFactory<NehtaNehtaCancerPrimaryOrRecurrence> {
+public class NehtaNehtaCancerPrimaryOrRecurrenceEnumFactory
+    implements EnumFactory<NehtaNehtaCancerPrimaryOrRecurrence> {
 
   public NehtaNehtaCancerPrimaryOrRecurrence fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
@@ -48,7 +45,7 @@ public class NehtaNehtaCancerPrimaryOrRecurrenceEnumFactory implements EnumFacto
       return NehtaNehtaCancerPrimaryOrRecurrence.LOCALRECURRENCE;
     if ("distant_metastases".equals(codeString))
       return NehtaNehtaCancerPrimaryOrRecurrence.DISTANTMETASTASES;
-    throw new IllegalArgumentException("Unknown NehtaNehtaCancerPrimaryOrRecurrence code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown NehtaNehtaCancerPrimaryOrRecurrence code '" + codeString + "'");
   }
 
   public String toCode(NehtaNehtaCancerPrimaryOrRecurrence code) {
@@ -61,8 +58,8 @@ public class NehtaNehtaCancerPrimaryOrRecurrenceEnumFactory implements EnumFacto
     return "?";
   }
 
-    public String toSystem(NehtaNehtaCancerPrimaryOrRecurrence code) {
-      return code.getSystem();
-      }
+  public String toSystem(NehtaNehtaCancerPrimaryOrRecurrence code) {
+    return code.getSystem();
+  }
 
 }

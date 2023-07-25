@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3GenderStatusEnumFactory implements EnumFactory<V3GenderStatus> {
@@ -46,7 +42,7 @@ public class V3GenderStatusEnumFactory implements EnumFactory<V3GenderStatus> {
       return V3GenderStatus.I;
     if ("N".equals(codeString))
       return V3GenderStatus.N;
-    throw new IllegalArgumentException("Unknown V3GenderStatus code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3GenderStatus code '" + codeString + "'");
   }
 
   public String toCode(V3GenderStatus code) {
@@ -57,8 +53,8 @@ public class V3GenderStatusEnumFactory implements EnumFactory<V3GenderStatus> {
     return "?";
   }
 
-    public String toSystem(V3GenderStatus code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3GenderStatus code) {
+    return code.getSystem();
+  }
 
 }

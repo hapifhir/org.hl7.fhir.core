@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 */
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
-
 
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
@@ -164,7 +160,7 @@ public class V3ParticipationTypeEnumFactory implements EnumFactory<V3Participati
       return V3ParticipationType.AUTHEN;
     if ("LA".equals(codeString))
       return V3ParticipationType.LA;
-    throw new IllegalArgumentException("Unknown V3ParticipationType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3ParticipationType code '" + codeString + "'");
   }
 
   public String toCode(V3ParticipationType code) {
@@ -293,8 +289,8 @@ public class V3ParticipationTypeEnumFactory implements EnumFactory<V3Participati
     return "?";
   }
 
-    public String toSystem(V3ParticipationType code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3ParticipationType code) {
+    return code.getSystem();
+  }
 
 }

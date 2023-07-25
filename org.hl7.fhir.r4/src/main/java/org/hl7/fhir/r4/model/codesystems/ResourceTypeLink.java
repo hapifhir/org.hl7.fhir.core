@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ResourceTypeLink {
 
-        /**
-         * Organization resource.
-         */
-        ORGANIZATION, 
-        /**
-         * Patient resource.
-         */
-        PATIENT, 
-        /**
-         * Practitioner resource.
-         */
-        PRACTITIONER, 
-        /**
-         * RelatedPerson resource.
-         */
-        RELATEDPERSON, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ResourceTypeLink fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("organization".equals(codeString))
-          return ORGANIZATION;
-        if ("patient".equals(codeString))
-          return PATIENT;
-        if ("practitioner".equals(codeString))
-          return PRACTITIONER;
-        if ("relatedperson".equals(codeString))
-          return RELATEDPERSON;
-        throw new FHIRException("Unknown ResourceTypeLink code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ORGANIZATION: return "organization";
-            case PATIENT: return "patient";
-            case PRACTITIONER: return "practitioner";
-            case RELATEDPERSON: return "relatedperson";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/resource-type-link";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ORGANIZATION: return "Organization resource.";
-            case PATIENT: return "Patient resource.";
-            case PRACTITIONER: return "Practitioner resource.";
-            case RELATEDPERSON: return "RelatedPerson resource.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ORGANIZATION: return "Organization";
-            case PATIENT: return "Patient";
-            case PRACTITIONER: return "Practitioner";
-            case RELATEDPERSON: return "RelatedPerson";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Organization resource.
+   */
+  ORGANIZATION,
+  /**
+   * Patient resource.
+   */
+  PATIENT,
+  /**
+   * Practitioner resource.
+   */
+  PRACTITIONER,
+  /**
+   * RelatedPerson resource.
+   */
+  RELATEDPERSON,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ResourceTypeLink fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("organization".equals(codeString))
+      return ORGANIZATION;
+    if ("patient".equals(codeString))
+      return PATIENT;
+    if ("practitioner".equals(codeString))
+      return PRACTITIONER;
+    if ("relatedperson".equals(codeString))
+      return RELATEDPERSON;
+    throw new FHIRException("Unknown ResourceTypeLink code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ORGANIZATION:
+      return "organization";
+    case PATIENT:
+      return "patient";
+    case PRACTITIONER:
+      return "practitioner";
+    case RELATEDPERSON:
+      return "relatedperson";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/resource-type-link";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ORGANIZATION:
+      return "Organization resource.";
+    case PATIENT:
+      return "Patient resource.";
+    case PRACTITIONER:
+      return "Practitioner resource.";
+    case RELATEDPERSON:
+      return "RelatedPerson resource.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ORGANIZATION:
+      return "Organization";
+    case PATIENT:
+      return "Patient";
+    case PRACTITIONER:
+      return "Practitioner";
+    case RELATEDPERSON:
+      return "RelatedPerson";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

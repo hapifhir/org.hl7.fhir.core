@@ -148,10 +148,10 @@ public class LiquidEngine implements IEvaluationContext {
     }
 
   }
-  
+
   private enum LiquidFilter {
     PREPEND;
-    
+
     public static LiquidFilter fromCode(String code) {
       if ("prepend".equals(code)) {
         return PREPEND;
@@ -163,14 +163,15 @@ public class LiquidEngine implements IEvaluationContext {
   private class LiquidExpressionNode {
     private LiquidFilter filter; // null at root
     private ExpressionNode expression; // null for some filters
+
     public LiquidExpressionNode(LiquidFilter filter, ExpressionNode expression) {
       super();
       this.filter = filter;
       this.expression = expression;
     }
-    
+
   }
-  
+
   private class LiquidStatement extends LiquidNode {
     private String statement;
     private List<LiquidExpressionNode> compiled = new ArrayList<>();
@@ -187,7 +188,7 @@ public class LiquidEngine implements IEvaluationContext {
             String f = lexer.getCurrent();
             LiquidFilter filter = LiquidFilter.fromCode(f);
             if (filter == null) {
-              lexer.error("Unknown Liquid filter '"+f+"'");
+              lexer.error("Unknown Liquid filter '" + f + "'");
             }
             lexer.next();
             if (!lexer.done() && lexer.getCurrent().equals(":")) {
@@ -201,16 +202,17 @@ public class LiquidEngine implements IEvaluationContext {
           }
         }
       }
-      
+
       String t = null;
       for (LiquidExpressionNode i : compiled) {
         if (i.filter == null) { // first
           t = stmtToString(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
-        } else switch (i.filter) {
-        case PREPEND:
-          t = stmtToString(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)) + t;
-          break;
-        }
+        } else
+          switch (i.filter) {
+          case PREPEND:
+            t = stmtToString(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)) + t;
+            break;
+          }
       }
       b.append(t);
     }
@@ -219,7 +221,10 @@ public class LiquidEngine implements IEvaluationContext {
       StringBuilder b = new StringBuilder();
       boolean first = true;
       for (Base i : items) {
-        if (first) first = false; else b.append(", ");
+        if (first)
+          first = false;
+        else
+          b.append(", ");
         String s = renderingSupport != null ? renderingSupport.renderForLiquid(ctxt.externalContext, i) : null;
         b.append(s != null ? s : engine.convertToString(i));
       }
@@ -344,7 +349,7 @@ public class LiquidEngine implements IEvaluationContext {
           }
           if (limit >= 0 && i == limit) {
             break;
-          }          
+          }
           lctxt.vars.put(varName, o);
           boolean wantBreak = false;
           for (LiquidNode n : body) {
@@ -374,7 +379,7 @@ public class LiquidEngine implements IEvaluationContext {
         } else if (cnt.startsWith("limit")) {
           cnt = cnt.substring(5).trim();
           if (!cnt.startsWith(":")) {
-            throw new FHIRException("Exception evaluating "+src+": limit is not followed by ':'");
+            throw new FHIRException("Exception evaluating " + src + ": limit is not followed by ':'");
           }
           cnt = cnt.substring(1).trim();
           int i = 0;
@@ -382,14 +387,14 @@ public class LiquidEngine implements IEvaluationContext {
             i++;
           }
           if (i == 0) {
-            throw new FHIRException("Exception evaluating "+src+": limit is not followed by a number");
+            throw new FHIRException("Exception evaluating " + src + ": limit is not followed by a number");
           }
           limit = Integer.parseInt(cnt.substring(0, i));
           cnt = cnt.substring(i);
         } else if (cnt.startsWith("offset")) {
           cnt = cnt.substring(6).trim();
           if (!cnt.startsWith(":")) {
-            throw new FHIRException("Exception evaluating "+src+": limit is not followed by ':'");
+            throw new FHIRException("Exception evaluating " + src + ": limit is not followed by ':'");
           }
           cnt = cnt.substring(1).trim();
           int i = 0;
@@ -397,14 +402,14 @@ public class LiquidEngine implements IEvaluationContext {
             i++;
           }
           if (i == 0) {
-            throw new FHIRException("Exception evaluating "+src+": limit is not followed by a number");
+            throw new FHIRException("Exception evaluating " + src + ": limit is not followed by a number");
           }
           offset = Integer.parseInt(cnt.substring(0, i));
           cnt = cnt.substring(i);
         } else {
-          throw new FHIRException("Exception evaluating "+src+": unexpected content at "+cnt);
+          throw new FHIRException("Exception evaluating " + src + ": unexpected content at " + cnt);
         }
-      }      
+      }
     }
   }
 
@@ -476,11 +481,13 @@ public class LiquidEngine implements IEvaluationContext {
       cnt = "," + cnt.substring(5).trim();
       while (!Utilities.noString(cnt)) {
         if (!cnt.startsWith(",")) {
-          throw new FHIRException("Script " + name + ": Script " + name + ": Found " + cnt.charAt(0) + " expecting ',' parsing cycle");
+          throw new FHIRException(
+              "Script " + name + ": Script " + name + ": Found " + cnt.charAt(0) + " expecting ',' parsing cycle");
         }
         cnt = cnt.substring(1).trim();
         if (!cnt.startsWith("\"")) {
-          throw new FHIRException("Script " + name + ": Script " + name + ": Found " + cnt.charAt(0) + " expecting '\"' parsing cycle");
+          throw new FHIRException(
+              "Script " + name + ": Script " + name + ": Found " + cnt.charAt(0) + " expecting '\"' parsing cycle");
         }
         cnt = cnt.substring(1);
         int i = 0;
@@ -521,7 +528,8 @@ public class LiquidEngine implements IEvaluationContext {
             else if (cnt.startsWith("include "))
               list.add(parseInclude(cnt.substring(7).trim()));
             else
-              throw new FHIRException("Script " + name + ": Script " + name + ": Unknown flow control statement " + cnt);
+              throw new FHIRException(
+                  "Script " + name + ": Script " + name + ": Unknown flow control statement " + cnt);
           } else { // next2() == '{'
             list.add(parseStatement());
           }
@@ -535,7 +543,8 @@ public class LiquidEngine implements IEvaluationContext {
         n.closeUp();
       if (terminators.length > 0)
         if (!isTerminator(close, terminators))
-          throw new FHIRException("Script " + name + ": Script " + name + ": Found end of script looking for " + terminators);
+          throw new FHIRException(
+              "Script " + name + ": Script " + name + ": Found end of script looking for " + terminators);
       return close;
     }
 
@@ -642,7 +651,6 @@ public class LiquidEngine implements IEvaluationContext {
       return res;
     }
 
-
     private String parseTag(char ch) throws FHIRException {
       grab();
       grab();
@@ -708,7 +716,8 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   @Override
-  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
+  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+      throws PathEngineException {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
@@ -716,7 +725,8 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+      List<List<Base>> parameters) {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;

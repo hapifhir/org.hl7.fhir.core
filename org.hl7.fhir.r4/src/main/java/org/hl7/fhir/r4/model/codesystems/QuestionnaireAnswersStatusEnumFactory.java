@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class QuestionnaireAnswersStatusEnumFactory implements EnumFactory<QuestionnaireAnswersStatus> {
@@ -52,7 +48,7 @@ public class QuestionnaireAnswersStatusEnumFactory implements EnumFactory<Questi
       return QuestionnaireAnswersStatus.ENTEREDINERROR;
     if ("stopped".equals(codeString))
       return QuestionnaireAnswersStatus.STOPPED;
-    throw new IllegalArgumentException("Unknown QuestionnaireAnswersStatus code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown QuestionnaireAnswersStatus code '" + codeString + "'");
   }
 
   public String toCode(QuestionnaireAnswersStatus code) {
@@ -69,8 +65,8 @@ public class QuestionnaireAnswersStatusEnumFactory implements EnumFactory<Questi
     return "?";
   }
 
-    public String toSystem(QuestionnaireAnswersStatus code) {
-      return code.getSystem();
-      }
+  public String toSystem(QuestionnaireAnswersStatus code) {
+    return code.getSystem();
+  }
 
 }

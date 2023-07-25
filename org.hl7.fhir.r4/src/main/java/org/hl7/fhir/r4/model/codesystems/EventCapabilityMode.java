@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum EventCapabilityMode {
 
-        /**
-         * The application sends requests and receives responses.
-         */
-        SENDER, 
-        /**
-         * The application receives requests and sends responses.
-         */
-        RECEIVER, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static EventCapabilityMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("sender".equals(codeString))
-          return SENDER;
-        if ("receiver".equals(codeString))
-          return RECEIVER;
-        throw new FHIRException("Unknown EventCapabilityMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SENDER: return "sender";
-            case RECEIVER: return "receiver";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/event-capability-mode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SENDER: return "The application sends requests and receives responses.";
-            case RECEIVER: return "The application receives requests and sends responses.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SENDER: return "Sender";
-            case RECEIVER: return "Receiver";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The application sends requests and receives responses.
+   */
+  SENDER,
+  /**
+   * The application receives requests and sends responses.
+   */
+  RECEIVER,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static EventCapabilityMode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("sender".equals(codeString))
+      return SENDER;
+    if ("receiver".equals(codeString))
+      return RECEIVER;
+    throw new FHIRException("Unknown EventCapabilityMode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SENDER:
+      return "sender";
+    case RECEIVER:
+      return "receiver";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/event-capability-mode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SENDER:
+      return "The application sends requests and receives responses.";
+    case RECEIVER:
+      return "The application receives requests and sends responses.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SENDER:
+      return "Sender";
+    case RECEIVER:
+      return "Receiver";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }
