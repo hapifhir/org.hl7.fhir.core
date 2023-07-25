@@ -56,6 +56,8 @@ public class CliContext {
   private HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
   @JsonProperty("allowDoubleQuotesInFHIRPath")  
   private boolean allowDoubleQuotesInFHIRPath = false;
+  @JsonProperty("checkIPSCodes")  
+  private boolean checkIPSCodes;
   @JsonProperty("langTransform")
   private String langTransform = null;
   @JsonProperty("map")
@@ -313,6 +315,14 @@ public class CliContext {
   @JsonProperty("allowDoubleQuotesInFHIRPath")  
   public void setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
     this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
+  }
+
+  public boolean isCheckIPSCodes() {
+    return checkIPSCodes;
+  }
+
+  public void setCheckIPSCodes(boolean checkIPSCodes) {
+    this.checkIPSCodes = checkIPSCodes;
   }
 
   @JsonProperty("locale")
@@ -727,6 +737,7 @@ public class CliContext {
       displayWarnings == that.displayWarnings &&
       wantInvariantsInMessages == that.wantInvariantsInMessages &&
       allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath &&
+      checkIPSCodes == that.checkIPSCodes &&
       Objects.equals(extensions, that.extensions) &&
       Objects.equals(map, that.map) &&
       Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck) &&
@@ -768,7 +779,7 @@ public class CliContext {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
             noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
             targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars, watchMode, watchScanDelay, watchSettleTime,
-            htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath);
+            htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
   }
 
   @Override
@@ -821,6 +832,7 @@ public class CliContext {
       ", bundleValidationRules=" + bundleValidationRules +
       ", htmlInMarkdownCheck=" + htmlInMarkdownCheck +
       ", allowDoubleQuotesInFHIRPath=" + allowDoubleQuotesInFHIRPath +
+      ", checkIPSCodes=" + checkIPSCodes +
       ", watchMode=" + watchMode +
       ", watchSettleTime=" + watchSettleTime +
       ", watchScanDelay=" + watchScanDelay +

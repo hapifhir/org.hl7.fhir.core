@@ -185,6 +185,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
+import org.hl7.fhir.validation.codesystem.CodingsObserver;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.ConceptMapValidator;
@@ -504,6 +505,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private ValidationOptions baseOptions = new ValidationOptions();
   private Map<String, CanonicalResourceLookupResult> crLookups = new HashMap<>();
   private boolean logProgress;
+  private CodingsObserver codingObserver;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices, XVerExtensionManager xverManager) {
     super(theContext, xverManager, false);
@@ -518,6 +520,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     source = Source.InstanceValidator;
     fpe.setDoNotEnforceAsSingletonRule(!VersionUtilities.isR5VerOrLater(theContext.getVersion()));
     fpe.setAllowDoubleQuotes(allowDoubleQuotesInFHIRPath);
+    codingObserver = new CodingsObserver(theContext, xverManager, debug);
   }
 
   @Override
@@ -911,6 +914,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (hintAboutNonMustSupport) {
       checkElementUsage(errors, element, stack);
     }
+    codingObserver.finish(errors, stack);
     errors.removeAll(messagesToRemove);
     timeTracker.overall(t);
     if (DEBUG_ELEMENT) {
@@ -6509,10 +6513,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (lang == null) {
       lang = "en"; // ubiquitious default languauge
     }
+    codingObserver.seeCode(stack, system, version, code, display);
     return context.validateCode(baseOptions.withLanguage(lang), system, version, code, checkDisplay ? display : null);
   }
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c, boolean checkMembership) {
+    codingObserver.seeCode(stack, c);
     if (checkMembership) {
       return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), c, valueset);   
     } else {
@@ -6521,6 +6527,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
   
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc, boolean vsOnly) {
+    codingObserver.seeCode(stack, cc);
     if (vsOnly) {
       return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), cc, valueset);
     } else {
@@ -6655,6 +6662,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setDisplayWarnings(boolean displayWarnings) {
     baseOptions.setDisplayWarningMode(displayWarnings);
+  }
+
+  public boolean isCheckIPSCodes() {
+    return codingObserver.isCheckIPSCodes();
+  }
+
+  public void setCheckIPSCodes(boolean checkIPSCodes) {
+    codingObserver.setCheckIPSCodes(checkIPSCodes);
   }
 
 

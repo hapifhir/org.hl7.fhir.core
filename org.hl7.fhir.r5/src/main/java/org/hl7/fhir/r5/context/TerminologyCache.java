@@ -278,6 +278,28 @@ public class TerminologyCache {
     }
   }
 
+  public CacheToken generateValidationToken(ValidationOptions options, Coding code, String vsUrl, Parameters expParameters) {
+    try {
+      CacheToken ct = new CacheToken();
+      if (code.hasSystem()) {
+        ct.setName(code.getSystem());
+        ct.hasVersion = code.hasVersion();
+      }
+      else
+        ct.name = NAME_FOR_NO_SYSTEM;
+      ct.setName(vsUrl);
+      JsonParser json = new JsonParser();
+      json.setOutputStyle(OutputStyle.PRETTY);
+      String expJS = json.composeString(expParameters);
+
+      ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsUrl == null ? "null" : vsUrl)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
+      ct.key = String.valueOf(hashJson(ct.request));
+      return ct;
+    } catch (IOException e) {
+      throw new Error(e);
+    }
+  }
+
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
     String s = null;
     if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {      
