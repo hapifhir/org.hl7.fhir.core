@@ -212,6 +212,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean doImplicitFHIRPathStringConversion;
   @Getter @Setter private HtmlInMarkdownCheck htmlInMarkdownCheck;
   @Getter @Setter private boolean allowDoubleQuotesInFHIRPath;
+  @Getter @Setter private boolean checkIPSCodes;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
@@ -264,6 +265,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
     htmlInMarkdownCheck = other.htmlInMarkdownCheck;
     allowDoubleQuotesInFHIRPath = other.allowDoubleQuotesInFHIRPath;
+    checkIPSCodes = other.checkIPSCodes;
     locale = other.locale;
     igs.addAll(other.igs);
     extensionDomains.addAll(other.extensionDomains);
@@ -853,6 +855,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setAllowDoubleQuotesInFHIRPath(allowDoubleQuotesInFHIRPath);
     validator.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
     validator.setDoImplicitFHIRPathStringConversion(doImplicitFHIRPathStringConversion);
+    validator.setCheckIPSCodes(checkIPSCodes);
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }

@@ -141,7 +141,6 @@ public class ValidatorCli {
     TimeTracker tt = new TimeTracker();
     TimeTracker.Session tts = tt.start("Loading");
 
-    args = addAdditionalParamsForIpsParam(args);
     setJavaSystemProxyParamsFromParams(args);
 
     Display.displayVersion(System.out);
@@ -200,6 +199,8 @@ public class ValidatorCli {
 
   public static void main(String[] args) throws Exception {
     final ValidatorCli validatorCli = new ValidatorCli(validationService);
+
+    args = addAdditionalParamsForIpsParam(args);
     final CliContext cliContext = Params.loadCliContext(args);
     validatorCli.readParamsAndExecuteTask(cliContext, args);
   }
@@ -259,6 +260,7 @@ public class ValidatorCli {
       if (a.equals("-ips")) {
         res.add("-version");
         res.add("4.0");
+        res.add("-check-ips-codes");
         res.add("-ig");
         res.add("hl7.fhir.uv.ips#1.1.0");
         res.add("-profile");
@@ -266,6 +268,7 @@ public class ValidatorCli {
       } else if (a.equals("-ips#")) {
         res.add("-version");
         res.add("4.0");
+        res.add("-check-ips-codes");
         res.add("-ig");
         res.add("hl7.fhir.uv.ips#"+a.substring(5));
         res.add("-profile");
@@ -273,6 +276,7 @@ public class ValidatorCli {
       } else if (a.startsWith("-ips$")) {
         res.add("-version");
         res.add("4.0");
+        res.add("-check-ips-codes");
         res.add("-ig");
         res.add("hl7.fhir.uv.ips#current$"+a.substring(5));
         res.add("-profile");

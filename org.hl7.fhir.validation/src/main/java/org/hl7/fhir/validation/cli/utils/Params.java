@@ -86,6 +86,7 @@ public class Params {
   public static final String SRC_LANG = "-src-lang";
   public static final String TGT_LANG = "-tgt-lang";
   public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
+  public static final String CHECK_IPS_CODES = "-check-ips-codes";
   
 
   public static final String RUN_TESTS = "-run-tests";
@@ -247,7 +248,9 @@ public class Params {
       } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
         cliContext.setNoExtensibleBindingMessages(true);
       } else if (args[i].equals(ALLOW_DOUBLE_QUOTES)) {
-        cliContext.setAllowDoubleQuotesInFHIRPath(true);        
+        cliContext.setAllowDoubleQuotesInFHIRPath(true);       
+      } else if (args[i].equals(CHECK_IPS_CODES)) {
+        cliContext.setCheckIPSCodes(true);       
       } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
         cliContext.setNoUnicodeBiDiControlChars(true);
       } else if (args[i].equals(NO_INVARIANTS)) {
