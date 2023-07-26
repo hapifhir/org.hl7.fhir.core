@@ -2379,6 +2379,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = false;
         }
       }
+      Set<String> badChars = new HashSet<>();
+      for (char ch : e.primitiveValue().toCharArray()) {
+        if (ch < 32 && !(ch == '\r' || ch == '\n' || ch == '\t')) {
+          // can't get to here with xml - the parser fails if you try
+          badChars.add(Integer.toHexString(ch));
+        }        
+      }
+      warningPlural(errors, "2023-07-26", IssueType.INVALID, e.line(), e.col(), path, badChars.isEmpty(), badChars.size(), I18nConstants.UNICODE_XML_BAD_CHARS, badChars.toString());      
     }
     String regex = context.getExtensionString(ToolingExtensions.EXT_REGEX);
     // there's a messy history here - this extension snhould only be on the element definition itself, but for historical reasons 
