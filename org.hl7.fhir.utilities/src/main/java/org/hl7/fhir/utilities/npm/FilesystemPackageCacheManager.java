@@ -88,6 +88,8 @@ import javax.annotation.Nonnull;
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
 
+  public static final String INI_TIMESTAMP_FORMAT = "yyyyMMddhhmmss";
+
   public enum FilesystemPackageCacheMode {
     USER, SYSTEM, TESTING, CUSTOM
   }
@@ -486,7 +488,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           Utilities.renameDirectory(tempDir, packRoot);          
 
           IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-          ini.setTimeStampFormat("yyyyMMddhhmmss");
+          ini.setTimeStampFormat(INI_TIMESTAMP_FORMAT);
           ini.setTimestampProperty("packages", id + "#" + v, Timestamp.from(Instant.now()), null);
           ini.setIntegerProperty("package-sizes", id + "#" + v, npm.getSize(), null);
           ini.save();
