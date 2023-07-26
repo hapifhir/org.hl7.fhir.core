@@ -29,18 +29,13 @@ package org.hl7.fhir.r4.utils;
   
  */
 
-
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -58,77 +53,79 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class BatchLoader {
 
-	public static void main(String[] args) throws IOException, Exception {
-	  if (args.length < 3) {
-	  	System.out.println("Batch uploader takes 3 parameters in order: server base url, file/folder to upload, and batch size");
-	  } else {
-	  	String server = args[0];
-	  	String file = args[1];
-	  	int size = Integer.parseInt(args[2]);
-	  	if (file.endsWith(".xml")) {
-	  		throw new FHIRException("Unimplemented file type "+file);
-	  	} else if (file.endsWith(".json")) {
-	  		throw new FHIRException("Unimplemented file type "+file);
+  public static void main(String[] args) throws IOException, Exception {
+    if (args.length < 3) {
+      System.out.println(
+          "Batch uploader takes 3 parameters in order: server base url, file/folder to upload, and batch size");
+    } else {
+      String server = args[0];
+      String file = args[1];
+      int size = Integer.parseInt(args[2]);
+      if (file.endsWith(".xml")) {
+        throw new FHIRException("Unimplemented file type " + file);
+      } else if (file.endsWith(".json")) {
+        throw new FHIRException("Unimplemented file type " + file);
 //	  	} else if (file.endsWith(".zip")) {
 //	  		LoadZipFile(server, file, p, size, 0, -1);
-	  	} else if (new File(file).isDirectory()) {
-	  	  LoadDirectory(server, file, size);
-	  	} else 
-	  		throw new FHIRException("Unknown file type "+file);
-	  }
-	}
-
-	private static void LoadDirectory(String server, String folder, int size) throws IOException, Exception {
-	  System.out.print("Connecting to "+server+".. ");
-	  FHIRToolingClient client = new FHIRToolingClient(server, "fhir/batch-loader");
-    System.out.println("Done");
-	  
-	  IniFile ini = new IniFile(Utilities.path(folder, "batch-load-progress.ini"));
-	  for (File f : new File(folder).listFiles()) {
-	    if (f.getName().endsWith(".json") || f.getName().endsWith(".xml")) {
-	      if (!ini.getBooleanProperty("finished", f.getName())) {
-	        sendFile(client, f, size, ini);
-	      }
-	    }
-	  }
+      } else if (new File(file).isDirectory()) {
+        LoadDirectory(server, file, size);
+      } else
+        throw new FHIRException("Unknown file type " + file);
+    }
   }
 
-	
-  private static void sendFile(FHIRToolingClient client, File f, int size, IniFile ini) throws FHIRFormatError, FileNotFoundException, IOException {
+  private static void LoadDirectory(String server, String folder, int size) throws IOException, Exception {
+    System.out.print("Connecting to " + server + ".. ");
+    FHIRToolingClient client = new FHIRToolingClient(server, "fhir/batch-loader");
+    System.out.println("Done");
+
+    IniFile ini = new IniFile(Utilities.path(folder, "batch-load-progress.ini"));
+    for (File f : new File(folder).listFiles()) {
+      if (f.getName().endsWith(".json") || f.getName().endsWith(".xml")) {
+        if (!ini.getBooleanProperty("finished", f.getName())) {
+          sendFile(client, f, size, ini);
+        }
+      }
+    }
+  }
+
+  private static void sendFile(FHIRToolingClient client, File f, int size, IniFile ini)
+      throws FHIRFormatError, FileNotFoundException, IOException {
     long ms = System.currentTimeMillis();
-    System.out.print("Loading "+f.getName()+".. ");
+    System.out.print("Loading " + f.getName() + ".. ");
     IParser parser = f.getName().endsWith(".json") ? new JsonParser() : new XmlParser();
     Resource res = parser.parse(new FileInputStream(f));
-    System.out.println("  done: ("+Long.toString(System.currentTimeMillis()-ms)+" ms)");
-    
+    System.out.println("  done: (" + Long.toString(System.currentTimeMillis() - ms) + " ms)");
+
     if (res instanceof Bundle) {
       Bundle bnd = (Bundle) res;
       int cursor = ini.hasProperty("progress", f.getName()) ? ini.getIntegerProperty("progress", f.getName()) : 0;
       while (cursor < bnd.getEntry().size()) {
         Bundle bt = new Bundle();
-        bt.setType(BundleType.BATCH);     
+        bt.setType(BundleType.BATCH);
         bt.setId(UUID.randomUUID().toString().toLowerCase());
-        for (int i = cursor; i < Math.min(bnd.getEntry().size(), cursor+size); i++) {
+        for (int i = cursor; i < Math.min(bnd.getEntry().size(), cursor + size); i++) {
           BundleEntryComponent be = bt.addEntry();
           be.setResource(bnd.getEntry().get(i).getResource());
           be.getRequest().setMethod(HTTPVerb.PUT);
-          be.getRequest().setUrl(be.getResource().getResourceType().toString()+"/"+be.getResource().getId());
+          be.getRequest().setUrl(be.getResource().getResourceType().toString() + "/" + be.getResource().getId());
         }
-        System.out.print(f.getName()+" ("+cursor+"/"+bnd.getEntry().size()+"): ");
+        System.out.print(f.getName() + " (" + cursor + "/" + bnd.getEntry().size() + "): ");
         ms = System.currentTimeMillis();
         Bundle resp = client.transaction(bt);
 
-        int ncursor = cursor+size;
+        int ncursor = cursor + size;
         for (int i = 0; i < resp.getEntry().size(); i++) {
           BundleEntryComponent t = resp.getEntry().get(i);
-          if (!t.getResponse().getStatus().startsWith("2")) { 
-            System.out.println("failed status at "+Integer.toString(i)+": "+t.getResponse().getStatus());
-            ncursor = cursor+i-1;
+          if (!t.getResponse().getStatus().startsWith("2")) {
+            System.out.println("failed status at " + Integer.toString(i) + ": " + t.getResponse().getStatus());
+            ncursor = cursor + i - 1;
             break;
           }
         }
         cursor = ncursor;
-        System.out.println("  .. done: ("+Long.toString(System.currentTimeMillis()-ms)+" ms) "+SimpleDateFormat.getInstance().format(new Date()));
+        System.out.println("  .. done: (" + Long.toString(System.currentTimeMillis() - ms) + " ms) "
+            + SimpleDateFormat.getInstance().format(new Date()));
         ini.setIntegerProperty("progress", f.getName(), cursor, null);
         ini.save();
       }
@@ -138,7 +135,7 @@ public class BatchLoader {
       client.update(res);
       ini.setBooleanProperty("finished", f.getName(), true, null);
       ini.save();
-    }    
+    }
   }
 //
 //  private static void LoadZipFile(String server, String file, IParser p, int size, int start, int end) throws IOException, Exception {

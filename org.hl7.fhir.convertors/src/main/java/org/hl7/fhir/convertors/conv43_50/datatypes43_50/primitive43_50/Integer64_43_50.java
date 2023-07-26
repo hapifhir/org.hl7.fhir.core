@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50;
 
-import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 

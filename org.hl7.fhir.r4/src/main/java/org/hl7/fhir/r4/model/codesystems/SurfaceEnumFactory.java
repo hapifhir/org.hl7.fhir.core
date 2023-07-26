@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class SurfaceEnumFactory implements EnumFactory<Surface> {
@@ -64,7 +60,7 @@ public class SurfaceEnumFactory implements EnumFactory<Surface> {
       return Surface.DI;
     if ("MOD".equals(codeString))
       return Surface.MOD;
-    throw new IllegalArgumentException("Unknown Surface code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown Surface code '" + codeString + "'");
   }
 
   public String toCode(Surface code) {
@@ -93,8 +89,8 @@ public class SurfaceEnumFactory implements EnumFactory<Surface> {
     return "?";
   }
 
-    public String toSystem(Surface code) {
-      return code.getSystem();
-      }
+  public String toSystem(Surface code) {
+    return code.getSystem();
+  }
 
 }

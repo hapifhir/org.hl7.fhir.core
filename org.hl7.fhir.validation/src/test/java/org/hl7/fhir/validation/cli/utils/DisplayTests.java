@@ -1,14 +1,15 @@
 package org.hl7.fhir.validation.cli.utils;
 
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.validation.cli.tasks.ValidateTask;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.hl7.fhir.r5.model.Constants;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class DisplayTests {
 

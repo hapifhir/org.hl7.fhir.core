@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
-
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -132,7 +128,7 @@ public class TestscriptOperationCodesEnumFactory implements EnumFactory<Testscri
       return TestscriptOperationCodes.VALIDATE;
     if ("validate-code".equals(codeString))
       return TestscriptOperationCodes.VALIDATECODE;
-    throw new IllegalArgumentException("Unknown TestscriptOperationCodes code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown TestscriptOperationCodes code '" + codeString + "'");
   }
 
   public String toCode(TestscriptOperationCodes code) {
@@ -229,8 +225,8 @@ public class TestscriptOperationCodesEnumFactory implements EnumFactory<Testscri
     return "?";
   }
 
-    public String toSystem(TestscriptOperationCodes code) {
-      return code.getSystem();
-      }
+  public String toSystem(TestscriptOperationCodes code) {
+    return code.getSystem();
+  }
 
 }

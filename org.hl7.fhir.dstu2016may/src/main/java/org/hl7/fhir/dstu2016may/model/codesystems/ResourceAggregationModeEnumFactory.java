@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ResourceAggregationModeEnumFactory implements EnumFactory<ResourceAggregationMode> {
@@ -48,7 +44,7 @@ public class ResourceAggregationModeEnumFactory implements EnumFactory<ResourceA
       return ResourceAggregationMode.REFERENCED;
     if ("bundled".equals(codeString))
       return ResourceAggregationMode.BUNDLED;
-    throw new IllegalArgumentException("Unknown ResourceAggregationMode code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ResourceAggregationMode code '" + codeString + "'");
   }
 
   public String toCode(ResourceAggregationMode code) {
@@ -61,8 +57,8 @@ public class ResourceAggregationModeEnumFactory implements EnumFactory<ResourceA
     return "?";
   }
 
-    public String toSystem(ResourceAggregationMode code) {
-      return code.getSystem();
-      }
+  public String toSystem(ResourceAggregationMode code) {
+    return code.getSystem();
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,50 +31,62 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QuestionMaxOccurs {
 
-        /**
-         * Element can repeat an unlimited number of times.
-         */
-        ASTERISK, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static QuestionMaxOccurs fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("*".equals(codeString))
-          return ASTERISK;
-        throw new FHIRException("Unknown QuestionMaxOccurs code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ASTERISK: return "*";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/question-max-occurs";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ASTERISK: return "Element can repeat an unlimited number of times.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ASTERISK: return "Repeating";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Element can repeat an unlimited number of times.
+   */
+  ASTERISK,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static QuestionMaxOccurs fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("*".equals(codeString))
+      return ASTERISK;
+    throw new FHIRException("Unknown QuestionMaxOccurs code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ASTERISK:
+      return "*";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/question-max-occurs";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ASTERISK:
+      return "Element can repeat an unlimited number of times.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ASTERISK:
+      return "Repeating";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

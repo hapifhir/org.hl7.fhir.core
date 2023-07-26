@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,102 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum EligibilityresponsePurpose {
 
-        /**
-         * The prior authorization requirements for the listed, or discovered if specified, converages for the categories of service and/or specifed biling codes are requested.
-         */
-        AUTHREQUIREMENTS, 
-        /**
-         * The plan benefits and optionally benefits consumed  for the listed, or discovered if specified, converages are requested.
-         */
-        BENEFITS, 
-        /**
-         * The insurer is requested to report on any coverages which they are aware of in addition to any specifed.
-         */
-        DISCOVERY, 
-        /**
-         * A check that the specified coverages are in-force is requested.
-         */
-        VALIDATION, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static EligibilityresponsePurpose fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("auth-requirements".equals(codeString))
-          return AUTHREQUIREMENTS;
-        if ("benefits".equals(codeString))
-          return BENEFITS;
-        if ("discovery".equals(codeString))
-          return DISCOVERY;
-        if ("validation".equals(codeString))
-          return VALIDATION;
-        throw new FHIRException("Unknown EligibilityresponsePurpose code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case AUTHREQUIREMENTS: return "auth-requirements";
-            case BENEFITS: return "benefits";
-            case DISCOVERY: return "discovery";
-            case VALIDATION: return "validation";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/eligibilityresponse-purpose";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case AUTHREQUIREMENTS: return "The prior authorization requirements for the listed, or discovered if specified, converages for the categories of service and/or specifed biling codes are requested.";
-            case BENEFITS: return "The plan benefits and optionally benefits consumed  for the listed, or discovered if specified, converages are requested.";
-            case DISCOVERY: return "The insurer is requested to report on any coverages which they are aware of in addition to any specifed.";
-            case VALIDATION: return "A check that the specified coverages are in-force is requested.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case AUTHREQUIREMENTS: return "Coverage auth-requirements";
-            case BENEFITS: return "Coverage benefits";
-            case DISCOVERY: return "Coverage Discovery";
-            case VALIDATION: return "Coverage Validation";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The prior authorization requirements for the listed, or discovered if
+   * specified, converages for the categories of service and/or specifed biling
+   * codes are requested.
+   */
+  AUTHREQUIREMENTS,
+  /**
+   * The plan benefits and optionally benefits consumed for the listed, or
+   * discovered if specified, converages are requested.
+   */
+  BENEFITS,
+  /**
+   * The insurer is requested to report on any coverages which they are aware of
+   * in addition to any specifed.
+   */
+  DISCOVERY,
+  /**
+   * A check that the specified coverages are in-force is requested.
+   */
+  VALIDATION,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static EligibilityresponsePurpose fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("auth-requirements".equals(codeString))
+      return AUTHREQUIREMENTS;
+    if ("benefits".equals(codeString))
+      return BENEFITS;
+    if ("discovery".equals(codeString))
+      return DISCOVERY;
+    if ("validation".equals(codeString))
+      return VALIDATION;
+    throw new FHIRException("Unknown EligibilityresponsePurpose code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case AUTHREQUIREMENTS:
+      return "auth-requirements";
+    case BENEFITS:
+      return "benefits";
+    case DISCOVERY:
+      return "discovery";
+    case VALIDATION:
+      return "validation";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/eligibilityresponse-purpose";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case AUTHREQUIREMENTS:
+      return "The prior authorization requirements for the listed, or discovered if specified, converages for the categories of service and/or specifed biling codes are requested.";
+    case BENEFITS:
+      return "The plan benefits and optionally benefits consumed  for the listed, or discovered if specified, converages are requested.";
+    case DISCOVERY:
+      return "The insurer is requested to report on any coverages which they are aware of in addition to any specifed.";
+    case VALIDATION:
+      return "A check that the specified coverages are in-force is requested.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case AUTHREQUIREMENTS:
+      return "Coverage auth-requirements";
+    case BENEFITS:
+      return "Coverage benefits";
+    case DISCOVERY:
+      return "Coverage Discovery";
+    case VALIDATION:
+      return "Coverage Validation";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

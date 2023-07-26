@@ -29,8 +29,6 @@ package org.hl7.fhir.dstu2.utils.validation;
   
  */
 
-
-
 import java.util.List;
 
 import org.hl7.fhir.dstu2.model.StructureDefinition;
@@ -46,13 +44,15 @@ import com.google.gson.JsonObject;
 public interface IResourceValidator {
 
   /**
-   * how much to check displays for coded elements 
+   * how much to check displays for coded elements
+   * 
    * @return
    */
   CheckDisplayOption getCheckDisplay();
 
   /**
-   * how much to check displays for coded elements 
+   * how much to check displays for coded elements
+   * 
    * @return
    */
   void setCheckDisplay(CheckDisplayOption checkDisplay);
@@ -63,130 +63,137 @@ public interface IResourceValidator {
    * @return
    */
 
-	IdStatus getResourceIdRule();
-	void setResourceIdRule(IdStatus resourceIdRule);
-  
+  IdStatus getResourceIdRule();
+
+  void setResourceIdRule(IdStatus resourceIdRule);
+
   BestPracticeWarningLevel getBasePracticeWarningLevel();
+
   void setBestPracticeWarningLevel(BestPracticeWarningLevel value);
 
   /**
-   * Given a DOM element, return a list of errors in the resource
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a DOM element, return a list of errors in the resource @- if the
+   * underlying infrastructure fails (not if the resource is invalid)
    */
   void validate(List<ValidationMessage> errors, Element element) throws Exception;
 
   /**
-   * Given a JSON Object, return a list of errors in the resource
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a JSON Object, return a list of errors in the resource @- if the
+   * underlying infrastructure fails (not if the resource is invalid)
    */
   void validate(List<ValidationMessage> errors, JsonObject object) throws Exception;
 
   /**
-   * Given a DOM element, return a list of errors in the resource
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a DOM element, return a list of errors in the resource @- if the
+   * underlying infrastructure fails (not if the resource is invalid)
    */
   List<ValidationMessage> validate(Element element) throws Exception;
 
   /**
-   * Given a DOM element, return a list of errors in the resource
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a DOM element, return a list of errors in the resource @- if the
+   * underlying infrastructure fails (not if the resource is invalid)
    */
   List<ValidationMessage> validate(JsonObject object) throws Exception;
 
   /**
-   * Given a DOM element, return a list of errors in the resource 
-   * with regard to the specified profile (by logical identifier)
-   * @- if the underlying infrastructure fails, or the profile can't be found (not if the resource is invalid)
+   * Given a DOM element, return a list of errors in the resource with regard to
+   * the specified profile (by logical identifier) @- if the underlying
+   * infrastructure fails, or the profile can't be found (not if the resource is
+   * invalid)
    */
   void validate(List<ValidationMessage> errors, Element element, String profile) throws Exception;
 
   /**
-   * Given a DOM element, return a list of errors in the resource 
-   * with regard to the specified profile (by logical identifier)
-   * @- if the underlying infrastructure fails, or the profile can't be found (not if the resource is invalid)
+   * Given a DOM element, return a list of errors in the resource with regard to
+   * the specified profile (by logical identifier) @- if the underlying
+   * infrastructure fails, or the profile can't be found (not if the resource is
+   * invalid)
    */
-	List<ValidationMessage> validate(Element element, String profile) throws Exception;
+  List<ValidationMessage> validate(Element element, String profile) throws Exception;
 
   /**
-   * Given a DOM element, return a list of errors in the resource 
-   * with regard to the specified profile (by logical identifier)
-   * @- if the underlying infrastructure fails, or the profile can't be found (not if the resource is invalid)
+   * Given a DOM element, return a list of errors in the resource with regard to
+   * the specified profile (by logical identifier) @- if the underlying
+   * infrastructure fails, or the profile can't be found (not if the resource is
+   * invalid)
    */
   List<ValidationMessage> validate(JsonObject object, StructureDefinition profile) throws Exception;
 
   /**
-   * Given a DOM element, return a list of errors in the resource 
-   * with regard to the specified profile (by logical identifier)
-   * @- if the underlying infrastructure fails, or the profile can't be found (not if the resource is invalid)
+   * Given a DOM element, return a list of errors in the resource with regard to
+   * the specified profile (by logical identifier) @- if the underlying
+   * infrastructure fails, or the profile can't be found (not if the resource is
+   * invalid)
    */
   List<ValidationMessage> validate(JsonObject object, String profile) throws Exception;
 
   /**
-   * Given a DOM element, return a list of errors in the resource 
-   * with regard to the specified profile 
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a DOM element, return a list of errors in the resource with regard to
+   * the specified profile @- if the underlying infrastructure fails (not if the
+   * resource is invalid)
    */
   void validate(List<ValidationMessage> errors, Element element, StructureDefinition profile) throws Exception;
 
   /**
-   * Given a DOM element, return a list of errors in the resource 
-   * with regard to the specified profile 
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a DOM element, return a list of errors in the resource with regard to
+   * the specified profile @- if the underlying infrastructure fails (not if the
+   * resource is invalid)
    */
   void validate(List<ValidationMessage> errors, JsonObject object, StructureDefinition profile) throws Exception;
 
   /**
-   * Given a DOM element, return a list of errors in the resource 
-   * with regard to the specified profile 
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a DOM element, return a list of errors in the resource with regard to
+   * the specified profile @- if the underlying infrastructure fails (not if the
+   * resource is invalid)
    */
   void validate(List<ValidationMessage> errors, JsonObject object, String profile) throws Exception;
 
   /**
-   * Given a DOM element, return a list of errors in the resource 
-   * with regard to the specified profile
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a DOM element, return a list of errors in the resource with regard to
+   * the specified profile @- if the underlying infrastructure fails (not if the
+   * resource is invalid)
    */
   List<ValidationMessage> validate(Element element, StructureDefinition profile) throws Exception;
 
-
   /**
-   * Given a DOM document, return a list of errors in the resource
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a DOM document, return a list of errors in the resource @- if the
+   * underlying infrastructure fails (not if the resource is invalid)
    */
   void validate(List<ValidationMessage> errors, Document document) throws Exception;
 
   /**
-   * Given a DOM document, return a list of errors in the resource
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a DOM document, return a list of errors in the resource @- if the
+   * underlying infrastructure fails (not if the resource is invalid)
    */
   List<ValidationMessage> validate(Document document) throws Exception;
 
   /**
-   * Given a DOM document, return a list of errors in the resource 
-   * with regard to the specified profile (by logical identifier)
-   * @- if the underlying infrastructure fails, or the profile can't be found (not if the resource is invalid)
+   * Given a DOM document, return a list of errors in the resource with regard to
+   * the specified profile (by logical identifier) @- if the underlying
+   * infrastructure fails, or the profile can't be found (not if the resource is
+   * invalid)
    */
   void validate(List<ValidationMessage> errors, Document document, String profile) throws Exception;
 
   /**
-   * Given a DOM document, return a list of errors in the resource 
-   * with regard to the specified profile (by logical identifier)
-   * @- if the underlying infrastructure fails, or the profile can't be found (not if the resource is invalid)
+   * Given a DOM document, return a list of errors in the resource with regard to
+   * the specified profile (by logical identifier) @- if the underlying
+   * infrastructure fails, or the profile can't be found (not if the resource is
+   * invalid)
    */
-	List<ValidationMessage> validate(Document document, String profile) throws Exception;
+  List<ValidationMessage> validate(Document document, String profile) throws Exception;
 
   /**
-   * Given a DOM document, return a list of errors in the resource 
-   * with regard to the specified profile 
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a DOM document, return a list of errors in the resource with regard to
+   * the specified profile @- if the underlying infrastructure fails (not if the
+   * resource is invalid)
    */
   void validate(List<ValidationMessage> errors, Document document, StructureDefinition profile) throws Exception;
 
   /**
-   * Given a DOM document, return a list of errors in the resource 
-   * with regard to the specified profile
-   * @- if the underlying infrastructure fails (not if the resource is invalid)
+   * Given a DOM document, return a list of errors in the resource with regard to
+   * the specified profile @- if the underlying infrastructure fails (not if the
+   * resource is invalid)
    */
   List<ValidationMessage> validate(Document document, StructureDefinition profile) throws Exception;
 

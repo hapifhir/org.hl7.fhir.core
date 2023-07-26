@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,110 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CompartmentType {
 
-        /**
-         * The compartment definition is for the patient compartment
-         */
-        PATIENT, 
-        /**
-         * The compartment definition is for the encounter compartment
-         */
-        ENCOUNTER, 
-        /**
-         * The compartment definition is for the related-person compartment
-         */
-        RELATEDPERSON, 
-        /**
-         * The compartment definition is for the practitioner compartment
-         */
-        PRACTITIONER, 
-        /**
-         * The compartment definition is for the device compartment
-         */
-        DEVICE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static CompartmentType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("Patient".equals(codeString))
-          return PATIENT;
-        if ("Encounter".equals(codeString))
-          return ENCOUNTER;
-        if ("RelatedPerson".equals(codeString))
-          return RELATEDPERSON;
-        if ("Practitioner".equals(codeString))
-          return PRACTITIONER;
-        if ("Device".equals(codeString))
-          return DEVICE;
-        throw new FHIRException("Unknown CompartmentType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PATIENT: return "Patient";
-            case ENCOUNTER: return "Encounter";
-            case RELATEDPERSON: return "RelatedPerson";
-            case PRACTITIONER: return "Practitioner";
-            case DEVICE: return "Device";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/compartment-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PATIENT: return "The compartment definition is for the patient compartment";
-            case ENCOUNTER: return "The compartment definition is for the encounter compartment";
-            case RELATEDPERSON: return "The compartment definition is for the related-person compartment";
-            case PRACTITIONER: return "The compartment definition is for the practitioner compartment";
-            case DEVICE: return "The compartment definition is for the device compartment";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PATIENT: return "Patient";
-            case ENCOUNTER: return "Encounter";
-            case RELATEDPERSON: return "RelatedPerson";
-            case PRACTITIONER: return "Practitioner";
-            case DEVICE: return "Device";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The compartment definition is for the patient compartment
+   */
+  PATIENT,
+  /**
+   * The compartment definition is for the encounter compartment
+   */
+  ENCOUNTER,
+  /**
+   * The compartment definition is for the related-person compartment
+   */
+  RELATEDPERSON,
+  /**
+   * The compartment definition is for the practitioner compartment
+   */
+  PRACTITIONER,
+  /**
+   * The compartment definition is for the device compartment
+   */
+  DEVICE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static CompartmentType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("Patient".equals(codeString))
+      return PATIENT;
+    if ("Encounter".equals(codeString))
+      return ENCOUNTER;
+    if ("RelatedPerson".equals(codeString))
+      return RELATEDPERSON;
+    if ("Practitioner".equals(codeString))
+      return PRACTITIONER;
+    if ("Device".equals(codeString))
+      return DEVICE;
+    throw new FHIRException("Unknown CompartmentType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PATIENT:
+      return "Patient";
+    case ENCOUNTER:
+      return "Encounter";
+    case RELATEDPERSON:
+      return "RelatedPerson";
+    case PRACTITIONER:
+      return "Practitioner";
+    case DEVICE:
+      return "Device";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/compartment-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PATIENT:
+      return "The compartment definition is for the patient compartment";
+    case ENCOUNTER:
+      return "The compartment definition is for the encounter compartment";
+    case RELATEDPERSON:
+      return "The compartment definition is for the related-person compartment";
+    case PRACTITIONER:
+      return "The compartment definition is for the practitioner compartment";
+    case DEVICE:
+      return "The compartment definition is for the device compartment";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PATIENT:
+      return "Patient";
+    case ENCOUNTER:
+      return "Encounter";
+    case RELATEDPERSON:
+      return "RelatedPerson";
+    case PRACTITIONER:
+      return "Practitioner";
+    case DEVICE:
+      return "Device";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

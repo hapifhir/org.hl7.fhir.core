@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,113 +31,147 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MediaModality {
 
-        /**
-         * A diagram. Often used in diagnostic reports
-         */
-        DIAGRAM, 
-        /**
-         * A digital record of a fax document
-         */
-        FAX, 
-        /**
-         * A digital scan of a document. This is reserved for when there is not enough metadata to create a document reference
-         */
-        SCAN, 
-        /**
-         * A retinal image used for identification purposes
-         */
-        RETINA, 
-        /**
-         * A finger print scan used for identification purposes
-         */
-        FINGERPRINT, 
-        /**
-         * An iris scan used for identification purposes
-         */
-        IRIS, 
-        /**
-         * A palm scan used for identification purposes
-         */
-        PALM, 
-        /**
-         * A face scan used for identification purposes
-         */
-        FACE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MediaModality fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("diagram".equals(codeString))
-          return DIAGRAM;
-        if ("fax".equals(codeString))
-          return FAX;
-        if ("scan".equals(codeString))
-          return SCAN;
-        if ("retina".equals(codeString))
-          return RETINA;
-        if ("fingerprint".equals(codeString))
-          return FINGERPRINT;
-        if ("iris".equals(codeString))
-          return IRIS;
-        if ("palm".equals(codeString))
-          return PALM;
-        if ("face".equals(codeString))
-          return FACE;
-        throw new FHIRException("Unknown MediaModality code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DIAGRAM: return "diagram";
-            case FAX: return "fax";
-            case SCAN: return "scan";
-            case RETINA: return "retina";
-            case FINGERPRINT: return "fingerprint";
-            case IRIS: return "iris";
-            case PALM: return "palm";
-            case FACE: return "face";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/media-modality";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DIAGRAM: return "A diagram. Often used in diagnostic reports";
-            case FAX: return "A digital record of a fax document";
-            case SCAN: return "A digital scan of a document. This is reserved for when there is not enough metadata to create a document reference";
-            case RETINA: return "A retinal image used for identification purposes";
-            case FINGERPRINT: return "A finger print scan used for identification purposes";
-            case IRIS: return "An iris scan used for identification purposes";
-            case PALM: return "A palm scan used for identification purposes";
-            case FACE: return "A face scan used for identification purposes";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DIAGRAM: return "Diagram";
-            case FAX: return "Fax";
-            case SCAN: return "Scanned Document";
-            case RETINA: return "Retina Scan";
-            case FINGERPRINT: return "Fingerprint";
-            case IRIS: return "Iris Scan";
-            case PALM: return "Palm Scan";
-            case FACE: return "Face Scan";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * A diagram. Often used in diagnostic reports
+   */
+  DIAGRAM,
+  /**
+   * A digital record of a fax document
+   */
+  FAX,
+  /**
+   * A digital scan of a document. This is reserved for when there is not enough
+   * metadata to create a document reference
+   */
+  SCAN,
+  /**
+   * A retinal image used for identification purposes
+   */
+  RETINA,
+  /**
+   * A finger print scan used for identification purposes
+   */
+  FINGERPRINT,
+  /**
+   * An iris scan used for identification purposes
+   */
+  IRIS,
+  /**
+   * A palm scan used for identification purposes
+   */
+  PALM,
+  /**
+   * A face scan used for identification purposes
+   */
+  FACE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MediaModality fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("diagram".equals(codeString))
+      return DIAGRAM;
+    if ("fax".equals(codeString))
+      return FAX;
+    if ("scan".equals(codeString))
+      return SCAN;
+    if ("retina".equals(codeString))
+      return RETINA;
+    if ("fingerprint".equals(codeString))
+      return FINGERPRINT;
+    if ("iris".equals(codeString))
+      return IRIS;
+    if ("palm".equals(codeString))
+      return PALM;
+    if ("face".equals(codeString))
+      return FACE;
+    throw new FHIRException("Unknown MediaModality code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DIAGRAM:
+      return "diagram";
+    case FAX:
+      return "fax";
+    case SCAN:
+      return "scan";
+    case RETINA:
+      return "retina";
+    case FINGERPRINT:
+      return "fingerprint";
+    case IRIS:
+      return "iris";
+    case PALM:
+      return "palm";
+    case FACE:
+      return "face";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/media-modality";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DIAGRAM:
+      return "A diagram. Often used in diagnostic reports";
+    case FAX:
+      return "A digital record of a fax document";
+    case SCAN:
+      return "A digital scan of a document. This is reserved for when there is not enough metadata to create a document reference";
+    case RETINA:
+      return "A retinal image used for identification purposes";
+    case FINGERPRINT:
+      return "A finger print scan used for identification purposes";
+    case IRIS:
+      return "An iris scan used for identification purposes";
+    case PALM:
+      return "A palm scan used for identification purposes";
+    case FACE:
+      return "A face scan used for identification purposes";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DIAGRAM:
+      return "Diagram";
+    case FAX:
+      return "Fax";
+    case SCAN:
+      return "Scanned Document";
+    case RETINA:
+      return "Retina Scan";
+    case FINGERPRINT:
+      return "Fingerprint";
+    case IRIS:
+      return "Iris Scan";
+    case PALM:
+      return "Palm Scan";
+    case FACE:
+      return "Face Scan";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

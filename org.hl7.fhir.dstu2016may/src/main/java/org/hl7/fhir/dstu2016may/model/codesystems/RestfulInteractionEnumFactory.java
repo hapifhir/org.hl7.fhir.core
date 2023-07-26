@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 */
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
-
 
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
@@ -74,7 +70,7 @@ public class RestfulInteractionEnumFactory implements EnumFactory<RestfulInterac
       return RestfulInteraction.BATCH;
     if ("operation".equals(codeString))
       return RestfulInteraction.OPERATION;
-    throw new IllegalArgumentException("Unknown RestfulInteraction code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown RestfulInteraction code '" + codeString + "'");
   }
 
   public String toCode(RestfulInteraction code) {
@@ -113,8 +109,8 @@ public class RestfulInteractionEnumFactory implements EnumFactory<RestfulInterac
     return "?";
   }
 
-    public String toSystem(RestfulInteraction code) {
-      return code.getSystem();
-      }
+  public String toSystem(RestfulInteraction code) {
+    return code.getSystem();
+  }
 
 }

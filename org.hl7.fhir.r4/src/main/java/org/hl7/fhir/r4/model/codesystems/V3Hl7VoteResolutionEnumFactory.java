@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
-
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -68,7 +64,7 @@ public class V3Hl7VoteResolutionEnumFactory implements EnumFactory<V3Hl7VoteReso
       return V3Hl7VoteResolution.UNRESOLVED;
     if ("withdraw".equals(codeString))
       return V3Hl7VoteResolution.WITHDRAW;
-    throw new IllegalArgumentException("Unknown V3Hl7VoteResolution code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3Hl7VoteResolution code '" + codeString + "'");
   }
 
   public String toCode(V3Hl7VoteResolution code) {
@@ -101,8 +97,8 @@ public class V3Hl7VoteResolutionEnumFactory implements EnumFactory<V3Hl7VoteReso
     return "?";
   }
 
-    public String toSystem(V3Hl7VoteResolution code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3Hl7VoteResolution code) {
+    return code.getSystem();
+  }
 
 }

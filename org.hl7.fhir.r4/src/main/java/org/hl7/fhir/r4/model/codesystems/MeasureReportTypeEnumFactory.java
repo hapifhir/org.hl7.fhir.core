@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class MeasureReportTypeEnumFactory implements EnumFactory<MeasureReportType> {
@@ -50,7 +46,7 @@ public class MeasureReportTypeEnumFactory implements EnumFactory<MeasureReportTy
       return MeasureReportType.SUMMARY;
     if ("data-collection".equals(codeString))
       return MeasureReportType.DATACOLLECTION;
-    throw new IllegalArgumentException("Unknown MeasureReportType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown MeasureReportType code '" + codeString + "'");
   }
 
   public String toCode(MeasureReportType code) {
@@ -65,8 +61,8 @@ public class MeasureReportTypeEnumFactory implements EnumFactory<MeasureReportTy
     return "?";
   }
 
-    public String toSystem(MeasureReportType code) {
-      return code.getSystem();
-      }
+  public String toSystem(MeasureReportType code) {
+    return code.getSystem();
+  }
 
 }

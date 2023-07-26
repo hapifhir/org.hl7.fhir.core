@@ -29,7 +29,6 @@ package org.hl7.fhir.r4b.utils;
   
  */
 
-
 import java.util.List;
 
 import org.hl7.fhir.r4b.model.Bundle;
@@ -55,6 +54,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 /**
  * Decoration utilities for various resource types
+ * 
  * @author Grahame
  *
  */
@@ -62,35 +62,34 @@ public class ResourceUtilities {
 
   public final static String FHIR_LANGUAGE = "urn:ietf:bcp:47";
 
-	public static boolean isAnError(OperationOutcome error) {
-		for (OperationOutcomeIssueComponent t : error.getIssue())
-			if (t.getSeverity() == IssueSeverity.ERROR)
-				return true;
-			else if (t.getSeverity() == IssueSeverity.FATAL)
-				return true;
-		return false;
-	}
-	
-	public static String getErrorDescription(OperationOutcome error) {  
-		if (error.hasText() && error.getText().hasDiv()) {
-			return new XhtmlComposer(XhtmlComposer.XML).composePlainText(error.getText().getDiv());
-		}
-		
-		StringBuilder b = new StringBuilder();
-		for (OperationOutcomeIssueComponent t : error.getIssue()) {
-			if (t.getSeverity() == IssueSeverity.ERROR) {
-				b.append("Error:" +gen(t.getDetails())+"\r\n");
-			} else if (t.getSeverity() == IssueSeverity.FATAL) {
-				b.append("Fatal:" +gen(t.getDetails())+"\r\n");
-			} else if (t.getSeverity() == IssueSeverity.WARNING) {
-				b.append("Warning:" +gen(t.getDetails())+"\r\n");
-			} else if (t.getSeverity() == IssueSeverity.INFORMATION) {
-				b.append("Information:" +gen(t.getDetails())+"\r\n");
-			}
-		}
-		return b.toString();
+  public static boolean isAnError(OperationOutcome error) {
+    for (OperationOutcomeIssueComponent t : error.getIssue())
+      if (t.getSeverity() == IssueSeverity.ERROR)
+        return true;
+      else if (t.getSeverity() == IssueSeverity.FATAL)
+        return true;
+    return false;
   }
 
+  public static String getErrorDescription(OperationOutcome error) {
+    if (error.hasText() && error.getText().hasDiv()) {
+      return new XhtmlComposer(XhtmlComposer.XML).composePlainText(error.getText().getDiv());
+    }
+
+    StringBuilder b = new StringBuilder();
+    for (OperationOutcomeIssueComponent t : error.getIssue()) {
+      if (t.getSeverity() == IssueSeverity.ERROR) {
+        b.append("Error:" + gen(t.getDetails()) + "\r\n");
+      } else if (t.getSeverity() == IssueSeverity.FATAL) {
+        b.append("Fatal:" + gen(t.getDetails()) + "\r\n");
+      } else if (t.getSeverity() == IssueSeverity.WARNING) {
+        b.append("Warning:" + gen(t.getDetails()) + "\r\n");
+      } else if (t.getSeverity() == IssueSeverity.INFORMATION) {
+        b.append("Information:" + gen(t.getDetails()) + "\r\n");
+      }
+    }
+    return b.toString();
+  }
 
   private static String gen(CodeableConcept details) {
     if (details.hasText()) {
@@ -106,9 +105,9 @@ public class ResourceUtilities {
         return c.getCode();
       }
     }
-    return "(no details supplied)";   
+    return "(no details supplied)";
   }
-  
+
   public static Resource getById(Bundle feed, ResourceType type, String reference) {
     for (BundleEntryComponent item : feed.getEntry()) {
       if (item.getResource().getId().equals(reference) && item.getResource().getResourceType() == type)
@@ -125,12 +124,12 @@ public class ResourceUtilities {
     return null;
   }
 
-	public static String getLink(Bundle feed, String rel) {
-		for (BundleLinkComponent link : feed.getLink()) {
-			if (link.getRelation().equals(rel))
-				return link.getUrl();
-		}
-	  return null;
+  public static String getLink(Bundle feed, String rel) {
+    for (BundleLinkComponent link : feed.getLink()) {
+      if (link.getRelation().equals(rel))
+        return link.getUrl();
+    }
+    return null;
   }
 
   public static Meta meta(Resource resource) {
@@ -192,8 +191,6 @@ public class ResourceUtilities {
 //    b.append("</tr>\r\n");
 //  }
 
-  
-
   private static String renderBinding(ElementDefinitionBindingComponent binding) {
     // TODO Auto-generated method stub
     return null;
@@ -205,8 +202,9 @@ public class ResourceUtilities {
     if (units instanceof CodeableConcept)
       return renderCodeable((CodeableConcept) units);
     else
-      return "<a href=\""+Utilities.escapeXml(((Reference) units).getReference())+"\">"+Utilities.escapeXml(((Reference) units).getReference())+"</a>";
-      
+      return "<a href=\"" + Utilities.escapeXml(((Reference) units).getReference()) + "\">"
+          + Utilities.escapeXml(((Reference) units).getReference()) + "</a>";
+
   }
 
   private static String renderCodeable(CodeableConcept units) {
@@ -214,7 +212,7 @@ public class ResourceUtilities {
       return "";
     String v = renderCoding(units.getCoding());
     if (units.hasText())
-      v = v + " " +Utilities.escapeXml(units.getText());
+      v = v + " " + Utilities.escapeXml(units.getText());
     return v;
   }
 
@@ -229,7 +227,8 @@ public class ResourceUtilities {
     if (code == null || code.isEmpty())
       return "";
     else
-      return "<span title=\""+Utilities.escapeXml(code.getSystem())+"\">"+Utilities.escapeXml(code.getCode())+"</span>";
+      return "<span title=\"" + Utilities.escapeXml(code.getSystem()) + "\">" + Utilities.escapeXml(code.getCode())
+          + "</span>";
   }
 
 //  private static List<String> chooseColumns(Bundle bundle, DataElement common, StringBuilder b, boolean profileLink) {
@@ -400,11 +399,11 @@ public class ResourceUtilities {
   public static void renderContactPoint(StringBuilder b, ContactPoint cp) {
     if (cp != null && !cp.isEmpty()) {
       if (cp.getSystem() == ContactPointSystem.EMAIL)
-        b.append("<a href=\"mailto:"+cp.getValue()+"\">"+cp.getValue()+"</a>");
-      else if (cp.getSystem() == ContactPointSystem.FAX) 
-        b.append("Fax: "+cp.getValue());
-      else if (cp.getSystem() == ContactPointSystem.OTHER) 
-        b.append("<a href=\""+cp.getValue()+"\">"+cp.getValue()+"</a>");
+        b.append("<a href=\"mailto:" + cp.getValue() + "\">" + cp.getValue() + "</a>");
+      else if (cp.getSystem() == ContactPointSystem.FAX)
+        b.append("Fax: " + cp.getValue());
+      else if (cp.getSystem() == ContactPointSystem.OTHER)
+        b.append("<a href=\"" + cp.getValue() + "\">" + cp.getValue() + "</a>");
       else
         b.append(cp.getValue());
     }

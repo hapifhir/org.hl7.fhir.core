@@ -1,21 +1,14 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
-import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerSession;
-import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
-import org.hl7.fhir.utilities.i18n.PoGetTextProducer.POGetTextLanguageProducerLanguageSession;
-import org.hl7.fhir.utilities.i18n.PoGetTextProducer.POGetTextProducerSession;
-import org.hl7.fhir.utilities.i18n.XLIFFProducer.XLiffLanguageProducerLanguageSession;
 
 public class PoGetTextProducer extends LanguageFileProducer {
 

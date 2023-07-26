@@ -1,9 +1,5 @@
 package org.hl7.fhir.r4.formats;
 
-
-
-
-
 import java.io.IOException;
 
 /*
@@ -35,7 +31,6 @@ import java.io.IOException;
   
 */
 
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -45,182 +40,204 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.Type;
 import org.xmlpull.v1.XmlPullParserException;
 
-
 /**
  * General interface - either an XML or JSON parser: read or write instances
- *  
+ * 
  * Defined to allow a factory to create a parser of the right type
  */
 public interface IParser {
 
-	/** 
-	 * check what kind of parser this is
-	 *  
-	 * @return what kind of parser this is
-	 */
-	public ParserType getType();
-	
+  /**
+   * check what kind of parser this is
+   * 
+   * @return what kind of parser this is
+   */
+  public ParserType getType();
+
   // -- Parser Configuration ----------------------------------
   /**
    * Whether to parse or ignore comments - either reading or writing
    */
-  public boolean getHandleComments(); 
+  public boolean getHandleComments();
+
   public IParser setHandleComments(boolean value);
 
   /**
-   * @param allowUnknownContent Whether to throw an exception if unknown content is found (or just skip it) when parsing
+   * @param allowUnknownContent Whether to throw an exception if unknown content
+   *                            is found (or just skip it) when parsing
    */
   public boolean isAllowUnknownContent();
+
   public IParser setAllowUnknownContent(boolean value);
-  
-  
+
   public enum OutputStyle {
     /**
-     * Produce normal output - no whitespace, except in HTML where whitespace is untouched
+     * Produce normal output - no whitespace, except in HTML where whitespace is
+     * untouched
      */
     NORMAL,
-    
+
     /**
      * Produce pretty output - human readable whitespace, HTML whitespace untouched
      */
     PRETTY,
-    
+
     /**
-     * Produce canonical output - no comments, no whitspace, HTML whitespace normlised, JSON attributes sorted alphabetically (slightly slower) 
+     * Produce canonical output - no comments, no whitspace, HTML whitespace
+     * normlised, JSON attributes sorted alphabetically (slightly slower)
      */
     CANONICAL,
   }
 
   /**
-   * Writing: 
+   * Writing:
    */
   public OutputStyle getOutputStyle();
+
   public IParser setOutputStyle(OutputStyle value);
-  
+
   /**
-   * This method is used by the publication tooling to stop the xhrtml narrative being generated. 
-   * It is not valid to use in production use. The tooling uses it to generate json/xml representations in html that are not cluttered by escaped html representations of the html representation
+   * This method is used by the publication tooling to stop the xhrtml narrative
+   * being generated. It is not valid to use in production use. The tooling uses
+   * it to generate json/xml representations in html that are not cluttered by
+   * escaped html representations of the html representation
    */
   public IParser setSuppressXhtml(String message);
 
   // -- Reading methods ----------------------------------------
-  
+
   /**
-   * parse content that is known to be a resource  
- * @throws XmlPullParserException 
- * @throws FHIRFormatError 
- * @throws IOException 
+   * parse content that is known to be a resource
+   * 
+   * @throws XmlPullParserException
+   * @throws FHIRFormatError
+   * @throws IOException
    */
   public Resource parse(InputStream input) throws IOException, FHIRFormatError;
 
   /**
-   * parse content that is known to be a resource  
- * @throws UnsupportedEncodingException 
- * @throws IOException 
- * @throws FHIRFormatError 
+   * parse content that is known to be a resource
+   * 
+   * @throws UnsupportedEncodingException
+   * @throws IOException
+   * @throws FHIRFormatError
    */
   public Resource parse(String input) throws UnsupportedEncodingException, FHIRFormatError, IOException;
-  
+
   /**
-   * parse content that is known to be a resource  
- * @throws IOException 
- * @throws FHIRFormatError 
+   * parse content that is known to be a resource
+   * 
+   * @throws IOException
+   * @throws FHIRFormatError
    */
   public Resource parse(byte[] bytes) throws FHIRFormatError, IOException;
 
   /**
-   * This is used to parse a type - a fragment of a resource. 
-   * There's no reason to use this in production - it's used 
-   * in the build tools 
+   * This is used to parse a type - a fragment of a resource. There's no reason to
+   * use this in production - it's used in the build tools
    * 
    * Not supported by all implementations
    * 
    * @param input
-   * @param knownType. if this is blank, the parser may try to infer the type (xml only)
+   * @param knownType. if this is blank, the parser may try to infer the type (xml
+   *                   only)
    * @return
- * @throws XmlPullParserException 
- * @throws FHIRFormatError 
- * @throws IOException 
+   * @throws XmlPullParserException
+   * @throws FHIRFormatError
+   * @throws IOException
    */
   public Type parseType(InputStream input, String knownType) throws IOException, FHIRFormatError;
+
   public Type parseAnyType(InputStream input, String knownType) throws IOException, FHIRFormatError;
-  
+
   /**
-   * This is used to parse a type - a fragment of a resource. 
-   * There's no reason to use this in production - it's used 
-   * in the build tools 
+   * This is used to parse a type - a fragment of a resource. There's no reason to
+   * use this in production - it's used in the build tools
    * 
    * Not supported by all implementations
    * 
    * @param input
-   * @param knownType. if this is blank, the parser may try to infer the type (xml only)
+   * @param knownType. if this is blank, the parser may try to infer the type (xml
+   *                   only)
    * @return
- * @throws UnsupportedEncodingException 
- * @throws IOException 
- * @throws FHIRFormatError 
+   * @throws UnsupportedEncodingException
+   * @throws IOException
+   * @throws FHIRFormatError
    */
-  public Type parseType(String input, String knownType) throws UnsupportedEncodingException, FHIRFormatError, IOException;
+  public Type parseType(String input, String knownType)
+      throws UnsupportedEncodingException, FHIRFormatError, IOException;
+
   /**
-   * This is used to parse a type - a fragment of a resource. 
-   * There's no reason to use this in production - it's used 
-   * in the build tools 
+   * This is used to parse a type - a fragment of a resource. There's no reason to
+   * use this in production - it's used in the build tools
    * 
    * Not supported by all implementations
    * 
    * @param input
-   * @param knownType. if this is blank, the parser may try to infer the type (xml only)
+   * @param knownType. if this is blank, the parser may try to infer the type (xml
+   *                   only)
    * @return
- * @throws IOException 
- * @throws FHIRFormatError 
-	 */
+   * @throws IOException
+   * @throws FHIRFormatError
+   */
   public Type parseType(byte[] bytes, String knownType) throws FHIRFormatError, IOException;
-  
+
   // -- Writing methods ----------------------------------------
 
-	/**
-	 * Compose a resource to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
-	 * @throws IOException 
-	 */
-	public void compose(OutputStream stream, Resource resource) throws IOException;
-	
   /**
-   * Compose a resource to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
- * @throws IOException 
+   * Compose a resource to a stream, possibly using pretty presentation for a
+   * human reader (used in the spec, for example, but not normally in production)
+   * 
+   * @throws IOException
    */
-	public String composeString(Resource resource) throws IOException;
+  public void compose(OutputStream stream, Resource resource) throws IOException;
 
-	/**
-   * Compose a resource to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
-	 * @throws IOException 
+  /**
+   * Compose a resource to a stream, possibly using pretty presentation for a
+   * human reader (used in the spec, for example, but not normally in production)
+   * 
+   * @throws IOException
    */
-	public byte[] composeBytes(Resource resource) throws IOException;
+  public String composeString(Resource resource) throws IOException;
 
+  /**
+   * Compose a resource to a stream, possibly using pretty presentation for a
+   * human reader (used in the spec, for example, but not normally in production)
+   * 
+   * @throws IOException
+   */
+  public byte[] composeBytes(Resource resource) throws IOException;
 
-	/**
-	 * Compose a type to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
-	 * 
-	 * Not supported by all implementations. rootName is ignored in the JSON format
-	 * @throws XmlPullParserException 
-	 * @throws FHIRFormatError 
-	 * @throws IOException 
-	 */
-	public void compose(OutputStream stream, Type type, String rootName) throws IOException;
-
-	/**
-   * Compose a type to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
+  /**
+   * Compose a type to a stream, possibly using pretty presentation for a human
+   * reader (used in the spec, for example, but not normally in production)
    * 
    * Not supported by all implementations. rootName is ignored in the JSON format
-	 * @throws IOException 
+   * 
+   * @throws XmlPullParserException
+   * @throws FHIRFormatError
+   * @throws IOException
+   */
+  public void compose(OutputStream stream, Type type, String rootName) throws IOException;
+
+  /**
+   * Compose a type to a stream, possibly using pretty presentation for a human
+   * reader (used in the spec, for example, but not normally in production)
+   * 
+   * Not supported by all implementations. rootName is ignored in the JSON format
+   * 
+   * @throws IOException
    */
   public String composeString(Type type, String rootName) throws IOException;
 
-	/**
-	 * Compose a type to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
+  /**
+   * Compose a type to a stream, possibly using pretty presentation for a human
+   * reader (used in the spec, for example, but not normally in production)
    * 
    * Not supported by all implementations. rootName is ignored in the JSON format
-	 * @throws IOException 
-	 */
-	public byte[] composeBytes(Type type, String rootName) throws IOException;
-
+   * 
+   * @throws IOException
+   */
+  public byte[] composeBytes(Type type, String rootName) throws IOException;
 
 }

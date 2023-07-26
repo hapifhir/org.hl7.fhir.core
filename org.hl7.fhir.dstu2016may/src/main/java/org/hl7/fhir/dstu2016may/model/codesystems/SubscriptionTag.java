@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SubscriptionTag {
 
-        /**
-         * The message has been queued for processing on a destination systems.
-         */
-        QUEUED, 
-        /**
-         * The message has been delivered to its intended recipient.
-         */
-        DELIVERED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static SubscriptionTag fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("queued".equals(codeString))
-          return QUEUED;
-        if ("delivered".equals(codeString))
-          return DELIVERED;
-        throw new FHIRException("Unknown SubscriptionTag code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case QUEUED: return "queued";
-            case DELIVERED: return "delivered";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/subscription-tag";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case QUEUED: return "The message has been queued for processing on a destination systems.";
-            case DELIVERED: return "The message has been delivered to its intended recipient.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case QUEUED: return "Queued";
-            case DELIVERED: return "Delivered";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The message has been queued for processing on a destination systems.
+   */
+  QUEUED,
+  /**
+   * The message has been delivered to its intended recipient.
+   */
+  DELIVERED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static SubscriptionTag fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("queued".equals(codeString))
+      return QUEUED;
+    if ("delivered".equals(codeString))
+      return DELIVERED;
+    throw new FHIRException("Unknown SubscriptionTag code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case QUEUED:
+      return "queued";
+    case DELIVERED:
+      return "delivered";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/subscription-tag";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case QUEUED:
+      return "The message has been queued for processing on a destination systems.";
+    case DELIVERED:
+      return "The message has been delivered to its intended recipient.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case QUEUED:
+      return "Queued";
+    case DELIVERED:
+      return "Delivered";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

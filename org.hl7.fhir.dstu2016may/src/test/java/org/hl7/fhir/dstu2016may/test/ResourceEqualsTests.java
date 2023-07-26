@@ -1,6 +1,5 @@
 package org.hl7.fhir.dstu2016may.test;
 
-
 import org.hl7.fhir.dstu2016may.formats.JsonParser;
 import org.hl7.fhir.dstu2016may.model.Resource;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,11 +18,7 @@ public class ResourceEqualsTests {
   private JsonParser dstu2016_parser = new JsonParser();;
 
   @ParameterizedTest
-  @ValueSource(strings = {
-    "conformance_example_1.json",
-    "immunization_example_1.json",
-    "patient_example_1.json"
-  })
+  @ValueSource(strings = { "conformance_example_1.json", "immunization_example_1.json", "patient_example_1.json" })
   public void testEquals(String resourcePath) throws IOException {
 
     org.hl7.fhir.dstu2016may.model.Resource resourceA = getResource(resourcePath);
@@ -47,13 +42,14 @@ public class ResourceEqualsTests {
     return "/" + resource;
   }
 
-  /* All files pairs contain a single difference, which can be evaluated with a diff. These differences are at various depths in the element tree, but not at the shallow level. */
+  /*
+   * All files pairs contain a single difference, which can be evaluated with a
+   * diff. These differences are at various depths in the element tree, but not at
+   * the shallow level.
+   */
   @ParameterizedTest
-  @CsvSource({
-    "conformance_example_1.json,conformance_example_2.json",
-    "immunization_example_1.json,immunization_example_2.json",
-    "patient_example_1.json,patient_example_2.json"
-  })
+  @CsvSource({ "conformance_example_1.json,conformance_example_2.json",
+      "immunization_example_1.json,immunization_example_2.json", "patient_example_1.json,patient_example_2.json" })
   public void testEqualsDeepFalse(String resourceAName, String resourceBName) throws IOException {
     org.hl7.fhir.dstu2016may.model.Resource resourceA = getResource(resourceAName);
 
@@ -62,13 +58,13 @@ public class ResourceEqualsTests {
     assertFalse(resourceA.equalsDeep(resourceB));
   }
 
-  /* All files pairs contain a single difference, which can be evaluated with a diff. These differences are at the shallow level. */
+  /*
+   * All files pairs contain a single difference, which can be evaluated with a
+   * diff. These differences are at the shallow level.
+   */
   @ParameterizedTest
-  @CsvSource({
-    "conformance_example_1.json,conformance_example_3.json",
-    "immunization_example_1.json,immunization_example_3.json",
-    "patient_example_1.json,patient_example_3.json"
-  })
+  @CsvSource({ "conformance_example_1.json,conformance_example_3.json",
+      "immunization_example_1.json,immunization_example_3.json", "patient_example_1.json,patient_example_3.json" })
   public void testEqualsShallowFalse(String resourceAName, String resourceBName) throws IOException {
     org.hl7.fhir.dstu2016may.model.Resource resourceA = getResource(resourceAName);
 

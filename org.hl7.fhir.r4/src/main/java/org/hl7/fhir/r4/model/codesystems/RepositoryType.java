@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,114 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum RepositoryType {
 
-        /**
-         * When URL is clicked, the resource can be seen directly (by webpage or by download link format).
-         */
-        DIRECTLINK, 
-        /**
-         * When the API method (e.g. [base_url]/[parameter]) related with the URL of the website is executed, the resource can be seen directly (usually in JSON or XML format).
-         */
-        OPENAPI, 
-        /**
-         * When logged into the website, the resource can be seen.
-         */
-        LOGIN, 
-        /**
-         * When logged in and  follow the API in the website related with URL, the resource can be seen.
-         */
-        OAUTH, 
-        /**
-         * Some other complicated or particular way to get resource from URL.
-         */
-        OTHER, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static RepositoryType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("directlink".equals(codeString))
-          return DIRECTLINK;
-        if ("openapi".equals(codeString))
-          return OPENAPI;
-        if ("login".equals(codeString))
-          return LOGIN;
-        if ("oauth".equals(codeString))
-          return OAUTH;
-        if ("other".equals(codeString))
-          return OTHER;
-        throw new FHIRException("Unknown RepositoryType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DIRECTLINK: return "directlink";
-            case OPENAPI: return "openapi";
-            case LOGIN: return "login";
-            case OAUTH: return "oauth";
-            case OTHER: return "other";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/repository-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DIRECTLINK: return "When URL is clicked, the resource can be seen directly (by webpage or by download link format).";
-            case OPENAPI: return "When the API method (e.g. [base_url]/[parameter]) related with the URL of the website is executed, the resource can be seen directly (usually in JSON or XML format).";
-            case LOGIN: return "When logged into the website, the resource can be seen.";
-            case OAUTH: return "When logged in and  follow the API in the website related with URL, the resource can be seen.";
-            case OTHER: return "Some other complicated or particular way to get resource from URL.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DIRECTLINK: return "Click and see";
-            case OPENAPI: return "The URL is the RESTful or other kind of API that can access to the result.";
-            case LOGIN: return "Result cannot be access unless an account is logged in";
-            case OAUTH: return "Result need to be fetched with API and need LOGIN( or cookies are required when visiting the link of resource)";
-            case OTHER: return "Some other complicated or particular way to get resource from URL.";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * When URL is clicked, the resource can be seen directly (by webpage or by
+   * download link format).
+   */
+  DIRECTLINK,
+  /**
+   * When the API method (e.g. [base_url]/[parameter]) related with the URL of the
+   * website is executed, the resource can be seen directly (usually in JSON or
+   * XML format).
+   */
+  OPENAPI,
+  /**
+   * When logged into the website, the resource can be seen.
+   */
+  LOGIN,
+  /**
+   * When logged in and follow the API in the website related with URL, the
+   * resource can be seen.
+   */
+  OAUTH,
+  /**
+   * Some other complicated or particular way to get resource from URL.
+   */
+  OTHER,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static RepositoryType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("directlink".equals(codeString))
+      return DIRECTLINK;
+    if ("openapi".equals(codeString))
+      return OPENAPI;
+    if ("login".equals(codeString))
+      return LOGIN;
+    if ("oauth".equals(codeString))
+      return OAUTH;
+    if ("other".equals(codeString))
+      return OTHER;
+    throw new FHIRException("Unknown RepositoryType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DIRECTLINK:
+      return "directlink";
+    case OPENAPI:
+      return "openapi";
+    case LOGIN:
+      return "login";
+    case OAUTH:
+      return "oauth";
+    case OTHER:
+      return "other";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/repository-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DIRECTLINK:
+      return "When URL is clicked, the resource can be seen directly (by webpage or by download link format).";
+    case OPENAPI:
+      return "When the API method (e.g. [base_url]/[parameter]) related with the URL of the website is executed, the resource can be seen directly (usually in JSON or XML format).";
+    case LOGIN:
+      return "When logged into the website, the resource can be seen.";
+    case OAUTH:
+      return "When logged in and  follow the API in the website related with URL, the resource can be seen.";
+    case OTHER:
+      return "Some other complicated or particular way to get resource from URL.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DIRECTLINK:
+      return "Click and see";
+    case OPENAPI:
+      return "The URL is the RESTful or other kind of API that can access to the result.";
+    case LOGIN:
+      return "Result cannot be access unless an account is logged in";
+    case OAUTH:
+      return "Result need to be fetched with API and need LOGIN( or cookies are required when visiting the link of resource)";
+    case OTHER:
+      return "Some other complicated or particular way to get resource from URL.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

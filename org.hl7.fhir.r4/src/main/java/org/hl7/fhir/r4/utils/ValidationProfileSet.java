@@ -29,8 +29,6 @@ package org.hl7.fhir.r4.utils;
   
  */
 
-
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -41,26 +39,28 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 public class ValidationProfileSet {
 
   public static class ProfileRegistration {
-    private String profile; 
+    private String profile;
     private boolean errorOnMissing;
-    
+
     public ProfileRegistration(String profile, boolean errorOnMissing) {
       super();
       this.profile = profile;
       this.errorOnMissing = errorOnMissing;
     }
+
     public String getProfile() {
       return profile;
     }
+
     public boolean isErrorOnMissing() {
       return errorOnMissing;
     }
-    
-    
+
   }
+
   private List<ProfileRegistration> canonical = new ArrayList<ProfileRegistration>();
   private List<StructureDefinition> definitions = new ArrayList<StructureDefinition>();
-  
+
   public ValidationProfileSet(String profile, boolean isError) {
     super();
     canonical.add(new ProfileRegistration(profile, isError));
@@ -112,7 +112,7 @@ public class ValidationProfileSet {
   }
 
   public StructureDefinition fetch(String effectiveProfile) {
-    for (StructureDefinition sd : definitions) 
+    for (StructureDefinition sd : definitions)
       if (effectiveProfile.equals(sd.getUrl()))
         return sd;
     return null;

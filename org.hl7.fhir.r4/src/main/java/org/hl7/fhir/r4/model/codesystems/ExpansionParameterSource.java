@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,87 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExpansionParameterSource {
 
-        /**
-         * The parameter was supplied by the client in the $expand request.
-         */
-        INPUT, 
-        /**
-         * The parameter was added by the expansion engine on the server.
-         */
-        SERVER, 
-        /**
-         * The parameter was added from one the code systems used in the $expand operation.
-         */
-        CODESYSTEM, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ExpansionParameterSource fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("input".equals(codeString))
-          return INPUT;
-        if ("server".equals(codeString))
-          return SERVER;
-        if ("codesystem".equals(codeString))
-          return CODESYSTEM;
-        throw new FHIRException("Unknown ExpansionParameterSource code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INPUT: return "input";
-            case SERVER: return "server";
-            case CODESYSTEM: return "codesystem";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/expansion-parameter-source";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INPUT: return "The parameter was supplied by the client in the $expand request.";
-            case SERVER: return "The parameter was added by the expansion engine on the server.";
-            case CODESYSTEM: return "The parameter was added from one the code systems used in the $expand operation.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INPUT: return "Client Input";
-            case SERVER: return "Server Engine";
-            case CODESYSTEM: return "Code System";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The parameter was supplied by the client in the $expand request.
+   */
+  INPUT,
+  /**
+   * The parameter was added by the expansion engine on the server.
+   */
+  SERVER,
+  /**
+   * The parameter was added from one the code systems used in the $expand
+   * operation.
+   */
+  CODESYSTEM,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ExpansionParameterSource fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("input".equals(codeString))
+      return INPUT;
+    if ("server".equals(codeString))
+      return SERVER;
+    if ("codesystem".equals(codeString))
+      return CODESYSTEM;
+    throw new FHIRException("Unknown ExpansionParameterSource code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INPUT:
+      return "input";
+    case SERVER:
+      return "server";
+    case CODESYSTEM:
+      return "codesystem";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/expansion-parameter-source";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INPUT:
+      return "The parameter was supplied by the client in the $expand request.";
+    case SERVER:
+      return "The parameter was added by the expansion engine on the server.";
+    case CODESYSTEM:
+      return "The parameter was added from one the code systems used in the $expand operation.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INPUT:
+      return "Client Input";
+    case SERVER:
+      return "Server Engine";
+    case CODESYSTEM:
+      return "Code System";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

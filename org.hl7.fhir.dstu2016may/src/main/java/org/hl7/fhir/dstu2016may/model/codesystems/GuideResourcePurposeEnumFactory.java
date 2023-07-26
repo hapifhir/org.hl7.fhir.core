@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Tue, Mar 22, 2016 08:00+1100 for FHIR v1.3.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class GuideResourcePurposeEnumFactory implements EnumFactory<GuideResourcePurpose> {
@@ -54,7 +50,7 @@ public class GuideResourcePurposeEnumFactory implements EnumFactory<GuideResourc
       return GuideResourcePurpose.DICTIONARY;
     if ("logical".equals(codeString))
       return GuideResourcePurpose.LOGICAL;
-    throw new IllegalArgumentException("Unknown GuideResourcePurpose code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown GuideResourcePurpose code '" + codeString + "'");
   }
 
   public String toCode(GuideResourcePurpose code) {
@@ -73,8 +69,8 @@ public class GuideResourcePurposeEnumFactory implements EnumFactory<GuideResourc
     return "?";
   }
 
-    public String toSystem(GuideResourcePurpose code) {
-      return code.getSystem();
-      }
+  public String toSystem(GuideResourcePurpose code) {
+    return code.getSystem();
+  }
 
 }

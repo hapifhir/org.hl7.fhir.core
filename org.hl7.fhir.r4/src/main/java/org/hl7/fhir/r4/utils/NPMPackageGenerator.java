@@ -29,8 +29,6 @@ package org.hl7.fhir.r4.utils;
   
  */
 
-
-
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -58,8 +56,8 @@ import org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDependsOnCom
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
+import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -70,18 +68,27 @@ public class NPMPackageGenerator {
 
   public enum Category {
     RESOURCE, EXAMPLE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL, TEMPLATE, JEKYLL;
-    
+
     private String getDirectory() {
       switch (this) {
-      case RESOURCE: return "/package/";
-      case EXAMPLE: return "/example/";
-      case OPENAPI: return "/openapi/";
-      case SCHEMATRON: return "/xml/";
-      case RDF: return "/rdf/";      
-      case OTHER: return "/other/";      
-      case TEMPLATE: return "/other/";      
-      case JEKYLL: return "/jekyll/";      
-      case TOOL: return "/bin/";      
+      case RESOURCE:
+        return "/package/";
+      case EXAMPLE:
+        return "/example/";
+      case OPENAPI:
+        return "/openapi/";
+      case SCHEMATRON:
+        return "/xml/";
+      case RDF:
+        return "/rdf/";
+      case OTHER:
+        return "/other/";
+      case TEMPLATE:
+        return "/other/";
+      case JEKYLL:
+        return "/jekyll/";
+      case TOOL:
+        return "/bin/";
       }
       return "/";
     }
@@ -94,10 +101,11 @@ public class NPMPackageGenerator {
   private BufferedOutputStream bufferedOutputStream;
   private GzipCompressorOutputStream gzipOutputStream;
   private JsonObject packageJ;
-  
-  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, String genDate) throws FHIRException, IOException {
+
+  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig,
+      String genDate) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at "+destFile);
+    System.out.println("create package file at " + destFile);
     this.destFile = destFile;
     start();
     List<String> fhirVersion = new ArrayList<>();
@@ -105,29 +113,31 @@ public class NPMPackageGenerator {
       fhirVersion.add(v.asStringValue());
     buildPackageJson(canonical, kind, url, genDate, ig, fhirVersion);
   }
-  
-  public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name) throws FHIRException, IOException {
+
+  public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name)
+      throws FHIRException, IOException {
     JsonObject p = master.packageJ.deepCopy();
     p.remove("name");
     p.addProperty("name", id);
     p.remove("type");
-    p.addProperty("type", PackageType.CONFORMANCE.getCode());    
+    p.addProperty("type", PackageType.CONFORMANCE.getCode());
     p.remove("title");
-    p.addProperty("title", name);    
+    p.addProperty("title", name);
     return new NPMPackageGenerator(destFile, p);
   }
-  
-  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, String genDate, List<String> fhirVersion) throws FHIRException, IOException {
+
+  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig,
+      String genDate, List<String> fhirVersion) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at "+destFile);
+    System.out.println("create package file at " + destFile);
     this.destFile = destFile;
     start();
     buildPackageJson(canonical, kind, url, genDate, ig, fhirVersion);
   }
-  
+
   public NPMPackageGenerator(String destFile, JsonObject npm) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at "+destFile);
+    System.out.println("create package file at " + destFile);
     this.destFile = destFile;
     start();
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -138,8 +148,9 @@ public class NPMPackageGenerator {
     }
     packageJ = npm;
   }
-  
-  private void buildPackageJson(String canonical, PackageType kind, String web, String genDate, ImplementationGuide ig, List<String> fhirVersion) throws FHIRException, IOException {
+
+  private void buildPackageJson(String canonical, PackageType kind, String web, String genDate, ImplementationGuide ig,
+      List<String> fhirVersion) throws FHIRException, IOException {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (!ig.hasPackageId())
       b.append("packageId");
@@ -151,7 +162,7 @@ public class NPMPackageGenerator {
       b.append("license");
     for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
       if (!d.hasVersion()) {
-        b.append("dependsOn.version("+d.getUri()+")");
+        b.append("dependsOn.version(" + d.getUri() + ")");
       }
     }
 
@@ -167,7 +178,7 @@ public class NPMPackageGenerator {
     if (ig.hasTitle())
       npm.addProperty("title", ig.getTitle());
     if (ig.hasDescription())
-      npm.addProperty("description", ig.getDescription()+ " (built "+genDate+timezone()+")");
+      npm.addProperty("description", ig.getDescription() + " (built " + genDate + timezone() + ")");
     if (kind != PackageType.CORE) {
       JsonObject dep = new JsonObject();
       npm.add("dependencies", dep);
@@ -211,18 +222,17 @@ public class NPMPackageGenerator {
     packageJ = npm;
   }
 
-
   private String timezone() {
-    TimeZone tz = TimeZone.getDefault();  
+    TimeZone tz = TimeZone.getDefault();
     Calendar cal = GregorianCalendar.getInstance(tz);
     int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
 
-    String offset = String.format("%02d:%02d", Math.abs(offsetInMillis / 3600000), Math.abs((offsetInMillis / 60000) % 60));
+    String offset = String.format("%02d:%02d", Math.abs(offsetInMillis / 3600000),
+        Math.abs((offsetInMillis / 60000) % 60));
     offset = (offsetInMillis >= 0 ? "+" : "-") + offset;
 
     return offset;
   }
-
 
   private String url(List<ContactPoint> telecom) {
     for (ContactPoint cp : telecom) {
@@ -231,7 +241,6 @@ public class NPMPackageGenerator {
     }
     return null;
   }
-
 
   private String email(List<ContactPoint> telecom) {
     for (ContactPoint cp : telecom) {
@@ -248,11 +257,10 @@ public class NPMPackageGenerator {
     tar = new TarArchiveOutputStream(gzipOutputStream);
   }
 
-
   public void addFile(Category cat, String name, byte[] content) throws IOException {
-    String path = cat.getDirectory()+name;
-    if (created.contains(path)) 
-      System.out.println("Duplicate package file "+path);
+    String path = cat.getDirectory() + name;
+    if (created.contains(path))
+      System.out.println("Duplicate package file " + path);
     else {
       created.add(path);
       TarArchiveEntry entry = new TarArchiveEntry(path);
@@ -262,7 +270,7 @@ public class NPMPackageGenerator {
       tar.closeArchiveEntry();
     }
   }
-  
+
   public void finish() throws IOException {
     tar.finish();
     tar.close();
@@ -286,10 +294,10 @@ public class NPMPackageGenerator {
         if (f.isDirectory()) {
           loadFiles(root, f);
         } else {
-          String path = f.getAbsolutePath().substring(root.length()+1);
+          String path = f.getAbsolutePath().substring(root.length() + 1);
           byte[] content = TextFile.fileToBytes(f);
-          if (created.contains(path)) 
-            System.out.println("Duplicate package file "+path);
+          if (created.contains(path))
+            System.out.println("Duplicate package file " + path);
           else {
             created.add(path);
             TarArchiveEntry entry = new TarArchiveEntry(path);
@@ -302,6 +310,5 @@ public class NPMPackageGenerator {
       }
     }
   }
-  
-  
+
 }

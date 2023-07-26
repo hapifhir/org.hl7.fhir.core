@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,111 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AccountStatus {
 
-        /**
-         * This account is active and may be used.
-         */
-        ACTIVE, 
-        /**
-         * This account is inactive and should not be used to track financial information.
-         */
-        INACTIVE, 
-        /**
-         * This instance should not have been part of this patient's medical record.
-         */
-        ENTEREDINERROR, 
-        /**
-         * This account is on hold.
-         */
-        ONHOLD, 
-        /**
-         * The account status is unknown.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static AccountStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("inactive".equals(codeString))
-          return INACTIVE;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if ("on-hold".equals(codeString))
-          return ONHOLD;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        throw new FHIRException("Unknown AccountStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACTIVE: return "active";
-            case INACTIVE: return "inactive";
-            case ENTEREDINERROR: return "entered-in-error";
-            case ONHOLD: return "on-hold";
-            case UNKNOWN: return "unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/account-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACTIVE: return "This account is active and may be used.";
-            case INACTIVE: return "This account is inactive and should not be used to track financial information.";
-            case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
-            case ONHOLD: return "This account is on hold.";
-            case UNKNOWN: return "The account status is unknown.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACTIVE: return "Active";
-            case INACTIVE: return "Inactive";
-            case ENTEREDINERROR: return "Entered in error";
-            case ONHOLD: return "On Hold";
-            case UNKNOWN: return "Unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * This account is active and may be used.
+   */
+  ACTIVE,
+  /**
+   * This account is inactive and should not be used to track financial
+   * information.
+   */
+  INACTIVE,
+  /**
+   * This instance should not have been part of this patient's medical record.
+   */
+  ENTEREDINERROR,
+  /**
+   * This account is on hold.
+   */
+  ONHOLD,
+  /**
+   * The account status is unknown.
+   */
+  UNKNOWN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static AccountStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("active".equals(codeString))
+      return ACTIVE;
+    if ("inactive".equals(codeString))
+      return INACTIVE;
+    if ("entered-in-error".equals(codeString))
+      return ENTEREDINERROR;
+    if ("on-hold".equals(codeString))
+      return ONHOLD;
+    if ("unknown".equals(codeString))
+      return UNKNOWN;
+    throw new FHIRException("Unknown AccountStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ACTIVE:
+      return "active";
+    case INACTIVE:
+      return "inactive";
+    case ENTEREDINERROR:
+      return "entered-in-error";
+    case ONHOLD:
+      return "on-hold";
+    case UNKNOWN:
+      return "unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/account-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ACTIVE:
+      return "This account is active and may be used.";
+    case INACTIVE:
+      return "This account is inactive and should not be used to track financial information.";
+    case ENTEREDINERROR:
+      return "This instance should not have been part of this patient's medical record.";
+    case ONHOLD:
+      return "This account is on hold.";
+    case UNKNOWN:
+      return "The account status is unknown.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ACTIVE:
+      return "Active";
+    case INACTIVE:
+      return "Inactive";
+    case ENTEREDINERROR:
+      return "Entered in error";
+    case ONHOLD:
+      return "On Hold";
+    case UNKNOWN:
+      return "Unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

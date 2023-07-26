@@ -60,7 +60,6 @@ import org.w3c.dom.Node;
   
  */
 
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -81,7 +80,7 @@ public class TestingUtilities extends BaseTestingUtilities {
     if ("4.5.0".equals(version)) {
       version = "4.4.0"; // temporary work around
     }
-    
+
     String v = VersionUtilities.getMajMin(version);
     if (fcontexts == null) {
       fcontexts = new HashMap<>();
@@ -89,9 +88,12 @@ public class TestingUtilities extends BaseTestingUtilities {
     if (!fcontexts.containsKey(v)) {
       FilesystemPackageCacheManager pcm;
       try {
-        pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
-        IWorkerContext fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
-        fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
+        pcm = new FilesystemPackageCacheManager(
+            org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+        IWorkerContext fcontext = SimpleWorkerContext
+            .fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
+        fcontext.setUcumService(
+            new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
         fcontext.setExpansionProfile(new Parameters());
 //        ((SimpleWorkerContext) fcontext).connectToTSServer(new TerminologyClientR5("http://tx.fhir.org/r4"), null);
         fcontexts.put(v, fcontext);
@@ -119,7 +121,6 @@ public class TestingUtilities extends BaseTestingUtilities {
       return s;
     throw new Error("FHIR Home directory not configured");
   }
-
 
   public static String content() throws IOException {
     if (contentpath != null)
@@ -191,10 +192,12 @@ public class TestingUtilities extends BaseTestingUtilities {
     c2 = skipBlankText(c2);
     while (c1 != null && c2 != null) {
       if (c1.getNodeType() != c2.getNodeType())
-        return "node type mismatch in children of " + path + ": " + Integer.toString(e1.getNodeType()) + "/" + Integer.toString(e2.getNodeType());
+        return "node type mismatch in children of " + path + ": " + Integer.toString(e1.getNodeType()) + "/"
+            + Integer.toString(e2.getNodeType());
       if (c1.getNodeType() == Node.TEXT_NODE) {
         if (!normalise(c1.getTextContent()).equals(normalise(c2.getTextContent())))
-          return "Text differs at " + path + ": " + normalise(c1.getTextContent()) + "/" + normalise(c2.getTextContent());
+          return "Text differs at " + path + ": " + normalise(c1.getTextContent()) + "/"
+              + normalise(c2.getTextContent());
       } else if (c1.getNodeType() == Node.ELEMENT_NODE) {
         s = compareElements(path, (Element) c1, (Element) c2);
         if (!Utilities.noString(s))
@@ -235,7 +238,8 @@ public class TestingUtilities extends BaseTestingUtilities {
           byte[] b1 = unBase64(sa.getTextContent());
           byte[] b2 = unBase64(ta.getTextContent());
           if (!sameBytes(b1, b2))
-            return "Attributes differ at " + path + ": value " + normalise(sa.getTextContent()) + "/" + normalise(ta.getTextContent());
+            return "Attributes differ at " + path + ": value " + normalise(sa.getTextContent()) + "/"
+                + normalise(ta.getTextContent());
         }
       }
     }
@@ -258,7 +262,8 @@ public class TestingUtilities extends BaseTestingUtilities {
   }
 
   private static Node skipBlankText(Node node) {
-    while (node != null && (((node.getNodeType() == Node.TEXT_NODE) && Utilities.isAllWhitespace(node.getTextContent())) || (node.getNodeType() == Node.COMMENT_NODE)))
+    while (node != null && (((node.getNodeType() == Node.TEXT_NODE) && Utilities.isAllWhitespace(node.getTextContent()))
+        || (node.getNodeType() == Node.COMMENT_NODE)))
       node = node.getNextSibling();
     return node;
   }
@@ -281,20 +286,24 @@ public class TestingUtilities extends BaseTestingUtilities {
     return builder.parse(fn);
   }
 
-  public static String checkJsonSrcIsSame(String s1, String s2) throws JsonSyntaxException, FileNotFoundException, IOException {
+  public static String checkJsonSrcIsSame(String s1, String s2)
+      throws JsonSyntaxException, FileNotFoundException, IOException {
     return checkJsonSrcIsSame(s1, s2, true);
   }
 
-  public static String checkJsonSrcIsSame(String s1, String s2, boolean showDiff) throws JsonSyntaxException, FileNotFoundException, IOException {
+  public static String checkJsonSrcIsSame(String s1, String s2, boolean showDiff)
+      throws JsonSyntaxException, FileNotFoundException, IOException {
     String result = compareJsonSrc(s1, s2);
     if (result != null && SHOW_DIFF && showDiff) {
       String diff = null;
       if (System.getProperty("os.name").contains("Linux"))
         diff = Utilities.path("/", "usr", "bin", "meld");
       else {
-        if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles"), "WinMerge"), "\\WinMergeU.exe", null))
+        if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles"), "WinMerge"),
+            "\\WinMergeU.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
-        else if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles"), "Meld"), "\\Meld.exe", null))
+        else if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles"), "Meld"), "\\Meld.exe",
+            null))
           diff = Utilities.path(System.getenv("ProgramFiles"), "Meld", "Meld.exe");
       }
       if (diff == null || diff.isEmpty())
@@ -319,7 +328,8 @@ public class TestingUtilities extends BaseTestingUtilities {
     return result;
   }
 
-  public static String checkJsonIsSame(String f1, String f2) throws JsonSyntaxException, FileNotFoundException, IOException {
+  public static String checkJsonIsSame(String f1, String f2)
+      throws JsonSyntaxException, FileNotFoundException, IOException {
     String result = compareJson(f1, f2);
     if (result != null && SHOW_DIFF) {
       String diff = Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
@@ -334,13 +344,15 @@ public class TestingUtilities extends BaseTestingUtilities {
     return result;
   }
 
-  private static String compareJsonSrc(String f1, String f2) throws JsonSyntaxException, FileNotFoundException, IOException {
+  private static String compareJsonSrc(String f1, String f2)
+      throws JsonSyntaxException, FileNotFoundException, IOException {
     JsonObject o1 = (JsonObject) new com.google.gson.JsonParser().parse(f1);
     JsonObject o2 = (JsonObject) new com.google.gson.JsonParser().parse(f2);
     return compareObjects("", o1, o2);
   }
 
-  private static String compareJson(String f1, String f2) throws JsonSyntaxException, FileNotFoundException, IOException {
+  private static String compareJson(String f1, String f2)
+      throws JsonSyntaxException, FileNotFoundException, IOException {
     JsonObject o1 = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(f1));
     JsonObject o2 = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(f2));
     return compareObjects("", o1, o2);
@@ -398,7 +410,8 @@ public class TestingUtilities extends BaseTestingUtilities {
       JsonArray a2 = (JsonArray) n2;
 
       if (a1.size() != a2.size())
-        return "array properties differ at " + path + ": count " + Integer.toString(a1.size()) + "/" + Integer.toString(a2.size());
+        return "array properties differ at " + path + ": count " + Integer.toString(a1.size()) + "/"
+            + Integer.toString(a2.size());
       for (int i = 0; i < a1.size(); i++) {
         String s = compareNodes(path + "[" + Integer.toString(i) + "]", a1.get(i), a2.get(i));
         if (!Utilities.noString(s))
@@ -411,20 +424,24 @@ public class TestingUtilities extends BaseTestingUtilities {
     return null;
   }
 
-  public static String checkTextIsSame(String s1, String s2) throws JsonSyntaxException, FileNotFoundException, IOException {
+  public static String checkTextIsSame(String s1, String s2)
+      throws JsonSyntaxException, FileNotFoundException, IOException {
     return checkTextIsSame(s1, s2, true);
   }
 
-  public static String checkTextIsSame(String s1, String s2, boolean showDiff) throws JsonSyntaxException, FileNotFoundException, IOException {
+  public static String checkTextIsSame(String s1, String s2, boolean showDiff)
+      throws JsonSyntaxException, FileNotFoundException, IOException {
     String result = compareText(s1, s2);
     if (result != null && SHOW_DIFF && showDiff) {
       String diff = null;
       if (System.getProperty("os.name").contains("Linux"))
         diff = Utilities.path("/", "usr", "bin", "meld");
       else {
-        if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"), "\\WinMergeU.exe", null))
+        if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"),
+            "\\WinMergeU.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
-        else if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"), "\\Meld.exe", null))
+        else if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"),
+            "\\Meld.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld", "Meld.exe");
       }
       if (diff == null || diff.isEmpty())
@@ -449,14 +466,15 @@ public class TestingUtilities extends BaseTestingUtilities {
     return result;
   }
 
-
   private static String compareText(String s1, String s2) {
     for (int i = 0; i < Integer.min(s1.length(), s2.length()); i++) {
       if (s1.charAt(i) != s2.charAt(i))
-        return "Strings differ at character " + Integer.toString(i) + ": '" + s1.charAt(i) + "' vs '" + s2.charAt(i) + "'";
+        return "Strings differ at character " + Integer.toString(i) + ": '" + s1.charAt(i) + "' vs '" + s2.charAt(i)
+            + "'";
     }
     if (s1.length() != s2.length())
-      return "Strings differ in length: " + Integer.toString(s1.length()) + " vs " + Integer.toString(s2.length()) + " but match to the end of the shortest";
+      return "Strings differ in length: " + Integer.toString(s1.length()) + " vs " + Integer.toString(s2.length())
+          + " but match to the end of the shortest";
     return null;
   }
 

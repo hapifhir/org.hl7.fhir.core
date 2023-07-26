@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.model;
   
  */
 
-
-
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -45,164 +43,165 @@ import org.hl7.fhir.instance.model.api.IPrimitiveType;
 
 import ca.uhn.fhir.model.api.IElement;
 
-public abstract class PrimitiveType<T> extends DataType implements IPrimitiveType<T>, IBaseHasExtensions, IElement, Externalizable {
+public abstract class PrimitiveType<T> extends DataType
+    implements IPrimitiveType<T>, IBaseHasExtensions, IElement, Externalizable {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	private T myCoercedValue;
-	private String myStringValue;
+  private T myCoercedValue;
+  private String myStringValue;
 
-	public String asStringValue() {
-		return myStringValue;
-	}
+  public String asStringValue() {
+    return myStringValue;
+  }
 
-	public abstract DataType copy();
+  public abstract DataType copy();
 
-	/**
-	 * Subclasses must override to convert a "coerced" value into an encoded one.
-	 * 
-	 * @param theValue
-	 *            Will not be null
-	 * @return May return null if the value does not correspond to anything
-	 */
-	protected abstract String encode(T theValue);
+  /**
+   * Subclasses must override to convert a "coerced" value into an encoded one.
+   * 
+   * @param theValue Will not be null
+   * @return May return null if the value does not correspond to anything
+   */
+  protected abstract String encode(T theValue);
 
-	@Override
-	public boolean equalsDeep(Base obj) {
-		if (!super.equalsDeep(obj))
-			return false;
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj.getClass() == getClass())) {
-			return false;
-		}
+  @Override
+  public boolean equalsDeep(Base obj) {
+    if (!super.equalsDeep(obj))
+      return false;
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj.getClass() == getClass())) {
+      return false;
+    }
 
-		PrimitiveType<?> o = (PrimitiveType<?>) obj;
+    PrimitiveType<?> o = (PrimitiveType<?>) obj;
 
-		EqualsBuilder b = new EqualsBuilder();
-		b.append(getValue(), o.getValue());
-		return b.isEquals();
-	}
+    EqualsBuilder b = new EqualsBuilder();
+    b.append(getValue(), o.getValue());
+    return b.isEquals();
+  }
 
-	@Override
-	public boolean equalsShallow(Base obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj.getClass() == getClass())) {
-			return false;
-		}
+  @Override
+  public boolean equalsShallow(Base obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj.getClass() == getClass())) {
+      return false;
+    }
 
-		PrimitiveType<?> o = (PrimitiveType<?>) obj;
+    PrimitiveType<?> o = (PrimitiveType<?>) obj;
 
-		EqualsBuilder b = new EqualsBuilder();
-		b.append(getValue(), o.getValue());
-		return b.isEquals();
-	}
+    EqualsBuilder b = new EqualsBuilder();
+    b.append(getValue(), o.getValue());
+    return b.isEquals();
+  }
 
-	public void fromStringValue(String theValue) {
-		myStringValue = theValue;
-		if (theValue == null) {
-			myCoercedValue = null;
-		} else {
-			// NB this might be null
-			myCoercedValue = parse(theValue);
-		}
-	}
+  public void fromStringValue(String theValue) {
+    myStringValue = theValue;
+    if (theValue == null) {
+      myCoercedValue = null;
+    } else {
+      // NB this might be null
+      myCoercedValue = parse(theValue);
+    }
+  }
 
-	public T getValue() {
-		return myCoercedValue;
-	}
+  public T getValue() {
+    return myCoercedValue;
+  }
 
-	public String getValueAsString() {
-		return asStringValue();
-	}
+  public String getValueAsString() {
+    return asStringValue();
+  }
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(getValue()).toHashCode();
-	}
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(getValue()).toHashCode();
+  }
 
-	public boolean hasValue() {
-  	  return !StringUtils.isBlank(getValueAsString());
-	}
-	
-	@Override
-	public boolean isEmpty() {
-		return super.isEmpty() && StringUtils.isBlank(getValueAsString());
-	}
+  public boolean hasValue() {
+    return !StringUtils.isBlank(getValueAsString());
+  }
 
-	public boolean isPrimitive() {
-		return true;
-	}
+  @Override
+  public boolean isEmpty() {
+    return super.isEmpty() && StringUtils.isBlank(getValueAsString());
+  }
 
-	/**
-	 * Subclasses must override to convert an encoded representation of this datatype into a "coerced" one
-	 * 
-	 * @param theValue
-	 *            Will not be null
-	 * @return May return null if the value does not correspond to anything
-	 */
-	protected abstract T parse(String theValue);
+  public boolean isPrimitive() {
+    return true;
+  }
 
-	public String primitiveValue() {
-		return asStringValue();
-	}
+  /**
+   * Subclasses must override to convert an encoded representation of this
+   * datatype into a "coerced" one
+   * 
+   * @param theValue Will not be null
+   * @return May return null if the value does not correspond to anything
+   */
+  protected abstract T parse(String theValue);
 
-	@Override
-	public void readExternal(ObjectInput theIn) throws IOException, ClassNotFoundException {
-		String object = (String) theIn.readObject();
-		setValueAsString(object);
-	}
+  public String primitiveValue() {
+    return asStringValue();
+  }
 
-	public PrimitiveType<T> setValue(T theValue) {
-		myCoercedValue = theValue;
-		updateStringValue();
-		return this;
-	}
+  @Override
+  public void readExternal(ObjectInput theIn) throws IOException, ClassNotFoundException {
+    String object = (String) theIn.readObject();
+    setValueAsString(object);
+  }
 
-	public void setValueAsString(String theValue) {
-		fromStringValue(theValue);
-	}
+  public PrimitiveType<T> setValue(T theValue) {
+    myCoercedValue = theValue;
+    updateStringValue();
+    return this;
+  }
 
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "[" + asStringValue() + "]";
-	}
+  public void setValueAsString(String theValue) {
+    fromStringValue(theValue);
+  }
 
-	protected DataType typedCopy() {
-		return copy();
-	}
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + "[" + asStringValue() + "]";
+  }
 
-	protected void updateStringValue() {
-		if (myCoercedValue == null) {
-			myStringValue = null;
-		} else {
-			// NB this might be null
-			myStringValue = encode(myCoercedValue);
-		}
-	}
+  protected DataType typedCopy() {
+    return copy();
+  }
 
-	@Override
-	public void writeExternal(ObjectOutput theOut) throws IOException {
-		theOut.writeObject(getValueAsString());
-	}
+  protected void updateStringValue() {
+    if (myCoercedValue == null) {
+      myStringValue = null;
+    } else {
+      // NB this might be null
+      myStringValue = encode(myCoercedValue);
+    }
+  }
+
+  @Override
+  public void writeExternal(ObjectOutput theOut) throws IOException {
+    theOut.writeObject(getValueAsString());
+  }
 
   @Override
   public Base setProperty(int hash, String name, Base value) throws FHIRException {
     switch (hash) {
     case 111972721: // value
-      setValueAsString(value.toString()); 
+      setValueAsString(value.toString());
       return value;
-    default: return super.setProperty(hash, name, value);
+    default:
+      return super.setProperty(hash, name, value);
     }
   }
 
   @Override
   public Base setProperty(String name, Base value) throws FHIRException {
     if (name.equals("value"))
-      setValueAsString(value.toString()); 
+      setValueAsString(value.toString());
     else
       return super.setProperty(name, value);
     return value;
@@ -211,12 +210,11 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
   @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     if (hash == 111972721) {
-      return this; 
+      return this;
     } else
       return super.makeProperty(hash, name);
 
   }
-
 
   @Override
   public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
@@ -230,25 +228,25 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
 
   public String[] getTypesForProperty(int hash, String name) throws FHIRException {
     if (name.equals("value"))
-      return new String[] {fhirType(), "string"}; 
+      return new String[] { fhirType(), "string" };
     else
       return super.getTypesForProperty(hash, name);
 
   }
 
   /*
-   * this is a work around for representation issues with Bigdecimal. So comments in DecimaType. 
-   * Yes, you can cut yourself with this method... 
+   * this is a work around for representation issues with Bigdecimal. So comments
+   * in DecimaType. Yes, you can cut yourself with this method...
    */
   protected void forceStringValue(String value) {
     myStringValue = value;
   }
-  
+
   @Override
   public boolean hasPrimitiveValue() {
     return StringUtils.isNotBlank(getValueAsString());
   }
-  
+
   public String fpValue() {
     return primitiveValue();
   }

@@ -58,11 +58,9 @@ public class CanonicalSpreadsheetGenerator extends SpreadsheetGenerator {
   }
 
   protected void addMetadataRow(Sheet sheet, String name, String value) {
-    Row row = sheet.createRow(sheet.getLastRowNum()+1);
+    Row row = sheet.createRow(sheet.getLastRowNum() + 1);
     addCell(row, 0, name, styles.get("body"));
     addCell(row, 1, value);
   }
 
-
-  
 }

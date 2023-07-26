@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
-
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -90,7 +86,7 @@ public class ChromosomeHumanEnumFactory implements EnumFactory<ChromosomeHuman> 
       return ChromosomeHuman.X;
     if ("Y".equals(codeString))
       return ChromosomeHuman.Y;
-    throw new IllegalArgumentException("Unknown ChromosomeHuman code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ChromosomeHuman code '" + codeString + "'");
   }
 
   public String toCode(ChromosomeHuman code) {
@@ -145,8 +141,8 @@ public class ChromosomeHumanEnumFactory implements EnumFactory<ChromosomeHuman> 
     return "?";
   }
 
-    public String toSystem(ChromosomeHuman code) {
-      return code.getSystem();
-      }
+  public String toSystem(ChromosomeHuman code) {
+    return code.getSystem();
+  }
 
 }

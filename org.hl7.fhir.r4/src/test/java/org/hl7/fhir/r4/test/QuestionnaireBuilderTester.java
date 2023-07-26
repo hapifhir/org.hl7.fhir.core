@@ -1,12 +1,12 @@
 package org.hl7.fhir.r4.test;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.utils.QuestionnaireBuilder;
-
-import java.io.File;
-import java.io.FileInputStream;
 
 public class QuestionnaireBuilderTester {
 
@@ -19,7 +19,8 @@ public class QuestionnaireBuilderTester {
       if (f.endsWith(".profile.xml") && !f.contains("type-")) {
         System.out.println("process " + f);
         try {
-          StructureDefinition p = (StructureDefinition) new XmlParser().parse(new FileInputStream(TEST_PROFILE_DIR + "\\" + f));
+          StructureDefinition p = (StructureDefinition) new XmlParser()
+              .parse(new FileInputStream(TEST_PROFILE_DIR + "\\" + f));
 //					Questionnaire q = b.buildQuestionnaire(p);
 //					new XmlComposer().compose(new FileOutputStream(TEST_DEST+f), q, true);
           throw new FHIRException("test");

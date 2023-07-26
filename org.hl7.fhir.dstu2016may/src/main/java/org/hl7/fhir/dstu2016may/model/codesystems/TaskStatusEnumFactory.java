@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class TaskStatusEnumFactory implements EnumFactory<TaskStatus> {
@@ -62,7 +58,7 @@ public class TaskStatusEnumFactory implements EnumFactory<TaskStatus> {
       return TaskStatus.FAILED;
     if ("completed".equals(codeString))
       return TaskStatus.COMPLETED;
-    throw new IllegalArgumentException("Unknown TaskStatus code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown TaskStatus code '" + codeString + "'");
   }
 
   public String toCode(TaskStatus code) {
@@ -89,8 +85,8 @@ public class TaskStatusEnumFactory implements EnumFactory<TaskStatus> {
     return "?";
   }
 
-    public String toSystem(TaskStatus code) {
-      return code.getSystem();
-      }
+  public String toSystem(TaskStatus code) {
+    return code.getSystem();
+  }
 
 }

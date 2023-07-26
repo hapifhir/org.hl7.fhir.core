@@ -1,6 +1,5 @@
 package org.hl7.fhir.r4b.model;
 
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -46,618 +45,716 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for ParameterDefinition Type: The parameters to the module. This collection specifies both the input and output parameters. Input parameters are provided by the caller as part of the $evaluate operation. Output parameters are included in the GuidanceResponse.
+ * Base StructureDefinition for ParameterDefinition Type: The parameters to the
+ * module. This collection specifies both the input and output parameters. Input
+ * parameters are provided by the caller as part of the $evaluate operation.
+ * Output parameters are included in the GuidanceResponse.
  */
-@DatatypeDef(name="ParameterDefinition")
+@DatatypeDef(name = "ParameterDefinition")
 public class ParameterDefinition extends DataType implements ICompositeType {
 
-    /**
-     * The name of the parameter used to allow access to the value of the parameter in evaluation contexts.
-     */
-    @Child(name = "name", type = {CodeType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name used to access the parameter value", formalDefinition="The name of the parameter used to allow access to the value of the parameter in evaluation contexts." )
-    protected CodeType name;
+  /**
+   * The name of the parameter used to allow access to the value of the parameter
+   * in evaluation contexts.
+   */
+  @Child(name = "name", type = { CodeType.class }, order = 0, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Name used to access the parameter value", formalDefinition = "The name of the parameter used to allow access to the value of the parameter in evaluation contexts.")
+  protected CodeType name;
 
-    /**
-     * Whether the parameter is input or output for the module.
-     */
-    @Child(name = "use", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="in | out", formalDefinition="Whether the parameter is input or output for the module." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/operation-parameter-use")
-    protected Enumeration<OperationParameterUse> use;
+  /**
+   * Whether the parameter is input or output for the module.
+   */
+  @Child(name = "use", type = { CodeType.class }, order = 1, min = 1, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "in | out", formalDefinition = "Whether the parameter is input or output for the module.")
+  @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/operation-parameter-use")
+  protected Enumeration<OperationParameterUse> use;
 
-    /**
-     * The minimum number of times this parameter SHALL appear in the request or response.
-     */
-    @Child(name = "min", type = {IntegerType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Minimum cardinality", formalDefinition="The minimum number of times this parameter SHALL appear in the request or response." )
-    protected IntegerType min;
+  /**
+   * The minimum number of times this parameter SHALL appear in the request or
+   * response.
+   */
+  @Child(name = "min", type = { IntegerType.class }, order = 2, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Minimum cardinality", formalDefinition = "The minimum number of times this parameter SHALL appear in the request or response.")
+  protected IntegerType min;
 
-    /**
-     * The maximum number of times this element is permitted to appear in the request or response.
-     */
-    @Child(name = "max", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Maximum cardinality (a number of *)", formalDefinition="The maximum number of times this element is permitted to appear in the request or response." )
-    protected StringType max;
+  /**
+   * The maximum number of times this element is permitted to appear in the
+   * request or response.
+   */
+  @Child(name = "max", type = { StringType.class }, order = 3, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Maximum cardinality (a number of *)", formalDefinition = "The maximum number of times this element is permitted to appear in the request or response.")
+  protected StringType max;
 
-    /**
-     * A brief discussion of what the parameter is for and how it is used by the module.
-     */
-    @Child(name = "documentation", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="A brief description of the parameter", formalDefinition="A brief discussion of what the parameter is for and how it is used by the module." )
-    protected StringType documentation;
+  /**
+   * A brief discussion of what the parameter is for and how it is used by the
+   * module.
+   */
+  @Child(name = "documentation", type = {
+      StringType.class }, order = 4, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "A brief description of the parameter", formalDefinition = "A brief discussion of what the parameter is for and how it is used by the module.")
+  protected StringType documentation;
 
-    /**
-     * The type of the parameter.
-     */
-    @Child(name = "type", type = {CodeType.class}, order=5, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="What type of value", formalDefinition="The type of the parameter." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-types")
-    protected Enumeration<FHIRAllTypes> type;
+  /**
+   * The type of the parameter.
+   */
+  @Child(name = "type", type = { CodeType.class }, order = 5, min = 1, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "What type of value", formalDefinition = "The type of the parameter.")
+  @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/all-types")
+  protected Enumeration<FHIRAllTypes> type;
 
-    /**
-     * If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.
-     */
-    @Child(name = "profile", type = {CanonicalType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="What profile the value is expected to be", formalDefinition="If specified, this indicates a profile that the input data must conform to, or that the output data will conform to." )
-    protected CanonicalType profile;
+  /**
+   * If specified, this indicates a profile that the input data must conform to,
+   * or that the output data will conform to.
+   */
+  @Child(name = "profile", type = {
+      CanonicalType.class }, order = 6, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "What profile the value is expected to be", formalDefinition = "If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.")
+  protected CanonicalType profile;
 
-    private static final long serialVersionUID = -1132749008L;
+  private static final long serialVersionUID = -1132749008L;
 
   /**
    * Constructor
    */
-    public ParameterDefinition() {
-      super();
-    }
+  public ParameterDefinition() {
+    super();
+  }
 
   /**
    * Constructor
    */
-    public ParameterDefinition(OperationParameterUse use, FHIRAllTypes type) {
-      super();
-      this.setUse(use);
-      this.setType(type);
-    }
+  public ParameterDefinition(OperationParameterUse use, FHIRAllTypes type) {
+    super();
+    this.setUse(use);
+    this.setType(type);
+  }
 
-    /**
-     * @return {@link #name} (The name of the parameter used to allow access to the value of the parameter in evaluation contexts.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-     */
-    public CodeType getNameElement() { 
+  /**
+   * @return {@link #name} (The name of the parameter used to allow access to the
+   *         value of the parameter in evaluation contexts.). This is the
+   *         underlying object with id, value and extensions. The accessor
+   *         "getName" gives direct access to the value
+   */
+  public CodeType getNameElement() {
+    if (this.name == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create ParameterDefinition.name");
+      else if (Configuration.doAutoCreate())
+        this.name = new CodeType(); // bb
+    return this.name;
+  }
+
+  public boolean hasNameElement() {
+    return this.name != null && !this.name.isEmpty();
+  }
+
+  public boolean hasName() {
+    return this.name != null && !this.name.isEmpty();
+  }
+
+  /**
+   * @param value {@link #name} (The name of the parameter used to allow access to
+   *              the value of the parameter in evaluation contexts.). This is the
+   *              underlying object with id, value and extensions. The accessor
+   *              "getName" gives direct access to the value
+   */
+  public ParameterDefinition setNameElement(CodeType value) {
+    this.name = value;
+    return this;
+  }
+
+  /**
+   * @return The name of the parameter used to allow access to the value of the
+   *         parameter in evaluation contexts.
+   */
+  public String getName() {
+    return this.name == null ? null : this.name.getValue();
+  }
+
+  /**
+   * @param value The name of the parameter used to allow access to the value of
+   *              the parameter in evaluation contexts.
+   */
+  public ParameterDefinition setName(String value) {
+    if (Utilities.noString(value))
+      this.name = null;
+    else {
       if (this.name == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ParameterDefinition.name");
-        else if (Configuration.doAutoCreate())
-          this.name = new CodeType(); // bb
-      return this.name;
+        this.name = new CodeType();
+      this.name.setValue(value);
     }
+    return this;
+  }
 
-    public boolean hasNameElement() { 
-      return this.name != null && !this.name.isEmpty();
-    }
+  /**
+   * @return {@link #use} (Whether the parameter is input or output for the
+   *         module.). This is the underlying object with id, value and
+   *         extensions. The accessor "getUse" gives direct access to the value
+   */
+  public Enumeration<OperationParameterUse> getUseElement() {
+    if (this.use == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create ParameterDefinition.use");
+      else if (Configuration.doAutoCreate())
+        this.use = new Enumeration<OperationParameterUse>(new OperationParameterUseEnumFactory()); // bb
+    return this.use;
+  }
 
-    public boolean hasName() { 
-      return this.name != null && !this.name.isEmpty();
-    }
+  public boolean hasUseElement() {
+    return this.use != null && !this.use.isEmpty();
+  }
 
-    /**
-     * @param value {@link #name} (The name of the parameter used to allow access to the value of the parameter in evaluation contexts.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-     */
-    public ParameterDefinition setNameElement(CodeType value) { 
-      this.name = value;
-      return this;
-    }
+  public boolean hasUse() {
+    return this.use != null && !this.use.isEmpty();
+  }
 
-    /**
-     * @return The name of the parameter used to allow access to the value of the parameter in evaluation contexts.
-     */
-    public String getName() { 
-      return this.name == null ? null : this.name.getValue();
-    }
+  /**
+   * @param value {@link #use} (Whether the parameter is input or output for the
+   *              module.). This is the underlying object with id, value and
+   *              extensions. The accessor "getUse" gives direct access to the
+   *              value
+   */
+  public ParameterDefinition setUseElement(Enumeration<OperationParameterUse> value) {
+    this.use = value;
+    return this;
+  }
 
-    /**
-     * @param value The name of the parameter used to allow access to the value of the parameter in evaluation contexts.
-     */
-    public ParameterDefinition setName(String value) { 
-      if (Utilities.noString(value))
-        this.name = null;
-      else {
-        if (this.name == null)
-          this.name = new CodeType();
-        this.name.setValue(value);
-      }
-      return this;
-    }
+  /**
+   * @return Whether the parameter is input or output for the module.
+   */
+  public OperationParameterUse getUse() {
+    return this.use == null ? null : this.use.getValue();
+  }
 
-    /**
-     * @return {@link #use} (Whether the parameter is input or output for the module.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
-     */
-    public Enumeration<OperationParameterUse> getUseElement() { 
-      if (this.use == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ParameterDefinition.use");
-        else if (Configuration.doAutoCreate())
-          this.use = new Enumeration<OperationParameterUse>(new OperationParameterUseEnumFactory()); // bb
-      return this.use;
-    }
+  /**
+   * @param value Whether the parameter is input or output for the module.
+   */
+  public ParameterDefinition setUse(OperationParameterUse value) {
+    if (this.use == null)
+      this.use = new Enumeration<OperationParameterUse>(new OperationParameterUseEnumFactory());
+    this.use.setValue(value);
+    return this;
+  }
 
-    public boolean hasUseElement() { 
-      return this.use != null && !this.use.isEmpty();
-    }
+  /**
+   * @return {@link #min} (The minimum number of times this parameter SHALL appear
+   *         in the request or response.). This is the underlying object with id,
+   *         value and extensions. The accessor "getMin" gives direct access to
+   *         the value
+   */
+  public IntegerType getMinElement() {
+    if (this.min == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create ParameterDefinition.min");
+      else if (Configuration.doAutoCreate())
+        this.min = new IntegerType(); // bb
+    return this.min;
+  }
 
-    public boolean hasUse() { 
-      return this.use != null && !this.use.isEmpty();
-    }
+  public boolean hasMinElement() {
+    return this.min != null && !this.min.isEmpty();
+  }
 
-    /**
-     * @param value {@link #use} (Whether the parameter is input or output for the module.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
-     */
-    public ParameterDefinition setUseElement(Enumeration<OperationParameterUse> value) { 
-      this.use = value;
-      return this;
-    }
+  public boolean hasMin() {
+    return this.min != null && !this.min.isEmpty();
+  }
 
-    /**
-     * @return Whether the parameter is input or output for the module.
-     */
-    public OperationParameterUse getUse() { 
-      return this.use == null ? null : this.use.getValue();
-    }
+  /**
+   * @param value {@link #min} (The minimum number of times this parameter SHALL
+   *              appear in the request or response.). This is the underlying
+   *              object with id, value and extensions. The accessor "getMin"
+   *              gives direct access to the value
+   */
+  public ParameterDefinition setMinElement(IntegerType value) {
+    this.min = value;
+    return this;
+  }
 
-    /**
-     * @param value Whether the parameter is input or output for the module.
-     */
-    public ParameterDefinition setUse(OperationParameterUse value) { 
-        if (this.use == null)
-          this.use = new Enumeration<OperationParameterUse>(new OperationParameterUseEnumFactory());
-        this.use.setValue(value);
-      return this;
-    }
+  /**
+   * @return The minimum number of times this parameter SHALL appear in the
+   *         request or response.
+   */
+  public int getMin() {
+    return this.min == null || this.min.isEmpty() ? 0 : this.min.getValue();
+  }
 
-    /**
-     * @return {@link #min} (The minimum number of times this parameter SHALL appear in the request or response.). This is the underlying object with id, value and extensions. The accessor "getMin" gives direct access to the value
-     */
-    public IntegerType getMinElement() { 
-      if (this.min == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ParameterDefinition.min");
-        else if (Configuration.doAutoCreate())
-          this.min = new IntegerType(); // bb
-      return this.min;
-    }
+  /**
+   * @param value The minimum number of times this parameter SHALL appear in the
+   *              request or response.
+   */
+  public ParameterDefinition setMin(int value) {
+    if (this.min == null)
+      this.min = new IntegerType();
+    this.min.setValue(value);
+    return this;
+  }
 
-    public boolean hasMinElement() { 
-      return this.min != null && !this.min.isEmpty();
-    }
+  /**
+   * @return {@link #max} (The maximum number of times this element is permitted
+   *         to appear in the request or response.). This is the underlying object
+   *         with id, value and extensions. The accessor "getMax" gives direct
+   *         access to the value
+   */
+  public StringType getMaxElement() {
+    if (this.max == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create ParameterDefinition.max");
+      else if (Configuration.doAutoCreate())
+        this.max = new StringType(); // bb
+    return this.max;
+  }
 
-    public boolean hasMin() { 
-      return this.min != null && !this.min.isEmpty();
-    }
+  public boolean hasMaxElement() {
+    return this.max != null && !this.max.isEmpty();
+  }
 
-    /**
-     * @param value {@link #min} (The minimum number of times this parameter SHALL appear in the request or response.). This is the underlying object with id, value and extensions. The accessor "getMin" gives direct access to the value
-     */
-    public ParameterDefinition setMinElement(IntegerType value) { 
-      this.min = value;
-      return this;
-    }
+  public boolean hasMax() {
+    return this.max != null && !this.max.isEmpty();
+  }
 
-    /**
-     * @return The minimum number of times this parameter SHALL appear in the request or response.
-     */
-    public int getMin() { 
-      return this.min == null || this.min.isEmpty() ? 0 : this.min.getValue();
-    }
+  /**
+   * @param value {@link #max} (The maximum number of times this element is
+   *              permitted to appear in the request or response.). This is the
+   *              underlying object with id, value and extensions. The accessor
+   *              "getMax" gives direct access to the value
+   */
+  public ParameterDefinition setMaxElement(StringType value) {
+    this.max = value;
+    return this;
+  }
 
-    /**
-     * @param value The minimum number of times this parameter SHALL appear in the request or response.
-     */
-    public ParameterDefinition setMin(int value) { 
-        if (this.min == null)
-          this.min = new IntegerType();
-        this.min.setValue(value);
-      return this;
-    }
+  /**
+   * @return The maximum number of times this element is permitted to appear in
+   *         the request or response.
+   */
+  public String getMax() {
+    return this.max == null ? null : this.max.getValue();
+  }
 
-    /**
-     * @return {@link #max} (The maximum number of times this element is permitted to appear in the request or response.). This is the underlying object with id, value and extensions. The accessor "getMax" gives direct access to the value
-     */
-    public StringType getMaxElement() { 
+  /**
+   * @param value The maximum number of times this element is permitted to appear
+   *              in the request or response.
+   */
+  public ParameterDefinition setMax(String value) {
+    if (Utilities.noString(value))
+      this.max = null;
+    else {
       if (this.max == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ParameterDefinition.max");
-        else if (Configuration.doAutoCreate())
-          this.max = new StringType(); // bb
-      return this.max;
+        this.max = new StringType();
+      this.max.setValue(value);
     }
+    return this;
+  }
 
-    public boolean hasMaxElement() { 
-      return this.max != null && !this.max.isEmpty();
-    }
+  /**
+   * @return {@link #documentation} (A brief discussion of what the parameter is
+   *         for and how it is used by the module.). This is the underlying object
+   *         with id, value and extensions. The accessor "getDocumentation" gives
+   *         direct access to the value
+   */
+  public StringType getDocumentationElement() {
+    if (this.documentation == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create ParameterDefinition.documentation");
+      else if (Configuration.doAutoCreate())
+        this.documentation = new StringType(); // bb
+    return this.documentation;
+  }
 
-    public boolean hasMax() { 
-      return this.max != null && !this.max.isEmpty();
-    }
+  public boolean hasDocumentationElement() {
+    return this.documentation != null && !this.documentation.isEmpty();
+  }
 
-    /**
-     * @param value {@link #max} (The maximum number of times this element is permitted to appear in the request or response.). This is the underlying object with id, value and extensions. The accessor "getMax" gives direct access to the value
-     */
-    public ParameterDefinition setMaxElement(StringType value) { 
-      this.max = value;
-      return this;
-    }
+  public boolean hasDocumentation() {
+    return this.documentation != null && !this.documentation.isEmpty();
+  }
 
-    /**
-     * @return The maximum number of times this element is permitted to appear in the request or response.
-     */
-    public String getMax() { 
-      return this.max == null ? null : this.max.getValue();
-    }
+  /**
+   * @param value {@link #documentation} (A brief discussion of what the parameter
+   *              is for and how it is used by the module.). This is the
+   *              underlying object with id, value and extensions. The accessor
+   *              "getDocumentation" gives direct access to the value
+   */
+  public ParameterDefinition setDocumentationElement(StringType value) {
+    this.documentation = value;
+    return this;
+  }
 
-    /**
-     * @param value The maximum number of times this element is permitted to appear in the request or response.
-     */
-    public ParameterDefinition setMax(String value) { 
-      if (Utilities.noString(value))
-        this.max = null;
-      else {
-        if (this.max == null)
-          this.max = new StringType();
-        this.max.setValue(value);
-      }
-      return this;
-    }
+  /**
+   * @return A brief discussion of what the parameter is for and how it is used by
+   *         the module.
+   */
+  public String getDocumentation() {
+    return this.documentation == null ? null : this.documentation.getValue();
+  }
 
-    /**
-     * @return {@link #documentation} (A brief discussion of what the parameter is for and how it is used by the module.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-     */
-    public StringType getDocumentationElement() { 
+  /**
+   * @param value A brief discussion of what the parameter is for and how it is
+   *              used by the module.
+   */
+  public ParameterDefinition setDocumentation(String value) {
+    if (Utilities.noString(value))
+      this.documentation = null;
+    else {
       if (this.documentation == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ParameterDefinition.documentation");
-        else if (Configuration.doAutoCreate())
-          this.documentation = new StringType(); // bb
-      return this.documentation;
+        this.documentation = new StringType();
+      this.documentation.setValue(value);
     }
+    return this;
+  }
 
-    public boolean hasDocumentationElement() { 
-      return this.documentation != null && !this.documentation.isEmpty();
-    }
+  /**
+   * @return {@link #type} (The type of the parameter.). This is the underlying
+   *         object with id, value and extensions. The accessor "getType" gives
+   *         direct access to the value
+   */
+  public Enumeration<FHIRAllTypes> getTypeElement() {
+    if (this.type == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create ParameterDefinition.type");
+      else if (Configuration.doAutoCreate())
+        this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory()); // bb
+    return this.type;
+  }
 
-    public boolean hasDocumentation() { 
-      return this.documentation != null && !this.documentation.isEmpty();
-    }
+  public boolean hasTypeElement() {
+    return this.type != null && !this.type.isEmpty();
+  }
 
-    /**
-     * @param value {@link #documentation} (A brief discussion of what the parameter is for and how it is used by the module.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-     */
-    public ParameterDefinition setDocumentationElement(StringType value) { 
-      this.documentation = value;
-      return this;
-    }
+  public boolean hasType() {
+    return this.type != null && !this.type.isEmpty();
+  }
 
-    /**
-     * @return A brief discussion of what the parameter is for and how it is used by the module.
-     */
-    public String getDocumentation() { 
-      return this.documentation == null ? null : this.documentation.getValue();
-    }
+  /**
+   * @param value {@link #type} (The type of the parameter.). This is the
+   *              underlying object with id, value and extensions. The accessor
+   *              "getType" gives direct access to the value
+   */
+  public ParameterDefinition setTypeElement(Enumeration<FHIRAllTypes> value) {
+    this.type = value;
+    return this;
+  }
 
-    /**
-     * @param value A brief discussion of what the parameter is for and how it is used by the module.
-     */
-    public ParameterDefinition setDocumentation(String value) { 
-      if (Utilities.noString(value))
-        this.documentation = null;
-      else {
-        if (this.documentation == null)
-          this.documentation = new StringType();
-        this.documentation.setValue(value);
-      }
-      return this;
-    }
+  /**
+   * @return The type of the parameter.
+   */
+  public FHIRAllTypes getType() {
+    return this.type == null ? null : this.type.getValue();
+  }
 
-    /**
-     * @return {@link #type} (The type of the parameter.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
-     */
-    public Enumeration<FHIRAllTypes> getTypeElement() { 
-      if (this.type == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ParameterDefinition.type");
-        else if (Configuration.doAutoCreate())
-          this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory()); // bb
-      return this.type;
-    }
+  /**
+   * @param value The type of the parameter.
+   */
+  public ParameterDefinition setType(FHIRAllTypes value) {
+    if (this.type == null)
+      this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory());
+    this.type.setValue(value);
+    return this;
+  }
 
-    public boolean hasTypeElement() { 
-      return this.type != null && !this.type.isEmpty();
-    }
+  /**
+   * @return {@link #profile} (If specified, this indicates a profile that the
+   *         input data must conform to, or that the output data will conform
+   *         to.). This is the underlying object with id, value and extensions.
+   *         The accessor "getProfile" gives direct access to the value
+   */
+  public CanonicalType getProfileElement() {
+    if (this.profile == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create ParameterDefinition.profile");
+      else if (Configuration.doAutoCreate())
+        this.profile = new CanonicalType(); // bb
+    return this.profile;
+  }
 
-    public boolean hasType() { 
-      return this.type != null && !this.type.isEmpty();
-    }
+  public boolean hasProfileElement() {
+    return this.profile != null && !this.profile.isEmpty();
+  }
 
-    /**
-     * @param value {@link #type} (The type of the parameter.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
-     */
-    public ParameterDefinition setTypeElement(Enumeration<FHIRAllTypes> value) { 
-      this.type = value;
-      return this;
-    }
+  public boolean hasProfile() {
+    return this.profile != null && !this.profile.isEmpty();
+  }
 
-    /**
-     * @return The type of the parameter.
-     */
-    public FHIRAllTypes getType() { 
-      return this.type == null ? null : this.type.getValue();
-    }
+  /**
+   * @param value {@link #profile} (If specified, this indicates a profile that
+   *              the input data must conform to, or that the output data will
+   *              conform to.). This is the underlying object with id, value and
+   *              extensions. The accessor "getProfile" gives direct access to the
+   *              value
+   */
+  public ParameterDefinition setProfileElement(CanonicalType value) {
+    this.profile = value;
+    return this;
+  }
 
-    /**
-     * @param value The type of the parameter.
-     */
-    public ParameterDefinition setType(FHIRAllTypes value) { 
-        if (this.type == null)
-          this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory());
-        this.type.setValue(value);
-      return this;
-    }
+  /**
+   * @return If specified, this indicates a profile that the input data must
+   *         conform to, or that the output data will conform to.
+   */
+  public String getProfile() {
+    return this.profile == null ? null : this.profile.getValue();
+  }
 
-    /**
-     * @return {@link #profile} (If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.). This is the underlying object with id, value and extensions. The accessor "getProfile" gives direct access to the value
-     */
-    public CanonicalType getProfileElement() { 
+  /**
+   * @param value If specified, this indicates a profile that the input data must
+   *              conform to, or that the output data will conform to.
+   */
+  public ParameterDefinition setProfile(String value) {
+    if (Utilities.noString(value))
+      this.profile = null;
+    else {
       if (this.profile == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ParameterDefinition.profile");
-        else if (Configuration.doAutoCreate())
-          this.profile = new CanonicalType(); // bb
-      return this.profile;
+        this.profile = new CanonicalType();
+      this.profile.setValue(value);
+    }
+    return this;
+  }
+
+  protected void listChildren(List<Property> children) {
+    super.listChildren(children);
+    children.add(new Property("name", "code",
+        "The name of the parameter used to allow access to the value of the parameter in evaluation contexts.", 0, 1,
+        name));
+    children.add(new Property("use", "code", "Whether the parameter is input or output for the module.", 0, 1, use));
+    children.add(new Property("min", "integer",
+        "The minimum number of times this parameter SHALL appear in the request or response.", 0, 1, min));
+    children.add(new Property("max", "string",
+        "The maximum number of times this element is permitted to appear in the request or response.", 0, 1, max));
+    children.add(new Property("documentation", "string",
+        "A brief discussion of what the parameter is for and how it is used by the module.", 0, 1, documentation));
+    children.add(new Property("type", "code", "The type of the parameter.", 0, 1, type));
+    children.add(new Property("profile", "canonical(StructureDefinition)",
+        "If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.",
+        0, 1, profile));
+  }
+
+  @Override
+  public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+    switch (_hash) {
+    case 3373707:
+      /* name */ return new Property("name", "code",
+          "The name of the parameter used to allow access to the value of the parameter in evaluation contexts.", 0, 1,
+          name);
+    case 116103:
+      /* use */ return new Property("use", "code", "Whether the parameter is input or output for the module.", 0, 1,
+          use);
+    case 108114:
+      /* min */ return new Property("min", "integer",
+          "The minimum number of times this parameter SHALL appear in the request or response.", 0, 1, min);
+    case 107876:
+      /* max */ return new Property("max", "string",
+          "The maximum number of times this element is permitted to appear in the request or response.", 0, 1, max);
+    case 1587405498:
+      /* documentation */ return new Property("documentation", "string",
+          "A brief discussion of what the parameter is for and how it is used by the module.", 0, 1, documentation);
+    case 3575610:
+      /* type */ return new Property("type", "code", "The type of the parameter.", 0, 1, type);
+    case -309425751:
+      /* profile */ return new Property("profile", "canonical(StructureDefinition)",
+          "If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.",
+          0, 1, profile);
+    default:
+      return super.getNamedProperty(_hash, _name, _checkValid);
     }
 
-    public boolean hasProfileElement() { 
-      return this.profile != null && !this.profile.isEmpty();
+  }
+
+  @Override
+  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+    switch (hash) {
+    case 3373707:
+      /* name */ return this.name == null ? new Base[0] : new Base[] { this.name }; // CodeType
+    case 116103:
+      /* use */ return this.use == null ? new Base[0] : new Base[] { this.use }; // Enumeration<OperationParameterUse>
+    case 108114:
+      /* min */ return this.min == null ? new Base[0] : new Base[] { this.min }; // IntegerType
+    case 107876:
+      /* max */ return this.max == null ? new Base[0] : new Base[] { this.max }; // StringType
+    case 1587405498:
+      /* documentation */ return this.documentation == null ? new Base[0] : new Base[] { this.documentation }; // StringType
+    case 3575610:
+      /* type */ return this.type == null ? new Base[0] : new Base[] { this.type }; // Enumeration<FHIRAllTypes>
+    case -309425751:
+      /* profile */ return this.profile == null ? new Base[0] : new Base[] { this.profile }; // CanonicalType
+    default:
+      return super.getProperty(hash, name, checkValid);
     }
 
-    public boolean hasProfile() { 
-      return this.profile != null && !this.profile.isEmpty();
+  }
+
+  @Override
+  public Base setProperty(int hash, String name, Base value) throws FHIRException {
+    switch (hash) {
+    case 3373707: // name
+      this.name = TypeConvertor.castToCode(value); // CodeType
+      return value;
+    case 116103: // use
+      value = new OperationParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
+      this.use = (Enumeration) value; // Enumeration<OperationParameterUse>
+      return value;
+    case 108114: // min
+      this.min = TypeConvertor.castToInteger(value); // IntegerType
+      return value;
+    case 107876: // max
+      this.max = TypeConvertor.castToString(value); // StringType
+      return value;
+    case 1587405498: // documentation
+      this.documentation = TypeConvertor.castToString(value); // StringType
+      return value;
+    case 3575610: // type
+      value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+      this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
+      return value;
+    case -309425751: // profile
+      this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
+      return value;
+    default:
+      return super.setProperty(hash, name, value);
     }
 
-    /**
-     * @param value {@link #profile} (If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.). This is the underlying object with id, value and extensions. The accessor "getProfile" gives direct access to the value
-     */
-    public ParameterDefinition setProfileElement(CanonicalType value) { 
-      this.profile = value;
-      return this;
+  }
+
+  @Override
+  public Base setProperty(String name, Base value) throws FHIRException {
+    if (name.equals("name")) {
+      this.name = TypeConvertor.castToCode(value); // CodeType
+    } else if (name.equals("use")) {
+      value = new OperationParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
+      this.use = (Enumeration) value; // Enumeration<OperationParameterUse>
+    } else if (name.equals("min")) {
+      this.min = TypeConvertor.castToInteger(value); // IntegerType
+    } else if (name.equals("max")) {
+      this.max = TypeConvertor.castToString(value); // StringType
+    } else if (name.equals("documentation")) {
+      this.documentation = TypeConvertor.castToString(value); // StringType
+    } else if (name.equals("type")) {
+      value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+      this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
+    } else if (name.equals("profile")) {
+      this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
+    } else
+      return super.setProperty(name, value);
+    return value;
+  }
+
+  @Override
+  public Base makeProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+    case 3373707:
+      return getNameElement();
+    case 116103:
+      return getUseElement();
+    case 108114:
+      return getMinElement();
+    case 107876:
+      return getMaxElement();
+    case 1587405498:
+      return getDocumentationElement();
+    case 3575610:
+      return getTypeElement();
+    case -309425751:
+      return getProfileElement();
+    default:
+      return super.makeProperty(hash, name);
     }
 
-    /**
-     * @return If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.
-     */
-    public String getProfile() { 
-      return this.profile == null ? null : this.profile.getValue();
+  }
+
+  @Override
+  public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+    case 3373707:
+      /* name */ return new String[] { "code" };
+    case 116103:
+      /* use */ return new String[] { "code" };
+    case 108114:
+      /* min */ return new String[] { "integer" };
+    case 107876:
+      /* max */ return new String[] { "string" };
+    case 1587405498:
+      /* documentation */ return new String[] { "string" };
+    case 3575610:
+      /* type */ return new String[] { "code" };
+    case -309425751:
+      /* profile */ return new String[] { "canonical" };
+    default:
+      return super.getTypesForProperty(hash, name);
     }
 
-    /**
-     * @param value If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.
-     */
-    public ParameterDefinition setProfile(String value) { 
-      if (Utilities.noString(value))
-        this.profile = null;
-      else {
-        if (this.profile == null)
-          this.profile = new CanonicalType();
-        this.profile.setValue(value);
-      }
-      return this;
-    }
+  }
 
-      protected void listChildren(List<Property> children) {
-        super.listChildren(children);
-        children.add(new Property("name", "code", "The name of the parameter used to allow access to the value of the parameter in evaluation contexts.", 0, 1, name));
-        children.add(new Property("use", "code", "Whether the parameter is input or output for the module.", 0, 1, use));
-        children.add(new Property("min", "integer", "The minimum number of times this parameter SHALL appear in the request or response.", 0, 1, min));
-        children.add(new Property("max", "string", "The maximum number of times this element is permitted to appear in the request or response.", 0, 1, max));
-        children.add(new Property("documentation", "string", "A brief discussion of what the parameter is for and how it is used by the module.", 0, 1, documentation));
-        children.add(new Property("type", "code", "The type of the parameter.", 0, 1, type));
-        children.add(new Property("profile", "canonical(StructureDefinition)", "If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.", 0, 1, profile));
-      }
-
-      @Override
-      public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-        switch (_hash) {
-        case 3373707: /*name*/  return new Property("name", "code", "The name of the parameter used to allow access to the value of the parameter in evaluation contexts.", 0, 1, name);
-        case 116103: /*use*/  return new Property("use", "code", "Whether the parameter is input or output for the module.", 0, 1, use);
-        case 108114: /*min*/  return new Property("min", "integer", "The minimum number of times this parameter SHALL appear in the request or response.", 0, 1, min);
-        case 107876: /*max*/  return new Property("max", "string", "The maximum number of times this element is permitted to appear in the request or response.", 0, 1, max);
-        case 1587405498: /*documentation*/  return new Property("documentation", "string", "A brief discussion of what the parameter is for and how it is used by the module.", 0, 1, documentation);
-        case 3575610: /*type*/  return new Property("type", "code", "The type of the parameter.", 0, 1, type);
-        case -309425751: /*profile*/  return new Property("profile", "canonical(StructureDefinition)", "If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.", 0, 1, profile);
-        default: return super.getNamedProperty(_hash, _name, _checkValid);
-        }
-
-      }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // CodeType
-        case 116103: /*use*/ return this.use == null ? new Base[0] : new Base[] {this.use}; // Enumeration<OperationParameterUse>
-        case 108114: /*min*/ return this.min == null ? new Base[0] : new Base[] {this.min}; // IntegerType
-        case 107876: /*max*/ return this.max == null ? new Base[0] : new Base[] {this.max}; // StringType
-        case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // StringType
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<FHIRAllTypes>
-        case -309425751: /*profile*/ return this.profile == null ? new Base[0] : new Base[] {this.profile}; // CanonicalType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 3373707: // name
-          this.name = TypeConvertor.castToCode(value); // CodeType
-          return value;
-        case 116103: // use
-          value = new OperationParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.use = (Enumeration) value; // Enumeration<OperationParameterUse>
-          return value;
-        case 108114: // min
-          this.min = TypeConvertor.castToInteger(value); // IntegerType
-          return value;
-        case 107876: // max
-          this.max = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 1587405498: // documentation
-          this.documentation = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 3575610: // type
-          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
-          return value;
-        case -309425751: // profile
-          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("name")) {
-          this.name = TypeConvertor.castToCode(value); // CodeType
-        } else if (name.equals("use")) {
-          value = new OperationParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.use = (Enumeration) value; // Enumeration<OperationParameterUse>
-        } else if (name.equals("min")) {
-          this.min = TypeConvertor.castToInteger(value); // IntegerType
-        } else if (name.equals("max")) {
-          this.max = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("documentation")) {
-          this.documentation = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("type")) {
-          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
-        } else if (name.equals("profile")) {
-          this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3373707:  return getNameElement();
-        case 116103:  return getUseElement();
-        case 108114:  return getMinElement();
-        case 107876:  return getMaxElement();
-        case 1587405498:  return getDocumentationElement();
-        case 3575610:  return getTypeElement();
-        case -309425751:  return getProfileElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3373707: /*name*/ return new String[] {"code"};
-        case 116103: /*use*/ return new String[] {"code"};
-        case 108114: /*min*/ return new String[] {"integer"};
-        case 107876: /*max*/ return new String[] {"string"};
-        case 1587405498: /*documentation*/ return new String[] {"string"};
-        case 3575610: /*type*/ return new String[] {"code"};
-        case -309425751: /*profile*/ return new String[] {"canonical"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.name");
-        }
-        else if (name.equals("use")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.use");
-        }
-        else if (name.equals("min")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.min");
-        }
-        else if (name.equals("max")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.max");
-        }
-        else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.documentation");
-        }
-        else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.type");
-        }
-        else if (name.equals("profile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.profile");
-        }
-        else
-          return super.addChild(name);
-      }
+  @Override
+  public Base addChild(String name) throws FHIRException {
+    if (name.equals("name")) {
+      throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.name");
+    } else if (name.equals("use")) {
+      throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.use");
+    } else if (name.equals("min")) {
+      throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.min");
+    } else if (name.equals("max")) {
+      throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.max");
+    } else if (name.equals("documentation")) {
+      throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.documentation");
+    } else if (name.equals("type")) {
+      throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.type");
+    } else if (name.equals("profile")) {
+      throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.profile");
+    } else
+      return super.addChild(name);
+  }
 
   public String fhirType() {
     return "ParameterDefinition";
 
   }
 
-      public ParameterDefinition copy() {
-        ParameterDefinition dst = new ParameterDefinition();
-        copyValues(dst);
-        return dst;
-      }
+  public ParameterDefinition copy() {
+    ParameterDefinition dst = new ParameterDefinition();
+    copyValues(dst);
+    return dst;
+  }
 
-      public void copyValues(ParameterDefinition dst) {
-        super.copyValues(dst);
-        dst.name = name == null ? null : name.copy();
-        dst.use = use == null ? null : use.copy();
-        dst.min = min == null ? null : min.copy();
-        dst.max = max == null ? null : max.copy();
-        dst.documentation = documentation == null ? null : documentation.copy();
-        dst.type = type == null ? null : type.copy();
-        dst.profile = profile == null ? null : profile.copy();
-      }
+  public void copyValues(ParameterDefinition dst) {
+    super.copyValues(dst);
+    dst.name = name == null ? null : name.copy();
+    dst.use = use == null ? null : use.copy();
+    dst.min = min == null ? null : min.copy();
+    dst.max = max == null ? null : max.copy();
+    dst.documentation = documentation == null ? null : documentation.copy();
+    dst.type = type == null ? null : type.copy();
+    dst.profile = profile == null ? null : profile.copy();
+  }
 
-      protected ParameterDefinition typedCopy() {
-        return copy();
-      }
+  protected ParameterDefinition typedCopy() {
+    return copy();
+  }
 
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof ParameterDefinition))
-          return false;
-        ParameterDefinition o = (ParameterDefinition) other_;
-        return compareDeep(name, o.name, true) && compareDeep(use, o.use, true) && compareDeep(min, o.min, true)
-           && compareDeep(max, o.max, true) && compareDeep(documentation, o.documentation, true) && compareDeep(type, o.type, true)
-           && compareDeep(profile, o.profile, true);
-      }
+  @Override
+  public boolean equalsDeep(Base other_) {
+    if (!super.equalsDeep(other_))
+      return false;
+    if (!(other_ instanceof ParameterDefinition))
+      return false;
+    ParameterDefinition o = (ParameterDefinition) other_;
+    return compareDeep(name, o.name, true) && compareDeep(use, o.use, true) && compareDeep(min, o.min, true)
+        && compareDeep(max, o.max, true) && compareDeep(documentation, o.documentation, true)
+        && compareDeep(type, o.type, true) && compareDeep(profile, o.profile, true);
+  }
 
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof ParameterDefinition))
-          return false;
-        ParameterDefinition o = (ParameterDefinition) other_;
-        return compareValues(name, o.name, true) && compareValues(use, o.use, true) && compareValues(min, o.min, true)
-           && compareValues(max, o.max, true) && compareValues(documentation, o.documentation, true) && compareValues(type, o.type, true)
-           && compareValues(profile, o.profile, true);
-      }
+  @Override
+  public boolean equalsShallow(Base other_) {
+    if (!super.equalsShallow(other_))
+      return false;
+    if (!(other_ instanceof ParameterDefinition))
+      return false;
+    ParameterDefinition o = (ParameterDefinition) other_;
+    return compareValues(name, o.name, true) && compareValues(use, o.use, true) && compareValues(min, o.min, true)
+        && compareValues(max, o.max, true) && compareValues(documentation, o.documentation, true)
+        && compareValues(type, o.type, true) && compareValues(profile, o.profile, true);
+  }
 
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, use, min, max, documentation
-          , type, profile);
-      }
-
+  public boolean isEmpty() {
+    return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, use, min, max, documentation, type, profile);
+  }
 
 }
-

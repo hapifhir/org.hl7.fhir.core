@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,79 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SecondaryFinding {
 
-        /**
-         * First release (2013): ACMG Recommendations for Reporting of Incidental Findings in Clinical Exome and Genome Sequencing.  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3727274/
-         */
-        ACMGVERSION1, 
-        /**
-         * Second release (2016): Recommendations for reporting of secondary findings in clinical exome and genome sequencing, 2016 update (ACMG SF v2.0): a policy statement of the American College of Medical Genetics and Genomics. https://www.ncbi.nlm.nih.gov/pubmed/27854360
-         */
-        ACMGVERSION2, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static SecondaryFinding fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("acmg-version1".equals(codeString))
-          return ACMGVERSION1;
-        if ("acmg-version2".equals(codeString))
-          return ACMGVERSION2;
-        throw new FHIRException("Unknown SecondaryFinding code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACMGVERSION1: return "acmg-version1";
-            case ACMGVERSION2: return "acmg-version2";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/secondary-finding";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACMGVERSION1: return "First release (2013): ACMG Recommendations for Reporting of Incidental Findings in Clinical Exome and Genome Sequencing.  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3727274/";
-            case ACMGVERSION2: return "Second release (2016): Recommendations for reporting of secondary findings in clinical exome and genome sequencing, 2016 update (ACMG SF v2.0): a policy statement of the American College of Medical Genetics and Genomics. https://www.ncbi.nlm.nih.gov/pubmed/27854360";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACMGVERSION1: return "ACMG Version 1";
-            case ACMGVERSION2: return "ACMG Version 2";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * First release (2013): ACMG Recommendations for Reporting of Incidental
+   * Findings in Clinical Exome and Genome Sequencing.
+   * https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3727274/
+   */
+  ACMGVERSION1,
+  /**
+   * Second release (2016): Recommendations for reporting of secondary findings in
+   * clinical exome and genome sequencing, 2016 update (ACMG SF v2.0): a policy
+   * statement of the American College of Medical Genetics and Genomics.
+   * https://www.ncbi.nlm.nih.gov/pubmed/27854360
+   */
+  ACMGVERSION2,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static SecondaryFinding fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("acmg-version1".equals(codeString))
+      return ACMGVERSION1;
+    if ("acmg-version2".equals(codeString))
+      return ACMGVERSION2;
+    throw new FHIRException("Unknown SecondaryFinding code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ACMGVERSION1:
+      return "acmg-version1";
+    case ACMGVERSION2:
+      return "acmg-version2";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/secondary-finding";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ACMGVERSION1:
+      return "First release (2013): ACMG Recommendations for Reporting of Incidental Findings in Clinical Exome and Genome Sequencing.  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3727274/";
+    case ACMGVERSION2:
+      return "Second release (2016): Recommendations for reporting of secondary findings in clinical exome and genome sequencing, 2016 update (ACMG SF v2.0): a policy statement of the American College of Medical Genetics and Genomics. https://www.ncbi.nlm.nih.gov/pubmed/27854360";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ACMGVERSION1:
+      return "ACMG Version 1";
+    case ACMGVERSION2:
+      return "ACMG Version 2";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

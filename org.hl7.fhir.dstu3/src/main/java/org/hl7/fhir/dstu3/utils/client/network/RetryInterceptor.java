@@ -1,10 +1,10 @@
 package org.hl7.fhir.dstu3.utils.client.network;
 
+import java.io.IOException;
+
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import java.io.IOException;
 
 /**
  * An {@link Interceptor} for {@link okhttp3.OkHttpClient} that controls the number of times we retry a to execute a

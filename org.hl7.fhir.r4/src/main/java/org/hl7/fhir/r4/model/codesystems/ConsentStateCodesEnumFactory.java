@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ConsentStateCodesEnumFactory implements EnumFactory<ConsentStateCodes> {
@@ -54,7 +50,7 @@ public class ConsentStateCodesEnumFactory implements EnumFactory<ConsentStateCod
       return ConsentStateCodes.INACTIVE;
     if ("entered-in-error".equals(codeString))
       return ConsentStateCodes.ENTEREDINERROR;
-    throw new IllegalArgumentException("Unknown ConsentStateCodes code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ConsentStateCodes code '" + codeString + "'");
   }
 
   public String toCode(ConsentStateCodes code) {
@@ -73,8 +69,8 @@ public class ConsentStateCodesEnumFactory implements EnumFactory<ConsentStateCod
     return "?";
   }
 
-    public String toSystem(ConsentStateCodes code) {
-      return code.getSystem();
-      }
+  public String toSystem(ConsentStateCodes code) {
+    return code.getSystem();
+  }
 
 }

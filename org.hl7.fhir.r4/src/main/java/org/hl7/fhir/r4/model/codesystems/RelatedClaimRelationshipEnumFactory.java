@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class RelatedClaimRelationshipEnumFactory implements EnumFactory<RelatedClaimRelationship> {
@@ -46,7 +42,7 @@ public class RelatedClaimRelationshipEnumFactory implements EnumFactory<RelatedC
       return RelatedClaimRelationship.PRIOR;
     if ("associated".equals(codeString))
       return RelatedClaimRelationship.ASSOCIATED;
-    throw new IllegalArgumentException("Unknown RelatedClaimRelationship code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown RelatedClaimRelationship code '" + codeString + "'");
   }
 
   public String toCode(RelatedClaimRelationship code) {
@@ -57,8 +53,8 @@ public class RelatedClaimRelationshipEnumFactory implements EnumFactory<RelatedC
     return "?";
   }
 
-    public String toSystem(RelatedClaimRelationship code) {
-      return code.getSystem();
-      }
+  public String toSystem(RelatedClaimRelationship code) {
+    return code.getSystem();
+  }
 
 }

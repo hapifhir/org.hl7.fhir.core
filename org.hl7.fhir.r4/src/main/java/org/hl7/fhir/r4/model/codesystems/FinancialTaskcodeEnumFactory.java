@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class FinancialTaskcodeEnumFactory implements EnumFactory<FinancialTaskcode> {
@@ -52,7 +48,7 @@ public class FinancialTaskcodeEnumFactory implements EnumFactory<FinancialTaskco
       return FinancialTaskcode.REPROCESS;
     if ("status".equals(codeString))
       return FinancialTaskcode.STATUS;
-    throw new IllegalArgumentException("Unknown FinancialTaskcode code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown FinancialTaskcode code '" + codeString + "'");
   }
 
   public String toCode(FinancialTaskcode code) {
@@ -69,8 +65,8 @@ public class FinancialTaskcodeEnumFactory implements EnumFactory<FinancialTaskco
     return "?";
   }
 
-    public String toSystem(FinancialTaskcode code) {
-      return code.getSystem();
-      }
+  public String toSystem(FinancialTaskcode code) {
+    return code.getSystem();
+  }
 
 }

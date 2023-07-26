@@ -1,6 +1,8 @@
 package org.hl7.fhir.utilities;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringJoiner;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;

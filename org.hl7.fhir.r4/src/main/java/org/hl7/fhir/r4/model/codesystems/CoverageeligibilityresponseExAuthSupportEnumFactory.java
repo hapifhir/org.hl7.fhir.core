@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,10 +31,10 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
-public class CoverageeligibilityresponseExAuthSupportEnumFactory implements EnumFactory<CoverageeligibilityresponseExAuthSupport> {
+public class CoverageeligibilityresponseExAuthSupportEnumFactory
+    implements EnumFactory<CoverageeligibilityresponseExAuthSupport> {
 
   public CoverageeligibilityresponseExAuthSupport fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
@@ -58,7 +55,7 @@ public class CoverageeligibilityresponseExAuthSupportEnumFactory implements Enum
       return CoverageeligibilityresponseExAuthSupport.MODEL;
     if ("picture".equals(codeString))
       return CoverageeligibilityresponseExAuthSupport.PICTURE;
-    throw new IllegalArgumentException("Unknown CoverageeligibilityresponseExAuthSupport code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown CoverageeligibilityresponseExAuthSupport code '" + codeString + "'");
   }
 
   public String toCode(CoverageeligibilityresponseExAuthSupport code) {
@@ -81,8 +78,8 @@ public class CoverageeligibilityresponseExAuthSupportEnumFactory implements Enum
     return "?";
   }
 
-    public String toSystem(CoverageeligibilityresponseExAuthSupport code) {
-      return code.getSystem();
-      }
+  public String toSystem(CoverageeligibilityresponseExAuthSupport code) {
+    return code.getSystem();
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractSubtype {
 
-        /**
-         * Canadian health information disclosure policy.
-         */
-        DISCLOSURECA, 
-        /**
-         * United States health information disclosure policy.
-         */
-        DISCLOSUREUS, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ContractSubtype fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("disclosure-ca".equals(codeString))
-          return DISCLOSURECA;
-        if ("disclosure-us".equals(codeString))
-          return DISCLOSUREUS;
-        throw new FHIRException("Unknown ContractSubtype code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DISCLOSURECA: return "disclosure-ca";
-            case DISCLOSUREUS: return "disclosure-us";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/contractsubtypecodes";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DISCLOSURECA: return "Canadian health information disclosure policy.";
-            case DISCLOSUREUS: return "United States health information disclosure policy.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DISCLOSURECA: return "Disclosure-CA";
-            case DISCLOSUREUS: return "Disclosure-US";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Canadian health information disclosure policy.
+   */
+  DISCLOSURECA,
+  /**
+   * United States health information disclosure policy.
+   */
+  DISCLOSUREUS,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ContractSubtype fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("disclosure-ca".equals(codeString))
+      return DISCLOSURECA;
+    if ("disclosure-us".equals(codeString))
+      return DISCLOSUREUS;
+    throw new FHIRException("Unknown ContractSubtype code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DISCLOSURECA:
+      return "disclosure-ca";
+    case DISCLOSUREUS:
+      return "disclosure-us";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/contractsubtypecodes";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DISCLOSURECA:
+      return "Canadian health information disclosure policy.";
+    case DISCLOSUREUS:
+      return "United States health information disclosure policy.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DISCLOSURECA:
+      return "Disclosure-CA";
+    case DISCLOSUREUS:
+      return "Disclosure-US";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

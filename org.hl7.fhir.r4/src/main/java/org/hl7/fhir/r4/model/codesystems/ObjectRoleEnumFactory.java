@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
-
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -90,7 +86,7 @@ public class ObjectRoleEnumFactory implements EnumFactory<ObjectRole> {
       return ObjectRole._23;
     if ("24".equals(codeString))
       return ObjectRole._24;
-    throw new IllegalArgumentException("Unknown ObjectRole code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ObjectRole code '" + codeString + "'");
   }
 
   public String toCode(ObjectRole code) {
@@ -145,8 +141,8 @@ public class ObjectRoleEnumFactory implements EnumFactory<ObjectRole> {
     return "?";
   }
 
-    public String toSystem(ObjectRole code) {
-      return code.getSystem();
-      }
+  public String toSystem(ObjectRole code) {
+    return code.getSystem();
+  }
 
 }

@@ -1,15 +1,16 @@
 package org.hl7.fhir.utilities.settings;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hl7.fhir.utilities.Utilities;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+
+import org.hl7.fhir.utilities.Utilities;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class FhirSettings {

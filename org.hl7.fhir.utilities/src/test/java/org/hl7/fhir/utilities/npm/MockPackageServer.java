@@ -1,11 +1,11 @@
 package org.hl7.fhir.utilities.npm;
 
+import java.io.IOException;
+
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okio.Buffer;
-
-import java.io.IOException;
 
 public class MockPackageServer {
   public static final String DUMMY_PACKAGE_NAME = "example.fhir.uv.myig";

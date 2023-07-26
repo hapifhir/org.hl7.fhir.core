@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,104 +31,134 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HttpOperations {
 
-        /**
-         * HTTP DELETE operation.
-         */
-        DELETE, 
-        /**
-         * HTTP GET operation.
-         */
-        GET, 
-        /**
-         * HTTP OPTIONS operation.
-         */
-        OPTIONS, 
-        /**
-         * HTTP PATCH operation.
-         */
-        PATCH, 
-        /**
-         * HTTP POST operation.
-         */
-        POST, 
-        /**
-         * HTTP PUT operation.
-         */
-        PUT, 
-        /**
-         * HTTP HEAD operation.
-         */
-        HEAD, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static HttpOperations fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("delete".equals(codeString))
-          return DELETE;
-        if ("get".equals(codeString))
-          return GET;
-        if ("options".equals(codeString))
-          return OPTIONS;
-        if ("patch".equals(codeString))
-          return PATCH;
-        if ("post".equals(codeString))
-          return POST;
-        if ("put".equals(codeString))
-          return PUT;
-        if ("head".equals(codeString))
-          return HEAD;
-        throw new FHIRException("Unknown HttpOperations code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DELETE: return "delete";
-            case GET: return "get";
-            case OPTIONS: return "options";
-            case PATCH: return "patch";
-            case POST: return "post";
-            case PUT: return "put";
-            case HEAD: return "head";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/http-operations";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DELETE: return "HTTP DELETE operation.";
-            case GET: return "HTTP GET operation.";
-            case OPTIONS: return "HTTP OPTIONS operation.";
-            case PATCH: return "HTTP PATCH operation.";
-            case POST: return "HTTP POST operation.";
-            case PUT: return "HTTP PUT operation.";
-            case HEAD: return "HTTP HEAD operation.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DELETE: return "DELETE";
-            case GET: return "GET";
-            case OPTIONS: return "OPTIONS";
-            case PATCH: return "PATCH";
-            case POST: return "POST";
-            case PUT: return "PUT";
-            case HEAD: return "HEAD";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * HTTP DELETE operation.
+   */
+  DELETE,
+  /**
+   * HTTP GET operation.
+   */
+  GET,
+  /**
+   * HTTP OPTIONS operation.
+   */
+  OPTIONS,
+  /**
+   * HTTP PATCH operation.
+   */
+  PATCH,
+  /**
+   * HTTP POST operation.
+   */
+  POST,
+  /**
+   * HTTP PUT operation.
+   */
+  PUT,
+  /**
+   * HTTP HEAD operation.
+   */
+  HEAD,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static HttpOperations fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("delete".equals(codeString))
+      return DELETE;
+    if ("get".equals(codeString))
+      return GET;
+    if ("options".equals(codeString))
+      return OPTIONS;
+    if ("patch".equals(codeString))
+      return PATCH;
+    if ("post".equals(codeString))
+      return POST;
+    if ("put".equals(codeString))
+      return PUT;
+    if ("head".equals(codeString))
+      return HEAD;
+    throw new FHIRException("Unknown HttpOperations code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DELETE:
+      return "delete";
+    case GET:
+      return "get";
+    case OPTIONS:
+      return "options";
+    case PATCH:
+      return "patch";
+    case POST:
+      return "post";
+    case PUT:
+      return "put";
+    case HEAD:
+      return "head";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/http-operations";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DELETE:
+      return "HTTP DELETE operation.";
+    case GET:
+      return "HTTP GET operation.";
+    case OPTIONS:
+      return "HTTP OPTIONS operation.";
+    case PATCH:
+      return "HTTP PATCH operation.";
+    case POST:
+      return "HTTP POST operation.";
+    case PUT:
+      return "HTTP PUT operation.";
+    case HEAD:
+      return "HTTP HEAD operation.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DELETE:
+      return "DELETE";
+    case GET:
+      return "GET";
+    case OPTIONS:
+      return "OPTIONS";
+    case PATCH:
+      return "PATCH";
+    case POST:
+      return "POST";
+    case PUT:
+      return "PUT";
+    case HEAD:
+      return "HEAD";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

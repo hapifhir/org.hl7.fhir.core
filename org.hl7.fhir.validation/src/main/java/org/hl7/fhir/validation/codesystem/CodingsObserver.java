@@ -1,11 +1,13 @@
 package org.hl7.fhir.validation.codesystem;
 
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
@@ -31,7 +33,7 @@ public class CodingsObserver extends BaseValidator {
     }
   }
 
-  public CodingsObserver(IWorkerContext context, XVerExtensionManager xverManager, boolean debug) {
+  public CodingsObserver(@Nonnull IWorkerContext context, @Nonnull XVerExtensionManager xverManager, boolean debug) {
     super(context, xverManager, debug);
     this.context = context;
   }
@@ -85,7 +87,6 @@ public class CodingsObserver extends BaseValidator {
       }
       System.out.println("Done Checking SCT codes for IPS");
     }
-
   }
 
   private Map<String, String> checkSCTCodes(Set<String> codes) {

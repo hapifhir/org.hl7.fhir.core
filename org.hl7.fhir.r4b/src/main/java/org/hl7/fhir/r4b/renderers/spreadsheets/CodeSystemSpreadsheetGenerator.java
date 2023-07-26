@@ -43,7 +43,7 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
       System.out.println("no code system!");
     }
     addCodeSystemMetadata(renderCanonicalResource(cs), cs);
-    
+
     if (cs.hasProperty()) {
       addProperties(cs.getProperty());
     }
@@ -66,7 +66,7 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
     addMetadataRow(sheet, "Supplements", cs.getSupplements());
     addMetadataRow(sheet, "Count", cs.getCountElement().asStringValue());
   }
-  
+
   private void addFilters(List<CodeSystemFilterComponent> filters) {
     Sheet sheet = makeSheet("Filters");
     addHeaders(sheet, "Code", "Description", "Operators", "Value");
@@ -76,7 +76,7 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
         cs.append(op.asStringValue());
       }
       addRow(sheet, f.getCode(), f.getDescription(), cs.toString(), f.getValue());
-    }        
+    }
   }
 
   private void addProperties(List<PropertyComponent> properties) {
@@ -84,48 +84,49 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
     addHeaders(sheet, "Code", "Uri", "Description", "Type");
     for (PropertyComponent p : properties) {
       addRow(sheet, p.getCode(), p.getUri(), p.getDescription(), p.getTypeElement().asStringValue());
-    }    
+    }
   }
 
   private void addConcepts(List<ConceptDefinitionComponent> concepts) {
     Sheet sheet = makeSheet("Concepts");
-    addHeaders(sheet, "Level", "Code", "Display", "Definition"); //todo: properties and designations
-    addConcepts(sheet, 1, concepts);    
+    addHeaders(sheet, "Level", "Code", "Display", "Definition"); // todo: properties and designations
+    addConcepts(sheet, 1, concepts);
   }
 
   private void addConcepts(Sheet sheet, int i, List<ConceptDefinitionComponent> concepts) {
     for (ConceptDefinitionComponent c : concepts) {
       addRow(sheet, Integer.toString(i), c.getCode(), c.getDisplay(), c.getDefinition());
       if (c.hasConcept()) {
-        addConcepts(sheet, i+1, c.getConcept());
+        addConcepts(sheet, i + 1, c.getConcept());
       }
-    }    
+    }
   }
 
   private void genExpansionParams(List<ValueSetExpansionParameterComponent> params) {
     Sheet sheet = makeSheet("Expansion Parameters");
     addHeaders(sheet, "Parameter", "Value");
     for (ValueSetExpansionParameterComponent p : params) {
-      addRow(sheet, p.getName(), dr.display(p.getValue()));          
-    }    
+      addRow(sheet, p.getName(), dr.display(p.getValue()));
+    }
   }
 
   private void genExpansion(List<ValueSetExpansionContainsComponent> list) {
     Sheet sheet = makeSheet("Expansion");
     addHeaders(sheet, "Level", "System", "version", "Code", "Display", "Abstract", "Inactive");
-    genExpansionEntry(1, list, sheet);    
+    genExpansionEntry(1, list, sheet);
   }
 
   public void genExpansionEntry(int level, List<ValueSetExpansionContainsComponent> list, Sheet sheet) {
     for (ValueSetExpansionContainsComponent p : list) {
-      addRow(sheet, Integer.toString(level), p.getSystem(), p.getVersion(), p.getCode(), p.getDisplay(), bool(p.getAbstract()), bool(p.getInactive()));  
+      addRow(sheet, Integer.toString(level), p.getSystem(), p.getVersion(), p.getCode(), p.getDisplay(),
+          bool(p.getAbstract()), bool(p.getInactive()));
       if (p.hasContains()) {
         genExpansionEntry(level + 1, p.getContains(), sheet);
       }
     }
   }
-  
-  private String bool(boolean value) {    
+
+  private String bool(boolean value) {
     return value ? "" : "false";
   }
 
@@ -181,8 +182,8 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
 //  }
 
   private void addAllCodes(Sheet sheet) {
-    addHeaders(sheet, "Codes");     
-    addRow(sheet, "All codes");          
+    addHeaders(sheet, "Codes");
+    addRow(sheet, "All codes");
   }
 
   private void addValueSets(Sheet sheet, List<CanonicalType> valueSets) {
@@ -199,14 +200,14 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
   }
 
   private void addConcepts(Sheet sheet, List<ConceptReferenceComponent> concepts) {
-    addHeaders(sheet, "Concept", "Description"); // todo: designations    
+    addHeaders(sheet, "Concept", "Description"); // todo: designations
     for (ConceptReferenceComponent cd : concepts) {
-      addRow(sheet, cd.getCode(), cd.getDisplay());      
-    }    
+      addRow(sheet, cd.getCode(), cd.getDisplay());
+    }
   }
 
   private void addFilters(Sheet sheet, List<ConceptSetFilterComponent> filters) {
-    addHeaders(sheet, "Property", "Operation", "Value");    
+    addHeaders(sheet, "Property", "Operation", "Value");
     for (ConceptSetFilterComponent f : filters) {
       addRow(sheet, f.getProperty(), f.getOpElement().asStringValue(), f.getValue());
     }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SequenceType {
 
-        /**
-         * Amino acid sequence
-         */
-        AA, 
-        /**
-         * DNA Sequence
-         */
-        DNA, 
-        /**
-         * RNA Sequence
-         */
-        RNA, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static SequenceType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("AA".equals(codeString))
-          return AA;
-        if ("DNA".equals(codeString))
-          return DNA;
-        if ("RNA".equals(codeString))
-          return RNA;
-        throw new FHIRException("Unknown SequenceType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case AA: return "AA";
-            case DNA: return "DNA";
-            case RNA: return "RNA";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/sequence-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case AA: return "Amino acid sequence";
-            case DNA: return "DNA Sequence";
-            case RNA: return "RNA Sequence";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case AA: return "AA Sequence";
-            case DNA: return "DNA Sequence";
-            case RNA: return "RNA Sequence";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Amino acid sequence
+   */
+  AA,
+  /**
+   * DNA Sequence
+   */
+  DNA,
+  /**
+   * RNA Sequence
+   */
+  RNA,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static SequenceType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("AA".equals(codeString))
+      return AA;
+    if ("DNA".equals(codeString))
+      return DNA;
+    if ("RNA".equals(codeString))
+      return RNA;
+    throw new FHIRException("Unknown SequenceType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case AA:
+      return "AA";
+    case DNA:
+      return "DNA";
+    case RNA:
+      return "RNA";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/sequence-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case AA:
+      return "Amino acid sequence";
+    case DNA:
+      return "DNA Sequence";
+    case RNA:
+      return "RNA Sequence";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case AA:
+      return "AA Sequence";
+    case DNA:
+      return "DNA Sequence";
+    case RNA:
+      return "RNA Sequence";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

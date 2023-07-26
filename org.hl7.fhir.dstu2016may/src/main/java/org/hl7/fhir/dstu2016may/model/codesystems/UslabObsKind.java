@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,88 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum UslabObsKind {
 
-        /**
-         * The value is Observation.value[x] is an actual result from a laboratory test
-         */
-        RESULT, 
-        /**
-         * The value is Observation.value[x] is a response to laboratory Ask at order (AOE) questions
-         */
-        RESPONSE, 
-        /**
-         * The value is Observation.value[x] is some other unsolicited clnically relevant information.
-         */
-        INFORMATION, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static UslabObsKind fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("result".equals(codeString))
-          return RESULT;
-        if ("response".equals(codeString))
-          return RESPONSE;
-        if ("information".equals(codeString))
-          return INFORMATION;
-        throw new FHIRException("Unknown UslabObsKind code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case RESULT: return "result";
-            case RESPONSE: return "response";
-            case INFORMATION: return "information";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/obs-kind";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case RESULT: return "The value is Observation.value[x] is an actual result from a laboratory test";
-            case RESPONSE: return "The value is Observation.value[x] is a response to laboratory Ask at order (AOE) questions";
-            case INFORMATION: return "The value is Observation.value[x] is some other unsolicited clnically relevant information.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case RESULT: return "result";
-            case RESPONSE: return "response";
-            case INFORMATION: return "information";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The value is Observation.value[x] is an actual result from a laboratory test
+   */
+  RESULT,
+  /**
+   * The value is Observation.value[x] is a response to laboratory Ask at order
+   * (AOE) questions
+   */
+  RESPONSE,
+  /**
+   * The value is Observation.value[x] is some other unsolicited clnically
+   * relevant information.
+   */
+  INFORMATION,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static UslabObsKind fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("result".equals(codeString))
+      return RESULT;
+    if ("response".equals(codeString))
+      return RESPONSE;
+    if ("information".equals(codeString))
+      return INFORMATION;
+    throw new FHIRException("Unknown UslabObsKind code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case RESULT:
+      return "result";
+    case RESPONSE:
+      return "response";
+    case INFORMATION:
+      return "information";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/obs-kind";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case RESULT:
+      return "The value is Observation.value[x] is an actual result from a laboratory test";
+    case RESPONSE:
+      return "The value is Observation.value[x] is a response to laboratory Ask at order (AOE) questions";
+    case INFORMATION:
+      return "The value is Observation.value[x] is some other unsolicited clnically relevant information.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case RESULT:
+      return "result";
+    case RESPONSE:
+      return "response";
+    case INFORMATION:
+      return "information";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -7,8 +7,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableCon
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Decimal40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 

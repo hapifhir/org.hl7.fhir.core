@@ -9,12 +9,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.MetadataResource;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
- * This manages a cached list of resources, and provides high speed access by URL / URL+version, and assumes that patch version doesn't matter for access
+ * This manages a cached list of resources, and provides high speed access by
+ * URL / URL+version, and assumes that patch version doesn't matter for access
  * note, though, that not all resources have semver versions
  * 
  * @author graha
@@ -46,12 +46,10 @@ public class CanonicalResourceManager<T extends MetadataResource> {
     }
   }
 
-
-  private boolean enforceUniqueId; 
+  private boolean enforceUniqueId;
   private List<T> list = new ArrayList<>();
   private Map<String, T> map = new HashMap<>();
-  
-  
+
   public CanonicalResourceManager(boolean enforceUniqueId) {
     super();
     this.enforceUniqueId = enforceUniqueId;
@@ -63,13 +61,13 @@ public class CanonicalResourceManager<T extends MetadataResource> {
     list.addAll(source.list);
     map.putAll(source.map);
   }
-  
+
   public void see(T r) {
     if (!r.hasId()) {
       r.setId(UUID.randomUUID().toString());
     }
     if (enforceUniqueId && map.containsKey(r.getId())) {
-      drop(r.getId());      
+      drop(r.getId());
     }
     list.add(r);
     map.put(r.getId(), r); // we do this so we can drop by id
@@ -77,7 +75,7 @@ public class CanonicalResourceManager<T extends MetadataResource> {
     if (r.hasUrl()) {
       // first, this is the correct reosurce for this version (if it has a version)
       if (r.hasVersion()) {
-        map.put(r.getUrl()+"|"+r.getVersion(), r);
+        map.put(r.getUrl() + "|" + r.getVersion(), r);
       }
       updateList(r.getUrl(), r.getVersion());
     }
@@ -94,7 +92,7 @@ public class CanonicalResourceManager<T extends MetadataResource> {
       // sort by version as much as we are able
       Collections.sort(rl, new MetadataResourceVersionComparator<T>());
       // the current is the latest
-      map.put(url, rl.get(rl.size()-1));
+      map.put(url, rl.get(rl.size() - 1));
       // now, also, the latest for major/minor
       if (version != null) {
         T latest = null;
@@ -106,45 +104,44 @@ public class CanonicalResourceManager<T extends MetadataResource> {
         if (latest != null) { // might be null if it's not using semver
           String lv = VersionUtilities.getMajMin(latest.getVersion());
           if (lv != null && !lv.equals(version))
-            map.put(url+"|"+lv, rl.get(rl.size()-1));
+            map.put(url + "|" + lv, rl.get(rl.size() - 1));
         }
       }
     }
   }
- 
 
   public T get(String url) {
     return map.get(url);
   }
-  
+
   public boolean has(String url) {
     return map.containsKey(url);
   }
-  
+
   public T get(String system, String version) {
-    if (map.containsKey(system+"|"+version))
-      return map.get(system+"|"+version);
+    if (map.containsKey(system + "|" + version))
+      return map.get(system + "|" + version);
     String mm = VersionUtilities.getMajMin(version);
     if (mm != null)
-      return map.get(system+"|"+mm);
+      return map.get(system + "|" + mm);
     else
       return null;
   }
-  
+
   public boolean has(String system, String version) {
-    if (map.containsKey(system+"|"+version))
+    if (map.containsKey(system + "|" + version))
       return true;
     String mm = VersionUtilities.getMajMin(version);
     if (mm != null)
-      return map.containsKey(system+"|"+mm);
+      return map.containsKey(system + "|" + mm);
     else
       return false;
   }
-  
+
   public int size() {
     return list.size();
   }
-  
+
   public void drop(String id) {
     T res = null;
     do {
@@ -159,30 +156,29 @@ public class CanonicalResourceManager<T extends MetadataResource> {
         map.remove(id);
         map.remove(res.getUrl());
         if (res.hasVersion()) {
-          map.remove(res.getUrl()+"|"+res.getVersion());
+          map.remove(res.getUrl() + "|" + res.getVersion());
           String mm = VersionUtilities.getMajMin(res.getVersion());
           if (mm != null) {
-            map.remove(res.getUrl()+"|"+mm);
+            map.remove(res.getUrl() + "|" + mm);
           }
         }
-        updateList(res.getUrl(), res.getVersion()); 
+        updateList(res.getUrl(), res.getVersion());
       }
     } while (res != null);
   }
-  
-  
+
   public void listAll(List<T> result) {
-    result.addAll(list);    
+    result.addAll(list);
   }
 
   public void listAllM(List<MetadataResource> result) {
-    result.addAll(list);    
+    result.addAll(list);
   }
 
   public void clear() {
     list.clear();
     map.clear();
-    
+
   }
 
   public List<T> getList() {
@@ -202,5 +198,5 @@ public class CanonicalResourceManager<T extends MetadataResource> {
   public boolean isEnforceUniqueId() {
     return enforceUniqueId;
   }
-  
+
 }

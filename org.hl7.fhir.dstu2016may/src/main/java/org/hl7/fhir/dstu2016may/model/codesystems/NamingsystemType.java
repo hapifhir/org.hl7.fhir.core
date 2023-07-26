@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,89 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NamingsystemType {
 
-        /**
-         * The naming system is used to define concepts and symbols to represent those concepts; e.g. UCUM, LOINC, NDC code, local lab codes, etc.
-         */
-        CODESYSTEM, 
-        /**
-         * The naming system is used to manage identifiers (e.g. license numbers, order numbers, etc.).
-         */
-        IDENTIFIER, 
-        /**
-         * The naming system is used as the root for other identifiers and naming systems.
-         */
-        ROOT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static NamingsystemType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("codesystem".equals(codeString))
-          return CODESYSTEM;
-        if ("identifier".equals(codeString))
-          return IDENTIFIER;
-        if ("root".equals(codeString))
-          return ROOT;
-        throw new FHIRException("Unknown NamingsystemType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CODESYSTEM: return "codesystem";
-            case IDENTIFIER: return "identifier";
-            case ROOT: return "root";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/namingsystem-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CODESYSTEM: return "The naming system is used to define concepts and symbols to represent those concepts; e.g. UCUM, LOINC, NDC code, local lab codes, etc.";
-            case IDENTIFIER: return "The naming system is used to manage identifiers (e.g. license numbers, order numbers, etc.).";
-            case ROOT: return "The naming system is used as the root for other identifiers and naming systems.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CODESYSTEM: return "Code System";
-            case IDENTIFIER: return "Identifier";
-            case ROOT: return "Root";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The naming system is used to define concepts and symbols to represent those
+   * concepts; e.g. UCUM, LOINC, NDC code, local lab codes, etc.
+   */
+  CODESYSTEM,
+  /**
+   * The naming system is used to manage identifiers (e.g. license numbers, order
+   * numbers, etc.).
+   */
+  IDENTIFIER,
+  /**
+   * The naming system is used as the root for other identifiers and naming
+   * systems.
+   */
+  ROOT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static NamingsystemType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("codesystem".equals(codeString))
+      return CODESYSTEM;
+    if ("identifier".equals(codeString))
+      return IDENTIFIER;
+    if ("root".equals(codeString))
+      return ROOT;
+    throw new FHIRException("Unknown NamingsystemType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case CODESYSTEM:
+      return "codesystem";
+    case IDENTIFIER:
+      return "identifier";
+    case ROOT:
+      return "root";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/namingsystem-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case CODESYSTEM:
+      return "The naming system is used to define concepts and symbols to represent those concepts; e.g. UCUM, LOINC, NDC code, local lab codes, etc.";
+    case IDENTIFIER:
+      return "The naming system is used to manage identifiers (e.g. license numbers, order numbers, etc.).";
+    case ROOT:
+      return "The naming system is used as the root for other identifiers and naming systems.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case CODESYSTEM:
+      return "Code System";
+    case IDENTIFIER:
+      return "Identifier";
+    case ROOT:
+      return "Root";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

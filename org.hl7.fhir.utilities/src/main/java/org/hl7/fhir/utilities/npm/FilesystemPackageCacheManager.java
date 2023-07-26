@@ -23,6 +23,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.IniFile;
@@ -39,8 +41,6 @@ import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

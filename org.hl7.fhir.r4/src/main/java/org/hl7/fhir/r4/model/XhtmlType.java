@@ -29,8 +29,6 @@ package org.hl7.fhir.r4.model;
   
  */
 
-
-
 import java.io.IOException;
 import java.util.List;
 
@@ -42,7 +40,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 public class XhtmlType extends Element {
 
   private Narrative place;
-  
+
   public XhtmlType(Narrative place) {
     super();
     this.place = place;
@@ -89,7 +87,7 @@ public class XhtmlType extends Element {
       } else {
         place.setDiv(castToXhtml(value));
       }
-    	return value;
+      return value;
     } else
       return super.setProperty(hash, name, value);
   }
@@ -97,7 +95,7 @@ public class XhtmlType extends Element {
   @Override
   public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
     if ("value".equals(name))
-      return new Base[] {this};
+      return new Base[] { this };
     return super.getProperty(hash, name, checkValid);
   }
 
@@ -108,17 +106,16 @@ public class XhtmlType extends Element {
     } catch (IOException e) {
     }
     return null;
-  }  
-  
+  }
+
   @Override
   public boolean isPrimitive() {
     return true;
   }
-  
+
   @Override
   public boolean hasPrimitiveValue() {
     return true;
   }
-  
 
 }

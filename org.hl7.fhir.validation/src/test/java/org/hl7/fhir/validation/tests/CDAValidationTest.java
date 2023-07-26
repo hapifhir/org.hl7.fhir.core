@@ -5,7 +5,6 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.validation.ValidatorCli;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class CDAValidationTest {

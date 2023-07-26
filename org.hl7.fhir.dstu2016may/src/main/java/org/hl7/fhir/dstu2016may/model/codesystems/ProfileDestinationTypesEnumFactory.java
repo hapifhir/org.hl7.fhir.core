@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Mon, Mar 21, 2016 12:03+1100 for FHIR v1.3.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ProfileDestinationTypesEnumFactory implements EnumFactory<ProfileDestinationTypes> {
@@ -50,7 +46,7 @@ public class ProfileDestinationTypesEnumFactory implements EnumFactory<ProfileDe
       return ProfileDestinationTypes.FHIRDSTU2SDCFORMRECEIVER;
     if ("FHIR-DSTU2-SDC-FormProcessor".equals(codeString))
       return ProfileDestinationTypes.FHIRDSTU2SDCFORMPROCESSOR;
-    throw new IllegalArgumentException("Unknown ProfileDestinationTypes code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ProfileDestinationTypes code '" + codeString + "'");
   }
 
   public String toCode(ProfileDestinationTypes code) {
@@ -65,8 +61,8 @@ public class ProfileDestinationTypesEnumFactory implements EnumFactory<ProfileDe
     return "?";
   }
 
-    public String toSystem(ProfileDestinationTypes code) {
-      return code.getSystem();
-      }
+  public String toSystem(ProfileDestinationTypes code) {
+    return code.getSystem();
+  }
 
 }

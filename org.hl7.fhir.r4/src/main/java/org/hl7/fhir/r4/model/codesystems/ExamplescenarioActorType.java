@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExamplescenarioActorType {
 
-        /**
-         * A person.
-         */
-        PERSON, 
-        /**
-         * A system.
-         */
-        ENTITY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ExamplescenarioActorType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("person".equals(codeString))
-          return PERSON;
-        if ("entity".equals(codeString))
-          return ENTITY;
-        throw new FHIRException("Unknown ExamplescenarioActorType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PERSON: return "person";
-            case ENTITY: return "entity";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/examplescenario-actor-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PERSON: return "A person.";
-            case ENTITY: return "A system.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PERSON: return "Person";
-            case ENTITY: return "System";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * A person.
+   */
+  PERSON,
+  /**
+   * A system.
+   */
+  ENTITY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ExamplescenarioActorType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("person".equals(codeString))
+      return PERSON;
+    if ("entity".equals(codeString))
+      return ENTITY;
+    throw new FHIRException("Unknown ExamplescenarioActorType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PERSON:
+      return "person";
+    case ENTITY:
+      return "entity";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/examplescenario-actor-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PERSON:
+      return "A person.";
+    case ENTITY:
+      return "A system.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PERSON:
+      return "Person";
+    case ENTITY:
+      return "System";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,113 +31,148 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AdverseEventSeriousness {
 
-        /**
-         * Non-serious.
-         */
-        NONSERIOUS, 
-        /**
-         * Serious.
-         */
-        SERIOUS, 
-        /**
-         * Results in death.
-         */
-        SERIOUSRESULTSINDEATH, 
-        /**
-         * Is Life-threatening.
-         */
-        SERIOUSISLIFETHREATENING, 
-        /**
-         * Requires inpatient hospitalization or causes prolongation of existing hospitalization.
-         */
-        SERIOUSRESULTSINHOSPITALIZATION, 
-        /**
-         * Results in persistent or significant disability/incapacity.
-         */
-        SERIOUSRESULTSINDISABILITY, 
-        /**
-         * Is a congenital anomaly/birth defect.
-         */
-        SERIOUSISBIRTHDEFECT, 
-        /**
-         * Requires intervention to prevent permanent impairment or damage (i.e., an important medical event that requires medical judgement).
-         */
-        SERIOUSREQUIRESPREVENTIMPAIRMENT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static AdverseEventSeriousness fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("Non-serious".equals(codeString))
-          return NONSERIOUS;
-        if ("Serious".equals(codeString))
-          return SERIOUS;
-        if ("SeriousResultsInDeath".equals(codeString))
-          return SERIOUSRESULTSINDEATH;
-        if ("SeriousIsLifeThreatening".equals(codeString))
-          return SERIOUSISLIFETHREATENING;
-        if ("SeriousResultsInHospitalization".equals(codeString))
-          return SERIOUSRESULTSINHOSPITALIZATION;
-        if ("SeriousResultsInDisability".equals(codeString))
-          return SERIOUSRESULTSINDISABILITY;
-        if ("SeriousIsBirthDefect".equals(codeString))
-          return SERIOUSISBIRTHDEFECT;
-        if ("SeriousRequiresPreventImpairment".equals(codeString))
-          return SERIOUSREQUIRESPREVENTIMPAIRMENT;
-        throw new FHIRException("Unknown AdverseEventSeriousness code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NONSERIOUS: return "Non-serious";
-            case SERIOUS: return "Serious";
-            case SERIOUSRESULTSINDEATH: return "SeriousResultsInDeath";
-            case SERIOUSISLIFETHREATENING: return "SeriousIsLifeThreatening";
-            case SERIOUSRESULTSINHOSPITALIZATION: return "SeriousResultsInHospitalization";
-            case SERIOUSRESULTSINDISABILITY: return "SeriousResultsInDisability";
-            case SERIOUSISBIRTHDEFECT: return "SeriousIsBirthDefect";
-            case SERIOUSREQUIRESPREVENTIMPAIRMENT: return "SeriousRequiresPreventImpairment";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/adverse-event-seriousness";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NONSERIOUS: return "Non-serious.";
-            case SERIOUS: return "Serious.";
-            case SERIOUSRESULTSINDEATH: return "Results in death.";
-            case SERIOUSISLIFETHREATENING: return "Is Life-threatening.";
-            case SERIOUSRESULTSINHOSPITALIZATION: return "Requires inpatient hospitalization or causes prolongation of existing hospitalization.";
-            case SERIOUSRESULTSINDISABILITY: return "Results in persistent or significant disability/incapacity.";
-            case SERIOUSISBIRTHDEFECT: return "Is a congenital anomaly/birth defect.";
-            case SERIOUSREQUIRESPREVENTIMPAIRMENT: return "Requires intervention to prevent permanent impairment or damage (i.e., an important medical event that requires medical judgement).";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NONSERIOUS: return "Non-serious";
-            case SERIOUS: return "Serious";
-            case SERIOUSRESULTSINDEATH: return "Results in death";
-            case SERIOUSISLIFETHREATENING: return "Is Life-threatening";
-            case SERIOUSRESULTSINHOSPITALIZATION: return "Requires or prolongs inpatient hospitalization";
-            case SERIOUSRESULTSINDISABILITY: return "Results in persistent or significant disability/incapacity";
-            case SERIOUSISBIRTHDEFECT: return "Is a congenital anomaly/birth defect";
-            case SERIOUSREQUIRESPREVENTIMPAIRMENT: return "Requires intervention to prevent permanent impairment";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Non-serious.
+   */
+  NONSERIOUS,
+  /**
+   * Serious.
+   */
+  SERIOUS,
+  /**
+   * Results in death.
+   */
+  SERIOUSRESULTSINDEATH,
+  /**
+   * Is Life-threatening.
+   */
+  SERIOUSISLIFETHREATENING,
+  /**
+   * Requires inpatient hospitalization or causes prolongation of existing
+   * hospitalization.
+   */
+  SERIOUSRESULTSINHOSPITALIZATION,
+  /**
+   * Results in persistent or significant disability/incapacity.
+   */
+  SERIOUSRESULTSINDISABILITY,
+  /**
+   * Is a congenital anomaly/birth defect.
+   */
+  SERIOUSISBIRTHDEFECT,
+  /**
+   * Requires intervention to prevent permanent impairment or damage (i.e., an
+   * important medical event that requires medical judgement).
+   */
+  SERIOUSREQUIRESPREVENTIMPAIRMENT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static AdverseEventSeriousness fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("Non-serious".equals(codeString))
+      return NONSERIOUS;
+    if ("Serious".equals(codeString))
+      return SERIOUS;
+    if ("SeriousResultsInDeath".equals(codeString))
+      return SERIOUSRESULTSINDEATH;
+    if ("SeriousIsLifeThreatening".equals(codeString))
+      return SERIOUSISLIFETHREATENING;
+    if ("SeriousResultsInHospitalization".equals(codeString))
+      return SERIOUSRESULTSINHOSPITALIZATION;
+    if ("SeriousResultsInDisability".equals(codeString))
+      return SERIOUSRESULTSINDISABILITY;
+    if ("SeriousIsBirthDefect".equals(codeString))
+      return SERIOUSISBIRTHDEFECT;
+    if ("SeriousRequiresPreventImpairment".equals(codeString))
+      return SERIOUSREQUIRESPREVENTIMPAIRMENT;
+    throw new FHIRException("Unknown AdverseEventSeriousness code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case NONSERIOUS:
+      return "Non-serious";
+    case SERIOUS:
+      return "Serious";
+    case SERIOUSRESULTSINDEATH:
+      return "SeriousResultsInDeath";
+    case SERIOUSISLIFETHREATENING:
+      return "SeriousIsLifeThreatening";
+    case SERIOUSRESULTSINHOSPITALIZATION:
+      return "SeriousResultsInHospitalization";
+    case SERIOUSRESULTSINDISABILITY:
+      return "SeriousResultsInDisability";
+    case SERIOUSISBIRTHDEFECT:
+      return "SeriousIsBirthDefect";
+    case SERIOUSREQUIRESPREVENTIMPAIRMENT:
+      return "SeriousRequiresPreventImpairment";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/adverse-event-seriousness";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case NONSERIOUS:
+      return "Non-serious.";
+    case SERIOUS:
+      return "Serious.";
+    case SERIOUSRESULTSINDEATH:
+      return "Results in death.";
+    case SERIOUSISLIFETHREATENING:
+      return "Is Life-threatening.";
+    case SERIOUSRESULTSINHOSPITALIZATION:
+      return "Requires inpatient hospitalization or causes prolongation of existing hospitalization.";
+    case SERIOUSRESULTSINDISABILITY:
+      return "Results in persistent or significant disability/incapacity.";
+    case SERIOUSISBIRTHDEFECT:
+      return "Is a congenital anomaly/birth defect.";
+    case SERIOUSREQUIRESPREVENTIMPAIRMENT:
+      return "Requires intervention to prevent permanent impairment or damage (i.e., an important medical event that requires medical judgement).";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case NONSERIOUS:
+      return "Non-serious";
+    case SERIOUS:
+      return "Serious";
+    case SERIOUSRESULTSINDEATH:
+      return "Results in death";
+    case SERIOUSISLIFETHREATENING:
+      return "Is Life-threatening";
+    case SERIOUSRESULTSINHOSPITALIZATION:
+      return "Requires or prolongs inpatient hospitalization";
+    case SERIOUSRESULTSINDISABILITY:
+      return "Results in persistent or significant disability/incapacity";
+    case SERIOUSISBIRTHDEFECT:
+      return "Is a congenital anomaly/birth defect";
+    case SERIOUSREQUIRESPREVENTIMPAIRMENT:
+      return "Requires intervention to prevent permanent impairment";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,104 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ReactionEventCertainty {
 
-        /**
-         * There is a low level of clinical certainty that the reaction was caused by the identified substance.
-         */
-        UNLIKELY, 
-        /**
-         * There is a high level of clinical certainty that the reaction was caused by the identified substance.
-         */
-        LIKELY, 
-        /**
-         * There is a very high level of clinical certainty that the reaction was due to the identified substance, which may include clinical evidence by testing or rechallenge.
-         */
-        CONFIRMED, 
-        /**
-         * The clinical certainty that the reaction was caused by the identified substance is unknown.  It is an explicit assertion that certainty is not known.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ReactionEventCertainty fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("unlikely".equals(codeString))
-          return UNLIKELY;
-        if ("likely".equals(codeString))
-          return LIKELY;
-        if ("confirmed".equals(codeString))
-          return CONFIRMED;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        throw new FHIRException("Unknown ReactionEventCertainty code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case UNLIKELY: return "unlikely";
-            case LIKELY: return "likely";
-            case CONFIRMED: return "confirmed";
-            case UNKNOWN: return "unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/reaction-event-certainty";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case UNLIKELY: return "There is a low level of clinical certainty that the reaction was caused by the identified substance.";
-            case LIKELY: return "There is a high level of clinical certainty that the reaction was caused by the identified substance.";
-            case CONFIRMED: return "There is a very high level of clinical certainty that the reaction was due to the identified substance, which may include clinical evidence by testing or rechallenge.";
-            case UNKNOWN: return "The clinical certainty that the reaction was caused by the identified substance is unknown.  It is an explicit assertion that certainty is not known.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case UNLIKELY: return "Unlikely";
-            case LIKELY: return "Likely";
-            case CONFIRMED: return "Confirmed";
-            case UNKNOWN: return "Unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * There is a low level of clinical certainty that the reaction was caused by
+   * the identified substance.
+   */
+  UNLIKELY,
+  /**
+   * There is a high level of clinical certainty that the reaction was caused by
+   * the identified substance.
+   */
+  LIKELY,
+  /**
+   * There is a very high level of clinical certainty that the reaction was due to
+   * the identified substance, which may include clinical evidence by testing or
+   * rechallenge.
+   */
+  CONFIRMED,
+  /**
+   * The clinical certainty that the reaction was caused by the identified
+   * substance is unknown. It is an explicit assertion that certainty is not
+   * known.
+   */
+  UNKNOWN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ReactionEventCertainty fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("unlikely".equals(codeString))
+      return UNLIKELY;
+    if ("likely".equals(codeString))
+      return LIKELY;
+    if ("confirmed".equals(codeString))
+      return CONFIRMED;
+    if ("unknown".equals(codeString))
+      return UNKNOWN;
+    throw new FHIRException("Unknown ReactionEventCertainty code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case UNLIKELY:
+      return "unlikely";
+    case LIKELY:
+      return "likely";
+    case CONFIRMED:
+      return "confirmed";
+    case UNKNOWN:
+      return "unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/reaction-event-certainty";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case UNLIKELY:
+      return "There is a low level of clinical certainty that the reaction was caused by the identified substance.";
+    case LIKELY:
+      return "There is a high level of clinical certainty that the reaction was caused by the identified substance.";
+    case CONFIRMED:
+      return "There is a very high level of clinical certainty that the reaction was due to the identified substance, which may include clinical evidence by testing or rechallenge.";
+    case UNKNOWN:
+      return "The clinical certainty that the reaction was caused by the identified substance is unknown.  It is an explicit assertion that certainty is not known.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case UNLIKELY:
+      return "Unlikely";
+    case LIKELY:
+      return "Likely";
+    case CONFIRMED:
+      return "Confirmed";
+    case UNKNOWN:
+      return "Unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

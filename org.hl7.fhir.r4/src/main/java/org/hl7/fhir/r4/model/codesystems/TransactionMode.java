@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum TransactionMode {
 
-        /**
-         * Neither batch or transaction is supported.
-         */
-        NOTSUPPORTED, 
-        /**
-         * Batches are  supported.
-         */
-        BATCH, 
-        /**
-         * Transactions are supported.
-         */
-        TRANSACTION, 
-        /**
-         * Both batches and transactions are supported.
-         */
-        BOTH, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static TransactionMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("not-supported".equals(codeString))
-          return NOTSUPPORTED;
-        if ("batch".equals(codeString))
-          return BATCH;
-        if ("transaction".equals(codeString))
-          return TRANSACTION;
-        if ("both".equals(codeString))
-          return BOTH;
-        throw new FHIRException("Unknown TransactionMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NOTSUPPORTED: return "not-supported";
-            case BATCH: return "batch";
-            case TRANSACTION: return "transaction";
-            case BOTH: return "both";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/transaction-mode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NOTSUPPORTED: return "Neither batch or transaction is supported.";
-            case BATCH: return "Batches are  supported.";
-            case TRANSACTION: return "Transactions are supported.";
-            case BOTH: return "Both batches and transactions are supported.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NOTSUPPORTED: return "None";
-            case BATCH: return "Batches supported";
-            case TRANSACTION: return "Transactions Supported";
-            case BOTH: return "Batches & Transactions";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Neither batch or transaction is supported.
+   */
+  NOTSUPPORTED,
+  /**
+   * Batches are supported.
+   */
+  BATCH,
+  /**
+   * Transactions are supported.
+   */
+  TRANSACTION,
+  /**
+   * Both batches and transactions are supported.
+   */
+  BOTH,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static TransactionMode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("not-supported".equals(codeString))
+      return NOTSUPPORTED;
+    if ("batch".equals(codeString))
+      return BATCH;
+    if ("transaction".equals(codeString))
+      return TRANSACTION;
+    if ("both".equals(codeString))
+      return BOTH;
+    throw new FHIRException("Unknown TransactionMode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case NOTSUPPORTED:
+      return "not-supported";
+    case BATCH:
+      return "batch";
+    case TRANSACTION:
+      return "transaction";
+    case BOTH:
+      return "both";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/transaction-mode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case NOTSUPPORTED:
+      return "Neither batch or transaction is supported.";
+    case BATCH:
+      return "Batches are  supported.";
+    case TRANSACTION:
+      return "Transactions are supported.";
+    case BOTH:
+      return "Both batches and transactions are supported.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case NOTSUPPORTED:
+      return "None";
+    case BATCH:
+      return "Batches supported";
+    case TRANSACTION:
+      return "Transactions Supported";
+    case BOTH:
+      return "Batches & Transactions";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

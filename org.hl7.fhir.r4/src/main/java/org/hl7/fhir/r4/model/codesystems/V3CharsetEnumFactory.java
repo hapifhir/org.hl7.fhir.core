@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3CharsetEnumFactory implements EnumFactory<V3Charset> {
@@ -62,7 +58,7 @@ public class V3CharsetEnumFactory implements EnumFactory<V3Charset> {
       return V3Charset.UTF7;
     if ("UTF-8".equals(codeString))
       return V3Charset.UTF8;
-    throw new IllegalArgumentException("Unknown V3Charset code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3Charset code '" + codeString + "'");
   }
 
   public String toCode(V3Charset code) {
@@ -89,8 +85,8 @@ public class V3CharsetEnumFactory implements EnumFactory<V3Charset> {
     return "?";
   }
 
-    public String toSystem(V3Charset code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3Charset code) {
+    return code.getSystem();
+  }
 
 }

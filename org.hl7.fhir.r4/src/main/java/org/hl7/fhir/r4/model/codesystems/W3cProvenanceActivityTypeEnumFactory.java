@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
-
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -66,7 +62,7 @@ public class W3cProvenanceActivityTypeEnumFactory implements EnumFactory<W3cProv
       return W3cProvenanceActivityType.ATTRIBUTION;
     if ("Collection".equals(codeString))
       return W3cProvenanceActivityType.COLLECTION;
-    throw new IllegalArgumentException("Unknown W3cProvenanceActivityType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown W3cProvenanceActivityType code '" + codeString + "'");
   }
 
   public String toCode(W3cProvenanceActivityType code) {
@@ -97,8 +93,8 @@ public class W3cProvenanceActivityTypeEnumFactory implements EnumFactory<W3cProv
     return "?";
   }
 
-    public String toSystem(W3cProvenanceActivityType code) {
-      return code.getSystem();
-      }
+  public String toSystem(W3cProvenanceActivityType code) {
+    return code.getSystem();
+  }
 
 }

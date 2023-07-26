@@ -29,45 +29,43 @@ package org.hl7.fhir.dstu2.model;
   
  */
 
-
-
 import java.net.URI;
 
 public class UuidType extends UriType {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	/**
-	 * Constructor
-	 */
-	public UuidType() {
-		super();
-	}
+  /**
+   * Constructor
+   */
+  public UuidType() {
+    super();
+  }
 
-	/**
-	 * Constructor
-	 */
-	public UuidType(String theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public UuidType(String theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	public UuidType(URI theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public UuidType(URI theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	@Override
-	public UuidType copy() {
-		return new UuidType(getValue());
-	}
-	
-	public String fhirType() {
-		return "uuid";		
-	}
+  /**
+   * Constructor
+   */
+  @Override
+  public UuidType copy() {
+    return new UuidType(getValue());
+  }
+
+  public String fhirType() {
+    return "uuid";
+  }
 
 }

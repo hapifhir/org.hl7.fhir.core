@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class GraphCompartmentUseEnumFactory implements EnumFactory<GraphCompartmentUse> {
@@ -46,7 +42,7 @@ public class GraphCompartmentUseEnumFactory implements EnumFactory<GraphCompartm
       return GraphCompartmentUse.CONDITION;
     if ("requirement".equals(codeString))
       return GraphCompartmentUse.REQUIREMENT;
-    throw new IllegalArgumentException("Unknown GraphCompartmentUse code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown GraphCompartmentUse code '" + codeString + "'");
   }
 
   public String toCode(GraphCompartmentUse code) {
@@ -57,8 +53,8 @@ public class GraphCompartmentUseEnumFactory implements EnumFactory<GraphCompartm
     return "?";
   }
 
-    public String toSystem(GraphCompartmentUse code) {
-      return code.getSystem();
-      }
+  public String toSystem(GraphCompartmentUse code) {
+    return code.getSystem();
+  }
 
 }

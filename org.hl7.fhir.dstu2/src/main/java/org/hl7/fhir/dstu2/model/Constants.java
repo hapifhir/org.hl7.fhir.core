@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2.model;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.dstu2.model;
 */
 
 // Generated on Wed, Jul 13, 2016 05:32+1000 for FHIR v1.0.2
-
 
 public class Constants {
 

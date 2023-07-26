@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProductStorageScale {
 
-        /**
-         * Fahrenheit temperature scale.
-         */
-        FARENHEIT, 
-        /**
-         * Celsius or centigrade temperature scale.
-         */
-        CELSIUS, 
-        /**
-         * Kelvin absolute thermodynamic temperature scale.
-         */
-        KELVIN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ProductStorageScale fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("farenheit".equals(codeString))
-          return FARENHEIT;
-        if ("celsius".equals(codeString))
-          return CELSIUS;
-        if ("kelvin".equals(codeString))
-          return KELVIN;
-        throw new FHIRException("Unknown ProductStorageScale code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case FARENHEIT: return "farenheit";
-            case CELSIUS: return "celsius";
-            case KELVIN: return "kelvin";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/product-storage-scale";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case FARENHEIT: return "Fahrenheit temperature scale.";
-            case CELSIUS: return "Celsius or centigrade temperature scale.";
-            case KELVIN: return "Kelvin absolute thermodynamic temperature scale.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case FARENHEIT: return "Fahrenheit";
-            case CELSIUS: return "Celsius";
-            case KELVIN: return "Kelvin";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Fahrenheit temperature scale.
+   */
+  FARENHEIT,
+  /**
+   * Celsius or centigrade temperature scale.
+   */
+  CELSIUS,
+  /**
+   * Kelvin absolute thermodynamic temperature scale.
+   */
+  KELVIN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ProductStorageScale fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("farenheit".equals(codeString))
+      return FARENHEIT;
+    if ("celsius".equals(codeString))
+      return CELSIUS;
+    if ("kelvin".equals(codeString))
+      return KELVIN;
+    throw new FHIRException("Unknown ProductStorageScale code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case FARENHEIT:
+      return "farenheit";
+    case CELSIUS:
+      return "celsius";
+    case KELVIN:
+      return "kelvin";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/product-storage-scale";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case FARENHEIT:
+      return "Fahrenheit temperature scale.";
+    case CELSIUS:
+      return "Celsius or centigrade temperature scale.";
+    case KELVIN:
+      return "Kelvin absolute thermodynamic temperature scale.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case FARENHEIT:
+      return "Fahrenheit";
+    case CELSIUS:
+      return "Celsius";
+    case KELVIN:
+      return "Kelvin";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractAction {
 
-        /**
-         * Definition for Action A
-         */
-        ACTIONA, 
-        /**
-         * Definition for Action B
-         */
-        ACTIONB, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ContractAction fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("action-a".equals(codeString))
-          return ACTIONA;
-        if ("action-b".equals(codeString))
-          return ACTIONB;
-        throw new FHIRException("Unknown ContractAction code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACTIONA: return "action-a";
-            case ACTIONB: return "action-b";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/contractaction";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACTIONA: return "Definition for Action A";
-            case ACTIONB: return "Definition for Action B";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACTIONA: return "Action A";
-            case ACTIONB: return "Action B";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Definition for Action A
+   */
+  ACTIONA,
+  /**
+   * Definition for Action B
+   */
+  ACTIONB,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ContractAction fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("action-a".equals(codeString))
+      return ACTIONA;
+    if ("action-b".equals(codeString))
+      return ACTIONB;
+    throw new FHIRException("Unknown ContractAction code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ACTIONA:
+      return "action-a";
+    case ACTIONB:
+      return "action-b";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/contractaction";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ACTIONA:
+      return "Definition for Action A";
+    case ACTIONB:
+      return "Definition for Action B";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ACTIONA:
+      return "Action A";
+    case ACTIONB:
+      return "Action B";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class BundleTypeEnumFactory implements EnumFactory<BundleType> {
@@ -60,7 +56,7 @@ public class BundleTypeEnumFactory implements EnumFactory<BundleType> {
       return BundleType.SEARCHSET;
     if ("collection".equals(codeString))
       return BundleType.COLLECTION;
-    throw new IllegalArgumentException("Unknown BundleType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown BundleType code '" + codeString + "'");
   }
 
   public String toCode(BundleType code) {
@@ -85,8 +81,8 @@ public class BundleTypeEnumFactory implements EnumFactory<BundleType> {
     return "?";
   }
 
-    public String toSystem(BundleType code) {
-      return code.getSystem();
-      }
+  public String toSystem(BundleType code) {
+    return code.getSystem();
+  }
 
 }
