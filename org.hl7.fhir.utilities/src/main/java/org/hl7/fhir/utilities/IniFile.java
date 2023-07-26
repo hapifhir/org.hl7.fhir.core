@@ -43,10 +43,13 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.sql.Timestamp;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -333,47 +336,30 @@ public final class IniFile
 
     /**
      * Returns the specified date property from the specified section.
-     * @param pstrSection the INI section name.
-     * @param pstrProp the property to be retrieved.
+     * @param iniSectionName the INI section name.
+     * @param propertyKey the property to be retrieved.
      * @return the date property value.
      */
-    public Date getTimestampProperty(String pstrSection, String pstrProp)
-    {
-        Timestamp   tsRet   = null;
-        Date        dtTmp   = null;
-        String      strVal  = null;
-        DateFormat  dtFmt   = null;
-        INIProperty objProp = null;
-        INISection  objSec  = null;
+    public Date getTimestampProperty(String iniSectionName, String propertyKey) {
 
-        objSec =  this.iniSections.get(pstrSection);
-        if (objSec != null)
-        {
-            objProp = objSec.getProperty(pstrProp);
-            try
-            {
-                if (objProp != null) strVal = objProp.getPropValue();
-                if (strVal != null)
-                {
-                    dtFmt = new SimpleDateFormat(this.mstrTimeStampFmt);
-                    dtFmt.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    dtTmp = dtFmt.parse(strVal);
-                    tsRet = new Timestamp(dtTmp.getTime());
-                }
-            }
-            catch (ParseException PExIgnore)
-            {
-            }
-            catch (IllegalArgumentException IAEx)
-            {
-            }
-            finally
-            {
-                if (objProp != null) objProp = null;
-            }
-            objSec = null;
+      Date dateToReturn = null;
+
+      INISection iniSection = this.iniSections.get(iniSectionName);
+      if (iniSection != null) {
+        INIProperty objProp = iniSection.getProperty(propertyKey);
+        try {
+          String propertyStringValue = null;
+          if (objProp != null) propertyStringValue = objProp.getPropValue();
+          if (propertyStringValue != null) {
+            DateTimeFormatter dtFmt = DateTimeFormatter.ofPattern(this.mstrTimeStampFmt).withZone(ZoneId.systemDefault());
+
+            ZonedDateTime zonedDateTime = ZonedDateTime.parse(propertyStringValue, dtFmt);
+            dateToReturn = Date.from(zonedDateTime.toInstant());
+          }
+        } catch (IllegalArgumentException IAEx) {
         }
-        return tsRet;
+      }
+      return dateToReturn;
     }
 
 /*------------------------------------------------------------------------------
@@ -529,7 +515,7 @@ public final class IniFile
      * @param propertyValue the timestamp value to be persisted.
      */
     public void setTimestampProperty(String iniSection, String propertyKey,
-                    					Timestamp propertyValue, String propertyComments)
+                    					ZonedDateTime propertyValue, String propertyComments)
     {
         INISection objSec   = null;
 
@@ -539,12 +525,12 @@ public final class IniFile
             objSec = new INISection(iniSection);
             this.iniSections.put(iniSection, objSec);
         }
-        objSec.setProperty(propertyKey, timeToStr(propertyValue, this.mstrTimeStampFmt),
+        objSec.setProperty(propertyKey, timeToString(propertyValue, this.mstrTimeStampFmt),
                         	propertyComments);
     }
 
     /**
-     * Sets the format to be used to interpreat date values.
+     * Sets the format to be used to interpret date values.
      * @param pstrDtFmt the format string
      * @throws IllegalArgumentException if the if the given pattern is invalid
      */
@@ -1074,7 +1060,7 @@ public final class IniFile
     
     /**
      * Helper method to check the existance of a file.
-     * @param the full path and name of the file to be checked.
+     * @param pathName the full path and name of the file to be checked.
      * @return true if file exists, false otherwise.
      */
     private boolean checkFile(String pathName)
@@ -1100,19 +1086,19 @@ public final class IniFile
 
     /**
      * Converts a java.util.date into String 
-     * @param pd Date that need to be converted to String 
-     * @param pstrFmt The date format pattern.
+     * @param date Date to be converted to String
+     * @param dateFormat The date format pattern.
      * @return String
      */
-    private String utilDateToStr(Date pdt, String pstrFmt)
+    private String utilDateToStr(Date date, String dateFormat)
     {
         String strRet = null;
         SimpleDateFormat dtFmt = null;
 
         try
         {
-            dtFmt = new SimpleDateFormat(pstrFmt);
-            strRet = dtFmt.format(pdt);
+            dtFmt = new SimpleDateFormat(dateFormat);
+            strRet = dtFmt.format(date);
         }
         catch (Exception e)
         {
@@ -1129,34 +1115,33 @@ public final class IniFile
      * Converts the given sql timestamp object to a string representation. The format
      * to be used is to be obtained from the configuration file.
      *  
-     * @param pobjTS the sql timestamp object to be converted.
-     * @param pblnGMT If true formats the string using GMT  timezone 
-     * otherwise using local timezone. 
+     * @param zonedDateTime the sql timestamp object to be converted.
+     * @param timeFormat the time format used to store the zonedDateTime value.
      * @return the formatted string representation of the timestamp.
      */
-    private String timeToStr(Timestamp pobjTS, String pstrFmt)
+    private String timeToString(ZonedDateTime zonedDateTime, String timeFormat)
     {
-        String strRet = null;
-        SimpleDateFormat dtFmt = null;
+        String stringValue = null;
+      DateTimeFormatter dateTimeFormatter = null;
 
         try
         {
-            dtFmt = new SimpleDateFormat(pstrFmt);
-            strRet = dtFmt.format(pobjTS);
+            dateTimeFormatter = DateTimeFormatter.ofPattern(timeFormat);
+            stringValue = dateTimeFormatter.format(zonedDateTime);
         }
         catch (IllegalArgumentException  iae)
         {
-            strRet = "";
+            stringValue = "";
         }
         catch (NullPointerException npe)
         {
-            strRet = "";
+            stringValue = "";
         }
         finally
         {
-            if (dtFmt != null) dtFmt = null;
+            if (dateTimeFormatter != null) dateTimeFormatter = null;
         }
-        return strRet;
+        return stringValue;
     }
 
     /**
