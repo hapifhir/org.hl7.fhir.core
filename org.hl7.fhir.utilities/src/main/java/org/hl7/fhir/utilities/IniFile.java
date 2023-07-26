@@ -47,14 +47,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -74,34 +67,34 @@ public final class IniFile
 
     /** Variable to denote the successful load operation. */
     @SuppressWarnings("unused")
-    private boolean mblnLoaded = false;
+    private boolean fileSuccessfullyLoaded = false;
 
     /** Variable to hold the ini file name and full path */
-    private String mstrFile;
+    private String filepath;
 
     /** Variable to hold the sections in an ini file. */
-    private LinkedHashMap<String, INISection> mhmapSections;
+    private LinkedHashMap<String, INISection> iniSections;
 
     /** Variable to hold environment variables **/
     private Properties mpropEnv;
 
     /**
      * Create a IniFile object from the file named in the parameter.
-     * @param pstrPathAndName The full path and name of the ini file to be used.
+     * @param pathname The full path and name of the ini file to be used.
      */
-    public IniFile(String pstrPathAndName)
+    public IniFile(String pathname)
     {
         this.mpropEnv = getEnvVars();
-        this.mhmapSections = new LinkedHashMap<String, INISection>();
-        this.mstrFile = pstrPathAndName;
+        this.iniSections = new LinkedHashMap<String, INISection>();
+        this.filepath = pathname;
         // Load the specified INI file.
-        if (checkFile(pstrPathAndName)) loadFile();
+        if (checkFile(pathname)) loadFile();
     }
 
     public IniFile(InputStream stream) {
       this.mpropEnv = getEnvVars();
-      this.mhmapSections = new LinkedHashMap<String, INISection>();
-      this.mstrFile = null;
+      this.iniSections = new LinkedHashMap<String, INISection>();
+      this.filepath = null;
       // Load the specified INI file.
       loadStream(stream);
     }
@@ -115,7 +108,7 @@ public final class IniFile
      */
     public String getFileName()
     {
-        return this.mstrFile;
+        return this.filepath;
     }
 
     /**
@@ -130,7 +123,7 @@ public final class IniFile
         INIProperty objProp  = null;
         INISection  objSec   = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec != null)
         {
             objProp = objSec.getProperty(pstrProp);
@@ -166,7 +159,7 @@ public final class IniFile
         INIProperty objProp = null;
         INISection  objSec  = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec != null)
         {
             objProp = objSec.getProperty(pstrProp);
@@ -198,7 +191,7 @@ public final class IniFile
         INIProperty objProp = null;
         INISection  objSec  = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec != null)
         {
             objProp = objSec.getProperty(pstrProp);
@@ -235,7 +228,7 @@ public final class IniFile
         INIProperty objProp = null;
         INISection  objSec  = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec != null)
         {
             objProp = objSec.getProperty(pstrProp);
@@ -272,7 +265,7 @@ public final class IniFile
         INIProperty objProp = null;
         INISection  objSec  = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec != null)
         {
             objProp = objSec.getProperty(pstrProp);
@@ -310,7 +303,7 @@ public final class IniFile
         INIProperty objProp = null;
         INISection  objSec  = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec != null)
         {
             objProp = objSec.getProperty(pstrProp);
@@ -353,7 +346,7 @@ public final class IniFile
         INIProperty objProp = null;
         INISection  objSec  = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec =  this.iniSections.get(pstrSection);
         if (objSec != null)
         {
             objProp = objSec.getProperty(pstrProp);
@@ -362,7 +355,8 @@ public final class IniFile
                 if (objProp != null) strVal = objProp.getPropValue();
                 if (strVal != null)
                 {
-                    dtFmt = new SimpleDateFormat(this.mstrDateFmt);
+                    dtFmt = new SimpleDateFormat(this.mstrTimeStampFmt);
+                    dtFmt.setTimeZone(TimeZone.getTimeZone("UTC"));
                     dtTmp = dtFmt.parse(strVal);
                     tsRet = new Timestamp(dtTmp.getTime());
                 }
@@ -394,11 +388,11 @@ public final class IniFile
     {
         INISection objSec   = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec == null)
         {
             objSec = new INISection(pstrSection);
-            this.mhmapSections.put(pstrSection, objSec);
+            this.iniSections.put(pstrSection, objSec);
         }
         objSec.setSecComments(delRemChars(pstrComments));
         objSec = null;
@@ -415,11 +409,11 @@ public final class IniFile
     {
         INISection objSec   = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec == null)
         {
             objSec = new INISection(pstrSection);
-            this.mhmapSections.put(pstrSection, objSec);
+            this.iniSections.put(pstrSection, objSec);
         }
         objSec.setProperty(pstrProp, pstrVal, pstrComments);
     }
@@ -435,11 +429,11 @@ public final class IniFile
     {
         INISection objSec   = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec == null)
         {
             objSec = new INISection(pstrSection);
-            this.mhmapSections.put(pstrSection, objSec);
+            this.iniSections.put(pstrSection, objSec);
         }
         if (pblnVal)
             objSec.setProperty(pstrProp, "TRUE", pstrComments);
@@ -458,11 +452,11 @@ public final class IniFile
     {
         INISection objSec   = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec == null)
         {
             objSec = new INISection(pstrSection);
-            this.mhmapSections.put(pstrSection, objSec);
+            this.iniSections.put(pstrSection, objSec);
         }
         objSec.setProperty(pstrProp, Integer.toString(pintVal), pstrComments);
     }
@@ -478,11 +472,11 @@ public final class IniFile
     {
         INISection objSec   = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec == null)
         {
             objSec = new INISection(pstrSection);
-            this.mhmapSections.put(pstrSection, objSec);
+            this.iniSections.put(pstrSection, objSec);
         }
         objSec.setProperty(pstrProp, Long.toString(plngVal), pstrComments);
     }
@@ -498,11 +492,11 @@ public final class IniFile
     {
         INISection objSec   = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec == null)
         {
             objSec = new INISection(pstrSection);
-            this.mhmapSections.put(pstrSection, objSec);
+            this.iniSections.put(pstrSection, objSec);
         }
         objSec.setProperty(pstrProp, Double.toString(pdblVal), pstrComments);
     }
@@ -518,11 +512,11 @@ public final class IniFile
     {
         INISection objSec   = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec == null)
         {
             objSec = new INISection(pstrSection);
-            this.mhmapSections.put(pstrSection, objSec);
+            this.iniSections.put(pstrSection, objSec);
         }
         objSec.setProperty(pstrProp, utilDateToStr(pdtVal, this.mstrDateFmt), 
                         	pstrComments);
@@ -530,23 +524,23 @@ public final class IniFile
 
     /**
      * Sets the specified java.sql.Timestamp property.
-     * @param pstrSection the INI section name.
-     * @param pstrProp the property to be set.
-     * @param ptsVal the timestamp value to be persisted.
+     * @param iniSection the INI section name.
+     * @param propertyKey the property to be set.
+     * @param propertyValue the timestamp value to be persisted.
      */
-    public void setTimestampProperty(String pstrSection, String pstrProp, 
-                    					Timestamp ptsVal, String pstrComments)
+    public void setTimestampProperty(String iniSection, String propertyKey,
+                    					Timestamp propertyValue, String propertyComments)
     {
         INISection objSec   = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(iniSection);
         if (objSec == null)
         {
-            objSec = new INISection(pstrSection);
-            this.mhmapSections.put(pstrSection, objSec);
+            objSec = new INISection(iniSection);
+            this.iniSections.put(iniSection, objSec);
         }
-        objSec.setProperty(pstrProp, timeToStr(ptsVal, this.mstrTimeStampFmt), 
-                        	pstrComments);
+        objSec.setProperty(propertyKey, timeToStr(propertyValue, this.mstrTimeStampFmt),
+                        	propertyComments);
     }
 
     /**
@@ -578,7 +572,7 @@ public final class IniFile
 ------------------------------------------------------------------------------*/
     public int getTotalSections()
     {
-        return this.mhmapSections.size();
+        return this.iniSections.size();
     }
 
     /**
@@ -593,10 +587,10 @@ public final class IniFile
 
         try
         {
-            if (this.mhmapSections.size() > 0)
+            if (this.iniSections.size() > 0)
             {
-                arrRet = new String[this.mhmapSections.size()];
-                for (iter = this.mhmapSections.keySet().iterator();;iter.hasNext())
+                arrRet = new String[this.iniSections.size()];
+                for (iter = this.iniSections.keySet().iterator();; iter.hasNext())
                 {
                     arrRet[iCntr] = (String) iter.next();
                     iCntr++;
@@ -623,7 +617,7 @@ public final class IniFile
         String[]   arrRet = null;
         INISection objSec = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec != null)
         {
             arrRet = objSec.getPropNames();
@@ -642,7 +636,7 @@ public final class IniFile
         Map<String, INIProperty>        hmRet = null;
         INISection objSec = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec != null)
         {
             hmRet = objSec.getProperties();
@@ -661,7 +655,7 @@ public final class IniFile
     {
         INISection objSec = null;
 
-        objSec = (INISection) this.mhmapSections.get(pstrSection);
+        objSec = (INISection) this.iniSections.get(pstrSection);
         if (objSec != null)
         {
             objSec.removeProperty(pstrProp);
@@ -675,8 +669,8 @@ public final class IniFile
      */
     public void removeSection(String pstrSection)
     {
-        if (this.mhmapSections.containsKey(pstrSection))
-            this.mhmapSections.remove(pstrSection);
+        if (this.iniSections.containsKey(pstrSection))
+            this.iniSections.remove(pstrSection);
     }
 
     /**
@@ -696,15 +690,15 @@ public final class IniFile
 
         try
         {
-            if (this.mhmapSections.size() == 0) return false;
-            objFile = new CSFile(this.mstrFile);
+            if (this.iniSections.size() == 0) return false;
+            objFile = new CSFile(this.filepath);
             if (objFile.exists()) objFile.delete();
             objWriter = new FileWriter(objFile);
-            itrSec = this.mhmapSections.keySet().iterator();
+            itrSec = this.iniSections.keySet().iterator();
             while (itrSec.hasNext())
             {
                 strName = (String) itrSec.next();
-                objSec = (INISection) this.mhmapSections.get(strName);
+                objSec = (INISection) this.iniSections.get(strName);
                 strTemp = objSec.toString();
                 objWriter.write(strTemp);
                 objWriter.write("\r\n");
@@ -739,13 +733,13 @@ public final class IniFile
 
         try
         {
-            if (this.mhmapSections.size() == 0) return false;
+            if (this.iniSections.size() == 0) return false;
             objWriter = new OutputStreamWriter(stream, "UTF-8");
-            itrSec = this.mhmapSections.keySet().iterator();
+            itrSec = this.iniSections.keySet().iterator();
             while (itrSec.hasNext())
             {
                 strName = (String) itrSec.next();
-                objSec = (INISection) this.mhmapSections.get(strName);
+                objSec = (INISection) this.iniSections.get(strName);
                 strTemp = objSec.toString();
                 objWriter.write(strTemp);
                 objWriter.write("\r\n");
@@ -891,7 +885,7 @@ public final class IniFile
                         {
                             // Section start reached create new section
                             if (objSec != null) 
-                                this.mhmapSections.put(strSection.trim(), objSec);
+                                this.iniSections.put(strSection.trim(), objSec);
                             objSec = null;
                             strSection = strLine.substring(1, strLine.length() - 1);
                             objSec = new INISection(strSection.trim(), strRemarks);
@@ -912,22 +906,22 @@ public final class IniFile
                         }
                     }
                     if (objSec != null)
-                        this.mhmapSections.put(strSection.trim(), objSec);
-                    this.mblnLoaded = true;
+                        this.iniSections.put(strSection.trim(), objSec);
+                    this.fileSuccessfullyLoaded = true;
                 }
             }
         }
         catch (FileNotFoundException FNFExIgnore)
         {
-            this.mhmapSections.clear();
+            this.iniSections.clear();
         }
         catch (IOException IOExIgnore)
         {
-            this.mhmapSections.clear();
+            this.iniSections.clear();
         }
         catch (NullPointerException NPExIgnore)
         {
-            this.mhmapSections.clear();
+            this.iniSections.clear();
         }
         finally
         {
@@ -961,7 +955,7 @@ public final class IniFile
 
         try
         {
-            objFRdr = new FileReader(this.mstrFile);
+            objFRdr = new FileReader(this.filepath);
             if (objFRdr != null)
             {
                 objBRdr = new BufferedReader(objFRdr);
@@ -991,7 +985,7 @@ public final class IniFile
                         {
                             // Section start reached create new section
                             if (objSec != null) 
-                                this.mhmapSections.put(strSection.trim(), objSec);
+                                this.iniSections.put(strSection.trim(), objSec);
                             objSec = null;
                             strSection = strLine.substring(1, strLine.length() - 1);
                             objSec = new INISection(strSection.trim(), strRemarks);
@@ -1012,22 +1006,22 @@ public final class IniFile
                         }
                     }
                     if (objSec != null)
-                        this.mhmapSections.put(strSection.trim(), objSec);
-                    this.mblnLoaded = true;
+                        this.iniSections.put(strSection.trim(), objSec);
+                    this.fileSuccessfullyLoaded = true;
                 }
             }
         }
         catch (FileNotFoundException FNFExIgnore)
         {
-            this.mhmapSections.clear();
+            this.iniSections.clear();
         }
         catch (IOException IOExIgnore)
         {
-            this.mhmapSections.clear();
+            this.iniSections.clear();
         }
         catch (NullPointerException NPExIgnore)
         {
-            this.mhmapSections.clear();
+            this.iniSections.clear();
         }
         finally
         {
@@ -1083,14 +1077,14 @@ public final class IniFile
      * @param the full path and name of the file to be checked.
      * @return true if file exists, false otherwise.
      */
-    private boolean checkFile(String pstrFile)
+    private boolean checkFile(String pathName)
     {
         boolean blnRet  = false;
         File    objFile = null;
 
         try
         {
-            objFile = new CSFile(pstrFile);
+            objFile = new CSFile(pathName);
             blnRet = (objFile.exists() && objFile.isFile());
         }
         catch (Exception e)
