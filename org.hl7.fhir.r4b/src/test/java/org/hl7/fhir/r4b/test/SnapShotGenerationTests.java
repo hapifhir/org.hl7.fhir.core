@@ -97,9 +97,7 @@ public class SnapShotGenerationTests {
   }
 
   public enum TestFetchMode {
-    INPUT,
-    OUTPUT,
-    INCLUDE
+    INPUT, OUTPUT, INCLUDE
   }
 
   public static class Rule {
@@ -139,7 +137,7 @@ public class SnapShotGenerationTests {
     private boolean newSliceProcessing;
     private boolean debug;
     private boolean noR4b;
-    
+
     private List<Rule> rules = new ArrayList<>();
     private StructureDefinition source;
     private List<StructureDefinition> included = new ArrayList<>();
@@ -220,19 +218,25 @@ public class SnapShotGenerationTests {
 
     public void load() throws FHIRFormatError, FileNotFoundException, IOException {
       if (TestingUtilities.findTestResource("r4b", "snapshot-generation", id + "-input.json"))
-        source = (StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", id + "-input.json"));
+        source = (StructureDefinition) new JsonParser()
+            .parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", id + "-input.json"));
       else
-        source = (StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", id + "-input.xml"));
+        source = (StructureDefinition) new XmlParser()
+            .parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", id + "-input.xml"));
       if (!fail)
-        expected = (StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", id + "-expected.xml"));
+        expected = (StructureDefinition) new XmlParser()
+            .parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", id + "-expected.xml"));
       if (!Utilities.noString(include))
-        included.add((StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", include + ".xml")));
+        included.add((StructureDefinition) new XmlParser()
+            .parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", include + ".xml")));
       if (!Utilities.noString(register)) {
         for (String s : register.split("\\,")) {
           if (TestingUtilities.findTestResource("r4b", "snapshot-generation", s + ".xml")) {
-            included.add((StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", s + ".xml")));
+            included.add((StructureDefinition) new XmlParser()
+                .parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", s + ".xml")));
           } else {
-            included.add((StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", s + ".json")));
+            included.add((StructureDefinition) new JsonParser()
+                .parse(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", s + ".json")));
           }
         }
       }
@@ -252,13 +256,16 @@ public class SnapShotGenerationTests {
     @Override
     public boolean isDatatype(String name) {
       StructureDefinition sd = TestingUtilities.context().fetchTypeDefinition(name);
-      return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) && (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE || sd.getKind() == StructureDefinitionKind.COMPLEXTYPE);
+      return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
+          && (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE
+              || sd.getKind() == StructureDefinitionKind.COMPLEXTYPE);
     }
 
     @Override
     public boolean isResource(String typeSimple) {
       StructureDefinition sd = TestingUtilities.context().fetchTypeDefinition(typeSimple);
-      return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) && (sd.getKind() == StructureDefinitionKind.RESOURCE);
+      return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
+          && (sd.getKind() == StructureDefinitionKind.RESOURCE);
     }
 
     @Override
@@ -272,7 +279,8 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding, String path) throws FHIRException {
+    public BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding,
+        String path) throws FHIRException {
       BindingResolution br = new BindingResolution();
       br.url = path + "/something.html";
       br.display = "something";
@@ -315,15 +323,20 @@ public class SnapShotGenerationTests {
     public Resource fetchFixture(String id) {
       TestFetchMode mode = TestFetchMode.INPUT;
       if (id.equals("patient"))
-        return TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient");
+        return TestingUtilities.context().fetchResource(StructureDefinition.class,
+            "http://hl7.org/fhir/StructureDefinition/Patient");
       if (id.equals("valueset"))
-        return TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet");
+        return TestingUtilities.context().fetchResource(StructureDefinition.class,
+            "http://hl7.org/fhir/StructureDefinition/ValueSet");
       if (id.equals("organization"))
-        return TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Organization");
+        return TestingUtilities.context().fetchResource(StructureDefinition.class,
+            "http://hl7.org/fhir/StructureDefinition/Organization");
       if (id.equals("operationoutcome"))
-        return TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/OperationOutcome");
+        return TestingUtilities.context().fetchResource(StructureDefinition.class,
+            "http://hl7.org/fhir/StructureDefinition/OperationOutcome");
       if (id.equals("parameters"))
-        return TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Parameters");
+        return TestingUtilities.context().fetchResource(StructureDefinition.class,
+            "http://hl7.org/fhir/StructureDefinition/Parameters");
 
       if (id.contains("-")) {
         String[] p = id.split("\\-");
@@ -336,17 +349,17 @@ public class SnapShotGenerationTests {
       for (TestDetails td : tests) {
         if (td.getId().equals(id))
           switch (mode) {
-            case INPUT:
-              return td.getSource();
-            case OUTPUT:
-              if (td.getOutput() == null)
-                throw new FHIRException("Not generated yet");
-              else
-                return td.getOutput();
-            case INCLUDE:
-              return td.getIncluded().get(0);
-            default:
-              throw new FHIRException("Not done yet");
+          case INPUT:
+            return td.getSource();
+          case OUTPUT:
+            if (td.getOutput() == null)
+              throw new FHIRException("Not generated yet");
+            else
+              return td.getOutput();
+          case INCLUDE:
+            return td.getIncluded().get(0);
+          default:
+            throw new FHIRException("Not done yet");
           }
       }
       return null;
@@ -354,7 +367,8 @@ public class SnapShotGenerationTests {
 
     // FHIRPath methods
     @Override
-    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext)
+        throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 
@@ -377,14 +391,16 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
+    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+        throws PathEngineException {
       if ("fixture".equals(functionName))
         return new TypeDetails(CollectionStatus.SINGLETON, TestingUtilities.context().getResourceNamesAsSet());
       return null;
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+        List<List<Base>> parameters) {
       if ("fixture".equals(functionName)) {
         String id = fp.convertToString(parameters.get(0));
         Resource res = fetchFixture(id);
@@ -415,7 +431,8 @@ public class SnapShotGenerationTests {
           ok = ok && v.getLevel().isError();
         return ok;
       }
-      throw new NotImplementedException("Not done yet (IGPublisherHostServices.SnapShotGenerationTestsContext), when item is element");
+      throw new NotImplementedException(
+          "Not done yet (IGPublisherHostServices.SnapShotGenerationTestsContext), when item is element");
     }
 
     public StructureDefinition getByUrl(String url) {
@@ -447,9 +464,11 @@ public class SnapShotGenerationTests {
     fp = new FHIRPathEngine(TestingUtilities.context());
   }
 
-  public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
+  public static Stream<Arguments> data()
+      throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
     SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext();
-    Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r4b", "snapshot-generation", "manifest.xml"));
+    Document tests = XMLUtil
+        .parseToDom(TestingUtilities.loadTestResource("r4b", "snapshot-generation", "manifest.xml"));
     Element test = XMLUtil.getFirstChild(tests.getDocumentElement());
     List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
@@ -472,7 +491,7 @@ public class SnapShotGenerationTests {
     if (test.noR4b) {
       Assert.assertTrue(true);
     } else {
-      System.out.println("---- "+id+" -----------------------------------------");
+      System.out.println("---- " + id + " -----------------------------------------");
       if (test.isFail()) {
         boolean failed = true;
         try {
@@ -503,7 +522,8 @@ public class SnapShotGenerationTests {
     }
   }
 
-  private void testSort(TestDetails test, SnapShotGenerationTestsContext context) throws DefinitionException, FHIRException, IOException {
+  private void testSort(TestDetails test, SnapShotGenerationTestsContext context)
+      throws DefinitionException, FHIRException, IOException {
     StructureDefinition base = getSD(test.getSource().getBaseDefinition(), context);
     test.setOutput(test.getSource().copy());
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
@@ -512,8 +532,10 @@ public class SnapShotGenerationTests {
     pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors, false);
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
-    IOUtils.copy(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")));
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), test.getOutput());
+    IOUtils.copy(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", test.getId() + "-expected.xml"),
+        new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")));
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(
+        new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), test.getOutput());
     Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
 
@@ -530,9 +552,11 @@ public class SnapShotGenerationTests {
           TestingUtilities.context().cacheResource(sd);
         }
       }
-      StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, test.included.get(0).getBaseDefinition());
+      StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class,
+          test.included.get(0).getBaseDefinition());
       if (base != null) {
-        pu.generateSnapshot(base, test.included.get(0), test.included.get(0).getUrl(), "http://test.org/profile", test.included.get(0).getName());
+        pu.generateSnapshot(base, test.included.get(0), test.included.get(0).getUrl(), "http://test.org/profile",
+            test.included.get(0).getName());
       }
       int ec = 0;
       for (ValidationMessage vm : messages) {
@@ -546,7 +570,8 @@ public class SnapShotGenerationTests {
     }
     StructureDefinition base = getSD(test.getSource().getBaseDefinition(), context);
     if (!base.getUrl().equals(test.getSource().getBaseDefinition()))
-      throw new Exception("URL mismatch on base: " + base.getUrl() + " wanting " + test.getSource().getBaseDefinition());
+      throw new Exception(
+          "URL mismatch on base: " + base.getUrl() + " wanting " + test.getSource().getBaseDefinition());
 
     StructureDefinition output = test.getSource().copy();
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages, new TestPKP());
@@ -555,8 +580,11 @@ public class SnapShotGenerationTests {
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
     if (!TestingUtilities.context().hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
-      NpmPackage npm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER).loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
-      TestingUtilities.context().loadFromPackage(npm, new TestLoader(new String[]{"StructureDefinition"}), new String[]{"StructureDefinition"});
+      NpmPackage npm = new FilesystemPackageCacheManager(
+          org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER)
+              .loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
+      TestingUtilities.context().loadFromPackage(npm, new TestLoader(new String[] { "StructureDefinition" }),
+          new String[] { "StructureDefinition" });
     }
     pu.setXver(new XVerExtensionManager(TestingUtilities.context()));
     if (test.isSort()) {
@@ -568,7 +596,8 @@ public class SnapShotGenerationTests {
     }
     try {
       messages.clear();
-      pu.generateSnapshot(base, output, test.getSource().getUrl(), "http://test.org/profile", test.getSource().getName());
+      pu.generateSnapshot(base, output, test.getSource().getUrl(), "http://test.org/profile",
+          test.getSource().getName());
       List<ValidationMessage> ml = new ArrayList<>();
       for (ValidationMessage vm : messages) {
         if (vm.getLevel() == IssueSeverity.ERROR) {
@@ -583,7 +612,8 @@ public class SnapShotGenerationTests {
       throw e;
     }
     if (output.getDifferential().hasElement()) {
-      RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
+      RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "",
+          null, ResourceRendererMode.END_USER);
       rc.setDestDir(Utilities.path("[tmp]", "snapshot"));
       rc.setProfileUtilities(new ProfileUtilities(TestingUtilities.context(), null, new TestPKP()));
       RendererFactory.factory(output, rc).render(output);
@@ -594,8 +624,11 @@ public class SnapShotGenerationTests {
       File dst = new File(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml"));
       if (dst.exists())
         dst.delete();
-      IOUtils.copy(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(dst));
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), output);
+      IOUtils.copy(
+          TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", test.getId() + "-expected.xml"),
+          new FileOutputStream(dst));
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY)
+          .compose(new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), output);
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);
       StructureDefinition t2 = test.output.copy();
@@ -604,13 +637,14 @@ public class SnapShotGenerationTests {
     }
   }
 
-  private StructureDefinition getSD(String url, SnapShotGenerationTestsContext context) throws DefinitionException, FHIRException, IOException {
+  private StructureDefinition getSD(String url, SnapShotGenerationTestsContext context)
+      throws DefinitionException, FHIRException, IOException {
     StructureDefinition sd = context.getByUrl(url);
     if (sd == null) {
       sd = TestingUtilities.context().fetchResource(StructureDefinition.class, url);
-    } 
+    }
     if (sd == null) {
-      throw new DefinitionException("Unable to find profile "+url);
+      throw new DefinitionException("Unable to find profile " + url);
     }
     if (!sd.hasSnapshot()) {
       StructureDefinition base = getSD(sd.getBaseDefinition(), context);

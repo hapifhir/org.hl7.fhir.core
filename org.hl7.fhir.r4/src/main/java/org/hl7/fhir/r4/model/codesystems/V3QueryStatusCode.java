@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,110 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3QueryStatusCode {
 
-        /**
-         * Query status aborted
-         */
-        ABORTED, 
-        /**
-         * Query Status delivered response
-         */
-        DELIVEREDRESPONSE, 
-        /**
-         * Query Status executing
-         */
-        EXECUTING, 
-        /**
-         * Query Status new
-         */
-        NEW, 
-        /**
-         * Query Status wait continued
-         */
-        WAITCONTINUEDQUERYRESPONSE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static V3QueryStatusCode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("aborted".equals(codeString))
-          return ABORTED;
-        if ("deliveredResponse".equals(codeString))
-          return DELIVEREDRESPONSE;
-        if ("executing".equals(codeString))
-          return EXECUTING;
-        if ("new".equals(codeString))
-          return NEW;
-        if ("waitContinuedQueryResponse".equals(codeString))
-          return WAITCONTINUEDQUERYRESPONSE;
-        throw new FHIRException("Unknown V3QueryStatusCode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ABORTED: return "aborted";
-            case DELIVEREDRESPONSE: return "deliveredResponse";
-            case EXECUTING: return "executing";
-            case NEW: return "new";
-            case WAITCONTINUEDQUERYRESPONSE: return "waitContinuedQueryResponse";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/v3-QueryStatusCode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ABORTED: return "Query status aborted";
-            case DELIVEREDRESPONSE: return "Query Status delivered response";
-            case EXECUTING: return "Query Status executing";
-            case NEW: return "Query Status new";
-            case WAITCONTINUEDQUERYRESPONSE: return "Query Status wait continued";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ABORTED: return "aborted";
-            case DELIVEREDRESPONSE: return "deliveredResponse";
-            case EXECUTING: return "executing";
-            case NEW: return "new";
-            case WAITCONTINUEDQUERYRESPONSE: return "waitContinuedQueryResponse";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Query status aborted
+   */
+  ABORTED,
+  /**
+   * Query Status delivered response
+   */
+  DELIVEREDRESPONSE,
+  /**
+   * Query Status executing
+   */
+  EXECUTING,
+  /**
+   * Query Status new
+   */
+  NEW,
+  /**
+   * Query Status wait continued
+   */
+  WAITCONTINUEDQUERYRESPONSE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static V3QueryStatusCode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("aborted".equals(codeString))
+      return ABORTED;
+    if ("deliveredResponse".equals(codeString))
+      return DELIVEREDRESPONSE;
+    if ("executing".equals(codeString))
+      return EXECUTING;
+    if ("new".equals(codeString))
+      return NEW;
+    if ("waitContinuedQueryResponse".equals(codeString))
+      return WAITCONTINUEDQUERYRESPONSE;
+    throw new FHIRException("Unknown V3QueryStatusCode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ABORTED:
+      return "aborted";
+    case DELIVEREDRESPONSE:
+      return "deliveredResponse";
+    case EXECUTING:
+      return "executing";
+    case NEW:
+      return "new";
+    case WAITCONTINUEDQUERYRESPONSE:
+      return "waitContinuedQueryResponse";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/v3-QueryStatusCode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ABORTED:
+      return "Query status aborted";
+    case DELIVEREDRESPONSE:
+      return "Query Status delivered response";
+    case EXECUTING:
+      return "Query Status executing";
+    case NEW:
+      return "Query Status new";
+    case WAITCONTINUEDQUERYRESPONSE:
+      return "Query Status wait continued";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ABORTED:
+      return "aborted";
+    case DELIVEREDRESPONSE:
+      return "deliveredResponse";
+    case EXECUTING:
+      return "executing";
+    case NEW:
+      return "new";
+    case WAITCONTINUEDQUERYRESPONSE:
+      return "waitContinuedQueryResponse";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

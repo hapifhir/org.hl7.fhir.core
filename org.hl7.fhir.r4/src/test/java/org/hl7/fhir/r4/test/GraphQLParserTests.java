@@ -1,5 +1,11 @@
 package org.hl7.fhir.r4.test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -12,12 +18,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
 
 @Disabled
 public class GraphQLParserTests {
@@ -41,6 +41,5 @@ public class GraphQLParserTests {
     Package doc = Parser.parse(test);
     Assertions.assertTrue(doc != null);
   }
-
 
 }

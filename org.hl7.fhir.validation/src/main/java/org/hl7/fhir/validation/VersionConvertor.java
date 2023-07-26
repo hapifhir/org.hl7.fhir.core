@@ -3,7 +3,16 @@ package org.hl7.fhir.validation;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.hl7.fhir.convertors.factory.*;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50;
 import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager;

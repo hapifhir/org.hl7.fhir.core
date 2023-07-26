@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ProvenanceAgentTypeEnumFactory implements EnumFactory<ProvenanceAgentType> {
@@ -56,7 +52,7 @@ public class ProvenanceAgentTypeEnumFactory implements EnumFactory<ProvenanceAge
       return ProvenanceAgentType.DEVICE;
     if ("related-person".equals(codeString))
       return ProvenanceAgentType.RELATEDPERSON;
-    throw new IllegalArgumentException("Unknown ProvenanceAgentType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ProvenanceAgentType code '" + codeString + "'");
   }
 
   public String toCode(ProvenanceAgentType code) {
@@ -77,8 +73,8 @@ public class ProvenanceAgentTypeEnumFactory implements EnumFactory<ProvenanceAge
     return "?";
   }
 
-    public String toSystem(ProvenanceAgentType code) {
-      return code.getSystem();
-      }
+  public String toSystem(ProvenanceAgentType code) {
+    return code.getSystem();
+  }
 
 }

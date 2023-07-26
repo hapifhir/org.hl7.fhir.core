@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,122 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VerificationresultStatus {
 
-        /**
-         * ***TODO***
-         */
-        ATTESTED, 
-        /**
-         * ***TODO***
-         */
-        VALIDATED, 
-        /**
-         * ***TODO***
-         */
-        INPROCESS, 
-        /**
-         * ***TODO***
-         */
-        REQREVALID, 
-        /**
-         * ***TODO***
-         */
-        VALFAIL, 
-        /**
-         * ***TODO***
-         */
-        REVALFAIL, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static VerificationresultStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("attested".equals(codeString))
-          return ATTESTED;
-        if ("validated".equals(codeString))
-          return VALIDATED;
-        if ("in-process".equals(codeString))
-          return INPROCESS;
-        if ("req-revalid".equals(codeString))
-          return REQREVALID;
-        if ("val-fail".equals(codeString))
-          return VALFAIL;
-        if ("reval-fail".equals(codeString))
-          return REVALFAIL;
-        throw new FHIRException("Unknown VerificationresultStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ATTESTED: return "attested";
-            case VALIDATED: return "validated";
-            case INPROCESS: return "in-process";
-            case REQREVALID: return "req-revalid";
-            case VALFAIL: return "val-fail";
-            case REVALFAIL: return "reval-fail";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/CodeSystem/status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ATTESTED: return "***TODO***";
-            case VALIDATED: return "***TODO***";
-            case INPROCESS: return "***TODO***";
-            case REQREVALID: return "***TODO***";
-            case VALFAIL: return "***TODO***";
-            case REVALFAIL: return "***TODO***";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ATTESTED: return "Attested";
-            case VALIDATED: return "Validated";
-            case INPROCESS: return "In process";
-            case REQREVALID: return "Requires revalidation";
-            case VALFAIL: return "Validation failed";
-            case REVALFAIL: return "Re-Validation failed";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * ***TODO***
+   */
+  ATTESTED,
+  /**
+   * ***TODO***
+   */
+  VALIDATED,
+  /**
+   * ***TODO***
+   */
+  INPROCESS,
+  /**
+   * ***TODO***
+   */
+  REQREVALID,
+  /**
+   * ***TODO***
+   */
+  VALFAIL,
+  /**
+   * ***TODO***
+   */
+  REVALFAIL,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static VerificationresultStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("attested".equals(codeString))
+      return ATTESTED;
+    if ("validated".equals(codeString))
+      return VALIDATED;
+    if ("in-process".equals(codeString))
+      return INPROCESS;
+    if ("req-revalid".equals(codeString))
+      return REQREVALID;
+    if ("val-fail".equals(codeString))
+      return VALFAIL;
+    if ("reval-fail".equals(codeString))
+      return REVALFAIL;
+    throw new FHIRException("Unknown VerificationresultStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ATTESTED:
+      return "attested";
+    case VALIDATED:
+      return "validated";
+    case INPROCESS:
+      return "in-process";
+    case REQREVALID:
+      return "req-revalid";
+    case VALFAIL:
+      return "val-fail";
+    case REVALFAIL:
+      return "reval-fail";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/CodeSystem/status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ATTESTED:
+      return "***TODO***";
+    case VALIDATED:
+      return "***TODO***";
+    case INPROCESS:
+      return "***TODO***";
+    case REQREVALID:
+      return "***TODO***";
+    case VALFAIL:
+      return "***TODO***";
+    case REVALFAIL:
+      return "***TODO***";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ATTESTED:
+      return "Attested";
+    case VALIDATED:
+      return "Validated";
+    case INPROCESS:
+      return "In process";
+    case REQREVALID:
+      return "Requires revalidation";
+    case VALFAIL:
+      return "Validation failed";
+    case REVALFAIL:
+      return "Re-Validation failed";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

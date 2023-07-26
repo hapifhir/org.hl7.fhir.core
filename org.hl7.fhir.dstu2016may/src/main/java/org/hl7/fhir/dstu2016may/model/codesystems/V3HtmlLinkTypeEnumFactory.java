@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 */
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
-
 
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
@@ -72,7 +68,7 @@ public class V3HtmlLinkTypeEnumFactory implements EnumFactory<V3HtmlLinkType> {
       return V3HtmlLinkType.STYLESHEET;
     if ("subsection".equals(codeString))
       return V3HtmlLinkType.SUBSECTION;
-    throw new IllegalArgumentException("Unknown V3HtmlLinkType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3HtmlLinkType code '" + codeString + "'");
   }
 
   public String toCode(V3HtmlLinkType code) {
@@ -109,8 +105,8 @@ public class V3HtmlLinkTypeEnumFactory implements EnumFactory<V3HtmlLinkType> {
     return "?";
   }
 
-    public String toSystem(V3HtmlLinkType code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3HtmlLinkType code) {
+    return code.getSystem();
+  }
 
 }

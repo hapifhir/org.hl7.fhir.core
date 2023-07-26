@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,10 +31,10 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
-public class NehtaNehtaNotidentifiedPresentPresentextensiveEnumFactory implements EnumFactory<NehtaNehtaNotidentifiedPresentPresentextensive> {
+public class NehtaNehtaNotidentifiedPresentPresentextensiveEnumFactory
+    implements EnumFactory<NehtaNehtaNotidentifiedPresentPresentextensive> {
 
   public NehtaNehtaNotidentifiedPresentPresentextensive fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
@@ -46,7 +43,8 @@ public class NehtaNehtaNotidentifiedPresentPresentextensiveEnumFactory implement
       return NehtaNehtaNotidentifiedPresentPresentextensive.NOTIDENTIFIED;
     if ("present_and_extensive".equals(codeString))
       return NehtaNehtaNotidentifiedPresentPresentextensive.PRESENTANDEXTENSIVE;
-    throw new IllegalArgumentException("Unknown NehtaNehtaNotidentifiedPresentPresentextensive code '"+codeString+"'");
+    throw new IllegalArgumentException(
+        "Unknown NehtaNehtaNotidentifiedPresentPresentextensive code '" + codeString + "'");
   }
 
   public String toCode(NehtaNehtaNotidentifiedPresentPresentextensive code) {
@@ -57,8 +55,8 @@ public class NehtaNehtaNotidentifiedPresentPresentextensiveEnumFactory implement
     return "?";
   }
 
-    public String toSystem(NehtaNehtaNotidentifiedPresentPresentextensive code) {
-      return code.getSystem();
-      }
+  public String toSystem(NehtaNehtaNotidentifiedPresentPresentextensive code) {
+    return code.getSystem();
+  }
 
 }

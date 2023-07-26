@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3RoleStatusEnumFactory implements EnumFactory<V3RoleStatus> {
@@ -56,7 +52,7 @@ public class V3RoleStatusEnumFactory implements EnumFactory<V3RoleStatus> {
       return V3RoleStatus.TERMINATED;
     if ("nullified".equals(codeString))
       return V3RoleStatus.NULLIFIED;
-    throw new IllegalArgumentException("Unknown V3RoleStatus code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3RoleStatus code '" + codeString + "'");
   }
 
   public String toCode(V3RoleStatus code) {
@@ -77,8 +73,8 @@ public class V3RoleStatusEnumFactory implements EnumFactory<V3RoleStatus> {
     return "?";
   }
 
-    public String toSystem(V3RoleStatus code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3RoleStatus code) {
+    return code.getSystem();
+  }
 
 }

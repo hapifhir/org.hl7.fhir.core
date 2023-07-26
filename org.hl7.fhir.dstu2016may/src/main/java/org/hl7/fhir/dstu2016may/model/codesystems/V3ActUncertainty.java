@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,78 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3ActUncertainty {
 
-        /**
-         * Specifies that the act statement is made without explicit tagging of uncertainty. This is the normal statement, meaning that it is not free of errors and uncertainty may still exist.
-         */
-        N, 
-        /**
-         * Specifies that the originator of the Act statement does not have full confidence in the applicability (i.e., in event mood: factual truth) of the statement.
-         */
-        U, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static V3ActUncertainty fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("N".equals(codeString))
-          return N;
-        if ("U".equals(codeString))
-          return U;
-        throw new FHIRException("Unknown V3ActUncertainty code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case N: return "N";
-            case U: return "U";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/v3/ActUncertainty";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case N: return "Specifies that the act statement is made without explicit tagging of uncertainty. This is the normal statement, meaning that it is not free of errors and uncertainty may still exist.";
-            case U: return "Specifies that the originator of the Act statement does not have full confidence in the applicability (i.e., in event mood: factual truth) of the statement.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case N: return "stated with no assertion of uncertainty";
-            case U: return "stated with uncertainty";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Specifies that the act statement is made without explicit tagging of
+   * uncertainty. This is the normal statement, meaning that it is not free of
+   * errors and uncertainty may still exist.
+   */
+  N,
+  /**
+   * Specifies that the originator of the Act statement does not have full
+   * confidence in the applicability (i.e., in event mood: factual truth) of the
+   * statement.
+   */
+  U,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static V3ActUncertainty fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("N".equals(codeString))
+      return N;
+    if ("U".equals(codeString))
+      return U;
+    throw new FHIRException("Unknown V3ActUncertainty code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case N:
+      return "N";
+    case U:
+      return "U";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/v3/ActUncertainty";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case N:
+      return "Specifies that the act statement is made without explicit tagging of uncertainty. This is the normal statement, meaning that it is not free of errors and uncertainty may still exist.";
+    case U:
+      return "Specifies that the originator of the Act statement does not have full confidence in the applicability (i.e., in event mood: factual truth) of the statement.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case N:
+      return "stated with no assertion of uncertainty";
+    case U:
+      return "stated with uncertainty";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

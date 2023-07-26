@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,104 +31,134 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum DaysOfWeek {
 
-        /**
-         * Monday
-         */
-        MON, 
-        /**
-         * Tuesday
-         */
-        TUE, 
-        /**
-         * Wednesday
-         */
-        WED, 
-        /**
-         * Thursday
-         */
-        THU, 
-        /**
-         * Friday
-         */
-        FRI, 
-        /**
-         * Saturday
-         */
-        SAT, 
-        /**
-         * Sunday
-         */
-        SUN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static DaysOfWeek fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("mon".equals(codeString))
-          return MON;
-        if ("tue".equals(codeString))
-          return TUE;
-        if ("wed".equals(codeString))
-          return WED;
-        if ("thu".equals(codeString))
-          return THU;
-        if ("fri".equals(codeString))
-          return FRI;
-        if ("sat".equals(codeString))
-          return SAT;
-        if ("sun".equals(codeString))
-          return SUN;
-        throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case MON: return "mon";
-            case TUE: return "tue";
-            case WED: return "wed";
-            case THU: return "thu";
-            case FRI: return "fri";
-            case SAT: return "sat";
-            case SUN: return "sun";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/days-of-week";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case MON: return "Monday";
-            case TUE: return "Tuesday";
-            case WED: return "Wednesday";
-            case THU: return "Thursday";
-            case FRI: return "Friday";
-            case SAT: return "Saturday";
-            case SUN: return "Sunday";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case MON: return "Monday";
-            case TUE: return "Tuesday";
-            case WED: return "Wednesday";
-            case THU: return "Thursday";
-            case FRI: return "Friday";
-            case SAT: return "Saturday";
-            case SUN: return "Sunday";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Monday
+   */
+  MON,
+  /**
+   * Tuesday
+   */
+  TUE,
+  /**
+   * Wednesday
+   */
+  WED,
+  /**
+   * Thursday
+   */
+  THU,
+  /**
+   * Friday
+   */
+  FRI,
+  /**
+   * Saturday
+   */
+  SAT,
+  /**
+   * Sunday
+   */
+  SUN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static DaysOfWeek fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("mon".equals(codeString))
+      return MON;
+    if ("tue".equals(codeString))
+      return TUE;
+    if ("wed".equals(codeString))
+      return WED;
+    if ("thu".equals(codeString))
+      return THU;
+    if ("fri".equals(codeString))
+      return FRI;
+    if ("sat".equals(codeString))
+      return SAT;
+    if ("sun".equals(codeString))
+      return SUN;
+    throw new FHIRException("Unknown DaysOfWeek code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case MON:
+      return "mon";
+    case TUE:
+      return "tue";
+    case WED:
+      return "wed";
+    case THU:
+      return "thu";
+    case FRI:
+      return "fri";
+    case SAT:
+      return "sat";
+    case SUN:
+      return "sun";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/days-of-week";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case MON:
+      return "Monday";
+    case TUE:
+      return "Tuesday";
+    case WED:
+      return "Wednesday";
+    case THU:
+      return "Thursday";
+    case FRI:
+      return "Friday";
+    case SAT:
+      return "Saturday";
+    case SUN:
+      return "Sunday";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case MON:
+      return "Monday";
+    case TUE:
+      return "Tuesday";
+    case WED:
+      return "Wednesday";
+    case THU:
+      return "Thursday";
+    case FRI:
+      return "Friday";
+    case SAT:
+      return "Saturday";
+    case SUN:
+      return "Sunday";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

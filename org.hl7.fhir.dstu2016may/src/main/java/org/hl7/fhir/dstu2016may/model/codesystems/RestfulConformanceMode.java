@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum RestfulConformanceMode {
 
-        /**
-         * The application acts as a client for this resource.
-         */
-        CLIENT, 
-        /**
-         * The application acts as a server for this resource.
-         */
-        SERVER, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static RestfulConformanceMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("client".equals(codeString))
-          return CLIENT;
-        if ("server".equals(codeString))
-          return SERVER;
-        throw new FHIRException("Unknown RestfulConformanceMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CLIENT: return "client";
-            case SERVER: return "server";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/restful-conformance-mode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CLIENT: return "The application acts as a client for this resource.";
-            case SERVER: return "The application acts as a server for this resource.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CLIENT: return "Client";
-            case SERVER: return "Server";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The application acts as a client for this resource.
+   */
+  CLIENT,
+  /**
+   * The application acts as a server for this resource.
+   */
+  SERVER,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static RestfulConformanceMode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("client".equals(codeString))
+      return CLIENT;
+    if ("server".equals(codeString))
+      return SERVER;
+    throw new FHIRException("Unknown RestfulConformanceMode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case CLIENT:
+      return "client";
+    case SERVER:
+      return "server";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/restful-conformance-mode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case CLIENT:
+      return "The application acts as a client for this resource.";
+    case SERVER:
+      return "The application acts as a server for this resource.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case CLIENT:
+      return "Client";
+    case SERVER:
+      return "Server";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

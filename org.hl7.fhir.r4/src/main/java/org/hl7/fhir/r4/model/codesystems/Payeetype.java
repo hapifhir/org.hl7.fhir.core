@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Payeetype {
 
-        /**
-         * The subscriber (policy holder) will be reimbursed.
-         */
-        SUBSCRIBER, 
-        /**
-         * Any benefit payable will be paid to the provider (Assignment of Benefit).
-         */
-        PROVIDER, 
-        /**
-         * Any benefit payable will be paid to a third party such as a guarrantor.
-         */
-        OTHER, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static Payeetype fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("subscriber".equals(codeString))
-          return SUBSCRIBER;
-        if ("provider".equals(codeString))
-          return PROVIDER;
-        if ("other".equals(codeString))
-          return OTHER;
-        throw new FHIRException("Unknown Payeetype code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SUBSCRIBER: return "subscriber";
-            case PROVIDER: return "provider";
-            case OTHER: return "other";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/payeetype";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SUBSCRIBER: return "The subscriber (policy holder) will be reimbursed.";
-            case PROVIDER: return "Any benefit payable will be paid to the provider (Assignment of Benefit).";
-            case OTHER: return "Any benefit payable will be paid to a third party such as a guarrantor.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SUBSCRIBER: return "Subscriber";
-            case PROVIDER: return "Provider";
-            case OTHER: return "Provider";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The subscriber (policy holder) will be reimbursed.
+   */
+  SUBSCRIBER,
+  /**
+   * Any benefit payable will be paid to the provider (Assignment of Benefit).
+   */
+  PROVIDER,
+  /**
+   * Any benefit payable will be paid to a third party such as a guarrantor.
+   */
+  OTHER,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static Payeetype fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("subscriber".equals(codeString))
+      return SUBSCRIBER;
+    if ("provider".equals(codeString))
+      return PROVIDER;
+    if ("other".equals(codeString))
+      return OTHER;
+    throw new FHIRException("Unknown Payeetype code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SUBSCRIBER:
+      return "subscriber";
+    case PROVIDER:
+      return "provider";
+    case OTHER:
+      return "other";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/payeetype";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SUBSCRIBER:
+      return "The subscriber (policy holder) will be reimbursed.";
+    case PROVIDER:
+      return "Any benefit payable will be paid to the provider (Assignment of Benefit).";
+    case OTHER:
+      return "Any benefit payable will be paid to a third party such as a guarrantor.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SUBSCRIBER:
+      return "Subscriber";
+    case PROVIDER:
+      return "Provider";
+    case OTHER:
+      return "Provider";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

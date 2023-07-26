@@ -29,27 +29,24 @@ package org.hl7.fhir.dstu2016may.formats;
   
  */
 
-
-
 public class TurtleLexer {
 
   public enum TurtleTokenType {
-    NULL, 
-    TOKEN, SPECIAL, LITERAL
+    NULL, TOKEN, SPECIAL, LITERAL
   }
 
   private String source;
-  private int cursor; 
+  private int cursor;
   private String token;
   private TurtleTokenType type;
-  
+
   public TurtleLexer(String source) throws Exception {
     this.source = source;
     cursor = 0;
     readNext();
   }
 
-  private void readNext() throws Exception {    
+  private void readNext() throws Exception {
     if (cursor >= source.length()) {
       token = null;
       type = TurtleTokenType.NULL;
@@ -63,25 +60,25 @@ public class TurtleLexer {
       readDelimiter();
     else if (Character.isLetter(source.charAt(cursor)))
       readToken();
-    
+
   }
 
   private void readLiteral() {
     StringBuilder b = new StringBuilder();
-    cursor++; // skip "        
+    cursor++; // skip "
     while (cursor < source.length() && source.charAt(cursor) != '"') {
       if (source.charAt(cursor) == '\\') {
         b.append(source.charAt(cursor));
-        cursor++;        
-      } 
+        cursor++;
+      }
       b.append(source.charAt(cursor));
       cursor++;
     }
-    token = "\""+b.toString()+"\"";
+    token = "\"" + b.toString() + "\"";
     type = TurtleTokenType.LITERAL;
     cursor++; // skip "
-    while (cursor < source.length() && Character.isWhitespace(source.charAt(cursor))) 
-      cursor++;    
+    while (cursor < source.length() && Character.isWhitespace(source.charAt(cursor)))
+      cursor++;
   }
 
   private void readDelimiter() {
@@ -90,7 +87,7 @@ public class TurtleLexer {
     cursor++;
     token = b.toString();
     type = TurtleTokenType.SPECIAL;
-    while (cursor < source.length() && Character.isWhitespace(source.charAt(cursor))) 
+    while (cursor < source.length() && Character.isWhitespace(source.charAt(cursor)))
       cursor++;
   }
 
@@ -99,8 +96,8 @@ public class TurtleLexer {
     while (cursor < source.length() && isValidTokenChar(source.charAt(cursor))) {
       if (source.charAt(cursor) == '\\') {
         b.append(source.charAt(cursor));
-        cursor++;        
-      } 
+        cursor++;
+      }
       b.append(source.charAt(cursor));
       cursor++;
     }
@@ -108,9 +105,9 @@ public class TurtleLexer {
     type = TurtleTokenType.TOKEN;
     if (token.endsWith(".")) {
       cursor--;
-      token = token.substring(0, token.length()-1);
+      token = token.substring(0, token.length() - 1);
     }
-    while (cursor < source.length() && Character.isWhitespace(source.charAt(cursor))) 
+    while (cursor < source.length() && Character.isWhitespace(source.charAt(cursor)))
       cursor++;
   }
 
@@ -135,6 +132,5 @@ public class TurtleLexer {
   public TurtleTokenType peekType() {
     return type;
   }
-  
-  
+
 }

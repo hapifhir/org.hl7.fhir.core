@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -41,189 +38,196 @@ import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+
 /**
- * A relationship of two Quantity values - expressed as a numerator and a denominator.
+ * A relationship of two Quantity values - expressed as a numerator and a
+ * denominator.
  */
-@DatatypeDef(name="Ratio")
+@DatatypeDef(name = "Ratio")
 public class Ratio extends Type implements ICompositeType {
 
-    /**
-     * The value of the numerator.
-     */
-    @Child(name = "numerator", type = {Quantity.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Numerator value", formalDefinition="The value of the numerator." )
-    protected Quantity numerator;
+  /**
+   * The value of the numerator.
+   */
+  @Child(name = "numerator", type = { Quantity.class }, order = 0, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Numerator value", formalDefinition = "The value of the numerator.")
+  protected Quantity numerator;
 
-    /**
-     * The value of the denominator.
-     */
-    @Child(name = "denominator", type = {Quantity.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Denominator value", formalDefinition="The value of the denominator." )
-    protected Quantity denominator;
+  /**
+   * The value of the denominator.
+   */
+  @Child(name = "denominator", type = { Quantity.class }, order = 1, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Denominator value", formalDefinition = "The value of the denominator.")
+  protected Quantity denominator;
 
-    private static final long serialVersionUID = 479922563L;
+  private static final long serialVersionUID = 479922563L;
 
   /**
    * Constructor
    */
-    public Ratio() {
-      super();
+  public Ratio() {
+    super();
+  }
+
+  /**
+   * @return {@link #numerator} (The value of the numerator.)
+   */
+  public Quantity getNumerator() {
+    if (this.numerator == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create Ratio.numerator");
+      else if (Configuration.doAutoCreate())
+        this.numerator = new Quantity(); // cc
+    return this.numerator;
+  }
+
+  public boolean hasNumerator() {
+    return this.numerator != null && !this.numerator.isEmpty();
+  }
+
+  /**
+   * @param value {@link #numerator} (The value of the numerator.)
+   */
+  public Ratio setNumerator(Quantity value) {
+    this.numerator = value;
+    return this;
+  }
+
+  /**
+   * @return {@link #denominator} (The value of the denominator.)
+   */
+  public Quantity getDenominator() {
+    if (this.denominator == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create Ratio.denominator");
+      else if (Configuration.doAutoCreate())
+        this.denominator = new Quantity(); // cc
+    return this.denominator;
+  }
+
+  public boolean hasDenominator() {
+    return this.denominator != null && !this.denominator.isEmpty();
+  }
+
+  /**
+   * @param value {@link #denominator} (The value of the denominator.)
+   */
+  public Ratio setDenominator(Quantity value) {
+    this.denominator = value;
+    return this;
+  }
+
+  protected void listChildren(List<Property> childrenList) {
+    super.listChildren(childrenList);
+    childrenList.add(new Property("numerator", "Quantity", "The value of the numerator.", 0,
+        java.lang.Integer.MAX_VALUE, numerator));
+    childrenList.add(new Property("denominator", "Quantity", "The value of the denominator.", 0,
+        java.lang.Integer.MAX_VALUE, denominator));
+  }
+
+  @Override
+  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+    switch (hash) {
+    case 1747334793:
+      /* numerator */ return this.numerator == null ? new Base[0] : new Base[] { this.numerator }; // Quantity
+    case -1983274394:
+      /* denominator */ return this.denominator == null ? new Base[0] : new Base[] { this.denominator }; // Quantity
+    default:
+      return super.getProperty(hash, name, checkValid);
     }
 
-    /**
-     * @return {@link #numerator} (The value of the numerator.)
-     */
-    public Quantity getNumerator() { 
-      if (this.numerator == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Ratio.numerator");
-        else if (Configuration.doAutoCreate())
-          this.numerator = new Quantity(); // cc
+  }
+
+  @Override
+  public void setProperty(int hash, String name, Base value) throws FHIRException {
+    switch (hash) {
+    case 1747334793: // numerator
+      this.numerator = castToQuantity(value); // Quantity
+      break;
+    case -1983274394: // denominator
+      this.denominator = castToQuantity(value); // Quantity
+      break;
+    default:
+      super.setProperty(hash, name, value);
+    }
+
+  }
+
+  @Override
+  public void setProperty(String name, Base value) throws FHIRException {
+    if (name.equals("numerator"))
+      this.numerator = castToQuantity(value); // Quantity
+    else if (name.equals("denominator"))
+      this.denominator = castToQuantity(value); // Quantity
+    else
+      super.setProperty(name, value);
+  }
+
+  @Override
+  public Base makeProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+    case 1747334793:
+      return getNumerator(); // Quantity
+    case -1983274394:
+      return getDenominator(); // Quantity
+    default:
+      return super.makeProperty(hash, name);
+    }
+
+  }
+
+  @Override
+  public Base addChild(String name) throws FHIRException {
+    if (name.equals("numerator")) {
+      this.numerator = new Quantity();
       return this.numerator;
-    }
-
-    public boolean hasNumerator() { 
-      return this.numerator != null && !this.numerator.isEmpty();
-    }
-
-    /**
-     * @param value {@link #numerator} (The value of the numerator.)
-     */
-    public Ratio setNumerator(Quantity value) { 
-      this.numerator = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #denominator} (The value of the denominator.)
-     */
-    public Quantity getDenominator() { 
-      if (this.denominator == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Ratio.denominator");
-        else if (Configuration.doAutoCreate())
-          this.denominator = new Quantity(); // cc
+    } else if (name.equals("denominator")) {
+      this.denominator = new Quantity();
       return this.denominator;
-    }
-
-    public boolean hasDenominator() { 
-      return this.denominator != null && !this.denominator.isEmpty();
-    }
-
-    /**
-     * @param value {@link #denominator} (The value of the denominator.)
-     */
-    public Ratio setDenominator(Quantity value) { 
-      this.denominator = value;
-      return this;
-    }
-
-      protected void listChildren(List<Property> childrenList) {
-        super.listChildren(childrenList);
-        childrenList.add(new Property("numerator", "Quantity", "The value of the numerator.", 0, java.lang.Integer.MAX_VALUE, numerator));
-        childrenList.add(new Property("denominator", "Quantity", "The value of the denominator.", 0, java.lang.Integer.MAX_VALUE, denominator));
-      }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 1747334793: /*numerator*/ return this.numerator == null ? new Base[0] : new Base[] {this.numerator}; // Quantity
-        case -1983274394: /*denominator*/ return this.denominator == null ? new Base[0] : new Base[] {this.denominator}; // Quantity
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public void setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 1747334793: // numerator
-          this.numerator = castToQuantity(value); // Quantity
-          break;
-        case -1983274394: // denominator
-          this.denominator = castToQuantity(value); // Quantity
-          break;
-        default: super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public void setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("numerator"))
-          this.numerator = castToQuantity(value); // Quantity
-        else if (name.equals("denominator"))
-          this.denominator = castToQuantity(value); // Quantity
-        else
-          super.setProperty(name, value);
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 1747334793:  return getNumerator(); // Quantity
-        case -1983274394:  return getDenominator(); // Quantity
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("numerator")) {
-          this.numerator = new Quantity();
-          return this.numerator;
-        }
-        else if (name.equals("denominator")) {
-          this.denominator = new Quantity();
-          return this.denominator;
-        }
-        else
-          return super.addChild(name);
-      }
+    } else
+      return super.addChild(name);
+  }
 
   public String fhirType() {
     return "Ratio";
 
   }
 
-      public Ratio copy() {
-        Ratio dst = new Ratio();
-        copyValues(dst);
-        dst.numerator = numerator == null ? null : numerator.copy();
-        dst.denominator = denominator == null ? null : denominator.copy();
-        return dst;
-      }
+  public Ratio copy() {
+    Ratio dst = new Ratio();
+    copyValues(dst);
+    dst.numerator = numerator == null ? null : numerator.copy();
+    dst.denominator = denominator == null ? null : denominator.copy();
+    return dst;
+  }
 
-      protected Ratio typedCopy() {
-        return copy();
-      }
+  protected Ratio typedCopy() {
+    return copy();
+  }
 
-      @Override
-      public boolean equalsDeep(Base other) {
-        if (!super.equalsDeep(other))
-          return false;
-        if (!(other instanceof Ratio))
-          return false;
-        Ratio o = (Ratio) other;
-        return compareDeep(numerator, o.numerator, true) && compareDeep(denominator, o.denominator, true)
-          ;
-      }
+  @Override
+  public boolean equalsDeep(Base other) {
+    if (!super.equalsDeep(other))
+      return false;
+    if (!(other instanceof Ratio))
+      return false;
+    Ratio o = (Ratio) other;
+    return compareDeep(numerator, o.numerator, true) && compareDeep(denominator, o.denominator, true);
+  }
 
-      @Override
-      public boolean equalsShallow(Base other) {
-        if (!super.equalsShallow(other))
-          return false;
-        if (!(other instanceof Ratio))
-          return false;
-        Ratio o = (Ratio) other;
-        return true;
-      }
+  @Override
+  public boolean equalsShallow(Base other) {
+    if (!super.equalsShallow(other))
+      return false;
+    if (!(other instanceof Ratio))
+      return false;
+    Ratio o = (Ratio) other;
+    return true;
+  }
 
-      public boolean isEmpty() {
-        return super.isEmpty() && (numerator == null || numerator.isEmpty()) && (denominator == null || denominator.isEmpty())
-          ;
-      }
-
+  public boolean isEmpty() {
+    return super.isEmpty() && (numerator == null || numerator.isEmpty())
+        && (denominator == null || denominator.isEmpty());
+  }
 
 }

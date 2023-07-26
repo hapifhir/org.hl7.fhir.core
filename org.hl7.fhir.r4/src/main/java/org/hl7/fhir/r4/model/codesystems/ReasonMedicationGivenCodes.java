@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ReasonMedicationGivenCodes {
 
-        /**
-         * No reason known.
-         */
-        A, 
-        /**
-         * The administration was following an ordered protocol.
-         */
-        B, 
-        /**
-         * The administration was needed to treat an emergency.
-         */
-        C, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ReasonMedicationGivenCodes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("a".equals(codeString))
-          return A;
-        if ("b".equals(codeString))
-          return B;
-        if ("c".equals(codeString))
-          return C;
-        throw new FHIRException("Unknown ReasonMedicationGivenCodes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case A: return "a";
-            case B: return "b";
-            case C: return "c";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/reason-medication-given";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case A: return "No reason known.";
-            case B: return "The administration was following an ordered protocol.";
-            case C: return "The administration was needed to treat an emergency.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case A: return "None";
-            case B: return "Given as Ordered";
-            case C: return "Emergency";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * No reason known.
+   */
+  A,
+  /**
+   * The administration was following an ordered protocol.
+   */
+  B,
+  /**
+   * The administration was needed to treat an emergency.
+   */
+  C,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ReasonMedicationGivenCodes fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("a".equals(codeString))
+      return A;
+    if ("b".equals(codeString))
+      return B;
+    if ("c".equals(codeString))
+      return C;
+    throw new FHIRException("Unknown ReasonMedicationGivenCodes code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case A:
+      return "a";
+    case B:
+      return "b";
+    case C:
+      return "c";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/reason-medication-given";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case A:
+      return "No reason known.";
+    case B:
+      return "The administration was following an ordered protocol.";
+    case C:
+      return "The administration was needed to treat an emergency.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case A:
+      return "None";
+    case B:
+      return "Given as Ordered";
+    case C:
+      return "Emergency";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

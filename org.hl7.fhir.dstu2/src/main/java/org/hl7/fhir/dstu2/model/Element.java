@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2.model;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -42,6 +39,7 @@ import org.hl7.fhir.instance.model.api.IBaseElement;
 import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
+
 /**
  * Base definition for all elements in a resource.
  */
@@ -50,15 +48,21 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   /**
    * unique id for the element within a resource (for internal references).
    */
-  @Child(name = "id", type = {IdType.class}, order=0, min=0, max=1, modifier=false, summary=false)
-  @Description(shortDefinition="xml:id (or equivalent in JSON)", formalDefinition="unique id for the element within a resource (for internal references)." )
+  @Child(name = "id", type = { IdType.class }, order = 0, min = 0, max = 1, modifier = false, summary = false)
+  @Description(shortDefinition = "xml:id (or equivalent in JSON)", formalDefinition = "unique id for the element within a resource (for internal references).")
   protected IdType id;
 
   /**
-   * May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.
+   * May be used to represent additional information that is not part of the basic
+   * definition of the element. In order to make the use of extensions safe and
+   * manageable, there is a strict set of governance applied to the definition and
+   * use of extensions. Though any implementer is allowed to define an extension,
+   * there is a set of requirements that SHALL be met as part of the definition of
+   * the extension.
    */
-  @Child(name = "extension", type = {Extension.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-  @Description(shortDefinition="Additional Content defined by implementations", formalDefinition="May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension." )
+  @Child(name = "extension", type = {
+      Extension.class }, order = 1, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = false)
+  @Description(shortDefinition = "Additional Content defined by implementations", formalDefinition = "May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.")
   protected List<Extension> extension;
 
   private static final long serialVersionUID = -158027598L;
@@ -71,9 +75,11 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   }
 
   /**
-   * @return {@link #id} (unique id for the element within a resource (for internal references).). This is the underlying object with id, value and extensions. The accessor "getId" gives direct access to the value
+   * @return {@link #id} (unique id for the element within a resource (for
+   *         internal references).). This is the underlying object with id, value
+   *         and extensions. The accessor "getId" gives direct access to the value
    */
-  public IdType getIdElement() { 
+  public IdType getIdElement() {
     if (this.id == null)
       if (Configuration.errorOnAutoCreate())
         throw new Error("Attempt to auto-create Element.id");
@@ -82,33 +88,38 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     return this.id;
   }
 
-  public boolean hasIdElement() { 
+  public boolean hasIdElement() {
     return this.id != null && !this.id.isEmpty();
   }
 
-  public boolean hasId() { 
+  public boolean hasId() {
     return this.id != null && !this.id.isEmpty();
   }
 
   /**
-   * @param value {@link #id} (unique id for the element within a resource (for internal references).). This is the underlying object with id, value and extensions. The accessor "getId" gives direct access to the value
+   * @param value {@link #id} (unique id for the element within a resource (for
+   *              internal references).). This is the underlying object with id,
+   *              value and extensions. The accessor "getId" gives direct access
+   *              to the value
    */
-  public Element setIdElement(IdType value) { 
+  public Element setIdElement(IdType value) {
     this.id = value;
     return this;
   }
 
   /**
-   * @return unique id for the element within a resource (for internal references).
+   * @return unique id for the element within a resource (for internal
+   *         references).
    */
-  public String getId() { 
+  public String getId() {
     return this.id == null ? null : this.id.getValue();
   }
 
   /**
-   * @param value unique id for the element within a resource (for internal references).
+   * @param value unique id for the element within a resource (for internal
+   *              references).
    */
-  public Element setId(String value) { 
+  public Element setId(String value) {
     if (Utilities.noString(value))
       this.id = null;
     else {
@@ -120,15 +131,21 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   }
 
   /**
-   * @return {@link #extension} (May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.)
+   * @return {@link #extension} (May be used to represent additional information
+   *         that is not part of the basic definition of the element. In order to
+   *         make the use of extensions safe and manageable, there is a strict set
+   *         of governance applied to the definition and use of extensions. Though
+   *         any implementer is allowed to define an extension, there is a set of
+   *         requirements that SHALL be met as part of the definition of the
+   *         extension.)
    */
-  public List<Extension> getExtension() { 
+  public List<Extension> getExtension() {
     if (this.extension == null)
       this.extension = new ArrayList<Extension>();
     return this.extension;
   }
 
-  public boolean hasExtension() { 
+  public boolean hasExtension() {
     if (this.extension == null)
       return false;
     for (Extension item : this.extension)
@@ -138,10 +155,16 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   }
 
   /**
-   * @return {@link #extension} (May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.)
+   * @return {@link #extension} (May be used to represent additional information
+   *         that is not part of the basic definition of the element. In order to
+   *         make the use of extensions safe and manageable, there is a strict set
+   *         of governance applied to the definition and use of extensions. Though
+   *         any implementer is allowed to define an extension, there is a set of
+   *         requirements that SHALL be met as part of the definition of the
+   *         extension.)
    */
   // syntactic sugar
-  public Extension addExtension() { //3
+  public Extension addExtension() { // 3
     Extension t = new Extension();
     if (this.extension == null)
       this.extension = new ArrayList<Extension>();
@@ -150,7 +173,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   }
 
   // syntactic sugar
-  public Element addExtension(Extension t) { //3
+  public Element addExtension(Extension t) { // 3
     if (t == null)
       return this;
     if (this.extension == null)
@@ -160,12 +183,12 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   }
 
   /**
-   * Returns an unmodifiable list containing all extensions on this element which 
+   * Returns an unmodifiable list containing all extensions on this element which
    * match the given URL.
    * 
    * @param theUrl The URL. Must not be blank or null.
-   * @return an unmodifiable list containing all extensions on this element which 
-   * match the given URL
+   * @return an unmodifiable list containing all extensions on this element which
+   *         match the given URL
    */
   public List<Extension> getExtensionsByUrl(String theUrl) {
     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
@@ -189,7 +212,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     if (retVal.size() == 0)
       return null;
     else {
-      org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+theUrl+" must have only one match");
+      org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url " + theUrl + " must have only one match");
       return retVal.get(0);
     }
   }
@@ -198,19 +221,18 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     Extension ex = new Extension();
     ex.setUrl(url);
     ex.setValue(value);
-    getExtension().add(ex);    
+    getExtension().add(ex);
   }
 
-
   public boolean hasExtension(String theUrl) {
-    return !getExtensionsByUrl(theUrl).isEmpty(); 
+    return !getExtensionsByUrl(theUrl).isEmpty();
   }
 
   public String getExtensionString(String theUrl) throws FHIRException {
-    List<Extension> ext = getExtensionsByUrl(theUrl); 
-    if (ext.isEmpty()) 
-      return null; 
-    if (ext.size() > 1) 
+    List<Extension> ext = getExtensionsByUrl(theUrl);
+    if (ext.isEmpty())
+      return null;
+    if (ext.size() > 1)
       throw new FHIRException("Multiple matching extensions found");
     if (!ext.get(0).getValue().isPrimitive())
       throw new FHIRException("Extension could not be converted to a string");
@@ -218,8 +240,11 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   }
 
   protected void listChildren(List<Property> childrenList) {
-    childrenList.add(new Property("id", "id", "unique id for the element within a resource (for internal references).", 0, java.lang.Integer.MAX_VALUE, id));
-    childrenList.add(new Property("extension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", 0, java.lang.Integer.MAX_VALUE, extension));
+    childrenList.add(new Property("id", "id", "unique id for the element within a resource (for internal references).",
+        0, java.lang.Integer.MAX_VALUE, id));
+    childrenList.add(new Property("extension", "Extension",
+        "May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.",
+        0, java.lang.Integer.MAX_VALUE, extension));
   }
 
   @Override
@@ -236,11 +261,9 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   public Base addChild(String name) throws FHIRException {
     if (name.equals("id")) {
       throw new FHIRException("Cannot call addChild on a primitive type Element.id");
-    }
-    else if (name.equals("extension")) {
+    } else if (name.equals("extension")) {
       return addExtension();
-    }
-    else
+    } else
       return super.addChild(name);
   }
 
@@ -257,7 +280,8 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       dst.extension = new ArrayList<Extension>();
       for (Extension i : extension)
         dst.extension.add(i.copy());
-    };
+    }
+    ;
   }
 
   @Override
@@ -281,9 +305,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   }
 
   public boolean isEmpty() {
-    return super.isEmpty() && (id == null || id.isEmpty()) && (extension == null || extension.isEmpty())
-        ;
+    return super.isEmpty() && (id == null || id.isEmpty()) && (extension == null || extension.isEmpty());
   }
-
 
 }

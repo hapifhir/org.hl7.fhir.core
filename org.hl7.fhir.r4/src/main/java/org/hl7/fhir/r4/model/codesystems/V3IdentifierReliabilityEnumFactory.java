@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3IdentifierReliabilityEnumFactory implements EnumFactory<V3IdentifierReliability> {
@@ -48,7 +44,7 @@ public class V3IdentifierReliabilityEnumFactory implements EnumFactory<V3Identif
       return V3IdentifierReliability.UNV;
     if ("VRF".equals(codeString))
       return V3IdentifierReliability.VRF;
-    throw new IllegalArgumentException("Unknown V3IdentifierReliability code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3IdentifierReliability code '" + codeString + "'");
   }
 
   public String toCode(V3IdentifierReliability code) {
@@ -61,8 +57,8 @@ public class V3IdentifierReliabilityEnumFactory implements EnumFactory<V3Identif
     return "?";
   }
 
-    public String toSystem(V3IdentifierReliability code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3IdentifierReliability code) {
+    return code.getSystem();
+  }
 
 }

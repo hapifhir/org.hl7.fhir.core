@@ -62,13 +62,20 @@ public class PatientRenderer extends ResourceRenderer {
       return true;
     }
     switch (newUse) {
-    case NULL: return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.USUAL);
-    case OFFICIAL: return !existsInList(oldUse, IdentifierUse.USUAL);
-    case OLD: return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.SECONDARY, IdentifierUse.USUAL);
-    case SECONDARY: return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.USUAL);
-    case TEMP: return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.SECONDARY, IdentifierUse.USUAL);
-    case USUAL: return true;
-    default: return false;
+    case NULL:
+      return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.USUAL);
+    case OFFICIAL:
+      return !existsInList(oldUse, IdentifierUse.USUAL);
+    case OLD:
+      return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.SECONDARY, IdentifierUse.USUAL);
+    case SECONDARY:
+      return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.USUAL);
+    case TEMP:
+      return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.SECONDARY, IdentifierUse.USUAL);
+    case USUAL:
+      return true;
+    default:
+      return false;
     }
   }
 
@@ -91,7 +98,6 @@ public class PatientRenderer extends ResourceRenderer {
     return isPreferred(newName.getUse(), oldName.getUse()) ? newName : oldName;
   }
 
-
   private boolean isPreferred(NameUse newUse, NameUse oldUse) {
     if (newUse == null && oldUse == null || newUse == oldUse) {
       return false;
@@ -100,14 +106,22 @@ public class PatientRenderer extends ResourceRenderer {
       return true;
     }
     switch (oldUse) {
-      case ANONYMOUS: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case MAIDEN: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case NICKNAME: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case NULL: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case OFFICIAL: return existsInList(newUse, NameUse.USUAL);
-      case OLD: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case TEMP: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case USUAL: return false; 
+    case ANONYMOUS:
+      return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
+    case MAIDEN:
+      return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
+    case NICKNAME:
+      return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
+    case NULL:
+      return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
+    case OFFICIAL:
+      return existsInList(newUse, NameUse.USUAL);
+    case OLD:
+      return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
+    case TEMP:
+      return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
+    case USUAL:
+      return false;
     }
     return false;
   }
@@ -138,12 +152,12 @@ public class PatientRenderer extends ResourceRenderer {
     if (valued(pw)) {
       pw.value().getBase().primitiveValue();
     }
-    DateType dt = null; 
+    DateType dt = null;
     pw = getProperty(pat, "birthDate");
     if (valued(pw)) {
       dt = (DateType) pw.value().getBase();
     }
-    return display(n, gender, dt, id);  
+    return display(n, gender, dt, id);
   }
 
   public void describe(XhtmlNode x, ResourceWrapper pat) throws UnsupportedEncodingException, IOException {
@@ -162,14 +176,13 @@ public class PatientRenderer extends ResourceRenderer {
     if (valued(pw)) {
       pw.value().getBase().primitiveValue();
     }
-    DateType dt = null; 
+    DateType dt = null;
     pw = getProperty(pat, "birthDate");
     if (valued(pw)) {
       dt = (DateType) pw.value().getBase();
     }
     describe(x, n, gender, dt, id);
   }
-
 
   private String display(HumanName name, String gender, DateType dob, Identifier id) {
     StringBuilder b = new StringBuilder();
@@ -184,19 +197,20 @@ public class PatientRenderer extends ResourceRenderer {
     if (dob == null) {
       b.append("DoB Unknown");
     } else {
-      b.append(display(dob));      
+      b.append(display(dob));
     }
     if (id != null) {
-      b.append(" ( ");      
+      b.append(" ( ");
       b.append(display(id));
-      b.append(")");      
+      b.append(")");
     }
     return b.toString();
   }
-  
-  public void describe(XhtmlNode x, HumanName name, String gender, DateType dob, Identifier id) throws UnsupportedEncodingException, IOException {
+
+  public void describe(XhtmlNode x, HumanName name, String gender, DateType dob, Identifier id)
+      throws UnsupportedEncodingException, IOException {
     if (name == null) {
-      x.b().tx("Unnamed Patient"); // todo: is this appropriate?  
+      x.b().tx("Unnamed Patient"); // todo: is this appropriate?
     } else {
       render(x.b(), name);
     }
@@ -213,11 +227,10 @@ public class PatientRenderer extends ResourceRenderer {
       render(x, dob);
     }
     if (id != null) {
-      x.tx(" ( ");      
+      x.tx(" ( ");
       render(x, id);
-      x.tx(")");      
+      x.tx(")");
     }
   }
-
 
 }

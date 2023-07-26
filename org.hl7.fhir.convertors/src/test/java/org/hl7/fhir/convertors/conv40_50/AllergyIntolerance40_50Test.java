@@ -1,15 +1,13 @@
 package org.hl7.fhir.convertors.conv40_50;
 
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
+import java.util.List;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.r4.model.AllergyIntolerance;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 public class AllergyIntolerance40_50Test {
     @Test

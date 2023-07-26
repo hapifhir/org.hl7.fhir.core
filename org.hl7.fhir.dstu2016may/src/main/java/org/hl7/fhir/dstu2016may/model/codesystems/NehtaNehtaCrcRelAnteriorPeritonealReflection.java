@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,89 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaCrcRelAnteriorPeritonealReflection {
 
-        /**
-         * The rectal tumour is entirely above the level of the peritoneal reflection anteriorly
-         */
-        ENTIRELYABOVE, 
-        /**
-         * The rectal tumour is astride (or at) the level of the peritoneal reflection anteriorly
-         */
-        ASTRIDE, 
-        /**
-         * The rectal tumour is entirely below the level of the peritoneal reflection anteriorly
-         */
-        ENTIRELYBELOW, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static NehtaNehtaCrcRelAnteriorPeritonealReflection fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("entirely_above".equals(codeString))
-          return ENTIRELYABOVE;
-        if ("astride".equals(codeString))
-          return ASTRIDE;
-        if ("entirely_below".equals(codeString))
-          return ENTIRELYBELOW;
-        throw new FHIRException("Unknown NehtaNehtaCrcRelAnteriorPeritonealReflection code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ENTIRELYABOVE: return "entirely_above";
-            case ASTRIDE: return "astride";
-            case ENTIRELYBELOW: return "entirely_below";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/nehta-crc-rel-anterior-peritoneal-reflection";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ENTIRELYABOVE: return "The rectal tumour is entirely above the level of the peritoneal reflection anteriorly";
-            case ASTRIDE: return "The rectal tumour is astride (or at) the level of the peritoneal reflection anteriorly";
-            case ENTIRELYBELOW: return "The rectal tumour is entirely below the level of the peritoneal reflection anteriorly";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ENTIRELYABOVE: return "Entirely above";
-            case ASTRIDE: return "Astride";
-            case ENTIRELYBELOW: return "Entirely below";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The rectal tumour is entirely above the level of the peritoneal reflection
+   * anteriorly
+   */
+  ENTIRELYABOVE,
+  /**
+   * The rectal tumour is astride (or at) the level of the peritoneal reflection
+   * anteriorly
+   */
+  ASTRIDE,
+  /**
+   * The rectal tumour is entirely below the level of the peritoneal reflection
+   * anteriorly
+   */
+  ENTIRELYBELOW,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static NehtaNehtaCrcRelAnteriorPeritonealReflection fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("entirely_above".equals(codeString))
+      return ENTIRELYABOVE;
+    if ("astride".equals(codeString))
+      return ASTRIDE;
+    if ("entirely_below".equals(codeString))
+      return ENTIRELYBELOW;
+    throw new FHIRException("Unknown NehtaNehtaCrcRelAnteriorPeritonealReflection code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ENTIRELYABOVE:
+      return "entirely_above";
+    case ASTRIDE:
+      return "astride";
+    case ENTIRELYBELOW:
+      return "entirely_below";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/nehta-crc-rel-anterior-peritoneal-reflection";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ENTIRELYABOVE:
+      return "The rectal tumour is entirely above the level of the peritoneal reflection anteriorly";
+    case ASTRIDE:
+      return "The rectal tumour is astride (or at) the level of the peritoneal reflection anteriorly";
+    case ENTIRELYBELOW:
+      return "The rectal tumour is entirely below the level of the peritoneal reflection anteriorly";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ENTIRELYABOVE:
+      return "Entirely above";
+    case ASTRIDE:
+      return "Astride";
+    case ENTIRELYBELOW:
+      return "Entirely below";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

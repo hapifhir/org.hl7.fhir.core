@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,75 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConstraintSeverity {
 
-        /**
-         * If the constraint is violated, the resource is not conformant.
-         */
-        ERROR, 
-        /**
-         * If the constraint is violated, the resource is conformant, but it is not necessarily following best practice.
-         */
-        WARNING, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ConstraintSeverity fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("error".equals(codeString))
-          return ERROR;
-        if ("warning".equals(codeString))
-          return WARNING;
-        throw new FHIRException("Unknown ConstraintSeverity code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ERROR: return "error";
-            case WARNING: return "warning";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/constraint-severity";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ERROR: return "If the constraint is violated, the resource is not conformant.";
-            case WARNING: return "If the constraint is violated, the resource is conformant, but it is not necessarily following best practice.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ERROR: return "Error";
-            case WARNING: return "Warning";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * If the constraint is violated, the resource is not conformant.
+   */
+  ERROR,
+  /**
+   * If the constraint is violated, the resource is conformant, but it is not
+   * necessarily following best practice.
+   */
+  WARNING,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ConstraintSeverity fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("error".equals(codeString))
+      return ERROR;
+    if ("warning".equals(codeString))
+      return WARNING;
+    throw new FHIRException("Unknown ConstraintSeverity code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ERROR:
+      return "error";
+    case WARNING:
+      return "warning";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/constraint-severity";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ERROR:
+      return "If the constraint is violated, the resource is not conformant.";
+    case WARNING:
+      return "If the constraint is violated, the resource is conformant, but it is not necessarily following best practice.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ERROR:
+      return "Error";
+    case WARNING:
+      return "Warning";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

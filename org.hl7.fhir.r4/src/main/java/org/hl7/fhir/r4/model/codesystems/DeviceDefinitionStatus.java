@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,101 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum DeviceDefinitionStatus {
 
-        /**
-         * The device is available for use.  Note: For *implanted devices*  this means that the device is implanted in the patient.
-         */
-        ACTIVE, 
-        /**
-         * The device is no longer available for use (e.g. lost, expired, damaged).  Note: For *implanted devices*  this means that the device has been removed from the patient.
-         */
-        INACTIVE, 
-        /**
-         * The device was entered in error and voided.
-         */
-        ENTEREDINERROR, 
-        /**
-         * The status of the device has not been determined.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static DeviceDefinitionStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("inactive".equals(codeString))
-          return INACTIVE;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        throw new FHIRException("Unknown DeviceDefinitionStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACTIVE: return "active";
-            case INACTIVE: return "inactive";
-            case ENTEREDINERROR: return "entered-in-error";
-            case UNKNOWN: return "unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/device-definition-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACTIVE: return "The device is available for use.  Note: For *implanted devices*  this means that the device is implanted in the patient.";
-            case INACTIVE: return "The device is no longer available for use (e.g. lost, expired, damaged).  Note: For *implanted devices*  this means that the device has been removed from the patient.";
-            case ENTEREDINERROR: return "The device was entered in error and voided.";
-            case UNKNOWN: return "The status of the device has not been determined.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACTIVE: return "Active";
-            case INACTIVE: return "Inactive";
-            case ENTEREDINERROR: return "Entered in Error";
-            case UNKNOWN: return "Unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The device is available for use. Note: For *implanted devices* this means
+   * that the device is implanted in the patient.
+   */
+  ACTIVE,
+  /**
+   * The device is no longer available for use (e.g. lost, expired, damaged).
+   * Note: For *implanted devices* this means that the device has been removed
+   * from the patient.
+   */
+  INACTIVE,
+  /**
+   * The device was entered in error and voided.
+   */
+  ENTEREDINERROR,
+  /**
+   * The status of the device has not been determined.
+   */
+  UNKNOWN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static DeviceDefinitionStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("active".equals(codeString))
+      return ACTIVE;
+    if ("inactive".equals(codeString))
+      return INACTIVE;
+    if ("entered-in-error".equals(codeString))
+      return ENTEREDINERROR;
+    if ("unknown".equals(codeString))
+      return UNKNOWN;
+    throw new FHIRException("Unknown DeviceDefinitionStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ACTIVE:
+      return "active";
+    case INACTIVE:
+      return "inactive";
+    case ENTEREDINERROR:
+      return "entered-in-error";
+    case UNKNOWN:
+      return "unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/device-definition-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ACTIVE:
+      return "The device is available for use.  Note: For *implanted devices*  this means that the device is implanted in the patient.";
+    case INACTIVE:
+      return "The device is no longer available for use (e.g. lost, expired, damaged).  Note: For *implanted devices*  this means that the device has been removed from the patient.";
+    case ENTEREDINERROR:
+      return "The device was entered in error and voided.";
+    case UNKNOWN:
+      return "The status of the device has not been determined.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ACTIVE:
+      return "Active";
+    case INACTIVE:
+      return "Inactive";
+    case ENTEREDINERROR:
+      return "Entered in Error";
+    case UNKNOWN:
+      return "Unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

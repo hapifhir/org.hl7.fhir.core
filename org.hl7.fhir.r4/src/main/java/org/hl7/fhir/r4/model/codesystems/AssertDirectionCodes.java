@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AssertDirectionCodes {
 
-        /**
-         * The assertion is evaluated on the response. This is the default value.
-         */
-        RESPONSE, 
-        /**
-         * The assertion is evaluated on the request.
-         */
-        REQUEST, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static AssertDirectionCodes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("response".equals(codeString))
-          return RESPONSE;
-        if ("request".equals(codeString))
-          return REQUEST;
-        throw new FHIRException("Unknown AssertDirectionCodes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case RESPONSE: return "response";
-            case REQUEST: return "request";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/assert-direction-codes";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case RESPONSE: return "The assertion is evaluated on the response. This is the default value.";
-            case REQUEST: return "The assertion is evaluated on the request.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case RESPONSE: return "response";
-            case REQUEST: return "request";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The assertion is evaluated on the response. This is the default value.
+   */
+  RESPONSE,
+  /**
+   * The assertion is evaluated on the request.
+   */
+  REQUEST,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static AssertDirectionCodes fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("response".equals(codeString))
+      return RESPONSE;
+    if ("request".equals(codeString))
+      return REQUEST;
+    throw new FHIRException("Unknown AssertDirectionCodes code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case RESPONSE:
+      return "response";
+    case REQUEST:
+      return "request";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/assert-direction-codes";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case RESPONSE:
+      return "The assertion is evaluated on the response. This is the default value.";
+    case REQUEST:
+      return "The assertion is evaluated on the request.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case RESPONSE:
+      return "response";
+    case REQUEST:
+      return "request";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

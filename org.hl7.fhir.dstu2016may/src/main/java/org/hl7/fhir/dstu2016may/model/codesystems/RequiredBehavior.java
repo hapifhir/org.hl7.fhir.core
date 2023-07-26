@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,90 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum RequiredBehavior {
 
-        /**
-         * An item with this behavior must be included in the items processed by the end user; the end user may not choose not to include this item
-         */
-        MUST, 
-        /**
-         * An item with this behavior may be included in the set of items processed by the end user
-         */
-        COULD, 
-        /**
-         * An item with this behavior must be included in the set of items processed by the end user, unless the end user provides documentation as to why the item was not included
-         */
-        MUSTUNLESSDOCUMENTED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static RequiredBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("must".equals(codeString))
-          return MUST;
-        if ("could".equals(codeString))
-          return COULD;
-        if ("must-unless-documented".equals(codeString))
-          return MUSTUNLESSDOCUMENTED;
-        throw new FHIRException("Unknown RequiredBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case MUST: return "must";
-            case COULD: return "could";
-            case MUSTUNLESSDOCUMENTED: return "must-unless-documented";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/required-behavior";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case MUST: return "An item with this behavior must be included in the items processed by the end user; the end user may not choose not to include this item";
-            case COULD: return "An item with this behavior may be included in the set of items processed by the end user";
-            case MUSTUNLESSDOCUMENTED: return "An item with this behavior must be included in the set of items processed by the end user, unless the end user provides documentation as to why the item was not included";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case MUST: return "Must";
-            case COULD: return "Could";
-            case MUSTUNLESSDOCUMENTED: return "Must Unless Documented";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * An item with this behavior must be included in the items processed by the end
+   * user; the end user may not choose not to include this item
+   */
+  MUST,
+  /**
+   * An item with this behavior may be included in the set of items processed by
+   * the end user
+   */
+  COULD,
+  /**
+   * An item with this behavior must be included in the set of items processed by
+   * the end user, unless the end user provides documentation as to why the item
+   * was not included
+   */
+  MUSTUNLESSDOCUMENTED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static RequiredBehavior fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("must".equals(codeString))
+      return MUST;
+    if ("could".equals(codeString))
+      return COULD;
+    if ("must-unless-documented".equals(codeString))
+      return MUSTUNLESSDOCUMENTED;
+    throw new FHIRException("Unknown RequiredBehavior code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case MUST:
+      return "must";
+    case COULD:
+      return "could";
+    case MUSTUNLESSDOCUMENTED:
+      return "must-unless-documented";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/required-behavior";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case MUST:
+      return "An item with this behavior must be included in the items processed by the end user; the end user may not choose not to include this item";
+    case COULD:
+      return "An item with this behavior may be included in the set of items processed by the end user";
+    case MUSTUNLESSDOCUMENTED:
+      return "An item with this behavior must be included in the set of items processed by the end user, unless the end user provides documentation as to why the item was not included";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case MUST:
+      return "Must";
+    case COULD:
+      return "Could";
+    case MUSTUNLESSDOCUMENTED:
+      return "Must Unless Documented";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

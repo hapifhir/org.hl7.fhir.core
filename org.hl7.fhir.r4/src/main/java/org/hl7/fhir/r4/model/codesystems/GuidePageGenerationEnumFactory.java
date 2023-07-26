@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class GuidePageGenerationEnumFactory implements EnumFactory<GuidePageGeneration> {
@@ -50,7 +46,7 @@ public class GuidePageGenerationEnumFactory implements EnumFactory<GuidePageGene
       return GuidePageGeneration.XML;
     if ("generated".equals(codeString))
       return GuidePageGeneration.GENERATED;
-    throw new IllegalArgumentException("Unknown GuidePageGeneration code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown GuidePageGeneration code '" + codeString + "'");
   }
 
   public String toCode(GuidePageGeneration code) {
@@ -65,8 +61,8 @@ public class GuidePageGenerationEnumFactory implements EnumFactory<GuidePageGene
     return "?";
   }
 
-    public String toSystem(GuidePageGeneration code) {
-      return code.getSystem();
-      }
+  public String toSystem(GuidePageGeneration code) {
+    return code.getSystem();
+  }
 
 }

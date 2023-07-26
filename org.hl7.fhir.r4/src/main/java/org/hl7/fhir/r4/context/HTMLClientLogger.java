@@ -29,8 +29,6 @@ package org.hl7.fhir.r4.context;
   
  */
 
-
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
@@ -45,7 +43,7 @@ public class HTMLClientLogger implements ToolingClientLogger {
   private PrintStream file;
   private int id = 0;
   private String lastId;
-  
+
   public HTMLClientLogger(String log) {
     if (log != null) {
       try {
@@ -61,10 +59,10 @@ public class HTMLClientLogger implements ToolingClientLogger {
       return;
     id++;
     lastId = Integer.toString(id);
-    file.println("<hr/><a name=\"l"+lastId+"\"> </a>");
+    file.println("<hr/><a name=\"l" + lastId + "\"> </a>");
     file.println("<pre>");
-    file.println(method+" "+url+" HTTP/1.0");
-    for (String s : headers)  
+    file.println(method + " " + url + " HTTP/1.0");
+    for (String s : headers)
       file.println(Utilities.escapeXml(s));
     if (body != null) {
       file.println("");
@@ -82,7 +80,7 @@ public class HTMLClientLogger implements ToolingClientLogger {
       return;
     file.println("<pre>");
     file.println(outcome);
-    for (String s : headers)  
+    for (String s : headers)
       file.println(Utilities.escapeXml(s));
     if (body != null) {
       file.println("");
@@ -99,7 +97,7 @@ public class HTMLClientLogger implements ToolingClientLogger {
   }
 
   public void clearLastId() {
-    lastId = null;    
+    lastId = null;
   }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MessageConformanceEventMode {
 
-        /**
-         * The application sends requests and receives responses.
-         */
-        SENDER, 
-        /**
-         * The application receives requests and sends responses.
-         */
-        RECEIVER, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MessageConformanceEventMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("sender".equals(codeString))
-          return SENDER;
-        if ("receiver".equals(codeString))
-          return RECEIVER;
-        throw new FHIRException("Unknown MessageConformanceEventMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SENDER: return "sender";
-            case RECEIVER: return "receiver";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/message-conformance-event-mode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SENDER: return "The application sends requests and receives responses.";
-            case RECEIVER: return "The application receives requests and sends responses.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SENDER: return "Sender";
-            case RECEIVER: return "Receiver";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The application sends requests and receives responses.
+   */
+  SENDER,
+  /**
+   * The application receives requests and sends responses.
+   */
+  RECEIVER,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MessageConformanceEventMode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("sender".equals(codeString))
+      return SENDER;
+    if ("receiver".equals(codeString))
+      return RECEIVER;
+    throw new FHIRException("Unknown MessageConformanceEventMode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SENDER:
+      return "sender";
+    case RECEIVER:
+      return "receiver";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/message-conformance-event-mode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SENDER:
+      return "The application sends requests and receives responses.";
+    case RECEIVER:
+      return "The application receives requests and sends responses.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SENDER:
+      return "Sender";
+    case RECEIVER:
+      return "Receiver";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

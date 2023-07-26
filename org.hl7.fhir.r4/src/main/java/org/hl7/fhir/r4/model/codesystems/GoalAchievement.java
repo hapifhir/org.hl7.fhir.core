@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,122 +31,162 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum GoalAchievement {
 
-        /**
-         * The goal is being sought but has not yet been reached. (Also applies if the goal was reached in the past but there has been regression and the goal is again being sought).
-         */
-        INPROGRESS, 
-        /**
-         * The goal is being sought, and is progressing.
-         */
-        IMPROVING, 
-        /**
-         * The goal is being sought, but is regressing.
-         */
-        WORSENING, 
-        /**
-         * The goal is being sought, but the trend is flat.
-         */
-        NOCHANGE, 
-        /**
-         * The goal has been met.
-         */
-        ACHIEVED, 
-        /**
-         * The goal has been met, but ongoing activity is needed to sustain the goal objective.
-         */
-        SUSTAINING, 
-        /**
-         * The goal has not been met and there might or might not have been progress towards target.
-         */
-        NOTACHIEVED, 
-        /**
-         * The goal has not been met and little to no progress towards target.
-         */
-        NOPROGRESS, 
-        /**
-         * The goal is not possible to be met.
-         */
-        NOTATTAINABLE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static GoalAchievement fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("in-progress".equals(codeString))
-          return INPROGRESS;
-        if ("improving".equals(codeString))
-          return IMPROVING;
-        if ("worsening".equals(codeString))
-          return WORSENING;
-        if ("no-change".equals(codeString))
-          return NOCHANGE;
-        if ("achieved".equals(codeString))
-          return ACHIEVED;
-        if ("sustaining".equals(codeString))
-          return SUSTAINING;
-        if ("not-achieved".equals(codeString))
-          return NOTACHIEVED;
-        if ("no-progress".equals(codeString))
-          return NOPROGRESS;
-        if ("not-attainable".equals(codeString))
-          return NOTATTAINABLE;
-        throw new FHIRException("Unknown GoalAchievement code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INPROGRESS: return "in-progress";
-            case IMPROVING: return "improving";
-            case WORSENING: return "worsening";
-            case NOCHANGE: return "no-change";
-            case ACHIEVED: return "achieved";
-            case SUSTAINING: return "sustaining";
-            case NOTACHIEVED: return "not-achieved";
-            case NOPROGRESS: return "no-progress";
-            case NOTATTAINABLE: return "not-attainable";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/goal-achievement";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INPROGRESS: return "The goal is being sought but has not yet been reached. (Also applies if the goal was reached in the past but there has been regression and the goal is again being sought).";
-            case IMPROVING: return "The goal is being sought, and is progressing.";
-            case WORSENING: return "The goal is being sought, but is regressing.";
-            case NOCHANGE: return "The goal is being sought, but the trend is flat.";
-            case ACHIEVED: return "The goal has been met.";
-            case SUSTAINING: return "The goal has been met, but ongoing activity is needed to sustain the goal objective.";
-            case NOTACHIEVED: return "The goal has not been met and there might or might not have been progress towards target.";
-            case NOPROGRESS: return "The goal has not been met and little to no progress towards target.";
-            case NOTATTAINABLE: return "The goal is not possible to be met.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INPROGRESS: return "In Progress";
-            case IMPROVING: return "Improving";
-            case WORSENING: return "Worsening";
-            case NOCHANGE: return "No Change";
-            case ACHIEVED: return "Achieved";
-            case SUSTAINING: return "Sustaining";
-            case NOTACHIEVED: return "Not Achieved";
-            case NOPROGRESS: return "No Progress";
-            case NOTATTAINABLE: return "Not Attainable";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The goal is being sought but has not yet been reached. (Also applies if the
+   * goal was reached in the past but there has been regression and the goal is
+   * again being sought).
+   */
+  INPROGRESS,
+  /**
+   * The goal is being sought, and is progressing.
+   */
+  IMPROVING,
+  /**
+   * The goal is being sought, but is regressing.
+   */
+  WORSENING,
+  /**
+   * The goal is being sought, but the trend is flat.
+   */
+  NOCHANGE,
+  /**
+   * The goal has been met.
+   */
+  ACHIEVED,
+  /**
+   * The goal has been met, but ongoing activity is needed to sustain the goal
+   * objective.
+   */
+  SUSTAINING,
+  /**
+   * The goal has not been met and there might or might not have been progress
+   * towards target.
+   */
+  NOTACHIEVED,
+  /**
+   * The goal has not been met and little to no progress towards target.
+   */
+  NOPROGRESS,
+  /**
+   * The goal is not possible to be met.
+   */
+  NOTATTAINABLE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static GoalAchievement fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("in-progress".equals(codeString))
+      return INPROGRESS;
+    if ("improving".equals(codeString))
+      return IMPROVING;
+    if ("worsening".equals(codeString))
+      return WORSENING;
+    if ("no-change".equals(codeString))
+      return NOCHANGE;
+    if ("achieved".equals(codeString))
+      return ACHIEVED;
+    if ("sustaining".equals(codeString))
+      return SUSTAINING;
+    if ("not-achieved".equals(codeString))
+      return NOTACHIEVED;
+    if ("no-progress".equals(codeString))
+      return NOPROGRESS;
+    if ("not-attainable".equals(codeString))
+      return NOTATTAINABLE;
+    throw new FHIRException("Unknown GoalAchievement code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INPROGRESS:
+      return "in-progress";
+    case IMPROVING:
+      return "improving";
+    case WORSENING:
+      return "worsening";
+    case NOCHANGE:
+      return "no-change";
+    case ACHIEVED:
+      return "achieved";
+    case SUSTAINING:
+      return "sustaining";
+    case NOTACHIEVED:
+      return "not-achieved";
+    case NOPROGRESS:
+      return "no-progress";
+    case NOTATTAINABLE:
+      return "not-attainable";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/goal-achievement";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INPROGRESS:
+      return "The goal is being sought but has not yet been reached. (Also applies if the goal was reached in the past but there has been regression and the goal is again being sought).";
+    case IMPROVING:
+      return "The goal is being sought, and is progressing.";
+    case WORSENING:
+      return "The goal is being sought, but is regressing.";
+    case NOCHANGE:
+      return "The goal is being sought, but the trend is flat.";
+    case ACHIEVED:
+      return "The goal has been met.";
+    case SUSTAINING:
+      return "The goal has been met, but ongoing activity is needed to sustain the goal objective.";
+    case NOTACHIEVED:
+      return "The goal has not been met and there might or might not have been progress towards target.";
+    case NOPROGRESS:
+      return "The goal has not been met and little to no progress towards target.";
+    case NOTATTAINABLE:
+      return "The goal is not possible to be met.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INPROGRESS:
+      return "In Progress";
+    case IMPROVING:
+      return "Improving";
+    case WORSENING:
+      return "Worsening";
+    case NOCHANGE:
+      return "No Change";
+    case ACHIEVED:
+      return "Achieved";
+    case SUSTAINING:
+      return "Sustaining";
+    case NOTACHIEVED:
+      return "Not Achieved";
+    case NOPROGRESS:
+      return "No Progress";
+    case NOTATTAINABLE:
+      return "Not Attainable";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

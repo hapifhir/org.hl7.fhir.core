@@ -1,6 +1,10 @@
 package org.hl7.fhir.r4.utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -31,7 +35,6 @@ import java.util.*;
   
  */
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4.context.IWorkerContext;
@@ -50,10 +53,10 @@ public class LiquidEngine implements IEvaluationContext {
   public interface ILiquidEngineIcludeResolver {
     public String fetchInclude(LiquidEngine engine, String name);
   }
-  
+
   private IEvaluationContext externalHostServices;
   private FHIRPathEngine engine;
-  private ILiquidEngineIcludeResolver includeResolver; 
+  private ILiquidEngineIcludeResolver includeResolver;
 
   private class LiquidEngineContext {
     private Object externalContext;
@@ -77,7 +80,7 @@ public class LiquidEngine implements IEvaluationContext {
     engine = new FHIRPathEngine(context);
     engine.setHostServices(this);
   }
-  
+
   public ILiquidEngineIcludeResolver getIncludeResolver() {
     return includeResolver;
   }
@@ -100,7 +103,8 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   private abstract class LiquidNode {
-    protected void closeUp() {}
+    protected void closeUp() {
+    }
 
     public abstract void evaluate(StringBuilder b, Resource resource, LiquidEngineContext ctxt) throws FHIRException;
   }
@@ -147,7 +151,7 @@ public class LiquidEngine implements IEvaluationContext {
     public void evaluate(StringBuilder b, Resource resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null)
         compiled = engine.parse(condition);
-      boolean ok = engine.evaluateToBoolean(ctxt, resource, resource, resource, compiled); 
+      boolean ok = engine.evaluateToBoolean(ctxt, resource, resource, resource, compiled);
       List<LiquidNode> list = ok ? thenBody : elseBody;
       for (LiquidNode n : list) {
         n.evaluate(b, resource, ctxt);
@@ -160,6 +164,7 @@ public class LiquidEngine implements IEvaluationContext {
     private String condition;
     private ExpressionNode compiled;
     private List<LiquidNode> body = new ArrayList<>();
+
     @Override
     public void evaluate(StringBuilder b, Resource resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null)
@@ -184,7 +189,7 @@ public class LiquidEngine implements IEvaluationContext {
       String src = includeResolver.fetchInclude(LiquidEngine.this, page);
       LiquidParser parser = new LiquidParser(src);
       LiquidDocument doc = parser.parse(page);
-      LiquidEngineContext nctxt =  new LiquidEngineContext(ctxt.externalContext);
+      LiquidEngineContext nctxt = new LiquidEngineContext(ctxt.externalContext);
       Tuple incl = new Tuple();
       nctxt.vars.put("include", incl);
       for (String s : params.keySet()) {
@@ -196,7 +201,7 @@ public class LiquidEngine implements IEvaluationContext {
     }
   }
 
-  public static class LiquidDocument  {
+  public static class LiquidDocument {
     private List<LiquidNode> body = new ArrayList<>();
 
   }
@@ -220,15 +225,15 @@ public class LiquidEngine implements IEvaluationContext {
     }
 
     private char next2() {
-      if (cursor >= source.length()-1)
+      if (cursor >= source.length() - 1)
         return 0;
       else
-        return source.charAt(cursor+1);
+        return source.charAt(cursor + 1);
     }
 
     private char grab() {
       cursor++;
-      return source.charAt(cursor-1);
+      return source.charAt(cursor - 1);
     }
 
     public LiquidDocument parse(String name) throws FHIRException {
@@ -241,8 +246,8 @@ public class LiquidEngine implements IEvaluationContext {
     private String parseList(List<LiquidNode> list, String[] terminators) throws FHIRException {
       String close = null;
       while (cursor < source.length()) {
-        if (next1() == '{' && (next2() == '%' || next2() == '{' )) {
-          if (next2() == '%') { 
+        if (next1() == '{' && (next2() == '%' || next2() == '{')) {
+          if (next2() == '%') {
             String cnt = parseTag('%');
             if (Utilities.existsInList(cnt, terminators)) {
               close = cnt;
@@ -254,30 +259,32 @@ public class LiquidEngine implements IEvaluationContext {
             else if (cnt.startsWith("include "))
               list.add(parseInclude(cnt.substring(7).trim()));
             else
-              throw new FHIRException("Script "+name+": Script "+name+": Unknown flow control statement "+cnt);
+              throw new FHIRException(
+                  "Script " + name + ": Script " + name + ": Unknown flow control statement " + cnt);
           } else { // next2() == '{'
             list.add(parseStatement());
           }
         } else {
-          if (list.size() == 0 || !(list.get(list.size()-1) instanceof LiquidConstant))
+          if (list.size() == 0 || !(list.get(list.size() - 1) instanceof LiquidConstant))
             list.add(new LiquidConstant());
-          ((LiquidConstant) list.get(list.size()-1)).addChar(grab());
+          ((LiquidConstant) list.get(list.size() - 1)).addChar(grab());
         }
       }
       for (LiquidNode n : list)
         n.closeUp();
       if (terminators.length > 0)
         if (!Utilities.existsInList(close, terminators))
-          throw new FHIRException("Script "+name+": Script "+name+": Found end of script looking for "+terminators);
+          throw new FHIRException(
+              "Script " + name + ": Script " + name + ": Found end of script looking for " + terminators);
       return close;
     }
 
     private LiquidNode parseIf(String cnt) throws FHIRException {
       LiquidIf res = new LiquidIf();
       res.condition = cnt.substring(3).trim();
-      String term = parseList(res.thenBody, new String[] { "else", "endif"} );
+      String term = parseList(res.thenBody, new String[] { "else", "endif" });
       if ("else".equals(term))
-        term = parseList(res.elseBody, new String[] { "endif"} );
+        term = parseList(res.elseBody, new String[] { "endif" });
       return res;
     }
 
@@ -286,7 +293,7 @@ public class LiquidEngine implements IEvaluationContext {
       while (i < cnt.length() && !Character.isWhitespace(cnt.charAt(i)))
         i++;
       if (i == cnt.length() || i == 0)
-        throw new FHIRException("Script "+name+": Error reading include: "+cnt);
+        throw new FHIRException("Script " + name + ": Error reading include: " + cnt);
       LiquidInclude res = new LiquidInclude();
       res.page = cnt.substring(0, i);
       while (i < cnt.length() && Character.isWhitespace(cnt.charAt(i)))
@@ -295,21 +302,20 @@ public class LiquidEngine implements IEvaluationContext {
         int j = i;
         while (i < cnt.length() && cnt.charAt(i) != '=')
           i++;
-        if (i >= cnt.length() || j == i) 
-          throw new FHIRException("Script "+name+": Error reading include: "+cnt);
+        if (i >= cnt.length() || j == i)
+          throw new FHIRException("Script " + name + ": Error reading include: " + cnt);
         String n = cnt.substring(j, i);
-          if (res.params.containsKey(n)) 
-            throw new FHIRException("Script "+name+": Error reading include: "+cnt);
+        if (res.params.containsKey(n))
+          throw new FHIRException("Script " + name + ": Error reading include: " + cnt);
+        i++;
+        ExpressionNodeWithOffset t = engine.parsePartial(cnt, i);
+        i = t.getOffset();
+        res.params.put(n, t.getNode());
+        while (i < cnt.length() && Character.isWhitespace(cnt.charAt(i)))
           i++;
-          ExpressionNodeWithOffset t = engine.parsePartial(cnt, i);
-          i = t.getOffset();
-          res.params.put(n, t.getNode());
-          while (i < cnt.length() && Character.isWhitespace(cnt.charAt(i)))
-            i++;
       }
       return res;
     }
-  
 
     private LiquidNode parseLoop(String cnt) throws FHIRException {
       int i = 0;
@@ -323,36 +329,36 @@ public class LiquidEngine implements IEvaluationContext {
       while (!Character.isWhitespace(cnt.charAt(i)))
         i++;
       if (!"in".equals(cnt.substring(j, i)))
-        throw new FHIRException("Script "+name+": Script "+name+": Error reading loop: "+cnt);
+        throw new FHIRException("Script " + name + ": Script " + name + ": Error reading loop: " + cnt);
       res.condition = cnt.substring(i).trim();
-      parseList(res.body, new String[] { "endloop"} );
+      parseList(res.body, new String[] { "endloop" });
       return res;
     }
 
     private String parseTag(char ch) throws FHIRException {
-      grab(); 
+      grab();
       grab();
       StringBuilder b = new StringBuilder();
       while (cursor < source.length() && !(next1() == '%' && next2() == '}')) {
         b.append(grab());
       }
-      if (!(next1() == '%' && next2() == '}')) 
-        throw new FHIRException("Script "+name+": Unterminated Liquid statement {% "+b.toString());
-      grab(); 
+      if (!(next1() == '%' && next2() == '}'))
+        throw new FHIRException("Script " + name + ": Unterminated Liquid statement {% " + b.toString());
+      grab();
       grab();
       return b.toString().trim();
     }
 
     private LiquidStatement parseStatement() throws FHIRException {
-      grab(); 
+      grab();
       grab();
       StringBuilder b = new StringBuilder();
       while (cursor < source.length() && !(next1() == '}' && next2() == '}')) {
         b.append(grab());
       }
-      if (!(next1() == '}' && next2() == '}')) 
-        throw new FHIRException("Script "+name+": Unterminated Liquid statement {{ "+b.toString());
-      grab(); 
+      if (!(next1() == '}' && next2() == '}'))
+        throw new FHIRException("Script " + name + ": Unterminated Liquid statement {{ " + b.toString());
+      grab();
       grab();
       LiquidStatement res = new LiquidStatement();
       res.statement = b.toString().trim();
@@ -394,7 +400,8 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   @Override
-  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
+  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+      throws PathEngineException {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
@@ -402,7 +409,8 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+      List<List<Base>> parameters) {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;

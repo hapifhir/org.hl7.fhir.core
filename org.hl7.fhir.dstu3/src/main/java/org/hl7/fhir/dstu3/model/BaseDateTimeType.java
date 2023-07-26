@@ -39,16 +39,16 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.hl7.fhir.utilities.DateTimeUtil;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.parser.DataFormatException;
-import org.hl7.fhir.utilities.DateTimeUtil;
-
-import javax.annotation.Nullable;
 
 public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 

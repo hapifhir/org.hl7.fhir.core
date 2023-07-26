@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,104 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NarrativeStatus {
 
-        /**
-         * The contents of the narrative are entirely generated from the core elements in the content.
-         */
-        GENERATED, 
-        /**
-         * The contents of the narrative are entirely generated from the core elements in the content and some of the content is generated from extensions. The narrative SHALL reflect the impact of all modifier extensions.
-         */
-        EXTENSIONS, 
-        /**
-         * The contents of the narrative may contain additional information not found in the structured data. Note that there is no computable way to determine what the extra information is, other than by human inspection.
-         */
-        ADDITIONAL, 
-        /**
-         * The contents of the narrative are some equivalent of "No human-readable text provided in this case".
-         */
-        EMPTY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static NarrativeStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("generated".equals(codeString))
-          return GENERATED;
-        if ("extensions".equals(codeString))
-          return EXTENSIONS;
-        if ("additional".equals(codeString))
-          return ADDITIONAL;
-        if ("empty".equals(codeString))
-          return EMPTY;
-        throw new FHIRException("Unknown NarrativeStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case GENERATED: return "generated";
-            case EXTENSIONS: return "extensions";
-            case ADDITIONAL: return "additional";
-            case EMPTY: return "empty";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/narrative-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case GENERATED: return "The contents of the narrative are entirely generated from the core elements in the content.";
-            case EXTENSIONS: return "The contents of the narrative are entirely generated from the core elements in the content and some of the content is generated from extensions. The narrative SHALL reflect the impact of all modifier extensions.";
-            case ADDITIONAL: return "The contents of the narrative may contain additional information not found in the structured data. Note that there is no computable way to determine what the extra information is, other than by human inspection.";
-            case EMPTY: return "The contents of the narrative are some equivalent of \"No human-readable text provided in this case\".";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case GENERATED: return "Generated";
-            case EXTENSIONS: return "Extensions";
-            case ADDITIONAL: return "Additional";
-            case EMPTY: return "Empty";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The contents of the narrative are entirely generated from the core elements
+   * in the content.
+   */
+  GENERATED,
+  /**
+   * The contents of the narrative are entirely generated from the core elements
+   * in the content and some of the content is generated from extensions. The
+   * narrative SHALL reflect the impact of all modifier extensions.
+   */
+  EXTENSIONS,
+  /**
+   * The contents of the narrative may contain additional information not found in
+   * the structured data. Note that there is no computable way to determine what
+   * the extra information is, other than by human inspection.
+   */
+  ADDITIONAL,
+  /**
+   * The contents of the narrative are some equivalent of "No human-readable text
+   * provided in this case".
+   */
+  EMPTY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static NarrativeStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("generated".equals(codeString))
+      return GENERATED;
+    if ("extensions".equals(codeString))
+      return EXTENSIONS;
+    if ("additional".equals(codeString))
+      return ADDITIONAL;
+    if ("empty".equals(codeString))
+      return EMPTY;
+    throw new FHIRException("Unknown NarrativeStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case GENERATED:
+      return "generated";
+    case EXTENSIONS:
+      return "extensions";
+    case ADDITIONAL:
+      return "additional";
+    case EMPTY:
+      return "empty";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/narrative-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case GENERATED:
+      return "The contents of the narrative are entirely generated from the core elements in the content.";
+    case EXTENSIONS:
+      return "The contents of the narrative are entirely generated from the core elements in the content and some of the content is generated from extensions. The narrative SHALL reflect the impact of all modifier extensions.";
+    case ADDITIONAL:
+      return "The contents of the narrative may contain additional information not found in the structured data. Note that there is no computable way to determine what the extra information is, other than by human inspection.";
+    case EMPTY:
+      return "The contents of the narrative are some equivalent of \"No human-readable text provided in this case\".";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case GENERATED:
+      return "Generated";
+    case EXTENSIONS:
+      return "Extensions";
+    case ADDITIONAL:
+      return "Additional";
+    case EMPTY:
+      return "Empty";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SortDirection {
 
-        /**
-         * Sort by the value ascending, so that lower values appear first.
-         */
-        ASCENDING, 
-        /**
-         * Sort by the value descending, so that lower values appear last.
-         */
-        DESCENDING, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static SortDirection fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("ascending".equals(codeString))
-          return ASCENDING;
-        if ("descending".equals(codeString))
-          return DESCENDING;
-        throw new FHIRException("Unknown SortDirection code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ASCENDING: return "ascending";
-            case DESCENDING: return "descending";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/sort-direction";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ASCENDING: return "Sort by the value ascending, so that lower values appear first.";
-            case DESCENDING: return "Sort by the value descending, so that lower values appear last.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ASCENDING: return "Ascending";
-            case DESCENDING: return "Descending";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Sort by the value ascending, so that lower values appear first.
+   */
+  ASCENDING,
+  /**
+   * Sort by the value descending, so that lower values appear last.
+   */
+  DESCENDING,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static SortDirection fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("ascending".equals(codeString))
+      return ASCENDING;
+    if ("descending".equals(codeString))
+      return DESCENDING;
+    throw new FHIRException("Unknown SortDirection code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ASCENDING:
+      return "ascending";
+    case DESCENDING:
+      return "descending";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/sort-direction";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ASCENDING:
+      return "Sort by the value ascending, so that lower values appear first.";
+    case DESCENDING:
+      return "Sort by the value descending, so that lower values appear last.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ASCENDING:
+      return "Ascending";
+    case DESCENDING:
+      return "Descending";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

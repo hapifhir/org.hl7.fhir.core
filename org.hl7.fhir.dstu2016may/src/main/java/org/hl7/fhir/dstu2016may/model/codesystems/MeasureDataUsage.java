@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,76 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MeasureDataUsage {
 
-        /**
-         * The data is intended to be provided as additional information alongside the measure results
-         */
-        SUPPLEMENTALDATA, 
-        /**
-         * The data is intended to be used to calculate and apply a risk adjustment model for the measure
-         */
-        RISKADJUSTMENTFACTOR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MeasureDataUsage fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("supplemental-data".equals(codeString))
-          return SUPPLEMENTALDATA;
-        if ("risk-adjustment-factor".equals(codeString))
-          return RISKADJUSTMENTFACTOR;
-        throw new FHIRException("Unknown MeasureDataUsage code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SUPPLEMENTALDATA: return "supplemental-data";
-            case RISKADJUSTMENTFACTOR: return "risk-adjustment-factor";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/measure-data-usage";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SUPPLEMENTALDATA: return "The data is intended to be provided as additional information alongside the measure results";
-            case RISKADJUSTMENTFACTOR: return "The data is intended to be used to calculate and apply a risk adjustment model for the measure";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SUPPLEMENTALDATA: return "Supplemental Data";
-            case RISKADJUSTMENTFACTOR: return "Risk Adjustment Factor";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The data is intended to be provided as additional information alongside the
+   * measure results
+   */
+  SUPPLEMENTALDATA,
+  /**
+   * The data is intended to be used to calculate and apply a risk adjustment
+   * model for the measure
+   */
+  RISKADJUSTMENTFACTOR,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MeasureDataUsage fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("supplemental-data".equals(codeString))
+      return SUPPLEMENTALDATA;
+    if ("risk-adjustment-factor".equals(codeString))
+      return RISKADJUSTMENTFACTOR;
+    throw new FHIRException("Unknown MeasureDataUsage code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SUPPLEMENTALDATA:
+      return "supplemental-data";
+    case RISKADJUSTMENTFACTOR:
+      return "risk-adjustment-factor";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/measure-data-usage";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SUPPLEMENTALDATA:
+      return "The data is intended to be provided as additional information alongside the measure results";
+    case RISKADJUSTMENTFACTOR:
+      return "The data is intended to be used to calculate and apply a risk adjustment model for the measure";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SUPPLEMENTALDATA:
+      return "Supplemental Data";
+    case RISKADJUSTMENTFACTOR:
+      return "Risk Adjustment Factor";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

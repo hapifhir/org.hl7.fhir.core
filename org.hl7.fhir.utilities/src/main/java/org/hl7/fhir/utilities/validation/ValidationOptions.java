@@ -1,10 +1,9 @@
 package org.hl7.fhir.utilities.validation;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.hl7.fhir.utilities.Utilities;
-
-import java.util.HashSet;
 
 public class ValidationOptions {
   public enum ValueSetMode {

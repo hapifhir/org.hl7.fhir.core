@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,110 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum PropertyRepresentation {
 
-        /**
-         * In XML, this property is represented as an attribute not an element.
-         */
-        XMLATTR, 
-        /**
-         * This element is represented using the XML text attribute (primitives only).
-         */
-        XMLTEXT, 
-        /**
-         * The type of this element is indicated using xsi:type.
-         */
-        TYPEATTR, 
-        /**
-         * Use CDA narrative instead of XHTML.
-         */
-        CDATEXT, 
-        /**
-         * The property is represented using XHTML.
-         */
-        XHTML, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static PropertyRepresentation fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("xmlAttr".equals(codeString))
-          return XMLATTR;
-        if ("xmlText".equals(codeString))
-          return XMLTEXT;
-        if ("typeAttr".equals(codeString))
-          return TYPEATTR;
-        if ("cdaText".equals(codeString))
-          return CDATEXT;
-        if ("xhtml".equals(codeString))
-          return XHTML;
-        throw new FHIRException("Unknown PropertyRepresentation code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case XMLATTR: return "xmlAttr";
-            case XMLTEXT: return "xmlText";
-            case TYPEATTR: return "typeAttr";
-            case CDATEXT: return "cdaText";
-            case XHTML: return "xhtml";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/property-representation";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case XMLATTR: return "In XML, this property is represented as an attribute not an element.";
-            case XMLTEXT: return "This element is represented using the XML text attribute (primitives only).";
-            case TYPEATTR: return "The type of this element is indicated using xsi:type.";
-            case CDATEXT: return "Use CDA narrative instead of XHTML.";
-            case XHTML: return "The property is represented using XHTML.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case XMLATTR: return "XML Attribute";
-            case XMLTEXT: return "XML Text";
-            case TYPEATTR: return "Type Attribute";
-            case CDATEXT: return "CDA Text Format";
-            case XHTML: return "XHTML";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * In XML, this property is represented as an attribute not an element.
+   */
+  XMLATTR,
+  /**
+   * This element is represented using the XML text attribute (primitives only).
+   */
+  XMLTEXT,
+  /**
+   * The type of this element is indicated using xsi:type.
+   */
+  TYPEATTR,
+  /**
+   * Use CDA narrative instead of XHTML.
+   */
+  CDATEXT,
+  /**
+   * The property is represented using XHTML.
+   */
+  XHTML,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static PropertyRepresentation fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("xmlAttr".equals(codeString))
+      return XMLATTR;
+    if ("xmlText".equals(codeString))
+      return XMLTEXT;
+    if ("typeAttr".equals(codeString))
+      return TYPEATTR;
+    if ("cdaText".equals(codeString))
+      return CDATEXT;
+    if ("xhtml".equals(codeString))
+      return XHTML;
+    throw new FHIRException("Unknown PropertyRepresentation code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case XMLATTR:
+      return "xmlAttr";
+    case XMLTEXT:
+      return "xmlText";
+    case TYPEATTR:
+      return "typeAttr";
+    case CDATEXT:
+      return "cdaText";
+    case XHTML:
+      return "xhtml";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/property-representation";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case XMLATTR:
+      return "In XML, this property is represented as an attribute not an element.";
+    case XMLTEXT:
+      return "This element is represented using the XML text attribute (primitives only).";
+    case TYPEATTR:
+      return "The type of this element is indicated using xsi:type.";
+    case CDATEXT:
+      return "Use CDA narrative instead of XHTML.";
+    case XHTML:
+      return "The property is represented using XHTML.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case XMLATTR:
+      return "XML Attribute";
+    case XMLTEXT:
+      return "XML Text";
+    case TYPEATTR:
+      return "Type Attribute";
+    case CDATEXT:
+      return "CDA Text Format";
+    case XHTML:
+      return "XHTML";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

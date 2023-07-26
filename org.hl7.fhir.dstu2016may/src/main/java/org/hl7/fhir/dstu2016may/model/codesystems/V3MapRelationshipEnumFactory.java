@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class V3MapRelationshipEnumFactory implements EnumFactory<V3MapRelationship> {
@@ -48,7 +44,7 @@ public class V3MapRelationshipEnumFactory implements EnumFactory<V3MapRelationsh
       return V3MapRelationship.E;
     if ("NT".equals(codeString))
       return V3MapRelationship.NT;
-    throw new IllegalArgumentException("Unknown V3MapRelationship code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3MapRelationship code '" + codeString + "'");
   }
 
   public String toCode(V3MapRelationship code) {
@@ -61,8 +57,8 @@ public class V3MapRelationshipEnumFactory implements EnumFactory<V3MapRelationsh
     return "?";
   }
 
-    public String toSystem(V3MapRelationship code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3MapRelationship code) {
+    return code.getSystem();
+  }
 
 }

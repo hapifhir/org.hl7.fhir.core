@@ -29,8 +29,6 @@ package org.hl7.fhir.dstu2016may.terminologies;
   
  */
 
-
-
 /*
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
@@ -61,5 +59,5 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 public interface ValueSetExpanderFactory {
-	public ValueSetExpander getExpander();
+  public ValueSetExpander getExpander();
 }

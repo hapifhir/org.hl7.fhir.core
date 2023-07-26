@@ -1,15 +1,12 @@
 package org.hl7.fhir.utilities.json;
 
 import java.io.IOException;
-import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
 /*

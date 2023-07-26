@@ -10,8 +10,6 @@ import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

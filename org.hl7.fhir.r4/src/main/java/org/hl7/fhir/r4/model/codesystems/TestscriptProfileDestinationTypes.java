@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum TestscriptProfileDestinationTypes {
 
-        /**
-         * General FHIR server used to respond to operations sent from a FHIR client.
-         */
-        FHIRSERVER, 
-        /**
-         * A FHIR server acting as a Structured Data Capture Form Manager.
-         */
-        FHIRSDCFORMMANAGER, 
-        /**
-         * A FHIR server acting as a Structured Data Capture Form Processor.
-         */
-        FHIRSDCFORMPROCESSOR, 
-        /**
-         * A FHIR server acting as a Structured Data Capture Form Receiver.
-         */
-        FHIRSDCFORMRECEIVER, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static TestscriptProfileDestinationTypes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("FHIR-Server".equals(codeString))
-          return FHIRSERVER;
-        if ("FHIR-SDC-FormManager".equals(codeString))
-          return FHIRSDCFORMMANAGER;
-        if ("FHIR-SDC-FormProcessor".equals(codeString))
-          return FHIRSDCFORMPROCESSOR;
-        if ("FHIR-SDC-FormReceiver".equals(codeString))
-          return FHIRSDCFORMRECEIVER;
-        throw new FHIRException("Unknown TestscriptProfileDestinationTypes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case FHIRSERVER: return "FHIR-Server";
-            case FHIRSDCFORMMANAGER: return "FHIR-SDC-FormManager";
-            case FHIRSDCFORMPROCESSOR: return "FHIR-SDC-FormProcessor";
-            case FHIRSDCFORMRECEIVER: return "FHIR-SDC-FormReceiver";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case FHIRSERVER: return "General FHIR server used to respond to operations sent from a FHIR client.";
-            case FHIRSDCFORMMANAGER: return "A FHIR server acting as a Structured Data Capture Form Manager.";
-            case FHIRSDCFORMPROCESSOR: return "A FHIR server acting as a Structured Data Capture Form Processor.";
-            case FHIRSDCFORMRECEIVER: return "A FHIR server acting as a Structured Data Capture Form Receiver.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case FHIRSERVER: return "FHIR Server";
-            case FHIRSDCFORMMANAGER: return "FHIR SDC FormManager";
-            case FHIRSDCFORMPROCESSOR: return "FHIR SDC FormProcessor";
-            case FHIRSDCFORMRECEIVER: return "FHIR SDC FormReceiver";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * General FHIR server used to respond to operations sent from a FHIR client.
+   */
+  FHIRSERVER,
+  /**
+   * A FHIR server acting as a Structured Data Capture Form Manager.
+   */
+  FHIRSDCFORMMANAGER,
+  /**
+   * A FHIR server acting as a Structured Data Capture Form Processor.
+   */
+  FHIRSDCFORMPROCESSOR,
+  /**
+   * A FHIR server acting as a Structured Data Capture Form Receiver.
+   */
+  FHIRSDCFORMRECEIVER,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static TestscriptProfileDestinationTypes fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("FHIR-Server".equals(codeString))
+      return FHIRSERVER;
+    if ("FHIR-SDC-FormManager".equals(codeString))
+      return FHIRSDCFORMMANAGER;
+    if ("FHIR-SDC-FormProcessor".equals(codeString))
+      return FHIRSDCFORMPROCESSOR;
+    if ("FHIR-SDC-FormReceiver".equals(codeString))
+      return FHIRSDCFORMRECEIVER;
+    throw new FHIRException("Unknown TestscriptProfileDestinationTypes code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case FHIRSERVER:
+      return "FHIR-Server";
+    case FHIRSDCFORMMANAGER:
+      return "FHIR-SDC-FormManager";
+    case FHIRSDCFORMPROCESSOR:
+      return "FHIR-SDC-FormProcessor";
+    case FHIRSDCFORMRECEIVER:
+      return "FHIR-SDC-FormReceiver";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case FHIRSERVER:
+      return "General FHIR server used to respond to operations sent from a FHIR client.";
+    case FHIRSDCFORMMANAGER:
+      return "A FHIR server acting as a Structured Data Capture Form Manager.";
+    case FHIRSDCFORMPROCESSOR:
+      return "A FHIR server acting as a Structured Data Capture Form Processor.";
+    case FHIRSDCFORMRECEIVER:
+      return "A FHIR server acting as a Structured Data Capture Form Receiver.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case FHIRSERVER:
+      return "FHIR Server";
+    case FHIRSDCFORMMANAGER:
+      return "FHIR SDC FormManager";
+    case FHIRSDCFORMPROCESSOR:
+      return "FHIR SDC FormProcessor";
+    case FHIRSDCFORMRECEIVER:
+      return "FHIR SDC FormReceiver";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

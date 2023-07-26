@@ -30,7 +30,6 @@ package org.hl7.fhir.dstu2.test;
 
 import java.io.File;
 
-
 public class SingleTest {
 
   /**

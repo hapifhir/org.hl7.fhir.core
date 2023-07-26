@@ -1,16 +1,13 @@
 package org.hl7.fhir.validation.cli.tasks;
 
+import java.io.PrintStream;
+
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.Params;
-import org.hl7.fhir.validation.special.R4R5MapTester;
-import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.testexecutor.TestExecutor;
 import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
-
-import java.io.File;
-import java.io.PrintStream;
 
 public class TestsTask extends StandaloneTask{
   @Override

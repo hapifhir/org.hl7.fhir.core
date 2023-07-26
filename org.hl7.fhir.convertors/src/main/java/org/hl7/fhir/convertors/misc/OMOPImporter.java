@@ -1,22 +1,20 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Map;
-import java.util.HashMap;
-
-import org.hl7.fhir.convertors.misc.OMOPImporter.Tracker;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.CSVReader;
-import org.hl7.fhir.utilities.Utilities;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.CSVReader;
+import org.hl7.fhir.utilities.Utilities;
 
 public class OMOPImporter {
 

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,113 +31,146 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CertaintySubcomponentType {
 
-        /**
-         * methodologic concerns reducing internal validity.
-         */
-        RISKOFBIAS, 
-        /**
-         * concerns that findings are not similar enough to support certainty.
-         */
-        INCONSISTENCY, 
-        /**
-         * concerns reducing external validity.
-         */
-        INDIRECTNESS, 
-        /**
-         * High quality evidence.
-         */
-        IMPRECISION, 
-        /**
-         * likelihood that what is published misrepresents what is available to publish.
-         */
-        PUBLICATIONBIAS, 
-        /**
-         * higher certainty due to dose response relationship.
-         */
-        DOSERESPONSEGRADIENT, 
-        /**
-         * higher certainty due to risk of bias in opposite direction.
-         */
-        PLAUSIBLECONFOUNDING, 
-        /**
-         * higher certainty due to large effect size.
-         */
-        LARGEEFFECT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static CertaintySubcomponentType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("RiskOfBias".equals(codeString))
-          return RISKOFBIAS;
-        if ("Inconsistency".equals(codeString))
-          return INCONSISTENCY;
-        if ("Indirectness".equals(codeString))
-          return INDIRECTNESS;
-        if ("Imprecision".equals(codeString))
-          return IMPRECISION;
-        if ("PublicationBias".equals(codeString))
-          return PUBLICATIONBIAS;
-        if ("DoseResponseGradient".equals(codeString))
-          return DOSERESPONSEGRADIENT;
-        if ("PlausibleConfounding".equals(codeString))
-          return PLAUSIBLECONFOUNDING;
-        if ("LargeEffect".equals(codeString))
-          return LARGEEFFECT;
-        throw new FHIRException("Unknown CertaintySubcomponentType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case RISKOFBIAS: return "RiskOfBias";
-            case INCONSISTENCY: return "Inconsistency";
-            case INDIRECTNESS: return "Indirectness";
-            case IMPRECISION: return "Imprecision";
-            case PUBLICATIONBIAS: return "PublicationBias";
-            case DOSERESPONSEGRADIENT: return "DoseResponseGradient";
-            case PLAUSIBLECONFOUNDING: return "PlausibleConfounding";
-            case LARGEEFFECT: return "LargeEffect";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/certainty-subcomponent-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case RISKOFBIAS: return "methodologic concerns reducing internal validity.";
-            case INCONSISTENCY: return "concerns that findings are not similar enough to support certainty.";
-            case INDIRECTNESS: return "concerns reducing external validity.";
-            case IMPRECISION: return "High quality evidence.";
-            case PUBLICATIONBIAS: return "likelihood that what is published misrepresents what is available to publish.";
-            case DOSERESPONSEGRADIENT: return "higher certainty due to dose response relationship.";
-            case PLAUSIBLECONFOUNDING: return "higher certainty due to risk of bias in opposite direction.";
-            case LARGEEFFECT: return "higher certainty due to large effect size.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case RISKOFBIAS: return "Risk of bias";
-            case INCONSISTENCY: return "Inconsistency";
-            case INDIRECTNESS: return "Indirectness";
-            case IMPRECISION: return "Imprecision";
-            case PUBLICATIONBIAS: return "Publication bias";
-            case DOSERESPONSEGRADIENT: return "Dose response gradient";
-            case PLAUSIBLECONFOUNDING: return "Plausible confounding";
-            case LARGEEFFECT: return "Large effect";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * methodologic concerns reducing internal validity.
+   */
+  RISKOFBIAS,
+  /**
+   * concerns that findings are not similar enough to support certainty.
+   */
+  INCONSISTENCY,
+  /**
+   * concerns reducing external validity.
+   */
+  INDIRECTNESS,
+  /**
+   * High quality evidence.
+   */
+  IMPRECISION,
+  /**
+   * likelihood that what is published misrepresents what is available to publish.
+   */
+  PUBLICATIONBIAS,
+  /**
+   * higher certainty due to dose response relationship.
+   */
+  DOSERESPONSEGRADIENT,
+  /**
+   * higher certainty due to risk of bias in opposite direction.
+   */
+  PLAUSIBLECONFOUNDING,
+  /**
+   * higher certainty due to large effect size.
+   */
+  LARGEEFFECT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static CertaintySubcomponentType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("RiskOfBias".equals(codeString))
+      return RISKOFBIAS;
+    if ("Inconsistency".equals(codeString))
+      return INCONSISTENCY;
+    if ("Indirectness".equals(codeString))
+      return INDIRECTNESS;
+    if ("Imprecision".equals(codeString))
+      return IMPRECISION;
+    if ("PublicationBias".equals(codeString))
+      return PUBLICATIONBIAS;
+    if ("DoseResponseGradient".equals(codeString))
+      return DOSERESPONSEGRADIENT;
+    if ("PlausibleConfounding".equals(codeString))
+      return PLAUSIBLECONFOUNDING;
+    if ("LargeEffect".equals(codeString))
+      return LARGEEFFECT;
+    throw new FHIRException("Unknown CertaintySubcomponentType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case RISKOFBIAS:
+      return "RiskOfBias";
+    case INCONSISTENCY:
+      return "Inconsistency";
+    case INDIRECTNESS:
+      return "Indirectness";
+    case IMPRECISION:
+      return "Imprecision";
+    case PUBLICATIONBIAS:
+      return "PublicationBias";
+    case DOSERESPONSEGRADIENT:
+      return "DoseResponseGradient";
+    case PLAUSIBLECONFOUNDING:
+      return "PlausibleConfounding";
+    case LARGEEFFECT:
+      return "LargeEffect";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/certainty-subcomponent-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case RISKOFBIAS:
+      return "methodologic concerns reducing internal validity.";
+    case INCONSISTENCY:
+      return "concerns that findings are not similar enough to support certainty.";
+    case INDIRECTNESS:
+      return "concerns reducing external validity.";
+    case IMPRECISION:
+      return "High quality evidence.";
+    case PUBLICATIONBIAS:
+      return "likelihood that what is published misrepresents what is available to publish.";
+    case DOSERESPONSEGRADIENT:
+      return "higher certainty due to dose response relationship.";
+    case PLAUSIBLECONFOUNDING:
+      return "higher certainty due to risk of bias in opposite direction.";
+    case LARGEEFFECT:
+      return "higher certainty due to large effect size.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case RISKOFBIAS:
+      return "Risk of bias";
+    case INCONSISTENCY:
+      return "Inconsistency";
+    case INDIRECTNESS:
+      return "Indirectness";
+    case IMPRECISION:
+      return "Imprecision";
+    case PUBLICATIONBIAS:
+      return "Publication bias";
+    case DOSERESPONSEGRADIENT:
+      return "Dose response gradient";
+    case PLAUSIBLECONFOUNDING:
+      return "Plausible confounding";
+    case LARGEEFFECT:
+      return "Large effect";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum OperationParameterUse {
 
-        /**
-         * This is an input parameter.
-         */
-        IN, 
-        /**
-         * This is an output parameter.
-         */
-        OUT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static OperationParameterUse fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("in".equals(codeString))
-          return IN;
-        if ("out".equals(codeString))
-          return OUT;
-        throw new FHIRException("Unknown OperationParameterUse code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case IN: return "in";
-            case OUT: return "out";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/operation-parameter-use";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case IN: return "This is an input parameter.";
-            case OUT: return "This is an output parameter.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case IN: return "In";
-            case OUT: return "Out";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * This is an input parameter.
+   */
+  IN,
+  /**
+   * This is an output parameter.
+   */
+  OUT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static OperationParameterUse fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("in".equals(codeString))
+      return IN;
+    if ("out".equals(codeString))
+      return OUT;
+    throw new FHIRException("Unknown OperationParameterUse code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case IN:
+      return "in";
+    case OUT:
+      return "out";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/operation-parameter-use";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case IN:
+      return "This is an input parameter.";
+    case OUT:
+      return "This is an output parameter.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case IN:
+      return "In";
+    case OUT:
+      return "Out";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

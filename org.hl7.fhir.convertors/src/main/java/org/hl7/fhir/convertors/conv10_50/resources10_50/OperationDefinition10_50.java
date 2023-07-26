@@ -10,10 +10,8 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Date
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Integer10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.dstu2.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;

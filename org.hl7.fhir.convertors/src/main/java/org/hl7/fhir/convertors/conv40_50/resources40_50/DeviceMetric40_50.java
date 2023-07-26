@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.conv40_50.resources40_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Timing40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Instant40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;

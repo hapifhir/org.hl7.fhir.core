@@ -38,5 +38,4 @@ public class GraphQLParserTests {
     Assertions.assertNotNull(doc);
   }
 
-
 }

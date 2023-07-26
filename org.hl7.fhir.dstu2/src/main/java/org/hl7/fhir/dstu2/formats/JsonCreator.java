@@ -29,8 +29,6 @@ package org.hl7.fhir.dstu2.formats;
   
  */
 
-
-
 import java.io.IOException;
 import java.math.BigDecimal;
 

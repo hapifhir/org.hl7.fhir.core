@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class MessageReasonEncounterEnumFactory implements EnumFactory<MessageReasonEncounter> {
@@ -54,7 +50,7 @@ public class MessageReasonEncounterEnumFactory implements EnumFactory<MessageRea
       return MessageReasonEncounter.MOVED;
     if ("edit".equals(codeString))
       return MessageReasonEncounter.EDIT;
-    throw new IllegalArgumentException("Unknown MessageReasonEncounter code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown MessageReasonEncounter code '" + codeString + "'");
   }
 
   public String toCode(MessageReasonEncounter code) {
@@ -73,8 +69,8 @@ public class MessageReasonEncounterEnumFactory implements EnumFactory<MessageRea
     return "?";
   }
 
-    public String toSystem(MessageReasonEncounter code) {
-      return code.getSystem();
-      }
+  public String toSystem(MessageReasonEncounter code) {
+    return code.getSystem();
+  }
 
 }

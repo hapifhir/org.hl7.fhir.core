@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcPatientAdoptionInfo {
 
-        /**
-         * An indication that the medical records being viewed are from a time prior to a patient's adoption and therefore cannot be viewed by the adoptive gaurdians.
-         */
-        _526742432, 
-        /**
-         * An indication that the medical records being viewed are from a time after a patient's adoption and can be viewed by the adoptive gaurdians.
-         */
-        _526742433, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static HspcPatientAdoptionInfo fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("526742432".equals(codeString))
-          return _526742432;
-        if ("526742433".equals(codeString))
-          return _526742433;
-        throw new FHIRException("Unknown HspcPatientAdoptionInfo code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _526742432: return "526742432";
-            case _526742433: return "526742433";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/patient-hspc-adoptionInfo";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _526742432: return "An indication that the medical records being viewed are from a time prior to a patient's adoption and therefore cannot be viewed by the adoptive gaurdians.";
-            case _526742433: return "An indication that the medical records being viewed are from a time after a patient's adoption and can be viewed by the adoptive gaurdians.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _526742432: return "Adopted Birth Record";
-            case _526742433: return "Adopted Patient Record";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * An indication that the medical records being viewed are from a time prior to
+   * a patient's adoption and therefore cannot be viewed by the adoptive
+   * gaurdians.
+   */
+  _526742432,
+  /**
+   * An indication that the medical records being viewed are from a time after a
+   * patient's adoption and can be viewed by the adoptive gaurdians.
+   */
+  _526742433,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static HspcPatientAdoptionInfo fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("526742432".equals(codeString))
+      return _526742432;
+    if ("526742433".equals(codeString))
+      return _526742433;
+    throw new FHIRException("Unknown HspcPatientAdoptionInfo code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case _526742432:
+      return "526742432";
+    case _526742433:
+      return "526742433";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/patient-hspc-adoptionInfo";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case _526742432:
+      return "An indication that the medical records being viewed are from a time prior to a patient's adoption and therefore cannot be viewed by the adoptive gaurdians.";
+    case _526742433:
+      return "An indication that the medical records being viewed are from a time after a patient's adoption and can be viewed by the adoptive gaurdians.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case _526742432:
+      return "Adopted Birth Record";
+    case _526742433:
+      return "Adopted Patient Record";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

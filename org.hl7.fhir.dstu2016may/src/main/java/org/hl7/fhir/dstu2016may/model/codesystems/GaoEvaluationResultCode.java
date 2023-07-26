@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,123 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum GaoEvaluationResultCode {
 
-        /**
-         * Order is within identified guidelines.
-         */
-        WITHIN, 
-        /**
-         * Order is outside identified guidelines.
-         */
-        OUTSIDE, 
-        /**
-         * No guidelines apply to order.
-         */
-        NOGUIDELINES, 
-        /**
-         * Evaluation was not completed (e.g., because more information is necessary).
-         */
-        INCOMPLETE, 
-        /**
-         * The evaluation was issued through a manual process.
-         */
-        MANUAL, 
-        /**
-         * No evaluation was performed as the requested service is not covered for this patient.
-         */
-        NOTCOVERED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static GaoEvaluationResultCode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("within".equals(codeString))
-          return WITHIN;
-        if ("outside".equals(codeString))
-          return OUTSIDE;
-        if ("noguidelines".equals(codeString))
-          return NOGUIDELINES;
-        if ("incomplete".equals(codeString))
-          return INCOMPLETE;
-        if ("manual".equals(codeString))
-          return MANUAL;
-        if ("notcovered".equals(codeString))
-          return NOTCOVERED;
-        throw new FHIRException("Unknown GaoEvaluationResultCode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case WITHIN: return "within";
-            case OUTSIDE: return "outside";
-            case NOGUIDELINES: return "noguidelines";
-            case INCOMPLETE: return "incomplete";
-            case MANUAL: return "manual";
-            case NOTCOVERED: return "notcovered";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/evaluation-result-code";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case WITHIN: return "Order is within identified guidelines.";
-            case OUTSIDE: return "Order is outside identified guidelines.";
-            case NOGUIDELINES: return "No guidelines apply to order.";
-            case INCOMPLETE: return "Evaluation was not completed (e.g., because more information is necessary).";
-            case MANUAL: return "The evaluation was issued through a manual process.";
-            case NOTCOVERED: return "No evaluation was performed as the requested service is not covered for this patient.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case WITHIN: return "Within Guidelines";
-            case OUTSIDE: return "Outside Guidelines";
-            case NOGUIDELINES: return "No Guidelines Apply";
-            case INCOMPLETE: return "Evaluation not completed.";
-            case MANUAL: return "Manual Evaluation";
-            case NOTCOVERED: return "Not covered";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Order is within identified guidelines.
+   */
+  WITHIN,
+  /**
+   * Order is outside identified guidelines.
+   */
+  OUTSIDE,
+  /**
+   * No guidelines apply to order.
+   */
+  NOGUIDELINES,
+  /**
+   * Evaluation was not completed (e.g., because more information is necessary).
+   */
+  INCOMPLETE,
+  /**
+   * The evaluation was issued through a manual process.
+   */
+  MANUAL,
+  /**
+   * No evaluation was performed as the requested service is not covered for this
+   * patient.
+   */
+  NOTCOVERED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static GaoEvaluationResultCode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("within".equals(codeString))
+      return WITHIN;
+    if ("outside".equals(codeString))
+      return OUTSIDE;
+    if ("noguidelines".equals(codeString))
+      return NOGUIDELINES;
+    if ("incomplete".equals(codeString))
+      return INCOMPLETE;
+    if ("manual".equals(codeString))
+      return MANUAL;
+    if ("notcovered".equals(codeString))
+      return NOTCOVERED;
+    throw new FHIRException("Unknown GaoEvaluationResultCode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case WITHIN:
+      return "within";
+    case OUTSIDE:
+      return "outside";
+    case NOGUIDELINES:
+      return "noguidelines";
+    case INCOMPLETE:
+      return "incomplete";
+    case MANUAL:
+      return "manual";
+    case NOTCOVERED:
+      return "notcovered";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/evaluation-result-code";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case WITHIN:
+      return "Order is within identified guidelines.";
+    case OUTSIDE:
+      return "Order is outside identified guidelines.";
+    case NOGUIDELINES:
+      return "No guidelines apply to order.";
+    case INCOMPLETE:
+      return "Evaluation was not completed (e.g., because more information is necessary).";
+    case MANUAL:
+      return "The evaluation was issued through a manual process.";
+    case NOTCOVERED:
+      return "No evaluation was performed as the requested service is not covered for this patient.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case WITHIN:
+      return "Within Guidelines";
+    case OUTSIDE:
+      return "Outside Guidelines";
+    case NOGUIDELINES:
+      return "No Guidelines Apply";
+    case INCOMPLETE:
+      return "Evaluation not completed.";
+    case MANUAL:
+      return "Manual Evaluation";
+    case NOTCOVERED:
+      return "Not covered";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

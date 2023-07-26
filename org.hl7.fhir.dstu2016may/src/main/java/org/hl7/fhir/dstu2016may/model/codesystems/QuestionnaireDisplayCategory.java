@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QuestionnaireDisplayCategory {
 
-        /**
-         * The text provides guidances on how to populate or use a portion of the questionnaire (or the questionnaire as a whole).
-         */
-        INSTRUCTIONS, 
-        /**
-         * The text provides guidance on how the information should be or will be handled from a security/confidentiality/access control perspective when completed
-         */
-        SECURITY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static QuestionnaireDisplayCategory fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("instructions".equals(codeString))
-          return INSTRUCTIONS;
-        if ("security".equals(codeString))
-          return SECURITY;
-        throw new FHIRException("Unknown QuestionnaireDisplayCategory code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INSTRUCTIONS: return "instructions";
-            case SECURITY: return "security";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/questionnaire-display-category";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INSTRUCTIONS: return "The text provides guidances on how to populate or use a portion of the questionnaire (or the questionnaire as a whole).";
-            case SECURITY: return "The text provides guidance on how the information should be or will be handled from a security/confidentiality/access control perspective when completed";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INSTRUCTIONS: return "Instructions";
-            case SECURITY: return "Security";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The text provides guidances on how to populate or use a portion of the
+   * questionnaire (or the questionnaire as a whole).
+   */
+  INSTRUCTIONS,
+  /**
+   * The text provides guidance on how the information should be or will be
+   * handled from a security/confidentiality/access control perspective when
+   * completed
+   */
+  SECURITY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static QuestionnaireDisplayCategory fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("instructions".equals(codeString))
+      return INSTRUCTIONS;
+    if ("security".equals(codeString))
+      return SECURITY;
+    throw new FHIRException("Unknown QuestionnaireDisplayCategory code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INSTRUCTIONS:
+      return "instructions";
+    case SECURITY:
+      return "security";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/questionnaire-display-category";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INSTRUCTIONS:
+      return "The text provides guidances on how to populate or use a portion of the questionnaire (or the questionnaire as a whole).";
+    case SECURITY:
+      return "The text provides guidance on how the information should be or will be handled from a security/confidentiality/access control perspective when completed";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INSTRUCTIONS:
+      return "Instructions";
+    case SECURITY:
+      return "Security";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }
