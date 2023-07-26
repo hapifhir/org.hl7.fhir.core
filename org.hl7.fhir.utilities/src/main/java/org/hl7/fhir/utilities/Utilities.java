@@ -984,7 +984,7 @@ public class Utilities {
       else if (isWhitespace(c)) {
         b.append("\\u"+Utilities.padLeft(Integer.toHexString(c), '0', 4));
       } else if (((int) c) < 32)
-        b.append("\\u" + Utilities.padLeft(String.valueOf((int) c), '0', 4));
+        b.append("\\u" + Utilities.padLeft(Integer.toHexString(c), '0', 4));
       else
         b.append(c);
     }
