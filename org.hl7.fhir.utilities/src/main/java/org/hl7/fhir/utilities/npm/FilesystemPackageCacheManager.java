@@ -9,10 +9,11 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.sql.Timestamp;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
+
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -88,7 +89,7 @@ import javax.annotation.Nonnull;
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
 
-  public static final String INI_TIMESTAMP_FORMAT = "yyyyMMddhhmmss";
+  public static final String INI_TIMESTAMP_FORMAT = "yyyyMMddHHmmss";
 
   public enum FilesystemPackageCacheMode {
     USER, SYSTEM, TESTING, CUSTOM
@@ -489,7 +490,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
           IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
           ini.setTimeStampFormat(INI_TIMESTAMP_FORMAT);
-          ini.setTimestampProperty("packages", id + "#" + v, Timestamp.from(Instant.now()), null);
+          ini.setTimestampProperty("packages", id + "#" + v, ZonedDateTime.now(), null);
           ini.setIntegerProperty("package-sizes", id + "#" + v, npm.getSize(), null);
           ini.save();
           if (progress)
