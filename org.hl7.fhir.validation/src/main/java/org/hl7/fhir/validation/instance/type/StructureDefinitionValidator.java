@@ -469,57 +469,63 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
     }
-    if (snapshot) { // we just don't have enough information to figure out the context in a differential
-      List<Element> constraints = element.getChildrenByName("constraint");
-      int cc = 0;
-      for (Element invariant : constraints) {
-        ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path"), rootPath, profileUrl) && ok;
-        cc++;
-      }    
-    }
+    List<Element> constraints = element.getChildrenByName("constraint");
+    int cc = 0;
+    for (Element invariant : constraints) {
+      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path"), rootPath, profileUrl, snapshot) && ok;
+      cc++;
+    }    
     return ok;
   }
   
-  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, List<Element> elements, Element element, String path, String rootPath, String profileUrl) {
+  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, List<Element> elements, Element element, String path, String rootPath, String profileUrl, boolean snapshot) {
     boolean ok = true;
     String key = invariant.getNamedChildValue("key"); 
     String expression = invariant.getNamedChildValue("expression");
     String source = invariant.getNamedChildValue("source");
     if (warning(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(key), I18nConstants.ED_INVARIANT_NO_KEY)) {
       if (hint(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(expression) || VersionUtilities.isR5Plus(context.getVersion()), I18nConstants.ED_INVARIANT_NO_EXPRESSION, key)) { // not for R5 - there's an invariant
-        if (!Utilities.noString(expression)) {
-          if (invariantMap.containsKey(key)) {
-            // it's legal - and common - for a list of elemnts to contain the same invariant more than once, but it's not valid if it's not always the same 
-            ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
-          } else {
-            invariantMap.put(key, expression);
-          }
-          if (Utilities.noString(source) || (source.equals(profileUrl))) { // no need to revalidate FHIRPath from elsewhere 
-            try {
-              // we have to figure out the context, and we might be in type slicing. 
-              String exp = expression;
-              Element te = element;
-              List<String> types = getTypesForElement(elements, te);
-              while (types.size() == 0 && te != null) {
-                Element oldte = te;
-                te = getParent(elements, te);
-                if (te != null) {
-                  exp = tail(oldte, te)+".all("+exp+")";
-                  types = getTypesForElement(elements, te);
+        if (snapshot) {// we just don't have enough information to figure out the context in a differential
+          if (!Utilities.noString(expression)) {
+            if (invariantMap.containsKey(key)) {
+              // it's legal - and common - for a list of elements to contain the same invariant more than once, but it's not valid if it's not always the same 
+              ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
+            } else {
+              invariantMap.put(key, expression);
+            }
+            if (Utilities.noString(source) || (source.equals(profileUrl))) { // no need to revalidate FHIRPath from elsewhere 
+              try {
+                // we have to figure out the context, and we might be in type slicing. 
+                String exp = expression;
+                Element te = element;
+                List<String> types = getTypesForElement(elements, te);
+                while (types.size() == 0 && te != null) {
+                  Element oldte = te;
+                  te = getParent(elements, te);
+                  if (te != null) {
+                    exp = tail(oldte, te)+".all("+exp+")";
+                    types = getTypesForElement(elements, te);
+                  }
                 }
-              }
-              if (types.size() == 0) {
-                // we got to the root before finding anything typed
-                types.add(elements.get(0).getNamedChildValue("path"));
-              }
-              fpe.checkOnTypes(invariant, rootPath, types, fpe.parse(exp));
-            } catch (Exception e) {
-              if (debug) {
-                e.printStackTrace();
-              }
-              ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
-            }         
-          }        
+                if (types.size() == 0) {
+                  // we got to the root before finding anything typed
+                  types.add(elements.get(0).getNamedChildValue("path"));
+                }
+                List<String> warnings = new ArrayList<>();
+                fpe.checkOnTypes(invariant, rootPath, types, fpe.parse(exp), warnings);
+                for (String s : warnings) {
+                  warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, false, key+": "+s);
+                }
+              } catch (Exception e) {
+                if (debug) {
+                  e.printStackTrace();
+                }
+                ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
+              }         
+            }        
+          }
+        } else {          
+          ok = rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || source.equals(profileUrl), I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source);
         }
       }
     }
@@ -552,6 +558,9 @@ public class StructureDefinitionValidator extends BaseValidator {
     } else {
       for (Element tr : element.getChildrenByName("type")) {
         String t = tr.getNamedChildValue("code");
+        if (t.startsWith("http://hl7.org/fhirpath")) {
+          t = tr.getExtensionValue("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type").primitiveValue();
+        }
         if (t != null) {
           if (isAbstractType(t) && hasChildren(element, elements) ) {
             types.add(element.getNamedChildValue("path"));
