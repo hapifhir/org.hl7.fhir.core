@@ -713,7 +713,7 @@ public class StructureMapUtilities {
   }
 
   public StructureMap parse(String text, String srcName) throws FHIRException {
-    FHIRLexer lexer = new FHIRLexer(text, srcName);
+    FHIRLexer lexer = new FHIRLexer(text, srcName, true, true);
     if (lexer.done())
       throw lexer.error("Map Input cannot be empty");
     lexer.token("map");
