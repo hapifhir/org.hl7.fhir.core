@@ -285,7 +285,7 @@ public class TypeDetails {
   public void update(TypeDetails source) {
     for (ProfiledType pt : source.types)
       addType(pt);
-    if (collectionStatus == null)
+    if (collectionStatus == null || collectionStatus == CollectionStatus.SINGLETON)
       collectionStatus = source.collectionStatus;
     else if (source.collectionStatus == CollectionStatus.UNORDERED)
       collectionStatus = source.collectionStatus;
@@ -515,6 +515,9 @@ public class TypeDetails {
   }
   public static TypeDetails empty() {
     return new TypeDetails(CollectionStatus.SINGLETON);
+  }
+  public boolean isList() {
+    return collectionStatus != null && collectionStatus.isList();
   }
   
 }
