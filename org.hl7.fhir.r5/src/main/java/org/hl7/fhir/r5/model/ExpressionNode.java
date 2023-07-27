@@ -359,6 +359,10 @@ public class ExpressionNode {
 
   public enum CollectionStatus {
     SINGLETON, ORDERED, UNORDERED;
+
+    boolean isList() {
+      return this == ORDERED || this == UNORDERED;
+    }
   }
   
   //the expression will have one of either name or constant
