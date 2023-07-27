@@ -462,7 +462,7 @@ public class NpmPackage {
 
       while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
         String n = entry.getName();
-        if (n.contains("..")) {
+        if (n.contains("/..") || n.contains("../")) {
           throw new RuntimeException("Entry with an illegal name: " + n);
         }
         if (entry.isDirectory()) {
