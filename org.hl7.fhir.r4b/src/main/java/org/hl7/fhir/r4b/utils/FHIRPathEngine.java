@@ -282,6 +282,7 @@ public class FHIRPathEngine {
                               // host
   private boolean doNotEnforceAsSingletonRule;
   private boolean doNotEnforceAsCaseSensitive;
+  private boolean allowDoubleQuotes;
 
   // if the fhir path expressions are allowed to use constants beyond those
   // defined in the specification
@@ -531,7 +532,7 @@ public class FHIRPathEngine {
   }
 
   public ExpressionNode parse(String path, String name) throws FHIRLexerException {
-    FHIRLexer lexer = new FHIRLexer(path, name);
+    FHIRLexer lexer = new FHIRLexer(path, name, false, allowDoubleQuotes);
     if (lexer.done()) {
       throw lexer.error("Path cannot be empty");
     }
@@ -572,7 +573,7 @@ public class FHIRPathEngine {
    * @throws Exception
    */
   public ExpressionNodeWithOffset parsePartial(String path, int i) throws FHIRLexerException {
-    FHIRLexer lexer = new FHIRLexer(path, i);
+    FHIRLexer lexer = new FHIRLexer(path, i, allowDoubleQuotes);
     if (lexer.done()) {
       throw lexer.error("Path cannot be empty");
     }
@@ -1400,8 +1401,7 @@ public class FHIRPathEngine {
   private boolean checkParamCount(FHIRLexer lexer, SourceLocation location, ExpressionNode exp, int count)
       throws FHIRLexerException {
     if (exp.getParameters().size() != count) {
-      throw lexer.error("The function \"" + exp.getName() + "\" requires " + Integer.toString(count) + " parameters",
-          location.toString());
+      throw lexer.error("The function \"" + exp.getName() + "\" requires " + Integer.toString(count) + " parameters");
     }
     return true;
   }
@@ -1410,7 +1410,7 @@ public class FHIRPathEngine {
       int countMax) throws FHIRLexerException {
     if (exp.getParameters().size() < countMin || exp.getParameters().size() > countMax) {
       throw lexer.error("The function \"" + exp.getName() + "\" requires between " + Integer.toString(countMin)
-          + " and " + Integer.toString(countMax) + " parameters", location.toString());
+          + " and " + Integer.toString(countMax) + " parameters");
     }
     return true;
   }
@@ -6722,4 +6722,14 @@ public class FHIRPathEngine {
     this.liquidMode = liquidMode;
   }
 
+  public ProfileUtilities getProfileUtilities() {
+    return profileUtilities;
+  }
+
+  public boolean isAllowDoubleQuotes() {
+    return allowDoubleQuotes;
+  }
+  public void setAllowDoubleQuotes(boolean allowDoubleQuotes) {
+    this.allowDoubleQuotes = allowDoubleQuotes;    
+  }
 }
