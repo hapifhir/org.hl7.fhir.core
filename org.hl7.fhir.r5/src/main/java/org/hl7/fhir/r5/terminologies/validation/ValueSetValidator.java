@@ -643,7 +643,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private boolean checkExpansion(Coding code, List<ValueSetExpansionContainsComponent> contains, VersionInfo vi) {
     for (ValueSetExpansionContainsComponent containsComponent: contains) {
-      if (containsComponent.getSystem().equals(code.getSystem()) && containsComponent.getCode().equals(code.getCode())) {
+      if (containsComponent.hasSystem() && containsComponent.hasCode() && containsComponent.getSystem().equals(code.getSystem()) && containsComponent.getCode().equals(code.getCode())) {
         vi.setExpansionVersion(containsComponent.getVersion());
         return true;
       }
