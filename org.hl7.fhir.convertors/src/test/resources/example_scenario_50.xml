@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExampleScenario xmlns="http://hl7.org/fhir">
+	<id value="example"/>
+	<text>
+		<status value="additional"/>
+		<div xmlns="http://www.w3.org/1999/xhtml">Stuff</div>
+	</text>
+	<extension url="http://example.org/StructureDefinition/someExtension">
+    <valueBoolean value="true"/>
+	</extension>
+	<modifierExtension url="http://example.org/StructureDefinition/someExtension">
+    <valueBoolean value="true"/>
+	</modifierExtension>
+	<url value="http://example.org/ExampleScenario/test"/>
+	<identifier>
+    <system value="http://example.org/NamingSystem/someid"/>
+    <value value="123"/>
+	</identifier>
+	<identifier>
+    <system value="http://example.org/NamingSystem/someid"/>
+    <value value="456"/>
+	</identifier>
+	<version value="1.0"/>
+	<versionAlgorithmCoding>
+    <system value="http://hl7.org/fhir/version-algorithm"/>
+    <code value="semver"/>
+	</versionAlgorithmCoding>
+	<name value="TestScenario"/>
+	<title value="Test Scenario"/>
+	<status value="draft"/>
+	<experimental value="true"/>
+	<date value="2023-07-13"/>
+	<publisher value="HL7"/>
+	<contact>
+    <name value="Admin"/>
+	</contact>
+	<contact>
+    <name value="Other Admin"/>
+	</contact>
+	<description value="Fully populated instance to test conversion"/>
+	<useContext>
+    <code>
+      <system value="http://terminology.hl7.org/CodeSystem/usage-context-type"/>
+      <code value="gender"/>
+    </code>
+    <valueCodeableConcept>
+      <text value="male"/>
+    </valueCodeableConcept>
+  </useContext>
+	<useContext>
+    <code>
+      <system value="http://terminology.hl7.org/CodeSystem/usage-context-type"/>
+      <code value="gender"/>
+    </code>
+    <valueCodeableConcept>
+      <text value="other"/>
+    </valueCodeableConcept>
+  </useContext>
+  <jurisdiction>
+    <text value="Everything"/>
+  </jurisdiction>
+  <jurisdiction>
+    <text value="Everywhere"/>
+  </jurisdiction>
+	<purpose value="Purpose: this serves to demonstrate the performing of medication administration, by using remote / mobile devices to a) Get the planned medication administrations and b) Record the performing of these administrations without a permanent connection to the EHR."/>
+	<copyright value="Legalese"/>
+	<copyrightLabel value="Short Legalese"/>
+	<actor>
+    <extension url="http://example.org/StructureDefinition/someExtension">
+      <valueBoolean value="true"/>
+    </extension>
+    <modifierExtension url="http://example.org/StructureDefinition/someExtension">
+      <valueBoolean value="true"/>
+    </modifierExtension>
+		<key value="Nurse"/>
+		<type value="person"/>
+		<title value="Nurse"/>
+		<description value="The Nurse"/>
+	</actor>
+	<actor>
+		<key value="MAP"/>
+		<type value="system"/>
+		<title value="Nurse's Tablet"/>
+		<description value="The entity that receives the Administration Requests to show the nurse to perform them"/>
+	</actor>
+	<instance>
+    <extension url="http://example.org/StructureDefinition/someExtension">
+      <valueBoolean value="true"/>
+    </extension>
+    <modifierExtension url="http://example.org/StructureDefinition/someExtension">
+      <valueBoolean value="true"/>
+    </modifierExtension>
+		<key value="iherx001"/>
+		<structureType>
+			<system value="http://hl7.org/fhir/fhir-types"/>
+			<code value="MedicationRequest"/>
+		</structureType>
+		<structureVersion value="5.0.0"/>
+		<structureProfileCanonical value="http://example.org/StructureDefinition/someProfile"/>
+		<title value="Initial Prescription"/>
+		<description value="The initial prescription which describes &quot;medication X, 3 times per day&quot; - the exact scheduling is not   in the initial prescription (it is left for the care teams to decide on the schedule)."/>
+		<version>
+      <extension url="http://example.org/StructureDefinition/someExtension">
+        <valueBoolean value="true"/>
+      </extension>
+      <modifierExtension url="http://example.org/StructureDefinition/someExtension">
+        <valueBoolean value="true"/>
+      </modifierExtension>
+      <key value="iherx001v1"/>
+      <title value="Initial Prescription v1"/>
+      <description value="Initial version"/>
+      <content>
+        <reference value="http://example.org/MedicationRequest/someResource2"/>
+      </content>
+    </version>
+		<version>
+      <key value="iherx001v2"/>
+      <title value="Initial Prescription v2"/>
+      <description value="Second version"/>
+      <content>
+        <reference value="http://example.org/MedicationRequest/someResource3"/>
+      </content>
+    </version>
+	</instance>
+	<instance>
+		<key value="iherx001.001"/>
+		<structureType>
+			<system value="http://hl7.org/fhir/fhir-types"/>
+			<code value="MedicationRequest"/>
+		</structureType>
+		<title value="Request for day 1, morning"/>
+		<content>
+      <reference value="http://example.org/MedicationRequest/someResource"/>
+		</content>
+		<containedInstance>
+      <instanceReference value="iherx001"/>
+      <versionReference value="iherx001v1"/>
+    </containedInstance>
+		<containedInstance>
+      <instanceReference value="iherx001"/>
+      <versionReference value="iherx001v2"/>
+    </containedInstance>
+	</instance>
+	<process>
+    <extension url="http://example.org/StructureDefinition/someExtension">
+      <valueBoolean value="true"/>
+    </extension>
+    <modifierExtension url="http://example.org/StructureDefinition/someExtension">
+      <valueBoolean value="true"/>
+    </modifierExtension>
+		<title value="Mobile Medication Administration"/>
+		<description value="This scenario demonstrates the process of getting the relevant medication instructions for a patient visit and reporting the results of administration. The scenario is as follows: After the prescription is issued, the institution schedules each individual administration event in the Medication Administration Record (MAR). When preparing for a visit, the nurse queries the MAR for the scheduled administrations, obtaining a bundle of records. The nurse then performs the care activities and registers the results in the device. Upon synchronization of the device and the institution, the results of administration are uploaded to the EHR, thus updating the MAR."/>
+		<preConditions value="Medication administration requests are in the EHR / MAR, scheduled for each individual intake."/>
+		<postConditions value="Medication administration Reports are submitted, EHR is updated."/>
+		<step>
+      <extension url="http://example.org/StructureDefinition/someExtension">
+        <valueBoolean value="true"/>
+      </extension>
+      <modifierExtension url="http://example.org/StructureDefinition/someExtension">
+        <valueBoolean value="true"/>
+      </modifierExtension>
+			<number value="1"/>
+			<workflow value="http://example.org/ExampleScenario/another-one"/>
+			<alternative>
+        <extension url="http://example.org/StructureDefinition/someExtension">
+          <valueBoolean value="true"/>
+        </extension>
+        <modifierExtension url="http://example.org/StructureDefinition/someExtension">
+          <valueBoolean value="true"/>
+        </modifierExtension>
+        <title value="A different way"/>
+        <description value="Explanation of a different way"/>
+        <step>
+          <number value="1.A.1"/>
+          <process>
+            <title value="Process title"/>
+            <description value="Process description"/>
+            <preConditions value="What should come before"/>
+            <postConditions value="What will be true after"/>
+            <step>
+              <number value="1.A.1.1"/>
+              <operation>
+                <extension url="http://example.org/StructureDefinition/someExtension">
+                  <valueBoolean value="true"/>
+                </extension>
+                <modifierExtension url="http://example.org/StructureDefinition/someExtension">
+                  <valueBoolean value="true"/>
+                </modifierExtension>
+                <type>
+                  <system value="http://hl7.org/fhir/restful-interaction"/>
+                  <code value="read"/>
+                </type>
+                <title value="Some title"/>
+                <initiator value="Nurse"/>
+                <receiver value="MAP"/>
+                <description value="Some description"/>
+                <initiatorActive value="true"/>
+                <receiverActive value="false"/>
+                <request>
+                  <instanceReference value="iherx001"/>
+                  <versionReference value="iherx001v1"/>
+                </request>
+                <response>
+                  <instanceReference value="iherx001"/>                
+                  <versionReference value="iherx001v2"/>
+                </response>
+              </operation>
+            </step>
+            <step>
+              <number value="1.A.1.2"/>
+              <operation>
+                <extension url="http://example.org/StructureDefinition/someExtension">
+                  <valueBoolean value="true"/>
+                </extension>
+                <modifierExtension url="http://example.org/StructureDefinition/someExtension">
+                  <valueBoolean value="true"/>
+                </modifierExtension>
+                <type>
+                  <system value="http://hl7.org/fhir/restful-interaction"/>
+                  <code value="create"/>
+                </type>
+                <title value="Some title 2"/>
+                <initiator value="MAP"/>
+                <receiver value="Nurse"/>
+                <description value="Some description 2"/>
+                <initiatorActive value="false"/>
+                <receiverActive value="true"/>
+                <request>
+                  <instanceReference value="iherx001"/>
+                  <versionReference value="iherx001v1"/>
+                </request>
+                <response>
+                  <instanceReference value="iherx001"/>
+                  <versionReference value="iherx001v2"/>
+                </response>
+              </operation>
+              <alternative>
+                <title value="Another alternative"/>
+              </alternative>
+            </step>
+          </process>
+        </step>
+      </alternative>
+			<pause value="true"/>
+		</step>
+		<step>
+			<number value="2"/>
+			<operation>
+				<title value="Query administration orders"/>
+				<initiator value="MAP"/>
+				<receiver value="Nurse"/>
+				<description value="Query for medication administration orders,\n- For today's shifts\n- For today's patients"/>
+				<request>
+					<instanceReference value="iherx001.001"/>
+				</request>
+				<response>
+					<instanceReference value="iherx001.001"/>
+				</response>
+			</operation>
+			<pause value="true"/>
+		</step>
+	</process>
+</ExampleScenario>
