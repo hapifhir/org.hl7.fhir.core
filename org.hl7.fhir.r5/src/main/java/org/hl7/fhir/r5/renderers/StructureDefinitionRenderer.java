@@ -500,9 +500,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
   private void scanObligations(Set<String> cols, List<ElementDefinition> list, ElementDefinition ed) {
 
-    for (Extension ob : ed.getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinition/obligation")) {
-      if (ob.hasExtension("actor")) {
-        for (Extension a : ob.getExtensionsByUrl("actor")) {
+    for (Extension ob : ed.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
+      if (ob.hasExtension("actor", "actorId")) {
+        for (Extension a : ob.getExtensionsByUrl("actor", "actorId")) {
           cols.add(a.getValueCanonicalType().primitiveValue());
         }
       } else 
@@ -838,11 +838,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       checkForNoChange(element.getIsModifierElement(), gc.addStyledText(translate("sd.table", "This element is a modifier element"), "?!", null, null, null, false));
     }
     if (element != null) {
-      if (element.getMustSupport() && element.hasExtension(ToolingExtensions.EXT_OBLIGATION)) {
+      if (element.getMustSupport() && element.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
         checkForNoChange(element.getMustSupportElement(), gc.addStyledText(translate("sd.table", "This element has obligations and must be supported"), "SO", "white", "red", null, false));
       } else if (element.getMustSupport()) {
           checkForNoChange(element.getMustSupportElement(), gc.addStyledText(translate("sd.table", "This element must be supported"), "S", "white", "red", null, false));
-      } else if (element != null && element.hasExtension(ToolingExtensions.EXT_OBLIGATION)) {
+      } else if (element != null && element.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
        checkForNoChange(element.getMustSupportElement(), gc.addStyledText(translate("sd.table", "This element has obligations"), "O", "white", "red", null, false));
       }
     }
@@ -1384,11 +1384,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           }
 
           ObligationsRenderer obr = new ObligationsRenderer(corePath, profile, definition.getPath(), rc, null, this);
-          if (definition.hasExtension(ToolingExtensions.EXT_OBLIGATION)) {
-            obr.seeObligations(definition.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION));
+          if (definition.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
+            obr.seeObligations(definition.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS));
           }
-          if (!definition.getPath().contains(".") && profile.hasExtension(ToolingExtensions.EXT_OBLIGATION)) {
-            obr.seeObligations(profile.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION));
+          if (!definition.getPath().contains(".") && profile.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
+            obr.seeObligations(profile.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS));
           }
           obr.renderTable(gen, c);
 
