@@ -42,11 +42,11 @@ public class ObligationsRenderer {
   public static class ObligationDetail {
     private String code;
     private List<String> elementIds = new ArrayList<>();
-    private String actorId;
+    private String actor;
     private String doco;
     private String docoShort;
     private String filter;
-    private String filterDesc;
+    private String filterDoco;
     private List<UsageContext> usage = new ArrayList<>();
     private boolean isUnchanged = false;
     private boolean matched = false;
@@ -58,11 +58,17 @@ public class ObligationsRenderer {
     
     public ObligationDetail(Extension ext) {
       this.code =  ext.getExtensionString("code");
-      this.actorId =  ext.getExtensionString("actorId");
+      this.actor =  ext.getExtensionString("actor");
+      if (this.actor == null) {
+        this.actor =  ext.getExtensionString("actorId");
+      }
       this.doco =  ext.getExtensionString("documentation");
       this.docoShort =  ext.getExtensionString("shortDoco");
       this.filter =  ext.getExtensionString("filter");
-      this.filterDesc =  ext.getExtensionString("filter-desc");
+      this.filterDoco =  ext.getExtensionString("filterDocumentation");
+      if (this.filterDoco == null) {
+        this.filterDoco =  ext.getExtensionString("filter-desc");
+      }
       for (Extension usage : ext.getExtensionsByUrl("usage")) {
         this.usage.add(usage.getValueUsageContext());
       }
@@ -101,11 +107,11 @@ public class ObligationsRenderer {
       isUnchanged = true;
       isUnchanged = isUnchanged && ((code==null && compare.code==null) || code.equals(compare.code));
       isUnchanged = elementIds.equals(compare.elementIds);
-      isUnchanged = isUnchanged && ((actorId==null && compare.actorId==null) || actorId.equals(compare.actorId));
+      isUnchanged = isUnchanged && ((actor==null && compare.actor==null) || actor.equals(compare.actor));
       isUnchanged = isUnchanged && ((doco==null && compare.doco==null) || doco.equals(compare.doco));
       isUnchanged = isUnchanged && ((docoShort==null && compare.docoShort==null) || docoShort.equals(compare.docoShort));
       isUnchanged = isUnchanged && ((filter==null && compare.filter==null) || filter.equals(compare.filter));
-      isUnchanged = isUnchanged && ((filterDesc==null && compare.filterDesc==null) || filterDesc.equals(compare.filterDesc));
+      isUnchanged = isUnchanged && ((filterDoco==null && compare.filterDoco==null) || filterDoco.equals(compare.filterDoco));
       isUnchanged = isUnchanged && ((usage==null && compare.usage==null) || usage.equals(compare.usage));
       return isUnchanged;
     }
@@ -119,7 +125,7 @@ public class ObligationsRenderer {
     }
 
     public String getFilterDesc() {
-      return filterDesc;
+      return filterDoco;
     }
 
     public String getFilter() {
@@ -131,11 +137,11 @@ public class ObligationsRenderer {
     }
 
     public boolean hasActor() {
-      return actorId != null;
+      return actor != null;
     }
 
     public boolean hasActor(String id) {
-      return id.equals(actorId);
+      return id.equals(actor);
     }
   }
 
@@ -338,7 +344,7 @@ public class ObligationsRenderer {
     boolean filter = false;
     boolean elementId = false;
     for (ObligationDetail binding : obligations) {
-      actor = actor || binding.actorId!=null  || (binding.compare!=null && binding.compare.actorId !=null);
+      actor = actor || binding.actor!=null  || (binding.compare!=null && binding.compare.actor !=null);
       doco = doco || binding.getDoco(fullDoco)!=null  || (binding.compare!=null && binding.compare.getDoco(fullDoco)!=null);
       usage = usage || !binding.usage.isEmpty() || (binding.compare!=null && !binding.compare.usage.isEmpty());
       filter = filter || binding.filter != null || (binding.compare!=null && binding.compare.filter!=null);
@@ -383,29 +389,29 @@ public class ObligationsRenderer {
       }
       if (actor) {
 
-        ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, ob.actorId);
+        ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, ob.actor);
         ActorDefinition compAd = null;
-        if (ob.compare!=null  && ob.compare.actorId!=null) {
-          compAd = context.getContext().fetchResource(ActorDefinition.class, ob.compare.actorId);
+        if (ob.compare!=null  && ob.compare.actor!=null) {
+          compAd = context.getContext().fetchResource(ActorDefinition.class, ob.compare.actor);
         }
 
         XhtmlNode actorId = tr.td().style("font-size: 11px");
-        if (ob.compare!=null && ob.actorId.equals(ob.compare.actorId))
+        if (ob.compare!=null && ob.actor.equals(ob.compare.actor))
           actorId.style(STYLE_UNCHANGED);
         if (ad != null && ad.hasWebPath()) {
-          actorId.ah(ad.getWebPath(), ob.actorId).tx(ad.present());
+          actorId.ah(ad.getWebPath(), ob.actor).tx(ad.present());
         } else if (ad != null) {
-          actorId.span(null, ob.actorId).tx(ad.present());
+          actorId.span(null, ob.actor).tx(ad.present());
         }
 
-        if (ob.compare!=null && ob.compare.actorId!=null && !ob.actorId.equals(ob.compare.actorId)) {
+        if (ob.compare!=null && ob.compare.actor!=null && !ob.actor.equals(ob.compare.actor)) {
           actorId.br();
           actorId = actorId.span(STYLE_REMOVED, null);
           if (compAd != null) {
             if (compAd.hasWebPath()) {
-              actorId.ah(compAd.getWebPath(), ob.compare.actorId).tx(compAd.present());
+              actorId.ah(compAd.getWebPath(), ob.compare.actor).tx(compAd.present());
             } else {
-              actorId.span(null, ob.compare.actorId).tx(compAd.present());
+              actorId.span(null, ob.compare.actor).tx(compAd.present());
             }
           }
         }
@@ -457,8 +463,8 @@ public class ObligationsRenderer {
 
       if (filter) {
         if (ob.filter != null) {
-          String d = "<code>"+ob.filter+"</code>" + (fullDoco ? md.processMarkdown("Binding.description", ob.filterDesc) : "");
-          String oldD = ob.compare==null ? null : "<code>"+ob.compare.filter+"</code>" + (fullDoco ? md.processMarkdown("Binding.description", ob.compare.filterDesc) : "");
+          String d = "<code>"+ob.filter+"</code>" + (fullDoco ? md.processMarkdown("Binding.description", ob.filterDoco) : "");
+          String oldD = ob.compare==null ? null : "<code>"+ob.compare.filter+"</code>" + (fullDoco ? md.processMarkdown("Binding.description", ob.compare.filterDoco) : "");
           tr.td().style("font-size: 11px").innerHTML(compareHtml(d, oldD));
         } else {
           tr.td().style("font-size: 11px");

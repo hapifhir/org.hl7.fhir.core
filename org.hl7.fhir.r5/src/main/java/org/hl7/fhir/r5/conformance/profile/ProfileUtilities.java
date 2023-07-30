@@ -219,7 +219,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile",
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status-reason",
       ToolingExtensions.EXT_SUMMARY,
-      ToolingExtensions.EXT_OBLIGATION);
+      ToolingExtensions.EXT_OBLIGATION_CORE,
+      ToolingExtensions.EXT_OBLIGATION_TOOLS);
 
 
   public IWorkerContext getContext() {
@@ -2205,7 +2206,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     for (ElementDefinition ed : obligationProfileElements) {
       for (Extension ext : ed.getExtension()) {
-        if (ToolingExtensions.EXT_OBLIGATION.equals(ext.getUrl())) {
+        if (Utilities.existsInList(ext.getUrl(), ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
           base.getExtension().add(ext.copy());
         }      
       }
@@ -2279,13 +2280,13 @@ public class ProfileUtilities extends TranslatingUtilities {
       }      
     }
     for (Extension ext : source.getExtension()) {
-      if (ToolingExtensions.EXT_OBLIGATION.equals(ext.getUrl())) {
+      if (Utilities.existsInList(ext.getUrl(), ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
         dest.getExtension().add(ext.copy());
       }      
     }
     for (ElementDefinition ed : obligationProfileElements) {
       for (Extension ext : ed.getExtension()) {
-        if (ToolingExtensions.EXT_OBLIGATION.equals(ext.getUrl())) {
+        if (Utilities.existsInList(ext.getUrl(), ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
           dest.getExtension().add(ext.copy());
         }      
       }

@@ -407,6 +407,28 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
      return java.util.Collections.unmodifiableList(retVal);
    }
    
+   public List<Extension> getExtensionsByUrl(String... theUrls) {
+     
+     ArrayList<Extension> retVal = new ArrayList<>();
+     for (Extension next : getExtension()) {
+       if (Utilities.existsInList(next.getUrl(), theUrls)) {
+         retVal.add(next);
+       }
+     }
+     return java.util.Collections.unmodifiableList(retVal);
+   }
+   
+
+   public boolean hasExtension(String... theUrls) {
+     for (Extension next : getExtension()) {
+       if (Utilities.existsInList(next.getUrl(), theUrls)) {
+         return true;
+       }
+     }
+     return false;
+   }
+
+
    /**
     * Returns an true if this element has an extension that matchs the given URL.
     * 
