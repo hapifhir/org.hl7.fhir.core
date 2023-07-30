@@ -112,6 +112,9 @@ public class Utilities {
       return false;
     }
     String value = string.startsWith("-") ? string.substring(1) : string;
+    if (Utilities.noString(value)) {
+      return false;
+    }
     for (char next : value.toCharArray()) {
       if (!Character.isDigit(next)) {
         return false;

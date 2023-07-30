@@ -41,6 +41,7 @@ import org.hl7.fhir.instance.model.api.IBaseHasModifierExtensions;
 import org.hl7.fhir.instance.model.api.IDomainResource;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
+import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.Description;
@@ -434,8 +435,14 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
     getExtension().add(ex);    
   }
   
-
-
+  public boolean hasExtension(String... theUrls) {
+    for (Extension next : getExtension()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   public boolean hasExtension(String url) {
     for (Extension e : getExtension())
@@ -486,6 +493,18 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
         }
       }
       return Collections.unmodifiableList(retVal);
+    }
+    
+
+    public List<Extension> getExtensionsByUrl(String... theUrls) {
+      
+      ArrayList<Extension> retVal = new ArrayList<>();
+      for (Extension next : getExtension()) {
+        if (Utilities.existsInList(next.getUrl(), theUrls)) {
+          retVal.add(next);
+        }
+      }
+      return java.util.Collections.unmodifiableList(retVal);
     }
 
     /**

@@ -12860,7 +12860,6 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     return t;
   }
 
-
 // end addition
 
 }
