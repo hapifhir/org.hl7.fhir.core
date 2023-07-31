@@ -3387,8 +3387,12 @@ public class FHIRPathEngine {
       return td;
     }
     case OfType : { 
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, exp.getParameters().get(0).getName());
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+      String tn = exp.getParameters().get(0).getName();
+      if (typeCastIsImpossible(focus, tn)) {
+        typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_OFTYPE_IMPOSSIBLE, focus.describeMin(), tn, exp.toString()));
+      }
+      TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, tn);
       if (td.typesHaveTargets()) {
         td.addTargets(focus.getTargets());
       }
@@ -3705,6 +3709,10 @@ public class FHIRPathEngine {
       break;
     }
     throw new Error("not Implemented yet");
+  }
+
+  private boolean typeCastIsImpossible(TypeDetails focus, String tn) {
+    return !focus.hasType(tn);
   }
 
   private boolean isExpressionParameter(ExpressionNode exp, int i) {

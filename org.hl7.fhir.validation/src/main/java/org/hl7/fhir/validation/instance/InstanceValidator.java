@@ -2766,7 +2766,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) /* || (url.startsWith("http://hl7.org/fhir/tools")) */ || 
             SpecialExtensions.isKnownExtension(url) || isXverUrl(url);
         if (!found) {
-          found = fetcher.resolveURL(this, hostContext, path, url, type);
+          found = fetcher.resolveURL(this, hostContext, path, url, type, type.equals("canonical"));
         }
       } catch (IOException e1) {
         found = false;
