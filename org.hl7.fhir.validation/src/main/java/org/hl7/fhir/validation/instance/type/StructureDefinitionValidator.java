@@ -78,6 +78,8 @@ public class StructureDefinitionValidator extends BaseValidator {
     StructureDefinition sd = null;
     String typeName = null;
     try {
+      String url = src.getNamedChildValue("url");
+      
       sd = loadAsSD(src);
       checkExtensionContext(errors, src, stack);
       
@@ -160,6 +162,16 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
         c++;
       }
+      
+      // if this is defining an extension, make sure that the extension fixed value matches the URL
+      String type = src.getNamedChildValue("type");
+      if ("Extension".equals(type)) {
+        String baseD = src.getNamedChildValue("baseDefinition");
+        if ("http://hl7.org/fhir/StructureDefinition/Extension".equals(baseD) && url != null) {
+          String fixedUrl = getFixedValue(src);
+          ok = rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), url.equals(fixedUrl), I18nConstants.SD_EXTENSION_URL_MISMATCH, url, fixedUrl) && ok;
+        }
+      }
     } catch (Exception e) {
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
       ok = false;
@@ -167,6 +179,19 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
   
+
+  private String getFixedValue(Element src) {
+    Element diff = src.getNamedChild("differential");
+    if (diff != null) {
+      for (Element ed : diff.getChildrenByName("element")) {
+        String path = ed.getNamedChildValue("path");
+        if ("Extension.url".equals(path)) {
+          return ed.getNamedChildValue("fixed");
+        }
+      }
+    }
+    return null;
+  }
 
   private boolean validateInheritsObligationProfile(List<ValidationMessage> errors, Element extension, NodeStack stack, Element src) {
     String tgt = extension.getNamedChildValue("value");
