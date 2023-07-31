@@ -433,7 +433,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
   }
 
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type)
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical)
       throws IOException, FHIRException {
     return true;
   }

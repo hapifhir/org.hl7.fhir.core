@@ -732,7 +732,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       return CodedContentValidationPolicy.VALUESET;
   }
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws IOException, FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical) throws IOException, FHIRException {
     return !url.contains("example.org") && !url.startsWith("http://hl7.org/fhir/invalid");
   }
 
