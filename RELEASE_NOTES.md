@@ -1,7 +1,9 @@
 ## Validator Changes
 
-* no changes
+* Fix invalid integer detection
+* Improved invariant checking
 
 ## Other code changes
 
-* no changes
+* Update obligation handling code for split definitions
+* Update ICF importer to handle grouping levels
