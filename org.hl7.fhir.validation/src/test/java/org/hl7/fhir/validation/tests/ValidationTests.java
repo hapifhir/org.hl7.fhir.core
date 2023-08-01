@@ -563,7 +563,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           JsonObject oj = JsonTrackingParser.parse(json, null);
           java.add("outcome", oj);
         }
-        JsonTrackingParser.write(manifest, new File(Utilities.path("[tmp]", "validator", "manifest.new.json")));
+
+        File newManifestFile = new File(Utilities.path("[tmp]", "validator", "manifest.new.json"));
+        if (!newManifestFile.getParentFile().exists()) {
+          newManifestFile.getParentFile().mkdir();
+        }
+        JsonTrackingParser.write(manifest, newManifestFile);
       }
       Assertions.fail("\r\n"+String.join("\r\n", fails));
     }
