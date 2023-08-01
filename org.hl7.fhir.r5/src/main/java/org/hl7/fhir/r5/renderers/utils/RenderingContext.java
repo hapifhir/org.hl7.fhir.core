@@ -96,7 +96,12 @@ public class RenderingContext {
     /**
      * Information about the processes (and sub-processes) defined in a scenario
      */
-    PROCESSES
+    PROCESSES,
+
+    /**
+     * A diagram showing interactions between the actors as part of the process steps
+     */
+    DIAGRAM
   }
 
   public enum QuestionnaireRendererMode {
