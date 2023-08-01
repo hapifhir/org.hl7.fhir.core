@@ -87,7 +87,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   private Set<String> containedIds = new HashSet<>();
   private boolean hasExtensions;
-  
+
   public ProfileDrivenRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
@@ -106,9 +106,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     boolean idDone = false;
     XhtmlNode p = x.para();
     if (context.isAddGeneratedNarrativeHeader()) {
-      p.b().tx("Generated Narrative: "+r.fhirType());
+      p.b().tx("Generated Narrative: " + r.fhirType());
       p.an(r.getId());
-      idDone = true;      
+      idDone = true;
     }
     if (context.isTechnicalMode() && !context.isContained()) {
       renderResourceHeader(r, x, !idDone);
@@ -120,27 +120,27 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     try {
       StructureDefinition sd = r.getDefinition();
       if (sd == null) {
-        throw new FHIRException("Cannot find definition for "+r.fhirType());
+        throw new FHIRException("Cannot find definition for " + r.fhirType());
       } else {
         ElementDefinition ed = sd.getSnapshot().getElement().get(0);
         containedIds.clear();
         hasExtensions = false;
-        generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
+        generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed,
+            context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
       }
     } catch (Exception e) {
-      System.out.println("Error Generating Narrative for "+r.fhirType()+"/"+r.getId()+": "+e.getMessage());
+      System.out.println("Error Generating Narrative for " + r.fhirType() + "/" + r.getId() + ": " + e.getMessage());
       e.printStackTrace();
-      x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      x.para().b().style("color: maroon").tx("Exception generating Narrative: " + e.getMessage());
     }
     return hasExtensions;
   }
-
 
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return "todo";
   }
-  
+
   @Override
   public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return "Not done yet";
@@ -226,8 +226,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 //  }
 //
 
-  
-  public void generateResourceSummary(XhtmlNode x, ResourceWrapper res, boolean textAlready, boolean showCodeDetails, boolean canLink) throws FHIRException, UnsupportedEncodingException, IOException {
+  public void generateResourceSummary(XhtmlNode x, ResourceWrapper res, boolean textAlready, boolean showCodeDetails,
+      boolean canLink) throws FHIRException, UnsupportedEncodingException, IOException {
     if (!textAlready) {
       XhtmlNode div = res.getNarrative();
       if (div != null) {
@@ -241,14 +241,16 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     String path = res.fhirType();
     StructureDefinition profile = getContext().getWorker().fetchResource(StructureDefinition.class, path);
     if (profile == null)
-      x.tx("unknown resource " +path);
+      x.tx("unknown resource " + path);
     else {
       boolean firstElement = true;
       boolean last = false;
       for (PropertyWrapper p : res.children()) {
         if (!ignoreProperty(p) && !p.getElementDefinition().getBase().getPath().startsWith("Resource.")) {
-          ElementDefinition child = getElementDefinition(profile.getSnapshot().getElement(), path+"."+p.getName(), p);
-          if (p.getValues().size() > 0 && p.getValues().get(0) != null && child != null && isPrimitive(child) && includeInSummary(child, p.getValues())) {
+          ElementDefinition child = getElementDefinition(profile.getSnapshot().getElement(), path + "." + p.getName(),
+              p);
+          if (p.getValues().size() > 0 && p.getValues().get(0) != null && child != null && isPrimitive(child)
+              && includeInSummary(child, p.getValues())) {
             if (firstElement)
               firstElement = false;
             else if (last)
@@ -268,13 +270,14 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     }
   }
 
-
   private boolean ignoreProperty(PropertyWrapper p) {
     return Utilities.existsInList(p.getName(), "contained");
   }
 
-  private boolean includeInSummary(ElementDefinition child, List<BaseWrapper> list) throws UnsupportedEncodingException, FHIRException, IOException {
-    if (child.getName().endsWith("active") && list != null && list.size() > 0 && "true".equals(list.get(0).getBase().primitiveValue())) {
+  private boolean includeInSummary(ElementDefinition child, List<BaseWrapper> list)
+      throws UnsupportedEncodingException, FHIRException, IOException {
+    if (child.getName().endsWith("active") && list != null && list.size() > 0
+        && "true".equals(list.get(0).getBase().primitiveValue())) {
       return false;
     }
     if (child.getIsModifier())
@@ -283,12 +286,13 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       return true;
     if (child.getType().size() == 1) {
       String t = child.getType().get(0).getWorkingCode();
-      if (t.equals("Address") || t.equals("Contact") || t.equals("Reference") || t.equals("Uri") || t.equals("Url") || t.equals("Canonical"))
+      if (t.equals("Address") || t.equals("Contact") || t.equals("Reference") || t.equals("Uri") || t.equals("Url")
+          || t.equals("Canonical"))
         return false;
     }
     return true;
   }
-  
+
   private ElementDefinition getElementDefinition(List<ElementDefinition> elements, String path, PropertyWrapper p) {
     for (ElementDefinition element : elements)
       if (element.getPath().equals(path))
@@ -298,7 +302,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return null;
   }
 
-  private void renderLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode parent, XhtmlNode x, boolean title, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
+  private void renderLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode parent, XhtmlNode x,
+      boolean title, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent)
+      throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     if (ew == null)
       return;
 
@@ -365,15 +371,19 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof ContactDetail) {
       ContactDetail cd = (ContactDetail) e;
       if (cd.hasName()) {
-        x.tx(cd.getName()+": ");
+        x.tx(cd.getName() + ": ");
       }
       boolean first = true;
       for (ContactPoint c : cd.getTelecom()) {
-        if (first) first = false; else x.tx(",");
+        if (first)
+          first = false;
+        else
+          x.tx(",");
         renderContactPoint(x, c);
       }
     } else if (e instanceof UriType) {
-      renderUri(x, (UriType) e, defn.getPath(), rcontext != null && rcontext.getResourceResource() != null ? rcontext.getResourceResource().getId() : null);
+      renderUri(x, (UriType) e, defn.getPath(),
+          rcontext != null && rcontext.getResourceResource() != null ? rcontext.getResourceResource().getId() : null);
     } else if (e instanceof Timing) {
       renderTiming(x, (Timing) e);
     } else if (e instanceof Range) {
@@ -391,7 +401,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       Reference r = (Reference) e;
       if (r.getReference() != null && r.getReference().contains("#")) {
         if (containedIds.contains(r.getReference().substring(1))) {
-          x.ah(r.getReference()).tx("See "+r.getReference());
+          x.ah(r.getReference()).tx("See " + r.getReference());
         } else {
           // in this case, we render the resource in line
           ResourceWrapper rw = null;
@@ -403,16 +413,17 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           if (rw == null) {
             renderReference(res, x, r);
           } else {
-            String ref = context.getResolver().urlForContained(context, res.fhirType(), res.getId(), rw.fhirType(), rw.getId());
+            String ref = context.getResolver().urlForContained(context, res.fhirType(), res.getId(), rw.fhirType(),
+                rw.getId());
             if (ref == null) {
-            x.an(rw.getId());
+              x.an(rw.getId());
               RenderingContext ctxtc = context.copy();
               ctxtc.setAddGeneratedNarrativeHeader(false);
               ctxtc.setContained(true);
               ResourceRenderer rr = RendererFactory.factory(rw, ctxtc);
-            rr.render(parent.blockquote(), rw);
+              rr.render(parent.blockquote(), rw);
             } else {
-              x.ah(ref).tx("See "+rw.fhirType());              
+              x.ah(ref).tx("See " + rw.fhirType());
             }
           }
         }
@@ -429,15 +440,17 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof ElementDefinition) {
       x.tx("todo-bundle");
     } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta)) {
-      throw new NotImplementedException("type "+e.getClass().getName()+" not handled - should not be here");
+      throw new NotImplementedException("type " + e.getClass().getName() + " not handled - should not be here");
     }
   }
 
-  private boolean displayLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, String name, boolean showCodeDetails) throws FHIRException, UnsupportedEncodingException, IOException {
+  private boolean displayLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, String name,
+      boolean showCodeDetails) throws FHIRException, UnsupportedEncodingException, IOException {
     return displayLeaf(res, ew, defn, x, name, showCodeDetails, true);
   }
-  
-  private boolean displayLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, String name, boolean showCodeDetails, boolean allowLinks) throws FHIRException, UnsupportedEncodingException, IOException {
+
+  private boolean displayLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, String name,
+      boolean showCodeDetails, boolean allowLinks) throws FHIRException, UnsupportedEncodingException, IOException {
     if (ew == null)
       return false;
     Base e = ew.getBase();
@@ -453,33 +466,33 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       return false;
 
     if (e instanceof StringType) {
-      x.addText(name+": "+((StringType) e).getValue());
+      x.addText(name + ": " + ((StringType) e).getValue());
       return true;
     } else if (e instanceof CodeType) {
-      x.addText(name+": "+((CodeType) e).getValue());
+      x.addText(name + ": " + ((CodeType) e).getValue());
       return true;
     } else if (e instanceof IdType) {
-      x.addText(name+": "+((IdType) e).getValue());
+      x.addText(name + ": " + ((IdType) e).getValue());
       return true;
     } else if (e instanceof UriType) {
       if (Utilities.isAbsoluteUrlLinkable(((UriType) e).getValue()) && allowLinks) {
-        x.tx(name+": ");
+        x.tx(name + ": ");
         x.ah(((UriType) e).getValue()).addText(((UriType) e).getValue());
       } else {
-        x.addText(name+": "+((UriType) e).getValue());
+        x.addText(name + ": " + ((UriType) e).getValue());
       }
       return true;
     } else if (e instanceof DateTimeType) {
-      x.addText(name+": "+((DateTimeType) e).toHumanDisplay());
+      x.addText(name + ": " + ((DateTimeType) e).toHumanDisplay());
       return true;
     } else if (e instanceof InstantType) {
-      x.addText(name+": "+((InstantType) e).toHumanDisplay());
+      x.addText(name + ": " + ((InstantType) e).toHumanDisplay());
       return true;
     } else if (e instanceof Extension) {
-      //      x.tx("Extensions: todo");
+      // x.tx("Extensions: todo");
       return false;
     } else if (e instanceof org.hl7.fhir.r4b.model.DateType) {
-      x.addText(name+": "+((org.hl7.fhir.r4b.model.DateType) e).toHumanDisplay());
+      x.addText(name + ": " + ((org.hl7.fhir.r4b.model.DateType) e).toHumanDisplay());
       return true;
     } else if (e instanceof Enumeration) {
       x.addText(((Enumeration<?>) e).getValue().toString()); // todo: look up a display name if there is one
@@ -492,7 +505,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         return true;
       }
     } else if (e instanceof CodeableReference) {
-      if (((CodeableReference) e).hasReference()) { 
+      if (((CodeableReference) e).hasReference()) {
         Reference r = ((CodeableReference) e).getReference();
         renderReference(res, x, r, allowLinks);
       } else {
@@ -546,7 +559,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       return true;
     } else if (e instanceof Period) {
       Period p = (Period) e;
-      x.addText(name+": ");
+      x.addText(name + ": ");
       x.addText(!p.hasStart() ? "?ngen-2?" : p.getStartElement().toHumanDisplay());
       x.tx(" --> ");
       x.addText(!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
@@ -568,12 +581,15 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof ContactDetail) {
       ContactDetail cd = (ContactDetail) e;
       if (cd.hasName()) {
-        x.tx(cd.getName()+": ");
+        x.tx(cd.getName() + ": ");
       }
       boolean first = true;
       for (ContactPoint c : cd.getTelecom()) {
-        if (first) first = false; else x.tx(",");
-        if (allowLinks) {      
+        if (first)
+          first = false;
+        else
+          x.tx(",");
+        if (allowLinks) {
           renderContactPoint(x, c);
         } else {
           displayContactPoint(x, c);
@@ -597,14 +613,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof Base64BinaryType) {
       return false;
     } else if (!(e instanceof Attachment))
-      throw new NotImplementedException("type "+e.getClass().getName()+" not handled yet");
+      throw new NotImplementedException("type " + e.getClass().getName() + " not handled yet");
     return false;
   }
 
-
-
   private boolean isPrimitive(ElementDefinition e) {
-    //we can tell if e is a primitive because it has types
+    // we can tell if e is a primitive because it has types
     if (e.getType().isEmpty()) {
       return false;
     }
@@ -620,10 +634,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         return true;
       }
       if (sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
-        if (Utilities.existsInList(e.getTypeFirstRep().getCode(), "Extension", "CodeableConcept", "Coding", "Annotation", "Identifier", "HumanName", "SampledData", 
-            "Address", "ContactPoint", "ContactDetail", "Timing", "Range", "Quantity", "Ratio", "Period", "Reference")) {
+        if (Utilities.existsInList(e.getTypeFirstRep().getCode(), "Extension", "CodeableConcept", "Coding",
+            "Annotation", "Identifier", "HumanName", "SampledData", "Address", "ContactPoint", "ContactDetail",
+            "Timing", "Range", "Quantity", "Ratio", "Period", "Reference")) {
           return true;
-        }        
+        }
       }
     }
     return false;
@@ -632,8 +647,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   private boolean isBase(String code) {
     return code.equals("Element") || code.equals("BackboneElement");
   }
-  
-  private List<ElementDefinition> getChildrenForPath(List<ElementDefinition> elements, String path) throws DefinitionException {
+
+  private List<ElementDefinition> getChildrenForPath(List<ElementDefinition> elements, String path)
+      throws DefinitionException {
     // do we need to do a name reference substitution?
     for (ElementDefinition e : elements) {
       if (e.getPath().equals(path) && e.hasContentReference()) {
@@ -641,11 +657,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         ElementDefinition t = null;
         // now, resolve the name
         for (ElementDefinition e1 : elements) {
-          if (ref.equals("#"+e1.getId()))
+          if (ref.equals("#" + e1.getId()))
             t = e1;
         }
         if (t == null)
-          throw new DefinitionException("Unable to resolve content reference "+ref+" trying to resolve "+path);
+          throw new DefinitionException("Unable to resolve content reference " + ref + " trying to resolve " + path);
         path = t.getPath();
         break;
       }
@@ -653,39 +669,48 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
     List<ElementDefinition> results = new ArrayList<ElementDefinition>();
     for (ElementDefinition e : elements) {
-      if (e.getPath().startsWith(path+".") && !e.getPath().substring(path.length()+1).contains("."))
+      if (e.getPath().startsWith(path + ".") && !e.getPath().substring(path.length() + 1).contains("."))
         results.add(e);
     }
     return results;
   }
 
-
   private boolean generateByProfile(StructureDefinition profile, boolean showCodeDetails) {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    if(context.isAddGeneratedNarrativeHeader()) {
-      x.para().b().tx("Generated Narrative: "+profile.present()+(showCodeDetails ? " with Details" : ""));
+    if (context.isAddGeneratedNarrativeHeader()) {
+      x.para().b().tx("Generated Narrative: " + profile.present() + (showCodeDetails ? " with Details" : ""));
     }
     try {
-      generateByProfile(rcontext.getResourceResource(), profile, rcontext.getResourceResource(), profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile.getSnapshot().getElement(), rcontext.getResourceResource().getResourceType().toString()), x, rcontext.getResourceResource().getResourceType().toString(), showCodeDetails);
+      generateByProfile(rcontext.getResourceResource(), profile, rcontext.getResourceResource(),
+          profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0),
+          getChildrenForPath(profile.getSnapshot().getElement(),
+              rcontext.getResourceResource().getResourceType().toString()),
+          x, rcontext.getResourceResource().getResourceType().toString(), showCodeDetails);
     } catch (Exception e) {
       e.printStackTrace();
-      x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      x.para().b().style("color: maroon").tx("Exception generating Narrative: " + e.getMessage());
     }
-    inject(rcontext.getResourceResource(), x,  NarrativeStatus.GENERATED);
+    inject(rcontext.getResourceResource(), x, NarrativeStatus.GENERATED);
     return true;
   }
 
-  private void generateByProfile(Resource res, StructureDefinition profile, Base e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
-    generateByProfile(new ResourceWrapperDirect(this.context, res), profile, new BaseWrapperDirect(this.context, e), allElements, defn, children, x, path, showCodeDetails, 0);
+  private void generateByProfile(Resource res, StructureDefinition profile, Base e, List<ElementDefinition> allElements,
+      ElementDefinition defn, List<ElementDefinition> children, XhtmlNode x, String path, boolean showCodeDetails)
+      throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
+    generateByProfile(new ResourceWrapperDirect(this.context, res), profile, new BaseWrapperDirect(this.context, e),
+        allElements, defn, children, x, path, showCodeDetails, 0);
   }
 
-  private void generateByProfile(ResourceWrapper res, StructureDefinition profile, BaseWrapper e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
+  private void generateByProfile(ResourceWrapper res, StructureDefinition profile, BaseWrapper e,
+      List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children, XhtmlNode x,
+      String path, boolean showCodeDetails, int indent)
+      throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     if (children.isEmpty()) {
       renderLeaf(res, e, defn, x, x, false, showCodeDetails, readDisplayHints(defn), path, indent);
     } else {
       for (PropertyWrapper p : splitExtensions(profile, e.children())) {
         if (p.hasValues()) {
-          ElementDefinition child = getElementDefinition(children, path+"."+p.getName(), p);
+          ElementDefinition child = getElementDefinition(children, path + "." + p.getName(), p);
           if (child == null) {
             child = p.getElementDefinition();
           }
@@ -699,8 +724,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     }
   }
 
-  public void generateElementByProfile(ResourceWrapper res, StructureDefinition profile, List<ElementDefinition> allElements, XhtmlNode x, String path,
-      boolean showCodeDetails, int indent, PropertyWrapper p, ElementDefinition child) throws UnsupportedEncodingException, IOException, EOperationOutcome {
+  public void generateElementByProfile(ResourceWrapper res, StructureDefinition profile,
+      List<ElementDefinition> allElements, XhtmlNode x, String path, boolean showCodeDetails, int indent,
+      PropertyWrapper p, ElementDefinition child) throws UnsupportedEncodingException, IOException, EOperationOutcome {
     Map<String, String> displayHints = readDisplayHints(child);
     if ("DomainResource.contained".equals(child.getBase().getPath())) {
 //                for (BaseWrapper v : p.getValues()) {
@@ -715,41 +741,41 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       if (isExtension(p)) {
         hasExtensions = true;
       }
-      List<ElementDefinition> grandChildren = getChildrenForPath(allElements, path+"."+p.getName());
-      filterGrandChildren(grandChildren, path+"."+p.getName(), p);
+      List<ElementDefinition> grandChildren = getChildrenForPath(allElements, path + "." + p.getName());
+      filterGrandChildren(grandChildren, path + "." + p.getName(), p);
       if (p.getValues().size() > 0) {
-         if (isPrimitive(child)) {
-           XhtmlNode para = x.isPara() ? para = x : x.para();
-           String name = p.getName();
-           if (name.endsWith("[x]"))
-             name = name.substring(0, name.length() - 3);
-           if (showCodeDetails || !isDefaultValue(displayHints, p.getValues())) {
-             para.b().addText(name);
-             para.tx(": ");
-             if (renderAsList(child) && p.getValues().size() > 1) {
-               XhtmlNode list = x.ul();
-               for (BaseWrapper v : p.getValues())
-                 renderLeaf(res, v, child, x, list.li(), false, showCodeDetails, displayHints, path, indent);
-             } else {
-               boolean first = true;
-               for (BaseWrapper v : p.getValues()) {
-                 if (first) {
-                   first = false;
-                 } else {
-                   para.tx(", ");
-                 }
-                 renderLeaf(res, v, child, x, para, false, showCodeDetails, displayHints, path, indent);
-               }
-             }
-           }
+        if (isPrimitive(child)) {
+          XhtmlNode para = x.isPara() ? para = x : x.para();
+          String name = p.getName();
+          if (name.endsWith("[x]"))
+            name = name.substring(0, name.length() - 3);
+          if (showCodeDetails || !isDefaultValue(displayHints, p.getValues())) {
+            para.b().addText(name);
+            para.tx(": ");
+            if (renderAsList(child) && p.getValues().size() > 1) {
+              XhtmlNode list = x.ul();
+              for (BaseWrapper v : p.getValues())
+                renderLeaf(res, v, child, x, list.li(), false, showCodeDetails, displayHints, path, indent);
+            } else {
+              boolean first = true;
+              for (BaseWrapper v : p.getValues()) {
+                if (first) {
+                  first = false;
+                } else {
+                  para.tx(", ");
+                }
+                renderLeaf(res, v, child, x, para, false, showCodeDetails, displayHints, path, indent);
+              }
+            }
+          }
         } else if (canDoTable(path, p, grandChildren, x)) {
           XhtmlNode xn = new XhtmlNode(NodeType.Element, getHeader());
           xn.addText(Utilities.capitalize(Utilities.camelCase(Utilities.pluralizeMe(p.getName()))));
-          XhtmlNode tbl = new XhtmlNode(NodeType.Element, "table"); 
+          XhtmlNode tbl = new XhtmlNode(NodeType.Element, "table");
           tbl.setAttribute("class", "grid");
           XhtmlNode tr = tbl.tr();
           tr.td().tx("-"); // work around problem with empty table rows
-          boolean add = addColumnHeadings(tr, grandChildren);          
+          boolean add = addColumnHeadings(tr, grandChildren);
           for (BaseWrapper v : p.getValues()) {
             if (v != null) {
               tr = tbl.tr();
@@ -773,22 +799,24 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 para.tx(": ");
                 renderLeaf(res, vv, child, x, para, false, showCodeDetails, displayHints, path, indent);
               } else if (ev.hasValues()) {
-                XhtmlNode bq = x.addTag("blockquote");                
+                XhtmlNode bq = x.addTag("blockquote");
                 bq.para().b().addText(isExtension(p) ? p.getStructure().present() : p.getName());
                 for (BaseWrapper vv : ev.getValues()) {
                   StructureDefinition ex = context.getWorker().fetchTypeDefinition("Extension");
                   List<ElementDefinition> children = getChildrenForPath(ex.getSnapshot().getElement(), "Extension");
-                  generateByProfile(res, ex, vv, allElements, child, children, bq, "Extension", showCodeDetails, indent+1);
+                  generateByProfile(res, ex, vv, allElements, child, children, bq, "Extension", showCodeDetails,
+                      indent + 1);
                 }
               }
             }
-          }          
+          }
         } else {
           for (BaseWrapper v : p.getValues()) {
             if (v != null) {
               XhtmlNode bq = x.addTag("blockquote");
               bq.para().b().addText(isExtension(p) ? p.getStructure().present() : p.getName());
-              generateByProfile(res, profile, v, allElements, child, grandChildren, bq, path+"."+p.getName(), showCodeDetails, indent+1);
+              generateByProfile(res, profile, v, allElements, child, grandChildren, bq, path + "." + p.getName(),
+                  showCodeDetails, indent + 1);
             }
           }
         }
@@ -796,27 +824,26 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     }
   }
 
-
   private String getHeader() {
     int i = 3;
     while (i <= context.getHeaderLevelContext())
       i++;
     if (i > 6)
       i = 6;
-    return "h"+Integer.toString(i);
+    return "h" + Integer.toString(i);
   }
 
   private List<PropertyWrapper> getValues(String path, PropertyWrapper p, ElementDefinition e) {
     List<PropertyWrapper> res = new ArrayList<PropertyWrapper>();
     for (BaseWrapper v : p.getValues()) {
       for (PropertyWrapper g : v.children()) {
-        if ((path+"."+p.getName()+"."+g.getName()).equals(e.getPath()))
+        if ((path + "." + p.getName() + "." + g.getName()).equals(e.getPath()))
           res.add(p);
       }
     }
     return res;
   }
-  
+
   private boolean canDoTable(String path, PropertyWrapper p, List<ElementDefinition> grandChildren, XhtmlNode x) {
     if (isExtension(p)) {
       return false;
@@ -837,11 +864,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return p.getName().contains("extension[");
   }
 
-
   private boolean canCollapse(ElementDefinition e) {
     // we can collapse any data type
     return !e.getType().isEmpty();
   }
+
   private boolean exemptFromRendering(ElementDefinition child) {
     if (child == null)
       return false;
@@ -870,10 +897,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return b;
   }
 
-  private boolean addColumnValues(ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren, BaseWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
+  private boolean addColumnValues(ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren,
+      BaseWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent)
+      throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     boolean b = false;
     for (ElementDefinition e : grandChildren) {
-      PropertyWrapper p = v.getChildByName(e.getPath().substring(e.getPath().lastIndexOf(".")+1));
+      PropertyWrapper p = v.getChildByName(e.getPath().substring(e.getPath().lastIndexOf(".") + 1));
       XhtmlNode td = tr.td();
       if (p == null || p.getValues().size() == 0 || p.getValues().get(0) == null) {
         b = true;
@@ -889,7 +918,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return b;
   }
 
-  private void filterGrandChildren(List<ElementDefinition> grandChildren,  String string, PropertyWrapper prop) {
+  private void filterGrandChildren(List<ElementDefinition> grandChildren, String string, PropertyWrapper prop) {
     List<ElementDefinition> toRemove = new ArrayList<ElementDefinition>();
     toRemove.addAll(grandChildren);
     for (BaseWrapper b : prop.getValues()) {
@@ -904,7 +933,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     grandChildren.removeAll(toRemove);
   }
 
-  private List<PropertyWrapper> splitExtensions(StructureDefinition profile, List<PropertyWrapper> children) throws UnsupportedEncodingException, IOException, FHIRException {
+  private List<PropertyWrapper> splitExtensions(StructureDefinition profile, List<PropertyWrapper> children)
+      throws UnsupportedEncodingException, IOException, FHIRException {
     List<PropertyWrapper> results = new ArrayList<PropertyWrapper>();
     Map<String, PropertyWrapper> map = new HashMap<String, PropertyWrapper>();
     for (PropertyWrapper p : children)
@@ -912,7 +942,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         // we're going to split these up, and create a property for each url
         if (p.hasValues()) {
           for (BaseWrapper v : p.getValues()) {
-            Extension ex  = (Extension) v.getBase();
+            Extension ex = (Extension) v.getBase();
             String url = ex.getUrl();
             StructureDefinition ed = getContext().getWorker().fetchResource(StructureDefinition.class, url);
             if (ed == null) {
@@ -926,19 +956,23 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
               }
             }
             if (p.getName().equals("modifierExtension") && ed == null) {
-              throw new DefinitionException("Unknown modifier extension "+url);
+              throw new DefinitionException("Unknown modifier extension " + url);
             }
-            PropertyWrapper pe = map.get(p.getName()+"["+url+"]");
+            PropertyWrapper pe = map.get(p.getName() + "[" + url + "]");
             if (pe == null) {
               if (ed == null) {
                 if (url.startsWith("http://hl7.org/fhir") && !url.startsWith("http://hl7.org/fhir/us")) {
-                  throw new DefinitionException("unknown extension "+url);
+                  throw new DefinitionException("unknown extension " + url);
                 }
                 // System.out.println("unknown extension "+url);
-                pe = new PropertyWrapperDirect(this.context, new Property(p.getName()+"["+url+"]", p.getTypeCode(), p.getDefinition(), p.getMinCardinality(), p.getMaxCardinality(), ex), null);
+                pe = new PropertyWrapperDirect(this.context, new Property(p.getName() + "[" + url + "]",
+                    p.getTypeCode(), p.getDefinition(), p.getMinCardinality(), p.getMaxCardinality(), ex), null);
               } else {
                 ElementDefinition def = ed.getSnapshot().getElement().get(0);
-                pe = new PropertyWrapperDirect(this.context, new Property(p.getName()+"["+url+"]", "Extension", def.getDefinition(), def.getMin(), def.getMax().equals("*") ? Integer.MAX_VALUE : Integer.parseInt(def.getMax()), ex), ed.getSnapshot().getElementFirstRep());
+                pe = new PropertyWrapperDirect(this.context,
+                    new Property(p.getName() + "[" + url + "]", "Extension", def.getDefinition(), def.getMin(),
+                        def.getMax().equals("*") ? Integer.MAX_VALUE : Integer.parseInt(def.getMax()), ex),
+                    ed.getSnapshot().getElementFirstRep());
                 ((PropertyWrapperDirect) pe).getWrapped().setStructure(ed);
               }
               results.add(pe);
@@ -951,7 +985,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return results;
   }
 
-
   private Map<String, String> readDisplayHints(ElementDefinition defn) throws DefinitionException {
     Map<String, String> hints = new HashMap<String, String>();
     if (defn != null) {
@@ -961,10 +994,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         for (String item : list) {
           String[] parts = item.split(":");
           if (parts.length == 1) {
-            hints.put("value", parts[0].trim());            
+            hints.put("value", parts[0].trim());
           } else {
             if (parts.length != 2) {
-              throw new DefinitionException("error reading display hint: '"+displayHint+"'");
+              throw new DefinitionException("error reading display hint: '" + displayHint + "'");
             }
             hints.put(parts[0].trim(), parts[1].trim());
           }
@@ -975,7 +1008,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   }
 
   @SuppressWarnings("rawtypes")
-  private boolean isDefaultValue(Map<String, String> displayHints, List<BaseWrapper> list) throws UnsupportedEncodingException, IOException, FHIRException {
+  private boolean isDefaultValue(Map<String, String> displayHints, List<BaseWrapper> list)
+      throws UnsupportedEncodingException, IOException, FHIRException {
     if (list.size() != 1)
       return false;
     if (list.get(0).getBase() instanceof PrimitiveType)
@@ -991,9 +1025,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return false;
   }
 
-
   protected String tail(String path) {
-    return path.substring(path.lastIndexOf(".")+1);
+    return path.substring(path.lastIndexOf(".") + 1);
   }
 
   public boolean canRender(Resource resource) {

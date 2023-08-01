@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Mon, Apr 18, 2016 07:09+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class EndpointStatusEnumFactory implements EnumFactory<EndpointStatus> {
@@ -50,7 +46,7 @@ public class EndpointStatusEnumFactory implements EnumFactory<EndpointStatus> {
       return EndpointStatus.ERROR;
     if ("off".equals(codeString))
       return EndpointStatus.OFF;
-    throw new IllegalArgumentException("Unknown EndpointStatus code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown EndpointStatus code '" + codeString + "'");
   }
 
   public String toCode(EndpointStatus code) {
@@ -65,8 +61,8 @@ public class EndpointStatusEnumFactory implements EnumFactory<EndpointStatus> {
     return "?";
   }
 
-    public String toSystem(EndpointStatus code) {
-      return code.getSystem();
-      }
+  public String toSystem(EndpointStatus code) {
+    return code.getSystem();
+  }
 
 }

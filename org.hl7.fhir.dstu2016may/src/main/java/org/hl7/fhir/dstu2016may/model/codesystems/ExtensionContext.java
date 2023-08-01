@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,89 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExtensionContext {
 
-        /**
-         * The context is all elements matching a particular resource element path.
-         */
-        RESOURCE, 
-        /**
-         * The context is all nodes matching a particular data type element path (root or repeating element) or all elements referencing a particular primitive data type (expressed as the datatype name).
-         */
-        DATATYPE, 
-        /**
-         * The context is a particular extension from a particular profile, a uri that identifies the extension definition.
-         */
-        EXTENSION, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ExtensionContext fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("resource".equals(codeString))
-          return RESOURCE;
-        if ("datatype".equals(codeString))
-          return DATATYPE;
-        if ("extension".equals(codeString))
-          return EXTENSION;
-        throw new FHIRException("Unknown ExtensionContext code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case RESOURCE: return "resource";
-            case DATATYPE: return "datatype";
-            case EXTENSION: return "extension";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/extension-context";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case RESOURCE: return "The context is all elements matching a particular resource element path.";
-            case DATATYPE: return "The context is all nodes matching a particular data type element path (root or repeating element) or all elements referencing a particular primitive data type (expressed as the datatype name).";
-            case EXTENSION: return "The context is a particular extension from a particular profile, a uri that identifies the extension definition.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case RESOURCE: return "Resource";
-            case DATATYPE: return "Datatype";
-            case EXTENSION: return "Extension";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The context is all elements matching a particular resource element path.
+   */
+  RESOURCE,
+  /**
+   * The context is all nodes matching a particular data type element path (root
+   * or repeating element) or all elements referencing a particular primitive data
+   * type (expressed as the datatype name).
+   */
+  DATATYPE,
+  /**
+   * The context is a particular extension from a particular profile, a uri that
+   * identifies the extension definition.
+   */
+  EXTENSION,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ExtensionContext fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("resource".equals(codeString))
+      return RESOURCE;
+    if ("datatype".equals(codeString))
+      return DATATYPE;
+    if ("extension".equals(codeString))
+      return EXTENSION;
+    throw new FHIRException("Unknown ExtensionContext code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case RESOURCE:
+      return "resource";
+    case DATATYPE:
+      return "datatype";
+    case EXTENSION:
+      return "extension";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/extension-context";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case RESOURCE:
+      return "The context is all elements matching a particular resource element path.";
+    case DATATYPE:
+      return "The context is all nodes matching a particular data type element path (root or repeating element) or all elements referencing a particular primitive data type (expressed as the datatype name).";
+    case EXTENSION:
+      return "The context is a particular extension from a particular profile, a uri that identifies the extension definition.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case RESOURCE:
+      return "Resource";
+    case DATATYPE:
+      return "Datatype";
+    case EXTENSION:
+      return "Extension";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -20,16 +20,15 @@ import org.hl7.fhir.r4b.model.Resource;
 
 public class ResourceFixer {
 
-
   public static void main(String[] args) {
     new ResourceFixer().vistAllResources(args[0]);
 
   }
 
   private Set<String> refs = new HashSet<>();
-  
+
   private void vistAllResources(String folder) {
-    
+
     for (File f : new File(folder).listFiles()) {
       if (f.isDirectory()) {
         vistAllResources(f.getAbsolutePath());
@@ -46,7 +45,7 @@ public class ResourceFixer {
               new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
             }
           } catch (Exception e) {
-            System.out.println("Error processing "+f.getAbsolutePath()+": "+e.getMessage());
+            System.out.println("Error processing " + f.getAbsolutePath() + ": " + e.getMessage());
 //            e.printStackTrace();
           }
         }
@@ -63,19 +62,19 @@ public class ResourceFixer {
               new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
             }
           } catch (Exception e) {
-            System.out.println("Error processing "+f.getAbsolutePath()+": "+e.getMessage());
+            System.out.println("Error processing " + f.getAbsolutePath() + ": " + e.getMessage());
 //            e.printStackTrace();
           }
         }
       }
-    } 
+    }
   }
 
   private boolean visitResource(Resource r) {
     if (r.hasId()) {
-      String ref = r.fhirType()+"/"+r.getId();
+      String ref = r.fhirType() + "/" + r.getId();
       if (refs.contains(ref)) {
-        throw new FHIRException("Duplicate resource "+ref);
+        throw new FHIRException("Duplicate resource " + ref);
       }
       refs.add(ref);
     }
@@ -87,14 +86,14 @@ public class ResourceFixer {
 
   private boolean visitCodeSystem(CodeSystem cs) {
     if (!cs.hasContent()) {
-      System.out.println("Setting content = complete for CodeSystem/"+cs.getId());      
+      System.out.println("Setting content = complete for CodeSystem/" + cs.getId());
       cs.setContent(CodeSystemContentMode.COMPLETE);
       return true;
-    } else if (!cs.hasHierarchyMeaning() && hasHierarchy(cs)) {      
-      System.out.println("Setting hierarchyMeaning = is-a for CodeSystem/"+cs.getId());      
+    } else if (!cs.hasHierarchyMeaning() && hasHierarchy(cs)) {
+      System.out.println("Setting hierarchyMeaning = is-a for CodeSystem/" + cs.getId());
       cs.setHierarchyMeaning(CodeSystemHierarchyMeaning.ISA);
       return true;
-    } else {      
+    } else {
       return false;
     }
   }

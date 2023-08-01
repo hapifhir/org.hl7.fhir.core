@@ -7,7 +7,6 @@ import java.util.HashSet;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.utilities.Utilities;
 
 public class SpecialExtensions {
 

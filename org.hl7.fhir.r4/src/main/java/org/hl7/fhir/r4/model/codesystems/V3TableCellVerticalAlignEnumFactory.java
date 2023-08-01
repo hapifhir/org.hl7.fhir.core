@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3TableCellVerticalAlignEnumFactory implements EnumFactory<V3TableCellVerticalAlign> {
@@ -50,7 +46,7 @@ public class V3TableCellVerticalAlignEnumFactory implements EnumFactory<V3TableC
       return V3TableCellVerticalAlign.MIDDLE;
     if ("top".equals(codeString))
       return V3TableCellVerticalAlign.TOP;
-    throw new IllegalArgumentException("Unknown V3TableCellVerticalAlign code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3TableCellVerticalAlign code '" + codeString + "'");
   }
 
   public String toCode(V3TableCellVerticalAlign code) {
@@ -65,8 +61,8 @@ public class V3TableCellVerticalAlignEnumFactory implements EnumFactory<V3TableC
     return "?";
   }
 
-    public String toSystem(V3TableCellVerticalAlign code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3TableCellVerticalAlign code) {
+    return code.getSystem();
+  }
 
 }

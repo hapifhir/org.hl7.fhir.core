@@ -1,6 +1,12 @@
 package org.hl7.fhir.utilities.tests.execution.junit4;
 
-import lombok.Getter;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
 import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
 import org.junit.runner.Description;
@@ -8,12 +14,7 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import lombok.Getter;
 
 public class JUnit4TestExecutor extends ModuleTestExecutor {
 

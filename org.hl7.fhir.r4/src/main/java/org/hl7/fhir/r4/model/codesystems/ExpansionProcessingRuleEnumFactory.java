@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ExpansionProcessingRuleEnumFactory implements EnumFactory<ExpansionProcessingRule> {
@@ -48,7 +44,7 @@ public class ExpansionProcessingRuleEnumFactory implements EnumFactory<Expansion
       return ExpansionProcessingRule.UNGROUPED;
     if ("groups-only".equals(codeString))
       return ExpansionProcessingRule.GROUPSONLY;
-    throw new IllegalArgumentException("Unknown ExpansionProcessingRule code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ExpansionProcessingRule code '" + codeString + "'");
   }
 
   public String toCode(ExpansionProcessingRule code) {
@@ -61,8 +57,8 @@ public class ExpansionProcessingRuleEnumFactory implements EnumFactory<Expansion
     return "?";
   }
 
-    public String toSystem(ExpansionProcessingRule code) {
-      return code.getSystem();
-      }
+  public String toSystem(ExpansionProcessingRule code) {
+    return code.getSystem();
+  }
 
 }

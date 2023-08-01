@@ -65,64 +65,68 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 public class ToolsHelper {
 
-  public static void main(String[] args) {   
+  public static void main(String[] args) {
     try {
       ToolsHelper self = new ToolsHelper();
-      if (args.length == 0) 
-        throw new FHIRException("Missing Command Parameter. Valid Commands: round, json, version, fragments, snapshot-maker");
-      if (args[0].equals("round")) 
+      if (args.length == 0)
+        throw new FHIRException(
+            "Missing Command Parameter. Valid Commands: round, json, version, fragments, snapshot-maker");
+      if (args[0].equals("round"))
         self.executeRoundTrip(args);
-      else if (args[0].equals("test")) 
+      else if (args[0].equals("test"))
         self.executeTest(args);
-      else if (args[0].equals("examples")) 
+      else if (args[0].equals("examples"))
         self.executeExamples(args);
-      else if (args[0].equals("json")) 
+      else if (args[0].equals("json"))
         self.executeJson(args);
-      else if (args[0].equals("cxml")) 
+      else if (args[0].equals("cxml"))
         self.executeCanonicalXml(args);
-      else if (args[0].equals("version")) 
+      else if (args[0].equals("version"))
         self.executeVersion(args);
-      else if (args[0].equals("fragments")) 
-          self.executeFragments(args);
-      else if (args[0].equals("snapshot-maker")) 
+      else if (args[0].equals("fragments"))
+        self.executeFragments(args);
+      else if (args[0].equals("snapshot-maker"))
         self.generateSnapshots(args);
-      else 
-        throw new FHIRException("Unknown command '"+args[0]+"'. Valid Commands: round, test, examples, json, cxml, version, fragments, snapshot-maker");
+      else
+        throw new FHIRException("Unknown command '" + args[0]
+            + "'. Valid Commands: round, test, examples, json, cxml, version, fragments, snapshot-maker");
     } catch (Throwable e) {
       try {
         e.printStackTrace();
-        TextFile.stringToFile(e.toString(), (args.length == 0 ? "tools" : args[0])+".err");
+        TextFile.stringToFile(e.toString(), (args.length == 0 ? "tools" : args[0]) + ".err");
       } catch (Exception e1) {
         e1.printStackTrace();
       }
     }
   }
 
-	private void executeExamples(String[] args) throws IOException {
-  	try {
-  		@SuppressWarnings("unchecked")
-  		List<String> lines = FileUtils.readLines(new File(args[1]), "UTF-8");
-  		String srcDir = lines.get(0);
-  		lines.remove(0);
-  		processExamples(srcDir, lines);
-  		TextFile.stringToFile("ok", Utilities.changeFileExt(args[1], ".out"));
-  	} catch (Exception e) {
-  		TextFile.stringToFile(e.getMessage(), Utilities.changeFileExt(args[1], ".out"));			
-  	}
+  private void executeExamples(String[] args) throws IOException {
+    try {
+      @SuppressWarnings("unchecked")
+      List<String> lines = FileUtils.readLines(new File(args[1]), "UTF-8");
+      String srcDir = lines.get(0);
+      lines.remove(0);
+      processExamples(srcDir, lines);
+      TextFile.stringToFile("ok", Utilities.changeFileExt(args[1], ".out"));
+    } catch (Exception e) {
+      TextFile.stringToFile(e.getMessage(), Utilities.changeFileExt(args[1], ".out"));
+    }
   }
 
-	private void generateSnapshots(String[] args) throws IOException, FHIRException {
-		if (args.length == 1) {
-			System.out.println("tools.jar snapshot-maker [source] -defn [definitions]");
-			System.out.println("");
-			System.out.println("Generates a snapshot from a differential. The nominated profile must have a single struture that has a differential");
-			System.out.println("");
-			System.out.println("source - the profile to generate the snapshot for. Maybe a file name, or a URL reference to a server running FHIR RESTful API");
-			System.out.println("definitions - filename for local copy of the validation.zip file");			
-		}
-	  String address = args[1];
-	  String definitions = args[3];
-	  
+  private void generateSnapshots(String[] args) throws IOException, FHIRException {
+    if (args.length == 1) {
+      System.out.println("tools.jar snapshot-maker [source] -defn [definitions]");
+      System.out.println("");
+      System.out.println(
+          "Generates a snapshot from a differential. The nominated profile must have a single struture that has a differential");
+      System.out.println("");
+      System.out.println(
+          "source - the profile to generate the snapshot for. Maybe a file name, or a URL reference to a server running FHIR RESTful API");
+      System.out.println("definitions - filename for local copy of the validation.zip file");
+    }
+    String address = args[1];
+    String definitions = args[3];
+
     SimpleWorkerContext context = SimpleWorkerContext.fromDefinitions(getDefinitions(definitions));
 
 //    if (address.startsWith("http:") || address.startsWith("http:")) {
@@ -138,21 +142,21 @@ public class ToolsHelper {
 //    	utils.generateSnapshot(base, profile, address, profile.getName(), null, null);
 //    	// client.update(StructureDefinition.class, profile, parts[1]);
 //    } else {
-    	throw new NotImplementedException("generating snapshots not done yet (address = "+address+")");
+    throw new NotImplementedException("generating snapshots not done yet (address = " + address + ")");
 //    }
-	}
-
-  private Map<String, byte[]> getDefinitions(String definitions) throws IOException, FHIRException {
-  	Map<String, byte[]> results = new HashMap<String, byte[]>();
-  	readDefinitions(results, loadDefinitions(definitions));
-	  return results;
   }
 
-	private void readDefinitions(Map<String, byte[]> map, byte[] defn) throws IOException {
+  private Map<String, byte[]> getDefinitions(String definitions) throws IOException, FHIRException {
+    Map<String, byte[]> results = new HashMap<String, byte[]>();
+    readDefinitions(results, loadDefinitions(definitions));
+    return results;
+  }
+
+  private void readDefinitions(Map<String, byte[]> map, byte[] defn) throws IOException {
     ZipInputStream zip = new ZipInputStream(new ByteArrayInputStream(defn));
     ZipEntry ze;
     while ((ze = zip.getNextEntry()) != null) {
-      if (!ze.getName().endsWith(".zip") && !ze.getName().endsWith(".jar") ) { // skip saxon .zip
+      if (!ze.getName().endsWith(".zip") && !ze.getName().endsWith(".jar")) { // skip saxon .zip
         String name = ze.getName();
         InputStream in = zip;
         ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -160,12 +164,12 @@ public class ToolsHelper {
         byte[] buf = new byte[1024];
         while ((n = in.read(buf, 0, 1024)) > -1) {
           b.write(buf, 0, n);
-        }        
+        }
         map.put(name, b.toByteArray());
       }
       zip.closeEntry();
     }
-    zip.close();    
+    zip.close();
   }
 
   private byte[] loadDefinitions(String definitions) throws FHIRException, IOException {
@@ -176,14 +180,14 @@ public class ToolsHelper {
     if (definitions.startsWith("https:") || definitions.startsWith("http:")) {
       defn = loadFromUrl(definitions);
     } else if (new File(definitions).exists()) {
-      defn = loadFromFile(definitions);      
+      defn = loadFromFile(definitions);
     } else
-      throw new FHIRException("Unable to find FHIR validation Pack (source = "+definitions+")");
+      throw new FHIRException("Unable to find FHIR validation Pack (source = " + definitions + ")");
     return defn;
   }
 
   private byte[] loadFromUrl(String src) throws IOException {
-  	URL url = new URL(src);
+    URL url = new URL(src);
     byte[] str = IOUtils.toByteArray(url.openStream());
     return str;
   }
@@ -196,33 +200,33 @@ public class ToolsHelper {
     return b;
   }
 
-
-	protected XmlPullParser loadXml(InputStream stream) throws XmlPullParserException, IOException {
-	BufferedInputStream input = new BufferedInputStream(stream);
-    XmlPullParserFactory factory = XmlPullParserFactory.newInstance(System.getProperty(XmlPullParserFactory.PROPERTY_NAME), null);
+  protected XmlPullParser loadXml(InputStream stream) throws XmlPullParserException, IOException {
+    BufferedInputStream input = new BufferedInputStream(stream);
+    XmlPullParserFactory factory = XmlPullParserFactory
+        .newInstance(System.getProperty(XmlPullParserFactory.PROPERTY_NAME), null);
     factory.setNamespaceAware(true);
     XmlPullParser xpp = factory.newPullParser();
     xpp.setInput(input, "UTF-8");
     xpp.next();
     return xpp;
   }
-	 
+
   protected int nextNoWhitespace(XmlPullParser xpp) throws XmlPullParserException, IOException {
     int eventType = xpp.getEventType();
     while (eventType == XmlPullParser.TEXT && xpp.isWhitespace())
       eventType = xpp.next();
     return eventType;
   }
-  
+
   public void executeFragments(String[] args) throws IOException {
     try {
       File source = new CSFile(args[1]);
-      if (!source.exists())        
-        throw new FHIRException("Source File \""+source.getAbsolutePath()+"\" not found");
+      if (!source.exists())
+        throw new FHIRException("Source File \"" + source.getAbsolutePath() + "\" not found");
       XmlPullParser xpp = loadXml(new FileInputStream(source));
       nextNoWhitespace(xpp);
       if (!xpp.getName().equals("tests"))
-        throw new FHIRFormatError("Unable to parse file - starts with "+xpp.getName());
+        throw new FHIRFormatError("Unable to parse file - starts with " + xpp.getName());
       xpp.next();
       nextNoWhitespace(xpp);
       StringBuilder s = new StringBuilder();
@@ -240,13 +244,14 @@ public class ToolsHelper {
         XmlParser p = new XmlParser();
         try {
           p.parseFragment(xpp, type);
-          s.append("<result id=\""+id+"\" outcome=\"ok\"/>\r\n");
+          s.append("<result id=\"" + id + "\" outcome=\"ok\"/>\r\n");
           nextNoWhitespace(xpp);
         } catch (Exception e) {
-          s.append("<result id=\""+id+"\" outcome=\"error\" msg=\""+Utilities.escapeXml(e.getMessage())+"\"/>\r\n");
+          s.append(
+              "<result id=\"" + id + "\" outcome=\"error\" msg=\"" + Utilities.escapeXml(e.getMessage()) + "\"/>\r\n");
           fail++;
         }
-        while (xpp.getEventType() != XmlPullParser.END_TAG || !xpp.getName().equals("pre")) 
+        while (xpp.getEventType() != XmlPullParser.END_TAG || !xpp.getName().equals("pre"))
           xpp.next();
         xpp.next();
         nextNoWhitespace(xpp);
@@ -263,15 +268,15 @@ public class ToolsHelper {
   }
 
   public void executeRoundTrip(String[] args) throws IOException, FHIRException {
-	FileInputStream in;
-	File source = new CSFile(args[1]);
+    FileInputStream in;
+    File source = new CSFile(args[1]);
     File dest = new CSFile(args[2]);
     if (args.length >= 4) {
-    	Utilities.copyFile(args[1], args[3]);
+      Utilities.copyFile(args[1], args[3]);
     }
 
-    if (!source.exists())        
-      throw new FHIRException("Source File \""+source.getAbsolutePath()+"\" not found");
+    if (!source.exists())
+      throw new FHIRException("Source File \"" + source.getAbsolutePath() + "\" not found");
     in = new CSFileInputStream(source);
     XmlParser p = new XmlParser();
     JsonParser parser = new JsonParser();
@@ -293,10 +298,10 @@ public class ToolsHelper {
     File source = new CSFile(args[1]);
     File dest = new CSFile(args[2]);
     File destc = new CSFile(Utilities.changeFileExt(args[2], ".canonical.json"));
-    File destt = new CSFile(args[2]+".tmp");
+    File destt = new CSFile(args[2] + ".tmp");
 
-    if (!source.exists())        
-      throw new FHIRException("Source File \""+source.getAbsolutePath()+"\" not found");
+    if (!source.exists())
+      throw new FHIRException("Source File \"" + source.getAbsolutePath() + "\" not found");
     in = new CSFileInputStream(source);
     XmlParser p = new XmlParser();
     Resource rf = p.parse(in);
@@ -313,7 +318,7 @@ public class ToolsHelper {
     json.setOutputStyle(OutputStyle.PRETTY);
     s = new FileOutputStream(destt);
     json.compose(s, rf);
-    s.close();    
+    s.close();
     return TextFile.fileToString(destt.getAbsolutePath());
   }
 
@@ -322,8 +327,8 @@ public class ToolsHelper {
     File source = new CSFile(args[1]);
     File dest = new CSFile(args[2]);
 
-    if (!source.exists())        
-      throw new FHIRException("Source File \""+source.getAbsolutePath()+"\" not found");
+    if (!source.exists())
+      throw new FHIRException("Source File \"" + source.getAbsolutePath() + "\" not found");
     in = new CSFileInputStream(source);
     XmlParser p = new XmlParser();
     Resource rf = p.parse(in);
@@ -333,91 +338,92 @@ public class ToolsHelper {
   }
 
   private void executeVersion(String[] args) throws IOException {
-    TextFile.stringToFile(org.hl7.fhir.dstu2.utils.Version.VERSION+":"+Constants.VERSION, args[1]);
+    TextFile.stringToFile(org.hl7.fhir.dstu2.utils.Version.VERSION + ":" + Constants.VERSION, args[1]);
   }
 
-  public void processExamples(String rootDir, Collection<String> list) throws FHIRException  {
+  public void processExamples(String rootDir, Collection<String> list) throws FHIRException {
     for (String n : list) {
       try {
-      String filename = rootDir + n + ".xml";
-      // 1. produce canonical XML
-      CSFileInputStream source = new CSFileInputStream(filename);
-      FileOutputStream dest = new FileOutputStream(Utilities.changeFileExt(filename, ".canonical.xml"));
-      XmlParser p = new XmlParser();
-      Resource r = p.parse(source);
-      XmlParser cxml = new XmlParser();
-      cxml.setOutputStyle(OutputStyle.CANONICAL);
-      cxml.compose(dest, r);
+        String filename = rootDir + n + ".xml";
+        // 1. produce canonical XML
+        CSFileInputStream source = new CSFileInputStream(filename);
+        FileOutputStream dest = new FileOutputStream(Utilities.changeFileExt(filename, ".canonical.xml"));
+        XmlParser p = new XmlParser();
+        Resource r = p.parse(source);
+        XmlParser cxml = new XmlParser();
+        cxml.setOutputStyle(OutputStyle.CANONICAL);
+        cxml.compose(dest, r);
 
-      // 2. produce JSON
-      source = new CSFileInputStream(filename);
-      dest = new FileOutputStream(Utilities.changeFileExt(filename, ".json"));
-      r = p.parse(source);
-      JsonParser json = new JsonParser();
-      json.setOutputStyle(OutputStyle.PRETTY);
-      json.compose(dest, r);
-      json = new JsonParser();
-      json.setOutputStyle(OutputStyle.CANONICAL);
-      dest = new FileOutputStream(Utilities.changeFileExt(filename, ".canonical.json"));
-      json.compose(dest, r);
+        // 2. produce JSON
+        source = new CSFileInputStream(filename);
+        dest = new FileOutputStream(Utilities.changeFileExt(filename, ".json"));
+        r = p.parse(source);
+        JsonParser json = new JsonParser();
+        json.setOutputStyle(OutputStyle.PRETTY);
+        json.compose(dest, r);
+        json = new JsonParser();
+        json.setOutputStyle(OutputStyle.CANONICAL);
+        dest = new FileOutputStream(Utilities.changeFileExt(filename, ".canonical.json"));
+        json.compose(dest, r);
       } catch (Exception e) {
         e.printStackTrace();
-        throw new FHIRException("Error Processing "+n+".xml: "+e.getMessage(), e);
+        throw new FHIRException("Error Processing " + n + ".xml: " + e.getMessage(), e);
       }
     }
   }
 
   public void testRoundTrip(String rootDir, String tmpDir, Collection<String> names) throws Throwable {
-		try {
-  	System.err.println("Round trip from "+rootDir+" to "+tmpDir+":"+Integer.toString(names.size())+" files");
-    for (String n : names) {
-    	System.err.print("  "+n);
-      String source = rootDir + n + ".xml";
-      // String tmpJson = tmpDir + n + ".json";
-      String tmp = tmpDir + n.replace(File.separator, "-") + ".tmp";
-      String dest = tmpDir + n.replace(File.separator, "-") + ".java.xml";
-      
-      FileInputStream in = new FileInputStream(source);
-      XmlParser xp = new XmlParser();
-      Resource r = xp.parse(in);
-    	System.err.print(".");
-      JsonParser jp = new JsonParser();
-      FileOutputStream out = new FileOutputStream(tmp);
-      jp.setOutputStyle(OutputStyle.PRETTY);
-      jp.compose(out, r);
-      out.close();
-      r = null;
-    	System.err.print(".");
-      
-      in = new FileInputStream(tmp);
-    	System.err.print(",");
-  		r = jp.parse(in);
-    	System.err.print(".");
-      out = new FileOutputStream(dest);
-      new XmlParser().compose(out, r, true);
-    	System.err.println("!");
-      out.close();
-      r = null;
-      System.gc();
+    try {
+      System.err
+          .println("Round trip from " + rootDir + " to " + tmpDir + ":" + Integer.toString(names.size()) + " files");
+      for (String n : names) {
+        System.err.print("  " + n);
+        String source = rootDir + n + ".xml";
+        // String tmpJson = tmpDir + n + ".json";
+        String tmp = tmpDir + n.replace(File.separator, "-") + ".tmp";
+        String dest = tmpDir + n.replace(File.separator, "-") + ".java.xml";
+
+        FileInputStream in = new FileInputStream(source);
+        XmlParser xp = new XmlParser();
+        Resource r = xp.parse(in);
+        System.err.print(".");
+        JsonParser jp = new JsonParser();
+        FileOutputStream out = new FileOutputStream(tmp);
+        jp.setOutputStyle(OutputStyle.PRETTY);
+        jp.compose(out, r);
+        out.close();
+        r = null;
+        System.err.print(".");
+
+        in = new FileInputStream(tmp);
+        System.err.print(",");
+        r = jp.parse(in);
+        System.err.print(".");
+        out = new FileOutputStream(dest);
+        new XmlParser().compose(out, r, true);
+        System.err.println("!");
+        out.close();
+        r = null;
+        System.gc();
+      }
+    } catch (Throwable e) {
+      System.err.println("Error: " + e.getMessage());
+      throw e;
     }
-		} catch (Throwable e) {
-			System.err.println("Error: "+e.getMessage());
-			throw e;
-	  }
   }
 
   private void executeTest(String[] args) throws Throwable {
-  	try {
-  		@SuppressWarnings("unchecked")
-  		List<String> lines = FileUtils.readLines(new File(args[1]), "UTF-8");
-  		String srcDir = lines.get(0);
-  		lines.remove(0);
-  		String dstDir = lines.get(0).trim();
-  		lines.remove(0);
-  		testRoundTrip(srcDir, dstDir, lines);
-  		TextFile.stringToFile("ok", Utilities.changeFileExt(args[1], ".out"));
-  	} catch (Exception e) {
-  		TextFile.stringToFile(e.getMessage(), Utilities.changeFileExt(args[1], ".out"));			
-  	}
+    try {
+      @SuppressWarnings("unchecked")
+      List<String> lines = FileUtils.readLines(new File(args[1]), "UTF-8");
+      String srcDir = lines.get(0);
+      lines.remove(0);
+      String dstDir = lines.get(0).trim();
+      lines.remove(0);
+      testRoundTrip(srcDir, dstDir, lines);
+      TextFile.stringToFile("ok", Utilities.changeFileExt(args[1], ".out"));
+    } catch (Exception e) {
+      TextFile.stringToFile(e.getMessage(), Utilities.changeFileExt(args[1], ".out"));
+    }
   }
 }

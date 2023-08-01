@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,113 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Referralstatus {
 
-        /**
-         * A draft referral that has yet to be send.
-         */
-        DRAFT, 
-        /**
-         * The referral is complete and is ready for fulfillment.
-         */
-        ACTIVE, 
-        /**
-         * The referral has been cancelled without being completed. For example it is no longer needed.
-         */
-        CANCELLED, 
-        /**
-         * The referral has been completely actioned.
-         */
-        COMPLETED, 
-        /**
-         * This referral record should never have existed, though it's possible some degree of real-world activity or decisions may have been taken due to its existence
-         */
-        ENTEREDINERROR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static Referralstatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("cancelled".equals(codeString))
-          return CANCELLED;
-        if ("completed".equals(codeString))
-          return COMPLETED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        throw new FHIRException("Unknown Referralstatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DRAFT: return "draft";
-            case ACTIVE: return "active";
-            case CANCELLED: return "cancelled";
-            case COMPLETED: return "completed";
-            case ENTEREDINERROR: return "entered-in-error";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/referralstatus";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DRAFT: return "A draft referral that has yet to be send.";
-            case ACTIVE: return "The referral is complete and is ready for fulfillment.";
-            case CANCELLED: return "The referral has been cancelled without being completed. For example it is no longer needed.";
-            case COMPLETED: return "The referral has been completely actioned.";
-            case ENTEREDINERROR: return "This referral record should never have existed, though it's possible some degree of real-world activity or decisions may have been taken due to its existence";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DRAFT: return "Draft";
-            case ACTIVE: return "Active";
-            case CANCELLED: return "Cancelled";
-            case COMPLETED: return "Completed";
-            case ENTEREDINERROR: return "Entered in Error";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * A draft referral that has yet to be send.
+   */
+  DRAFT,
+  /**
+   * The referral is complete and is ready for fulfillment.
+   */
+  ACTIVE,
+  /**
+   * The referral has been cancelled without being completed. For example it is no
+   * longer needed.
+   */
+  CANCELLED,
+  /**
+   * The referral has been completely actioned.
+   */
+  COMPLETED,
+  /**
+   * This referral record should never have existed, though it's possible some
+   * degree of real-world activity or decisions may have been taken due to its
+   * existence
+   */
+  ENTEREDINERROR,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static Referralstatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("draft".equals(codeString))
+      return DRAFT;
+    if ("active".equals(codeString))
+      return ACTIVE;
+    if ("cancelled".equals(codeString))
+      return CANCELLED;
+    if ("completed".equals(codeString))
+      return COMPLETED;
+    if ("entered-in-error".equals(codeString))
+      return ENTEREDINERROR;
+    throw new FHIRException("Unknown Referralstatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DRAFT:
+      return "draft";
+    case ACTIVE:
+      return "active";
+    case CANCELLED:
+      return "cancelled";
+    case COMPLETED:
+      return "completed";
+    case ENTEREDINERROR:
+      return "entered-in-error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/referralstatus";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DRAFT:
+      return "A draft referral that has yet to be send.";
+    case ACTIVE:
+      return "The referral is complete and is ready for fulfillment.";
+    case CANCELLED:
+      return "The referral has been cancelled without being completed. For example it is no longer needed.";
+    case COMPLETED:
+      return "The referral has been completely actioned.";
+    case ENTEREDINERROR:
+      return "This referral record should never have existed, though it's possible some degree of real-world activity or decisions may have been taken due to its existence";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DRAFT:
+      return "Draft";
+    case ACTIVE:
+      return "Active";
+    case CANCELLED:
+      return "Cancelled";
+    case COMPLETED:
+      return "Completed";
+    case ENTEREDINERROR:
+      return "Entered in Error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

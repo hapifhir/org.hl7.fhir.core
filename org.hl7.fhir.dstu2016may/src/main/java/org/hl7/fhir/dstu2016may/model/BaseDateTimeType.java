@@ -29,7 +29,6 @@ package org.hl7.fhir.dstu2016may.model;
   
  */
 
-
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.parser.DataFormatException;
 import org.apache.commons.lang3.StringUtils;
@@ -69,7 +68,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   /**
    * Constructor
    *
-   * @throws DataFormatException If the specified precision is not allowed for this type
+   * @throws DataFormatException If the specified precision is not allowed for
+   *                             this type
    */
   public BaseDateTimeType(Date theDate, TemporalPrecisionEnum thePrecision) {
     setValue(theDate, thePrecision);
@@ -88,7 +88,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   /**
    * Constructor
    *
-   * @throws DataFormatException If the specified precision is not allowed for this type
+   * @throws DataFormatException If the specified precision is not allowed for
+   *                             this type
    */
   public BaseDateTimeType(String theString) {
     setValueAsString(theString);
@@ -97,7 +98,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
   private void validatePrecisionAndThrowIllegalArgumentException() {
     if (!isPrecisionAllowed(getPrecision())) {
-      throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + getPrecision() + " precision): " + getValueAsString());
+      throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName()
+          + " does not support " + getPrecision() + " precision): " + getValueAsString());
     }
   }
 
@@ -205,7 +207,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
-   * Gets the precision for this datatype (using the default for the given type if not set)
+   * Gets the precision for this datatype (using the default for the given type if
+   * not set)
    *
    * @see #setPrecision(TemporalPrecisionEnum)
    */
@@ -230,8 +233,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
-   * Returns the TimeZone associated with this dateTime's value. May return <code>null</code> if no timezone was
-   * supplied.
+   * Returns the TimeZone associated with this dateTime's value. May return
+   * <code>null</code> if no timezone was supplied.
    */
   public TimeZone getTimeZone() {
     if (myTimeZoneZulu) {
@@ -265,7 +268,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
-   * To be implemented by subclasses to indicate whether the given precision is allowed by this type
+   * To be implemented by subclasses to indicate whether the given precision is
+   * allowed by this type
    */
   abstract boolean isPrecisionAllowed(TemporalPrecisionEnum thePrecision);
 
@@ -284,7 +288,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
-   * Returns <code>true</code> if this object represents a date that is today's date
+   * Returns <code>true</code> if this object represents a date that is today's
+   * date
    *
    * @throws NullPointerException if {@link #getValue()} returns <code>null</code>
    */
@@ -343,7 +348,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
           int offsetIdx = getOffsetIndex(value);
           String time;
           if (offsetIdx == -1) {
-            //throwBadDateFormat(theValue);
+            // throwBadDateFormat(theValue);
             // No offset - should this be an error?
             time = value.substring(11);
           } else {
@@ -447,9 +452,11 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
-   * Sets the value for this type using the given Java Date object as the time, and using the default precision for
-   * this datatype (unless the precision is already set), as well as the local timezone as determined by the local operating
-   * system. Both of these properties may be modified in subsequent calls if neccesary.
+   * Sets the value for this type using the given Java Date object as the time,
+   * and using the default precision for this datatype (unless the precision is
+   * already set), as well as the local timezone as determined by the local
+   * operating system. Both of these properties may be modified in subsequent
+   * calls if neccesary.
    */
   @Override
   public BaseDateTimeType setValue(Date theValue) {
@@ -458,9 +465,10 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
-   * Sets the value for this type using the given Java Date object as the time, and using the specified precision, as
-   * well as the local timezone as determined by the local operating system. Both of
-   * these properties may be modified in subsequent calls if neccesary.
+   * Sets the value for this type using the given Java Date object as the time,
+   * and using the specified precision, as well as the local timezone as
+   * determined by the local operating system. Both of these properties may be
+   * modified in subsequent calls if neccesary.
    *
    * @param theValue     The date value
    * @param thePrecision The precision
@@ -499,11 +507,13 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
-   * Returns a human readable version of this date/time using the system local format.
+   * Returns a human readable version of this date/time using the system local
+   * format.
    * <p>
-   * <b>Note on time zones:</b> This method renders the value using the time zone that is contained within the value.
-   * For example, if this date object contains the value "2012-01-05T12:00:00-08:00",
-   * the human display will be rendered as "12:00:00" even if the application is being executed on a system in a
+   * <b>Note on time zones:</b> This method renders the value using the time zone
+   * that is contained within the value. For example, if this date object contains
+   * the value "2012-01-05T12:00:00-08:00", the human display will be rendered as
+   * "12:00:00" even if the application is being executed on a system in a
    * different time zone. If this behaviour is not what you want, use
    * {@link #toHumanDisplayLocalTimezone()} instead.
    * </p>
@@ -513,10 +523,11 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
-   * Returns a human readable version of this date/time using the system local format, converted to the local timezone
-   * if neccesary.
+   * Returns a human readable version of this date/time using the system local
+   * format, converted to the local timezone if neccesary.
    *
-   * @see #toHumanDisplay() for a method which does not convert the time to the local timezone before rendering it.
+   * @see #toHumanDisplay() for a method which does not convert the time to the
+   *      local timezone before rendering it.
    */
   public String toHumanDisplayLocalTimezone() {
     return DateTimeUtil.toHumanDisplayLocalTimezone(getPrecision(), getValue(), getValueAsString());
@@ -524,7 +535,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
   private void validateCharAtIndexIs(String theValue, int theIndex, char theChar) {
     if (theValue.charAt(theIndex) != theChar) {
-      throwBadDateFormat(theValue, "Expected character '" + theChar + "' at index " + theIndex + " but found " + theValue.charAt(theIndex));
+      throwBadDateFormat(theValue,
+          "Expected character '" + theChar + "' at index " + theIndex + " but found " + theValue.charAt(theIndex));
     }
   }
 
@@ -627,8 +639,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   /**
    * Returns the milliseconds within the current second.
    * <p>
-   * Note that this method returns the
-   * same value as {@link #getNanos()} but with less precision.
+   * Note that this method returns the same value as {@link #getNanos()} but with
+   * less precision.
    * </p>
    */
   public Integer getMillis() {
@@ -638,8 +650,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   /**
    * Sets the milliseconds within the current second.
    * <p>
-   * Note that this method sets the
-   * same value as {@link #setNanos(long)} but with less precision.
+   * Note that this method sets the same value as {@link #setNanos(long)} but with
+   * less precision.
    * </p>
    */
   public BaseDateTimeType setMillis(int theMillis) {
@@ -650,8 +662,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   /**
    * Returns the nanoseconds within the current second
    * <p>
-   * Note that this method returns the
-   * same value as {@link #getMillis()} but with more precision.
+   * Note that this method returns the same value as {@link #getMillis()} but with
+   * more precision.
    * </p>
    */
   public Long getNanos() {
@@ -666,8 +678,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   /**
    * Sets the nanoseconds within the current second
    * <p>
-   * Note that this method sets the
-   * same value as {@link #setMillis(int)} but with more precision.
+   * Note that this method sets the same value as {@link #setMillis(int)} but with
+   * more precision.
    * </p>
    */
   public BaseDateTimeType setNanos(long theNanos) {
@@ -707,7 +719,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
   private void validateValueInRange(long theValue, long theMinimum, long theMaximum) {
     if (theValue < theMinimum || theValue > theMaximum) {
-      throw new IllegalArgumentException("Value " + theValue + " is not between allowable range: " + theMinimum + " - " + theMaximum);
+      throw new IllegalArgumentException(
+          "Value " + theValue + " is not between allowable range: " + theMinimum + " - " + theMaximum);
     }
   }
 
@@ -732,7 +745,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
           break;
         }
 
-        // assertEquals("2013-02-02T20:13:03-05:00", DateAndTime.parseV3("20130202201303-0500").toString());
+        // assertEquals("2013-02-02T20:13:03-05:00",
+        // DateAndTime.parseV3("20130202201303-0500").toString());
         if (i == 4 || i == 6) {
           b.append('-');
         } else if (i == 8) {

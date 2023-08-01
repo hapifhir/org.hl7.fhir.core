@@ -18,18 +18,20 @@ import org.junit.jupiter.api.Test;
 public class ShexGeneratorTests {
 
   private void doTest(String name) throws IOException, FHIRException {
-    String workingDirectory = "C:\\work\\org.hl7.fhir.2016May\\build\\publish"; // FileSystems.getDefault().getPath(System.getProperty("user.dir"), "data").toString();
+    String workingDirectory = "C:\\work\\org.hl7.fhir.2016May\\build\\publish"; // FileSystems.getDefault().getPath(System.getProperty("user.dir"),
+                                                                                // "data").toString();
     if (TestingUtilities.context == null) {
       // For the time being, put the validation entry in org/hl7/fhir/dstu3/data
       Path path = FileSystems.getDefault().getPath(workingDirectory, "validation-min.xml.zip");
       TestingUtilities.context = SimpleWorkerContext.fromPack(path.toString());
     }
     StructureDefinition sd = TestingUtilities.context.fetchTypeDefinition(name);
-    if(sd == null) {
+    if (sd == null) {
       throw new FHIRException("StructuredDefinition for " + name + "was null");
     }
-    Path outPath = FileSystems.getDefault().getPath(workingDirectory, name+".shex");
-    TextFile.stringToFile(new ShExGenerator(TestingUtilities.context).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
+    Path outPath = FileSystems.getDefault().getPath(workingDirectory, name + ".shex");
+    TextFile.stringToFile(new ShExGenerator(TestingUtilities.context).generate(HTMLLinkPolicy.NONE, sd),
+        outPath.toString());
   }
 
   @Test
@@ -42,7 +44,6 @@ public class ShexGeneratorTests {
     doTest("uri");
   }
 
-
   @Test
   public void testObservation() throws FHIRException, IOException {
     doTest("Observation");
@@ -52,7 +53,7 @@ public class ShexGeneratorTests {
   public void testRef() throws FHIRException, IOException {
     doTest("Reference");
   }
-  
+
   @Test
   public void testAccount() throws FHIRException, IOException {
     doTest("Account");

@@ -32,8 +32,9 @@ public class ComparisonSession {
   private boolean debug;
   private String title;
   private ProfileKnowledgeProvider pkp;
-  
-  public ComparisonSession(IWorkerContext contextLeft, IWorkerContext contextRight, String title, ProfileKnowledgeProvider pkp) {
+
+  public ComparisonSession(IWorkerContext contextLeft, IWorkerContext contextRight, String title,
+      ProfileKnowledgeProvider pkp) {
     super();
     this.contextLeft = contextLeft;
     this.contextRight = contextRight;
@@ -42,32 +43,34 @@ public class ComparisonSession {
     this.pkp = pkp;
 //    debug = true;
   }
-  
+
   public IWorkerContext getContextLeft() {
     return contextLeft;
   }
-  
+
   public IWorkerContext getContextRight() {
     return contextRight;
   }
-  
+
   public String getTitle() {
     return title;
   }
 
-  public ResourceComparison compare(String left, String right) throws DefinitionException, FHIRFormatError, IOException {
+  public ResourceComparison compare(String left, String right)
+      throws DefinitionException, FHIRFormatError, IOException {
     CanonicalResource l = (CanonicalResource) contextLeft.fetchResource(Resource.class, left);
     if (l == null) {
-      throw new DefinitionException("Unable to resolve "+left);
+      throw new DefinitionException("Unable to resolve " + left);
     }
     CanonicalResource r = (CanonicalResource) contextRight.fetchResource(Resource.class, right);
     if (r == null) {
-      throw new DefinitionException("Unable to resolve "+right);
+      throw new DefinitionException("Unable to resolve " + right);
     }
     return compare(l, r);
   }
 
-  public ResourceComparison compare(CanonicalResource left, CanonicalResource right) throws DefinitionException, FHIRFormatError, IOException {
+  public ResourceComparison compare(CanonicalResource left, CanonicalResource right)
+      throws DefinitionException, FHIRFormatError, IOException {
     if (left != null && right != null) {
       String key = key(left.getUrl(), left.getVersion(), right.getUrl(), right.getVersion());
       if (compares.containsKey(key)) {
@@ -88,17 +91,19 @@ public class ComparisonSession {
           compares.put(key, csc);
           return csc;
         } else if (left instanceof StructureDefinition && right instanceof StructureDefinition) {
-          ProfileComparer cs = new ProfileComparer(this, new ProfileUtilities(contextLeft, null, pkp), new ProfileUtilities(contextRight, null, pkp));
+          ProfileComparer cs = new ProfileComparer(this, new ProfileUtilities(contextLeft, null, pkp),
+              new ProfileUtilities(contextRight, null, pkp));
           ProfileComparison csc = cs.compare((StructureDefinition) left, (StructureDefinition) right);
           compares.put(key, csc);
           return csc;
         } else {
-          throw new FHIRException("Unable to compare resources of type "+left.fhirType()+" and "+right.fhirType());
+          throw new FHIRException(
+              "Unable to compare resources of type " + left.fhirType() + " and " + right.fhirType());
         }
       } catch (Throwable e) {
         ResourceComparer.PlaceHolderComparison csc = new ResourceComparer.PlaceHolderComparison(left, right, e);
         compares.put(key, csc);
-        return csc;      
+        return csc;
       }
     } else if (left != null) {
       String key = key(left.getUrl(), left.getVersion(), left.getUrl(), left.getVersion());
@@ -107,7 +112,7 @@ public class ComparisonSession {
       }
       ResourceComparer.PlaceHolderComparison csc = new ResourceComparer.PlaceHolderComparison(left, right);
       compares.put(key, csc);
-      return csc;      
+      return csc;
     } else {
       String key = key(right.getUrl(), right.getVersion(), right.getUrl(), right.getVersion());
       if (compares.containsKey(key)) {
@@ -115,18 +120,18 @@ public class ComparisonSession {
       }
       ResourceComparer.PlaceHolderComparison csc = new ResourceComparer.PlaceHolderComparison(left, right);
       compares.put(key, csc);
-      return csc;      
+      return csc;
     }
   }
 
   private String key(String urlL, String verL, String urlR, String verR) {
-    return urlL+"|"+verL+"||"+urlR+"|"+verR;
+    return urlL + "|" + verL + "||" + urlR + "|" + verR;
   }
-  
+
   public void identify(CanonicalResource res) {
     count++;
-    res.setId(sessiondId+"-"+count);
-    res.setUrl("http://hl7.org/fhir/comparison/"+res.fhirType()+"/"+res.getId());
+    res.setId(sessiondId + "-" + count);
+    res.setUrl("http://hl7.org/fhir/comparison/" + res.fhirType() + "/" + res.getId());
   }
 
   public void identify(ResourceComparison res) {

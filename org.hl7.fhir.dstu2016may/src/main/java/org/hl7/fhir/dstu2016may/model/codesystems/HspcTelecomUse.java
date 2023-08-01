@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,50 +31,62 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcTelecomUse {
 
-        /**
-         * The type of telecom system was not specified for the given number.
-         */
-        NS, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static HspcTelecomUse fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("NS".equals(codeString))
-          return NS;
-        throw new FHIRException("Unknown HspcTelecomUse code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NS: return "NS";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/telecomUse";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NS: return "The type of telecom system was not specified for the given number.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NS: return "Not specified";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The type of telecom system was not specified for the given number.
+   */
+  NS,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static HspcTelecomUse fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("NS".equals(codeString))
+      return NS;
+    throw new FHIRException("Unknown HspcTelecomUse code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case NS:
+      return "NS";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/telecomUse";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case NS:
+      return "The type of telecom system was not specified for the given number.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case NS:
+      return "Not specified";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

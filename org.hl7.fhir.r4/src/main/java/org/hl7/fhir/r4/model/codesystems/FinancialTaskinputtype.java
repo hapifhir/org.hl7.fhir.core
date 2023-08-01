@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,104 +31,136 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum FinancialTaskinputtype {
 
-        /**
-         * The name of a resource to include in a selection.
-         */
-        INCLUDE, 
-        /**
-         * The name of a resource to not include in a selection.
-         */
-        EXCLUDE, 
-        /**
-         * A reference to the response resource to the original processing of a resource.
-         */
-        ORIGRESPONSE, 
-        /**
-         * A reference value which must be quoted to authorize an action.
-         */
-        REFERENCE, 
-        /**
-         * The sequence number associated with an item for reprocessing.
-         */
-        ITEM, 
-        /**
-         * The reference period for the action being requested.
-         */
-        PERIOD, 
-        /**
-         * The processing status from a check on the processing status of a resource such as the adjudication of a claim.
-         */
-        STATUS, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static FinancialTaskinputtype fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("include".equals(codeString))
-          return INCLUDE;
-        if ("exclude".equals(codeString))
-          return EXCLUDE;
-        if ("origresponse".equals(codeString))
-          return ORIGRESPONSE;
-        if ("reference".equals(codeString))
-          return REFERENCE;
-        if ("item".equals(codeString))
-          return ITEM;
-        if ("period".equals(codeString))
-          return PERIOD;
-        if ("status".equals(codeString))
-          return STATUS;
-        throw new FHIRException("Unknown FinancialTaskinputtype code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INCLUDE: return "include";
-            case EXCLUDE: return "exclude";
-            case ORIGRESPONSE: return "origresponse";
-            case REFERENCE: return "reference";
-            case ITEM: return "item";
-            case PERIOD: return "period";
-            case STATUS: return "status";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/financialtaskinputtype";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INCLUDE: return "The name of a resource to include in a selection.";
-            case EXCLUDE: return "The name of a resource to not include in a selection.";
-            case ORIGRESPONSE: return "A reference to the response resource to the original processing of a resource.";
-            case REFERENCE: return "A reference value which must be quoted to authorize an action.";
-            case ITEM: return "The sequence number associated with an item for reprocessing.";
-            case PERIOD: return "The reference period for the action being requested.";
-            case STATUS: return "The processing status from a check on the processing status of a resource such as the adjudication of a claim.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INCLUDE: return "Include";
-            case EXCLUDE: return "Exclude";
-            case ORIGRESPONSE: return "Original Response";
-            case REFERENCE: return "Reference Number";
-            case ITEM: return "Item Number";
-            case PERIOD: return "Period";
-            case STATUS: return "Status code";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The name of a resource to include in a selection.
+   */
+  INCLUDE,
+  /**
+   * The name of a resource to not include in a selection.
+   */
+  EXCLUDE,
+  /**
+   * A reference to the response resource to the original processing of a
+   * resource.
+   */
+  ORIGRESPONSE,
+  /**
+   * A reference value which must be quoted to authorize an action.
+   */
+  REFERENCE,
+  /**
+   * The sequence number associated with an item for reprocessing.
+   */
+  ITEM,
+  /**
+   * The reference period for the action being requested.
+   */
+  PERIOD,
+  /**
+   * The processing status from a check on the processing status of a resource
+   * such as the adjudication of a claim.
+   */
+  STATUS,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static FinancialTaskinputtype fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("include".equals(codeString))
+      return INCLUDE;
+    if ("exclude".equals(codeString))
+      return EXCLUDE;
+    if ("origresponse".equals(codeString))
+      return ORIGRESPONSE;
+    if ("reference".equals(codeString))
+      return REFERENCE;
+    if ("item".equals(codeString))
+      return ITEM;
+    if ("period".equals(codeString))
+      return PERIOD;
+    if ("status".equals(codeString))
+      return STATUS;
+    throw new FHIRException("Unknown FinancialTaskinputtype code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INCLUDE:
+      return "include";
+    case EXCLUDE:
+      return "exclude";
+    case ORIGRESPONSE:
+      return "origresponse";
+    case REFERENCE:
+      return "reference";
+    case ITEM:
+      return "item";
+    case PERIOD:
+      return "period";
+    case STATUS:
+      return "status";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/financialtaskinputtype";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INCLUDE:
+      return "The name of a resource to include in a selection.";
+    case EXCLUDE:
+      return "The name of a resource to not include in a selection.";
+    case ORIGRESPONSE:
+      return "A reference to the response resource to the original processing of a resource.";
+    case REFERENCE:
+      return "A reference value which must be quoted to authorize an action.";
+    case ITEM:
+      return "The sequence number associated with an item for reprocessing.";
+    case PERIOD:
+      return "The reference period for the action being requested.";
+    case STATUS:
+      return "The processing status from a check on the processing status of a resource such as the adjudication of a claim.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INCLUDE:
+      return "Include";
+    case EXCLUDE:
+      return "Exclude";
+    case ORIGRESPONSE:
+      return "Original Response";
+    case REFERENCE:
+      return "Reference Number";
+    case ITEM:
+      return "Item Number";
+    case PERIOD:
+      return "Period";
+    case STATUS:
+      return "Status code";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

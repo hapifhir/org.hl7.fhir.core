@@ -33,55 +33,55 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
   
  */
 
-
-
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
- * Represents a Time datatype, per the FHIR specification. A time is a specification of hours and minutes (and optionally milliseconds), with NO date and NO timezone information attached. It is
- * expressed as a string in the form <code>HH:mm:ss[.SSSS]</code>
+ * Represents a Time datatype, per the FHIR specification. A time is a
+ * specification of hours and minutes (and optionally milliseconds), with NO
+ * date and NO timezone information attached. It is expressed as a string in the
+ * form <code>HH:mm:ss[.SSSS]</code>
  */
-@DatatypeDef(name="time")
+@DatatypeDef(name = "time")
 public class TimeType extends PrimitiveType<String> {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	/**
-	 * Constructor
-	 */
-	public TimeType() {
-		// nothing
-	}
-	
-	/**
-	 * Constructor
-	 */
-	public TimeType(String theValue) {
-		setValue(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public TimeType() {
+    // nothing
+  }
 
-	@Override
-	protected String parse(String theValue) {
-		return theValue;
-	}
+  /**
+   * Constructor
+   */
+  public TimeType(String theValue) {
+    setValue(theValue);
+  }
 
-	@Override
-	protected String encode(String theValue) {
-		return theValue;
-	}
+  @Override
+  protected String parse(String theValue) {
+    return theValue;
+  }
 
-	@Override
-	public TimeType copy() {
-		TimeType ret = new TimeType(getValue());
+  @Override
+  protected String encode(String theValue) {
+    return theValue;
+  }
+
+  @Override
+  public TimeType copy() {
+    TimeType ret = new TimeType(getValue());
     copyValues(ret);
     return ret;
-	}
+  }
 
-	public String fhirType() {
-		return "time";
-	}
+  public String fhirType() {
+    return "time";
+  }
 
- public int getHour() {
+  public int getHour() {
     String v = getValue();
     if (v.length() < 2) {
       return 0;
@@ -131,7 +131,7 @@ public class TimeType extends PrimitiveType<String> {
     if (v.length() > 9) {
       return TemporalPrecisionEnum.MILLI;
     }
-   
+
     return null;
   }
 
@@ -146,6 +146,6 @@ public class TimeType extends PrimitiveType<String> {
 
   @Override
   public String fpValue() {
-    return "@T"+primitiveValue();
+    return "@T" + primitiveValue();
   }
 }

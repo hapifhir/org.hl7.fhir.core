@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,75 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractActorrole {
 
-        /**
-         * Someone who provides health care related services to people or animals including both clinical and support services.
-         */
-        PRACTITIONER, 
-        /**
-         * A receiver, human or animal, of health care related goods and services.
-         */
-        PATIENT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ContractActorrole fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("practitioner".equals(codeString))
-          return PRACTITIONER;
-        if ("patient".equals(codeString))
-          return PATIENT;
-        throw new FHIRException("Unknown ContractActorrole code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PRACTITIONER: return "practitioner";
-            case PATIENT: return "patient";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/contractactorrole";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PRACTITIONER: return "Someone who provides health care related services to people or animals including both clinical and support services.";
-            case PATIENT: return "A receiver, human or animal, of health care related goods and services.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PRACTITIONER: return "Practitioner";
-            case PATIENT: return "Patient";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Someone who provides health care related services to people or animals
+   * including both clinical and support services.
+   */
+  PRACTITIONER,
+  /**
+   * A receiver, human or animal, of health care related goods and services.
+   */
+  PATIENT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ContractActorrole fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("practitioner".equals(codeString))
+      return PRACTITIONER;
+    if ("patient".equals(codeString))
+      return PATIENT;
+    throw new FHIRException("Unknown ContractActorrole code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PRACTITIONER:
+      return "practitioner";
+    case PATIENT:
+      return "patient";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/contractactorrole";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PRACTITIONER:
+      return "Someone who provides health care related services to people or animals including both clinical and support services.";
+    case PATIENT:
+      return "A receiver, human or animal, of health care related goods and services.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PRACTITIONER:
+      return "Practitioner";
+    case PATIENT:
+      return "Patient";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

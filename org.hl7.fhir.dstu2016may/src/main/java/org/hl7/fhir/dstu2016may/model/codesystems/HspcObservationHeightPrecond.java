@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcObservationHeightPrecond {
 
-        /**
-         * The individual's height was measured while the individual was wearing shoes
-         */
-        _84138, 
-        /**
-         * The individual's height was measured without the individual wearing shoes.
-         */
-        _84139, 
-        /**
-         * The individual's height was measured while the individual was lying down.
-         */
-        _84140, 
-        /**
-         * The individual's height was measured while the individual was standing up.
-         */
-        _84141, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static HspcObservationHeightPrecond fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("84138".equals(codeString))
-          return _84138;
-        if ("84139".equals(codeString))
-          return _84139;
-        if ("84140".equals(codeString))
-          return _84140;
-        if ("84141".equals(codeString))
-          return _84141;
-        throw new FHIRException("Unknown HspcObservationHeightPrecond code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _84138: return "84138";
-            case _84139: return "84139";
-            case _84140: return "84140";
-            case _84141: return "84141";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7,org/fhir/observation-hspc-heightPrecond";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _84138: return "The individual's height was measured while the individual was wearing shoes";
-            case _84139: return "The individual's height was measured without the individual wearing shoes.";
-            case _84140: return "The individual's height was measured while the individual was lying down.";
-            case _84141: return "The individual's height was measured while the individual was standing up.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _84138: return "Height (body length) with shoes";
-            case _84139: return "Height (body length) without shoes";
-            case _84140: return "Height (body length) with patient reclining";
-            case _84141: return "Height (body length) with patient standing";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The individual's height was measured while the individual was wearing shoes
+   */
+  _84138,
+  /**
+   * The individual's height was measured without the individual wearing shoes.
+   */
+  _84139,
+  /**
+   * The individual's height was measured while the individual was lying down.
+   */
+  _84140,
+  /**
+   * The individual's height was measured while the individual was standing up.
+   */
+  _84141,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static HspcObservationHeightPrecond fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("84138".equals(codeString))
+      return _84138;
+    if ("84139".equals(codeString))
+      return _84139;
+    if ("84140".equals(codeString))
+      return _84140;
+    if ("84141".equals(codeString))
+      return _84141;
+    throw new FHIRException("Unknown HspcObservationHeightPrecond code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case _84138:
+      return "84138";
+    case _84139:
+      return "84139";
+    case _84140:
+      return "84140";
+    case _84141:
+      return "84141";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7,org/fhir/observation-hspc-heightPrecond";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case _84138:
+      return "The individual's height was measured while the individual was wearing shoes";
+    case _84139:
+      return "The individual's height was measured without the individual wearing shoes.";
+    case _84140:
+      return "The individual's height was measured while the individual was lying down.";
+    case _84141:
+      return "The individual's height was measured while the individual was standing up.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case _84138:
+      return "Height (body length) with shoes";
+    case _84139:
+      return "Height (body length) without shoes";
+    case _84140:
+      return "Height (body length) with patient reclining";
+    case _84141:
+      return "Height (body length) with patient standing";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

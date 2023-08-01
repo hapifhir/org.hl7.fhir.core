@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.patterns;
   
  */
 
-
-
 import java.util.List;
 
 import org.hl7.fhir.r4b.model.Annotation;
@@ -43,7 +41,7 @@ import org.hl7.fhir.r4b.model.Resource;
 public class PatternBaseImpl implements PatternBase {
 
   private Base wrapped;
-  
+
   public PatternBaseImpl(Base wrapped) {
     super();
     this.wrapped = wrapped;
@@ -65,7 +63,7 @@ public class PatternBaseImpl implements PatternBase {
     else if (wrapped instanceof Resource)
       ((Resource) wrapped).setId(value);
     else
-      throw new Error("this should not happen? wrapped = "+wrapped.getClass().getName());
+      throw new Error("this should not happen? wrapped = " + wrapped.getClass().getName());
     return this;
   }
 
@@ -78,20 +76,18 @@ public class PatternBaseImpl implements PatternBase {
     return null;
   }
 
-
   protected Annotation convertStringToAnnotation(String value) {
     if (value == null)
       return null;
     else
       return new Annotation().setText(value);
   }
-  
+
   protected String convertAnnotationToString(Annotation value) {
     if (value == null)
       return null;
     else
       return value.getText();
   }
-
 
 }

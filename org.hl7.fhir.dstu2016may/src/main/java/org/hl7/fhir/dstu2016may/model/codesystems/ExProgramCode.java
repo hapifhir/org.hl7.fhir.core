@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExProgramCode {
 
-        /**
-         * Child Asthma Program
-         */
-        AS, 
-        /**
-         * Heamodialisis Program.
-         */
-        HD, 
-        /**
-         * Autism Screening Program.
-         */
-        AUSCR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ExProgramCode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("AS".equals(codeString))
-          return AS;
-        if ("HD".equals(codeString))
-          return HD;
-        if ("AUSCR".equals(codeString))
-          return AUSCR;
-        throw new FHIRException("Unknown ExProgramCode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case AS: return "AS";
-            case HD: return "HD";
-            case AUSCR: return "AUSCR";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/ex-programcode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case AS: return "Child Asthma Program";
-            case HD: return "Heamodialisis Program.";
-            case AUSCR: return "Autism Screening Program.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case AS: return "Child Asthma";
-            case HD: return "Heamodialisis";
-            case AUSCR: return "Autism Screening";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Child Asthma Program
+   */
+  AS,
+  /**
+   * Heamodialisis Program.
+   */
+  HD,
+  /**
+   * Autism Screening Program.
+   */
+  AUSCR,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ExProgramCode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("AS".equals(codeString))
+      return AS;
+    if ("HD".equals(codeString))
+      return HD;
+    if ("AUSCR".equals(codeString))
+      return AUSCR;
+    throw new FHIRException("Unknown ExProgramCode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case AS:
+      return "AS";
+    case HD:
+      return "HD";
+    case AUSCR:
+      return "AUSCR";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/ex-programcode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case AS:
+      return "Child Asthma Program";
+    case HD:
+      return "Heamodialisis Program.";
+    case AUSCR:
+      return "Autism Screening Program.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case AS:
+      return "Child Asthma";
+    case HD:
+      return "Heamodialisis";
+    case AUSCR:
+      return "Autism Screening";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

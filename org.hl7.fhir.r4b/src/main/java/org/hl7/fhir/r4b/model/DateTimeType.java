@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.model;
   
  */
 
-
-
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import org.apache.commons.lang3.time.DateUtils;
@@ -41,7 +39,8 @@ import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 
 /**
- * Represents a FHIR dateTime datatype. Valid precisions values for this type are:
+ * Represents a FHIR dateTime datatype. Valid precisions values for this type
+ * are:
  * <ul>
  * <li>{@link TemporalPrecisionEnum#YEAR}
  * <li>{@link TemporalPrecisionEnum#MONTH}
@@ -53,150 +52,150 @@ import java.util.zip.DataFormatException;
 @DatatypeDef(name = "dateTime")
 public class DateTimeType extends BaseDateTimeType {
 
-	private static final long serialVersionUID = 3L;
-	
-	/**
-	 * The default precision for this type
-	 */
-	public static final TemporalPrecisionEnum DEFAULT_PRECISION = TemporalPrecisionEnum.SECOND;
+  private static final long serialVersionUID = 3L;
 
-	/**
-	 * Constructor
-	 */
-	public DateTimeType() {
-		super();
-	}
+  /**
+   * The default precision for this type
+   */
+  public static final TemporalPrecisionEnum DEFAULT_PRECISION = TemporalPrecisionEnum.SECOND;
 
-	/**
-	 * Create a new DateTimeDt with seconds precision and the local time zone
-	 */
-	public DateTimeType(Date theDate) {
-		super(theDate, DEFAULT_PRECISION, TimeZone.getDefault());
-	}
+  /**
+   * Constructor
+   */
+  public DateTimeType() {
+    super();
+  }
 
-	/**
-	 * Constructor which accepts a date value and a precision value. Valid precisions values for this type are:
-	 * <ul>
-	 * <li>{@link TemporalPrecisionEnum#YEAR}
-	 * <li>{@link TemporalPrecisionEnum#MONTH}
-	 * <li>{@link TemporalPrecisionEnum#DAY}
-	 * <li>{@link TemporalPrecisionEnum#SECOND}
-	 * <li>{@link TemporalPrecisionEnum#MILLI}
-	 * </ul>
-	 * 
-	 * @throws DataFormatException
-	 *             If the specified precision is not allowed for this type
-	 */
-	public DateTimeType(Date theDate, TemporalPrecisionEnum thePrecision) {
-		super(theDate, thePrecision, TimeZone.getDefault());
-	}
+  /**
+   * Create a new DateTimeDt with seconds precision and the local time zone
+   */
+  public DateTimeType(Date theDate) {
+    super(theDate, DEFAULT_PRECISION, TimeZone.getDefault());
+  }
 
-	/**
-	 * Create a new instance using a string date/time
-	 * 
-	 * @throws DataFormatException
-	 *             If the specified precision is not allowed for this type
-	 */
-	public DateTimeType(String theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor which accepts a date value and a precision value. Valid
+   * precisions values for this type are:
+   * <ul>
+   * <li>{@link TemporalPrecisionEnum#YEAR}
+   * <li>{@link TemporalPrecisionEnum#MONTH}
+   * <li>{@link TemporalPrecisionEnum#DAY}
+   * <li>{@link TemporalPrecisionEnum#SECOND}
+   * <li>{@link TemporalPrecisionEnum#MILLI}
+   * </ul>
+   * 
+   * @throws DataFormatException If the specified precision is not allowed for
+   *                             this type
+   */
+  public DateTimeType(Date theDate, TemporalPrecisionEnum thePrecision) {
+    super(theDate, thePrecision, TimeZone.getDefault());
+  }
 
-	/**
-	 * Constructor which accepts a date value, precision value, and time zone. Valid precisions values for this type
-	 * are:
-	 * <ul>
-	 * <li>{@link TemporalPrecisionEnum#YEAR}
-	 * <li>{@link TemporalPrecisionEnum#MONTH}
-	 * <li>{@link TemporalPrecisionEnum#DAY}
-	 * <li>{@link TemporalPrecisionEnum#SECOND}
-	 * <li>{@link TemporalPrecisionEnum#MILLI}
-	 * </ul>
-	 */
-	public DateTimeType(Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
-		super(theDate, thePrecision, theTimezone);
-	}
+  /**
+   * Create a new instance using a string date/time
+   * 
+   * @throws DataFormatException If the specified precision is not allowed for
+   *                             this type
+   */
+  public DateTimeType(String theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	public DateTimeType(Calendar theCalendar) {
-		if (theCalendar != null) {
-			setValue(theCalendar.getTime());
-			setPrecision(DEFAULT_PRECISION);
-			setTimeZone(theCalendar.getTimeZone());
-		}
-	}
+  /**
+   * Constructor which accepts a date value, precision value, and time zone. Valid
+   * precisions values for this type are:
+   * <ul>
+   * <li>{@link TemporalPrecisionEnum#YEAR}
+   * <li>{@link TemporalPrecisionEnum#MONTH}
+   * <li>{@link TemporalPrecisionEnum#DAY}
+   * <li>{@link TemporalPrecisionEnum#SECOND}
+   * <li>{@link TemporalPrecisionEnum#MILLI}
+   * </ul>
+   */
+  public DateTimeType(Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
+    super(theDate, thePrecision, theTimezone);
+  }
 
-	@Override
-	boolean isPrecisionAllowed(TemporalPrecisionEnum thePrecision) {
-		switch (thePrecision) {
-		case YEAR:
-		case MONTH:
-		case DAY:
-		case SECOND:
-		case MILLI:
-			return true;
-		default:
-			return false;
-		}
-	}
+  /**
+   * Constructor
+   */
+  public DateTimeType(Calendar theCalendar) {
+    if (theCalendar != null) {
+      setValue(theCalendar.getTime());
+      setPrecision(DEFAULT_PRECISION);
+      setTimeZone(theCalendar.getTimeZone());
+    }
+  }
 
-	/**
-	 * Returns a new instance of DateTimeType with the current system time and SECOND precision and the system local time
-	 * zone
-	 */
-	public static DateTimeType now() {
-		return new DateTimeType(new Date(), TemporalPrecisionEnum.SECOND, TimeZone.getDefault());
-	}
+  @Override
+  boolean isPrecisionAllowed(TemporalPrecisionEnum thePrecision) {
+    switch (thePrecision) {
+    case YEAR:
+    case MONTH:
+    case DAY:
+    case SECOND:
+    case MILLI:
+      return true;
+    default:
+      return false;
+    }
+  }
 
-	/**
-	 * Returns the default precision for this datatype
-	 * 
-	 * @see #DEFAULT_PRECISION
-	 */
-	@Override
-	protected TemporalPrecisionEnum getDefaultPrecisionForDatatype() {
-		return DEFAULT_PRECISION;
-	}
+  /**
+   * Returns a new instance of DateTimeType with the current system time and
+   * SECOND precision and the system local time zone
+   */
+  public static DateTimeType now() {
+    return new DateTimeType(new Date(), TemporalPrecisionEnum.SECOND, TimeZone.getDefault());
+  }
 
-	@Override
-	public DateTimeType copy() {
-		DateTimeType ret = new DateTimeType(getValueAsString());
+  /**
+   * Returns the default precision for this datatype
+   * 
+   * @see #DEFAULT_PRECISION
+   */
+  @Override
+  protected TemporalPrecisionEnum getDefaultPrecisionForDatatype() {
+    return DEFAULT_PRECISION;
+  }
+
+  @Override
+  public DateTimeType copy() {
+    DateTimeType ret = new DateTimeType(getValueAsString());
     copyValues(ret);
     return ret;
-	}
+  }
 
-	/**
-	 * Creates a new instance by parsing an HL7 v3 format date time string
-	 */
-	public static DateTimeType parseV3(String theV3String) {
-		DateTimeType retVal = new DateTimeType();
-		retVal.setValueAsV3String(theV3String);
-		return retVal;
-	}
+  /**
+   * Creates a new instance by parsing an HL7 v3 format date time string
+   */
+  public static DateTimeType parseV3(String theV3String) {
+    DateTimeType retVal = new DateTimeType();
+    retVal.setValueAsV3String(theV3String);
+    return retVal;
+  }
 
-	public static DateTimeType today() {
-		DateTimeType retVal = now();
-		retVal.setPrecision(TemporalPrecisionEnum.DAY);
-		return retVal;
-	}
+  public static DateTimeType today() {
+    DateTimeType retVal = now();
+    retVal.setPrecision(TemporalPrecisionEnum.DAY);
+    return retVal;
+  }
 
-	public boolean getTzSign() {
-		return getTimeZone().getRawOffset() >= 0;
-	}
+  public boolean getTzSign() {
+    return getTimeZone().getRawOffset() >= 0;
+  }
 
-	public int getTzHour() {
-		return (int) (getTimeZone().getRawOffset() / DateUtils.MILLIS_PER_MINUTE) / 60;
-	}
+  public int getTzHour() {
+    return (int) (getTimeZone().getRawOffset() / DateUtils.MILLIS_PER_MINUTE) / 60;
+  }
 
-	public int getTzMin() {
-		return (int) (getTimeZone().getRawOffset() / DateUtils.MILLIS_PER_MINUTE) % 60;
-	}
+  public int getTzMin() {
+    return (int) (getTimeZone().getRawOffset() / DateUtils.MILLIS_PER_MINUTE) % 60;
+  }
 
-	
-	public String fhirType() {
-		return "dateTime";		
-	}
+  public String fhirType() {
+    return "dateTime";
+  }
 
   public String getAsV3() {
     String r = getValueAsString();
@@ -212,7 +211,7 @@ public class DateTimeType extends BaseDateTimeType {
   private String stripChar(String r, int i, char c) {
     if (r.length() <= i || r.charAt(i) != c)
       return r;
-    return r.substring(0, i)+r.substring(i+1);
+    return r.substring(0, i) + r.substring(i + 1);
   }
 
   @Override

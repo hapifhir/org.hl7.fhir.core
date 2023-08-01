@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ProviderQualificationEnumFactory implements EnumFactory<ProviderQualification> {
@@ -48,7 +44,7 @@ public class ProviderQualificationEnumFactory implements EnumFactory<ProviderQua
       return ProviderQualification._604215;
     if ("604210".equals(codeString))
       return ProviderQualification._604210;
-    throw new IllegalArgumentException("Unknown ProviderQualification code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ProviderQualification code '" + codeString + "'");
   }
 
   public String toCode(ProviderQualification code) {
@@ -61,8 +57,8 @@ public class ProviderQualificationEnumFactory implements EnumFactory<ProviderQua
     return "?";
   }
 
-    public String toSystem(ProviderQualification code) {
-      return code.getSystem();
-      }
+  public String toSystem(ProviderQualification code) {
+    return code.getSystem();
+  }
 
 }

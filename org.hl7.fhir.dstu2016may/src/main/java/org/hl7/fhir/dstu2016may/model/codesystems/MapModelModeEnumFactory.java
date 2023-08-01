@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class MapModelModeEnumFactory implements EnumFactory<MapModelMode> {
@@ -50,7 +46,7 @@ public class MapModelModeEnumFactory implements EnumFactory<MapModelMode> {
       return MapModelMode.TARGET;
     if ("produced".equals(codeString))
       return MapModelMode.PRODUCED;
-    throw new IllegalArgumentException("Unknown MapModelMode code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown MapModelMode code '" + codeString + "'");
   }
 
   public String toCode(MapModelMode code) {
@@ -65,8 +61,8 @@ public class MapModelModeEnumFactory implements EnumFactory<MapModelMode> {
     return "?";
   }
 
-    public String toSystem(MapModelMode code) {
-      return code.getSystem();
-      }
+  public String toSystem(MapModelMode code) {
+    return code.getSystem();
+  }
 
 }

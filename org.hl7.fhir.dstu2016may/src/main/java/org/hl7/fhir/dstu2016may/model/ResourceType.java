@@ -29,130 +29,31 @@ package org.hl7.fhir.dstu2016may.model;
   
  */
 
-
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
 public enum ResourceType {
-    Account,
-    AllergyIntolerance,
-    Appointment,
-    AppointmentResponse,
-    AuditEvent,
-    Basic,
-    Binary,
-    BodySite,
-    Bundle,
-    CarePlan,
-    CareTeam,
-    Claim,
-    ClaimResponse,
-    ClinicalImpression,
-    CodeSystem,
-    Communication,
-    CommunicationRequest,
-    CompartmentDefinition,
-    Composition,
-    ConceptMap,
-    Condition,
-    Conformance,
-    Contract,
-    Coverage,
-    DataElement,
-    DecisionSupportRule,
-    DecisionSupportServiceModule,
-    DetectedIssue,
-    Device,
-    DeviceComponent,
-    DeviceMetric,
-    DeviceUseRequest,
-    DeviceUseStatement,
-    DiagnosticOrder,
-    DiagnosticReport,
-    DocumentManifest,
-    DocumentReference,
-    EligibilityRequest,
-    EligibilityResponse,
-    Encounter,
-    EnrollmentRequest,
-    EnrollmentResponse,
-    EpisodeOfCare,
-    ExpansionProfile,
-    ExplanationOfBenefit,
-    FamilyMemberHistory,
-    Flag,
-    Goal,
-    Group,
-    GuidanceResponse,
-    HealthcareService,
-    ImagingExcerpt,
-    ImagingObjectSelection,
-    ImagingStudy,
-    Immunization,
-    ImmunizationRecommendation,
-    ImplementationGuide,
-    Library,
-    Linkage,
-    List,
-    Location,
-    Measure,
-    MeasureReport,
-    Media,
-    Medication,
-    MedicationAdministration,
-    MedicationDispense,
-    MedicationOrder,
-    MedicationStatement,
-    MessageHeader,
-    ModuleDefinition,
-    NamingSystem,
-    NutritionOrder,
-    Observation,
-    OperationDefinition,
-    OperationOutcome,
-    Order,
-    OrderResponse,
-    OrderSet,
-    Organization,
-    Parameters,
-    Patient,
-    PaymentNotice,
-    PaymentReconciliation,
-    Person,
-    Practitioner,
-    PractitionerRole,
-    Procedure,
-    ProcedureRequest,
-    ProcessRequest,
-    ProcessResponse,
-    Protocol,
-    Provenance,
-    Questionnaire,
-    QuestionnaireResponse,
-    ReferralRequest,
-    RelatedPerson,
-    RiskAssessment,
-    Schedule,
-    SearchParameter,
-    Sequence,
-    Slot,
-    Specimen,
-    StructureDefinition,
-    StructureMap,
-    Subscription,
-    Substance,
-    SupplyDelivery,
-    SupplyRequest,
-    Task,
-    TestScript,
-    ValueSet,
-    VisionPrescription;
+  Account, AllergyIntolerance, Appointment, AppointmentResponse, AuditEvent, Basic, Binary, BodySite, Bundle, CarePlan,
+  CareTeam, Claim, ClaimResponse, ClinicalImpression, CodeSystem, Communication, CommunicationRequest,
+  CompartmentDefinition, Composition, ConceptMap, Condition, Conformance, Contract, Coverage, DataElement,
+  DecisionSupportRule, DecisionSupportServiceModule, DetectedIssue, Device, DeviceComponent, DeviceMetric,
+  DeviceUseRequest, DeviceUseStatement, DiagnosticOrder, DiagnosticReport, DocumentManifest, DocumentReference,
+  EligibilityRequest, EligibilityResponse, Encounter, EnrollmentRequest, EnrollmentResponse, EpisodeOfCare,
+  ExpansionProfile, ExplanationOfBenefit, FamilyMemberHistory, Flag, Goal, Group, GuidanceResponse, HealthcareService,
+  ImagingExcerpt, ImagingObjectSelection, ImagingStudy, Immunization, ImmunizationRecommendation, ImplementationGuide,
+  Library, Linkage, List, Location, Measure, MeasureReport, Media, Medication, MedicationAdministration,
+  MedicationDispense, MedicationOrder, MedicationStatement, MessageHeader, ModuleDefinition, NamingSystem,
+  NutritionOrder, Observation, OperationDefinition, OperationOutcome, Order, OrderResponse, OrderSet, Organization,
+  Parameters, Patient, PaymentNotice, PaymentReconciliation, Person, Practitioner, PractitionerRole, Procedure,
+  ProcedureRequest, ProcessRequest, ProcessResponse, Protocol, Provenance, Questionnaire, QuestionnaireResponse,
+  ReferralRequest, RelatedPerson, RiskAssessment, Schedule, SearchParameter, Sequence, Slot, Specimen,
+  StructureDefinition, StructureMap, Subscription, Substance, SupplyDelivery, SupplyRequest, Task, TestScript, ValueSet,
+  VisionPrescription;
 
-
-    public String getPath() {;
-      switch (this) {
+  public String getPath() {
+    ;
+    switch (this) {
     case Account:
       return "account";
     case AllergyIntolerance:
@@ -380,11 +281,11 @@ public enum ResourceType {
     case VisionPrescription:
       return "visionprescription";
     }
-      return null;
+    return null;
   }
 
-
-    public static ResourceType fromCode(String code) throws FHIRException {;
+  public static ResourceType fromCode(String code) throws FHIRException {
+    ;
     if ("Account".equals(code))
       return Account;
     if ("AllergyIntolerance".equals(code))
@@ -612,7 +513,7 @@ public enum ResourceType {
     if ("VisionPrescription".equals(code))
       return VisionPrescription;
 
-    throw new FHIRException("Unknown resource type "+code);
+    throw new FHIRException("Unknown resource type " + code);
   }
 
 }

@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.model;
   
  */
 
-
-
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
@@ -39,68 +37,68 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 @DatatypeDef(name = "integer64")
 public class Integer64Type extends PrimitiveType<Long> /* implements IBaseInteger64Datatype */ {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	/**
-	 * Constructor
-	 */
-	public Integer64Type() {
-		// nothing
-	}
+  /**
+   * Constructor
+   */
+  public Integer64Type() {
+    // nothing
+  }
 
-	/**
-	 * Constructor
-	 */
-	public Integer64Type(long theInteger) {
-		setValue(theInteger);
-	}
+  /**
+   * Constructor
+   */
+  public Integer64Type(long theInteger) {
+    setValue(theInteger);
+  }
 
-	/**
-	 * Constructor
-	 * 
-	 * @param theIntegerAsString
-	 *            A string representation of an integer
-	 * @throws IllegalArgumentException
-	 *             If the string is not a valid integer representation
-	 */
-	public Integer64Type(String theIntegerAsString) {
-		setValueAsString(theIntegerAsString);
-	}
+  /**
+   * Constructor
+   * 
+   * @param theIntegerAsString A string representation of an integer
+   * @throws IllegalArgumentException If the string is not a valid integer
+   *                                  representation
+   */
+  public Integer64Type(String theIntegerAsString) {
+    setValueAsString(theIntegerAsString);
+  }
 
-	/**
-	 * Constructor
-	 * 
-	 * @param theValue The value
-	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
-	 */
-	public Integer64Type(Long theValue) {
-	    if(theValue!=null) {
-	    	setValue(theValue);
-	    }
-	}
+  /**
+   * Constructor
+   * 
+   * @param theValue The value
+   * @throws IllegalArgumentException If the value is too large to fit in a signed
+   *                                  integer
+   */
+  public Integer64Type(Long theValue) {
+    if (theValue != null) {
+      setValue(theValue);
+    }
+  }
 
-	@Override
-	protected Long parse(String theValue) {
-		try {
-			return Long.parseLong(theValue);
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
+  @Override
+  protected Long parse(String theValue) {
+    try {
+      return Long.parseLong(theValue);
+    } catch (NumberFormatException e) {
+      throw new IllegalArgumentException(e);
+    }
+  }
 
-	@Override
-	protected String encode(Long theValue) {
-		return Long.toString(theValue);
-	}
+  @Override
+  protected String encode(Long theValue) {
+    return Long.toString(theValue);
+  }
 
-	@Override
-	public Integer64Type copy() {
-		Integer64Type ret = new Integer64Type(getValue());
+  @Override
+  public Integer64Type copy() {
+    Integer64Type ret = new Integer64Type(getValue());
     copyValues(ret);
     return ret;
-	}
+  }
 
-	public String fhirType() {
-		return "integer64";		
-	}
+  public String fhirType() {
+    return "integer64";
+  }
 }

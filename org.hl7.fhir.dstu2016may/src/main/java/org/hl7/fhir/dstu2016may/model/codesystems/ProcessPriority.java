@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProcessPriority {
 
-        /**
-         * Immediately in real time.
-         */
-        STAT, 
-        /**
-         * With best effort.
-         */
-        NORMAL, 
-        /**
-         * Later, when possible.
-         */
-        DEFERRED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ProcessPriority fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("stat".equals(codeString))
-          return STAT;
-        if ("normal".equals(codeString))
-          return NORMAL;
-        if ("deferred".equals(codeString))
-          return DEFERRED;
-        throw new FHIRException("Unknown ProcessPriority code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case STAT: return "stat";
-            case NORMAL: return "normal";
-            case DEFERRED: return "deferred";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/processpriority";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case STAT: return "Immediately in real time.";
-            case NORMAL: return "With best effort.";
-            case DEFERRED: return "Later, when possible.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case STAT: return "Immediate";
-            case NORMAL: return "Normal";
-            case DEFERRED: return "Deferred";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Immediately in real time.
+   */
+  STAT,
+  /**
+   * With best effort.
+   */
+  NORMAL,
+  /**
+   * Later, when possible.
+   */
+  DEFERRED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ProcessPriority fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("stat".equals(codeString))
+      return STAT;
+    if ("normal".equals(codeString))
+      return NORMAL;
+    if ("deferred".equals(codeString))
+      return DEFERRED;
+    throw new FHIRException("Unknown ProcessPriority code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case STAT:
+      return "stat";
+    case NORMAL:
+      return "normal";
+    case DEFERRED:
+      return "deferred";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/processpriority";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case STAT:
+      return "Immediately in real time.";
+    case NORMAL:
+      return "With best effort.";
+    case DEFERRED:
+      return "Later, when possible.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case STAT:
+      return "Immediate";
+    case NORMAL:
+      return "Normal";
+    case DEFERRED:
+      return "Deferred";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

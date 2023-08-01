@@ -1,13 +1,13 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
+import java.util.Arrays;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Extension30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Meta30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Narrative30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.Arrays;
 
 public class Resource30_40 {
 

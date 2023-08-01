@@ -26,8 +26,27 @@ public class StructureDefinitionHacker {
     if (VersionUtilities.isR4Ver(version) && "http://hl7.org/fhir/StructureDefinition/example-composition".equals(sd.getUrl())) {
       for (ElementDefinition ed : sd.getSnapshot().getElement()) {
         fixDocSecURL(ed);
-      } for (ElementDefinition ed : sd.getDifferential().getElement()) {
+      } 
+      for (ElementDefinition ed : sd.getDifferential().getElement()) {
         fixDocSecURL(ed);
+        if ("ClinicalImpression.problem".equals(ed.getPath())) {
+          // work around a bidi problem
+          ed.setComment("e.g. The patient is a pregnant, has congestive heart failure, has an Adenocarcinoma, and is allergic to penicillin.");
+        }
+      }
+    }
+    if (VersionUtilities.isR4Ver(version) && "http://hl7.org/fhir/StructureDefinition/ClinicalImpression".equals(sd.getUrl())) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        if ("ClinicalImpression.problem".equals(ed.getPath())) {
+          // work around a bidi problem
+          ed.setComment("e.g. The patient is a pregnant, has congestive heart failure, has an Adenocarcinoma, and is allergic to penicillin.");
+        }
+      } 
+      for (ElementDefinition ed : sd.getDifferential().getElement()) {
+        if ("ClinicalImpression.problem".equals(ed.getPath())) {
+          // work around a bidi problem
+          ed.setComment("e.g. The patient is a pregnant, has congestive heart failure, has an Adenocarcinoma, and is allergic to penicillin.");
+        }
       }
     }
     return sd;

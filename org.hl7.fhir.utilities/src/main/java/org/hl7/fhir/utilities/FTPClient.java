@@ -1,8 +1,9 @@
 package org.hl7.fhir.utilities;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -10,9 +11,9 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 public class FTPClient {
 

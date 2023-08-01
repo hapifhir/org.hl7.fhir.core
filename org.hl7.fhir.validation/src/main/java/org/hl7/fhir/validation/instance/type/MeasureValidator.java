@@ -531,7 +531,7 @@ public class MeasureValidator extends BaseValidator {
       CodeableConcept cc = ObjectConverter.readAsCodeableConcept(mrgs.getNamedChild("code"));
       if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrgs.line(), mrgs.col(), ns.getLiteralPath(), cc != null, I18nConstants.MEASURE_MR_GRP_POP_NO_CODE)) {
         MeasureGroupStratifierComponent mgs = getGroupStratifierForCode(cc, mg);
-        if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), mgs != null, I18nConstants.MEASURE_MR_GRP_POP_UNK_CODE)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), mgs != null, I18nConstants.MEASURE_MR_GRPST_POP_UNK_CODE)) {
           if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), !strats.contains(mgs), I18nConstants.MEASURE_MR_GRP_POP_DUPL_CODE)) {
             strats.add(mgs);
             ok = validateMeasureReportGroupStratifier(hostContext, m, mgs, errors, mrgs, ns, inProgress) && ok;

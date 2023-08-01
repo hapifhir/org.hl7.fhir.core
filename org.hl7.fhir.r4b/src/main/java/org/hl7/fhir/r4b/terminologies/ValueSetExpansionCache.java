@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.terminologies;
   
  */
 
-
-
 /*
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
@@ -87,33 +85,34 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
 
   public class CacheAwareExpander implements ValueSetExpander {
 
-	  @Override
-	  public ValueSetExpansionOutcome expand(ValueSet source, Parameters expParams) throws ETooCostly, IOException {
-	    String cacheKey = makeCacheKey(source, expParams);
-	  	if (expansions.containsKey(cacheKey))
-	  		return expansions.get(cacheKey);
-	  	ValueSetExpander vse = new ValueSetExpanderSimple(context);
-	  	ValueSetExpansionOutcome vso = vse.expand(source, expParams);
-	  	if (vso.getError() != null) {
-	  	  // well, we'll see if the designated server can expand it, and if it can, we'll cache it locally
-	  		vso = context.expandVS(source, false, expParams == null || !expParams.getParameterBool("excludeNested"));
-	  		if (cacheFolder != null) {
-	  		  FileOutputStream s = new FileOutputStream(Utilities.path(cacheFolder, makeFileName(source.getUrl())));
-	  		  context.newXmlParser().setOutputStyle(OutputStyle.PRETTY).compose(s, vso.getValueset());
-	  		  s.close();
-	  		}
-	  	}
-	  	if (vso.getValueset() != null)
-	  	  expansions.put(cacheKey, vso);
-	  	return vso;
-	  }
+    @Override
+    public ValueSetExpansionOutcome expand(ValueSet source, Parameters expParams) throws ETooCostly, IOException {
+      String cacheKey = makeCacheKey(source, expParams);
+      if (expansions.containsKey(cacheKey))
+        return expansions.get(cacheKey);
+      ValueSetExpander vse = new ValueSetExpanderSimple(context);
+      ValueSetExpansionOutcome vso = vse.expand(source, expParams);
+      if (vso.getError() != null) {
+        // well, we'll see if the designated server can expand it, and if it can, we'll
+        // cache it locally
+        vso = context.expandVS(source, false, expParams == null || !expParams.getParameterBool("excludeNested"));
+        if (cacheFolder != null) {
+          FileOutputStream s = new FileOutputStream(Utilities.path(cacheFolder, makeFileName(source.getUrl())));
+          context.newXmlParser().setOutputStyle(OutputStyle.PRETTY).compose(s, vso.getValueset());
+          s.close();
+        }
+      }
+      if (vso.getValueset() != null)
+        expansions.put(cacheKey, vso);
+      return vso;
+    }
 
     private String makeCacheKey(ValueSet source, Parameters expParams) throws IOException {
       if (expParams == null)
         return source.getUrl();
       JsonParser p = new JsonParser();
       String r = p.composeString(expParams);
-      return source.getUrl() + " " + r.hashCode(); 
+      return source.getUrl() + " " + r.hashCode();
     }
 
   }
@@ -126,15 +125,16 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
   private final String cacheFolder;
 
   private Object lock;
-	
-	public ValueSetExpansionCache(IWorkerContext context, Object lock) {
+
+  public ValueSetExpansionCache(IWorkerContext context, Object lock) {
     super();
     cacheFolder = null;
     this.lock = lock;
     this.context = context;
   }
-  
-	public ValueSetExpansionCache(IWorkerContext context, String cacheFolder, Object lock) throws FHIRFormatError, IOException {
+
+  public ValueSetExpansionCache(IWorkerContext context, String cacheFolder, Object lock)
+      throws FHIRFormatError, IOException {
     super();
     this.context = context;
     this.cacheFolder = cacheFolder;
@@ -142,22 +142,24 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
     if (this.cacheFolder != null)
       loadCache();
   }
-  
+
   private String makeFileName(String url) {
-    return url.replace("$", "").replace(":", "").replace("|", ".").replace("//", "/").replace("/", "_")+".xml";
+    return url.replace("$", "").replace(":", "").replace("|", ".").replace("//", "/").replace("/", "_") + ".xml";
   }
-  
+
   private void loadCache() throws FHIRFormatError, IOException {
     File[] files = new File(cacheFolder).listFiles();
     for (File f : files) {
       if (f.getName().endsWith(".xml")) {
         final FileInputStream is = new FileInputStream(f);
-        try {	   
+        try {
           Resource r = context.newXmlParser().setOutputStyle(OutputStyle.PRETTY).parse(is);
           if (r instanceof OperationOutcome) {
             OperationOutcome oo = (OperationOutcome) r;
-            expansions.put(ToolingExtensions.getExtension(oo,VS_ID_EXT).getValue().toString(),
-                new ValueSetExpansionOutcome(new XhtmlComposer(XhtmlComposer.XML, false).composePlainText(oo.getText().getDiv()), TerminologyServiceErrorClass.UNKNOWN));
+            expansions.put(ToolingExtensions.getExtension(oo, VS_ID_EXT).getValue().toString(),
+                new ValueSetExpansionOutcome(
+                    new XhtmlComposer(XhtmlComposer.XML, false).composePlainText(oo.getText().getDiv()),
+                    TerminologyServiceErrorClass.UNKNOWN));
           } else if (r instanceof ValueSet) {
             ValueSet vs = (ValueSet) r;
             if (vs.hasExpansion())
@@ -165,13 +167,13 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
             else {
               canonicals.put(vs.getUrl(), vs);
               if (vs.hasVersion())
-                canonicals.put(vs.getUrl()+"|"+vs.getVersion(), vs);
+                canonicals.put(vs.getUrl() + "|" + vs.getVersion(), vs);
             }
           } else if (r instanceof CanonicalResource) {
             CanonicalResource md = (CanonicalResource) r;
             canonicals.put(md.getUrl(), md);
             if (md.hasVersion())
-              canonicals.put(md.getUrl()+"|"+md.getVersion(), md);
+              canonicals.put(md.getUrl() + "|" + md.getVersion(), md);
           }
         } finally {
           IOUtils.closeQuietly(is);
@@ -181,14 +183,14 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
   }
 
   @Override
-	public ValueSetExpander getExpander() {
-		return new CacheAwareExpander();
-		// return new ValueSetExpander(valuesets, codesystems);
-	}
+  public ValueSetExpander getExpander() {
+    return new CacheAwareExpander();
+    // return new ValueSetExpander(valuesets, codesystems);
+  }
 
   public CanonicalResource getStoredResource(String canonicalUri) {
     synchronized (lock) {
-    return canonicals.get(canonicalUri);
+      return canonicals.get(canonicalUri);
     }
   }
 
@@ -196,14 +198,14 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
     synchronized (lock) {
       canonicals.put(md.getUrl(), md);
       if (md.hasVersion())
-        canonicals.put(md.getUrl()+"|"+md.getVersion(), md);    
+        canonicals.put(md.getUrl() + "|" + md.getVersion(), md);
     }
     if (cacheFolder != null) {
-      FileOutputStream s = new FileOutputStream(Utilities.path(cacheFolder, makeFileName(md.getUrl()+"|"+md.getVersion())));
+      FileOutputStream s = new FileOutputStream(
+          Utilities.path(cacheFolder, makeFileName(md.getUrl() + "|" + md.getVersion())));
       context.newXmlParser().setOutputStyle(OutputStyle.PRETTY).compose(s, md);
       s.close();
     }
   }
-
 
 }

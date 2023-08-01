@@ -78,7 +78,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws IOException, FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical) throws IOException, FHIRException {
     if (!Utilities.isAbsoluteUrl(url)) {
       return false;
     }
@@ -283,7 +283,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   @Override
   public void findResource(Object validator, String url) {
     try {
-      resolveURL((IResourceValidator) validator, null, null, url, null);
+      resolveURL((IResourceValidator) validator, null, null, url, null, false);
     } catch (Exception e) {
     }
   }

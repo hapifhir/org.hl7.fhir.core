@@ -28,9 +28,9 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 package org.hl7.fhir.dstu3.test;
 
-import org.junit.jupiter.api.Disabled;
-
 import java.io.File;
+
+import org.junit.jupiter.api.Disabled;
 
 @Disabled
 public class SingleTest {

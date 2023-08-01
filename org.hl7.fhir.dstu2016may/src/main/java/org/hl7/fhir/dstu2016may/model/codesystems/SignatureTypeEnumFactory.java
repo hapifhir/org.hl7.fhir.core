@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 */
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
-
 
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
@@ -78,7 +74,7 @@ public class SignatureTypeEnumFactory implements EnumFactory<SignatureType> {
       return SignatureType.OID_1_2_840_10065_1_12_1_17;
     if ("1.2.840.10065.1.12.1.18".equals(codeString))
       return SignatureType.OID_1_2_840_10065_1_12_1_18;
-    throw new IllegalArgumentException("Unknown SignatureType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown SignatureType code '" + codeString + "'");
   }
 
   public String toCode(SignatureType code) {
@@ -121,8 +117,8 @@ public class SignatureTypeEnumFactory implements EnumFactory<SignatureType> {
     return "?";
   }
 
-    public String toSystem(SignatureType code) {
-      return code.getSystem();
-      }
+  public String toSystem(SignatureType code) {
+    return code.getSystem();
+  }
 
 }

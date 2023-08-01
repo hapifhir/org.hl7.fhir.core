@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,80 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ActionPrecheckBehavior {
 
-        /**
-         * An action with this behavior is one of the most frequent action that is, or should be, included by an end user, for the particular context in which the action occurs. The system displaying the action to the end user should consider "pre-checking" such an action as a convenience for the user
-         */
-        YES, 
-        /**
-         * An action with this behavior is one of the less frequent actions included by the end user, for the particular context in which the action occurs. The system displaying the actions to the end user would typically not "pre-check" such an action
-         */
-        NO, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ActionPrecheckBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("yes".equals(codeString))
-          return YES;
-        if ("no".equals(codeString))
-          return NO;
-        throw new FHIRException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case YES: return "yes";
-            case NO: return "no";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/action-precheck-behavior";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case YES: return "An action with this behavior is one of the most frequent action that is, or should be, included by an end user, for the particular context in which the action occurs. The system displaying the action to the end user should consider \"pre-checking\" such an action as a convenience for the user";
-            case NO: return "An action with this behavior is one of the less frequent actions included by the end user, for the particular context in which the action occurs. The system displaying the actions to the end user would typically not \"pre-check\" such an action";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case YES: return "Yes";
-            case NO: return "No";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * An action with this behavior is one of the most frequent action that is, or
+   * should be, included by an end user, for the particular context in which the
+   * action occurs. The system displaying the action to the end user should
+   * consider "pre-checking" such an action as a convenience for the user
+   */
+  YES,
+  /**
+   * An action with this behavior is one of the less frequent actions included by
+   * the end user, for the particular context in which the action occurs. The
+   * system displaying the actions to the end user would typically not "pre-check"
+   * such an action
+   */
+  NO,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ActionPrecheckBehavior fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("yes".equals(codeString))
+      return YES;
+    if ("no".equals(codeString))
+      return NO;
+    throw new FHIRException("Unknown ActionPrecheckBehavior code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case YES:
+      return "yes";
+    case NO:
+      return "no";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/action-precheck-behavior";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case YES:
+      return "An action with this behavior is one of the most frequent action that is, or should be, included by an end user, for the particular context in which the action occurs. The system displaying the action to the end user should consider \"pre-checking\" such an action as a convenience for the user";
+    case NO:
+      return "An action with this behavior is one of the less frequent actions included by the end user, for the particular context in which the action occurs. The system displaying the actions to the end user would typically not \"pre-check\" such an action";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case YES:
+      return "Yes";
+    case NO:
+      return "No";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

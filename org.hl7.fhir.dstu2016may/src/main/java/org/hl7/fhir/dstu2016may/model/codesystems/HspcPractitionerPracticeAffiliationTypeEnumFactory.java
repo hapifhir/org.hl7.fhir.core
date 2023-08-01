@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,17 +31,17 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
-public class HspcPractitionerPracticeAffiliationTypeEnumFactory implements EnumFactory<HspcPractitionerPracticeAffiliationType> {
+public class HspcPractitionerPracticeAffiliationTypeEnumFactory
+    implements EnumFactory<HspcPractitionerPracticeAffiliationType> {
 
   public HspcPractitionerPracticeAffiliationType fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
       return null;
     if ("5b595190-aceb-48de-b0d6-8950a8829183".equals(codeString))
       return HspcPractitionerPracticeAffiliationType._5B595190ACEB48DEB0D68950A8829183;
-    throw new IllegalArgumentException("Unknown HspcPractitionerPracticeAffiliationType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown HspcPractitionerPracticeAffiliationType code '" + codeString + "'");
   }
 
   public String toCode(HspcPractitionerPracticeAffiliationType code) {
@@ -53,8 +50,8 @@ public class HspcPractitionerPracticeAffiliationTypeEnumFactory implements EnumF
     return "?";
   }
 
-    public String toSystem(HspcPractitionerPracticeAffiliationType code) {
-      return code.getSystem();
-      }
+  public String toSystem(HspcPractitionerPracticeAffiliationType code) {
+    return code.getSystem();
+  }
 
 }

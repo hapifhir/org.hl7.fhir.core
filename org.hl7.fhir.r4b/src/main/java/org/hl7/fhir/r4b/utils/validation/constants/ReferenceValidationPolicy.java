@@ -1,11 +1,7 @@
 package org.hl7.fhir.r4b.utils.validation.constants;
 
 public enum ReferenceValidationPolicy {
-  IGNORE,
-  CHECK_TYPE_IF_EXISTS,
-  CHECK_EXISTS,
-  CHECK_EXISTS_AND_TYPE,
-  CHECK_VALID;
+  IGNORE, CHECK_TYPE_IF_EXISTS, CHECK_EXISTS, CHECK_EXISTS_AND_TYPE, CHECK_VALID;
 
   public boolean ignore() {
     return this == IGNORE;

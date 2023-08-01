@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VerificationresultCanPushUpdates {
 
-        /**
-         * null
-         */
-        YES, 
-        /**
-         * null
-         */
-        NO, 
-        /**
-         * null
-         */
-        UNDETERMINED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static VerificationresultCanPushUpdates fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("yes".equals(codeString))
-          return YES;
-        if ("no".equals(codeString))
-          return NO;
-        if ("undetermined".equals(codeString))
-          return UNDETERMINED;
-        throw new FHIRException("Unknown VerificationresultCanPushUpdates code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case YES: return "yes";
-            case NO: return "no";
-            case UNDETERMINED: return "undetermined";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/can-push-updates";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case YES: return "";
-            case NO: return "";
-            case UNDETERMINED: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case YES: return "Yes";
-            case NO: return "No";
-            case UNDETERMINED: return "Undetermined";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  YES,
+  /**
+   * null
+   */
+  NO,
+  /**
+   * null
+   */
+  UNDETERMINED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static VerificationresultCanPushUpdates fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("yes".equals(codeString))
+      return YES;
+    if ("no".equals(codeString))
+      return NO;
+    if ("undetermined".equals(codeString))
+      return UNDETERMINED;
+    throw new FHIRException("Unknown VerificationresultCanPushUpdates code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case YES:
+      return "yes";
+    case NO:
+      return "no";
+    case UNDETERMINED:
+      return "undetermined";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/can-push-updates";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case YES:
+      return "";
+    case NO:
+      return "";
+    case UNDETERMINED:
+      return "";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case YES:
+      return "Yes";
+    case NO:
+      return "No";
+    case UNDETERMINED:
+      return "Undetermined";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

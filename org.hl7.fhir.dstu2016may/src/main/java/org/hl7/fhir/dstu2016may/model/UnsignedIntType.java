@@ -29,70 +29,66 @@ package org.hl7.fhir.dstu2016may.model;
   
  */
 
-
-
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
  * Primitive type "integer" in FHIR: A signed 32-bit integer
  */
-@DatatypeDef(name = "unsignedInt", profileOf=IntegerType.class)
+@DatatypeDef(name = "unsignedInt", profileOf = IntegerType.class)
 public class UnsignedIntType extends IntegerType {
 
-
-	/**
-	 * 
-	 */
+  /**
+   * 
+   */
   private static final long serialVersionUID = -7991875974606711355L;
 
-	/**
-	 * Constructor
-	 */
-	public UnsignedIntType() {
-		// nothing
-	}
+  /**
+   * Constructor
+   */
+  public UnsignedIntType() {
+    // nothing
+  }
 
-	/**
-	 * Constructor
-	 */
-	public UnsignedIntType(int theInteger) {
-		setValue(theInteger);
-	}
+  /**
+   * Constructor
+   */
+  public UnsignedIntType(int theInteger) {
+    setValue(theInteger);
+  }
 
-	/**
-	 * Constructor
-	 * 
-	 * @param theIntegerAsString
-	 *            A string representation of an integer
-	 * @throws IllegalArgumentException
-	 *             If the string is not a valid integer representation
-	 */
-	public UnsignedIntType(String theIntegerAsString) {
-		setValueAsString(theIntegerAsString);
-	}
+  /**
+   * Constructor
+   * 
+   * @param theIntegerAsString A string representation of an integer
+   * @throws IllegalArgumentException If the string is not a valid integer
+   *                                  representation
+   */
+  public UnsignedIntType(String theIntegerAsString) {
+    setValueAsString(theIntegerAsString);
+  }
 
-	/**
-	 * Constructor
-	 * 
-	 * @param theValue The value
-	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
-	 */
-	public UnsignedIntType(Long theValue) {
-	    if (theValue < 0 || theValue > java.lang.Integer.MAX_VALUE) {
-	        throw new IllegalArgumentException
-	            (theValue + " cannot be cast to int without changing its value.");
-	    }
-	    if(theValue!=null) {
-	    	setValue((int)theValue.longValue());
-	    }
-	}
+  /**
+   * Constructor
+   * 
+   * @param theValue The value
+   * @throws IllegalArgumentException If the value is too large to fit in a signed
+   *                                  integer
+   */
+  public UnsignedIntType(Long theValue) {
+    if (theValue < 0 || theValue > java.lang.Integer.MAX_VALUE) {
+      throw new IllegalArgumentException(theValue + " cannot be cast to int without changing its value.");
+    }
+    if (theValue != null) {
+      setValue((int) theValue.longValue());
+    }
+  }
 
-	@Override
-	public UnsignedIntType copy() {
-		return new UnsignedIntType(getValue());
-	}
+  @Override
+  public UnsignedIntType copy() {
+    return new UnsignedIntType(getValue());
+  }
 
-	public String fhirType() {
-		return "unsignedInt";		
-	}
+  public String fhirType() {
+    return "unsignedInt";
+  }
 }

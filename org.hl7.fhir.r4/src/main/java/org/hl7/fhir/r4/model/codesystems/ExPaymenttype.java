@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExPaymenttype {
 
-        /**
-         * Complete (final) payment of the benefit under the Claim less any adjustments.
-         */
-        COMPLETE, 
-        /**
-         * Partial payment of the benefit under the Claim less any adjustments.
-         */
-        PARTIAL, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ExPaymenttype fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("complete".equals(codeString))
-          return COMPLETE;
-        if ("partial".equals(codeString))
-          return PARTIAL;
-        throw new FHIRException("Unknown ExPaymenttype code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case COMPLETE: return "complete";
-            case PARTIAL: return "partial";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/ex-paymenttype";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case COMPLETE: return "Complete (final) payment of the benefit under the Claim less any adjustments.";
-            case PARTIAL: return "Partial payment of the benefit under the Claim less any adjustments.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case COMPLETE: return "Complete";
-            case PARTIAL: return "Partial";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Complete (final) payment of the benefit under the Claim less any adjustments.
+   */
+  COMPLETE,
+  /**
+   * Partial payment of the benefit under the Claim less any adjustments.
+   */
+  PARTIAL,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ExPaymenttype fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("complete".equals(codeString))
+      return COMPLETE;
+    if ("partial".equals(codeString))
+      return PARTIAL;
+    throw new FHIRException("Unknown ExPaymenttype code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case COMPLETE:
+      return "complete";
+    case PARTIAL:
+      return "partial";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/ex-paymenttype";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case COMPLETE:
+      return "Complete (final) payment of the benefit under the Claim less any adjustments.";
+    case PARTIAL:
+      return "Partial payment of the benefit under the Claim less any adjustments.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case COMPLETE:
+      return "Complete";
+    case PARTIAL:
+      return "Partial";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

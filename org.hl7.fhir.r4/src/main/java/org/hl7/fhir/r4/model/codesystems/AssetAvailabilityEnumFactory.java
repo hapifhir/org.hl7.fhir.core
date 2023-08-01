@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class AssetAvailabilityEnumFactory implements EnumFactory<AssetAvailability> {
@@ -44,7 +40,7 @@ public class AssetAvailabilityEnumFactory implements EnumFactory<AssetAvailabili
       return null;
     if ("lease".equals(codeString))
       return AssetAvailability.LEASE;
-    throw new IllegalArgumentException("Unknown AssetAvailability code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown AssetAvailability code '" + codeString + "'");
   }
 
   public String toCode(AssetAvailability code) {
@@ -53,8 +49,8 @@ public class AssetAvailabilityEnumFactory implements EnumFactory<AssetAvailabili
     return "?";
   }
 
-    public String toSystem(AssetAvailability code) {
-      return code.getSystem();
-      }
+  public String toSystem(AssetAvailability code) {
+    return code.getSystem();
+  }
 
 }

@@ -31,34 +31,28 @@ class ResourceTests {
     assertTrue(new CodeSystem().supportsCopyright());
     assertTrue(new ValueSet().supportsCopyright());
     assertTrue(new ConceptMap().supportsCopyright());
-    assertTrue(new TerminologyCapabilities().supportsCopyright()); 
-    assertTrue(new CapabilityStatement().supportsCopyright()); 
-    assertTrue(new StructureDefinition().supportsCopyright()); 
-    assertTrue(new ImplementationGuide().supportsCopyright()); 
-    assertTrue(new MessageDefinition().supportsCopyright()); 
-    assertTrue(new StructureMap().supportsCopyright()); 
-    assertTrue(new ExampleScenario().supportsCopyright()); 
+    assertTrue(new TerminologyCapabilities().supportsCopyright());
+    assertTrue(new CapabilityStatement().supportsCopyright());
+    assertTrue(new StructureDefinition().supportsCopyright());
+    assertTrue(new ImplementationGuide().supportsCopyright());
+    assertTrue(new MessageDefinition().supportsCopyright());
+    assertTrue(new StructureMap().supportsCopyright());
+    assertTrue(new ExampleScenario().supportsCopyright());
     assertFalse(new SearchParameter().supportsCopyright());
-    assertFalse(new NamingSystem().supportsCopyright()); 
-    assertFalse(new OperationDefinition().supportsCopyright()); 
-    assertFalse(new CompartmentDefinition().supportsCopyright()); 
-    assertFalse(new GraphDefinition().supportsCopyright()); 
+    assertFalse(new NamingSystem().supportsCopyright());
+    assertFalse(new OperationDefinition().supportsCopyright());
+    assertFalse(new CompartmentDefinition().supportsCopyright());
+    assertFalse(new GraphDefinition().supportsCopyright());
   }
 
-  private String SRC = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n"+
-      "<Patient xmlns=\"http://hl7.org/fhir\">\r\n"+
-      "  <name>\r\n"+
-      "    <text value=\"Job Bloggs\"/>\r\n"+
-      "  </name>\r\n"+
-      "</Patient>\r\n";
+  private String SRC = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n"
+      + "<Patient xmlns=\"http://hl7.org/fhir\">\r\n" + "  <name>\r\n" + "    <text value=\"Job Bloggs\"/>\r\n"
+      + "  </name>\r\n" + "</Patient>\r\n";
 
-  private String TGT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+
-      "<Patient xmlns=\"http://hl7.org/fhir\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://hl7.org/fhir http://test.org/Patient.xsd\">"+
-      "<name>"+
-      "<text value=\"Job Bloggs\"/>"+
-      "</name>"+
-      "</Patient>";
-  
+  private String TGT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+      + "<Patient xmlns=\"http://hl7.org/fhir\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://hl7.org/fhir http://test.org/Patient.xsd\">"
+      + "<name>" + "<text value=\"Job Bloggs\"/>" + "</name>" + "</Patient>";
+
   @Test
   void testSchemaLocation() throws IOException {
     XmlParser xml = new XmlParser();

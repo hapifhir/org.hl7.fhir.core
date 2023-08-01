@@ -29,8 +29,6 @@ package org.hl7.fhir.dstu2.utils;
   
  */
 
-
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -68,35 +66,39 @@ import org.xml.sax.SAXException;
 
 public class DigitalSignatures {
 
-
-  public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, KeyException, MarshalException, XMLSignatureException, FHIRException {
+  public static void main(String[] args)
+      throws SAXException, IOException, ParserConfigurationException, NoSuchAlgorithmException,
+      InvalidAlgorithmParameterException, KeyException, MarshalException, XMLSignatureException, FHIRException {
     // http://docs.oracle.com/javase/7/docs/technotes/guides/security/xmldsig/XMLDigitalSignature.html
     //
     byte[] inputXml = "<Envelope xmlns=\"urn:envelope\">\r\n</Envelope>\r\n".getBytes();
     // load the document that's going to be signed
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); 
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     dbf.setNamespaceAware(true);
-    DocumentBuilder builder = dbf.newDocumentBuilder();  
-    Document doc = builder.parse(new ByteArrayInputStream(inputXml)); 
-    
+    DocumentBuilder builder = dbf.newDocumentBuilder();
+    Document doc = builder.parse(new ByteArrayInputStream(inputXml));
+
     // create a key pair
     KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
     kpg.initialize(2048);
-    KeyPair kp = kpg.generateKeyPair(); 
-    
+    KeyPair kp = kpg.generateKeyPair();
+
     // sign the document
-    DOMSignContext dsc = new DOMSignContext(kp.getPrivate(), doc.getDocumentElement()); 
-    XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM"); 
-   
-    Reference ref = fac.newReference("", fac.newDigestMethod(DigestMethod.SHA1, null), Collections.singletonList(fac.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null)), null, null);
-    SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null), fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections.singletonList(ref));
-    
-    KeyInfoFactory kif = fac.getKeyInfoFactory(); 
+    DOMSignContext dsc = new DOMSignContext(kp.getPrivate(), doc.getDocumentElement());
+    XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
+
+    Reference ref = fac.newReference("", fac.newDigestMethod(DigestMethod.SHA1, null),
+        Collections.singletonList(fac.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null)), null, null);
+    SignedInfo si = fac.newSignedInfo(
+        fac.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null),
+        fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections.singletonList(ref));
+
+    KeyInfoFactory kif = fac.getKeyInfoFactory();
     KeyValue kv = kif.newKeyValue(kp.getPublic());
     KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
-    XMLSignature signature = fac.newXMLSignature(si, ki); 
+    XMLSignature signature = fac.newXMLSignature(si, ki);
     signature.sign(dsc);
-    
+
     OutputStream os = System.out;
     new XmlGenerator().generate(doc.getDocumentElement(), os);
   }

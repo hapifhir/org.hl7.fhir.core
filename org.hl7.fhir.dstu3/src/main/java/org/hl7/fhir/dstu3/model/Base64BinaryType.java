@@ -1,5 +1,14 @@
 package org.hl7.fhir.dstu3.model;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+import org.apache.commons.codec.binary.Base64;
+import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
+import org.hl7.fhir.instance.model.api.IPrimitiveType;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,14 +43,6 @@ package org.hl7.fhir.dstu3.model;
 import ca.uhn.fhir.model.api.IElement;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.parser.DataFormatException;
-import org.apache.commons.codec.binary.Base64;
-import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
-import org.hl7.fhir.instance.model.api.IPrimitiveType;
-
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 
 /**
  * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in base64

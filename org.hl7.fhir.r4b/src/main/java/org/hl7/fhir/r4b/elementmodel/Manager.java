@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.elementmodel;
   
  */
 
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -46,72 +44,80 @@ import org.hl7.fhir.r4b.model.StructureDefinition;
 
 public class Manager {
 
-  //TODO use EnumMap
-  public enum FhirFormat { XML, JSON, TURTLE, TEXT, VBAR, SHC; 
+  // TODO use EnumMap
+  public enum FhirFormat {
+    XML, JSON, TURTLE, TEXT, VBAR, SHC;
     // SHC = smart health cards, including as text versions of QR codes
 
     public String getExtension() {
       switch (this) {
-        case JSON:
-          return "json";
-        case TURTLE:
-          return "ttl";
-        case XML:
-          return "xml";
-        case TEXT:
-          return "txt";
-        case VBAR:
-          return "hl7";
-        case SHC:
-          return "shc";
+      case JSON:
+        return "json";
+      case TURTLE:
+        return "ttl";
+      case XML:
+        return "xml";
+      case TEXT:
+        return "txt";
+      case VBAR:
+        return "hl7";
+      case SHC:
+        return "shc";
       }
       return null;
     }
 
     public static FhirFormat getFhirFormat(String code) {
       switch (code) {
-        case "json":
-          return JSON;
-        case "ttl":
-          return TURTLE;
-        case "xml":
-          return XML;
-        case "txt":
-          return TEXT;
-        case "hl7":
-          return VBAR;
+      case "json":
+        return JSON;
+      case "ttl":
+        return TURTLE;
+      case "xml":
+        return XML;
+      case "txt":
+        return TEXT;
+      case "hl7":
+        return VBAR;
       }
       return null;
     }
 
-    
   }
-  
-  public static List<NamedElement> parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
+
+  public static List<NamedElement> parse(IWorkerContext context, InputStream source, FhirFormat inputFormat)
+      throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     return makeParser(context, inputFormat).parse(source);
   }
 
-  public static Element parseSingle(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
+  public static Element parseSingle(IWorkerContext context, InputStream source, FhirFormat inputFormat)
+      throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     return makeParser(context, inputFormat).parseSingle(source);
   }
-  
 
-  public static void compose(IWorkerContext context, Element e, OutputStream destination, FhirFormat outputFormat, OutputStyle style, String base) throws FHIRException, IOException {
+  public static void compose(IWorkerContext context, Element e, OutputStream destination, FhirFormat outputFormat,
+      OutputStyle style, String base) throws FHIRException, IOException {
     makeParser(context, outputFormat).compose(e, destination, style, base);
   }
 
   public static ParserBase makeParser(IWorkerContext context, FhirFormat format) {
     switch (format) {
-    case JSON : return new JsonParser(context);
-    case XML : return new XmlParser(context);
-    case TURTLE : return new TurtleParser(context);
-    case VBAR : return new VerticalBarParser(context);
-    case SHC : return new SHCParser(context);
-    case TEXT : throw new Error("Programming logic error: do not call makeParser for a text resource");
+    case JSON:
+      return new JsonParser(context);
+    case XML:
+      return new XmlParser(context);
+    case TURTLE:
+      return new TurtleParser(context);
+    case VBAR:
+      return new VerticalBarParser(context);
+    case SHC:
+      return new SHCParser(context);
+    case TEXT:
+      throw new Error("Programming logic error: do not call makeParser for a text resource");
     }
     return null;
   }
-  
+
   public static Element build(IWorkerContext context, StructureDefinition sd) {
     Property p = new Property(context, sd.getSnapshot().getElementFirstRep(), sd);
     Element e = new Element(null, p);

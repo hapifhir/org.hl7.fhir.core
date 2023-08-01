@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
-import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Annotation43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;

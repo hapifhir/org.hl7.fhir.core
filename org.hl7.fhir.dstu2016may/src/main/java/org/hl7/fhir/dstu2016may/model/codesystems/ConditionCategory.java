@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,99 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConditionCategory {
 
-        /**
-         * The patient considers the condition an issue to be addressed.
-         */
-        COMPLAINT, 
-        /**
-         * A symptom of a condition (as might be mentioned in a review of systems).
-         */
-        SYMPTOM, 
-        /**
-         * An observation made by a healthcare provider.
-         */
-        FINDING, 
-        /**
-         * This is a judgment made by a healthcare provider that the patient has a particular disease or condition.
-         */
-        DIAGNOSIS, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ConditionCategory fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("complaint".equals(codeString))
-          return COMPLAINT;
-        if ("symptom".equals(codeString))
-          return SYMPTOM;
-        if ("finding".equals(codeString))
-          return FINDING;
-        if ("diagnosis".equals(codeString))
-          return DIAGNOSIS;
-        throw new FHIRException("Unknown ConditionCategory code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case COMPLAINT: return "complaint";
-            case SYMPTOM: return "symptom";
-            case FINDING: return "finding";
-            case DIAGNOSIS: return "diagnosis";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/condition-category";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case COMPLAINT: return "The patient considers the condition an issue to be addressed.";
-            case SYMPTOM: return "A symptom of a condition (as might be mentioned in a review of systems).";
-            case FINDING: return "An observation made by a healthcare provider.";
-            case DIAGNOSIS: return "This is a judgment made by a healthcare provider that the patient has a particular disease or condition.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case COMPLAINT: return "Complaint";
-            case SYMPTOM: return "Symptom";
-            case FINDING: return "Finding";
-            case DIAGNOSIS: return "Diagnosis";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The patient considers the condition an issue to be addressed.
+   */
+  COMPLAINT,
+  /**
+   * A symptom of a condition (as might be mentioned in a review of systems).
+   */
+  SYMPTOM,
+  /**
+   * An observation made by a healthcare provider.
+   */
+  FINDING,
+  /**
+   * This is a judgment made by a healthcare provider that the patient has a
+   * particular disease or condition.
+   */
+  DIAGNOSIS,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ConditionCategory fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("complaint".equals(codeString))
+      return COMPLAINT;
+    if ("symptom".equals(codeString))
+      return SYMPTOM;
+    if ("finding".equals(codeString))
+      return FINDING;
+    if ("diagnosis".equals(codeString))
+      return DIAGNOSIS;
+    throw new FHIRException("Unknown ConditionCategory code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case COMPLAINT:
+      return "complaint";
+    case SYMPTOM:
+      return "symptom";
+    case FINDING:
+      return "finding";
+    case DIAGNOSIS:
+      return "diagnosis";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/condition-category";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case COMPLAINT:
+      return "The patient considers the condition an issue to be addressed.";
+    case SYMPTOM:
+      return "A symptom of a condition (as might be mentioned in a review of systems).";
+    case FINDING:
+      return "An observation made by a healthcare provider.";
+    case DIAGNOSIS:
+      return "This is a judgment made by a healthcare provider that the patient has a particular disease or condition.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case COMPLAINT:
+      return "Complaint";
+    case SYMPTOM:
+      return "Symptom";
+    case FINDING:
+      return "Finding";
+    case DIAGNOSIS:
+      return "Diagnosis";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }
