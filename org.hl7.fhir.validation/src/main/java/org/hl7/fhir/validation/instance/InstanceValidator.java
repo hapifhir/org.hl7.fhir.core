@@ -2038,36 +2038,45 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (en.contains("#")) {
           pu = en.substring(0, en.indexOf("#"));
           en = en.substring(en.indexOf("#")+1);          
+        } else {
+          //pu = en;
         }
         if (Utilities.existsInList(en, "Element", "Any")) {
           ok = true;
         } else if (en.equals("Resource") && container.isResource()) {
           ok = true;
+        } else if (en.equals("CanonicalResource") && VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(stack.getLiteralPath())) {
+          ok = true;
+        } else if (plist.contains(en) && pu == null) {
+          ok = true;
         }
-        if (checkConformsToProfile(appContext, errors, resource, container, stack, extUrl, ctxt.getExpression(), pu)) {
-          for (String p : plist) {
-            if (ok) {
-              break;
-            }
-            if (p.equals(en)) {
-              ok = true;
-            } else {
-              String pn = p;
-              String pt = "";
-              if (p.contains(".")) {
-                pn = p.substring(0, p.indexOf("."));
-                pt = p.substring(p.indexOf("."));
+        
+        if (!ok) {
+          if (checkConformsToProfile(appContext, errors, resource, container, stack, extUrl, ctxt.getExpression(), pu)) {
+            for (String p : plist) {
+              if (ok) {
+                break;
               }
-              StructureDefinition sd = context.fetchTypeDefinition(pn);
-              while (sd != null) {
-                if ((sd.getType() + pt).equals(en)) {
-                  ok = true;
-                  break;
+              if (p.equals(en)) {
+                ok = true;
+              } else {
+                String pn = p;
+                String pt = "";
+                if (p.contains(".")) {
+                  pn = p.substring(0, p.indexOf("."));
+                  pt = p.substring(p.indexOf("."));
                 }
-                if (sd.getBaseDefinition() != null) {
-                  sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
-                } else {
-                  sd = null;
+                StructureDefinition sd = context.fetchTypeDefinition(pn);
+                while (sd != null) {
+                  if ((sd.getType() + pt).equals(en)) {
+                    ok = true;
+                    break;
+                  }
+                  if (sd.getBaseDefinition() != null) {
+                    sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+                  } else {
+                    sd = null;
+                  }
                 }
               }
             }
