@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class DiscriminatorTypeEnumFactory implements EnumFactory<DiscriminatorType> {
@@ -52,7 +48,7 @@ public class DiscriminatorTypeEnumFactory implements EnumFactory<DiscriminatorTy
       return DiscriminatorType.TYPE;
     if ("profile".equals(codeString))
       return DiscriminatorType.PROFILE;
-    throw new IllegalArgumentException("Unknown DiscriminatorType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown DiscriminatorType code '" + codeString + "'");
   }
 
   public String toCode(DiscriminatorType code) {
@@ -69,8 +65,8 @@ public class DiscriminatorTypeEnumFactory implements EnumFactory<DiscriminatorTy
     return "?";
   }
 
-    public String toSystem(DiscriminatorType code) {
-      return code.getSystem();
-      }
+  public String toSystem(DiscriminatorType code) {
+    return code.getSystem();
+  }
 
 }

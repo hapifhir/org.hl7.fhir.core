@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ContractSecurityControlEnumFactory implements EnumFactory<ContractSecurityControl> {
@@ -44,7 +40,7 @@ public class ContractSecurityControlEnumFactory implements EnumFactory<ContractS
       return null;
     if ("policy".equals(codeString))
       return ContractSecurityControl.POLICY;
-    throw new IllegalArgumentException("Unknown ContractSecurityControl code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ContractSecurityControl code '" + codeString + "'");
   }
 
   public String toCode(ContractSecurityControl code) {
@@ -53,8 +49,8 @@ public class ContractSecurityControlEnumFactory implements EnumFactory<ContractS
     return "?";
   }
 
-    public String toSystem(ContractSecurityControl code) {
-      return code.getSystem();
-      }
+  public String toSystem(ContractSecurityControl code) {
+    return code.getSystem();
+  }
 
 }

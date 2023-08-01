@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,110 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum EpisodeofcareType {
 
-        /**
-         * null
-         */
-        HACC, 
-        /**
-         * null
-         */
-        PAC, 
-        /**
-         * null
-         */
-        DIAB, 
-        /**
-         * null
-         */
-        DA, 
-        /**
-         * null
-         */
-        CACP, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static EpisodeofcareType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("hacc".equals(codeString))
-          return HACC;
-        if ("pac".equals(codeString))
-          return PAC;
-        if ("diab".equals(codeString))
-          return DIAB;
-        if ("da".equals(codeString))
-          return DA;
-        if ("cacp".equals(codeString))
-          return CACP;
-        throw new FHIRException("Unknown EpisodeofcareType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case HACC: return "hacc";
-            case PAC: return "pac";
-            case DIAB: return "diab";
-            case DA: return "da";
-            case CACP: return "cacp";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/episodeofcare-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case HACC: return "";
-            case PAC: return "";
-            case DIAB: return "";
-            case DA: return "";
-            case CACP: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case HACC: return "Home and Community Care";
-            case PAC: return "Post Acute Care";
-            case DIAB: return "Post coordinated diabetes program";
-            case DA: return "Drug and alcohol rehabilitation";
-            case CACP: return "Community-based aged care";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  HACC,
+  /**
+   * null
+   */
+  PAC,
+  /**
+   * null
+   */
+  DIAB,
+  /**
+   * null
+   */
+  DA,
+  /**
+   * null
+   */
+  CACP,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static EpisodeofcareType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("hacc".equals(codeString))
+      return HACC;
+    if ("pac".equals(codeString))
+      return PAC;
+    if ("diab".equals(codeString))
+      return DIAB;
+    if ("da".equals(codeString))
+      return DA;
+    if ("cacp".equals(codeString))
+      return CACP;
+    throw new FHIRException("Unknown EpisodeofcareType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case HACC:
+      return "hacc";
+    case PAC:
+      return "pac";
+    case DIAB:
+      return "diab";
+    case DA:
+      return "da";
+    case CACP:
+      return "cacp";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/episodeofcare-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case HACC:
+      return "";
+    case PAC:
+      return "";
+    case DIAB:
+      return "";
+    case DA:
+      return "";
+    case CACP:
+      return "";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case HACC:
+      return "Home and Community Care";
+    case PAC:
+      return "Post Acute Care";
+    case DIAB:
+      return "Post coordinated diabetes program";
+    case DA:
+      return "Drug and alcohol rehabilitation";
+    case CACP:
+      return "Community-based aged care";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

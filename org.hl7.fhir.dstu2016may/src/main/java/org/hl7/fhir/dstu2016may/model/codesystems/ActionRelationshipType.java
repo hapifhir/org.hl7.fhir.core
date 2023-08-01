@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ActionRelationshipType {
 
-        /**
-         * The action must be performed before the related action
-         */
-        BEFORE, 
-        /**
-         * The action must be performed after the related action
-         */
-        AFTER, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ActionRelationshipType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("before".equals(codeString))
-          return BEFORE;
-        if ("after".equals(codeString))
-          return AFTER;
-        throw new FHIRException("Unknown ActionRelationshipType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case BEFORE: return "before";
-            case AFTER: return "after";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/action-relationship-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case BEFORE: return "The action must be performed before the related action";
-            case AFTER: return "The action must be performed after the related action";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case BEFORE: return "Before";
-            case AFTER: return "After";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The action must be performed before the related action
+   */
+  BEFORE,
+  /**
+   * The action must be performed after the related action
+   */
+  AFTER,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ActionRelationshipType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("before".equals(codeString))
+      return BEFORE;
+    if ("after".equals(codeString))
+      return AFTER;
+    throw new FHIRException("Unknown ActionRelationshipType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case BEFORE:
+      return "before";
+    case AFTER:
+      return "after";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/action-relationship-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case BEFORE:
+      return "The action must be performed before the related action";
+    case AFTER:
+      return "The action must be performed after the related action";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case BEFORE:
+      return "Before";
+    case AFTER:
+      return "After";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

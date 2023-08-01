@@ -29,8 +29,6 @@ package org.hl7.fhir.dstu2.utils;
   
  */
 
-
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -59,23 +57,24 @@ public class Translations {
   public void setLang(String lang) {
     this.lang = lang.split("[.;]");
   }
-  
+
   /**
    * Load from the XML translations file maintained by the FHIR project
    * 
    * @param filename
-   * @throws IOException 
-   * @throws SAXException 
-   * @throws FileNotFoundException 
-   * @throws ParserConfigurationException 
+   * @throws IOException
+   * @throws SAXException
+   * @throws FileNotFoundException
+   * @throws ParserConfigurationException
    * @throws Exception
    */
-  public void load(String filename) throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
+  public void load(String filename)
+      throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
     loadMessages(builder.parse(new CSFileInputStream(filename)));
   }
-  
+
   private void loadMessages(Document doc) {
     // TODO Auto-generated method stub
     Element element = XMLUtil.getFirstChild(doc.getDocumentElement());
@@ -92,8 +91,9 @@ public class Translations {
   /**
    * use configured language
    * 
-   * @param id - the id of the message to retrieve
-   * @param defaultMsg - string to use if the message is not defined or a language match is not found (if null, then will default to english)
+   * @param id         - the id of the message to retrieve
+   * @param defaultMsg - string to use if the message is not defined or a language
+   *                   match is not found (if null, then will default to english)
    * @return the message
    */
   public String getMessage(String id, String defaultMsg) {
@@ -103,9 +103,11 @@ public class Translations {
   /**
    * return the message in a specified language
    * 
-   * @param id - the id of the message to retrieve
-   * @param lang - a language string from a browser
-   * @param defaultMsg - string to use if the message is not defined or a language match is not found (if null, then will default to the english message)
+   * @param id         - the id of the message to retrieve
+   * @param lang       - a language string from a browser
+   * @param defaultMsg - string to use if the message is not defined or a language
+   *                   match is not found (if null, then will default to the
+   *                   english message)
    * @return the message
    */
   public String getMessage(String id, String lang, String defaultMsg) {
@@ -138,7 +140,7 @@ public class Translations {
     }
     return null;
   }
- 
+
   // http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
   public String getLangDesc(String s) {
     if (s.equals("en"))
@@ -151,6 +153,5 @@ public class Translations {
       return "\u0440\u0443\u0301\u0441\u0441\u043a\u0438\u0439 (Russian)";
     return "\"" + s + "\"";
   }
-
 
 }

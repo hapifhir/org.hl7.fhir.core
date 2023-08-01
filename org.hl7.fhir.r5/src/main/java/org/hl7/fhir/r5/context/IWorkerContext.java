@@ -321,10 +321,21 @@ public interface IWorkerContext {
     private Coding coding;
     private ValidationResult result;
     private CacheToken cacheToken;
+    private String vs;
 
     public CodingValidationRequest(Coding coding) {
       super();
       this.coding = coding;
+    }
+
+    public CodingValidationRequest(Coding coding, String vs) {
+      super();
+      this.coding = coding;
+      this.vs = vs;
+    }
+
+    public String getVs() {
+      return vs;
     }
 
     public ValidationResult getResult() {
@@ -826,6 +837,7 @@ public interface IWorkerContext {
    * @param vs
    */
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
+  public void validateCodeBatchByRef(ValidationOptions options, List<? extends CodingValidationRequest> codes, String vsUrl);
 
 
   // todo: figure these out

@@ -3,15 +3,13 @@ package org.hl7.fhir.convertors.misc;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import org.hl7.fhir.r4.formats.IParser.OutputStyle;
+import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r4.formats.IParser.OutputStyle;
-import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,88 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MedicationAdminCategory {
 
-        /**
-         * Includes administrations in an inpatient or acute care setting
-         */
-        INPATIENT, 
-        /**
-         * Includes administrations in an outpatient setting (for example, Emergency Department, Outpatient Clinic, Outpatient Surgery, Doctor's office)
-         */
-        OUTPATIENT, 
-        /**
-         * Includes administrations by the patient in their home (this would include long term care or nursing homes, hospices, etc.)
-         */
-        COMMUNITY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MedicationAdminCategory fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("inpatient".equals(codeString))
-          return INPATIENT;
-        if ("outpatient".equals(codeString))
-          return OUTPATIENT;
-        if ("community".equals(codeString))
-          return COMMUNITY;
-        throw new FHIRException("Unknown MedicationAdminCategory code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INPATIENT: return "inpatient";
-            case OUTPATIENT: return "outpatient";
-            case COMMUNITY: return "community";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/medication-admin-category";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INPATIENT: return "Includes administrations in an inpatient or acute care setting";
-            case OUTPATIENT: return "Includes administrations in an outpatient setting (for example, Emergency Department, Outpatient Clinic, Outpatient Surgery, Doctor's office)";
-            case COMMUNITY: return "Includes administrations by the patient in their home (this would include long term care or nursing homes, hospices, etc.)";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INPATIENT: return "Inpatient";
-            case OUTPATIENT: return "Outpatient";
-            case COMMUNITY: return "Community";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Includes administrations in an inpatient or acute care setting
+   */
+  INPATIENT,
+  /**
+   * Includes administrations in an outpatient setting (for example, Emergency
+   * Department, Outpatient Clinic, Outpatient Surgery, Doctor's office)
+   */
+  OUTPATIENT,
+  /**
+   * Includes administrations by the patient in their home (this would include
+   * long term care or nursing homes, hospices, etc.)
+   */
+  COMMUNITY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MedicationAdminCategory fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("inpatient".equals(codeString))
+      return INPATIENT;
+    if ("outpatient".equals(codeString))
+      return OUTPATIENT;
+    if ("community".equals(codeString))
+      return COMMUNITY;
+    throw new FHIRException("Unknown MedicationAdminCategory code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INPATIENT:
+      return "inpatient";
+    case OUTPATIENT:
+      return "outpatient";
+    case COMMUNITY:
+      return "community";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/medication-admin-category";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INPATIENT:
+      return "Includes administrations in an inpatient or acute care setting";
+    case OUTPATIENT:
+      return "Includes administrations in an outpatient setting (for example, Emergency Department, Outpatient Clinic, Outpatient Surgery, Doctor's office)";
+    case COMMUNITY:
+      return "Includes administrations by the patient in their home (this would include long term care or nursing homes, hospices, etc.)";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INPATIENT:
+      return "Inpatient";
+    case OUTPATIENT:
+      return "Outpatient";
+    case COMMUNITY:
+      return "Community";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

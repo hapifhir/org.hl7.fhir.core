@@ -29,7 +29,6 @@ package org.hl7.fhir.r4b.terminologies;
   
  */
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.model.*;
 import org.hl7.fhir.r4b.utils.client.network.ClientHeaders;
@@ -40,20 +39,36 @@ import java.util.Map;
 public interface TerminologyClient {
 
   String getAddress();
+
   String getServerVersion();
+
   TerminologyCapabilities getTerminologyCapabilities() throws FHIRException;
+
   ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException;
+
   Parameters validateCS(Parameters pin) throws FHIRException;
+
   Parameters validateVS(Parameters pin) throws FHIRException;
+
   TerminologyClient setTimeout(int i) throws FHIRException;
+
   TerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
+
   int getRetryCount() throws FHIRException;
+
   TerminologyClient setRetryCount(int retryCount) throws FHIRException;
+
   CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
+
   Parameters lookupCode(Map<String, String> params) throws FHIRException;
+
   Bundle validateBatch(Bundle batch);
+
   CanonicalResource read(String type, String id);
+
   ClientHeaders getClientHeaders();
+
   TerminologyClient setClientHeaders(ClientHeaders clientHeaders);
+
   TerminologyClient setUserAgent(String userAgent);
 }

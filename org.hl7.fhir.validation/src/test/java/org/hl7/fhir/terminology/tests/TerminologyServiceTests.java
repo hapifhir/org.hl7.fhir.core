@@ -22,23 +22,23 @@ import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.terminology.tests.TerminologyServiceTests.JsonObjectPair;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -47,7 +47,6 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.special.TxTesterScrubbers;
 import org.hl7.fhir.validation.special.TxTesterSorters;
-import org.hl7.fhir.validation.tests.ValidationEngineTests;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -122,6 +121,7 @@ public class TerminologyServiceTests {
     }
     ValidationEngine engine = new ValidationEngine(this.baseEngine);
     for (String s : setup.suite.forceArray("setup").asStrings()) {
+      // System.out.println(s);
       Resource res = loadResource(s);
       engine.seeResource(res);
     }
@@ -243,7 +243,13 @@ public class TerminologyServiceTests {
     }
     if (p.hasParameter("mode") && "lenient-display-validation".equals(p.getParameterString("mode"))) {
       options = options.setDisplayWarningMode(true);
-   }
+    }
+    engine.getContext().getExpansionParameters().clearParameters("includeAlternateCodes");
+    for (ParametersParameterComponent pp : p.getParameter()) {
+      if ("includeAlternateCodes".equals(pp.getName())) {
+        engine.getContext().getExpansionParameters().addParameter(pp.copy());
+      }
+    }
     ValidationResult vm;
     if (p.hasParameter("code")) {
       vm = engine.getContext().validateCode(options.withGuessSystem(), p.getParameterString("system"), p.getParameterString("systemVersion"), p.getParameterString("code"), p.getParameterString("display"), vs);
@@ -282,7 +288,7 @@ public class TerminologyServiceTests {
     }
     if (vm.getUnknownSystems() != null) {
       for (String s : vm.getUnknownSystems()) {
-        res.addParameter("x-caused-by-unknown-system", new UriType(s));
+        res.addParameter("x-caused-by-unknown-system", new CanonicalType(s));
       }
     }
     if (vm.getIssues().size() > 0) {

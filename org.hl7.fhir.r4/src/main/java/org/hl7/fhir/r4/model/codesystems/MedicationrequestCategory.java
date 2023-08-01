@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,104 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MedicationrequestCategory {
 
-        /**
-         * Includes requests for medications to be administered or consumed in an inpatient or acute care setting
-         */
-        INPATIENT, 
-        /**
-         * Includes requests for medications to be administered or consumed in an outpatient setting (for example, Emergency Department, Outpatient Clinic, Outpatient Surgery, Doctor's office)
-         */
-        OUTPATIENT, 
-        /**
-         * Includes requests for medications to be administered or consumed by the patient in their home (this would include long term care or nursing homes, hospices, etc.)
-         */
-        COMMUNITY, 
-        /**
-         * Includes requests for medications created when the patient is being released from a facility
-         */
-        DISCHARGE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MedicationrequestCategory fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("inpatient".equals(codeString))
-          return INPATIENT;
-        if ("outpatient".equals(codeString))
-          return OUTPATIENT;
-        if ("community".equals(codeString))
-          return COMMUNITY;
-        if ("discharge".equals(codeString))
-          return DISCHARGE;
-        throw new FHIRException("Unknown MedicationrequestCategory code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INPATIENT: return "inpatient";
-            case OUTPATIENT: return "outpatient";
-            case COMMUNITY: return "community";
-            case DISCHARGE: return "discharge";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/medicationrequest-category";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INPATIENT: return "Includes requests for medications to be administered or consumed in an inpatient or acute care setting";
-            case OUTPATIENT: return "Includes requests for medications to be administered or consumed in an outpatient setting (for example, Emergency Department, Outpatient Clinic, Outpatient Surgery, Doctor's office)";
-            case COMMUNITY: return "Includes requests for medications to be administered or consumed by the patient in their home (this would include long term care or nursing homes, hospices, etc.)";
-            case DISCHARGE: return "Includes requests for medications created when the patient is being released from a facility";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INPATIENT: return "Inpatient";
-            case OUTPATIENT: return "Outpatient";
-            case COMMUNITY: return "Community";
-            case DISCHARGE: return "Discharge";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Includes requests for medications to be administered or consumed in an
+   * inpatient or acute care setting
+   */
+  INPATIENT,
+  /**
+   * Includes requests for medications to be administered or consumed in an
+   * outpatient setting (for example, Emergency Department, Outpatient Clinic,
+   * Outpatient Surgery, Doctor's office)
+   */
+  OUTPATIENT,
+  /**
+   * Includes requests for medications to be administered or consumed by the
+   * patient in their home (this would include long term care or nursing homes,
+   * hospices, etc.)
+   */
+  COMMUNITY,
+  /**
+   * Includes requests for medications created when the patient is being released
+   * from a facility
+   */
+  DISCHARGE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MedicationrequestCategory fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("inpatient".equals(codeString))
+      return INPATIENT;
+    if ("outpatient".equals(codeString))
+      return OUTPATIENT;
+    if ("community".equals(codeString))
+      return COMMUNITY;
+    if ("discharge".equals(codeString))
+      return DISCHARGE;
+    throw new FHIRException("Unknown MedicationrequestCategory code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INPATIENT:
+      return "inpatient";
+    case OUTPATIENT:
+      return "outpatient";
+    case COMMUNITY:
+      return "community";
+    case DISCHARGE:
+      return "discharge";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/medicationrequest-category";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INPATIENT:
+      return "Includes requests for medications to be administered or consumed in an inpatient or acute care setting";
+    case OUTPATIENT:
+      return "Includes requests for medications to be administered or consumed in an outpatient setting (for example, Emergency Department, Outpatient Clinic, Outpatient Surgery, Doctor's office)";
+    case COMMUNITY:
+      return "Includes requests for medications to be administered or consumed by the patient in their home (this would include long term care or nursing homes, hospices, etc.)";
+    case DISCHARGE:
+      return "Includes requests for medications created when the patient is being released from a facility";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INPATIENT:
+      return "Inpatient";
+    case OUTPATIENT:
+      return "Outpatient";
+    case COMMUNITY:
+      return "Community";
+    case DISCHARGE:
+      return "Discharge";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

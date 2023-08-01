@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,122 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProcedureProgressStatusCodes {
 
-        /**
-         * A patient is in the Operating Room.
-         */
-        INOPERATINGROOM, 
-        /**
-         * The patient is prepared for a procedure.
-         */
-        PREPARED, 
-        /**
-         * The patient is under anesthesia.
-         */
-        ANESTHESIAINDUCED, 
-        /**
-         * The patient has open incision(s).
-         */
-        OPENINCISION, 
-        /**
-         * The patient has incision(s) closed.
-         */
-        CLOSEDINCISION, 
-        /**
-         * The patient is in the recovery room.
-         */
-        INRECOVERYROOM, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ProcedureProgressStatusCodes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("in-operating-room".equals(codeString))
-          return INOPERATINGROOM;
-        if ("prepared".equals(codeString))
-          return PREPARED;
-        if ("anesthesia-induced".equals(codeString))
-          return ANESTHESIAINDUCED;
-        if ("open-incision".equals(codeString))
-          return OPENINCISION;
-        if ("closed-incision".equals(codeString))
-          return CLOSEDINCISION;
-        if ("in-recovery-room".equals(codeString))
-          return INRECOVERYROOM;
-        throw new FHIRException("Unknown ProcedureProgressStatusCodes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INOPERATINGROOM: return "in-operating-room";
-            case PREPARED: return "prepared";
-            case ANESTHESIAINDUCED: return "anesthesia-induced";
-            case OPENINCISION: return "open-incision";
-            case CLOSEDINCISION: return "closed-incision";
-            case INRECOVERYROOM: return "in-recovery-room";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/procedure-progress-status-code";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INOPERATINGROOM: return "A patient is in the Operating Room.";
-            case PREPARED: return "The patient is prepared for a procedure.";
-            case ANESTHESIAINDUCED: return "The patient is under anesthesia.";
-            case OPENINCISION: return "The patient has open incision(s).";
-            case CLOSEDINCISION: return "The patient has incision(s) closed.";
-            case INRECOVERYROOM: return "The patient is in the recovery room.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INOPERATINGROOM: return "In Operating Room";
-            case PREPARED: return "Prepared";
-            case ANESTHESIAINDUCED: return "Anesthesia Induced";
-            case OPENINCISION: return "Open Incision";
-            case CLOSEDINCISION: return "Closed Incision";
-            case INRECOVERYROOM: return "In Recovery Room";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * A patient is in the Operating Room.
+   */
+  INOPERATINGROOM,
+  /**
+   * The patient is prepared for a procedure.
+   */
+  PREPARED,
+  /**
+   * The patient is under anesthesia.
+   */
+  ANESTHESIAINDUCED,
+  /**
+   * The patient has open incision(s).
+   */
+  OPENINCISION,
+  /**
+   * The patient has incision(s) closed.
+   */
+  CLOSEDINCISION,
+  /**
+   * The patient is in the recovery room.
+   */
+  INRECOVERYROOM,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ProcedureProgressStatusCodes fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("in-operating-room".equals(codeString))
+      return INOPERATINGROOM;
+    if ("prepared".equals(codeString))
+      return PREPARED;
+    if ("anesthesia-induced".equals(codeString))
+      return ANESTHESIAINDUCED;
+    if ("open-incision".equals(codeString))
+      return OPENINCISION;
+    if ("closed-incision".equals(codeString))
+      return CLOSEDINCISION;
+    if ("in-recovery-room".equals(codeString))
+      return INRECOVERYROOM;
+    throw new FHIRException("Unknown ProcedureProgressStatusCodes code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INOPERATINGROOM:
+      return "in-operating-room";
+    case PREPARED:
+      return "prepared";
+    case ANESTHESIAINDUCED:
+      return "anesthesia-induced";
+    case OPENINCISION:
+      return "open-incision";
+    case CLOSEDINCISION:
+      return "closed-incision";
+    case INRECOVERYROOM:
+      return "in-recovery-room";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/procedure-progress-status-code";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INOPERATINGROOM:
+      return "A patient is in the Operating Room.";
+    case PREPARED:
+      return "The patient is prepared for a procedure.";
+    case ANESTHESIAINDUCED:
+      return "The patient is under anesthesia.";
+    case OPENINCISION:
+      return "The patient has open incision(s).";
+    case CLOSEDINCISION:
+      return "The patient has incision(s) closed.";
+    case INRECOVERYROOM:
+      return "The patient is in the recovery room.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INOPERATINGROOM:
+      return "In Operating Room";
+    case PREPARED:
+      return "Prepared";
+    case ANESTHESIAINDUCED:
+      return "Anesthesia Induced";
+    case OPENINCISION:
+      return "Open Incision";
+    case CLOSEDINCISION:
+      return "Closed Incision";
+    case INRECOVERYROOM:
+      return "In Recovery Room";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

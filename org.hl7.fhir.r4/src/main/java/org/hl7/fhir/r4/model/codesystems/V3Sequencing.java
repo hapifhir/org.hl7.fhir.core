@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3Sequencing {
 
-        /**
-         * Ascending sequence order.
-         */
-        A, 
-        /**
-         * Descending sequence order.
-         */
-        D, 
-        /**
-         * No enforced sequence order.
-         */
-        N, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static V3Sequencing fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("A".equals(codeString))
-          return A;
-        if ("D".equals(codeString))
-          return D;
-        if ("N".equals(codeString))
-          return N;
-        throw new FHIRException("Unknown V3Sequencing code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case A: return "A";
-            case D: return "D";
-            case N: return "N";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/v3-Sequencing";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case A: return "Ascending sequence order.";
-            case D: return "Descending sequence order.";
-            case N: return "No enforced sequence order.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case A: return "Ascending";
-            case D: return "Descending";
-            case N: return "None";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Ascending sequence order.
+   */
+  A,
+  /**
+   * Descending sequence order.
+   */
+  D,
+  /**
+   * No enforced sequence order.
+   */
+  N,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static V3Sequencing fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("A".equals(codeString))
+      return A;
+    if ("D".equals(codeString))
+      return D;
+    if ("N".equals(codeString))
+      return N;
+    throw new FHIRException("Unknown V3Sequencing code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case A:
+      return "A";
+    case D:
+      return "D";
+    case N:
+      return "N";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/v3-Sequencing";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case A:
+      return "Ascending sequence order.";
+    case D:
+      return "Descending sequence order.";
+    case N:
+      return "No enforced sequence order.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case A:
+      return "Ascending";
+    case D:
+      return "Descending";
+    case N:
+      return "None";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

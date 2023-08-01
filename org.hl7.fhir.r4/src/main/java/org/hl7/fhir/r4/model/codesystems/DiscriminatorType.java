@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,115 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum DiscriminatorType {
 
-        /**
-         * The slices have different values in the nominated element.
-         */
-        VALUE, 
-        /**
-         * The slices are differentiated by the presence or absence of the nominated element.
-         */
-        EXISTS, 
-        /**
-         * The slices have different values in the nominated element, as determined by testing them against the applicable ElementDefinition.pattern[x].
-         */
-        PATTERN, 
-        /**
-         * The slices are differentiated by type of the nominated element.
-         */
-        TYPE, 
-        /**
-         * The slices are differentiated by conformance of the nominated element to a specified profile. Note that if the path specifies .resolve() then the profile is the target profile on the reference. In this case, validation by the possible profiles is required to differentiate the slices.
-         */
-        PROFILE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static DiscriminatorType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("value".equals(codeString))
-          return VALUE;
-        if ("exists".equals(codeString))
-          return EXISTS;
-        if ("pattern".equals(codeString))
-          return PATTERN;
-        if ("type".equals(codeString))
-          return TYPE;
-        if ("profile".equals(codeString))
-          return PROFILE;
-        throw new FHIRException("Unknown DiscriminatorType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case VALUE: return "value";
-            case EXISTS: return "exists";
-            case PATTERN: return "pattern";
-            case TYPE: return "type";
-            case PROFILE: return "profile";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/discriminator-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case VALUE: return "The slices have different values in the nominated element.";
-            case EXISTS: return "The slices are differentiated by the presence or absence of the nominated element.";
-            case PATTERN: return "The slices have different values in the nominated element, as determined by testing them against the applicable ElementDefinition.pattern[x].";
-            case TYPE: return "The slices are differentiated by type of the nominated element.";
-            case PROFILE: return "The slices are differentiated by conformance of the nominated element to a specified profile. Note that if the path specifies .resolve() then the profile is the target profile on the reference. In this case, validation by the possible profiles is required to differentiate the slices.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case VALUE: return "Value";
-            case EXISTS: return "Exists";
-            case PATTERN: return "Pattern";
-            case TYPE: return "Type";
-            case PROFILE: return "Profile";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The slices have different values in the nominated element.
+   */
+  VALUE,
+  /**
+   * The slices are differentiated by the presence or absence of the nominated
+   * element.
+   */
+  EXISTS,
+  /**
+   * The slices have different values in the nominated element, as determined by
+   * testing them against the applicable ElementDefinition.pattern[x].
+   */
+  PATTERN,
+  /**
+   * The slices are differentiated by type of the nominated element.
+   */
+  TYPE,
+  /**
+   * The slices are differentiated by conformance of the nominated element to a
+   * specified profile. Note that if the path specifies .resolve() then the
+   * profile is the target profile on the reference. In this case, validation by
+   * the possible profiles is required to differentiate the slices.
+   */
+  PROFILE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static DiscriminatorType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("value".equals(codeString))
+      return VALUE;
+    if ("exists".equals(codeString))
+      return EXISTS;
+    if ("pattern".equals(codeString))
+      return PATTERN;
+    if ("type".equals(codeString))
+      return TYPE;
+    if ("profile".equals(codeString))
+      return PROFILE;
+    throw new FHIRException("Unknown DiscriminatorType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case VALUE:
+      return "value";
+    case EXISTS:
+      return "exists";
+    case PATTERN:
+      return "pattern";
+    case TYPE:
+      return "type";
+    case PROFILE:
+      return "profile";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/discriminator-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case VALUE:
+      return "The slices have different values in the nominated element.";
+    case EXISTS:
+      return "The slices are differentiated by the presence or absence of the nominated element.";
+    case PATTERN:
+      return "The slices have different values in the nominated element, as determined by testing them against the applicable ElementDefinition.pattern[x].";
+    case TYPE:
+      return "The slices are differentiated by type of the nominated element.";
+    case PROFILE:
+      return "The slices are differentiated by conformance of the nominated element to a specified profile. Note that if the path specifies .resolve() then the profile is the target profile on the reference. In this case, validation by the possible profiles is required to differentiate the slices.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case VALUE:
+      return "Value";
+    case EXISTS:
+      return "Exists";
+    case PATTERN:
+      return "Pattern";
+    case TYPE:
+      return "Type";
+    case PROFILE:
+      return "Profile";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

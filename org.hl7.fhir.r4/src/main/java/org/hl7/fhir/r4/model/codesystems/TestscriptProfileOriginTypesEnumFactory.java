@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class TestscriptProfileOriginTypesEnumFactory implements EnumFactory<TestscriptProfileOriginTypes> {
@@ -46,7 +42,7 @@ public class TestscriptProfileOriginTypesEnumFactory implements EnumFactory<Test
       return TestscriptProfileOriginTypes.FHIRCLIENT;
     if ("FHIR-SDC-FormFiller".equals(codeString))
       return TestscriptProfileOriginTypes.FHIRSDCFORMFILLER;
-    throw new IllegalArgumentException("Unknown TestscriptProfileOriginTypes code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown TestscriptProfileOriginTypes code '" + codeString + "'");
   }
 
   public String toCode(TestscriptProfileOriginTypes code) {
@@ -57,8 +53,8 @@ public class TestscriptProfileOriginTypesEnumFactory implements EnumFactory<Test
     return "?";
   }
 
-    public String toSystem(TestscriptProfileOriginTypes code) {
-      return code.getSystem();
-      }
+  public String toSystem(TestscriptProfileOriginTypes code) {
+    return code.getSystem();
+  }
 
 }

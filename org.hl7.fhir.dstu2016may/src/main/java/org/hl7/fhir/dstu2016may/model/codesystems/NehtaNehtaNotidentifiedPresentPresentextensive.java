@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaNotidentifiedPresentPresentextensive {
 
-        /**
-         * Indicates whether value was not identified
-         */
-        NOTIDENTIFIED, 
-        /**
-         * Indicates whether invasion was presetn and extensive
-         */
-        PRESENTANDEXTENSIVE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static NehtaNehtaNotidentifiedPresentPresentextensive fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("not_identified".equals(codeString))
-          return NOTIDENTIFIED;
-        if ("present_and_extensive".equals(codeString))
-          return PRESENTANDEXTENSIVE;
-        throw new FHIRException("Unknown NehtaNehtaNotidentifiedPresentPresentextensive code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NOTIDENTIFIED: return "not_identified";
-            case PRESENTANDEXTENSIVE: return "present_and_extensive";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/nehta-notidentified-present-presentextensive";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NOTIDENTIFIED: return "Indicates whether value was not identified";
-            case PRESENTANDEXTENSIVE: return "Indicates whether invasion was presetn and extensive";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NOTIDENTIFIED: return "Not identified";
-            case PRESENTANDEXTENSIVE: return "Present and extensive";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Indicates whether value was not identified
+   */
+  NOTIDENTIFIED,
+  /**
+   * Indicates whether invasion was presetn and extensive
+   */
+  PRESENTANDEXTENSIVE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static NehtaNehtaNotidentifiedPresentPresentextensive fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("not_identified".equals(codeString))
+      return NOTIDENTIFIED;
+    if ("present_and_extensive".equals(codeString))
+      return PRESENTANDEXTENSIVE;
+    throw new FHIRException("Unknown NehtaNehtaNotidentifiedPresentPresentextensive code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case NOTIDENTIFIED:
+      return "not_identified";
+    case PRESENTANDEXTENSIVE:
+      return "present_and_extensive";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/nehta-notidentified-present-presentextensive";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case NOTIDENTIFIED:
+      return "Indicates whether value was not identified";
+    case PRESENTANDEXTENSIVE:
+      return "Indicates whether invasion was presetn and extensive";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case NOTIDENTIFIED:
+      return "Not identified";
+    case PRESENTANDEXTENSIVE:
+      return "Present and extensive";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

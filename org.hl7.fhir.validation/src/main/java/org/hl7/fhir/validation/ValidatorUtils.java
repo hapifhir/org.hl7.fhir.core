@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +22,6 @@ import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R5ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R6ToR5Loader;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.renderers.RendererFactory;

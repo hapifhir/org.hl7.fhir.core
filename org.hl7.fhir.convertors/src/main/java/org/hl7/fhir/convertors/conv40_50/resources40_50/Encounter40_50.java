@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Duration40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.PositiveInt40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;

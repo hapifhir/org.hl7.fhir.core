@@ -1,25 +1,45 @@
 package org.hl7.fhir.validation;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
-import org.hl7.fhir.validation.cli.tasks.*;
+import org.hl7.fhir.validation.cli.tasks.CliTask;
+import org.hl7.fhir.validation.cli.tasks.CompareTask;
+import org.hl7.fhir.validation.cli.tasks.CompileTask;
+import org.hl7.fhir.validation.cli.tasks.ConvertTask;
+import org.hl7.fhir.validation.cli.tasks.FhirpathTask;
+import org.hl7.fhir.validation.cli.tasks.InstallTask;
+import org.hl7.fhir.validation.cli.tasks.LangTransformTask;
+import org.hl7.fhir.validation.cli.tasks.NarrativeTask;
+import org.hl7.fhir.validation.cli.tasks.ScanTask;
+import org.hl7.fhir.validation.cli.tasks.SnapshotTask;
+import org.hl7.fhir.validation.cli.tasks.SpecialTask;
+import org.hl7.fhir.validation.cli.tasks.SpreadsheetTask;
+import org.hl7.fhir.validation.cli.tasks.TestsTask;
+import org.hl7.fhir.validation.cli.tasks.TransformTask;
+import org.hl7.fhir.validation.cli.tasks.TxTestsTask;
+import org.hl7.fhir.validation.cli.tasks.ValidateTask;
+import org.hl7.fhir.validation.cli.tasks.VersionTask;
 import org.hl7.fhir.validation.cli.utils.Params;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ValidatorCliTests {

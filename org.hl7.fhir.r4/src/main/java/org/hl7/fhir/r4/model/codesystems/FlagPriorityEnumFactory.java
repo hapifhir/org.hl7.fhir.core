@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class FlagPriorityEnumFactory implements EnumFactory<FlagPriority> {
@@ -50,7 +46,7 @@ public class FlagPriorityEnumFactory implements EnumFactory<FlagPriority> {
       return FlagPriority.PM;
     if ("PH".equals(codeString))
       return FlagPriority.PH;
-    throw new IllegalArgumentException("Unknown FlagPriority code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown FlagPriority code '" + codeString + "'");
   }
 
   public String toCode(FlagPriority code) {
@@ -65,8 +61,8 @@ public class FlagPriorityEnumFactory implements EnumFactory<FlagPriority> {
     return "?";
   }
 
-    public String toSystem(FlagPriority code) {
-      return code.getSystem();
-      }
+  public String toSystem(FlagPriority code) {
+    return code.getSystem();
+  }
 
 }

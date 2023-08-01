@@ -29,8 +29,6 @@ package org.hl7.fhir.r4.terminologies;
   
  */
 
-
-
 import java.net.URISyntaxException;
 import java.util.Map;
 
@@ -45,7 +43,7 @@ import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 public class TerminologyClientR4 implements TerminologyClient {
 
   private FHIRToolingClient client;
-  
+
   public TerminologyClientR4(String address, String userAgent) throws URISyntaxException {
     client = new FHIRToolingClient(address, userAgent);
   }
@@ -77,7 +75,7 @@ public class TerminologyClientR4 implements TerminologyClient {
 
   @Override
   public void setTimeout(int i) {
-    client.setTimeout(i);    
+    client.setTimeout(i);
   }
 
   @Override

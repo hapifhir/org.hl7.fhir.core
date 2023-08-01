@@ -30,7 +30,6 @@ package org.hl7.fhir.r4b.test.misc;
 
 import java.io.File;
 
-
 public class SingleTest {
 
   /**

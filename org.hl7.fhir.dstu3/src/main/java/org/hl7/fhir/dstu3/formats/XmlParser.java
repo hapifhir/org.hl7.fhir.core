@@ -2,8 +2,6 @@ package org.hl7.fhir.dstu3.formats;
 
 import java.io.IOException;
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.

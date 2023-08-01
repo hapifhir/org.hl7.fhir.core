@@ -1,13 +1,12 @@
 package org.hl7.fhir.validation.cli.tasks;
 
+import java.io.PrintStream;
+
+import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.utils.Params;
 import org.hl7.fhir.validation.special.TxTester;
-import org.hl7.fhir.validation.testexecutor.TestExecutor;
-import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
-
-import java.io.PrintStream;
 
 public class TxTestsTask extends StandaloneTask{
   @Override
@@ -43,6 +42,7 @@ public class TxTestsTask extends StandaloneTask{
       final String tx = Params.getParam(args, Params.TERMINOLOGY);
       final String filter = Params.getParam(args, Params.FILTER);
       boolean ok = new TxTester(new TxTester.InternalTxLoader(source, output), tx, false).setOutput(output).execute(version, filter);
-      System.exit(ok ? 1 : 0);
+      SystemExitManager.setError(ok ? 1 : 0);
+      SystemExitManager.finish();
   }
 }

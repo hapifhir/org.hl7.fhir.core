@@ -29,8 +29,6 @@ package org.hl7.fhir.r4.model;
   
  */
 
-
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -45,154 +43,155 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 @DatatypeDef(name = "decimal")
 public class DecimalType extends PrimitiveType<BigDecimal> implements Comparable<DecimalType>, IBaseDecimalDatatype {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	/**
-	 * Constructor
-	 */
-	public DecimalType() {
-		super();
-	}
+  /**
+   * Constructor
+   */
+  public DecimalType() {
+    super();
+  }
 
-	/**
-	 * Constructor
-	 */
-	public DecimalType(BigDecimal theValue) {
-		setValue(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public DecimalType(BigDecimal theValue) {
+    setValue(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	public DecimalType(double theValue) {
-		// Use the valueOf here because the constructor gives wacky precision
-		// changes due to the floating point conversion
-		setValue(BigDecimal.valueOf(theValue));
-	}
+  /**
+   * Constructor
+   */
+  public DecimalType(double theValue) {
+    // Use the valueOf here because the constructor gives wacky precision
+    // changes due to the floating point conversion
+    setValue(BigDecimal.valueOf(theValue));
+  }
 
-	/**
-	 * Constructor
-	 */
-	public DecimalType(long theValue) {
-		setValue(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public DecimalType(long theValue) {
+    setValue(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	public DecimalType(String theValue) {
-		setValueAsString(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public DecimalType(String theValue) {
+    setValueAsString(theValue);
+  }
 
-	@Override
-	public int compareTo(DecimalType theObj) {
-		if (getValue() == null && theObj.getValue() == null) {
-			return 0;
-		}
-		if (getValue() != null && theObj.getValue() == null) {
-			return 1;
-		}
-		if (getValue() == null && theObj.getValue() != null) {
-			return -1;
-		}
-		return getValue().compareTo(theObj.getValue());
-	}
+  @Override
+  public int compareTo(DecimalType theObj) {
+    if (getValue() == null && theObj.getValue() == null) {
+      return 0;
+    }
+    if (getValue() != null && theObj.getValue() == null) {
+      return 1;
+    }
+    if (getValue() == null && theObj.getValue() != null) {
+      return -1;
+    }
+    return getValue().compareTo(theObj.getValue());
+  }
 
-	@Override
-	protected String encode(BigDecimal theValue) {
-		return getValue().toString();
-	}
+  @Override
+  protected String encode(BigDecimal theValue) {
+    return getValue().toString();
+  }
 
-	/**
-	 * Gets the value as an integer, using {@link BigDecimal#intValue()}
-	 */
-	public int getValueAsInteger() {
-		return getValue().intValue();
-	}
+  /**
+   * Gets the value as an integer, using {@link BigDecimal#intValue()}
+   */
+  public int getValueAsInteger() {
+    return getValue().intValue();
+  }
 
-	public Number getValueAsNumber() {
-		return getValue();
-	}
+  public Number getValueAsNumber() {
+    return getValue();
+  }
 
-	@Override
-	protected BigDecimal parse(String theValue) {
-		return new BigDecimal(theValue);
-	}
+  @Override
+  protected BigDecimal parse(String theValue) {
+    return new BigDecimal(theValue);
+  }
 
-	/**
-	 * Rounds the value to the given prevision
-	 * 
-	 * @see MathContext#getPrecision()
-	 */
-	public void round(int thePrecision) {
-		if (getValue() != null) {
-			BigDecimal newValue = getValue().round(new MathContext(thePrecision));
-			setValue(newValue);
-		}
-	}
+  /**
+   * Rounds the value to the given prevision
+   * 
+   * @see MathContext#getPrecision()
+   */
+  public void round(int thePrecision) {
+    if (getValue() != null) {
+      BigDecimal newValue = getValue().round(new MathContext(thePrecision));
+      setValue(newValue);
+    }
+  }
 
-	/**
-	 * Rounds the value to the given prevision
-	 * 
-	 * @see MathContext#getPrecision()
-	 * @see MathContext#getRoundingMode()
-	 */
-	public void round(int thePrecision, RoundingMode theRoundingMode) {
-		if (getValue() != null) {
-			BigDecimal newValue = getValue().round(new MathContext(thePrecision, theRoundingMode));
-			setValue(newValue);
-		}
-	}
+  /**
+   * Rounds the value to the given prevision
+   * 
+   * @see MathContext#getPrecision()
+   * @see MathContext#getRoundingMode()
+   */
+  public void round(int thePrecision, RoundingMode theRoundingMode) {
+    if (getValue() != null) {
+      BigDecimal newValue = getValue().round(new MathContext(thePrecision, theRoundingMode));
+      setValue(newValue);
+    }
+  }
 
-	/**
-	 * Sets a new value using an integer
-	 */
-	public void setValueAsInteger(int theValue) {
-		setValue(BigDecimal.valueOf(theValue));
-	}
+  /**
+   * Sets a new value using an integer
+   */
+  public void setValueAsInteger(int theValue) {
+    setValue(BigDecimal.valueOf(theValue));
+  }
 
   public void setValueAsString(String theString) {
     setValue(new BigDecimal(theString));
     setRepresentation(theString);
   }
 
-	/**
-	 * Sets a new value using a long
-	 */
-	public void setValue(long theValue) {
-		setValue(BigDecimal.valueOf(theValue));
-	}
+  /**
+   * Sets a new value using a long
+   */
+  public void setValue(long theValue) {
+    setValue(BigDecimal.valueOf(theValue));
+  }
 
-	/**
-	 * Sets a new value using a double
-	 */
-	public void setValue(double theValue) {
-		setValue(BigDecimal.valueOf(theValue));
-	}
+  /**
+   * Sets a new value using a double
+   */
+  public void setValue(double theValue) {
+    setValue(BigDecimal.valueOf(theValue));
+  }
 
-	@Override
-	public DecimalType copy() {
-		DecimalType ret = new DecimalType(getValue());
+  @Override
+  public DecimalType copy() {
+    DecimalType ret = new DecimalType(getValue());
     copyValues(ret);
     return ret;
-	}
+  }
 
-	public String fhirType() {
-		return "decimal";		
-	}
+  public String fhirType() {
+    return "decimal";
+  }
 
-	/**
-	 * A parser can provide a literal representation for the decimal value that preserves
-	 * the presented form.
-	 * 
-	 * All sorts of bad things can happen if this method is used to set the string representation
-	 * to anything other than what was parsed into the actual value. Don't do that
-	 * 
-	 * @param value
-	 * @return
-	 */
-	public DecimalType setRepresentation(String value) {
-	  forceStringValue(value);
-	  return this;
-	}
+  /**
+   * A parser can provide a literal representation for the decimal value that
+   * preserves the presented form.
+   * 
+   * All sorts of bad things can happen if this method is used to set the string
+   * representation to anything other than what was parsed into the actual value.
+   * Don't do that
+   * 
+   * @param value
+   * @return
+   */
+  public DecimalType setRepresentation(String value) {
+    forceStringValue(value);
+    return this;
+  }
 }

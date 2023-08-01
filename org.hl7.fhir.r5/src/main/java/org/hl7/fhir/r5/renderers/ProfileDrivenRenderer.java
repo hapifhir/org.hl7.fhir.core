@@ -485,8 +485,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof Resource) {
       return;
     } else if (e instanceof DataRequirement) {
-      DataRequirement p = (DataRequirement) e;
+      DataRequirement p  = (DataRequirement) e;
       renderDataRequirement(x, p);
+    } else if (e instanceof UsageContext) {
+      UsageContext p  = (UsageContext) e;
+      renderUsageContext(x, p);
     } else if (e instanceof PrimitiveType) {
       x.tx(((PrimitiveType) e).primitiveValue());
     } else if (e instanceof ElementDefinition) {

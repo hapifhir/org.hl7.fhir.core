@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3AcknowledgementConditionEnumFactory implements EnumFactory<V3AcknowledgementCondition> {
@@ -50,7 +46,7 @@ public class V3AcknowledgementConditionEnumFactory implements EnumFactory<V3Ackn
       return V3AcknowledgementCondition.NE;
     if ("SU".equals(codeString))
       return V3AcknowledgementCondition.SU;
-    throw new IllegalArgumentException("Unknown V3AcknowledgementCondition code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3AcknowledgementCondition code '" + codeString + "'");
   }
 
   public String toCode(V3AcknowledgementCondition code) {
@@ -65,8 +61,8 @@ public class V3AcknowledgementConditionEnumFactory implements EnumFactory<V3Ackn
     return "?";
   }
 
-    public String toSystem(V3AcknowledgementCondition code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3AcknowledgementCondition code) {
+    return code.getSystem();
+  }
 
 }

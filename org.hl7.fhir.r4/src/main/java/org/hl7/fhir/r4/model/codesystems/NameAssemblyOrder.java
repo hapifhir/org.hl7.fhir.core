@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NameAssemblyOrder {
 
-        /**
-         * null
-         */
-        NL1, 
-        /**
-         * null
-         */
-        NL2, 
-        /**
-         * null
-         */
-        NL3, 
-        /**
-         * null
-         */
-        NL4, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static NameAssemblyOrder fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("NL1".equals(codeString))
-          return NL1;
-        if ("NL2".equals(codeString))
-          return NL2;
-        if ("NL3".equals(codeString))
-          return NL3;
-        if ("NL4".equals(codeString))
-          return NL4;
-        throw new FHIRException("Unknown NameAssemblyOrder code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NL1: return "NL1";
-            case NL2: return "NL2";
-            case NL3: return "NL3";
-            case NL4: return "NL4";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/name-assembly-order";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NL1: return "";
-            case NL2: return "";
-            case NL3: return "";
-            case NL4: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NL1: return "Own Name";
-            case NL2: return "Partner Name";
-            case NL3: return "Partner Name followed by Maiden Name";
-            case NL4: return "Own Name followed by Partner Name";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  NL1,
+  /**
+   * null
+   */
+  NL2,
+  /**
+   * null
+   */
+  NL3,
+  /**
+   * null
+   */
+  NL4,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static NameAssemblyOrder fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("NL1".equals(codeString))
+      return NL1;
+    if ("NL2".equals(codeString))
+      return NL2;
+    if ("NL3".equals(codeString))
+      return NL3;
+    if ("NL4".equals(codeString))
+      return NL4;
+    throw new FHIRException("Unknown NameAssemblyOrder code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case NL1:
+      return "NL1";
+    case NL2:
+      return "NL2";
+    case NL3:
+      return "NL3";
+    case NL4:
+      return "NL4";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/name-assembly-order";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case NL1:
+      return "";
+    case NL2:
+      return "";
+    case NL3:
+      return "";
+    case NL4:
+      return "";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case NL1:
+      return "Own Name";
+    case NL2:
+      return "Partner Name";
+    case NL3:
+      return "Partner Name followed by Maiden Name";
+    case NL4:
+      return "Own Name followed by Partner Name";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

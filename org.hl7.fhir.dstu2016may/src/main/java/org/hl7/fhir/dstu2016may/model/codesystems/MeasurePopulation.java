@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,122 +31,158 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MeasurePopulation {
 
-        /**
-         * The initial population for the measure
-         */
-        INITIALPOPULATION, 
-        /**
-         * The numerator for the measure
-         */
-        NUMERATOR, 
-        /**
-         * The numerator exclusion for the measure
-         */
-        NUMERATOREXCLUSION, 
-        /**
-         * The denominator for the measure
-         */
-        DENOMINATOR, 
-        /**
-         * The denominator exclusion for the measure
-         */
-        DENOMINATOREXCLUSION, 
-        /**
-         * The denominator exception for the measure
-         */
-        DENOMINATOREXCEPTION, 
-        /**
-         * The measure population for the measure
-         */
-        MEASUREPOPULATION, 
-        /**
-         * The measure population exclusion for the measure
-         */
-        MEASUREPOPULATIONEXCLUSION, 
-        /**
-         * The measure score for the measure
-         */
-        MEASURESCORE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MeasurePopulation fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("initial-population".equals(codeString))
-          return INITIALPOPULATION;
-        if ("numerator".equals(codeString))
-          return NUMERATOR;
-        if ("numerator-exclusion".equals(codeString))
-          return NUMERATOREXCLUSION;
-        if ("denominator".equals(codeString))
-          return DENOMINATOR;
-        if ("denominator-exclusion".equals(codeString))
-          return DENOMINATOREXCLUSION;
-        if ("denominator-exception".equals(codeString))
-          return DENOMINATOREXCEPTION;
-        if ("measure-population".equals(codeString))
-          return MEASUREPOPULATION;
-        if ("measure-population-exclusion".equals(codeString))
-          return MEASUREPOPULATIONEXCLUSION;
-        if ("measure-score".equals(codeString))
-          return MEASURESCORE;
-        throw new FHIRException("Unknown MeasurePopulation code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INITIALPOPULATION: return "initial-population";
-            case NUMERATOR: return "numerator";
-            case NUMERATOREXCLUSION: return "numerator-exclusion";
-            case DENOMINATOR: return "denominator";
-            case DENOMINATOREXCLUSION: return "denominator-exclusion";
-            case DENOMINATOREXCEPTION: return "denominator-exception";
-            case MEASUREPOPULATION: return "measure-population";
-            case MEASUREPOPULATIONEXCLUSION: return "measure-population-exclusion";
-            case MEASURESCORE: return "measure-score";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/measure-population";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INITIALPOPULATION: return "The initial population for the measure";
-            case NUMERATOR: return "The numerator for the measure";
-            case NUMERATOREXCLUSION: return "The numerator exclusion for the measure";
-            case DENOMINATOR: return "The denominator for the measure";
-            case DENOMINATOREXCLUSION: return "The denominator exclusion for the measure";
-            case DENOMINATOREXCEPTION: return "The denominator exception for the measure";
-            case MEASUREPOPULATION: return "The measure population for the measure";
-            case MEASUREPOPULATIONEXCLUSION: return "The measure population exclusion for the measure";
-            case MEASURESCORE: return "The measure score for the measure";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INITIALPOPULATION: return "Initial Population";
-            case NUMERATOR: return "Numerator";
-            case NUMERATOREXCLUSION: return "Numerator Exclusion";
-            case DENOMINATOR: return "Denominator";
-            case DENOMINATOREXCLUSION: return "Denominator Exclusion";
-            case DENOMINATOREXCEPTION: return "Denominator Exception";
-            case MEASUREPOPULATION: return "Measure Population";
-            case MEASUREPOPULATIONEXCLUSION: return "Measure Population Exclusion";
-            case MEASURESCORE: return "Measure Score";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The initial population for the measure
+   */
+  INITIALPOPULATION,
+  /**
+   * The numerator for the measure
+   */
+  NUMERATOR,
+  /**
+   * The numerator exclusion for the measure
+   */
+  NUMERATOREXCLUSION,
+  /**
+   * The denominator for the measure
+   */
+  DENOMINATOR,
+  /**
+   * The denominator exclusion for the measure
+   */
+  DENOMINATOREXCLUSION,
+  /**
+   * The denominator exception for the measure
+   */
+  DENOMINATOREXCEPTION,
+  /**
+   * The measure population for the measure
+   */
+  MEASUREPOPULATION,
+  /**
+   * The measure population exclusion for the measure
+   */
+  MEASUREPOPULATIONEXCLUSION,
+  /**
+   * The measure score for the measure
+   */
+  MEASURESCORE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MeasurePopulation fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("initial-population".equals(codeString))
+      return INITIALPOPULATION;
+    if ("numerator".equals(codeString))
+      return NUMERATOR;
+    if ("numerator-exclusion".equals(codeString))
+      return NUMERATOREXCLUSION;
+    if ("denominator".equals(codeString))
+      return DENOMINATOR;
+    if ("denominator-exclusion".equals(codeString))
+      return DENOMINATOREXCLUSION;
+    if ("denominator-exception".equals(codeString))
+      return DENOMINATOREXCEPTION;
+    if ("measure-population".equals(codeString))
+      return MEASUREPOPULATION;
+    if ("measure-population-exclusion".equals(codeString))
+      return MEASUREPOPULATIONEXCLUSION;
+    if ("measure-score".equals(codeString))
+      return MEASURESCORE;
+    throw new FHIRException("Unknown MeasurePopulation code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INITIALPOPULATION:
+      return "initial-population";
+    case NUMERATOR:
+      return "numerator";
+    case NUMERATOREXCLUSION:
+      return "numerator-exclusion";
+    case DENOMINATOR:
+      return "denominator";
+    case DENOMINATOREXCLUSION:
+      return "denominator-exclusion";
+    case DENOMINATOREXCEPTION:
+      return "denominator-exception";
+    case MEASUREPOPULATION:
+      return "measure-population";
+    case MEASUREPOPULATIONEXCLUSION:
+      return "measure-population-exclusion";
+    case MEASURESCORE:
+      return "measure-score";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/measure-population";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INITIALPOPULATION:
+      return "The initial population for the measure";
+    case NUMERATOR:
+      return "The numerator for the measure";
+    case NUMERATOREXCLUSION:
+      return "The numerator exclusion for the measure";
+    case DENOMINATOR:
+      return "The denominator for the measure";
+    case DENOMINATOREXCLUSION:
+      return "The denominator exclusion for the measure";
+    case DENOMINATOREXCEPTION:
+      return "The denominator exception for the measure";
+    case MEASUREPOPULATION:
+      return "The measure population for the measure";
+    case MEASUREPOPULATIONEXCLUSION:
+      return "The measure population exclusion for the measure";
+    case MEASURESCORE:
+      return "The measure score for the measure";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INITIALPOPULATION:
+      return "Initial Population";
+    case NUMERATOR:
+      return "Numerator";
+    case NUMERATOREXCLUSION:
+      return "Numerator Exclusion";
+    case DENOMINATOR:
+      return "Denominator";
+    case DENOMINATOREXCLUSION:
+      return "Denominator Exclusion";
+    case DENOMINATOREXCEPTION:
+      return "Denominator Exception";
+    case MEASUREPOPULATION:
+      return "Measure Population";
+    case MEASUREPOPULATIONEXCLUSION:
+      return "Measure Population Exclusion";
+    case MEASURESCORE:
+      return "Measure Score";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

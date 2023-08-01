@@ -12,7 +12,7 @@ public interface IValidatorResourceFetcher {
 
   Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRException, IOException;
 
-  boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws IOException, FHIRException;
+  boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical) throws IOException, FHIRException;
 
   byte[] fetchRaw(IResourceValidator validator, String url) throws IOException; // for attachment checking
 

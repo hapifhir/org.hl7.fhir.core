@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.model;
   
  */
 
-
-
 import java.net.URI;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -38,43 +36,43 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 /**
  * Primitive type "url" in FHIR: an OID represented as urn:oid:0.1.2.3.4...
  */
-@DatatypeDef(name="url", profileOf=UriType.class)
+@DatatypeDef(name = "url", profileOf = UriType.class)
 public class UrlType extends UriType {
 
-	private static final long serialVersionUID = 4L;
+  private static final long serialVersionUID = 4L;
 
-	/**
-	 * Constructor
-	 */
-	public UrlType() {
-		super();
-	}
+  /**
+   * Constructor
+   */
+  public UrlType() {
+    super();
+  }
 
-	/**
-	 * Constructor
-	 */
-	public UrlType(String theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public UrlType(String theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	public UrlType(URI theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public UrlType(URI theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	@Override
-	public UrlType copy() {
-		UrlType ret = new UrlType(getValue());
+  /**
+   * Constructor
+   */
+  @Override
+  public UrlType copy() {
+    UrlType ret = new UrlType(getValue());
     copyValues(ret);
     return ret;
-	}
+  }
 
-	public String fhirType() {
-		return "url";		
-	}
+  public String fhirType() {
+    return "url";
+  }
 }

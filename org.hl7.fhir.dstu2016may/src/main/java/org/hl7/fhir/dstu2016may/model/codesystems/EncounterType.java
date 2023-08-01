@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum EncounterType {
 
-        /**
-         * null
-         */
-        ADMS, 
-        /**
-         * null
-         */
-        BD_BMCLIN, 
-        /**
-         * null
-         */
-        CCS60, 
-        /**
-         * null
-         */
-        OKI, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static EncounterType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("ADMS".equals(codeString))
-          return ADMS;
-        if ("BD/BM-clin".equals(codeString))
-          return BD_BMCLIN;
-        if ("CCS60".equals(codeString))
-          return CCS60;
-        if ("OKI".equals(codeString))
-          return OKI;
-        throw new FHIRException("Unknown EncounterType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ADMS: return "ADMS";
-            case BD_BMCLIN: return "BD/BM-clin";
-            case CCS60: return "CCS60";
-            case OKI: return "OKI";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/encounter-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ADMS: return "";
-            case BD_BMCLIN: return "";
-            case CCS60: return "";
-            case OKI: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ADMS: return "Annual diabetes mellitus screening";
-            case BD_BMCLIN: return "Bone drilling/bone marrow punction in clinic";
-            case CCS60: return "Infant colon screening - 60 minutes";
-            case OKI: return "Outpatient Kenacort injection";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  ADMS,
+  /**
+   * null
+   */
+  BD_BMCLIN,
+  /**
+   * null
+   */
+  CCS60,
+  /**
+   * null
+   */
+  OKI,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static EncounterType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("ADMS".equals(codeString))
+      return ADMS;
+    if ("BD/BM-clin".equals(codeString))
+      return BD_BMCLIN;
+    if ("CCS60".equals(codeString))
+      return CCS60;
+    if ("OKI".equals(codeString))
+      return OKI;
+    throw new FHIRException("Unknown EncounterType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ADMS:
+      return "ADMS";
+    case BD_BMCLIN:
+      return "BD/BM-clin";
+    case CCS60:
+      return "CCS60";
+    case OKI:
+      return "OKI";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/encounter-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ADMS:
+      return "";
+    case BD_BMCLIN:
+      return "";
+    case CCS60:
+      return "";
+    case OKI:
+      return "";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ADMS:
+      return "Annual diabetes mellitus screening";
+    case BD_BMCLIN:
+      return "Bone drilling/bone marrow punction in clinic";
+    case CCS60:
+      return "Infant colon screening - 60 minutes";
+    case OKI:
+      return "Outpatient Kenacort injection";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

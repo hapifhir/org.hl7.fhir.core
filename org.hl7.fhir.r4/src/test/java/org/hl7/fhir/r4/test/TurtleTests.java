@@ -1,14 +1,14 @@
 package org.hl7.fhir.r4.test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.formats.Turtle;
 import org.hl7.fhir.utilities.TextFile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class TurtleTests {
 
@@ -48,7 +48,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "first.nt"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_first2() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "first.ttl"), true);
 //  }
@@ -139,7 +139,9 @@ public class TurtleTests {
 
   @Test
   public void test_labeled_blank_node_with_PN_CHARS_BASE_character_boundaries() throws Exception {
-    doTest(TestingUtilities.resourceNameToFile("turtle", "labeled_blank_node_with_PN_CHARS_BASE_character_boundaries.ttl"), false);
+    doTest(
+        TestingUtilities.resourceNameToFile("turtle", "labeled_blank_node_with_PN_CHARS_BASE_character_boundaries.ttl"),
+        false);
   }
 
   @Test
@@ -352,7 +354,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "literal_with_escaped_LINE_FEED.ttl"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_literal_with_FORM_FEEDNT() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "literal_with_FORM_FEED.nt"), true);
 //  }
@@ -431,7 +433,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "LITERAL1_all_punctuation.ttl"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_LITERAL1_ascii_boundariesNT() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "LITERAL1_ascii_boundaries.nt"), true);
 //  }
@@ -467,22 +469,26 @@ public class TurtleTests {
 
   @Test
   public void test_localName_with_assigned_nfc_bmp_PN_CHARS_BASE_character_boundariesNT() throws Exception {
-    doTest(TestingUtilities.resourceNameToFile("turtle", "localName_with_assigned_nfc_bmp_PN_CHARS_BASE_character_boundaries.nt"), true);
+    doTest(TestingUtilities.resourceNameToFile("turtle",
+        "localName_with_assigned_nfc_bmp_PN_CHARS_BASE_character_boundaries.nt"), true);
   }
 
   @Test
   public void test_localName_with_assigned_nfc_bmp_PN_CHARS_BASE_character_boundaries() throws Exception {
-    doTest(TestingUtilities.resourceNameToFile("turtle", "localName_with_assigned_nfc_bmp_PN_CHARS_BASE_character_boundaries.ttl"), true);
+    doTest(TestingUtilities.resourceNameToFile("turtle",
+        "localName_with_assigned_nfc_bmp_PN_CHARS_BASE_character_boundaries.ttl"), true);
   }
 
   @Test
   public void test_localName_with_assigned_nfc_PN_CHARS_BASE_character_boundariesNT() throws Exception {
-    doTest(TestingUtilities.resourceNameToFile("turtle", "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.nt"), true);
+    doTest(TestingUtilities.resourceNameToFile("turtle",
+        "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.nt"), true);
   }
 
   @Test
   public void test_localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries() throws Exception {
-    doTest(TestingUtilities.resourceNameToFile("turtle", "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.ttl"), false);
+    doTest(TestingUtilities.resourceNameToFile("turtle",
+        "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.ttl"), false);
   }
 
   // don't need to support property names with ':'
@@ -516,12 +522,14 @@ public class TurtleTests {
 
   @Test
   public void test_localName_with_nfc_PN_CHARS_BASE_character_boundariesNT() throws Exception {
-    doTest(TestingUtilities.resourceNameToFile("turtle", "localName_with_nfc_PN_CHARS_BASE_character_boundaries.nt"), true);
+    doTest(TestingUtilities.resourceNameToFile("turtle", "localName_with_nfc_PN_CHARS_BASE_character_boundaries.nt"),
+        true);
   }
 
   @Test
   public void test_localName_with_nfc_PN_CHARS_BASE_character_boundaries() throws Exception {
-    doTest(TestingUtilities.resourceNameToFile("turtle", "localName_with_nfc_PN_CHARS_BASE_character_boundaries.ttl"), false);
+    doTest(TestingUtilities.resourceNameToFile("turtle", "localName_with_nfc_PN_CHARS_BASE_character_boundaries.ttl"),
+        false);
   }
 
   @Test
@@ -579,7 +587,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "number_sign_following_PNAME_NS.nt"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_number_sign_following_PNAME_NS() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "number_sign_following_PNAME_NS.ttl"), true);
 //  }
@@ -619,7 +627,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "percent_escaped_localName.nt"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_percent_escaped_localName() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "percent_escaped_localName.ttl"), true);
 //  }
@@ -643,7 +651,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "predicateObjectList_with_two_objectLists.ttl"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_prefix_only_IRI() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "prefix_only_IRI.ttl"), true);
 //  }
@@ -702,7 +710,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "reserved_escaped_localName.nt"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_reserved_escaped_localName() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "reserved_escaped_localName.ttl"), true);
 //  }
@@ -736,7 +744,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-eval-bad-03.ttl"), false);
   }
 
-  //  @Test
+  // @Test
 //  public void test_turtle_eval_bad_04() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-eval-bad-04.ttl"), false);
 //  }
@@ -1046,7 +1054,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-base-03.ttl"), false);
   }
 
-  //  @Test
+  // @Test
 //  public void test_turtle_syntax_bad_blank_label_dot_end() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-blank-label-dot-end.ttl"), false);
 //  }
@@ -1102,7 +1110,8 @@ public class TurtleTests {
 
   @Test
   public void test_turtle_syntax_bad_LITERAL2_with_langtag_and_datatype() throws Exception {
-    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-LITERAL2_with_langtag_and_datatype.ttl"), false);
+    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-LITERAL2_with_langtag_and_datatype.ttl"),
+        false);
   }
 
   @Test
@@ -1155,7 +1164,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-n3-extras-05.ttl"), false);
   }
 
-  //  @Test
+  // @Test
 //  public void test_turtle_syntax_bad_n3_extras_06() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-n3-extras-06.ttl"), false);
 //  }
@@ -1245,7 +1254,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-pname-02.ttl"), false);
   }
 
-  //  @Test
+  // @Test
 //  public void test_turtle_syntax_bad_pname_03() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-pname-03.ttl"), false);
 //  }
@@ -1394,7 +1403,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-struct-17.ttl"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_turtle_syntax_bad_uri_01() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-uri-01.ttl"), false);
 //  }
@@ -1408,7 +1417,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-uri-03.ttl"), false);
   }
 
-  //  @Test
+  // @Test
 //  public void test_turtle_syntax_bad_uri_04() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-bad-uri-04.ttl"), false);
 //  }
@@ -1541,7 +1550,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-lists-02.ttl"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_turtle_syntax_lists_03() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-lists-03.ttl"), true);
 //  }
@@ -1587,7 +1596,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-number-04.ttl"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_turtle_syntax_number_05() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-number-05.ttl"), true);
 //  }
@@ -1601,7 +1610,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-number-07.ttl"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_turtle_syntax_number_08() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-number-08.ttl"), true);
 //  }
@@ -1640,7 +1649,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-prefix-01.ttl"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_turtle_syntax_prefix_02() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-prefix-02.ttl"), true);
 //  }
@@ -1654,7 +1663,7 @@ public class TurtleTests {
     doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-prefix-04.ttl"), true);
   }
 
-  //  @Test
+  // @Test
 //  public void test_turtle_syntax_prefix_05() throws Exception {
 //    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-syntax-prefix-05.ttl"), true);
 //  }

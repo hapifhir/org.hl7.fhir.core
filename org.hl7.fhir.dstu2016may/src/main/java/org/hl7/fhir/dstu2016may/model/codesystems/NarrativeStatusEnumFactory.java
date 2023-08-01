@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class NarrativeStatusEnumFactory implements EnumFactory<NarrativeStatus> {
@@ -50,7 +46,7 @@ public class NarrativeStatusEnumFactory implements EnumFactory<NarrativeStatus> 
       return NarrativeStatus.ADDITIONAL;
     if ("empty".equals(codeString))
       return NarrativeStatus.EMPTY;
-    throw new IllegalArgumentException("Unknown NarrativeStatus code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown NarrativeStatus code '" + codeString + "'");
   }
 
   public String toCode(NarrativeStatus code) {
@@ -65,8 +61,8 @@ public class NarrativeStatusEnumFactory implements EnumFactory<NarrativeStatus> 
     return "?";
   }
 
-    public String toSystem(NarrativeStatus code) {
-      return code.getSystem();
-      }
+  public String toSystem(NarrativeStatus code) {
+    return code.getSystem();
+  }
 
 }

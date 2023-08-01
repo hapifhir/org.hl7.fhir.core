@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,10 +31,10 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
-public class HspcObservationHeightMeasMethodDeviceEnumFactory implements EnumFactory<HspcObservationHeightMeasMethodDevice> {
+public class HspcObservationHeightMeasMethodDeviceEnumFactory
+    implements EnumFactory<HspcObservationHeightMeasMethodDevice> {
 
   public HspcObservationHeightMeasMethodDevice fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
@@ -52,7 +49,7 @@ public class HspcObservationHeightMeasMethodDeviceEnumFactory implements EnumFac
       return HspcObservationHeightMeasMethodDevice._2063;
     if ("521363688".equals(codeString))
       return HspcObservationHeightMeasMethodDevice._521363688;
-    throw new IllegalArgumentException("Unknown HspcObservationHeightMeasMethodDevice code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown HspcObservationHeightMeasMethodDevice code '" + codeString + "'");
   }
 
   public String toCode(HspcObservationHeightMeasMethodDevice code) {
@@ -69,8 +66,8 @@ public class HspcObservationHeightMeasMethodDeviceEnumFactory implements EnumFac
     return "?";
   }
 
-    public String toSystem(HspcObservationHeightMeasMethodDevice code) {
-      return code.getSystem();
-      }
+  public String toSystem(HspcObservationHeightMeasMethodDevice code) {
+    return code.getSystem();
+  }
 
 }

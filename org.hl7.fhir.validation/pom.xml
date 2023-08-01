@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.0.21</version>
+        <version>6.0.24-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -195,12 +195,7 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>io.javalin</groupId>
-            <artifactId>javalin</artifactId>
-            <version>3.8.0</version>
-				<optional>true</optional>
-        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
@@ -216,7 +211,7 @@
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
-            <version>3.0.9.RELEASE</version>
+            <version>3.1.1.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

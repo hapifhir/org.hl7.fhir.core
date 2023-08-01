@@ -219,7 +219,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile",
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status-reason",
       ToolingExtensions.EXT_SUMMARY,
-      ToolingExtensions.EXT_OBLIGATION);
+      ToolingExtensions.EXT_OBLIGATION_CORE,
+      ToolingExtensions.EXT_OBLIGATION_TOOLS);
 
 
   public IWorkerContext getContext() {
@@ -2205,7 +2206,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     for (ElementDefinition ed : obligationProfileElements) {
       for (Extension ext : ed.getExtension()) {
-        if (ToolingExtensions.EXT_OBLIGATION.equals(ext.getUrl())) {
+        if (Utilities.existsInList(ext.getUrl(), ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
           base.getExtension().add(ext.copy());
         }      
       }
@@ -2279,26 +2280,30 @@ public class ProfileUtilities extends TranslatingUtilities {
       }      
     }
     for (Extension ext : source.getExtension()) {
-      if (ToolingExtensions.EXT_OBLIGATION.equals(ext.getUrl())) {
+      if (Utilities.existsInList(ext.getUrl(), ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
         dest.getExtension().add(ext.copy());
       }      
     }
     for (ElementDefinition ed : obligationProfileElements) {
       for (Extension ext : ed.getExtension()) {
-        if (ToolingExtensions.EXT_OBLIGATION.equals(ext.getUrl())) {
+        if (Utilities.existsInList(ext.getUrl(), ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
           dest.getExtension().add(ext.copy());
         }      
       }
     }
     // Before applying changes, apply them to what's in the profile
     StructureDefinition profile = null;
+    boolean msg = true;
     if (base.hasSliceName()) {
       profile = base.getType().size() == 1 && base.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, base.getTypeFirstRep().getProfile().get(0).getValue(), srcSD) : null;
     }
     if (profile==null) {
       profile = source.getType().size() == 1 && source.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, source.getTypeFirstRep().getProfile().get(0).getValue(), derivedSrc) : null;
       if (profile != null && !"Extension".equals(profile.getType()) && profile.getKind() != StructureDefinitionKind.RESOURCE && profile.getKind() != StructureDefinitionKind.LOGICAL) {
+        // this is a problem - we're kind of hacking things here. The problem is that we sometimes want the details from the profile to override the 
+        // inherited attributes, and sometimes not
         profile = null;
+        msg = false;
       }
     }
     if (profile != null) {
@@ -2320,15 +2325,17 @@ public class ProfileUtilities extends TranslatingUtilities {
     } else if (source.getType().size() == 1 && source.getTypeFirstRep().hasProfile() && !source.getTypeFirstRep().getProfile().get(0).hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT)) {
       // todo: should we change down the profile_element if there's one?
       String type = source.getTypeFirstRep().getWorkingCode();
-      if ("Extension".equals(type)) {
-        System.out.println("Can't find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");          
-        if (allowUnknownProfile != AllowUnknownProfile.ALL_TYPES) {
-          throw new DefinitionException("Unable to find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue());          
-        }
-      } else {
-        System.out.println("Can't find "+type+" profile "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");          
-        if (allowUnknownProfile == AllowUnknownProfile.NONE) {
-          throw new DefinitionException("Unable to find "+type+" profile "+source.getTypeFirstRep().getProfile().get(0).asStringValue());          
+      if (msg) {
+        if ("Extension".equals(type)) {
+          System.out.println("Can't find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");          
+          if (allowUnknownProfile != AllowUnknownProfile.ALL_TYPES) {
+            throw new DefinitionException("Unable to find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue());          
+          }
+        } else {
+          System.out.println("Can't find "+type+" profile "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");          
+          if (allowUnknownProfile == AllowUnknownProfile.NONE) {
+            throw new DefinitionException("Unable to find "+type+" profile "+source.getTypeFirstRep().getProfile().get(0).asStringValue());          
+          }
         }
       }
     }

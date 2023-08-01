@@ -1,5 +1,14 @@
 package org.hl7.fhir.dstu3.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.hl7.fhir.dstu3.context.IWorkerContext;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -28,29 +37,44 @@ package org.hl7.fhir.dstu3.utils;
   POSSIBILITY OF SUCH DAMAGE.
   
  */
-
-
-
-import org.hl7.fhir.dstu3.model.*;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.hl7.fhir.dstu3.context.IWorkerContext;
+import org.hl7.fhir.dstu3.model.BackboneElement;
+import org.hl7.fhir.dstu3.model.Base;
+import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent;
+import org.hl7.fhir.dstu3.model.DomainResource;
+import org.hl7.fhir.dstu3.model.Element;
+import org.hl7.fhir.dstu3.model.ExpressionNode;
+import org.hl7.fhir.dstu3.model.IntegerType;
+import org.hl7.fhir.dstu3.model.Property;
+import org.hl7.fhir.dstu3.model.Reference;
+import org.hl7.fhir.dstu3.model.Resource;
+import org.hl7.fhir.dstu3.model.StringType;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.graphql.*;
+import org.hl7.fhir.utilities.graphql.Argument;
 import org.hl7.fhir.utilities.graphql.Argument.ArgumentListStatus;
-import org.hl7.fhir.utilities.graphql.Package;
+import org.hl7.fhir.utilities.graphql.Directive;
+import org.hl7.fhir.utilities.graphql.EGraphEngine;
+import org.hl7.fhir.utilities.graphql.EGraphQLException;
+import org.hl7.fhir.utilities.graphql.Field;
+import org.hl7.fhir.utilities.graphql.Fragment;
+import org.hl7.fhir.utilities.graphql.GraphQLResponse;
+import org.hl7.fhir.utilities.graphql.IGraphQLEngine;
+import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
+import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices.ReferenceResolution;
+import org.hl7.fhir.utilities.graphql.NameValue;
+import org.hl7.fhir.utilities.graphql.NumberValue;
+import org.hl7.fhir.utilities.graphql.ObjectValue;
+import org.hl7.fhir.utilities.graphql.Operation;
 import org.hl7.fhir.utilities.graphql.Operation.OperationType;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.hl7.fhir.utilities.graphql.IGraphQLStorageServices.ReferenceResolution;
+import org.hl7.fhir.utilities.graphql.Package;
+import org.hl7.fhir.utilities.graphql.Selection;
+import org.hl7.fhir.utilities.graphql.StringValue;
+import org.hl7.fhir.utilities.graphql.Value;
+import org.hl7.fhir.utilities.graphql.Variable;
+import org.hl7.fhir.utilities.graphql.VariableValue;
 
 public class GraphQLEngine implements IGraphQLEngine {
   

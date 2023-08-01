@@ -141,6 +141,8 @@ public class ToolingExtensions {
   public static final String EXT_EXTENSION_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style";
   public static final String EXT_LOGICAL_TARGET = "http://hl7.org/fhir/tools/StructureDefinition/logical-target";
   public static final String EXT_PROFILE_MAPPING = "http://hl7.org/fhir/tools/StructureDefinition/profile-mapping";
+  public static final String EXT_CS_ALTERNATE_USE = "http://hl7.org/fhir/StructureDefinition/alternate-code-use";
+  public static final String EXT_CS_ALTERNATE_STATUS = "http://hl7.org/fhir/StructureDefinition/alternate-code-status";
 
   // validated
   //  private static final String EXT_OID = "http://hl7.org/fhir/StructureDefinition/valueset-oid";
@@ -245,7 +247,8 @@ public class ToolingExtensions {
   public static final String WEB_BINDING_STYLE = "http://build.fhir.org/ig/FHIR/fhir-tools-ig/StructureDefinition-binding-style.html";
   public static final String EXT_IGDEP_COMMENT = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment";
   public static final String EXT_XPATH_CONSTRAINT = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.constraint.xpath";
-  public static final String EXT_OBLIGATION = "http://hl7.org/fhir/tools/StructureDefinition/obligation";
+  public static final String EXT_OBLIGATION_TOOLS = "http://hl7.org/fhir/tools/StructureDefinition/obligation";
+  public static final String EXT_OBLIGATION_CORE = "http://hl7.org/fhir/StructureDefinition/obligation";
   public static final String EXT_NO_BINDING = "http://hl7.org/fhir/tools/StructureDefinition/no-binding";
   ;
   

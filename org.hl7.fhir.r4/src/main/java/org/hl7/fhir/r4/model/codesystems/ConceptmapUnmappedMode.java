@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConceptmapUnmappedMode {
 
-        /**
-         * Use the code as provided in the $translate request.
-         */
-        PROVIDED, 
-        /**
-         * Use the code explicitly provided in the group.unmapped.
-         */
-        FIXED, 
-        /**
-         * Use the map identified by the canonical URL in the url element.
-         */
-        OTHERMAP, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ConceptmapUnmappedMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("provided".equals(codeString))
-          return PROVIDED;
-        if ("fixed".equals(codeString))
-          return FIXED;
-        if ("other-map".equals(codeString))
-          return OTHERMAP;
-        throw new FHIRException("Unknown ConceptmapUnmappedMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PROVIDED: return "provided";
-            case FIXED: return "fixed";
-            case OTHERMAP: return "other-map";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/conceptmap-unmapped-mode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PROVIDED: return "Use the code as provided in the $translate request.";
-            case FIXED: return "Use the code explicitly provided in the group.unmapped.";
-            case OTHERMAP: return "Use the map identified by the canonical URL in the url element.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PROVIDED: return "Provided Code";
-            case FIXED: return "Fixed Code";
-            case OTHERMAP: return "Other Map";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Use the code as provided in the $translate request.
+   */
+  PROVIDED,
+  /**
+   * Use the code explicitly provided in the group.unmapped.
+   */
+  FIXED,
+  /**
+   * Use the map identified by the canonical URL in the url element.
+   */
+  OTHERMAP,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ConceptmapUnmappedMode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("provided".equals(codeString))
+      return PROVIDED;
+    if ("fixed".equals(codeString))
+      return FIXED;
+    if ("other-map".equals(codeString))
+      return OTHERMAP;
+    throw new FHIRException("Unknown ConceptmapUnmappedMode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PROVIDED:
+      return "provided";
+    case FIXED:
+      return "fixed";
+    case OTHERMAP:
+      return "other-map";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/conceptmap-unmapped-mode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PROVIDED:
+      return "Use the code as provided in the $translate request.";
+    case FIXED:
+      return "Use the code explicitly provided in the group.unmapped.";
+    case OTHERMAP:
+      return "Use the map identified by the canonical URL in the url element.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PROVIDED:
+      return "Provided Code";
+    case FIXED:
+      return "Fixed Code";
+    case OTHERMAP:
+      return "Other Map";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

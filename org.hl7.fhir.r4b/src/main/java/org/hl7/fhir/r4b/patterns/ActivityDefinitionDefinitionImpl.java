@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4b.patterns;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -64,832 +61,762 @@ public class ActivityDefinitionDefinitionImpl extends PatternBaseImpl implements
     this.wrapped = wrapped;
   }
 
-    public int getUrlMin() {
-      return 0;
-    }
+  public int getUrlMin() {
+    return 0;
+  }
 
-    public int getUrlMax() {
-      return 1;
-    }
+  public int getUrlMax() {
+    return 1;
+  }
 
-    public UriType getUrlElement() throws FHIRException {
-      return wrapped.getUrlElement();
-    }
+  public UriType getUrlElement() throws FHIRException {
+    return wrapped.getUrlElement();
+  }
 
+  public boolean hasUrlElement() {
+    return wrapped.hasUrlElement();
+  }
 
-    public boolean hasUrlElement() {
-      return wrapped.hasUrlElement();
-    }
+  public boolean hasUrl() {
+    return wrapped.hasUrl();
+  }
 
+  public Definition setUrlElement(UriType value) throws FHIRException {
+    wrapped.setUrlElement(value);
+    return this;
 
-    public boolean hasUrl() {
-      return wrapped.hasUrl();
-    }
+  }
 
+  public String getUrl() throws FHIRException {
+    return wrapped.getUrl();
+  }
 
-    public Definition setUrlElement(UriType value) throws FHIRException {
-      wrapped.setUrlElement(value);
-      return this;
+  public Definition setUrl(String value) throws FHIRException {
+    wrapped.setUrl(value);
+    return this;
 
-    }
+  }
 
+  public int getIdentifierMin() {
+    return 0;
+  }
 
-    public String getUrl() throws FHIRException {
-      return wrapped.getUrl();
-    }
+  public int getIdentifierMax() {
+    return 2147483647;
+  }
 
-    public Definition setUrl(String value) throws FHIRException {
-      wrapped.setUrl(value);
-      return this;
+  public Identifier getIdentifier() throws FHIRException {
+    return wrapped.getIdentifierFirstRep();
+  }
 
-}
+  public boolean hasIdentifier() {
+    return wrapped.hasIdentifier();
+  }
 
-    public int getIdentifierMin() {
-      return 0;
-    }
+  public Definition setIdentifier(Identifier value) throws FHIRException {
+    wrapped.getIdentifier().clear();
+    if (value != null)
+      wrapped.getIdentifier().add(value);
+    return this;
 
-    public int getIdentifierMax() {
-      return 2147483647;
-    }
+  }
 
-    public Identifier getIdentifier() throws FHIRException {
-      return wrapped.getIdentifierFirstRep();
-    }
+  public int getVersionMin() {
+    return 0;
+  }
 
-    public boolean hasIdentifier() {
-      return wrapped.hasIdentifier();
-    }
+  public int getVersionMax() {
+    return 1;
+  }
 
-    public Definition setIdentifier(Identifier value) throws FHIRException {
-      wrapped.getIdentifier().clear();
-      if (value != null)
-        wrapped.getIdentifier().add(value);
-      return this;
+  public StringType getVersionElement() throws FHIRException {
+    return wrapped.getVersionElement();
+  }
 
-    }
+  public boolean hasVersionElement() {
+    return wrapped.hasVersionElement();
+  }
 
-    public int getVersionMin() {
-      return 0;
-    }
+  public boolean hasVersion() {
+    return wrapped.hasVersion();
+  }
 
-    public int getVersionMax() {
-      return 1;
-    }
+  public Definition setVersionElement(StringType value) throws FHIRException {
+    wrapped.setVersionElement(value);
+    return this;
 
-    public StringType getVersionElement() throws FHIRException {
-      return wrapped.getVersionElement();
-    }
+  }
 
+  public String getVersion() throws FHIRException {
+    return wrapped.getVersion();
+  }
 
-    public boolean hasVersionElement() {
-      return wrapped.hasVersionElement();
-    }
+  public Definition setVersion(String value) throws FHIRException {
+    wrapped.setVersion(value);
+    return this;
 
+  }
 
-    public boolean hasVersion() {
-      return wrapped.hasVersion();
-    }
+  public int getTitleMin() {
+    return 0;
+  }
 
+  public int getTitleMax() {
+    return 1;
+  }
 
-    public Definition setVersionElement(StringType value) throws FHIRException {
-      wrapped.setVersionElement(value);
-      return this;
+  public StringType getTitleElement() throws FHIRException {
+    return wrapped.getTitleElement();
+  }
 
-    }
+  public boolean hasTitleElement() {
+    return wrapped.hasTitleElement();
+  }
 
+  public boolean hasTitle() {
+    return wrapped.hasTitle();
+  }
 
-    public String getVersion() throws FHIRException {
-      return wrapped.getVersion();
-    }
+  public Definition setTitleElement(StringType value) throws FHIRException {
+    wrapped.setTitleElement(value);
+    return this;
 
-    public Definition setVersion(String value) throws FHIRException {
-      wrapped.setVersion(value);
-      return this;
+  }
 
-}
+  public String getTitle() throws FHIRException {
+    return wrapped.getTitle();
+  }
 
-    public int getTitleMin() {
-      return 0;
-    }
+  public Definition setTitle(String value) throws FHIRException {
+    wrapped.setTitle(value);
+    return this;
 
-    public int getTitleMax() {
-      return 1;
-    }
+  }
 
-    public StringType getTitleElement() throws FHIRException {
-      return wrapped.getTitleElement();
-    }
+  public int getDerivedFromCanonicalMin() {
+    return 0;
+  }
 
+  public int getDerivedFromCanonicalMax() {
+    return 0;
+  }
 
-    public boolean hasTitleElement() {
-      return wrapped.hasTitleElement();
-    }
+  public List<CanonicalType> getDerivedFromCanonical() throws FHIRException {
+    throw new FHIRException("The pattern property 'derivedFromCanonical' is not supported in 'ActivityDefinition'");
+  }
 
+  public Definition setDerivedFromCanonical(List<CanonicalType> theDerivedFromCanonical) throws FHIRException {
 
-    public boolean hasTitle() {
-      return wrapped.hasTitle();
-    }
+    throw new FHIRException("The pattern property 'derivedFromCanonical' is not supported in 'ActivityDefinition'");
+  }
 
+  public boolean hasDerivedFromCanonical() {
+    return false;
+  }
 
-    public Definition setTitleElement(StringType value) throws FHIRException {
-      wrapped.setTitleElement(value);
-      return this;
+  public CanonicalType addDerivedFromCanonicalElement() throws FHIRException {
+    throw new FHIRException("The pattern property 'derivedFromCanonical' is not supported in 'ActivityDefinition'");
+  }
 
-    }
+  public Definition addDerivedFromCanonical(String value) throws FHIRException {
+    throw new FHIRException("The pattern property 'derivedFromCanonical' is not supported in 'ActivityDefinition'");
+  }
 
+  public boolean hasDerivedFromCanonical(String value) {
+    return false;
+  }
 
-    public String getTitle() throws FHIRException {
-      return wrapped.getTitle();
-    }
+  public int getDerivedFromUriMin() {
+    return 0;
+  }
 
-    public Definition setTitle(String value) throws FHIRException {
-      wrapped.setTitle(value);
-      return this;
+  public int getDerivedFromUriMax() {
+    return 0;
+  }
 
-}
+  public List<UriType> getDerivedFromUri() throws FHIRException {
+    throw new FHIRException("The pattern property 'derivedFromUri' is not supported in 'ActivityDefinition'");
+  }
 
-    public int getDerivedFromCanonicalMin() {
-      return 0;
-    }
+  public Definition setDerivedFromUri(List<UriType> theDerivedFromUri) throws FHIRException {
 
-    public int getDerivedFromCanonicalMax() {
-      return 0;
-    }
+    throw new FHIRException("The pattern property 'derivedFromUri' is not supported in 'ActivityDefinition'");
+  }
 
-    public List<CanonicalType> getDerivedFromCanonical() throws FHIRException {
-      throw new FHIRException("The pattern property 'derivedFromCanonical' is not supported in 'ActivityDefinition'");
-    }
+  public boolean hasDerivedFromUri() {
+    return false;
+  }
 
-    public Definition setDerivedFromCanonical(List<CanonicalType> theDerivedFromCanonical) throws FHIRException {
+  public UriType addDerivedFromUriElement() throws FHIRException {
+    throw new FHIRException("The pattern property 'derivedFromUri' is not supported in 'ActivityDefinition'");
+  }
 
-      throw new FHIRException("The pattern property 'derivedFromCanonical' is not supported in 'ActivityDefinition'");
-    }
+  public Definition addDerivedFromUri(String value) throws FHIRException {
+    throw new FHIRException("The pattern property 'derivedFromUri' is not supported in 'ActivityDefinition'");
+  }
 
-    public boolean hasDerivedFromCanonical() {
-      return false;
-    }
+  public boolean hasDerivedFromUri(String value) {
+    return false;
+  }
 
+  public int getPartOfMin() {
+    return 0;
+  }
 
-    public CanonicalType addDerivedFromCanonicalElement() throws FHIRException {
-      throw new FHIRException("The pattern property 'derivedFromCanonical' is not supported in 'ActivityDefinition'");
-    }
+  public int getPartOfMax() {
+    return 0;
+  }
 
+  public List<CanonicalType> getPartOf() throws FHIRException {
+    throw new FHIRException("The pattern property 'partOf' is not supported in 'ActivityDefinition'");
+  }
 
-    public Definition addDerivedFromCanonical(String value) throws FHIRException {
-      throw new FHIRException("The pattern property 'derivedFromCanonical' is not supported in 'ActivityDefinition'");
-    }
+  public Definition setPartOf(List<CanonicalType> thePartOf) throws FHIRException {
 
+    throw new FHIRException("The pattern property 'partOf' is not supported in 'ActivityDefinition'");
+  }
 
-    public boolean hasDerivedFromCanonical(String value) {
-      return false;
-    }
+  public boolean hasPartOf() {
+    return false;
+  }
 
+  public CanonicalType addPartOfElement() throws FHIRException {
+    throw new FHIRException("The pattern property 'partOf' is not supported in 'ActivityDefinition'");
+  }
 
-    public int getDerivedFromUriMin() {
-      return 0;
-    }
+  public Definition addPartOf(String value) throws FHIRException {
+    throw new FHIRException("The pattern property 'partOf' is not supported in 'ActivityDefinition'");
+  }
 
-    public int getDerivedFromUriMax() {
-      return 0;
-    }
+  public boolean hasPartOf(String value) {
+    return false;
+  }
 
-    public List<UriType> getDerivedFromUri() throws FHIRException {
-      throw new FHIRException("The pattern property 'derivedFromUri' is not supported in 'ActivityDefinition'");
-    }
+  public int getReplacesMin() {
+    return 0;
+  }
 
-    public Definition setDerivedFromUri(List<UriType> theDerivedFromUri) throws FHIRException {
+  public int getReplacesMax() {
+    return 0;
+  }
 
-      throw new FHIRException("The pattern property 'derivedFromUri' is not supported in 'ActivityDefinition'");
-    }
+  public List<CanonicalType> getReplaces() throws FHIRException {
+    throw new FHIRException("The pattern property 'replaces' is not supported in 'ActivityDefinition'");
+  }
 
-    public boolean hasDerivedFromUri() {
-      return false;
-    }
+  public Definition setReplaces(List<CanonicalType> theReplaces) throws FHIRException {
 
+    throw new FHIRException("The pattern property 'replaces' is not supported in 'ActivityDefinition'");
+  }
 
-    public UriType addDerivedFromUriElement() throws FHIRException {
-      throw new FHIRException("The pattern property 'derivedFromUri' is not supported in 'ActivityDefinition'");
-    }
+  public boolean hasReplaces() {
+    return false;
+  }
 
+  public CanonicalType addReplacesElement() throws FHIRException {
+    throw new FHIRException("The pattern property 'replaces' is not supported in 'ActivityDefinition'");
+  }
 
-    public Definition addDerivedFromUri(String value) throws FHIRException {
-      throw new FHIRException("The pattern property 'derivedFromUri' is not supported in 'ActivityDefinition'");
-    }
+  public Definition addReplaces(String value) throws FHIRException {
+    throw new FHIRException("The pattern property 'replaces' is not supported in 'ActivityDefinition'");
+  }
 
+  public boolean hasReplaces(String value) {
+    return false;
+  }
 
-    public boolean hasDerivedFromUri(String value) {
-      return false;
-    }
+  public int getStatusMin() {
+    return 0;
+  }
 
+  public int getStatusMax() {
+    return 0;
+  }
 
-    public int getPartOfMin() {
-      return 0;
-    }
+  public Enumeration<PublicationStatus> getStatusElement() throws FHIRException {
+    throw new FHIRException("The pattern property 'status' is not supported in 'ActivityDefinition'");
+  }
 
-    public int getPartOfMax() {
-      return 0;
-    }
+  public boolean hasStatusElement() {
+    return false;
+  }
 
-    public List<CanonicalType> getPartOf() throws FHIRException {
-      throw new FHIRException("The pattern property 'partOf' is not supported in 'ActivityDefinition'");
-    }
+  public boolean hasStatus() {
+    return false;
+  }
 
-    public Definition setPartOf(List<CanonicalType> thePartOf) throws FHIRException {
+  public Definition setStatusElement(Enumeration<PublicationStatus> value) throws FHIRException {
+    throw new FHIRException("The pattern property 'status' is not supported in 'ActivityDefinition'");
+  }
 
-      throw new FHIRException("The pattern property 'partOf' is not supported in 'ActivityDefinition'");
-    }
+  public PublicationStatus getStatus() throws FHIRException {
+    throw new FHIRException("The pattern property 'status' is not supported in 'ActivityDefinition'");
+  }
 
-    public boolean hasPartOf() {
-      return false;
-    }
+  public Definition setStatus(PublicationStatus value) throws FHIRException {
+    throw new FHIRException("The pattern property 'status' is not supported in 'ActivityDefinition'");
+  }
 
+  public int getExperimentalMin() {
+    return 0;
+  }
 
-    public CanonicalType addPartOfElement() throws FHIRException {
-      throw new FHIRException("The pattern property 'partOf' is not supported in 'ActivityDefinition'");
-    }
+  public int getExperimentalMax() {
+    return 1;
+  }
 
+  public BooleanType getExperimentalElement() throws FHIRException {
+    return wrapped.getExperimentalElement();
+  }
 
-    public Definition addPartOf(String value) throws FHIRException {
-      throw new FHIRException("The pattern property 'partOf' is not supported in 'ActivityDefinition'");
-    }
+  public boolean hasExperimentalElement() {
+    return wrapped.hasExperimentalElement();
+  }
 
+  public boolean hasExperimental() {
+    return wrapped.hasExperimental();
+  }
 
-    public boolean hasPartOf(String value) {
-      return false;
-    }
+  public Definition setExperimentalElement(BooleanType value) throws FHIRException {
+    wrapped.setExperimentalElement(value);
+    return this;
 
+  }
 
-    public int getReplacesMin() {
-      return 0;
-    }
+  public boolean getExperimental() throws FHIRException {
+    return wrapped.getExperimental();
+  }
 
-    public int getReplacesMax() {
-      return 0;
-    }
+  public Definition setExperimental(boolean value) throws FHIRException {
+    wrapped.setExperimental(value);
+    return this;
 
-    public List<CanonicalType> getReplaces() throws FHIRException {
-      throw new FHIRException("The pattern property 'replaces' is not supported in 'ActivityDefinition'");
-    }
+  }
 
-    public Definition setReplaces(List<CanonicalType> theReplaces) throws FHIRException {
+  public int getSubjectMin() {
+    return 0;
+  }
 
-      throw new FHIRException("The pattern property 'replaces' is not supported in 'ActivityDefinition'");
-    }
+  public int getSubjectMax() {
+    return 0;
+  }
 
-    public boolean hasReplaces() {
-      return false;
-    }
+  public DataType getSubject() throws FHIRException {
+    throw new FHIRException("The pattern property 'subject[x]' is not supported in 'ActivityDefinition'");
+  }
 
+  public CodeableConcept getSubjectCodeableConcept() throws FHIRException {
+    throw new FHIRException("The pattern property 'subject[x]' is not supported in 'ActivityDefinition'");
+  }
 
-    public CanonicalType addReplacesElement() throws FHIRException {
-      throw new FHIRException("The pattern property 'replaces' is not supported in 'ActivityDefinition'");
-    }
+  public boolean hasSubjectCodeableConcept() {
+    return false;
+  }
 
+  public Reference getSubjectReference() throws FHIRException {
+    throw new FHIRException("The pattern property 'subject[x]' is not supported in 'ActivityDefinition'");
+  }
 
-    public Definition addReplaces(String value) throws FHIRException {
-      throw new FHIRException("The pattern property 'replaces' is not supported in 'ActivityDefinition'");
-    }
+  public boolean hasSubjectReference() {
+    return false;
+  }
 
+  public boolean hasSubject() {
+    return false;
+  }
 
-    public boolean hasReplaces(String value) {
-      return false;
-    }
+  public Definition setSubject(DataType value) throws FHIRException {
+    throw new FHIRException("The pattern property 'subject[x]' is not supported in 'ActivityDefinition'");
+  }
 
+  public int getDateMin() {
+    return 0;
+  }
 
-    public int getStatusMin() {
-      return 0;
-    }
+  public int getDateMax() {
+    return 1;
+  }
 
-    public int getStatusMax() {
-      return 0;
-    }
+  public DateTimeType getDateElement() throws FHIRException {
+    return wrapped.getDateElement();
+  }
 
-    public Enumeration<PublicationStatus> getStatusElement() throws FHIRException {
-      throw new FHIRException("The pattern property 'status' is not supported in 'ActivityDefinition'");
-    }
+  public boolean hasDateElement() {
+    return wrapped.hasDateElement();
+  }
 
+  public boolean hasDate() {
+    return wrapped.hasDate();
+  }
 
-    public boolean hasStatusElement() {
-      return false;
-    }
+  public Definition setDateElement(DateTimeType value) throws FHIRException {
+    wrapped.setDateElement(value);
+    return this;
 
+  }
 
-    public boolean hasStatus() {
-      return false;
-    }
+  public Date getDate() throws FHIRException {
+    return wrapped.getDate();
+  }
 
+  public Definition setDate(Date value) throws FHIRException {
+    wrapped.setDate(value);
+    return this;
 
-    public Definition setStatusElement(Enumeration<PublicationStatus> value) throws FHIRException {
-      throw new FHIRException("The pattern property 'status' is not supported in 'ActivityDefinition'");
-    }
+  }
 
+  public int getPublisherMin() {
+    return 0;
+  }
 
-    public PublicationStatus getStatus() throws FHIRException {
-      throw new FHIRException("The pattern property 'status' is not supported in 'ActivityDefinition'");
-    }
+  public int getPublisherMax() {
+    return 0;
+  }
 
-    public Definition setStatus(PublicationStatus value) throws FHIRException {
-      throw new FHIRException("The pattern property 'status' is not supported in 'ActivityDefinition'");
-}
+  public Reference getPublisher() throws FHIRException {
+    throw new FHIRException("The pattern property 'publisher' is not supported in 'ActivityDefinition'");
+  }
 
-    public int getExperimentalMin() {
-      return 0;
-    }
+  public boolean hasPublisher() {
+    return false;
+  }
 
-    public int getExperimentalMax() {
-      return 1;
-    }
+  public Definition setPublisher(Reference value) throws FHIRException {
+    throw new FHIRException("The pattern property 'publisher' is not supported in 'ActivityDefinition'");
+  }
 
-    public BooleanType getExperimentalElement() throws FHIRException {
-      return wrapped.getExperimentalElement();
-    }
+  public int getContactMin() {
+    return 0;
+  }
 
+  public int getContactMax() {
+    return 2147483647;
+  }
 
-    public boolean hasExperimentalElement() {
-      return wrapped.hasExperimentalElement();
-    }
+  public List<ContactDetail> getContact() throws FHIRException {
+    return wrapped.getContact();
+  }
 
+  public Definition setContact(List<ContactDetail> theContact) throws FHIRException {
 
-    public boolean hasExperimental() {
-      return wrapped.hasExperimental();
-    }
+    wrapped.setContact(theContact);
+    return this;
 
+  }
 
-    public Definition setExperimentalElement(BooleanType value) throws FHIRException {
-      wrapped.setExperimentalElement(value);
-      return this;
+  public boolean hasContact() {
+    return wrapped.hasContact();
+  }
 
-    }
+  public ContactDetail addContact() throws FHIRException {
+    throw new FHIRException("The pattern property 'contact' is not supported in 'ActivityDefinition'");
+  }
 
+  public Definition addContact(ContactDetail t) throws FHIRException {
+    throw new FHIRException("The pattern property 'contact' is not supported in 'ActivityDefinition'");
+  }
 
-    public boolean getExperimental() throws FHIRException {
-      return wrapped.getExperimental();
-    }
+  public ContactDetail getContactFirstRep() throws FHIRException {
 
-    public Definition setExperimental(boolean value) throws FHIRException {
-      wrapped.setExperimental(value);
-      return this;
+    return wrapped.getContactFirstRep();
+  }
 
-}
+  public int getDescriptionMin() {
+    return 0;
+  }
 
-    public int getSubjectMin() {
-      return 0;
-    }
+  public int getDescriptionMax() {
+    return 1;
+  }
 
-    public int getSubjectMax() {
-      return 0;
-    }
+  public MarkdownType getDescriptionElement() throws FHIRException {
+    return wrapped.getDescriptionElement();
+  }
 
-    public DataType getSubject() throws FHIRException {
-      throw new FHIRException("The pattern property 'subject[x]' is not supported in 'ActivityDefinition'");
-    }
+  public boolean hasDescriptionElement() {
+    return wrapped.hasDescriptionElement();
+  }
 
-    public CodeableConcept getSubjectCodeableConcept() throws FHIRException {
-      throw new FHIRException("The pattern property 'subject[x]' is not supported in 'ActivityDefinition'");
-    }
+  public boolean hasDescription() {
+    return wrapped.hasDescription();
+  }
 
-    public boolean hasSubjectCodeableConcept() { 
-      return false;
-    }
+  public Definition setDescriptionElement(MarkdownType value) throws FHIRException {
+    wrapped.setDescriptionElement(value);
+    return this;
 
-    public Reference getSubjectReference() throws FHIRException {
-      throw new FHIRException("The pattern property 'subject[x]' is not supported in 'ActivityDefinition'");
-    }
+  }
 
-    public boolean hasSubjectReference() { 
-      return false;
-    }
+  public String getDescription() throws FHIRException {
+    return wrapped.getDescription();
+  }
 
-    public boolean hasSubject() {
-      return false;
-    }
+  public Definition setDescription(String value) throws FHIRException {
+    wrapped.setDescription(value);
+    return this;
 
-    public Definition setSubject(DataType value) throws FHIRException {
-      throw new FHIRException("The pattern property 'subject[x]' is not supported in 'ActivityDefinition'");
-    }
+  }
 
-    public int getDateMin() {
-      return 0;
-    }
+  public int getUseContextMin() {
+    return 0;
+  }
 
-    public int getDateMax() {
-      return 1;
-    }
+  public int getUseContextMax() {
+    return 2147483647;
+  }
 
-    public DateTimeType getDateElement() throws FHIRException {
-      return wrapped.getDateElement();
-    }
+  public List<UsageContext> getUseContext() throws FHIRException {
+    return wrapped.getUseContext();
+  }
 
+  public Definition setUseContext(List<UsageContext> theUseContext) throws FHIRException {
 
-    public boolean hasDateElement() {
-      return wrapped.hasDateElement();
-    }
+    wrapped.setUseContext(theUseContext);
+    return this;
 
+  }
 
-    public boolean hasDate() {
-      return wrapped.hasDate();
-    }
+  public boolean hasUseContext() {
+    return wrapped.hasUseContext();
+  }
 
+  public UsageContext addUseContext() throws FHIRException {
+    throw new FHIRException("The pattern property 'useContext' is not supported in 'ActivityDefinition'");
+  }
 
-    public Definition setDateElement(DateTimeType value) throws FHIRException {
-      wrapped.setDateElement(value);
-      return this;
+  public Definition addUseContext(UsageContext t) throws FHIRException {
+    throw new FHIRException("The pattern property 'useContext' is not supported in 'ActivityDefinition'");
+  }
 
-    }
+  public UsageContext getUseContextFirstRep() throws FHIRException {
 
+    return wrapped.getUseContextFirstRep();
+  }
 
-    public Date getDate() throws FHIRException {
-      return wrapped.getDate();
-    }
+  public int getJurisdictionMin() {
+    return 0;
+  }
 
-    public Definition setDate(Date value) throws FHIRException {
-      wrapped.setDate(value);
-      return this;
+  public int getJurisdictionMax() {
+    return 2147483647;
+  }
 
-}
+  public List<CodeableConcept> getJurisdiction() throws FHIRException {
+    return wrapped.getJurisdiction();
+  }
 
-    public int getPublisherMin() {
-      return 0;
-    }
+  public Definition setJurisdiction(List<CodeableConcept> theJurisdiction) throws FHIRException {
 
-    public int getPublisherMax() {
-      return 0;
-    }
+    wrapped.setJurisdiction(theJurisdiction);
+    return this;
 
-    public Reference getPublisher() throws FHIRException {
-      throw new FHIRException("The pattern property 'publisher' is not supported in 'ActivityDefinition'");
-    }
+  }
 
-    public boolean hasPublisher() {
-      return false;
-    }
+  public boolean hasJurisdiction() {
+    return wrapped.hasJurisdiction();
+  }
 
-    public Definition setPublisher(Reference value) throws FHIRException {
-      throw new FHIRException("The pattern property 'publisher' is not supported in 'ActivityDefinition'");
-    }
+  public CodeableConcept addJurisdiction() throws FHIRException {
+    throw new FHIRException("The pattern property 'jurisdiction' is not supported in 'ActivityDefinition'");
+  }
 
-    public int getContactMin() {
-      return 0;
-    }
+  public Definition addJurisdiction(CodeableConcept t) throws FHIRException {
+    throw new FHIRException("The pattern property 'jurisdiction' is not supported in 'ActivityDefinition'");
+  }
 
-    public int getContactMax() {
-      return 2147483647;
-    }
+  public CodeableConcept getJurisdictionFirstRep() throws FHIRException {
 
-    public List<ContactDetail> getContact() throws FHIRException {
-      return wrapped.getContact();
-    }
+    return wrapped.getJurisdictionFirstRep();
+  }
 
-    public Definition setContact(List<ContactDetail> theContact) throws FHIRException {
+  public int getPurposeMin() {
+    return 0;
+  }
 
-      wrapped.setContact(theContact);
-      return this;
+  public int getPurposeMax() {
+    return 1;
+  }
 
-    }
+  public MarkdownType getPurposeElement() throws FHIRException {
+    return wrapped.getPurposeElement();
+  }
 
-    public boolean hasContact() {
-      return wrapped.hasContact();
-    }
+  public boolean hasPurposeElement() {
+    return wrapped.hasPurposeElement();
+  }
 
+  public boolean hasPurpose() {
+    return wrapped.hasPurpose();
+  }
 
-    public ContactDetail addContact() throws FHIRException {
-      throw new FHIRException("The pattern property 'contact' is not supported in 'ActivityDefinition'");
-    }
+  public Definition setPurposeElement(MarkdownType value) throws FHIRException {
+    wrapped.setPurposeElement(value);
+    return this;
 
+  }
 
-    public Definition addContact(ContactDetail t) throws FHIRException {
-      throw new FHIRException("The pattern property 'contact' is not supported in 'ActivityDefinition'");
-    }
+  public String getPurpose() throws FHIRException {
+    return wrapped.getPurpose();
+  }
 
+  public Definition setPurpose(String value) throws FHIRException {
+    wrapped.setPurpose(value);
+    return this;
 
-    public ContactDetail getContactFirstRep() throws FHIRException {
+  }
 
-      return wrapped.getContactFirstRep();
-    }
+  public int getCopyrightMin() {
+    return 0;
+  }
 
-    public int getDescriptionMin() {
-      return 0;
-    }
+  public int getCopyrightMax() {
+    return 1;
+  }
 
-    public int getDescriptionMax() {
-      return 1;
-    }
+  public MarkdownType getCopyrightElement() throws FHIRException {
+    return wrapped.getCopyrightElement();
+  }
 
-    public MarkdownType getDescriptionElement() throws FHIRException {
-      return wrapped.getDescriptionElement();
-    }
+  public boolean hasCopyrightElement() {
+    return wrapped.hasCopyrightElement();
+  }
 
+  public boolean hasCopyright() {
+    return wrapped.hasCopyright();
+  }
 
-    public boolean hasDescriptionElement() {
-      return wrapped.hasDescriptionElement();
-    }
+  public Definition setCopyrightElement(MarkdownType value) throws FHIRException {
+    wrapped.setCopyrightElement(value);
+    return this;
 
+  }
 
-    public boolean hasDescription() {
-      return wrapped.hasDescription();
-    }
+  public String getCopyright() throws FHIRException {
+    return wrapped.getCopyright();
+  }
 
+  public Definition setCopyright(String value) throws FHIRException {
+    wrapped.setCopyright(value);
+    return this;
 
-    public Definition setDescriptionElement(MarkdownType value) throws FHIRException {
-      wrapped.setDescriptionElement(value);
-      return this;
+  }
 
-    }
+  public int getApprovalDateMin() {
+    return 0;
+  }
 
+  public int getApprovalDateMax() {
+    return 1;
+  }
 
-    public String getDescription() throws FHIRException {
-      return wrapped.getDescription();
-    }
+  public DateType getApprovalDateElement() throws FHIRException {
+    return wrapped.getApprovalDateElement();
+  }
 
-    public Definition setDescription(String value) throws FHIRException {
-      wrapped.setDescription(value);
-      return this;
+  public boolean hasApprovalDateElement() {
+    return wrapped.hasApprovalDateElement();
+  }
 
-}
+  public boolean hasApprovalDate() {
+    return wrapped.hasApprovalDate();
+  }
 
-    public int getUseContextMin() {
-      return 0;
-    }
+  public Definition setApprovalDateElement(DateType value) throws FHIRException {
+    wrapped.setApprovalDateElement(value);
+    return this;
 
-    public int getUseContextMax() {
-      return 2147483647;
-    }
+  }
 
-    public List<UsageContext> getUseContext() throws FHIRException {
-      return wrapped.getUseContext();
-    }
+  public Date getApprovalDate() throws FHIRException {
+    return wrapped.getApprovalDate();
+  }
 
-    public Definition setUseContext(List<UsageContext> theUseContext) throws FHIRException {
+  public Definition setApprovalDate(Date value) throws FHIRException {
+    wrapped.setApprovalDate(value);
+    return this;
 
-      wrapped.setUseContext(theUseContext);
-      return this;
+  }
 
-    }
+  public int getLastReviewDateMin() {
+    return 0;
+  }
 
-    public boolean hasUseContext() {
-      return wrapped.hasUseContext();
-    }
+  public int getLastReviewDateMax() {
+    return 1;
+  }
 
+  public DateType getLastReviewDateElement() throws FHIRException {
+    return wrapped.getLastReviewDateElement();
+  }
 
-    public UsageContext addUseContext() throws FHIRException {
-      throw new FHIRException("The pattern property 'useContext' is not supported in 'ActivityDefinition'");
-    }
+  public boolean hasLastReviewDateElement() {
+    return wrapped.hasLastReviewDateElement();
+  }
 
+  public boolean hasLastReviewDate() {
+    return wrapped.hasLastReviewDate();
+  }
 
-    public Definition addUseContext(UsageContext t) throws FHIRException {
-      throw new FHIRException("The pattern property 'useContext' is not supported in 'ActivityDefinition'");
-    }
+  public Definition setLastReviewDateElement(DateType value) throws FHIRException {
+    wrapped.setLastReviewDateElement(value);
+    return this;
 
+  }
 
-    public UsageContext getUseContextFirstRep() throws FHIRException {
+  public Date getLastReviewDate() throws FHIRException {
+    return wrapped.getLastReviewDate();
+  }
 
-      return wrapped.getUseContextFirstRep();
-    }
+  public Definition setLastReviewDate(Date value) throws FHIRException {
+    wrapped.setLastReviewDate(value);
+    return this;
 
-    public int getJurisdictionMin() {
-      return 0;
-    }
+  }
 
-    public int getJurisdictionMax() {
-      return 2147483647;
-    }
+  public int getEffectivePeriodMin() {
+    return 0;
+  }
 
-    public List<CodeableConcept> getJurisdiction() throws FHIRException {
-      return wrapped.getJurisdiction();
-    }
+  public int getEffectivePeriodMax() {
+    return 1;
+  }
 
-    public Definition setJurisdiction(List<CodeableConcept> theJurisdiction) throws FHIRException {
+  public Period getEffectivePeriod() throws FHIRException {
+    return wrapped.getEffectivePeriod();
+  }
 
-      wrapped.setJurisdiction(theJurisdiction);
-      return this;
+  public boolean hasEffectivePeriod() {
+    return wrapped.hasEffectivePeriod();
+  }
 
-    }
+  public Definition setEffectivePeriod(Period value) throws FHIRException {
+    wrapped.setEffectivePeriod(value);
+    return this;
 
-    public boolean hasJurisdiction() {
-      return wrapped.hasJurisdiction();
-    }
+  }
 
+  public int getPerformerTypeMin() {
+    return 0;
+  }
 
-    public CodeableConcept addJurisdiction() throws FHIRException {
-      throw new FHIRException("The pattern property 'jurisdiction' is not supported in 'ActivityDefinition'");
-    }
+  public int getPerformerTypeMax() {
+    return 0;
+  }
 
+  public CodeableConcept getPerformerType() throws FHIRException {
+    throw new FHIRException("The pattern property 'performerType' is not supported in 'ActivityDefinition'");
+  }
 
-    public Definition addJurisdiction(CodeableConcept t) throws FHIRException {
-      throw new FHIRException("The pattern property 'jurisdiction' is not supported in 'ActivityDefinition'");
-    }
+  public boolean hasPerformerType() {
+    return false;
+  }
 
-
-    public CodeableConcept getJurisdictionFirstRep() throws FHIRException {
-
-      return wrapped.getJurisdictionFirstRep();
-    }
-
-    public int getPurposeMin() {
-      return 0;
-    }
-
-    public int getPurposeMax() {
-      return 1;
-    }
-
-    public MarkdownType getPurposeElement() throws FHIRException {
-      return wrapped.getPurposeElement();
-    }
-
-
-    public boolean hasPurposeElement() {
-      return wrapped.hasPurposeElement();
-    }
-
-
-    public boolean hasPurpose() {
-      return wrapped.hasPurpose();
-    }
-
-
-    public Definition setPurposeElement(MarkdownType value) throws FHIRException {
-      wrapped.setPurposeElement(value);
-      return this;
-
-    }
-
-
-    public String getPurpose() throws FHIRException {
-      return wrapped.getPurpose();
-    }
-
-    public Definition setPurpose(String value) throws FHIRException {
-      wrapped.setPurpose(value);
-      return this;
-
-}
-
-    public int getCopyrightMin() {
-      return 0;
-    }
-
-    public int getCopyrightMax() {
-      return 1;
-    }
-
-    public MarkdownType getCopyrightElement() throws FHIRException {
-      return wrapped.getCopyrightElement();
-    }
-
-
-    public boolean hasCopyrightElement() {
-      return wrapped.hasCopyrightElement();
-    }
-
-
-    public boolean hasCopyright() {
-      return wrapped.hasCopyright();
-    }
-
-
-    public Definition setCopyrightElement(MarkdownType value) throws FHIRException {
-      wrapped.setCopyrightElement(value);
-      return this;
-
-    }
-
-
-    public String getCopyright() throws FHIRException {
-      return wrapped.getCopyright();
-    }
-
-    public Definition setCopyright(String value) throws FHIRException {
-      wrapped.setCopyright(value);
-      return this;
-
-}
-
-    public int getApprovalDateMin() {
-      return 0;
-    }
-
-    public int getApprovalDateMax() {
-      return 1;
-    }
-
-    public DateType getApprovalDateElement() throws FHIRException {
-      return wrapped.getApprovalDateElement();
-    }
-
-
-    public boolean hasApprovalDateElement() {
-      return wrapped.hasApprovalDateElement();
-    }
-
-
-    public boolean hasApprovalDate() {
-      return wrapped.hasApprovalDate();
-    }
-
-
-    public Definition setApprovalDateElement(DateType value) throws FHIRException {
-      wrapped.setApprovalDateElement(value);
-      return this;
-
-    }
-
-
-    public Date getApprovalDate() throws FHIRException {
-      return wrapped.getApprovalDate();
-    }
-
-    public Definition setApprovalDate(Date value) throws FHIRException {
-      wrapped.setApprovalDate(value);
-      return this;
-
-}
-
-    public int getLastReviewDateMin() {
-      return 0;
-    }
-
-    public int getLastReviewDateMax() {
-      return 1;
-    }
-
-    public DateType getLastReviewDateElement() throws FHIRException {
-      return wrapped.getLastReviewDateElement();
-    }
-
-
-    public boolean hasLastReviewDateElement() {
-      return wrapped.hasLastReviewDateElement();
-    }
-
-
-    public boolean hasLastReviewDate() {
-      return wrapped.hasLastReviewDate();
-    }
-
-
-    public Definition setLastReviewDateElement(DateType value) throws FHIRException {
-      wrapped.setLastReviewDateElement(value);
-      return this;
-
-    }
-
-
-    public Date getLastReviewDate() throws FHIRException {
-      return wrapped.getLastReviewDate();
-    }
-
-    public Definition setLastReviewDate(Date value) throws FHIRException {
-      wrapped.setLastReviewDate(value);
-      return this;
-
-}
-
-    public int getEffectivePeriodMin() {
-      return 0;
-    }
-
-    public int getEffectivePeriodMax() {
-      return 1;
-    }
-
-    public Period getEffectivePeriod() throws FHIRException {
-      return wrapped.getEffectivePeriod();
-    }
-
-    public boolean hasEffectivePeriod() {
-      return wrapped.hasEffectivePeriod();
-    }
-
-    public Definition setEffectivePeriod(Period value) throws FHIRException {
-      wrapped.setEffectivePeriod(value);
-      return this;
-
-    }
-
-    public int getPerformerTypeMin() {
-      return 0;
-    }
-
-    public int getPerformerTypeMax() {
-      return 0;
-    }
-
-    public CodeableConcept getPerformerType() throws FHIRException {
-      throw new FHIRException("The pattern property 'performerType' is not supported in 'ActivityDefinition'");
-    }
-
-    public boolean hasPerformerType() {
-      return false;
-    }
-
-    public Definition setPerformerType(CodeableConcept value) throws FHIRException {
-      throw new FHIRException("The pattern property 'performerType' is not supported in 'ActivityDefinition'");
-    }
+  public Definition setPerformerType(CodeableConcept value) throws FHIRException {
+    throw new FHIRException("The pattern property 'performerType' is not supported in 'ActivityDefinition'");
+  }
 
   public String fhirType() {
-     return "ActivityDefinition";
-}
-
+    return "ActivityDefinition";
+  }
 
 }

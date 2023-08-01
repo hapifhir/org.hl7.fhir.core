@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class OrganizationTypeEnumFactory implements EnumFactory<OrganizationType> {
@@ -64,7 +60,7 @@ public class OrganizationTypeEnumFactory implements EnumFactory<OrganizationType
       return OrganizationType.BUS;
     if ("other".equals(codeString))
       return OrganizationType.OTHER;
-    throw new IllegalArgumentException("Unknown OrganizationType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown OrganizationType code '" + codeString + "'");
   }
 
   public String toCode(OrganizationType code) {
@@ -93,8 +89,8 @@ public class OrganizationTypeEnumFactory implements EnumFactory<OrganizationType
     return "?";
   }
 
-    public String toSystem(OrganizationType code) {
-      return code.getSystem();
-      }
+  public String toSystem(OrganizationType code) {
+    return code.getSystem();
+  }
 
 }

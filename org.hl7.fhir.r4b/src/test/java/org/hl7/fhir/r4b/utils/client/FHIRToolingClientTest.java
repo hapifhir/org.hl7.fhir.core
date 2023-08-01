@@ -35,35 +35,37 @@ class FHIRToolingClientTest {
     mockClient = Mockito.mock(Client.class);
     ResourceRequest<Resource> resourceResourceRequest = new ResourceRequest<>(generateBundle(), 200, "");
 
-    //GET
+    // GET
     Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
-      Mockito.any(Headers.class), Mockito.anyString(), Mockito.anyLong()))
-      .thenReturn(resourceResourceRequest);
-    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
-      Mockito.any(Headers.class), Mockito.eq("TerminologyCapabilities"), Mockito.anyLong()))
-      .thenReturn(new ResourceRequest<>(new TerminologyCapabilities(), 200, "location"));
-    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
-      Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement"), Mockito.anyLong()))
-      .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
-    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
-      Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement-Quick"), Mockito.anyLong()))
-      .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
+        Mockito.any(Headers.class), Mockito.anyString(), Mockito.anyLong())).thenReturn(resourceResourceRequest);
+    Mockito
+        .when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+            Mockito.any(Headers.class), Mockito.eq("TerminologyCapabilities"), Mockito.anyLong()))
+        .thenReturn(new ResourceRequest<>(new TerminologyCapabilities(), 200, "location"));
+    Mockito
+        .when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+            Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement"), Mockito.anyLong()))
+        .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
+    Mockito
+        .when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+            Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement-Quick"), Mockito.anyLong()))
+        .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
 
-    //PUT
+    // PUT
     Mockito.when(mockClient.issuePutRequest(Mockito.any(URI.class), Mockito.any(byte[].class), Mockito.anyString(),
-      Mockito.any(Headers.class), Mockito.anyString(), Mockito.anyLong()))
-      .thenReturn(resourceResourceRequest);
-    //POST
+        Mockito.any(Headers.class), Mockito.anyString(), Mockito.anyLong())).thenReturn(resourceResourceRequest);
+    // POST
     Mockito.when(mockClient.issuePostRequest(Mockito.any(URI.class), Mockito.any(byte[].class), Mockito.anyString(),
-      Mockito.any(Headers.class), Mockito.anyString(), Mockito.anyLong()))
-      .thenReturn(resourceResourceRequest);
-    Mockito.when(mockClient.issuePostRequest(Mockito.any(URI.class), Mockito.any(byte[].class), Mockito.anyString(),
-      Mockito.any(Headers.class), Mockito.contains("validate"), Mockito.anyLong()))
-      .thenReturn(new ResourceRequest<>(new OperationOutcome(), 200, "location"));
-    //BUNDLE REQ
-    Mockito.when(mockClient.executeBundleRequest(Mockito.any(Request.Builder.class), Mockito.anyString(),
-      Mockito.any(Headers.class), Mockito.anyString(), Mockito.anyInt(), Mockito.anyLong()))
-      .thenReturn(generateBundle());
+        Mockito.any(Headers.class), Mockito.anyString(), Mockito.anyLong())).thenReturn(resourceResourceRequest);
+    Mockito
+        .when(mockClient.issuePostRequest(Mockito.any(URI.class), Mockito.any(byte[].class), Mockito.anyString(),
+            Mockito.any(Headers.class), Mockito.contains("validate"), Mockito.anyLong()))
+        .thenReturn(new ResourceRequest<>(new OperationOutcome(), 200, "location"));
+    // BUNDLE REQ
+    Mockito
+        .when(mockClient.executeBundleRequest(Mockito.any(Request.Builder.class), Mockito.anyString(),
+            Mockito.any(Headers.class), Mockito.anyString(), Mockito.anyInt(), Mockito.anyLong()))
+        .thenReturn(generateBundle());
     toolingClient = new FHIRToolingClient(TX_ADDR, "fhir/test-cases");
     toolingClient.setClient(mockClient);
   }
@@ -84,13 +86,8 @@ class FHIRToolingClientTest {
     Bundle bundle = new Bundle();
 
     // Add the patient as an entry.
-    bundle.addEntry()
-      .setFullUrl(patient.getIdElement().getValue())
-      .setResource(patient)
-      .getRequest()
-      .setUrl("Patient")
-      .setIfNoneExist("identifier=http://acme.org/mrns|12345")
-      .setMethod(Bundle.HTTPVerb.POST);
+    bundle.addEntry().setFullUrl(patient.getIdElement().getValue()).setResource(patient).getRequest().setUrl("Patient")
+        .setIfNoneExist("identifier=http://acme.org/mrns|12345").setMethod(Bundle.HTTPVerb.POST);
 
     return bundle;
   }
@@ -98,13 +95,8 @@ class FHIRToolingClientTest {
   private Patient generatePatient() {
     // Create a patient object
     Patient patient = new Patient();
-    patient.addIdentifier()
-      .setSystem("http://acme.org/mrns")
-      .setValue("12345");
-    patient.addName()
-      .setFamily("Jameson")
-      .addGiven("J")
-      .addGiven("Jonah");
+    patient.addIdentifier().setSystem("http://acme.org/mrns").setValue("12345");
+    patient.addName().setFamily("Jameson").addGiven("J").addGiven("Jonah");
     patient.setGender(Enumerations.AdministrativeGender.MALE);
 
     // Give the patient a temporary UUID so that other resources in
@@ -116,17 +108,9 @@ class FHIRToolingClientTest {
   private Observation generateObservation() {
     // Create an observation object
     Observation observation = new Observation();
-    observation
-      .getCode()
-      .addCoding()
-      .setSystem("http://loinc.org")
-      .setCode("789-8")
-      .setDisplay("Erythrocytes [#/volume] in Blood by Automated count");
-    observation.setValue(
-      new Quantity()
-        .setValue(4.12)
-        .setUnit("10 trillion/L")
-        .setSystem("http://unitsofmeasure.org")
+    observation.getCode().addCoding().setSystem("http://loinc.org").setCode("789-8")
+        .setDisplay("Erythrocytes [#/volume] in Blood by Automated count");
+    observation.setValue(new Quantity().setValue(4.12).setUnit("10 trillion/L").setSystem("http://unitsofmeasure.org")
         .setCode("10*12/L"));
     return observation;
   }
@@ -144,7 +128,7 @@ class FHIRToolingClientTest {
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.getTerminologyCapabilities();
     Mockito.verify(mockClient).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
-      headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+        headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
@@ -156,7 +140,7 @@ class FHIRToolingClientTest {
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.getCapabilitiesStatement();
     Mockito.verify(mockClient).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
-      headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+        headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
@@ -168,7 +152,7 @@ class FHIRToolingClientTest {
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.getCapabilitiesStatementQuick();
     Mockito.verify(mockClient).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
-      headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+        headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
@@ -180,7 +164,7 @@ class FHIRToolingClientTest {
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.read(Patient.class, "id");
     Mockito.verify(mockClient).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
-      headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+        headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
@@ -192,7 +176,7 @@ class FHIRToolingClientTest {
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.vread(Patient.class, "id", "version");
     Mockito.verify(mockClient).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
-      headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+        headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
@@ -204,7 +188,7 @@ class FHIRToolingClientTest {
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.getCanonical(Patient.class, "canonicalURL");
     Mockito.verify(mockClient).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
-      headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+        headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
@@ -216,8 +200,8 @@ class FHIRToolingClientTest {
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.update(generatePatient());
     Mockito.verify(mockClient).issuePutRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.any(byte[].class),
-      ArgumentMatchers.anyString(), headersArgumentCaptor.capture(), ArgumentMatchers.anyString(),
-      ArgumentMatchers.anyLong());
+        ArgumentMatchers.anyString(), headersArgumentCaptor.capture(), ArgumentMatchers.anyString(),
+        ArgumentMatchers.anyLong());
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
@@ -229,8 +213,8 @@ class FHIRToolingClientTest {
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.validate(Patient.class, generatePatient(), "id");
     Mockito.verify(mockClient).issuePostRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.any(byte[].class),
-      ArgumentMatchers.anyString(), headersArgumentCaptor.capture(), ArgumentMatchers.anyString(),
-      ArgumentMatchers.anyLong());
+        ArgumentMatchers.anyString(), headersArgumentCaptor.capture(), ArgumentMatchers.anyString(),
+        ArgumentMatchers.anyLong());
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);

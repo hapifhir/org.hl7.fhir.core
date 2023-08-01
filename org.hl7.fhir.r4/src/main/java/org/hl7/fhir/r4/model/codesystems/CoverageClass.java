@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,140 +31,182 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CoverageClass {
 
-        /**
-         * An employee group
-         */
-        GROUP, 
-        /**
-         * A sub-group of an employee group
-         */
-        SUBGROUP, 
-        /**
-         * A specific suite of benefits.
-         */
-        PLAN, 
-        /**
-         * A subset of a specific suite of benefits.
-         */
-        SUBPLAN, 
-        /**
-         * A class of benefits.
-         */
-        CLASS, 
-        /**
-         * A subset of a class of benefits.
-         */
-        SUBCLASS, 
-        /**
-         * A sequence number associated with a short-term continuance of the coverage.
-         */
-        SEQUENCE, 
-        /**
-         * Pharmacy benefit manager's Business Identification Number.
-         */
-        RXBIN, 
-        /**
-         * A Pharmacy Benefit Manager specified Processor Control Number.
-         */
-        RXPCN, 
-        /**
-         * A Pharmacy Benefit Manager specified Member ID.
-         */
-        RXID, 
-        /**
-         * A Pharmacy Benefit Manager specified Group number.
-         */
-        RXGROUP, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static CoverageClass fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("group".equals(codeString))
-          return GROUP;
-        if ("subgroup".equals(codeString))
-          return SUBGROUP;
-        if ("plan".equals(codeString))
-          return PLAN;
-        if ("subplan".equals(codeString))
-          return SUBPLAN;
-        if ("class".equals(codeString))
-          return CLASS;
-        if ("subclass".equals(codeString))
-          return SUBCLASS;
-        if ("sequence".equals(codeString))
-          return SEQUENCE;
-        if ("rxbin".equals(codeString))
-          return RXBIN;
-        if ("rxpcn".equals(codeString))
-          return RXPCN;
-        if ("rxid".equals(codeString))
-          return RXID;
-        if ("rxgroup".equals(codeString))
-          return RXGROUP;
-        throw new FHIRException("Unknown CoverageClass code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case GROUP: return "group";
-            case SUBGROUP: return "subgroup";
-            case PLAN: return "plan";
-            case SUBPLAN: return "subplan";
-            case CLASS: return "class";
-            case SUBCLASS: return "subclass";
-            case SEQUENCE: return "sequence";
-            case RXBIN: return "rxbin";
-            case RXPCN: return "rxpcn";
-            case RXID: return "rxid";
-            case RXGROUP: return "rxgroup";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/coverage-class";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case GROUP: return "An employee group";
-            case SUBGROUP: return "A sub-group of an employee group";
-            case PLAN: return "A specific suite of benefits.";
-            case SUBPLAN: return "A subset of a specific suite of benefits.";
-            case CLASS: return "A class of benefits.";
-            case SUBCLASS: return "A subset of a class of benefits.";
-            case SEQUENCE: return "A sequence number associated with a short-term continuance of the coverage.";
-            case RXBIN: return "Pharmacy benefit manager's Business Identification Number.";
-            case RXPCN: return "A Pharmacy Benefit Manager specified Processor Control Number.";
-            case RXID: return "A Pharmacy Benefit Manager specified Member ID.";
-            case RXGROUP: return "A Pharmacy Benefit Manager specified Group number.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case GROUP: return "Group";
-            case SUBGROUP: return "SubGroup";
-            case PLAN: return "Plan";
-            case SUBPLAN: return "SubPlan";
-            case CLASS: return "Class";
-            case SUBCLASS: return "SubClass";
-            case SEQUENCE: return "Sequence";
-            case RXBIN: return "RX BIN";
-            case RXPCN: return "RX PCN";
-            case RXID: return "RX Id";
-            case RXGROUP: return "RX Group";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * An employee group
+   */
+  GROUP,
+  /**
+   * A sub-group of an employee group
+   */
+  SUBGROUP,
+  /**
+   * A specific suite of benefits.
+   */
+  PLAN,
+  /**
+   * A subset of a specific suite of benefits.
+   */
+  SUBPLAN,
+  /**
+   * A class of benefits.
+   */
+  CLASS,
+  /**
+   * A subset of a class of benefits.
+   */
+  SUBCLASS,
+  /**
+   * A sequence number associated with a short-term continuance of the coverage.
+   */
+  SEQUENCE,
+  /**
+   * Pharmacy benefit manager's Business Identification Number.
+   */
+  RXBIN,
+  /**
+   * A Pharmacy Benefit Manager specified Processor Control Number.
+   */
+  RXPCN,
+  /**
+   * A Pharmacy Benefit Manager specified Member ID.
+   */
+  RXID,
+  /**
+   * A Pharmacy Benefit Manager specified Group number.
+   */
+  RXGROUP,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static CoverageClass fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("group".equals(codeString))
+      return GROUP;
+    if ("subgroup".equals(codeString))
+      return SUBGROUP;
+    if ("plan".equals(codeString))
+      return PLAN;
+    if ("subplan".equals(codeString))
+      return SUBPLAN;
+    if ("class".equals(codeString))
+      return CLASS;
+    if ("subclass".equals(codeString))
+      return SUBCLASS;
+    if ("sequence".equals(codeString))
+      return SEQUENCE;
+    if ("rxbin".equals(codeString))
+      return RXBIN;
+    if ("rxpcn".equals(codeString))
+      return RXPCN;
+    if ("rxid".equals(codeString))
+      return RXID;
+    if ("rxgroup".equals(codeString))
+      return RXGROUP;
+    throw new FHIRException("Unknown CoverageClass code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case GROUP:
+      return "group";
+    case SUBGROUP:
+      return "subgroup";
+    case PLAN:
+      return "plan";
+    case SUBPLAN:
+      return "subplan";
+    case CLASS:
+      return "class";
+    case SUBCLASS:
+      return "subclass";
+    case SEQUENCE:
+      return "sequence";
+    case RXBIN:
+      return "rxbin";
+    case RXPCN:
+      return "rxpcn";
+    case RXID:
+      return "rxid";
+    case RXGROUP:
+      return "rxgroup";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/coverage-class";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case GROUP:
+      return "An employee group";
+    case SUBGROUP:
+      return "A sub-group of an employee group";
+    case PLAN:
+      return "A specific suite of benefits.";
+    case SUBPLAN:
+      return "A subset of a specific suite of benefits.";
+    case CLASS:
+      return "A class of benefits.";
+    case SUBCLASS:
+      return "A subset of a class of benefits.";
+    case SEQUENCE:
+      return "A sequence number associated with a short-term continuance of the coverage.";
+    case RXBIN:
+      return "Pharmacy benefit manager's Business Identification Number.";
+    case RXPCN:
+      return "A Pharmacy Benefit Manager specified Processor Control Number.";
+    case RXID:
+      return "A Pharmacy Benefit Manager specified Member ID.";
+    case RXGROUP:
+      return "A Pharmacy Benefit Manager specified Group number.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case GROUP:
+      return "Group";
+    case SUBGROUP:
+      return "SubGroup";
+    case PLAN:
+      return "Plan";
+    case SUBPLAN:
+      return "SubPlan";
+    case CLASS:
+      return "Class";
+    case SUBCLASS:
+      return "SubClass";
+    case SEQUENCE:
+      return "Sequence";
+    case RXBIN:
+      return "RX BIN";
+    case RXPCN:
+      return "RX PCN";
+    case RXID:
+      return "RX Id";
+    case RXGROUP:
+      return "RX Group";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

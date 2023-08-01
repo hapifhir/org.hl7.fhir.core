@@ -3,13 +3,10 @@ package org.hl7.fhir.convertors.conv43_50.resources43_50;
 import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Coding43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Decimal43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Integer43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 

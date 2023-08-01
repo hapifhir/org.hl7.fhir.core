@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,88 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExpansionProcessingRule {
 
-        /**
-         * The expansion (when in UI mode) includes all codes *and* any defined groups (in extensions).
-         */
-        ALLCODES, 
-        /**
-         * The expanion (when in UI mode) lists the groups, and then any codes that have not been included in a group.
-         */
-        UNGROUPED, 
-        /**
-         * The expansion (when in UI mode) only includes the defined groups.
-         */
-        GROUPSONLY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ExpansionProcessingRule fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("all-codes".equals(codeString))
-          return ALLCODES;
-        if ("ungrouped".equals(codeString))
-          return UNGROUPED;
-        if ("groups-only".equals(codeString))
-          return GROUPSONLY;
-        throw new FHIRException("Unknown ExpansionProcessingRule code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ALLCODES: return "all-codes";
-            case UNGROUPED: return "ungrouped";
-            case GROUPSONLY: return "groups-only";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/expansion-processing-rule";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ALLCODES: return "The expansion (when in UI mode) includes all codes *and* any defined groups (in extensions).";
-            case UNGROUPED: return "The expanion (when in UI mode) lists the groups, and then any codes that have not been included in a group.";
-            case GROUPSONLY: return "The expansion (when in UI mode) only includes the defined groups.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ALLCODES: return "All Codes";
-            case UNGROUPED: return "Groups + Ungrouped codes";
-            case GROUPSONLY: return "Groups Only";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The expansion (when in UI mode) includes all codes *and* any defined groups
+   * (in extensions).
+   */
+  ALLCODES,
+  /**
+   * The expanion (when in UI mode) lists the groups, and then any codes that have
+   * not been included in a group.
+   */
+  UNGROUPED,
+  /**
+   * The expansion (when in UI mode) only includes the defined groups.
+   */
+  GROUPSONLY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ExpansionProcessingRule fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("all-codes".equals(codeString))
+      return ALLCODES;
+    if ("ungrouped".equals(codeString))
+      return UNGROUPED;
+    if ("groups-only".equals(codeString))
+      return GROUPSONLY;
+    throw new FHIRException("Unknown ExpansionProcessingRule code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ALLCODES:
+      return "all-codes";
+    case UNGROUPED:
+      return "ungrouped";
+    case GROUPSONLY:
+      return "groups-only";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/expansion-processing-rule";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ALLCODES:
+      return "The expansion (when in UI mode) includes all codes *and* any defined groups (in extensions).";
+    case UNGROUPED:
+      return "The expanion (when in UI mode) lists the groups, and then any codes that have not been included in a group.";
+    case GROUPSONLY:
+      return "The expansion (when in UI mode) only includes the defined groups.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ALLCODES:
+      return "All Codes";
+    case UNGROUPED:
+      return "Groups + Ungrouped codes";
+    case GROUPSONLY:
+      return "Groups Only";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

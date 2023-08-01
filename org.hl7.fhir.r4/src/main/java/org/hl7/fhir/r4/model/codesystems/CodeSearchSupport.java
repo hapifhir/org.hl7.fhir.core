@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,76 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CodeSearchSupport {
 
-        /**
-         * The search for code on ValueSet only includes codes explicitly detailed on includes or expansions.
-         */
-        EXPLICIT, 
-        /**
-         * The search for code on ValueSet only includes all codes based on the expansion of the value set.
-         */
-        ALL, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static CodeSearchSupport fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("explicit".equals(codeString))
-          return EXPLICIT;
-        if ("all".equals(codeString))
-          return ALL;
-        throw new FHIRException("Unknown CodeSearchSupport code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case EXPLICIT: return "explicit";
-            case ALL: return "all";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/code-search-support";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case EXPLICIT: return "The search for code on ValueSet only includes codes explicitly detailed on includes or expansions.";
-            case ALL: return "The search for code on ValueSet only includes all codes based on the expansion of the value set.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case EXPLICIT: return "Explicit Codes";
-            case ALL: return "Implicit Codes";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The search for code on ValueSet only includes codes explicitly detailed on
+   * includes or expansions.
+   */
+  EXPLICIT,
+  /**
+   * The search for code on ValueSet only includes all codes based on the
+   * expansion of the value set.
+   */
+  ALL,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static CodeSearchSupport fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("explicit".equals(codeString))
+      return EXPLICIT;
+    if ("all".equals(codeString))
+      return ALL;
+    throw new FHIRException("Unknown CodeSearchSupport code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case EXPLICIT:
+      return "explicit";
+    case ALL:
+      return "all";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/code-search-support";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case EXPLICIT:
+      return "The search for code on ValueSet only includes codes explicitly detailed on includes or expansions.";
+    case ALL:
+      return "The search for code on ValueSet only includes all codes based on the expansion of the value set.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case EXPLICIT:
+      return "Explicit Codes";
+    case ALL:
+      return "Implicit Codes";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

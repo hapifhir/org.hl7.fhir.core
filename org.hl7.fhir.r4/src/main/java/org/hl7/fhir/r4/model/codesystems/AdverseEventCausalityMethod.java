@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AdverseEventCausalityMethod {
 
-        /**
-         * null
-         */
-        PROBABILITYSCALE, 
-        /**
-         * null
-         */
-        BAYESIAN, 
-        /**
-         * null
-         */
-        CHECKLIST, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static AdverseEventCausalityMethod fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("ProbabilityScale".equals(codeString))
-          return PROBABILITYSCALE;
-        if ("Bayesian".equals(codeString))
-          return BAYESIAN;
-        if ("Checklist".equals(codeString))
-          return CHECKLIST;
-        throw new FHIRException("Unknown AdverseEventCausalityMethod code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PROBABILITYSCALE: return "ProbabilityScale";
-            case BAYESIAN: return "Bayesian";
-            case CHECKLIST: return "Checklist";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/adverse-event-causality-method";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PROBABILITYSCALE: return "";
-            case BAYESIAN: return "";
-            case CHECKLIST: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PROBABILITYSCALE: return "Probability Scale";
-            case BAYESIAN: return "Bayesian";
-            case CHECKLIST: return "Checklist";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  PROBABILITYSCALE,
+  /**
+   * null
+   */
+  BAYESIAN,
+  /**
+   * null
+   */
+  CHECKLIST,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static AdverseEventCausalityMethod fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("ProbabilityScale".equals(codeString))
+      return PROBABILITYSCALE;
+    if ("Bayesian".equals(codeString))
+      return BAYESIAN;
+    if ("Checklist".equals(codeString))
+      return CHECKLIST;
+    throw new FHIRException("Unknown AdverseEventCausalityMethod code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PROBABILITYSCALE:
+      return "ProbabilityScale";
+    case BAYESIAN:
+      return "Bayesian";
+    case CHECKLIST:
+      return "Checklist";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/adverse-event-causality-method";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PROBABILITYSCALE:
+      return "";
+    case BAYESIAN:
+      return "";
+    case CHECKLIST:
+      return "";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PROBABILITYSCALE:
+      return "Probability Scale";
+    case BAYESIAN:
+      return "Bayesian";
+    case CHECKLIST:
+      return "Checklist";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3EmployeeJobClass {
 
-        /**
-         * Employment in which the employee is expected to work at least a standard work week (defined by the US Bureau of Labor Statistics as 35-44 hours per week)
-         */
-        FT, 
-        /**
-         * Employment in which the employee is expected to work less than a standard work week (defined by the US Bureau of Labor Statistics as 35-44 hours per week)
-         */
-        PT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static V3EmployeeJobClass fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("FT".equals(codeString))
-          return FT;
-        if ("PT".equals(codeString))
-          return PT;
-        throw new FHIRException("Unknown V3EmployeeJobClass code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case FT: return "FT";
-            case PT: return "PT";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/v3-EmployeeJobClass";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case FT: return "Employment in which the employee is expected to work at least a standard work week (defined by the US Bureau of Labor Statistics as 35-44 hours per week)";
-            case PT: return "Employment in which the employee is expected to work less than a standard work week (defined by the US Bureau of Labor Statistics as 35-44 hours per week)";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case FT: return "full-time";
-            case PT: return "part-time";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Employment in which the employee is expected to work at least a standard work
+   * week (defined by the US Bureau of Labor Statistics as 35-44 hours per week)
+   */
+  FT,
+  /**
+   * Employment in which the employee is expected to work less than a standard
+   * work week (defined by the US Bureau of Labor Statistics as 35-44 hours per
+   * week)
+   */
+  PT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static V3EmployeeJobClass fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("FT".equals(codeString))
+      return FT;
+    if ("PT".equals(codeString))
+      return PT;
+    throw new FHIRException("Unknown V3EmployeeJobClass code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case FT:
+      return "FT";
+    case PT:
+      return "PT";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/v3-EmployeeJobClass";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case FT:
+      return "Employment in which the employee is expected to work at least a standard work week (defined by the US Bureau of Labor Statistics as 35-44 hours per week)";
+    case PT:
+      return "Employment in which the employee is expected to work less than a standard work week (defined by the US Bureau of Labor Statistics as 35-44 hours per week)";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case FT:
+      return "full-time";
+    case PT:
+      return "part-time";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

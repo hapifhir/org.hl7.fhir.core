@@ -29,13 +29,9 @@ package org.hl7.fhir.r4b.openapi;
   
  */
 
-
-
-
 import com.google.gson.JsonObject;
 
 public class PathItemWriter extends BaseWriter {
-
 
   public PathItemWriter(JsonObject object) {
     super(object);
@@ -43,18 +39,16 @@ public class PathItemWriter extends BaseWriter {
 
   public PathItemWriter summary(String value) {
     object.addProperty("summary", value);
-    return this;            
+    return this;
   }
-  
+
   public PathItemWriter description(String value) {
     object.addProperty("description", value);
-    return this;            
+    return this;
   }
 
   public OperationWriter operation(String op) {
-    return new OperationWriter(ensureMapObject(op));     
+    return new OperationWriter(ensureMapObject(op));
   }
 
-  
-  
 }

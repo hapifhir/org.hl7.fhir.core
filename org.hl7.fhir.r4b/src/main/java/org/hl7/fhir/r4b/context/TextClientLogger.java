@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.context;
   
  */
 
-
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
@@ -43,7 +41,7 @@ import org.hl7.fhir.utilities.Utilities;
 public class TextClientLogger extends BaseLogger implements ToolingClientLogger {
 
   private PrintStream file;
-  
+
   public TextClientLogger(String log) {
     if (log != null) {
       try {
@@ -58,9 +56,9 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
     if (file == null)
       return;
     String id = nextId();
-    file.println("\r\n--- "+id+" -----------------\r\nRequest: \r\n");
-    file.println(method+" "+url+" HTTP/1.0");
-    for (String s : headers)  
+    file.println("\r\n--- " + id + " -----------------\r\nRequest: \r\n");
+    file.println(method + " " + url + " HTTP/1.0");
+    for (String s : headers)
       file.println(Utilities.escapeXml(s));
     if (body != null) {
       file.println("");
@@ -77,7 +75,7 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
       return;
     file.println("\r\n\r\nResponse: \r\n");
     file.println(outcome);
-    for (String s : headers)  
+    for (String s : headers)
       file.println(Utilities.escapeXml(s));
     if (body != null) {
       file.println("");

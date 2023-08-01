@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
-import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
@@ -9,7 +8,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Range3
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.SimpleQuantity30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Instant30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Observation30_50 {

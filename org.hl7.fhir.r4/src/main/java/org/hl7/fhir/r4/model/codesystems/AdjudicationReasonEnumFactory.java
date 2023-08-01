@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class AdjudicationReasonEnumFactory implements EnumFactory<AdjudicationReason> {
@@ -46,7 +42,7 @@ public class AdjudicationReasonEnumFactory implements EnumFactory<AdjudicationRe
       return AdjudicationReason.AR001;
     if ("ar002".equals(codeString))
       return AdjudicationReason.AR002;
-    throw new IllegalArgumentException("Unknown AdjudicationReason code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown AdjudicationReason code '" + codeString + "'");
   }
 
   public String toCode(AdjudicationReason code) {
@@ -57,8 +53,8 @@ public class AdjudicationReasonEnumFactory implements EnumFactory<AdjudicationRe
     return "?";
   }
 
-    public String toSystem(AdjudicationReason code) {
-      return code.getSystem();
-      }
+  public String toSystem(AdjudicationReason code) {
+    return code.getSystem();
+  }
 
 }

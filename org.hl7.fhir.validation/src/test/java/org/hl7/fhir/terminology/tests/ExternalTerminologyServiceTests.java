@@ -22,12 +22,10 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
-
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;

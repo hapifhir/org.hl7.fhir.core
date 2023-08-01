@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,87 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MediaType {
 
-        /**
-         * The media consists of one or more unmoving images, including photographs, computer-generated graphs and charts, and scanned documents
-         */
-        IMAGE, 
-        /**
-         * The media consists of a series of frames that capture a moving image
-         */
-        VIDEO, 
-        /**
-         * The media consists of a sound recording
-         */
-        AUDIO, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MediaType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("image".equals(codeString))
-          return IMAGE;
-        if ("video".equals(codeString))
-          return VIDEO;
-        if ("audio".equals(codeString))
-          return AUDIO;
-        throw new FHIRException("Unknown MediaType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case IMAGE: return "image";
-            case VIDEO: return "video";
-            case AUDIO: return "audio";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/media-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case IMAGE: return "The media consists of one or more unmoving images, including photographs, computer-generated graphs and charts, and scanned documents";
-            case VIDEO: return "The media consists of a series of frames that capture a moving image";
-            case AUDIO: return "The media consists of a sound recording";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case IMAGE: return "Image";
-            case VIDEO: return "Video";
-            case AUDIO: return "Audio";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The media consists of one or more unmoving images, including photographs,
+   * computer-generated graphs and charts, and scanned documents
+   */
+  IMAGE,
+  /**
+   * The media consists of a series of frames that capture a moving image
+   */
+  VIDEO,
+  /**
+   * The media consists of a sound recording
+   */
+  AUDIO,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MediaType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("image".equals(codeString))
+      return IMAGE;
+    if ("video".equals(codeString))
+      return VIDEO;
+    if ("audio".equals(codeString))
+      return AUDIO;
+    throw new FHIRException("Unknown MediaType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case IMAGE:
+      return "image";
+    case VIDEO:
+      return "video";
+    case AUDIO:
+      return "audio";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/media-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case IMAGE:
+      return "The media consists of one or more unmoving images, including photographs, computer-generated graphs and charts, and scanned documents";
+    case VIDEO:
+      return "The media consists of a series of frames that capture a moving image";
+    case AUDIO:
+      return "The media consists of a sound recording";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case IMAGE:
+      return "Image";
+    case VIDEO:
+      return "Video";
+    case AUDIO:
+      return "Audio";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

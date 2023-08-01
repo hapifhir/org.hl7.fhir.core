@@ -29,7 +29,7 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
   public OperationOutcomeRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
-  
+
   public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (OperationOutcome) dr);
   }
@@ -44,7 +44,8 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
     if (success)
       x.para().tx("All OK");
     if (op.getIssue().size() > 0) {
-      XhtmlNode tbl = x.table("grid"); // on the basis that we'll most likely be rendered using the standard fhir css, but it doesn't really matter
+      XhtmlNode tbl = x.table("grid"); // on the basis that we'll most likely be rendered using the standard fhir css,
+                                       // but it doesn't really matter
       XhtmlNode tr = tbl.tr();
       tr.td().b().tx("Severity");
       tr.td().b().tx("Location");
@@ -99,7 +100,7 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
   public static String toString(OperationOutcome oo) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (OperationOutcomeIssueComponent issue : oo.getIssue()) {
-      b.append(issue.getSeverity().toCode()+": "+issue.getDetails().getText());
+      b.append(issue.getSeverity().toCode() + ": " + issue.getDetails().getText());
     }
     return b.toString();
   }

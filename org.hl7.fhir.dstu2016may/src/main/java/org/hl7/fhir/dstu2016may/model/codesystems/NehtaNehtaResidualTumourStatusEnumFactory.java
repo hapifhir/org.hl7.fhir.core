@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class NehtaNehtaResidualTumourStatusEnumFactory implements EnumFactory<NehtaNehtaResidualTumourStatus> {
@@ -48,7 +44,7 @@ public class NehtaNehtaResidualTumourStatusEnumFactory implements EnumFactory<Ne
       return NehtaNehtaResidualTumourStatus.R1;
     if ("r2".equals(codeString))
       return NehtaNehtaResidualTumourStatus.R2;
-    throw new IllegalArgumentException("Unknown NehtaNehtaResidualTumourStatus code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown NehtaNehtaResidualTumourStatus code '" + codeString + "'");
   }
 
   public String toCode(NehtaNehtaResidualTumourStatus code) {
@@ -61,8 +57,8 @@ public class NehtaNehtaResidualTumourStatusEnumFactory implements EnumFactory<Ne
     return "?";
   }
 
-    public String toSystem(NehtaNehtaResidualTumourStatus code) {
-      return code.getSystem();
-      }
+  public String toSystem(NehtaNehtaResidualTumourStatus code) {
+    return code.getSystem();
+  }
 
 }

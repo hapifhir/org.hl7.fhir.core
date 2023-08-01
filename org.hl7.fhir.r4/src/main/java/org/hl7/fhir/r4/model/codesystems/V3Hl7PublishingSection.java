@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,97 +31,144 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3Hl7PublishingSection {
 
-        /**
-         * Description: Represents the HL7 V3 publishing section that deals with the administration and management of health care activities and organizations.
+  /**
+   * Description: Represents the HL7 V3 publishing section that deals with the
+   * administration and management of health care activities and organizations.
+   * 
+   * 
+   * UsageNote: V3 Specifications are published in a set of "domains", which
+   * contain interactions and related specifications for a single area of health
+   * care within which can be supported by a single, coherent set of
+   * interoperability specifications.
+   * 
+   * For publishing purposes, these domains are aggregated into sub-sections of
+   * related health care areas and these sub-sections are further aggregated into
+   * three major sets.
+   */
+  AM,
+  /**
+   * Description: Represents the HL7 V3 publishing section that deals with the
+   * health care provision and clinical management.
+   * 
+   * 
+   * UsageNote: V3 Specifications are published in a set of "domains", which
+   * contain interactions and related specifications for a single area of health
+   * care within which can be supported by a single, coherent set of
+   * interoperability specifications.
+   * 
+   * For publishing purposes, these domains are aggregated into sub-sections of
+   * related health care areas and these sub-sections are further aggregated into
+   * three major sets.
+   */
+  HM,
+  /**
+   * Description: Represents the HL7 V3 publishing section that deals with the
+   * definition and management of the computing and communication infrastructure
+   * necessary to support health care.
+   * 
+   * 
+   * UsageNote: V3 Specifications are published in a set of "domains", which
+   * contain interactions and related specifications for a single area of health
+   * care within which can be supported by a single, coherent set of
+   * interoperability specifications.
+   * 
+   * For publishing purposes, these domains are aggregated into sub-sections of
+   * related health care areas and these sub-sections are further aggregated into
+   * three major sets.
+   */
+  IM,
+  /**
+   * Description: Represents the HL7 V3 publishing section that holds
+   * specifications that are unassigned - that have not yet been assigned to one
+   * of the formal publishing sections.
+   * 
+   * 
+   * UsageNote: V3 Specifications are published in a set of "domains", which
+   * contain interactions and related specifications for a single area of health
+   * care within which can be supported by a single, coherent set of
+   * interoperability specifications.
+   * 
+   * For publishing purposes, these domains are aggregated into sub-sections of
+   * related health care areas and these sub-sections are further aggregated into
+   * three major sets.
+   */
+  UU,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
-                        
-                           UsageNote: V3 Specifications are published in a set of "domains", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.
+  public static V3Hl7PublishingSection fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("AM".equals(codeString))
+      return AM;
+    if ("HM".equals(codeString))
+      return HM;
+    if ("IM".equals(codeString))
+      return IM;
+    if ("UU".equals(codeString))
+      return UU;
+    throw new FHIRException("Unknown V3Hl7PublishingSection code '" + codeString + "'");
+  }
 
-                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.
-         */
-        AM, 
-        /**
-         * Description: Represents the HL7 V3 publishing section that deals with the health care provision and clinical management.
-
-                        
-                           UsageNote: V3 Specifications are published in a set of "domains", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.
-
-                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.
-         */
-        HM, 
-        /**
-         * Description: Represents the HL7 V3 publishing section that deals with the definition and management of the computing and communication infrastructure necessary to support health care.
-
-                        
-                           UsageNote: V3 Specifications are published in a set of "domains", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.
-
-                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.
-         */
-        IM, 
-        /**
-         * Description: Represents the HL7 V3 publishing section that holds specifications that are unassigned - that have not yet been assigned to one of the formal publishing sections.
-
-                        
-                           UsageNote: V3 Specifications are published in a set of "domains", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.
-
-                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.
-         */
-        UU, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static V3Hl7PublishingSection fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("AM".equals(codeString))
-          return AM;
-        if ("HM".equals(codeString))
-          return HM;
-        if ("IM".equals(codeString))
-          return IM;
-        if ("UU".equals(codeString))
-          return UU;
-        throw new FHIRException("Unknown V3Hl7PublishingSection code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case AM: return "AM";
-            case HM: return "HM";
-            case IM: return "IM";
-            case UU: return "UU";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/v3-hl7PublishingSection";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case AM: return "Description: Represents the HL7 V3 publishing section that deals with the administration and management of health care activities and organizations.\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.\r\n\n                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.";
-            case HM: return "Description: Represents the HL7 V3 publishing section that deals with the health care provision and clinical management.\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.\r\n\n                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.";
-            case IM: return "Description: Represents the HL7 V3 publishing section that deals with the definition and management of the computing and communication infrastructure necessary to support health care.\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.\r\n\n                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.";
-            case UU: return "Description: Represents the HL7 V3 publishing section that holds specifications that are unassigned - that have not yet been assigned to one of the formal publishing sections.\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.\r\n\n                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case AM: return "administrative management";
-            case HM: return "health and clinical management";
-            case IM: return "infrastructure management";
-            case UU: return "unknown";
-            case NULL: return null;
-            default: return "?";
-          }
+  public String toCode() {
+    switch (this) {
+    case AM:
+      return "AM";
+    case HM:
+      return "HM";
+    case IM:
+      return "IM";
+    case UU:
+      return "UU";
+    case NULL:
+      return null;
+    default:
+      return "?";
     }
+  }
 
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/v3-hl7PublishingSection";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case AM:
+      return "Description: Represents the HL7 V3 publishing section that deals with the administration and management of health care activities and organizations.\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.\r\n\n                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.";
+    case HM:
+      return "Description: Represents the HL7 V3 publishing section that deals with the health care provision and clinical management.\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.\r\n\n                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.";
+    case IM:
+      return "Description: Represents the HL7 V3 publishing section that deals with the definition and management of the computing and communication infrastructure necessary to support health care.\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.\r\n\n                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.";
+    case UU:
+      return "Description: Represents the HL7 V3 publishing section that holds specifications that are unassigned - that have not yet been assigned to one of the formal publishing sections.\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.\r\n\n                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case AM:
+      return "administrative management";
+    case HM:
+      return "health and clinical management";
+    case IM:
+      return "infrastructure management";
+    case UU:
+      return "unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

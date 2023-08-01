@@ -2,7 +2,6 @@ package org.hl7.fhir.validation;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -78,17 +77,21 @@ import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
-import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.IniFile;
+import org.hl7.fhir.utilities.SIDUtilities;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
-import org.hl7.fhir.validation.ValidationEngine.IValidationEngineLoader;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.services.IPackageInstaller;
@@ -212,6 +215,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean doImplicitFHIRPathStringConversion;
   @Getter @Setter private HtmlInMarkdownCheck htmlInMarkdownCheck;
   @Getter @Setter private boolean allowDoubleQuotesInFHIRPath;
+  @Getter @Setter private boolean checkIPSCodes;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
@@ -264,6 +268,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
     htmlInMarkdownCheck = other.htmlInMarkdownCheck;
     allowDoubleQuotesInFHIRPath = other.allowDoubleQuotesInFHIRPath;
+    checkIPSCodes = other.checkIPSCodes;
     locale = other.locale;
     igs.addAll(other.igs);
     extensionDomains.addAll(other.extensionDomains);
@@ -594,7 +599,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
           try {
             loader.load(ref.getCnt());
           } catch (Throwable t) {
-            System.out.println(t.getMessage());
+            if (debug) {
+               System.out.println("Error during round 1 scanning: "+t.getMessage());
+            }
           }
         }
       }
@@ -851,6 +858,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setAllowDoubleQuotesInFHIRPath(allowDoubleQuotesInFHIRPath);
     validator.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
     validator.setDoImplicitFHIRPathStringConversion(doImplicitFHIRPathStringConversion);
+    validator.setCheckIPSCodes(checkIPSCodes);
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }
@@ -1104,7 +1112,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical) throws FHIRException {
     // some of this logic might take a while, and it's not going to change once loaded
     if (resolvedUrls .containsKey(type+"|"+url)) {
       return resolvedUrls.get(type+"|"+url);
@@ -1146,7 +1154,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     if (fetcher != null) {
       try {
-        boolean ok = fetcher.resolveURL(validator, appContext, path, url, type);
+        boolean ok = fetcher.resolveURL(validator, appContext, path, url, type, canonical);
         resolvedUrls.put(type+"|"+url, ok);
         return ok;
       } catch (Exception e) {

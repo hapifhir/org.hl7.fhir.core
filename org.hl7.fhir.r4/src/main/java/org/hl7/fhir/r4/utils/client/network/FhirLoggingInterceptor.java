@@ -1,15 +1,20 @@
 package org.hl7.fhir.r4.utils.client.network;
 
-import okhttp3.*;
-import okio.Buffer;
-
-import org.hl7.fhir.utilities.ToolingClientLogger;
-
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nonnull;
+
+import org.hl7.fhir.utilities.ToolingClientLogger;
+
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.Buffer;
 
 public class FhirLoggingInterceptor implements Interceptor {
 

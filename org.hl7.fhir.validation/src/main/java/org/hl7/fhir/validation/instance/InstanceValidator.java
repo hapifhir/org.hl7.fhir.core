@@ -54,6 +54,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
@@ -111,6 +113,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.model.Extension;
@@ -185,6 +188,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
+import org.hl7.fhir.validation.codesystem.CodingsObserver;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.ConceptMapValidator;
@@ -368,10 +372,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       if (externalHostServices != null) {
-        return externalHostServices.resolveReference(c.getAppContext(), url, refContext);
+        return setParentsBase(externalHostServices.resolveReference(c.getAppContext(), url, refContext));
       } else if (fetcher != null) {
         try {
-          return fetcher.fetch(InstanceValidator.this, c.getAppContext(), url);
+          return setParents(fetcher.fetch(InstanceValidator.this, c.getAppContext(), url));
         } catch (IOException e) {
           throw new FHIRException(e);
         }
@@ -504,8 +508,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private ValidationOptions baseOptions = new ValidationOptions();
   private Map<String, CanonicalResourceLookupResult> crLookups = new HashMap<>();
   private boolean logProgress;
+  private CodingsObserver codingObserver;
 
-  public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices, XVerExtensionManager xverManager) {
+  public InstanceValidator(@Nonnull IWorkerContext theContext, @Nonnull IEvaluationContext hostServices, @Nonnull XVerExtensionManager xverManager) {
     super(theContext, xverManager, false);
     start = System.currentTimeMillis();
     this.externalHostServices = hostServices;
@@ -518,6 +523,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     source = Source.InstanceValidator;
     fpe.setDoNotEnforceAsSingletonRule(!VersionUtilities.isR5VerOrLater(theContext.getVersion()));
     fpe.setAllowDoubleQuotes(allowDoubleQuotesInFHIRPath);
+    codingObserver = new CodingsObserver(theContext, xverManager, debug);
   }
 
   @Override
@@ -911,6 +917,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (hintAboutNonMustSupport) {
       checkElementUsage(errors, element, stack);
     }
+    codingObserver.finish(errors, stack);
     errors.removeAll(messagesToRemove);
     timeTracker.overall(t);
     if (DEBUG_ELEMENT) {
@@ -1069,7 +1076,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }           
         } 
         if (!isAllowExamples() || !Utilities.startsWithInList(system, "http://example.org", "https://example.org")) {
-          hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
+          CodeSystem cs = context.fetchCodeSystem(system);
+          if (cs == null) {
+            hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
+          } else {
+            if (hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, cs.getContent() != CodeSystemContentMode.NOTPRESENT, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOT_USABLE, system)) {
+              rule(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, false, "Error - this should not happen? (Consult GG)"); 
+            }
+          }
         }
         return true;
       } catch (Exception e) {
@@ -2373,6 +2387,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = false;
         }
       }
+      Set<String> badChars = new HashSet<>();
+      for (char ch : e.primitiveValue().toCharArray()) {
+        if (ch < 32 && !(ch == '\r' || ch == '\n' || ch == '\t')) {
+          // can't get to here with xml - the parser fails if you try
+          badChars.add(Integer.toHexString(ch));
+        }        
+      }
+      warningPlural(errors, "2023-07-26", IssueType.INVALID, e.line(), e.col(), path, badChars.isEmpty(), badChars.size(), I18nConstants.UNICODE_XML_BAD_CHARS, badChars.toString());      
     }
     String regex = context.getExtensionString(ToolingExtensions.EXT_REGEX);
     // there's a messy history here - this extension snhould only be on the element definition itself, but for historical reasons 
@@ -2744,7 +2766,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) /* || (url.startsWith("http://hl7.org/fhir/tools")) */ || 
             SpecialExtensions.isKnownExtension(url) || isXverUrl(url);
         if (!found) {
-          found = fetcher.resolveURL(this, hostContext, path, url, type);
+          found = fetcher.resolveURL(this, hostContext, path, url, type, type.equals("canonical"));
         }
       } catch (IOException e1) {
         found = false;
@@ -5620,11 +5642,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean checkDisplay = true;
 
     SpecialElement special = ei.getElement().getSpecial();
-    if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.BUNDLE_ISSUES || special == SpecialElement.PARAMETER) {
-      ok = checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, ei.getElement(), ei.getElement(), localStack, false) && ok;
-    } else {
-      ok = checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, resource, ei.getElement(), localStack, false) && ok;
-    }
+    // this used to say
+    //   if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.BUNDLE_ISSUES || special == SpecialElement.PARAMETER) {
+    //      ok = checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, ei.getElement(), ei.getElement(), localStack, false) && ok;
+    // but this isn't correct - when the invariant is on the element, the invariant is in the context of the resource that contains the element.
+    // changed 18-Jul 2023 - see https://chat.fhir.org/#narrow/stream/179266-fhirpath/topic/FHIRPath.20.25resource.20variable
+    ok = checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, resource, ei.getElement(), localStack, false) && ok;
 
     ei.getElement().markValidation(profile, checkDefn);
     boolean elementValidated = false;
@@ -5770,8 +5793,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       int index = profile.getSnapshot().getElement().indexOf(checkDefn);
       if (index < profile.getSnapshot().getElement().size() - 1) {
         String nextPath = profile.getSnapshot().getElement().get(index + 1).getPath();
-        if (!nextPath.equals(checkDefn.getPath()) && nextPath.startsWith(checkDefn.getPath()))
-          ok = validateElement(hostContext, errors, profile, checkDefn, null, null, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension, pct, mode) && ok;
+        if (!nextPath.equals(checkDefn.getPath()) && nextPath.startsWith(checkDefn.getPath())) {
+          if (ei.getElement().getSpecial() == SpecialElement.BUNDLE_ENTRY || ei.getElement().getSpecial() == SpecialElement.BUNDLE_OUTCOME || ei.getElement().getSpecial() == SpecialElement.PARAMETER) {
+            ok = validateElement(hostContext.forEntry(ei.getElement(), null), errors, profile, checkDefn, null, null, ei.getElement(), ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension, pct, mode) && ok;                        
+          } else if (ei.getElement().getSpecial() == SpecialElement.CONTAINED) {
+            ok = validateElement(hostContext.forContained(ei.getElement()), errors, profile, checkDefn, null, null, ei.getElement(), ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension, pct, mode) && ok;            
+          } else {
+            ok = validateElement(hostContext, errors, profile, checkDefn, null, null, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension, pct, mode) && ok;            
+          }
+        }
       }
     }
     return ok;
@@ -6501,10 +6531,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (lang == null) {
       lang = "en"; // ubiquitious default languauge
     }
+    codingObserver.seeCode(stack, system, version, code, display);
     return context.validateCode(baseOptions.withLanguage(lang), system, version, code, checkDisplay ? display : null);
   }
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c, boolean checkMembership) {
+    codingObserver.seeCode(stack, c);
     if (checkMembership) {
       return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), c, valueset);   
     } else {
@@ -6513,6 +6545,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
   
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc, boolean vsOnly) {
+    codingObserver.seeCode(stack, cc);
     if (vsOnly) {
       return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), cc, valueset);
     } else {
@@ -6560,11 +6593,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
   }
 
-  public static void setParents(Element element) {
+  public static Element setParents(Element element) {
     if (element != null && !element.hasParentForValidator()) {
       element.setParentForValidator(null);
       setParentsInner(element);
     }
+    return element;
+  }
+  
+  public static Base setParentsBase(Base element) {
+    if (element instanceof Element) {
+      setParents((Element) element);
+    }
+    return element;
   }
   
   public static void setParentsInner(Element element) {
@@ -6639,6 +6680,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setDisplayWarnings(boolean displayWarnings) {
     baseOptions.setDisplayWarningMode(displayWarnings);
+  }
+
+  public boolean isCheckIPSCodes() {
+    return codingObserver.isCheckIPSCodes();
+  }
+
+  public void setCheckIPSCodes(boolean checkIPSCodes) {
+    codingObserver.setCheckIPSCodes(checkIPSCodes);
   }
 
 

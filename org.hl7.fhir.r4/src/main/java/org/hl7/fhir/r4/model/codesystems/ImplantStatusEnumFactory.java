@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ImplantStatusEnumFactory implements EnumFactory<ImplantStatus> {
@@ -50,7 +46,7 @@ public class ImplantStatusEnumFactory implements EnumFactory<ImplantStatus> {
       return ImplantStatus.DISABLED;
     if ("unknown".equals(codeString))
       return ImplantStatus.UNKNOWN;
-    throw new IllegalArgumentException("Unknown ImplantStatus code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ImplantStatus code '" + codeString + "'");
   }
 
   public String toCode(ImplantStatus code) {
@@ -65,8 +61,8 @@ public class ImplantStatusEnumFactory implements EnumFactory<ImplantStatus> {
     return "?";
   }
 
-    public String toSystem(ImplantStatus code) {
-      return code.getSystem();
-      }
+  public String toSystem(ImplantStatus code) {
+    return code.getSystem();
+  }
 
 }

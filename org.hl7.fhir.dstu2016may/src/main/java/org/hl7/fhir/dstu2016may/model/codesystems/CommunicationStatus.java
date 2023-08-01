@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,112 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CommunicationStatus {
 
-        /**
-         * The communication transmission is ongoing.
-         */
-        INPROGRESS, 
-        /**
-         * The message transmission is complete, i.e., delivered to the recipient's destination.
-         */
-        COMPLETED, 
-        /**
-         * The communication transmission has been held by originating system/user request.
-         */
-        SUSPENDED, 
-        /**
-         * The receiving system has declined to accept the message.
-         */
-        REJECTED, 
-        /**
-         * There was a failure in transmitting the message out.
-         */
-        FAILED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static CommunicationStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("in-progress".equals(codeString))
-          return INPROGRESS;
-        if ("completed".equals(codeString))
-          return COMPLETED;
-        if ("suspended".equals(codeString))
-          return SUSPENDED;
-        if ("rejected".equals(codeString))
-          return REJECTED;
-        if ("failed".equals(codeString))
-          return FAILED;
-        throw new FHIRException("Unknown CommunicationStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INPROGRESS: return "in-progress";
-            case COMPLETED: return "completed";
-            case SUSPENDED: return "suspended";
-            case REJECTED: return "rejected";
-            case FAILED: return "failed";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/communication-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INPROGRESS: return "The communication transmission is ongoing.";
-            case COMPLETED: return "The message transmission is complete, i.e., delivered to the recipient's destination.";
-            case SUSPENDED: return "The communication transmission has been held by originating system/user request.";
-            case REJECTED: return "The receiving system has declined to accept the message.";
-            case FAILED: return "There was a failure in transmitting the message out.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INPROGRESS: return "In Progress";
-            case COMPLETED: return "Completed";
-            case SUSPENDED: return "Suspended";
-            case REJECTED: return "Rejected";
-            case FAILED: return "Failed";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The communication transmission is ongoing.
+   */
+  INPROGRESS,
+  /**
+   * The message transmission is complete, i.e., delivered to the recipient's
+   * destination.
+   */
+  COMPLETED,
+  /**
+   * The communication transmission has been held by originating system/user
+   * request.
+   */
+  SUSPENDED,
+  /**
+   * The receiving system has declined to accept the message.
+   */
+  REJECTED,
+  /**
+   * There was a failure in transmitting the message out.
+   */
+  FAILED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static CommunicationStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("in-progress".equals(codeString))
+      return INPROGRESS;
+    if ("completed".equals(codeString))
+      return COMPLETED;
+    if ("suspended".equals(codeString))
+      return SUSPENDED;
+    if ("rejected".equals(codeString))
+      return REJECTED;
+    if ("failed".equals(codeString))
+      return FAILED;
+    throw new FHIRException("Unknown CommunicationStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INPROGRESS:
+      return "in-progress";
+    case COMPLETED:
+      return "completed";
+    case SUSPENDED:
+      return "suspended";
+    case REJECTED:
+      return "rejected";
+    case FAILED:
+      return "failed";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/communication-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INPROGRESS:
+      return "The communication transmission is ongoing.";
+    case COMPLETED:
+      return "The message transmission is complete, i.e., delivered to the recipient's destination.";
+    case SUSPENDED:
+      return "The communication transmission has been held by originating system/user request.";
+    case REJECTED:
+      return "The receiving system has declined to accept the message.";
+    case FAILED:
+      return "There was a failure in transmitting the message out.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INPROGRESS:
+      return "In Progress";
+    case COMPLETED:
+      return "Completed";
+    case SUSPENDED:
+      return "Suspended";
+    case REJECTED:
+      return "Rejected";
+    case FAILED:
+      return "Failed";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

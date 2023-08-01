@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,100 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HistoryAbsentReason {
 
-        /**
-         * Patient does not know the subject, e.g. the biological parent of an adopted patient.
-         */
-        SUBJECTUNKNOWN, 
-        /**
-         * The patient withheld or refused to share the information.
-         */
-        WITHHELD, 
-        /**
-         * Information cannot be obtained; e.g. unconscious patient.
-         */
-        UNABLETOOBTAIN, 
-        /**
-         * Patient does not have the information now, but can provide the information at a later date.
-         */
-        DEFERRED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static HistoryAbsentReason fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("subject-unknown".equals(codeString))
-          return SUBJECTUNKNOWN;
-        if ("withheld".equals(codeString))
-          return WITHHELD;
-        if ("unable-to-obtain".equals(codeString))
-          return UNABLETOOBTAIN;
-        if ("deferred".equals(codeString))
-          return DEFERRED;
-        throw new FHIRException("Unknown HistoryAbsentReason code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SUBJECTUNKNOWN: return "subject-unknown";
-            case WITHHELD: return "withheld";
-            case UNABLETOOBTAIN: return "unable-to-obtain";
-            case DEFERRED: return "deferred";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/history-absent-reason";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SUBJECTUNKNOWN: return "Patient does not know the subject, e.g. the biological parent of an adopted patient.";
-            case WITHHELD: return "The patient withheld or refused to share the information.";
-            case UNABLETOOBTAIN: return "Information cannot be obtained; e.g. unconscious patient.";
-            case DEFERRED: return "Patient does not have the information now, but can provide the information at a later date.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SUBJECTUNKNOWN: return "Subject Unknown";
-            case WITHHELD: return "Information Withheld";
-            case UNABLETOOBTAIN: return "Unable To Obtain";
-            case DEFERRED: return "Deferred";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Patient does not know the subject, e.g. the biological parent of an adopted
+   * patient.
+   */
+  SUBJECTUNKNOWN,
+  /**
+   * The patient withheld or refused to share the information.
+   */
+  WITHHELD,
+  /**
+   * Information cannot be obtained; e.g. unconscious patient.
+   */
+  UNABLETOOBTAIN,
+  /**
+   * Patient does not have the information now, but can provide the information at
+   * a later date.
+   */
+  DEFERRED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static HistoryAbsentReason fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("subject-unknown".equals(codeString))
+      return SUBJECTUNKNOWN;
+    if ("withheld".equals(codeString))
+      return WITHHELD;
+    if ("unable-to-obtain".equals(codeString))
+      return UNABLETOOBTAIN;
+    if ("deferred".equals(codeString))
+      return DEFERRED;
+    throw new FHIRException("Unknown HistoryAbsentReason code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SUBJECTUNKNOWN:
+      return "subject-unknown";
+    case WITHHELD:
+      return "withheld";
+    case UNABLETOOBTAIN:
+      return "unable-to-obtain";
+    case DEFERRED:
+      return "deferred";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/history-absent-reason";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SUBJECTUNKNOWN:
+      return "Patient does not know the subject, e.g. the biological parent of an adopted patient.";
+    case WITHHELD:
+      return "The patient withheld or refused to share the information.";
+    case UNABLETOOBTAIN:
+      return "Information cannot be obtained; e.g. unconscious patient.";
+    case DEFERRED:
+      return "Patient does not have the information now, but can provide the information at a later date.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SUBJECTUNKNOWN:
+      return "Subject Unknown";
+    case WITHHELD:
+      return "Information Withheld";
+    case UNABLETOOBTAIN:
+      return "Unable To Obtain";
+    case DEFERRED:
+      return "Deferred";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

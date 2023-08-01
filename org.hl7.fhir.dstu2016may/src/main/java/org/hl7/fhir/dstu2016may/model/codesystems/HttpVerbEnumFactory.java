@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class HttpVerbEnumFactory implements EnumFactory<HttpVerb> {
@@ -50,7 +46,7 @@ public class HttpVerbEnumFactory implements EnumFactory<HttpVerb> {
       return HttpVerb.PUT;
     if ("DELETE".equals(codeString))
       return HttpVerb.DELETE;
-    throw new IllegalArgumentException("Unknown HttpVerb code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown HttpVerb code '" + codeString + "'");
   }
 
   public String toCode(HttpVerb code) {
@@ -65,8 +61,8 @@ public class HttpVerbEnumFactory implements EnumFactory<HttpVerb> {
     return "?";
   }
 
-    public String toSystem(HttpVerb code) {
-      return code.getSystem();
-      }
+  public String toSystem(HttpVerb code) {
+    return code.getSystem();
+  }
 
 }

@@ -18,8 +18,8 @@ public class ParserBaseTest {
   public static final String SLASHED_O = "ø";
   private ParserBase parserBase;
 
-    @BeforeEach
-    public void beforeEach() {
+  @BeforeEach
+  public void beforeEach() {
     parserBase = new ParserBase() {
       @Override
       public ParserType getType() {
@@ -46,17 +46,17 @@ public class ParserBaseTest {
         stream.write(SLASHED_O.getBytes("UTF-8"));
       }
     };
-    }
+  }
 
-    @Test
-    public void composeString_forResource_worksForCurrentEncoding() throws IOException {
-      String actualString = parserBase.composeString(mock(Resource.class));
-      assertEquals(SLASHED_O, actualString);
-    }
+  @Test
+  public void composeString_forResource_worksForCurrentEncoding() throws IOException {
+    String actualString = parserBase.composeString(mock(Resource.class));
+    assertEquals(SLASHED_O, actualString);
+  }
 
-    @Test
-    public void composeString_forDataType_worksForCurrentEncoding() throws IOException {
-      String actualString = parserBase.composeString(mock(Type.class), "dummyName");
-      assertEquals(SLASHED_O, actualString);
-    }
+  @Test
+  public void composeString_forDataType_worksForCurrentEncoding() throws IOException {
+    String actualString = parserBase.composeString(mock(Type.class), "dummyName");
+    assertEquals(SLASHED_O, actualString);
+  }
 }

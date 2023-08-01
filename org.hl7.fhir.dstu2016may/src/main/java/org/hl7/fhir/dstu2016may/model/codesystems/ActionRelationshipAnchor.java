@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ActionRelationshipAnchor {
 
-        /**
-         * The action relationship is anchored to the start of the related action
-         */
-        START, 
-        /**
-         * The action relationship is anchored to the end of the related action
-         */
-        END, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ActionRelationshipAnchor fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("start".equals(codeString))
-          return START;
-        if ("end".equals(codeString))
-          return END;
-        throw new FHIRException("Unknown ActionRelationshipAnchor code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case START: return "start";
-            case END: return "end";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/action-relationship-anchor";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case START: return "The action relationship is anchored to the start of the related action";
-            case END: return "The action relationship is anchored to the end of the related action";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case START: return "Start";
-            case END: return "End";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The action relationship is anchored to the start of the related action
+   */
+  START,
+  /**
+   * The action relationship is anchored to the end of the related action
+   */
+  END,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ActionRelationshipAnchor fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("start".equals(codeString))
+      return START;
+    if ("end".equals(codeString))
+      return END;
+    throw new FHIRException("Unknown ActionRelationshipAnchor code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case START:
+      return "start";
+    case END:
+      return "end";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/action-relationship-anchor";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case START:
+      return "The action relationship is anchored to the start of the related action";
+    case END:
+      return "The action relationship is anchored to the end of the related action";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case START:
+      return "Start";
+    case END:
+      return "End";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

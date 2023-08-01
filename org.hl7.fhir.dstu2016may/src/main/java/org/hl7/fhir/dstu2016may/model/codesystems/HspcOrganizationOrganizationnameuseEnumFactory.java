@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,17 +31,17 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
-public class HspcOrganizationOrganizationnameuseEnumFactory implements EnumFactory<HspcOrganizationOrganizationnameuse> {
+public class HspcOrganizationOrganizationnameuseEnumFactory
+    implements EnumFactory<HspcOrganizationOrganizationnameuse> {
 
   public HspcOrganizationOrganizationnameuse fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
       return null;
     if ("526758025".equals(codeString))
       return HspcOrganizationOrganizationnameuse._526758025;
-    throw new IllegalArgumentException("Unknown HspcOrganizationOrganizationnameuse code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown HspcOrganizationOrganizationnameuse code '" + codeString + "'");
   }
 
   public String toCode(HspcOrganizationOrganizationnameuse code) {
@@ -53,8 +50,8 @@ public class HspcOrganizationOrganizationnameuseEnumFactory implements EnumFacto
     return "?";
   }
 
-    public String toSystem(HspcOrganizationOrganizationnameuse code) {
-      return code.getSystem();
-      }
+  public String toSystem(HspcOrganizationOrganizationnameuse code) {
+    return code.getSystem();
+  }
 
 }

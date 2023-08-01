@@ -1,5 +1,13 @@
 package org.hl7.fhir.dstu3.test;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Base;
@@ -23,13 +31,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Disabled // TODO Need to find and fix files referenced here

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum TaskPriority {
 
-        /**
-         * This task has low priority.
-         */
-        LOW, 
-        /**
-         * This task has normal priority.
-         */
-        NORMAL, 
-        /**
-         * This task has high priority.
-         */
-        HIGH, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static TaskPriority fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("low".equals(codeString))
-          return LOW;
-        if ("normal".equals(codeString))
-          return NORMAL;
-        if ("high".equals(codeString))
-          return HIGH;
-        throw new FHIRException("Unknown TaskPriority code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case LOW: return "low";
-            case NORMAL: return "normal";
-            case HIGH: return "high";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/task-priority";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case LOW: return "This task has low priority.";
-            case NORMAL: return "This task has normal priority.";
-            case HIGH: return "This task has high priority.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case LOW: return "Low";
-            case NORMAL: return "Normal";
-            case HIGH: return "High";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * This task has low priority.
+   */
+  LOW,
+  /**
+   * This task has normal priority.
+   */
+  NORMAL,
+  /**
+   * This task has high priority.
+   */
+  HIGH,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static TaskPriority fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("low".equals(codeString))
+      return LOW;
+    if ("normal".equals(codeString))
+      return NORMAL;
+    if ("high".equals(codeString))
+      return HIGH;
+    throw new FHIRException("Unknown TaskPriority code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case LOW:
+      return "low";
+    case NORMAL:
+      return "normal";
+    case HIGH:
+      return "high";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/task-priority";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case LOW:
+      return "This task has low priority.";
+    case NORMAL:
+      return "This task has normal priority.";
+    case HIGH:
+      return "This task has high priority.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case LOW:
+      return "Low";
+    case NORMAL:
+      return "Normal";
+    case HIGH:
+      return "High";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

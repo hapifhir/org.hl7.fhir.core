@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,123 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SpecialValues {
 
-        /**
-         * Boolean true.
-         */
-        TRUE, 
-        /**
-         * Boolean false.
-         */
-        FALSE, 
-        /**
-         * The content is greater than zero, but too small to be quantified.
-         */
-        TRACE, 
-        /**
-         * The specific quantity is not known, but is known to be non-zero and is not specified because it makes up the bulk of the material.
-         */
-        SUFFICIENT, 
-        /**
-         * The value is no longer available.
-         */
-        WITHDRAWN, 
-        /**
-         * The are no known applicable values in this context.
-         */
-        NILKNOWN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static SpecialValues fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("true".equals(codeString))
-          return TRUE;
-        if ("false".equals(codeString))
-          return FALSE;
-        if ("trace".equals(codeString))
-          return TRACE;
-        if ("sufficient".equals(codeString))
-          return SUFFICIENT;
-        if ("withdrawn".equals(codeString))
-          return WITHDRAWN;
-        if ("nil-known".equals(codeString))
-          return NILKNOWN;
-        throw new FHIRException("Unknown SpecialValues code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case TRUE: return "true";
-            case FALSE: return "false";
-            case TRACE: return "trace";
-            case SUFFICIENT: return "sufficient";
-            case WITHDRAWN: return "withdrawn";
-            case NILKNOWN: return "nil-known";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/special-values";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case TRUE: return "Boolean true.";
-            case FALSE: return "Boolean false.";
-            case TRACE: return "The content is greater than zero, but too small to be quantified.";
-            case SUFFICIENT: return "The specific quantity is not known, but is known to be non-zero and is not specified because it makes up the bulk of the material.";
-            case WITHDRAWN: return "The value is no longer available.";
-            case NILKNOWN: return "The are no known applicable values in this context.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case TRUE: return "true";
-            case FALSE: return "false";
-            case TRACE: return "Trace Amount Detected";
-            case SUFFICIENT: return "Sufficient Quantity";
-            case WITHDRAWN: return "Value Withdrawn";
-            case NILKNOWN: return "Nil Known";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Boolean true.
+   */
+  TRUE,
+  /**
+   * Boolean false.
+   */
+  FALSE,
+  /**
+   * The content is greater than zero, but too small to be quantified.
+   */
+  TRACE,
+  /**
+   * The specific quantity is not known, but is known to be non-zero and is not
+   * specified because it makes up the bulk of the material.
+   */
+  SUFFICIENT,
+  /**
+   * The value is no longer available.
+   */
+  WITHDRAWN,
+  /**
+   * The are no known applicable values in this context.
+   */
+  NILKNOWN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static SpecialValues fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("true".equals(codeString))
+      return TRUE;
+    if ("false".equals(codeString))
+      return FALSE;
+    if ("trace".equals(codeString))
+      return TRACE;
+    if ("sufficient".equals(codeString))
+      return SUFFICIENT;
+    if ("withdrawn".equals(codeString))
+      return WITHDRAWN;
+    if ("nil-known".equals(codeString))
+      return NILKNOWN;
+    throw new FHIRException("Unknown SpecialValues code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case TRUE:
+      return "true";
+    case FALSE:
+      return "false";
+    case TRACE:
+      return "trace";
+    case SUFFICIENT:
+      return "sufficient";
+    case WITHDRAWN:
+      return "withdrawn";
+    case NILKNOWN:
+      return "nil-known";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/special-values";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case TRUE:
+      return "Boolean true.";
+    case FALSE:
+      return "Boolean false.";
+    case TRACE:
+      return "The content is greater than zero, but too small to be quantified.";
+    case SUFFICIENT:
+      return "The specific quantity is not known, but is known to be non-zero and is not specified because it makes up the bulk of the material.";
+    case WITHDRAWN:
+      return "The value is no longer available.";
+    case NILKNOWN:
+      return "The are no known applicable values in this context.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case TRUE:
+      return "true";
+    case FALSE:
+      return "false";
+    case TRACE:
+      return "Trace Amount Detected";
+    case SUFFICIENT:
+      return "Sufficient Quantity";
+    case WITHDRAWN:
+      return "Value Withdrawn";
+    case NILKNOWN:
+      return "Nil Known";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }
