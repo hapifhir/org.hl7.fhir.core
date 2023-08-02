@@ -2839,12 +2839,24 @@ public class ValueSet extends MetadataResource {
           , total, offset, parameter, property, contains);
       }
 
-  public String fhirType() {
-    return "ValueSet.expansion";
+      public boolean hasParameterValue(String name, String value) {
+        for (ValueSetExpansionParameterComponent p : getParameter()) {
+          if (name.equals(p.getName()) && p.hasValue() && value.equals(p.getValue().primitiveValue())) {
+            return true;
+          }
+        }
+        return false;
+      }
 
-  }
+      public void addParameter(String name, DataType value) {
+        getParameter().add(new ValueSetExpansionParameterComponent(name).setValue(value));
+      }
+      
+      public String fhirType() {
+        return "ValueSet.expansion";
+      }
 
-  }
+    }
 
     @Block()
     public static class ValueSetExpansionParameterComponent extends BackboneElement implements IBaseBackboneElement {

@@ -97,7 +97,6 @@ import com.google.j2objc.annotations.ReflectionSupport.Level;
 public class ValueSetValidator extends ValueSetProcessBase {
 
   private ValueSet valueset;
-  private IWorkerContext context;
   private Map<String, ValueSetValidator> inner = new HashMap<>();
   private ValidationOptions options;
   private ValidationContextCarrier localContext;
@@ -229,7 +228,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       
       for (Coding c : code.getCoding()) {
         b.append(c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode());
-        Boolean ok = codeInValueSet(c.getSystem(), c.getVersion(), c.getCode(), info);
+        Boolean ok = codeInValueSet(path, c.getSystem(), c.getVersion(), c.getCode(), info);
         if (ok == null && result != null && result == false) {
           result = null;
         } else if (ok != null && ok) {
@@ -338,30 +337,6 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return versionTest == null && VersionUtilities.versionsMatch(versionTest, versionActual);
   }
 
-  private List<OperationOutcomeIssueComponent> makeIssue(IssueSeverity level, IssueType type, String location, String message) {
-    OperationOutcomeIssueComponent result = new OperationOutcomeIssueComponent();
-    switch (level) {
-    case ERROR:
-      result.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR);
-      break;
-    case FATAL:
-      result.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.FATAL);
-      break;
-    case INFORMATION:
-      result.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION);
-      break;
-    case WARNING:
-      result.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
-      break;
-    }
-    result.setCode(type);
-    result.addLocation(location);
-    result.getDetails().setText(message);
-    ArrayList<OperationOutcomeIssueComponent> list = new ArrayList<>();
-    list.add(result);
-    return list;
-  }
-  
   public ValidationResult validateCode(Coding code) throws FHIRException {
     return validateCode("Coding", code); 
   }
@@ -375,6 +350,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     boolean inInclude = false;
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     VersionInfo vi = new VersionInfo(this);
+    checkCanonical(issues, path, valueset);
 
     String system = code.hasSystem() ? code.getSystem() : getValueSetSystemOrNull();
     if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
@@ -434,6 +410,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
             }
           }
         }
+      } else {
+        checkCanonical(issues, path, cs);
       }
       if (cs != null && cs.hasSupplements()) {
         String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getUrl());
@@ -462,6 +440,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           throw new FHIRException("Unable to evaluate based on empty code system");
         }
         res = validateCode(path, code, cs, null);
+        res.setIssues(issues);
       } else if (cs == null && valueset.hasExpansion() && inExpansion) {
         // we just take the value set as face value then
         res = new ValidationResult(system, wv, new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()), code.getDisplay());
@@ -486,7 +465,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     // then, if we have a value set, we check it's in the value set
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       if ((res==null || res.isOk())) { 
-        Boolean ok = codeInValueSet(system, wv, code.getCode(), info);
+        Boolean ok = codeInValueSet(path, system, wv, code.getCode(), info);
         if (ok == null || !ok) {
           if (res == null) {
             res = new ValidationResult((IssueSeverity) null, null, info.getIssues());
@@ -982,14 +961,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return true;
   }
   
-  public Boolean codeInValueSet(String system, String version, String code, ValidationProcessInfo info) throws FHIRException {
-    return codeInValueSet("code", system, version, code, info);
-  }
-  
   public Boolean codeInValueSet(String path, String system, String version, String code, ValidationProcessInfo info) throws FHIRException {
     if (valueset == null) {
       return false;
     }
+    checkCanonical(info.getIssues(), path, valueset);
     Boolean result = false;
     VersionInfo vi = new VersionInfo(this);
       
@@ -1029,15 +1005,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (isValueSetUnionImports()) {
         ok = false;
         for (UriType uri : vsi.getValueSet()) {
-          if (inImport(uri.getValue(), system, version, code)) {
+          if (inImport(path, uri.getValue(), system, version, code, info)) {
             return true;
           }
         }
       } else {
-        ok = inImport(vsi.getValueSet().get(0).getValue(), system, version, code);
+        ok = inImport(path, vsi.getValueSet().get(0).getValue(), system, version, code, info);
         for (int i = 1; i < vsi.getValueSet().size(); i++) {
           UriType uri = vsi.getValueSet().get(i);
-          ok = ok && inImport(uri.getValue(), system, version, code); 
+          ok = ok && inImport(path, uri.getValue(), system, version, code, info); 
         }
       }
     }
@@ -1097,6 +1073,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return null;
       }
     } else {
+      checkCanonical(info.getIssues(), path, cs);
       if (vsi.hasFilter()) {
         ok = true;
         for (ConceptSetFilterComponent f : vsi.getFilter()) {
@@ -1231,12 +1208,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return vsc;
   }
 
-  private boolean inImport(String uri, String system, String version, String code) throws FHIRException {
+  private boolean inImport(String path, String uri, String system, String version, String code, ValidationProcessInfo info) throws FHIRException {
     ValueSetValidator vs = getVs(uri);
     if (vs == null) {
       return false;
     } else {
-      Boolean ok = vs.codeInValueSet(system, version, code, null);
+      Boolean ok = vs.codeInValueSet(path, system, version, code, info);
       return ok != null && ok;
     }
   }
