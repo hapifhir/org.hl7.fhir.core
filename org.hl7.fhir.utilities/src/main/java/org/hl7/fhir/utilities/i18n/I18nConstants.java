@@ -950,6 +950,9 @@ public class I18nConstants {
   public static final String FHIRPATH_OFTYPE_IMPOSSIBLE = "FHIRPATH_OFTYPE_IMPOSSIBLE";
   public static final String ED_SEARCH_EXPRESSION_ERROR = "ED_SEARCH_EXPRESSION_ERROR";
   public static final String SD_EXTENSION_URL_MISMATCH = "SD_EXTENSION_URL_MISMATCH";
+  public static final String MSG_DEPRECATED = "MSG_DEPRECATED";
+  public static final String MSG_WITHDRAWN = "MSG_WITHDRAWN";
+  public static final String MSG_RETIRED = "MSG_RETIRED";
 
 
 

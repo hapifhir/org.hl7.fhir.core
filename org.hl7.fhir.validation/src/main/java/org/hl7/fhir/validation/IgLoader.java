@@ -520,12 +520,14 @@ public class IgLoader implements IValidationEngineLoader {
       }
     }
 
-    if (loadInContext) {
-//      getContext().getLoadedPackages().add(pi.name() + "#" + pi.version());
-      getContext().loadFromPackage(pi, ValidatorUtils.loaderForVersion(pi.fhirVersion()));
-    }
-    for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "CapabilityStatement", "SearchParameter", "Conformance", "StructureMap", "ValueSet", "StructureDefinition")) {
-      res.put(s, TextFile.streamToBytes(pi.load("package", s)));
+    if (!pi.isCoreExamples()) {
+      if (loadInContext) {
+        //      getContext().getLoadedPackages().add(pi.name() + "#" + pi.version());
+        getContext().loadFromPackage(pi, ValidatorUtils.loaderForVersion(pi.fhirVersion()));
+      }
+      for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "CapabilityStatement", "SearchParameter", "Conformance", "StructureMap", "ValueSet", "StructureDefinition")) {
+        res.put(s, TextFile.streamToBytes(pi.load("package", s)));
+      }
     }
     String ini = "[FHIR]\r\nversion=" + pi.fhirVersion() + "\r\n";
     res.put("version.info", ini.getBytes());
