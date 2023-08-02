@@ -114,25 +114,25 @@ System.out.println(plantUml);
   }
 
   protected String toPlantUml(ExampleScenarioProcessStepOperationComponent op, String prefix, ExampleScenario scen, Map<String,Boolean> actorsActive) {
-    String plantUml = "";
-    plantUml += handleActivation(op.getInitiator(), op.getInitiatorActive(), actorsActive);
-    plantUml += handleActivation(op.getReceiver(), op.getReceiverActive(), actorsActive);
-    plantUml += op.getInitiator() + " -> " + op.getReceiver() + ": ";
-    plantUml += creolLink(op.getTitle(), "#s_" + prefix, op.getDescription());
+    StringBuilder plantUml = new StringBuilder();
+    plantUml.append(handleActivation(op.getInitiator(), op.getInitiatorActive(), actorsActive));
+    plantUml.append(handleActivation(op.getReceiver(), op.getReceiverActive(), actorsActive));
+    plantUml.append(op.getInitiator() + " -> " + op.getReceiver() + ": ");
+    plantUml.append(creolLink(op.getTitle(), "#s_" + prefix, op.getDescription()));
     if (op.hasRequest()) {
-      plantUml += " (" + creolLink("payload", linkForInstance(op.getRequest())) + ")\r\n";
+      plantUml.append(" (" + creolLink("payload", linkForInstance(op.getRequest())) + ")\r\n");
     }
     if (op.hasResponse()) {
-      plantUml += "activate " + op.getReceiver() + "\r\n";
-      plantUml += op.getReceiver() + " --> " + op.getInitiator() + ": ";
-      plantUml += creolLink("response", "#s_" + prefix, op.getDescription());
-      plantUml += " (" + creolLink("payload", linkForInstance(op.getRequest())) + ")\r\n";
-      plantUml += "deactivate " + op.getReceiver() + "\r\n";
+      plantUml.append("activate " + op.getReceiver() + "\r\n");
+      plantUml.append(op.getReceiver() + " --> " + op.getInitiator() + ": ");
+      plantUml.append(creolLink("response", "#s_" + prefix, op.getDescription()));
+      plantUml.append(" (" + creolLink("payload", linkForInstance(op.getRequest())) + ")\r\n");
+      plantUml.append("deactivate " + op.getReceiver() + "\r\n");
     }
-    plantUml += handleDeactivation(op.getInitiator(), op.getInitiatorActive(), actorsActive);
-    plantUml += handleDeactivation(op.getReceiver(), op.getReceiverActive(), actorsActive);
+    plantUml.append(handleDeactivation(op.getInitiator(), op.getInitiatorActive(), actorsActive));
+    plantUml.append(handleDeactivation(op.getReceiver(), op.getReceiverActive(), actorsActive));
 
-    return plantUml;
+    return plantUml.toString();
   }
 
   private String handleActivation(String actorId, boolean active, Map<String,Boolean> actorsActive) {
