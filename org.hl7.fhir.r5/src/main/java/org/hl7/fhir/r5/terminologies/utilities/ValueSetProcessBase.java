@@ -114,13 +114,15 @@ public class ValueSetProcessBase {
   }
   
   public void checkCanonical(List<OperationOutcomeIssueComponent> issues, String path, CanonicalResource resource) {
-    StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(resource);
-    if (standardsStatus == StandardsStatus.DEPRECATED) {
-      addToIssues(issues, makeStatusIssue(path, "deprecated", I18nConstants.MSG_DEPRECATED, resource));
-    } else if (standardsStatus == StandardsStatus.WITHDRAWN) {
-      addToIssues(issues, makeStatusIssue(path, "withdrawn", I18nConstants.MSG_WITHDRAWN, resource));
-    } else if (resource.getStatus() == PublicationStatus.RETIRED) {
-      addToIssues(issues, makeStatusIssue(path, "retired", I18nConstants.MSG_RETIRED, resource));
+    if (resource != null) {
+      StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(resource);
+      if (standardsStatus == StandardsStatus.DEPRECATED) {
+        addToIssues(issues, makeStatusIssue(path, "deprecated", I18nConstants.MSG_DEPRECATED, resource));
+      } else if (standardsStatus == StandardsStatus.WITHDRAWN) {
+        addToIssues(issues, makeStatusIssue(path, "withdrawn", I18nConstants.MSG_WITHDRAWN, resource));
+      } else if (resource.getStatus() == PublicationStatus.RETIRED) {
+        addToIssues(issues, makeStatusIssue(path, "retired", I18nConstants.MSG_RETIRED, resource));
+      }
     }
   }
 
@@ -149,19 +151,21 @@ public class ValueSetProcessBase {
   }
 
   public void checkCanonical(ValueSetExpansionComponent params, CanonicalResource resource) {
-    StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(resource);
-    if (standardsStatus == StandardsStatus.DEPRECATED) {
-      if (!params.hasParameterValue("warning-deprecated", resource.getVersionedUrl())) {
-        params.addParameter("warning-deprecated", new UriType(resource.getVersionedUrl()));
-      } 
-    } else if (standardsStatus == StandardsStatus.WITHDRAWN) {
-      if (!params.hasParameterValue("warning-withdrawn", resource.getVersionedUrl())) {
-        params.addParameter("warning-withdrawn", new UriType(resource.getVersionedUrl()));
-      } 
-    } else if (resource.getStatus() == PublicationStatus.RETIRED) {
-      if (!params.hasParameterValue("warning-retired", resource.getVersionedUrl())) {
-        params.addParameter("warning-retired", new UriType(resource.getVersionedUrl()));
-      } 
+    if (resource != null) {
+      StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(resource);
+      if (standardsStatus == StandardsStatus.DEPRECATED) {
+        if (!params.hasParameterValue("warning-deprecated", resource.getVersionedUrl())) {
+          params.addParameter("warning-deprecated", new UriType(resource.getVersionedUrl()));
+        } 
+      } else if (standardsStatus == StandardsStatus.WITHDRAWN) {
+        if (!params.hasParameterValue("warning-withdrawn", resource.getVersionedUrl())) {
+          params.addParameter("warning-withdrawn", new UriType(resource.getVersionedUrl()));
+        } 
+      } else if (resource.getStatus() == PublicationStatus.RETIRED) {
+        if (!params.hasParameterValue("warning-retired", resource.getVersionedUrl())) {
+          params.addParameter("warning-retired", new UriType(resource.getVersionedUrl()));
+        } 
+      }
     }
   }
             
