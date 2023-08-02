@@ -307,7 +307,18 @@ public class Utilities {
     CSFile src = new CSFile(sourceFolder);
     if (!src.exists())
       throw new FHIRException("Folder " + sourceFolder + " not found");
-    createDirectory(destFolder);
+    File dst = new File(destFolder);
+    if(!dst.getCanonicalFile().getName().equals(dst.getName())) {
+      File tmp = new File(destFolder+System.currentTimeMillis());
+      if (!dst.renameTo(tmp)) {
+        throw new IOException("fixing case from "+dst.getCanonicalFile().getName()+" to "+tmp.getName()+" failed");
+      }
+      if (!tmp.renameTo(dst)) {
+        throw new IOException("fixing case from "+tmp.getCanonicalFile().getName()+" to "+dst.getName()+" failed");
+      }
+    } else if (!dst.exists()) {    
+      createDirectory(destFolder);
+    }
 
     String[] files = src.list();
     for (String f : files) {
@@ -318,7 +329,7 @@ public class Utilities {
       } else {
         if (notifier != null)
           notifier.copyFile(sourceFolder + File.separator + f, destFolder + File.separator + f);
-        copyFile(new CSFile(sourceFolder + File.separator + f), new CSFile(destFolder + File.separator + f));
+        copyFile(new CSFile(sourceFolder + File.separator + f), new /*CS*/File(destFolder + File.separator + f)); // case doesn't have to match on the target
       }
     }
   }
@@ -357,6 +368,10 @@ public class Utilities {
       if (!new CSFile(destFile.getParent()).exists()) {
         createDirectory(destFile.getParent());
       }
+      destFile.createNewFile();
+    } else if (!destFile.getCanonicalFile().getName().equals(destFile.getName())) {
+      // case mismatch
+      destFile.delete();
       destFile.createNewFile();
     }
 

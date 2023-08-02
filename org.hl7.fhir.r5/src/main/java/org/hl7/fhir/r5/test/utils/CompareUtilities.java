@@ -45,7 +45,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     String result = compareXml(expected, actual);
     if (result != null && SHOW_DIFF) {
       String diff = getDiffTool();
-      if (new File(diff).exists() || Utilities.isToken(diff)) {
+      if (diff != null && new File(diff).exists() || Utilities.isToken(diff)) {
         Runtime.getRuntime().exec(new String[]{diff, expected, actual});
       }
     }

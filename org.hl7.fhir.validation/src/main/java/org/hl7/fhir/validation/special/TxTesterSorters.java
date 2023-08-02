@@ -3,7 +3,11 @@ package org.hl7.fhir.validation.special;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.hl7.fhir.ParametersParameter;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -16,8 +20,14 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 public class TxTesterSorters {
 
 
+
   public static void sortParameters(Parameters po) {
     Collections.sort(po.getParameter(), new TxTesterSorters.ParameterSorter());
+    for (ParametersParameterComponent p : po.getParameter()) {
+      if (p.getResource() != null && p.getResource() instanceof OperationOutcome) {
+        Collections.sort(((OperationOutcome) p.getResource()).getIssue(), new TxTesterSorters.OperationIssueSorter());
+      }
+    }
   }
   
 
@@ -43,7 +53,24 @@ public class TxTesterSorters {
   }
 
   
-  
+
+  public static class OperationIssueSorter implements Comparator<OperationOutcomeIssueComponent> {
+
+    @Override
+    public int compare(OperationOutcomeIssueComponent o1, OperationOutcomeIssueComponent o2) {
+      if (o1.hasSeverity() && o2.hasSeverity() && o1.getSeverity() != o2.getSeverity()) {
+        return o1.getSeverity().compareTo(o2.getSeverity());
+      }
+      if (o1.hasCode() && o2.hasCode() && o1.getCode() != o2.getCode()) {
+        return o1.getCode().compareTo(o2.getCode());
+      }
+      if (o1.getDetails().hasText() && o2.getDetails().hasText() && !o1.getDetails().getText().equals(o2.getDetails().getText())) {
+        return o1.getDetails().getText().compareTo(o2.getDetails().getText());
+      }
+      return 0;
+    }
+  }
+
   public static class DesignationSorter implements Comparator<ConceptReferenceDesignationComponent> {
 
     @Override
