@@ -35,7 +35,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public enum StandardsStatus {
 
-  EXTERNAL, INFORMATIVE, DRAFT, TRIAL_USE, DEPRECATED, NORMATIVE;
+  EXTERNAL, INFORMATIVE, DRAFT, TRIAL_USE, DEPRECATED, NORMATIVE, WITHDRAWN;
 
   public String toDisplay() {
     switch (this) {
@@ -51,6 +51,8 @@ public enum StandardsStatus {
       return "External";
     case DEPRECATED: 
       return "Deprecated";
+    case WITHDRAWN: 
+      return "Withdrawn";
     }
     return "?";
   }
@@ -66,9 +68,11 @@ public enum StandardsStatus {
     case INFORMATIVE:
       return "informative";
     case DEPRECATED: 
-    return "deprecated";
+      return "deprecated";
     case EXTERNAL:
       return "external";
+    case WITHDRAWN: 
+      return "Withdrawn";
     }
     return "?";
   }
@@ -93,6 +97,8 @@ public enum StandardsStatus {
       return EXTERNAL;
     if (value.equalsIgnoreCase("DEPRECATED"))
       return DEPRECATED;
+    if (value.equalsIgnoreCase("WITHDRAWN"))
+      return WITHDRAWN;
     throw new FHIRException("Incorrect Standards Status '"+value+"'");
   }
 
@@ -110,6 +116,8 @@ public enum StandardsStatus {
       return "XD";
     case EXTERNAL:
       return "X";
+    case WITHDRAWN:
+      return "W";
     }
     return "?";
   }
@@ -125,6 +133,7 @@ public enum StandardsStatus {
     case INFORMATIVE:
       return "#ffffe6";
     case DEPRECATED: 
+    case WITHDRAWN: 
       return "#ffcccc";
     case EXTERNAL:
       return "#e6ffff";
@@ -143,6 +152,7 @@ public enum StandardsStatus {
     case INFORMATIVE:
       return "#ffffec";
     case DEPRECATED: 
+    case WITHDRAWN:
       return "#ffcccc";
     case EXTERNAL:
       return "#ecffff";
@@ -159,6 +169,8 @@ public enum StandardsStatus {
       return (tgtSS == NORMATIVE || tgtSS == EXTERNAL );
     if (this == DEPRECATED)
       return (tgtSS == DEPRECATED );
+    if (this == WITHDRAWN)
+      return (tgtSS == WITHDRAWN );
     return false;
   }
 

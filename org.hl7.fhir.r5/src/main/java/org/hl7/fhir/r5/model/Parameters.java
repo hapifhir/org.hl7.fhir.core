@@ -1753,6 +1753,14 @@ public String toString() {
         return true;
     }
     return false;
+  } 
+
+  public boolean hasParameterValue(String name, String value) {
+    for (ParametersParameterComponent p : getParameter()) {
+      if (p.getName().equals(name) && p.hasValue() && value.equals(p.getValue().primitiveValue()))
+        return true;
+    }
+    return false;
   }
 
   public boolean hasParameter(String name) {

@@ -1490,6 +1490,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     String system = null;
     String code = null;
     String version = null;
+    List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+
     TerminologyServiceErrorClass err = TerminologyServiceErrorClass.UNKNOWN;
     for (ParametersParameterComponent p : pOut.getParameter()) {
       if (p.hasValue()) {
@@ -1506,7 +1508,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         } else if (p.getName().equals("code")) {
           code = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("x-caused-by-unknown-system")) {
-          err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;         
+          err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
+        } else if (p.getName().equals("warning-withdrawn")) {
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
+          iss.getDetails().setText(formatMessage(I18nConstants.MSG_WITHDRAWN, ((PrimitiveType<?>) p.getValue()).asStringValue()));              
+          issues.add(iss);
+        } else if (p.getName().equals("warning-deprecated")) {
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
+          iss.getDetails().setText(formatMessage(I18nConstants.MSG_DEPRECATED, ((PrimitiveType<?>) p.getValue()).asStringValue()));              
+          issues.add(iss);
+        } else if (p.getName().equals("warning-retired")) {
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
+          iss.getDetails().setText(formatMessage(I18nConstants.MSG_RETIRED, ((PrimitiveType<?>) p.getValue()).asStringValue()));              
+          issues.add(iss);
         } else if (p.getName().equals("cause")) {
           try {
             IssueType it = IssueType.fromCode(((StringType) p.getValue()).getValue());
@@ -1524,15 +1538,18 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       }
     }
+    ValidationResult res = null;
     if (!ok) {
-      return new ValidationResult(IssueSeverity.ERROR, message+" (from "+tcc.getClient().getId()+")", err, null).setTxLink(txLog.getLastId());
+      res = new ValidationResult(IssueSeverity.ERROR, message+" (from "+tcc.getClient().getId()+")", err, null).setTxLink(txLog.getLastId());
     } else if (message != null && !message.equals("No Message returned")) { 
-      return new ValidationResult(IssueSeverity.WARNING, message+" (from "+tcc.getClient().getId()+")", system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog.getLastId());
+      res = new ValidationResult(IssueSeverity.WARNING, message+" (from "+tcc.getClient().getId()+")", system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog.getLastId());
     } else if (display != null) {
-      return new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog.getLastId());
+      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog.getLastId());
     } else {
-      return new ValidationResult(system, version, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog.getLastId());
+      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog.getLastId());
     }
+    res.setIssues(issues );
+    return res;
   }
 
   // --------------------------------------------------------------------------------------------------------------------------------------------------------
