@@ -846,7 +846,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             for (UriType u : t.getProfile()) {
               StructureDefinition sd = context.fetchResource(StructureDefinition.class, u.getValue(), derived);
               if (sd == null) {
-                if (xver != null && xver.matchingUrl(u.getValue()) && xver.status(u.getValue()) == XVerExtensionStatus.Valid) {
+                if (makeXVer().matchingUrl(u.getValue()) && xver.status(u.getValue()) == XVerExtensionStatus.Valid) {
                   sd = xver.makeDefinition(u.getValue());              
                 }
               }
@@ -889,6 +889,13 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.clearUserData("profileutils.snapshot.generating");
       snapshotStack.remove(derived.getUrl());
     }
+  }
+
+  private XVerExtensionManager makeXVer() {
+    if (xver == null) {
+      xver = new XVerExtensionManager(context);
+    }
+    return xver;
   }
 
   private ElementDefinition getElementInCurrentContext(String path, List<ElementDefinition> list) {
@@ -1759,7 +1766,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (type.hasProfile()) {
       sd = context.fetchResource(StructureDefinition.class, type.getProfile().get(0).getValue(), src);
       if (sd == null) {
-        if (xver != null && xver.matchingUrl(type.getProfile().get(0).getValue()) && xver.status(type.getProfile().get(0).getValue()) == XVerExtensionStatus.Valid) {
+        if (makeXVer().matchingUrl(type.getProfile().get(0).getValue()) && xver.status(type.getProfile().get(0).getValue()) == XVerExtensionStatus.Valid) {
           sd = xver.makeDefinition(type.getProfile().get(0).getValue());              
           generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), webUrl, sd.getName());
         }
@@ -2301,7 +2308,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       String pu = source.getTypeFirstRep().getProfile().get(0).getValue();
       profile = context.fetchResource(StructureDefinition.class, pu, derivedSrc);
       if (profile == null) {
-        if (xver.matchingUrl(pu)) {
+        if (makeXVer().matchingUrl(pu)) {
           switch (xver.status(pu)) {
             case BadVersion:
               throw new FHIRException("Reference to invalid version in extension url " + pu);
