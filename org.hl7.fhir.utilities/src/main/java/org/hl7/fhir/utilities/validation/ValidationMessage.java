@@ -859,6 +859,38 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     this.ignorableError = ignorableError;
     return this;
   }
+
+  public boolean matches(ValidationMessage other) {
+    if (location == null) {
+      if (other.location != null) {
+        return false;
+      }
+    } else if (!location.equals(other.location)) {
+      return false;
+    }
+    if (message == null) {
+      if (other.message != null) {
+        return false;
+      }
+    } else if (!message.equals(other.message)) {
+      return false;
+    }
+    if (messageId == null) {
+      if (other.messageId != null) {
+        return false;
+      }
+    } else if (!messageId.equals(other.messageId)) {
+      return false;
+    }
+    if (type != other.type) {
+      return false;
+    }
+    if (level != other.level) {
+      return false;
+    }
+    return true;
+  }
+  
   
   
 }

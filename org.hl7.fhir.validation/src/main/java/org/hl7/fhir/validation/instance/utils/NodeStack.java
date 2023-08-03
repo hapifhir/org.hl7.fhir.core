@@ -2,8 +2,10 @@ package org.hl7.fhir.validation.instance.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -19,7 +21,7 @@ public class NodeStack {
   private Element element;
   private ElementDefinition extension;
   private String literalPath; // xpath format
-  private List<String> logicalPaths; // dotted format, various entry points
+  private Set<String> logicalPaths; // dotted format, various entry points
   private NodeStack parent;
   private ElementDefinition type;
   private String workingLang;
@@ -38,7 +40,7 @@ public class NodeStack {
     literalPath = (initialPath == null ? "" : initialPath+".") + element.getPath();
     workingLang = validationLanguage;
     if (!element.getName().equals(element.fhirType())) {
-      logicalPaths = new ArrayList<>();
+      logicalPaths = new HashSet<>();
       logicalPaths.add(element.fhirType());
     }
   }
@@ -79,8 +81,8 @@ public class NodeStack {
     return literalPath == null ? "" : literalPath;
   }
 
-  public List<String> getLogicalPaths() {
-    return logicalPaths == null ? new ArrayList<String>() : logicalPaths;
+  public Set<String> getLogicalPaths() {
+    return logicalPaths == null ? new HashSet<String>() : logicalPaths;
   }
 
   private ElementDefinition getType() {
@@ -96,6 +98,9 @@ public class NodeStack {
   }
 
   private NodeStack pushInternal(Element element, int count, ElementDefinition definition, ElementDefinition type, String sep) {
+    if (definition == null & element.getProperty() != null) {
+      definition = element.getProperty().getDefinition();
+    }
     NodeStack res = new NodeStack(context);
     res.ids = ids;
     res.parent = this;
@@ -121,7 +126,7 @@ public class NodeStack {
         res.literalPath = res.literalPath.substring(0, res.literalPath.lastIndexOf(".")) + "." + en;;
       }
     }
-    res.logicalPaths = new ArrayList<String>();
+    res.logicalPaths = new HashSet<String>();
     if (type != null) {
       // type will be null if we on a stitching point of a contained resource, or if....
       res.type = type;
@@ -131,21 +136,46 @@ public class NodeStack {
         tn = element.fhirType();
       }
       for (String lp : getLogicalPaths()) {
-        res.logicalPaths.add(lp + "." + t);
-        if (t.endsWith("[x]")) {
-          res.logicalPaths.add(lp + "." + t.substring(0, t.length() - 3) + ".ofType("+type.getPath()+")");
-          res.logicalPaths.add(lp + "." + t.substring(0, t.length() - 3) + type.getPath());
+        if (isRealPath(lp, t)) {
+          res.logicalPaths.add(lp + "." + t);
+          if (t.endsWith("[x]")) {
+            res.logicalPaths.add(lp + "." + t.substring(0, t.length() - 3) + ".ofType("+type.getPath()+")");
+            res.logicalPaths.add(lp + "." + t.substring(0, t.length() - 3) + type.getPath());
+          }
         }
       }
       res.logicalPaths.add(tn);
     } else if (definition != null) {
       for (String lp : getLogicalPaths()) {
-        res.logicalPaths.add(lp + "." + element.getName());
+        if (isRealPath(lp, element.getName())) {
+          res.logicalPaths.add(lp + "." + element.getName());
+        }
       }
-      res.logicalPaths.add(definition.typeSummary());
-    } else
+      if (definition.hasContentReference()) {
+        res.logicalPaths.add(definition.getContentReference().substring(definition.getContentReference().indexOf("#")+1));        
+      } else {
+        res.logicalPaths.addAll(definition.typeList());
+      }
+    } else {
       res.logicalPaths.addAll(getLogicalPaths());
+    }
     return res;
+  }
+
+  private boolean isRealPath(String lp, String t) {
+    if (Utilities.existsInList(lp, "Element")) {
+      return Utilities.existsInList(t, "id", "extension");
+    }
+    if (Utilities.existsInList(lp, "BackboneElement", "BackboneType")) {
+      return Utilities.existsInList(t, "modifierExtension");
+    }
+    if (Utilities.existsInList(lp, "Resource")) {
+      return Utilities.existsInList(t, "id", "meta", "implicitRules", "language");
+    }
+    if (Utilities.existsInList(lp, "DomainResource")) {
+      return Utilities.existsInList(t, "text", "contained", "extension", "modifierExtension");
+    }
+    return true;
   }
 
   private void setType(ElementDefinition type) {

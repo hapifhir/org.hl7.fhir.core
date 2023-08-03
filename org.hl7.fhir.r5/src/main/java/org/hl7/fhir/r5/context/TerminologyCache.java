@@ -695,7 +695,7 @@ public class TerminologyCache {
   }
 
   protected String hashJson(String s) {
-    s = StringUtils.remove(s, ' ');
+//    s = StringUtils.remove(s, ' ');
     s = StringUtils.remove(s, '\n');
     s = StringUtils.remove(s, '\r');
     return String.valueOf(s.hashCode());

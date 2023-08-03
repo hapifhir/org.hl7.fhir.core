@@ -2024,8 +2024,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return true;
       }
       plist.add(p);
-
     }
+    Collections.sort(plist); // logical paths are a set, but we want a predictable order for error messages
 
     for (StructureDefinitionContextComponent ctxt : fixContexts(extUrl, definition.getContext())) {
       if (ok) {

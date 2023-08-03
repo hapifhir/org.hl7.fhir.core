@@ -71,7 +71,7 @@ public class ValueSetValidator extends BaseValidator {
       List<Element> composes = vs.getChildrenByName("compose");
       int cc = 0;
       for (Element compose : composes) {
-        ok = validateValueSetCompose(errors, compose, stack.push(compose, cc, null, null), vs.getNamedChildValue("url"), "retired".equals(vs.getNamedChildValue("url"))) & ok;
+        ok = validateValueSetCompose(errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url"), "retired".equals(vs.getNamedChildValue("url"))) & ok;
         cc++;
       }
     }
