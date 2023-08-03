@@ -198,7 +198,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
     generateContentModeNotices(x, vs.getExpansion(), vs);
     generateVersionNotice(x, vs.getExpansion(), vs);
 
-    CodeSystem allCS = null;
     boolean doLevel = false;
     for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContains()) {
       if (cc.hasContains()) {
@@ -206,8 +205,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
         break;
       }
     }
-    
+    boolean doInactive = checkDoInactive(vs.getExpansion().getContains());    
     boolean doDefinition = checkDoDefinition(vs.getExpansion().getContains());
+    
     XhtmlNode t = x.table( "codes");
     XhtmlNode tr = t.tr();
     if (doLevel)
@@ -221,6 +221,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
       scanForDesignations(c, langs, designations);
     }
     scanForProperties(vs.getExpansion(), langs, properties);
+    if (doInactive) {
+      tr.td().b().tx("Inactive");
+    }
     if (doDefinition) {
       tr.td().b().tx("Definition");
       doDesignations = false;
@@ -250,7 +253,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     
     addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
-      addExpansionRowToTable(t, vs, c, 1, doLevel, true, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
+      addExpansionRowToTable(t, vs, c, 1, doLevel, doDefinition, doInactive, maps, langs, designations, doDesignations, properties);
     }
 
     // now, build observed languages
@@ -673,6 +676,17 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return false;
   }
 
+  private boolean checkDoInactive(List<ValueSetExpansionContainsComponent> contains) {
+    for (ValueSetExpansionContainsComponent c : contains) {
+      if (c.hasInactive()) {
+        return true;
+      }
+      if (checkDoInactive(c.getContains()))
+        return true;
+    }
+    return false;
+  }
+
 
   private boolean allFromOneSystem(ValueSet vs) {
     if (vs.getExpansion().getContains().isEmpty())
@@ -754,7 +768,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }    
   }
 
-  private void addExpansionRowToTable(XhtmlNode t, ValueSet vs, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties) throws FHIRFormatError, DefinitionException, IOException {
+  private void addExpansionRowToTable(XhtmlNode t, ValueSet vs, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doDefinition, boolean doInactive, List<UsedConceptMap> maps, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tr = t.tr();
     if (ValueSetUtilities.isDeprecated(vs, c)) {
       tr.setAttribute("style", "background-color: #ffeeee");
@@ -772,19 +786,21 @@ public class ValueSetRenderer extends TerminologyRenderer {
     String s = Utilities.padLeft("", '\u00A0', i*2);
     td.attribute("style", "white-space:nowrap").addText(s);
     addCodeToTable(c.getAbstract(), c.getSystem(), c.getCode(), c.getDisplay(), td);
-    if (doSystem) {
-      td = tr.td();
-      td.addText(c.getSystem());
-    }
+    td = tr.td();
+    td.addText(c.getSystem());
     td = tr.td();
     if (c.hasDisplayElement())
       td.addText(c.getDisplay());
 
-    if (doDefinition) {
-      CodeSystem cs = allCS;
-      if (cs == null)
-        cs = getContext().getWorker().fetchCodeSystem(c.getSystem());
+    if (doInactive) {
       td = tr.td();
+      if (c.getInactive()) {
+        td.tx("inactive");
+      }
+    }
+    if (doDefinition) {
+      td = tr.td();
+      CodeSystem cs = getContext().getWorker().fetchCodeSystem(c.getSystem());
       if (cs != null) {
         String defn = CodeSystemUtilities.getCodeDefinition(cs, c.getCode());
         addMarkdown(td, defn, cs.getWebPath());
@@ -817,7 +833,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       addLangaugesToRow(c, langs, tr);
     }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
-      addExpansionRowToTable(t, vs, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
+      addExpansionRowToTable(t, vs, cc, i+1, doLevel, doDefinition, doInactive, maps, langs, designations, doDesignations, properties);
     }
   }
 
