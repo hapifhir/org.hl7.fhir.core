@@ -2297,8 +2297,25 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (base.hasSliceName()) {
       profile = base.getType().size() == 1 && base.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, base.getTypeFirstRep().getProfile().get(0).getValue(), srcSD) : null;
     }
-    if (profile==null) {
-      profile = source.getType().size() == 1 && source.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, source.getTypeFirstRep().getProfile().get(0).getValue(), derivedSrc) : null;
+    if (profile == null && source.getTypeFirstRep().hasProfile()) {
+      String pu = source.getTypeFirstRep().getProfile().get(0).getValue();
+      profile = context.fetchResource(StructureDefinition.class, pu, derivedSrc);
+      if (profile == null) {
+        if (xver.matchingUrl(pu)) {
+          switch (xver.status(pu)) {
+            case BadVersion:
+              throw new FHIRException("Reference to invalid version in extension url " + pu);
+            case Invalid:
+              throw new FHIRException("Reference to invalid extension " + pu);
+            case Unknown:
+              throw new FHIRException("Reference to unknown extension " + pu);
+            case Valid:
+              profile = xver.makeDefinition(pu);
+              generateSnapshot(context.fetchTypeDefinition("Extension"), profile, profile.getUrl(), context.getSpecUrl(), profile.getName());
+          }
+        }
+        
+      }
       if (profile != null && !"Extension".equals(profile.getType()) && profile.getKind() != StructureDefinitionKind.RESOURCE && profile.getKind() != StructureDefinitionKind.LOGICAL) {
         // this is a problem - we're kind of hacking things here. The problem is that we sometimes want the details from the profile to override the 
         // inherited attributes, and sometimes not
