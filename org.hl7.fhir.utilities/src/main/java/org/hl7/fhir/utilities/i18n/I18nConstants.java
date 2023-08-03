@@ -81,6 +81,7 @@ public class I18nConstants {
   public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES = "Discriminator__is_based_on_type_but_slice__in__has_no_types";
   public static final String DISCRIMINATOR_BAD_PATH = "DISCRIMINATOR_BAD_PATH";
   public static final String DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_for__should_be_one_of__instead_of";
+  public static final String DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_WS_for__should_be_one_of__instead_of";
   public static final String DOCUMENT = "documentmsg";
   public static final String DOCUMENT_DATE_REQUIRED = "Bundle_Document_Date_Missing";
   public static final String DOCUMENT_DATE_REQUIRED_HTML = "Bundle_Document_Date_Missing_html";
