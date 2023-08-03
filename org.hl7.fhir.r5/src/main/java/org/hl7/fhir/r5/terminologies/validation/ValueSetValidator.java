@@ -648,6 +648,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (vcc != null) {
       vcc.addCoding(vc);
     }
+    boolean ws = false;    
     if (code.getDisplay() == null) {
       return new ValidationResult(code.getSystem(), cs.getVersion(), cc, vc.getDisplay());
     }
@@ -656,13 +657,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
       b.append("'"+cc.getDisplay()+"'");
       if (code.getDisplay().equalsIgnoreCase(cc.getDisplay())) {
         return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs));
+      } else if (Utilities.normalize(code.getDisplay()).equals(Utilities.normalize(cc.getDisplay()))) {
+        ws = true;
       }
     }
+    
     for (ConceptDefinitionDesignationComponent ds : cc.getDesignation()) {
       if (isOkLanguage(ds.getLanguage())) {
         b.append("'"+ds.getValue()+"'");
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
           return new ValidationResult(code.getSystem(),cs.getVersion(),  cc, getPreferredDisplay(cc, cs));
+        }
+        if (Utilities.normalize(code.getDisplay()).equalsIgnoreCase(Utilities.normalize(ds.getValue()))) {
+          ws = true;
         }
       }
     }
@@ -690,7 +697,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       String msg = context.formatMessagePlural(options.getLanguages().size(), I18nConstants.NO_VALID_DISPLAY_FOUND, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary());
       return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg));      
     } else {
-      String msg = context.formatMessagePlural(b.count(), I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
+      String msg = context.formatMessagePlural(b.count(), ws ? I18nConstants.DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF : I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
       return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg));
     }
   }
