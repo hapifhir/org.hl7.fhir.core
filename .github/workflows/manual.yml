@@ -18,6 +18,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
     - name: Collect module licenses
+      run: mvn clean install -DskipTests
+    - name: Collect module licenses
       run: mvn license:add-third-party
     - name: Aggregate licenses
       run: mvn license:aggregate-add-third-party
