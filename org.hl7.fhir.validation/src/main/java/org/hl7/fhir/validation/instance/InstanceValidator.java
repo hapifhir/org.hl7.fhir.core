@@ -5969,7 +5969,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (ed.hasSlicing()) {
         if (slicer != null && slicer.getPath().equals(ed.getPath())) {
           String errorContext = "profile " + profile.getVersionedUrl();
-          if (!resource.getChildValue(ID).isEmpty()) {
+          if (resource.hasChild(ID) && !resource.getChildValue(ID).isEmpty()) {
             errorContext += "; instance " + resource.getChildValue("id");
           }
           throw new DefinitionException(context.formatMessage(I18nConstants.SLICE_ENCOUNTERED_MIDWAY_THROUGH_SET_PATH___ID___, slicer.getPath(), slicer.getId(), errorContext));

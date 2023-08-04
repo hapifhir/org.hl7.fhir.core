@@ -865,8 +865,12 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       if (other.location != null) {
         return false;
       }
-    } else if (!location.equals(other.location)) {
-      return false;
+    } else {
+      String l1 = preprocessLocation(location);
+      String l2 = preprocessLocation(other.location);
+      if (!l1.equals(l2)) {
+        return false;
+      }
     }
     if (message == null) {
       if (other.message != null) {
@@ -889,6 +893,14 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       return false;
     }
     return true;
+  }
+
+  private String preprocessLocation(String loc) {
+    // some locations are prefixes with a location but they're not different since the location is fixed where .match is called from 
+    if (loc.contains(": ")) {
+      return loc.substring(loc.indexOf(": ")+2);
+    }
+    return loc;
   }
   
   
