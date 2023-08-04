@@ -544,8 +544,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (s.startsWith("version=")) {
         if (version == null)
         version = s.substring(8);
-        else if (!version.equals(s.substring(8))) 
+        else if (!version.equals(s.substring(8))) {
           throw new DefinitionException(formatMessage(I18nConstants.VERSION_MISMATCH_THE_CONTEXT_HAS_VERSION__LOADED_AND_THE_NEW_CONTENT_BEING_LOADED_IS_VERSION_, version, s.substring(8)));
+        }
       }
       if (s.startsWith("revision="))
         revision = s.substring(9);
