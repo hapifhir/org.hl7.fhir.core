@@ -297,6 +297,7 @@ public class NpmPackage {
   private Map<String, Object> userData;
   private boolean minimalMemory;
   private int size;
+  private boolean warned = false;
 
   /**
    * Constructor
@@ -1375,4 +1376,13 @@ public class NpmPackage {
     this.size = size;
   }
 
+  public boolean isWarned() {
+    return warned;
+  }
+
+  public void setWarned(boolean warned) {
+    this.warned = warned;
+  }
+
+  
 }
