@@ -103,8 +103,8 @@ public class StructureDefinitionValidator extends BaseValidator {
               for (ValidationMessage msg : msgs) {
                 // we need to set the location for the context 
                 String loc = msg.getLocation();
-                if (loc.contains("#")) {
-                  msg.setLocation(stack.getLiteralPath()+".differential.element.where(path = '"+loc.substring(loc.indexOf("#")+1)+"')");
+                if (loc.startsWith("StructureDefinition.")) {
+                  msg.setLocation(stack.getLiteralPath()+loc.substring(loc.indexOf(".")));
                 } else {
                   msg.setLocation(stack.getLiteralPath());
                 }

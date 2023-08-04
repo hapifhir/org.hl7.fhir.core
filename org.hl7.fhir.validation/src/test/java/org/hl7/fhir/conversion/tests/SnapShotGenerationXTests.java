@@ -107,7 +107,7 @@ public class SnapShotGenerationXTests {
       sort = "true".equals(test.getAttribute("sort"));
       fail = "true".equals(test.getAttribute("fail"));
       newSliceProcessing = !"false".equals(test.getAttribute("new-slice-processing"));
-      debug = false; // "true".equals(test.getAttribute("debug"));
+      debug = "true".equals(test.getAttribute("debug"));
 
       id = test.getAttribute("id");
       include = test.getAttribute("include");
@@ -510,7 +510,7 @@ public class SnapShotGenerationXTests {
     pu.setAllowUnknownProfile(AllowUnknownProfile.ALL_TYPES);
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
-      int lastCount = output.getDifferential().getElement().size();
+//      int lastCount = output.getDifferential().getElement().size();
       pu.sortDifferential(base, output, test.getSource().getName(), errors, false);
       if (errors.size() > 0)
         throw new FHIRException("Sort failed: " + errors.toString());
