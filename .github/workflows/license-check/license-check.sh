@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/bash
+#!/bin/bash
 IFS=$'\n'
 
 readarray -t whitelist < ./.github/workflows/license-check/license-whitelist.txt
