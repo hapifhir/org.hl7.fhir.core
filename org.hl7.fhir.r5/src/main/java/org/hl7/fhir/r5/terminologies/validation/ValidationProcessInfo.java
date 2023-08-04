@@ -29,7 +29,7 @@ public class ValidationProcessInfo {
     return issues;
   }
   public void addIssue(List<OperationOutcomeIssueComponent> issues) {
-    issues.addAll(issues);
+    this.issues.addAll(issues);
     
   }
   public boolean hasErrors() {
