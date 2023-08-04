@@ -954,9 +954,7 @@ public class I18nConstants {
   public static final String MSG_DEPRECATED = "MSG_DEPRECATED";
   public static final String MSG_WITHDRAWN = "MSG_WITHDRAWN";
   public static final String MSG_RETIRED = "MSG_RETIRED";
-
-
-
+  public static final String INACTIVE_CODE_WARNING = "INACTIVE_CODE_WARNING";
 }
 
 

@@ -214,7 +214,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           }
         } else {
           c.setUserData("cs", cs);
-          res = validateCode(path+".coding["+i+"]", c, cs, vcc);
+          res = validateCode(path+".coding["+i+"]", c, cs, vcc, info);
         }
         info.getIssues().addAll(res.getIssues());
         i++;
@@ -349,6 +349,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     boolean inExpansion = false;
     boolean inInclude = false;
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+    ValidationProcessInfo info = new ValidationProcessInfo(issues);
     VersionInfo vi = new VersionInfo(this);
     checkCanonical(issues, path, valueset);
 
@@ -439,7 +440,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           // we can't validate that here. 
           throw new FHIRException("Unable to evaluate based on empty code system");
         }
-        res = validateCode(path, code, cs, null);
+        res = validateCode(path, code, cs, null, info);
         res.setIssues(issues);
       } else if (cs == null && valueset.hasExpansion() && inExpansion) {
         // we just take the value set as face value then
@@ -460,7 +461,6 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     String wv = vi.getVersion(system, code.getVersion());
 
-    ValidationProcessInfo info = new ValidationProcessInfo(issues);
     
     // then, if we have a value set, we check it's in the value set
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
@@ -633,7 +633,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return false;
   }
 
-  private ValidationResult validateCode(String path, Coding code, CodeSystem cs, CodeableConcept vcc) {
+  private ValidationResult validateCode(String path, Coding code, CodeSystem cs, CodeableConcept vcc, ValidationProcessInfo info) {
     ConceptDefinitionComponent cc = cs.hasUserData("tx.cs.special") ? ((SpecialCodeSystem) cs.getUserData("tx.cs.special")).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode(), allAltCodes);
     if (cc == null) {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
@@ -647,6 +647,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
     Coding vc = new Coding().setCode(cc.getCode()).setSystem(cs.getUrl()).setVersion(cs.getVersion()).setDisplay(getPreferredDisplay(cc, cs));
     if (vcc != null) {
       vcc.addCoding(vc);
+    }
+    if (CodeSystemUtilities.isInactive(cs, cc)) {
+      info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.EXPIRED, path, context.formatMessage(I18nConstants.INACTIVE_CODE_WARNING, cc.getCode())));
     }
     boolean ws = false;    
     if (code.getDisplay() == null) {
@@ -1081,6 +1084,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     } else {
       checkCanonical(info.getIssues(), path, cs);
+      if (valueset.getCompose().hasInactive() && !valueset.getCompose().getInactive()) {
+        if (CodeSystemUtilities.isInactive(cs, code)) {
+          return false;
+        }
+      }
+      
       if (vsi.hasFilter()) {
         ok = true;
         for (ConceptSetFilterComponent f : vsi.getFilter()) {

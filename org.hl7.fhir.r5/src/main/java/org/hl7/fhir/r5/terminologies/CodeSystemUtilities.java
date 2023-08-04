@@ -369,6 +369,10 @@ public class CodeSystemUtilities {
       if ("inactive".equals(p.getCode()) && p.hasValueBooleanType()) {
         return p.getValueBooleanType().getValue();
       }
+      if ("inactive".equals(p.getCode()) && p.hasValueCodeType()) {
+        String code = p.getValueCodeType().primitiveValue();
+        return "true".equals(code);
+      }
     }
     return false;
   }
