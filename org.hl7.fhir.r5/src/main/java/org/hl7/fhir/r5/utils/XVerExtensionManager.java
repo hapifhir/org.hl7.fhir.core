@@ -286,34 +286,4 @@ public class XVerExtensionManager {
     }
   }
 
-  public String getReference(String url) {
-    String version = getVersion(url);
-    String base = VersionUtilities.getSpecUrl(version);
-    if (base == null) {
-      return null;
-    } else {
-      String path = url.substring(url.indexOf("-")+1);
-      if (!path.contains(".")) {
-        return null;
-      }
-      String type = path.substring(0, path.indexOf("."));
-      if (Utilities.existsInList(type, "Annotation", "Attachment", "Identifier", "CodeableConcept", "Coding", "Quantity", "Duration", "Range", "Period", "Ratio", "RatioRange", "SampledData", "Signature", "HumanName", "Address", "ContactPoint", "Timing")) {
-        return Utilities.pathURL(base, "datatypes-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "Element", "BackboneElement", "BackboneType", "PrimitiveType", "DataType", "Base")) {
-        return Utilities.pathURL(base, "types-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "UsageContext", "RelatedArtifact", "DataRequirement", "ParameterDefinition", "TriggerDefinition", "Expression", "ContactDetail", "ExtendedContactDetail", "VirtualServiceDetail", "Availability", "MonetaryComponent", "Contributor")) {
-        return Utilities.pathURL(base, "metadatatypes-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "Reference", "CodeableReference")) {
-        return Utilities.pathURL(base, "references-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "Meta")) {
-        return Utilities.pathURL(base, "resource-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      return Utilities.pathURL(base, type.toLowerCase()+"-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-    }
-  }
-
 }
