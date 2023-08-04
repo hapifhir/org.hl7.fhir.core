@@ -766,10 +766,8 @@ public class ProfilePathProcessor {
     int i = ss.size() -1;
     ElementDefinition m = null;
 
-    System.out.println("check for "+ed.getPath());
     while (i >= 0) {
       ElementDefinition t = ss.get(i);
-      System.out.println(""+i+": "+t.getPath());
       if (pathsMatch(t.getPath(), ed.getPath())) {
         if (t.hasSlicing() || t.hasSliceName() || t.getPath().endsWith("[x]")) {
           m = t;
@@ -790,7 +788,6 @@ public class ProfilePathProcessor {
       } else {
         System.err.println("checkToSeeIfSlicingExists: "+ed.getPath()+":"+ed.getSliceName()+" is not sliced");
       }
-      m = ed;
     }
   }
 
