@@ -2857,13 +2857,14 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
      // work around for old badly generated SDs
-      if (DONT_DO_THIS && Utilities.existsInList(tt, "Extension", "uri", "string", "Element")) {
-        matchType = true;
-      }
-      if (DONT_DO_THIS && Utilities.existsInList(tt, "Resource","DomainResource") && pkp.isResource(t)) {
-        matchType = true;
-      }
+//      if (DONT_DO_THIS && Utilities.existsInList(tt, "Extension", "uri", "string", "Element")) {
+//        matchType = true;
+//      }
+//      if (DONT_DO_THIS && Utilities.existsInList(tt, "Resource","DomainResource") && pkp.isResource(t)) {
+//        matchType = true;
+//      }
       if (matchType) {
+        ts.copyExtensions(td, "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support", "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern", "http://hl7.org/fhir/StructureDefinition/obligation");
         if (ts.hasTargetProfile()) {
           // check that any derived target has a reference chain back to one of the base target profiles
           for (UriType u : ts.getTargetProfile()) {
@@ -2882,9 +2883,9 @@ public class ProfileUtilities extends TranslatingUtilities {
                 tgtOk = td.hasTargetProfile(url);
               }
             }
-            if (tgtOk)
+            if (tgtOk) {
               ok = true;
-            else {
+            } else {
               if (messages == null) {
                 throw new FHIRException(context.formatMessage(I18nConstants.ERROR_AT__THE_TARGET_PROFILE__IS_NOT__VALID_CONSTRAINT_ON_THE_BASE_, purl, derived.getPath(), url, td.getTargetProfile()));
               } else {
