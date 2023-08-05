@@ -169,7 +169,11 @@ public class StructureDefinitionValidator extends BaseValidator {
         String baseD = src.getNamedChildValue("baseDefinition");
         if ("http://hl7.org/fhir/StructureDefinition/Extension".equals(baseD) && url != null) {
           String fixedUrl = getFixedValue(src);
-          ok = rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), url.equals(fixedUrl), I18nConstants.SD_EXTENSION_URL_MISMATCH, url, fixedUrl) && ok;
+          if (rule(errors, "2023-08-05", IssueType.INVALID, stack.getLiteralPath(), fixedUrl != null, I18nConstants.SD_EXTENSION_URL_MISSING, url)) {
+            ok = rule(errors, "2023-08-05", IssueType.INVALID, stack.getLiteralPath(), url.equals(fixedUrl), I18nConstants.SD_EXTENSION_URL_MISMATCH, url, fixedUrl) && ok;
+          } else {
+            ok = false;
+          }
         }
       }
     } catch (Exception e) {
