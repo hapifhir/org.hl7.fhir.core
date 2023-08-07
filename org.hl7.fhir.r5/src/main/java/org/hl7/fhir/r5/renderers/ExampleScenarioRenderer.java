@@ -49,7 +49,6 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
 
   public String renderDiagram(ExampleScenario scen) throws IOException {
     String plantUml = toPlantUml(scen);
-System.out.println(plantUml);
     SourceStringReader reader = new SourceStringReader(plantUml);
     final ByteArrayOutputStream os = new ByteArrayOutputStream();
     reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
@@ -62,16 +61,18 @@ System.out.println(plantUml);
   protected String toPlantUml(ExampleScenario scen) throws IOException {
     String plantUml = "@startuml\r\n";
     plantUml += "Title " + (scen.hasTitle() ? scen.getTitle() : scen.getName()) + "\r\n\r\n";
+    Map<String, String> actorKeys = new HashMap<String, String>();
 
     for (ExampleScenarioActorComponent actor: scen.getActor()) {
       String actorType = actor.getType().equals(Enumerations.ExampleScenarioActorType.PERSON) ? "actor" : "participant";
-      plantUml += actorType + " \"" + creolLink(actor.getTitle(), "#a_" + actor.getKey(), actor.getDescription()) + "\" as " + actor.getKey() + "\r\n";
+      actorKeys.put(actor.getKey(), escapeKey(actor.getKey()));
+      plantUml += actorType + " \"" + creolLink(actor.getTitle(), "#a_" + actor.getKey(), actor.getDescription()) + "\" as " + actorKeys.get(actor.getKey()) + "\r\n";
     }
     plantUml += "\r\n";
 
     int processNum = 1;
     for (ExampleScenarioProcessComponent process: scen.getProcess()) {
-      plantUml += toPlantUml(process, Integer.toString(processNum), scen);
+      plantUml += toPlantUml(process, Integer.toString(processNum), scen, actorKeys);
       processNum++;
     }
     plantUml += "@enduml";
@@ -79,7 +80,17 @@ System.out.println(plantUml);
     return plantUml;
   }
 
-  protected String toPlantUml(ExampleScenarioProcessComponent process, String prefix, ExampleScenario scen) throws IOException {
+  private String escapeKey(String origKey) {
+    char[] chars = origKey.toCharArray();
+    for (int i=0; i<chars.length; i++) {
+      char c = chars[i];
+      if (!((c>='A' && c<='Z') || (c>='a' && c<='z') || (c>='0' && c<='9') || c=='@' || c=='.'))
+        chars[i] = '_';
+    }
+    return new String(chars);
+  }
+
+  protected String toPlantUml(ExampleScenarioProcessComponent process, String prefix, ExampleScenario scen, Map<String, String> actorKeys) throws IOException {
     String plantUml = "group " + process.getTitle() + " " + creolLink("details", "#p_" + prefix, process.getDescription()) + "\r\n";
 
     Map<String,Boolean> actorsActive = new HashMap<String, Boolean>();
@@ -88,7 +99,7 @@ System.out.println(plantUml);
     }
     int stepCount = 1;
     for (ExampleScenarioProcessStepComponent step: process.getStep()) {
-      plantUml += toPlantUml(step, stepPrefix(prefix, step, stepCount), scen, actorsActive);
+      plantUml += toPlantUml(step, stepPrefix(prefix, step, stepCount), scen, actorsActive, actorKeys);
       stepCount++;
     }
 
@@ -96,7 +107,7 @@ System.out.println(plantUml);
     return plantUml;
   }
 
-  protected String toPlantUml(ExampleScenarioProcessStepComponent step, String prefix, ExampleScenario scen, Map<String,Boolean> actorsActive) throws IOException {
+  protected String toPlantUml(ExampleScenarioProcessStepComponent step, String prefix, ExampleScenario scen, Map<String,Boolean> actorsActive, Map<String, String> actorKeys) throws IOException {
     String plantUml = "";
     if (step.hasWorkflow()) {
       XhtmlNode n = new XhtmlDocument();
@@ -104,51 +115,51 @@ System.out.println(plantUml);
       XhtmlNode ref = n.getChildNodes().get(0);
       plantUml += noteOver(scen.getActor(), "Step " + trimPrefix(prefix) + " - See scenario\n" + creolLink(ref.getContent(), ref.getAttribute("href")));
     } else if (step.hasProcess())
-      plantUml += toPlantUml(step.getProcess(), prefix, scen);
+      plantUml += toPlantUml(step.getProcess(), prefix, scen, actorKeys);
     else {
       // Operation
-      plantUml += toPlantUml(step.getOperation(), prefix, scen, actorsActive);
+      plantUml += toPlantUml(step.getOperation(), prefix, scen, actorsActive, actorKeys);
     }
 
     return plantUml;
   }
 
-  protected String toPlantUml(ExampleScenarioProcessStepOperationComponent op, String prefix, ExampleScenario scen, Map<String,Boolean> actorsActive) {
+  protected String toPlantUml(ExampleScenarioProcessStepOperationComponent op, String prefix, ExampleScenario scen, Map<String,Boolean> actorsActive, Map<String, String> actorKeys) {
     StringBuilder plantUml = new StringBuilder();
-    plantUml.append(handleActivation(op.getInitiator(), op.getInitiatorActive(), actorsActive));
-    plantUml.append(handleActivation(op.getReceiver(), op.getReceiverActive(), actorsActive));
-    plantUml.append(op.getInitiator() + " -> " + op.getReceiver() + ": ");
+    plantUml.append(handleActivation(op.getInitiator(), op.getInitiatorActive(), actorsActive, actorKeys));
+    plantUml.append(handleActivation(op.getReceiver(), op.getReceiverActive(), actorsActive, actorKeys));
+    plantUml.append(actorKeys.get(op.getInitiator()) + " -> " + actorKeys.get(op.getReceiver()) + ": ");
     plantUml.append(creolLink(op.getTitle(), "#s_" + prefix, op.getDescription()));
     if (op.hasRequest()) {
       plantUml.append(" (" + creolLink("payload", linkForInstance(op.getRequest())) + ")\r\n");
     }
     if (op.hasResponse()) {
-      plantUml.append("activate " + op.getReceiver() + "\r\n");
-      plantUml.append(op.getReceiver() + " --> " + op.getInitiator() + ": ");
+      plantUml.append("activate " + actorKeys.get(op.getReceiver()) + "\r\n");
+      plantUml.append(actorKeys.get(op.getReceiver()) + " --> " + actorKeys.get(op.getInitiator()) + ": ");
       plantUml.append(creolLink("response", "#s_" + prefix, op.getDescription()));
       plantUml.append(" (" + creolLink("payload", linkForInstance(op.getRequest())) + ")\r\n");
-      plantUml.append("deactivate " + op.getReceiver() + "\r\n");
+      plantUml.append("deactivate " + actorKeys.get(op.getReceiver()) + "\r\n");
     }
-    plantUml.append(handleDeactivation(op.getInitiator(), op.getInitiatorActive(), actorsActive));
-    plantUml.append(handleDeactivation(op.getReceiver(), op.getReceiverActive(), actorsActive));
+    plantUml.append(handleDeactivation(op.getInitiator(), op.getInitiatorActive(), actorsActive, actorKeys));
+    plantUml.append(handleDeactivation(op.getReceiver(), op.getReceiverActive(), actorsActive, actorKeys));
 
     return plantUml.toString();
   }
 
-  private String handleActivation(String actorId, boolean active, Map<String,Boolean> actorsActive) {
+  private String handleActivation(String actorId, boolean active, Map<String,Boolean> actorsActive, Map<String, String> actorKeys) {
     String plantUml = "";
     Boolean actorWasActive = actorsActive.get(actorId);
     if (active && !actorWasActive) {
-      plantUml += "activate " + actorId + "\r\n";
+      plantUml += "activate " + actorKeys.get(actorId) + "\r\n";
     }
     return plantUml;
   }
 
-  private String handleDeactivation(String actorId, boolean active, Map<String,Boolean> actorsActive) {
+  private String handleDeactivation(String actorId, boolean active, Map<String,Boolean> actorsActive, Map<String, String> actorKeys) {
     String plantUml = "";
     Boolean actorWasActive = actorsActive.get(actorId);
     if (!active && actorWasActive) {
-      plantUml += "deactivate " + actorId + "\r\n";
+      plantUml += "deactivate " + actorKeys.get(actorId) + "\r\n";
     }
     if (active != actorWasActive) {
       actorsActive.remove(actorId);
@@ -216,6 +227,16 @@ System.out.println(plantUml);
     thead.th().addText("Content");
     thead.th().addText("Description");
 
+    Map<String, String> instanceNames = new HashMap<String, String>();
+    for (ExampleScenarioInstanceComponent instance : scen.getInstance()) {
+      instanceNames.put("i_" + instance.getKey(), instance.getTitle());
+      if (instance.hasVersion()) {
+        for (ExampleScenarioInstanceVersionComponent version: instance.getVersion()) {
+          instanceNames.put("i_" + instance.getKey() + "v_" + version.getKey(), version.getTitle());
+        }
+      }
+    }
+
     for (ExampleScenarioInstanceComponent instance : scen.getInstance()) {
       XhtmlNode row = tbl.tr();
       XhtmlNode nameCell = row.td();
@@ -252,6 +273,22 @@ System.out.println(plantUml);
 
       XhtmlNode descCell = row.td();
       addMarkdown(descCell, instance.getDescription());
+      if (instance.hasContainedInstance()) {
+        descCell.b().tx("Contains: ");
+        int containedCount = 1;
+        for (ExampleScenarioInstanceContainedInstanceComponent contained: instance.getContainedInstance()) {
+          String key = "i_" + contained.getInstanceReference();
+          if (contained.hasVersionReference())
+            key += "v_" + contained.getVersionReference();
+          String description = instanceNames.get(key);
+          if (description==null)
+            throw new FHIRException("Unable to find contained instance " + key + " under " + instance.getKey());
+          descCell.ah("#" + key).tx(description);
+          containedCount++;
+          if (instance.getContainedInstance().size() > containedCount)
+            descCell.tx(", ");
+        }
+      }
 
       for (ExampleScenarioInstanceVersionComponent version: instance.getVersion()) {
         row = tbl.tr();
@@ -272,7 +309,6 @@ System.out.println(plantUml);
         descCell = row.td();
         addMarkdown(descCell, instance.getDescription());
       }
-      //Todo;
     }
     return true;
   }
