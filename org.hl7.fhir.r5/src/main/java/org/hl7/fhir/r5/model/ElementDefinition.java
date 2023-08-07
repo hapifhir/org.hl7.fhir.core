@@ -12748,6 +12748,15 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     }
     return b.toString();
   }
+
+  public List<String> typeList() {
+    List<String> res = new ArrayList<>();
+    for (TypeRefComponent tr : getType()) {
+      if (tr.hasCode())
+        res.add(tr.getWorkingCode());
+    }
+    return res;
+  }
   
   public String typeSummaryVB() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|");

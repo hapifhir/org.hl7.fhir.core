@@ -65,8 +65,9 @@ public class CSFile extends File {
     //attempt to open a file triggers a directory listing
     if (exists()) 
     {
-    	if(!this.getCanonicalFile().getName().equals(this.getName()))
+    	if(!this.getCanonicalFile().getName().equals(this.getName())) {
     		throw new Error("Case mismatch of file "+ pathname+": found "+this.getCanonicalFile().getName());
+    	}
     }
   }
 

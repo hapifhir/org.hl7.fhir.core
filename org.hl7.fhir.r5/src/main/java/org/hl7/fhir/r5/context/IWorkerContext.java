@@ -124,7 +124,7 @@ public interface IWorkerContext {
     private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     private CodeableConcept codeableConcept;
     private Set<String> unknownSystems;
-
+    
     @Override
     public String toString() {
       return "ValidationResult [definition=" + definition + ", system=" + system + ", severity=" + severity + ", message=" + message + ", errorClass="
@@ -313,6 +313,14 @@ public interface IWorkerContext {
       } else {
         return String.join(",", unknownSystems);
       }
+    }
+
+    public void setIssues(List<OperationOutcomeIssueComponent> issues) {
+      if (this.issues != null) {
+        issues.addAll(this.issues);
+      }
+      this.issues = issues;
+      
     }
 
   }

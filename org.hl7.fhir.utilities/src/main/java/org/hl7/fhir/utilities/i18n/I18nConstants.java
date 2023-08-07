@@ -81,6 +81,7 @@ public class I18nConstants {
   public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES = "Discriminator__is_based_on_type_but_slice__in__has_no_types";
   public static final String DISCRIMINATOR_BAD_PATH = "DISCRIMINATOR_BAD_PATH";
   public static final String DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_for__should_be_one_of__instead_of";
+  public static final String DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_WS_for__should_be_one_of__instead_of";
   public static final String DOCUMENT = "documentmsg";
   public static final String DOCUMENT_DATE_REQUIRED = "Bundle_Document_Date_Missing";
   public static final String DOCUMENT_DATE_REQUIRED_HTML = "Bundle_Document_Date_Missing_html";
@@ -949,9 +950,12 @@ public class I18nConstants {
   public static final String ED_INVARIANT_KEY_ALREADY_USED = "ED_INVARIANT_KEY_ALREADY_USED";
   public static final String FHIRPATH_OFTYPE_IMPOSSIBLE = "FHIRPATH_OFTYPE_IMPOSSIBLE";
   public static final String ED_SEARCH_EXPRESSION_ERROR = "ED_SEARCH_EXPRESSION_ERROR";
-
-
-
+  public static final String SD_EXTENSION_URL_MISMATCH = "SD_EXTENSION_URL_MISMATCH";
+  public static final String MSG_DEPRECATED = "MSG_DEPRECATED";
+  public static final String MSG_WITHDRAWN = "MSG_WITHDRAWN";
+  public static final String MSG_RETIRED = "MSG_RETIRED";
+  public static final String INACTIVE_CODE_WARNING = "INACTIVE_CODE_WARNING";
+  public static final String SD_EXTENSION_URL_MISSING = "SD_EXTENSION_URL_MISSING";
 }
 
 
