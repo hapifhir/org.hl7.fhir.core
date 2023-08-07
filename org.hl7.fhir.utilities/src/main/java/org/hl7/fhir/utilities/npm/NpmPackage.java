@@ -297,6 +297,7 @@ public class NpmPackage {
   private Map<String, Object> userData;
   private boolean minimalMemory;
   private int size;
+  private boolean warned = false;
 
   /**
    * Constructor
@@ -1266,6 +1267,11 @@ public class NpmPackage {
     return Utilities.existsInList(npm.asString("type"), "fhir.core", "Core");
   }
 
+  public boolean isCoreExamples() {
+    return name().startsWith("hl7.fhir.r") && name().endsWith(".examples");
+  }
+  
+  
   public boolean isTx() {
     return npm.asString("name").startsWith("hl7.terminology");
   }
@@ -1369,5 +1375,14 @@ public class NpmPackage {
   public void setSize(int size) {
     this.size = size;
   }
+
+  public boolean isWarned() {
+    return warned;
+  }
+
+  public void setWarned(boolean warned) {
+    this.warned = warned;
+  }
+
   
 }

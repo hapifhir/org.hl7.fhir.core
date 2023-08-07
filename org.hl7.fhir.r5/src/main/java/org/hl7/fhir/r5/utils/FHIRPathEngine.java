@@ -668,7 +668,7 @@ public class FHIRPathEngine {
         if (sd == null) {
           throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT, t);        
         }
-        types = new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl());
+        types.addType(sd.getUrl());
       } else {
         String ctxt = t.substring(0, t.indexOf('.'));
         StructureDefinition sd = cu.findType(ctxt);
@@ -680,11 +680,10 @@ public class FHIRPathEngine {
           throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT_ELEMENT, t);
         }
         if (ed.fixedType != null) { 
-          types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
+          types.addType(ed.fixedType);
         } else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) { 
-          types = new TypeDetails(CollectionStatus.SINGLETON, sd.getType()+"#"+t);
+          types.addType(sd.getType()+"#"+t);
         } else {
-          types = new TypeDetails(CollectionStatus.SINGLETON);
           for (TypeRefComponent tt : ed.getDefinition().getType()) { 
             types.addType(tt.getCode());
           }
@@ -3545,7 +3544,7 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);
     case Resolve : {
       checkContextReference(focus, "resolve", exp);
-      return new TypeDetails(CollectionStatus.ORDERED, "DomainResource"); 
+      return new TypeDetails(focus.getCollectionStatus(), "Resource"); 
     }
     case Extension : {
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
