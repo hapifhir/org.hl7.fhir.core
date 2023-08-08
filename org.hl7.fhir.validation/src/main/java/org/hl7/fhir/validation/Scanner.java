@@ -88,7 +88,7 @@ public class Scanner {
       try {
         System.out.println("Validate " + ref);
         messages.clear();
-        e = getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
+        e = getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
         res.add(new ScanOutputItem(ref.getRef(), null, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
       } catch (Exception ex) {
         res.add(new ScanOutputItem(ref.getRef(), null, null, exceptionToOutcome(ex)));
@@ -104,7 +104,7 @@ public class Scanner {
             try {
               System.out.println("Validate " + ref + " against " + ig.getUrl());
               messages.clear();
-              getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType(), url);
+              getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType(), url);
               res.add(new ScanOutputItem(ref.getRef(), ig, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
             } catch (Exception ex) {
               res.add(new ScanOutputItem(ref.getRef(), ig, null, exceptionToOutcome(ex)));
@@ -118,7 +118,7 @@ public class Scanner {
                 try {
                   System.out.println("Validate " + ref + " against " + sd.getUrl());
                   messages.clear();
-                  validator.validate(null, messages, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType(), Collections.singletonList(sd));
+                  validator.validate(null, messages, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType(), Collections.singletonList(sd));
                   res.add(new ScanOutputItem(ref.getRef(), ig, sd, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
                 } catch (Exception ex) {
                   res.add(new ScanOutputItem(ref.getRef(), ig, sd, exceptionToOutcome(ex)));

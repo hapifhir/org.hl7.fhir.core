@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
+import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -95,7 +96,7 @@ public class StructureMappingTests {
   @MethodSource("data")
   public void test(String name, String source, String map, String output) throws Exception {
 
-    byte[] byteSource = TestingUtilities.loadTestResourceBytes("r5", "structure-mapping", source);
+    ByteProvider byteSource = ByteProvider.forBytes(TestingUtilities.loadTestResourceBytes("r5", "structure-mapping", source));
 
     String outputJson = TestingUtilities.loadTestResource("r5", "structure-mapping", output);
     String fileOutputRes = TestingUtilities.tempFile("structure-mapping", output) + ".out";
@@ -144,7 +145,7 @@ public class StructureMappingTests {
 	try {
 	  r = new StructureMapUtilities(context).parse(map, "cda2qr");
 	  context.cacheResource(r);	      
-	  byte[] byteSource = "{}".getBytes();
+	  ByteProvider byteSource = ByteProvider.forBytes("{}".getBytes());
 	  org.hl7.fhir.r5.elementmodel.Element element = validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl());
 	  Assertions.assertNotNull(element);
 	} finally {
@@ -164,7 +165,7 @@ public class StructureMappingTests {
     StructureDefinition structureDefinition = new StructureDefinition().setUrl("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
     structureDefinition.getSnapshot().addElement().setPath("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
     context.cacheResource(structureDefinition);
-    byte[] byteSource = "testGetSourceResourceFromStructureMapDefinitionException".getBytes();
+    ByteProvider byteSource = ByteProvider.forBytes("testGetSourceResourceFromStructureMapDefinitionException".getBytes());
     DefinitionException thrown = assertThrows(
     		DefinitionException.class,
     		() -> validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl()),

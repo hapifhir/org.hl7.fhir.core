@@ -38,7 +38,6 @@ public class CPTImporter {
 
   }
 
-  private Connection con;
 
   private void doImport(String src, String version, String dst) throws FHIRException, FileNotFoundException, IOException, ClassNotFoundException, SQLException {
 
@@ -85,8 +84,15 @@ public class CPTImporter {
     System.out.println(k);
     
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dst), cs); 
+    produceDB(Utilities.changeFileExt(dst, ".db"), cs);
     
-    connect(Utilities.changeFileExt(dst, ".db"));
+    cs.getConcept().removeIf(cc -> !Utilities.existsInList(cc.getCode(), "metadata-kinds", "metadata-designations", "99202", "99203", "25", "P1"));
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.changeFileExt(dst, "-fragment.json")), cs); 
+    produceDB(Utilities.changeFileExt(dst, "-fragment.db"), cs);
+  }
+
+  private void produceDB(String path, CodeSystem cs) throws ClassNotFoundException, SQLException {
+    Connection con = connect(path);
 
     Statement stmt = con.createStatement();
     stmt.execute("insert into Information (name, value) values ('version', "+cs.getVersion()+")");        
@@ -95,7 +101,7 @@ public class CPTImporter {
         stmt.execute("insert into Concepts (code, modifier) values ('"+cc.getCode()+"', "+isModifier(cc)+")");
         int i = 0;
         if (cc.hasDisplay()) {
-          stmt.execute("insert into Designations (code, type, sequence, value) values ('"+cc.getCode()+"', 0, 0, '"+Utilities.escapeSql(cc.getDisplay())+"')");
+          stmt.execute("insert into Designations (code, type, sequence, value) values ('"+cc.getCode()+"', 'display', 0, '"+Utilities.escapeSql(cc.getDisplay())+"')");
           i++;
         }
         for (ConceptDefinitionDesignationComponent d : cc.getDesignation()) {
@@ -111,9 +117,7 @@ public class CPTImporter {
         }    
       }
     }
-    cs.getConcept().removeIf(cc -> !Utilities.existsInList(cc.getCode(), "metadata-kinds", "metadata-designations", "99202", "25"));
 
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dst+"-fragment"), cs); 
   }
 
   private String isModifier(ConceptDefinitionComponent cc) {
@@ -126,19 +130,19 @@ public class CPTImporter {
   }
 
 
-  private void connect(String dest) throws SQLException, ClassNotFoundException {
+  private Connection connect(String dest) throws SQLException, ClassNotFoundException {
     //    Class.forName("com.mysql.jdbc.Driver");  
     //    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omop?useSSL=false","root",{pwd}); 
     new File(dest).delete();
-    con = DriverManager.getConnection("jdbc:sqlite:"+dest); 
-    makeMetadataTable();
-    makeConceptsTable();
-    makeDesignationsTable();
-    makePropertiesTable();
-    
+    Connection con = DriverManager.getConnection("jdbc:sqlite:"+dest); 
+    makeMetadataTable(con);
+    makeConceptsTable(con);
+    makeDesignationsTable(con);
+    makePropertiesTable(con);
+    return con;    
   }
   
-  private void makeDesignationsTable() throws SQLException {
+  private void makeDesignationsTable(Connection con) throws SQLException {
     Statement stmt = con.createStatement();
     stmt.execute("CREATE TABLE Designations (\r\n"+
         "`code` varchar(15) NOT NULL,\r\n"+
@@ -149,7 +153,7 @@ public class CPTImporter {
   }
 
 
-  private void makePropertiesTable() throws SQLException {
+  private void makePropertiesTable(Connection con) throws SQLException {
 
     Statement stmt = con.createStatement();
     stmt.execute("CREATE TABLE Properties (\r\n"+
@@ -162,7 +166,7 @@ public class CPTImporter {
   }
 
 
-  private void makeConceptsTable() throws SQLException {
+  private void makeConceptsTable(Connection con) throws SQLException {
 
     Statement stmt = con.createStatement();
     stmt.execute("CREATE TABLE Concepts (\r\n"+
@@ -173,7 +177,7 @@ public class CPTImporter {
   }
 
 
-  private void makeMetadataTable() throws SQLException {
+  private void makeMetadataTable(Connection con) throws SQLException {
 
     Statement stmt = con.createStatement();
     stmt.execute("CREATE TABLE Information (\r\n"+
