@@ -100,6 +100,8 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     int stepCount = 1;
     for (ExampleScenarioProcessStepComponent step: process.getStep()) {
       plantUml += toPlantUml(step, stepPrefix(prefix, step, stepCount), scen, actorsActive, actorKeys);
+      if (step.getPause())
+        plantUml += "... time passes ...\n";
       stepCount++;
     }
 
