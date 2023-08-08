@@ -579,7 +579,7 @@ public class ValidationService {
     for (SourceFile ref : refs) {
       System.out.println("  Extract Translations from " + ref);
       org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
-      Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
+      Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
       LanguageProducerSession ps = po.startSession(e.fhirType()+"-"+e.getIdBase(), cliContext.getSrcLang());
       LanguageProducerLanguageSession psl = ps.forLang(cliContext.getTgtLang());
       new LanguageUtils(validator.getContext()).generateTranslations(e, psl);
@@ -614,7 +614,7 @@ public class ValidationService {
     for (SourceFile ref : refs) {
       System.out.println("  Inject Translations into " + ref);
       org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
-      Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());      
+      Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());      
       t = t + new LanguageUtils(validator.getContext()).importFromTranslations(e, translations);
       Manager.compose(validator.getContext(), e, new FileOutputStream(Utilities.path(dst, new File(ref.getRef()).getName())), cnt.getCntType(),
           OutputStyle.PRETTY, null);
