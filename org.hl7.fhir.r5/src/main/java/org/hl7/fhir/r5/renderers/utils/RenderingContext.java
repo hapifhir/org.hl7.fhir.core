@@ -80,7 +80,30 @@ public class RenderingContext {
     BINDINGS, // tree/name + column for each kind of binding found, cells are lists of bindings 
     OBLIGATIONS, // tree/name + column for each actor that has obligations
   }
-  
+
+  public enum ExampleScenarioRendererMode {
+    /**
+     * A visual presentation of the questionnaire, with a set of property panes that can be toggled on and off.
+     * Note that this is not the same as how the questionnaire would like on a form filler, since all dynamic behavior is ignored
+     */
+    ACTORS,
+
+    /**
+     * A table listing all the instances (and versions there-of) used in a scenario
+     */
+    INSTANCES,
+
+    /**
+     * Information about the processes (and sub-processes) defined in a scenario
+     */
+    PROCESSES,
+
+    /**
+     * A diagram showing interactions between the actors as part of the process steps
+     */
+    DIAGRAM
+  }
+
   public enum QuestionnaireRendererMode {
     /**
      * A visual presentation of the questionnaire, with a set of property panes that can be toggled on and off.
@@ -146,6 +169,7 @@ public class RenderingContext {
   private boolean inlineGraphics;
   private StandardsStatus defaultStandardsStatus;
 
+  private ExampleScenarioRendererMode scenarioMode = null;
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
   private StructureDefinitionRendererMode structureMode = StructureDefinitionRendererMode.SUMMARY;
   
@@ -211,6 +235,7 @@ public class RenderingContext {
     res.definitionsTarget = definitionsTarget;
     res.destDir = destDir;
     res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
+    res.scenarioMode = scenarioMode;
     res.questionnaireMode = questionnaireMode;
     res.structureMode = structureMode;
     res.header = header;
@@ -437,6 +462,15 @@ public class RenderingContext {
 
   public RenderingContext setHeader(boolean header) {
     this.header = header;
+    return this;
+  }
+
+  public ExampleScenarioRendererMode getScenarioMode() {
+    return scenarioMode;
+  }
+
+  public RenderingContext setScenarioMode(ExampleScenarioRendererMode scenarioMode) {
+    this.scenarioMode = scenarioMode;
     return this;
   }
 
