@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -72,8 +73,8 @@ public class ValidatorUtils {
     }
   }
   
-  protected static void grabNatives(Map<String, byte[]> source, Map<String, byte[]> binaries, String prefix) {
-    for (Map.Entry<String, byte[]> e : source.entrySet()) {
+  protected static void grabNatives(Map<String, ByteProvider> source, Map<String, ByteProvider> binaries, String prefix) {
+    for (Map.Entry<String, ByteProvider> e : source.entrySet()) {
       if (e.getKey().endsWith(".zip"))
         binaries.put(prefix + "#" + e.getKey(), e.getValue());
     }

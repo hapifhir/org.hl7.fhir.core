@@ -71,6 +71,7 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.MagicResources;
 import org.hl7.fhir.utilities.TextFile;
@@ -291,11 +292,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       return build(context);
     }
 
-    public SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader, PackageInformation pi) throws IOException, FHIRException  {
+    public SimpleWorkerContext fromDefinitions(Map<String, ByteProvider> source, IContextResourceLoader loader, PackageInformation pi) throws IOException, FHIRException  {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       for (String name : source.keySet()) {
         try {
-          context.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name)), loader, null, pi);
+          context.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name).getBytes()), loader, null, pi);
         } catch (Exception e) {
           System.out.println("Error loading "+name+": "+e.getMessage());
           throw new FHIRException("Error loading "+name+": "+e.getMessage(), e);

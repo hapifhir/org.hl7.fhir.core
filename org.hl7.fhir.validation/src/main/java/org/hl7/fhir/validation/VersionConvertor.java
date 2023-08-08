@@ -24,10 +24,10 @@ public class VersionConvertor {
     org.hl7.fhir.dstu2.model.Resource r2;
     switch (cnt.getCntType()) {
       case JSON:
-        r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(cnt.getFocus());
+        r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(cnt.getFocus().getBytes());
         break;
       case XML:
-        r2 = new org.hl7.fhir.dstu2.formats.XmlParser().parse(cnt.getFocus());
+        r2 = new org.hl7.fhir.dstu2.formats.XmlParser().parse(cnt.getFocus().getBytes());
         break;
       default:
         throw new FHIRException("Unsupported input format: " + cnt.getCntType().toString());
@@ -53,10 +53,10 @@ public class VersionConvertor {
     org.hl7.fhir.dstu2016may.model.Resource r2b;
     switch (cnt.getCntType()) {
       case JSON:
-        r2b = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(cnt.getFocus());
+        r2b = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(cnt.getFocus().getBytes());
         break;
       case XML:
-        r2b = new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(cnt.getFocus());
+        r2b = new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(cnt.getFocus().getBytes());
         break;
       default:
         throw new FHIRException("Unsupported input format: " + cnt.getCntType().toString());
@@ -82,10 +82,10 @@ public class VersionConvertor {
     org.hl7.fhir.dstu3.model.Resource r3;
     switch (cnt.getCntType()) {
       case JSON:
-        r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(cnt.getFocus());
+        r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(cnt.getFocus().getBytes());
         break;
       case XML:
-        r3 = new org.hl7.fhir.dstu3.formats.XmlParser().parse(cnt.getFocus());
+        r3 = new org.hl7.fhir.dstu3.formats.XmlParser().parse(cnt.getFocus().getBytes());
         break;
       default:
         throw new FHIRException("Unsupported input format: " + cnt.getCntType().toString());
@@ -109,10 +109,10 @@ public class VersionConvertor {
     org.hl7.fhir.r4.model.Resource r4;
     switch (cnt.getCntType()) {
       case JSON:
-        r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(cnt.getFocus());
+        r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(cnt.getFocus().getBytes());
         break;
       case XML:
-        r4 = new org.hl7.fhir.r4.formats.XmlParser().parse(cnt.getFocus());
+        r4 = new org.hl7.fhir.r4.formats.XmlParser().parse(cnt.getFocus().getBytes());
         break;
       default:
         throw new FHIRException("Unsupported input format: " + cnt.getCntType().toString());
@@ -137,10 +137,10 @@ public class VersionConvertor {
     org.hl7.fhir.r4b.model.Resource r4b;
     switch (cnt.getCntType()) {
       case JSON:
-        r4b = new org.hl7.fhir.r4b.formats.JsonParser().parse(cnt.getFocus());
+        r4b = new org.hl7.fhir.r4b.formats.JsonParser().parse(cnt.getFocus().getBytes());
         break;
       case XML:
-        r4b = new org.hl7.fhir.r4b.formats.XmlParser().parse(cnt.getFocus());
+        r4b = new org.hl7.fhir.r4b.formats.XmlParser().parse(cnt.getFocus().getBytes());
         break;
       default:
         throw new FHIRException("Unsupported input format: " + cnt.getCntType().toString());
@@ -159,10 +159,10 @@ public class VersionConvertor {
     org.hl7.fhir.r5.model.Resource r5;
     switch (cnt.getCntType()) {
       case JSON:
-        r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(cnt.getFocus());
+        r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(cnt.getFocus().getBytes());
         break;
       case XML:
-        r5 = new org.hl7.fhir.r5.formats.XmlParser().parse(cnt.getFocus());
+        r5 = new org.hl7.fhir.r5.formats.XmlParser().parse(cnt.getFocus().getBytes() );
         break;
       default:
         throw new FHIRException("Unsupported input format: " + cnt.getCntType().toString());

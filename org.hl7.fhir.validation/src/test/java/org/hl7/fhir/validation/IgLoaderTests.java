@@ -21,6 +21,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.ByteProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,8 +64,8 @@ public class IgLoaderTests {
     final byte[] dummyBytes = {};
     final String dummyKey = "dummyKey";
 
-    final Map<String, byte[]> dummyMap = new HashMap<>();
-    dummyMap.put(dummyKey, dummyBytes);
+    final Map<String, ByteProvider> dummyMap = new HashMap<>();
+    dummyMap.put(dummyKey, ByteProvider.forBytes(dummyBytes));
 
 
       IgLoader igLoader = Mockito.spy(new IgLoader(
@@ -136,10 +137,10 @@ public class IgLoaderTests {
       simpleWorkerContext,
       "4.0.1"
     ));
-    Map<String, byte[]> map = igLoader.readZip(IgLoaderTests.class.getResourceAsStream("/zip-slip/zip-normal.zip"));
+    Map<String, ByteProvider> map = igLoader.readZip(IgLoaderTests.class.getResourceAsStream("/zip-slip/zip-normal.zip"));
     final String testPath = "zip-normal/depth1/test.txt";
     assertTrue(map.containsKey(testPath));
-    String testFileContent = new String(map.get(testPath), StandardCharsets.UTF_8);
+    String testFileContent = new String(map.get(testPath).getBytes(), StandardCharsets.UTF_8);
     Assertions.assertEquals("dummy file content", testFileContent);
   }
 }
