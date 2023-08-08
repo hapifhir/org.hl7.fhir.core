@@ -65,6 +65,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
@@ -249,6 +250,19 @@ public class NpmPackage {
         }
       } else {
         return content.get(file);
+      }
+    }
+
+    public ByteProvider getProvider(String file) throws FileNotFoundException, IOException {
+      if (folder != null) {
+        File f = new File(Utilities.path(folder.getAbsolutePath(), file));
+        if (f.exists()) {
+          return ByteProvider.forFile(f);
+        } else {
+          return null;
+        }
+      } else {
+        return ByteProvider.forBytes(content.get(file));
       }
     }
 
@@ -794,6 +808,7 @@ public class NpmPackage {
   public InputStream load(String file) throws IOException {
     return load("package", file);
   }
+  
   /**
    * get a stream that contains the contents of one of the files in a folder
    * 
@@ -814,6 +829,27 @@ public class NpmPackage {
     }
   }
 
+  /**
+   * get a stream that contains the contents of one of the files in a folder
+   * 
+   * @param folder
+   * @param file
+   * @return
+   * @throws IOException
+   */
+  public ByteProvider getProvider(String folder, String file) throws IOException {
+    NpmPackageFolder f = folders.get(folder);
+    if (f == null) {
+      f = folders.get(Utilities.path("package", folder));
+    }
+    if (f != null && f.hasFile(file)) {
+      return f.getProvider(file);
+    } else {
+      throw new IOException("Unable to find the file "+folder+"/"+file+" in the package "+name());
+    }
+  }
+
+  
   public boolean hasFile(String folder, String file) throws IOException {
     NpmPackageFolder f = folders.get(folder);
     if (f == null) {
