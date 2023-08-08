@@ -76,6 +76,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return render(x, (ValueSet) dr, false);
   }
   
+
   public boolean render(XhtmlNode x, ValueSet vs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
     List<UsedConceptMap> maps = findReleventMaps(vs);
     
@@ -1130,10 +1131,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
     boolean hasExtensions = false;
     XhtmlNode li;
     li = ul.li();
-    CodeSystem e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
     Map<String, ConceptDefinitionComponent> definitions = new HashMap<>();
     
     if (inc.hasSystem()) {
+      CodeSystem e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
       if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
         li.addText(type+" all codes defined in ");
         addCsRef(inc, li, e);
