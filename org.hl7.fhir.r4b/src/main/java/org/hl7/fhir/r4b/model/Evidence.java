@@ -496,7 +496,7 @@ public class Evidence extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Evidence.variableDefinition.description");
+        throw new FHIRException("Cannot call addChild on a singleton property Evidence.variableDefinition.description");
       } else if (name.equals("note")) {
         return addNote();
       } else if (name.equals("variableRole")) {
@@ -1325,7 +1325,7 @@ public class Evidence extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.description");
+        throw new FHIRException("Cannot call addChild on a singleton property Evidence.statistic.description");
       } else if (name.equals("note")) {
         return addNote();
       } else if (name.equals("statisticType")) {
@@ -1338,9 +1338,9 @@ public class Evidence extends DomainResource {
         this.quantity = new Quantity();
         return this.quantity;
       } else if (name.equals("numberOfEvents")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.numberOfEvents");
+        throw new FHIRException("Cannot call addChild on a singleton property Evidence.statistic.numberOfEvents");
       } else if (name.equals("numberAffected")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.numberAffected");
+        throw new FHIRException("Cannot call addChild on a singleton property Evidence.statistic.numberAffected");
       } else if (name.equals("sampleSize")) {
         this.sampleSize = new EvidenceStatisticSampleSizeComponent();
         return this.sampleSize;
@@ -1881,18 +1881,18 @@ public class Evidence extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.sampleSize.description");
+        throw new FHIRException("Cannot call addChild on a singleton property Evidence.statistic.sampleSize.description");
       } else if (name.equals("note")) {
         return addNote();
       } else if (name.equals("numberOfStudies")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type Evidence.statistic.sampleSize.numberOfStudies");
+            "Cannot call addChild on a singleton property Evidence.statistic.sampleSize.numberOfStudies");
       } else if (name.equals("numberOfParticipants")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type Evidence.statistic.sampleSize.numberOfParticipants");
+            "Cannot call addChild on a singleton property Evidence.statistic.sampleSize.numberOfParticipants");
       } else if (name.equals("knownDataCount")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type Evidence.statistic.sampleSize.knownDataCount");
+            "Cannot call addChild on a singleton property Evidence.statistic.sampleSize.knownDataCount");
       } else
         return super.addChild(name);
     }
@@ -2507,7 +2507,7 @@ public class Evidence extends DomainResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type Evidence.statistic.attributeEstimate.description");
+            "Cannot call addChild on a singleton property Evidence.statistic.attributeEstimate.description");
       } else if (name.equals("note")) {
         return addNote();
       } else if (name.equals("type")) {
@@ -2517,7 +2517,7 @@ public class Evidence extends DomainResource {
         this.quantity = new Quantity();
         return this.quantity;
       } else if (name.equals("level")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.attributeEstimate.level");
+        throw new FHIRException("Cannot call addChild on a singleton property Evidence.statistic.attributeEstimate.level");
       } else if (name.equals("range")) {
         this.range = new Range();
         return this.range;
@@ -3466,7 +3466,7 @@ public class Evidence extends DomainResource {
         return this.variableDefinition;
       } else if (name.equals("handling")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type Evidence.statistic.modelCharacteristic.variable.handling");
+            "Cannot call addChild on a singleton property Evidence.statistic.modelCharacteristic.variable.handling");
       } else if (name.equals("valueCategory")) {
         return addValueCategory();
       } else if (name.equals("valueQuantity")) {
@@ -4013,7 +4013,7 @@ public class Evidence extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Evidence.certainty.description");
+        throw new FHIRException("Cannot call addChild on a singleton property Evidence.certainty.description");
       } else if (name.equals("note")) {
         return addNote();
       } else if (name.equals("type")) {
@@ -4023,7 +4023,7 @@ public class Evidence extends DomainResource {
         this.rating = new CodeableConcept();
         return this.rating;
       } else if (name.equals("rater")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Evidence.certainty.rater");
+        throw new FHIRException("Cannot call addChild on a singleton property Evidence.certainty.rater");
       } else if (name.equals("subcomponent")) {
         return addSubcomponent();
       } else
@@ -6223,13 +6223,13 @@ public class Evidence extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Evidence.url");
+      throw new FHIRException("Cannot call addChild on a singleton property Evidence.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Evidence.version");
+      throw new FHIRException("Cannot call addChild on a singleton property Evidence.version");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Evidence.title");
+      throw new FHIRException("Cannot call addChild on a singleton property Evidence.title");
     } else if (name.equals("citeAsReference")) {
       this.citeAs = new Reference();
       return this.citeAs;
@@ -6237,17 +6237,17 @@ public class Evidence extends DomainResource {
       this.citeAs = new MarkdownType();
       return this.citeAs;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Evidence.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Evidence.status");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Evidence.date");
+      throw new FHIRException("Cannot call addChild on a singleton property Evidence.date");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("approvalDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Evidence.approvalDate");
+      throw new FHIRException("Cannot call addChild on a singleton property Evidence.approvalDate");
     } else if (name.equals("lastReviewDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Evidence.lastReviewDate");
+      throw new FHIRException("Cannot call addChild on a singleton property Evidence.lastReviewDate");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Evidence.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property Evidence.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("author")) {
@@ -6261,9 +6261,9 @@ public class Evidence extends DomainResource {
     } else if (name.equals("relatedArtifact")) {
       return addRelatedArtifact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Evidence.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Evidence.description");
     } else if (name.equals("assertion")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Evidence.assertion");
+      throw new FHIRException("Cannot call addChild on a singleton property Evidence.assertion");
     } else if (name.equals("note")) {
       return addNote();
     } else if (name.equals("variableDefinition")) {

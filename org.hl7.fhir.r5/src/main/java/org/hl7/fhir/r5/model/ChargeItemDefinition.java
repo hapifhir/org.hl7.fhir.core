@@ -2632,13 +2632,13 @@ public class ChargeItemDefinition extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.url");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.version");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -2649,37 +2649,37 @@ public class ChargeItemDefinition extends MetadataResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.name");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.title");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.title");
         }
         else if (name.equals("derivedFromUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.derivedFromUri");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.derivedFromUri");
         }
         else if (name.equals("partOf")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.partOf");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.partOf");
         }
         else if (name.equals("replaces")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.replaces");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.replaces");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.status");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.experimental");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.date");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.publisher");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.description");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -2688,19 +2688,19 @@ public class ChargeItemDefinition extends MetadataResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.purpose");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.copyright");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.copyrightLabel");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.approvalDate");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItemDefinition.lastReviewDate");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();

@@ -635,7 +635,7 @@ public class StructureDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.name");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.name");
       } else if (name.equals("telecom")) {
         return addTelecom();
       } else
@@ -1046,13 +1046,13 @@ public class StructureDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("identity")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.identity");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.identity");
       } else if (name.equals("uri")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.uri");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.uri");
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.name");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.name");
       } else if (name.equals("comments")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.comments");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.comments");
       } else
         return super.addChild(name);
     }
@@ -3418,53 +3418,53 @@ public class StructureDefinition extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.url");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.version");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.name");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.name");
     } else if (name.equals("display")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.display");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.display");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.status");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.experimental");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.date");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.date");
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.description");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.description");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("requirements")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.requirements");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.requirements");
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.copyright");
     } else if (name.equals("code")) {
       return addCode();
     } else if (name.equals("fhirVersion")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.fhirVersion");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.fhirVersion");
     } else if (name.equals("mapping")) {
       return addMapping();
     } else if (name.equals("kind")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.kind");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.kind");
     } else if (name.equals("abstract")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.abstract");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.abstract");
     } else if (name.equals("contextType")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.contextType");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.contextType");
     } else if (name.equals("context")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.context");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.context");
     } else if (name.equals("baseType")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.baseType");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.baseType");
     } else if (name.equals("baseDefinition")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.baseDefinition");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.baseDefinition");
     } else if (name.equals("derivation")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureDefinition.derivation");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureDefinition.derivation");
     } else if (name.equals("snapshot")) {
       this.snapshot = new StructureDefinitionSnapshotComponent();
       return this.snapshot;

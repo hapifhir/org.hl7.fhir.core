@@ -922,20 +922,20 @@ public class RelatedArtifact extends DataType implements ICompositeType {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RelatedArtifact.type");
+      throw new FHIRException("Cannot call addChild on a singleton property RelatedArtifact.type");
     } else if (name.equals("label")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RelatedArtifact.label");
+      throw new FHIRException("Cannot call addChild on a singleton property RelatedArtifact.label");
     } else if (name.equals("display")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RelatedArtifact.display");
+      throw new FHIRException("Cannot call addChild on a singleton property RelatedArtifact.display");
     } else if (name.equals("citation")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RelatedArtifact.citation");
+      throw new FHIRException("Cannot call addChild on a singleton property RelatedArtifact.citation");
     } else if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RelatedArtifact.url");
+      throw new FHIRException("Cannot call addChild on a singleton property RelatedArtifact.url");
     } else if (name.equals("document")) {
       this.document = new Attachment();
       return this.document;
     } else if (name.equals("resource")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RelatedArtifact.resource");
+      throw new FHIRException("Cannot call addChild on a singleton property RelatedArtifact.resource");
     } else
       return super.addChild(name);
   }

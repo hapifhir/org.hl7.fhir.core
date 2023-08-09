@@ -508,10 +508,10 @@ public class SubscriptionStatus extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("eventNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionStatus.notificationEvent.eventNumber");
+          throw new FHIRException("Cannot call addChild on a singleton property SubscriptionStatus.notificationEvent.eventNumber");
         }
         else if (name.equals("timestamp")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionStatus.notificationEvent.timestamp");
+          throw new FHIRException("Cannot call addChild on a singleton property SubscriptionStatus.notificationEvent.timestamp");
         }
         else if (name.equals("focus")) {
           this.focus = new Reference();
@@ -1092,13 +1092,13 @@ public class SubscriptionStatus extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionStatus.status");
+          throw new FHIRException("Cannot call addChild on a singleton property SubscriptionStatus.status");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionStatus.type");
+          throw new FHIRException("Cannot call addChild on a singleton property SubscriptionStatus.type");
         }
         else if (name.equals("eventsSinceSubscriptionStart")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionStatus.eventsSinceSubscriptionStart");
+          throw new FHIRException("Cannot call addChild on a singleton property SubscriptionStatus.eventsSinceSubscriptionStart");
         }
         else if (name.equals("notificationEvent")) {
           return addNotificationEvent();
@@ -1108,7 +1108,7 @@ public class SubscriptionStatus extends DomainResource {
           return this.subscription;
         }
         else if (name.equals("topic")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionStatus.topic");
+          throw new FHIRException("Cannot call addChild on a singleton property SubscriptionStatus.topic");
         }
         else if (name.equals("error")) {
           return addError();

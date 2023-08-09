@@ -1433,7 +1433,7 @@ public class ProcedureRequest extends DomainResource {
       this.performer = new Reference();
       return this.performer;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ProcedureRequest.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ProcedureRequest.status");
     } else if (name.equals("notes")) {
       return addNotes();
     } else if (name.equals("asNeededBoolean")) {
@@ -1443,12 +1443,12 @@ public class ProcedureRequest extends DomainResource {
       this.asNeeded = new CodeableConcept();
       return this.asNeeded;
     } else if (name.equals("orderedOn")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ProcedureRequest.orderedOn");
+      throw new FHIRException("Cannot call addChild on a singleton property ProcedureRequest.orderedOn");
     } else if (name.equals("orderer")) {
       this.orderer = new Reference();
       return this.orderer;
     } else if (name.equals("priority")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ProcedureRequest.priority");
+      throw new FHIRException("Cannot call addChild on a singleton property ProcedureRequest.priority");
     } else
       return super.addChild(name);
   }

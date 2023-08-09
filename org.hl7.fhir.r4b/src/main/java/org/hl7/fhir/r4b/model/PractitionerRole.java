@@ -466,15 +466,15 @@ public class PractitionerRole extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("daysOfWeek")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.availableTime.daysOfWeek");
+        throw new FHIRException("Cannot call addChild on a singleton property PractitionerRole.availableTime.daysOfWeek");
       } else if (name.equals("allDay")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.availableTime.allDay");
+        throw new FHIRException("Cannot call addChild on a singleton property PractitionerRole.availableTime.allDay");
       } else if (name.equals("availableStartTime")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type PractitionerRole.availableTime.availableStartTime");
+            "Cannot call addChild on a singleton property PractitionerRole.availableTime.availableStartTime");
       } else if (name.equals("availableEndTime")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type PractitionerRole.availableTime.availableEndTime");
+            "Cannot call addChild on a singleton property PractitionerRole.availableTime.availableEndTime");
       } else
         return super.addChild(name);
     }
@@ -739,7 +739,7 @@ public class PractitionerRole extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.notAvailable.description");
+        throw new FHIRException("Cannot call addChild on a singleton property PractitionerRole.notAvailable.description");
       } else if (name.equals("during")) {
         this.during = new Period();
         return this.during;
@@ -1913,7 +1913,7 @@ public class PractitionerRole extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("active")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.active");
+      throw new FHIRException("Cannot call addChild on a singleton property PractitionerRole.active");
     } else if (name.equals("period")) {
       this.period = new Period();
       return this.period;
@@ -1938,7 +1938,7 @@ public class PractitionerRole extends DomainResource {
     } else if (name.equals("notAvailable")) {
       return addNotAvailable();
     } else if (name.equals("availabilityExceptions")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.availabilityExceptions");
+      throw new FHIRException("Cannot call addChild on a singleton property PractitionerRole.availabilityExceptions");
     } else if (name.equals("endpoint")) {
       return addEndpoint();
     } else

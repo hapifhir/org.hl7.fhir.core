@@ -413,7 +413,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Extension.url");
+      throw new FHIRException("Cannot call addChild on a singleton property Extension.url");
     } else if (name.equals("valueBase64Binary")) {
       this.value = new Base64BinaryType();
       return this.value;

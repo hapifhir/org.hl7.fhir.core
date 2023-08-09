@@ -718,18 +718,18 @@ public class AppointmentResponse extends DomainResource {
       this.appointment = new Reference();
       return this.appointment;
     } else if (name.equals("start")) {
-      throw new FHIRException("Cannot call addChild on a primitive type AppointmentResponse.start");
+      throw new FHIRException("Cannot call addChild on a singleton property AppointmentResponse.start");
     } else if (name.equals("end")) {
-      throw new FHIRException("Cannot call addChild on a primitive type AppointmentResponse.end");
+      throw new FHIRException("Cannot call addChild on a singleton property AppointmentResponse.end");
     } else if (name.equals("participantType")) {
       return addParticipantType();
     } else if (name.equals("actor")) {
       this.actor = new Reference();
       return this.actor;
     } else if (name.equals("participantStatus")) {
-      throw new FHIRException("Cannot call addChild on a primitive type AppointmentResponse.participantStatus");
+      throw new FHIRException("Cannot call addChild on a singleton property AppointmentResponse.participantStatus");
     } else if (name.equals("comment")) {
-      throw new FHIRException("Cannot call addChild on a primitive type AppointmentResponse.comment");
+      throw new FHIRException("Cannot call addChild on a singleton property AppointmentResponse.comment");
     } else
       return super.addChild(name);
   }

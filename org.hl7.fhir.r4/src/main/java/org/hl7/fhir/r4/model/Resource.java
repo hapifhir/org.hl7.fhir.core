@@ -440,14 +440,14 @@ public abstract class Resource extends BaseResource implements IAnyResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("id")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Resource.id");
+      throw new FHIRException("Cannot call addChild on a singleton property Resource.id");
     } else if (name.equals("meta")) {
       this.meta = new Meta();
       return this.meta;
     } else if (name.equals("implicitRules")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Resource.implicitRules");
+      throw new FHIRException("Cannot call addChild on a singleton property Resource.implicitRules");
     } else if (name.equals("language")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Resource.language");
+      throw new FHIRException("Cannot call addChild on a singleton property Resource.language");
     } else
       return super.addChild(name);
   }

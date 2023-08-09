@@ -1233,11 +1233,11 @@ public class DeviceMetric extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.type");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceMetric.type");
       } else if (name.equals("state")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.state");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceMetric.state");
       } else if (name.equals("time")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.time");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceMetric.time");
       } else
         return super.addChild(name);
     }
@@ -2210,11 +2210,11 @@ public class DeviceMetric extends DomainResource {
       this.parent = new Reference();
       return this.parent;
     } else if (name.equals("operationalStatus")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.operationalStatus");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceMetric.operationalStatus");
     } else if (name.equals("color")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.color");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceMetric.color");
     } else if (name.equals("category")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceMetric.category");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceMetric.category");
     } else if (name.equals("measurementPeriod")) {
       this.measurementPeriod = new Timing();
       return this.measurementPeriod;

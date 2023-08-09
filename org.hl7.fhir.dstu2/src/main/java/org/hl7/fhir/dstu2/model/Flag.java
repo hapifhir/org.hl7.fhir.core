@@ -659,7 +659,7 @@ public class Flag extends DomainResource {
       this.category = new CodeableConcept();
       return this.category;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Flag.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Flag.status");
     } else if (name.equals("period")) {
       this.period = new Period();
       return this.period;

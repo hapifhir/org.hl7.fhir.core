@@ -531,7 +531,7 @@ public class Group extends DomainResource {
         this.value = new Range();
         return this.value;
       } else if (name.equals("exclude")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Group.exclude");
+        throw new FHIRException("Cannot call addChild on a singleton property Group.exclude");
       } else if (name.equals("period")) {
         this.period = new Period();
         return this.period;
@@ -793,7 +793,7 @@ public class Group extends DomainResource {
         this.period = new Period();
         return this.period;
       } else if (name.equals("inactive")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Group.inactive");
+        throw new FHIRException("Cannot call addChild on a singleton property Group.inactive");
       } else
         return super.addChild(name);
     }
@@ -1340,16 +1340,16 @@ public class Group extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Group.type");
+      throw new FHIRException("Cannot call addChild on a singleton property Group.type");
     } else if (name.equals("actual")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Group.actual");
+      throw new FHIRException("Cannot call addChild on a singleton property Group.actual");
     } else if (name.equals("code")) {
       this.code = new CodeableConcept();
       return this.code;
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Group.name");
+      throw new FHIRException("Cannot call addChild on a singleton property Group.name");
     } else if (name.equals("quantity")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Group.quantity");
+      throw new FHIRException("Cannot call addChild on a singleton property Group.quantity");
     } else if (name.equals("characteristic")) {
       return addCharacteristic();
     } else if (name.equals("member")) {

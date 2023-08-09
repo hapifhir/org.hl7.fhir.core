@@ -630,7 +630,7 @@ public class Task extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Task.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Task.name");
       } else if (name.equals("valueBoolean")) {
         this.value = new BooleanType();
         return this.value;
@@ -938,7 +938,7 @@ public class Task extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Task.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Task.name");
       } else if (name.equals("valueBoolean")) {
         this.value = new BooleanType();
         return this.value;
@@ -2238,13 +2238,13 @@ public class Task extends DomainResource {
       this.type = new CodeableConcept();
       return this.type;
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.description");
     } else if (name.equals("performerType")) {
       return addPerformerType();
     } else if (name.equals("priority")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.priority");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.priority");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.status");
     } else if (name.equals("failureReason")) {
       this.failureReason = new CodeableConcept();
       return this.failureReason;
@@ -2255,11 +2255,11 @@ public class Task extends DomainResource {
       this.for_ = new Reference();
       return this.for_;
     } else if (name.equals("definition")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.definition");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.definition");
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.created");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.created");
     } else if (name.equals("lastModified")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.lastModified");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.lastModified");
     } else if (name.equals("creator")) {
       this.creator = new Reference();
       return this.creator;

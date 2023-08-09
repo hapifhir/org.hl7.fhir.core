@@ -813,7 +813,7 @@ public class MedicationStatement extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.text");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.text");
       } else if (name.equals("timing")) {
         this.timing = new Timing();
         return this.timing;
@@ -1829,11 +1829,11 @@ public class MedicationStatement extends DomainResource {
       this.informationSource = new Reference();
       return this.informationSource;
     } else if (name.equals("dateAsserted")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.dateAsserted");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.dateAsserted");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.status");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.status");
     } else if (name.equals("wasNotTaken")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.wasNotTaken");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.wasNotTaken");
     } else if (name.equals("reasonNotTaken")) {
       return addReasonNotTaken();
     } else if (name.equals("reasonForUseCodeableConcept")) {
@@ -1849,7 +1849,7 @@ public class MedicationStatement extends DomainResource {
       this.effective = new Period();
       return this.effective;
     } else if (name.equals("note")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.note");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.note");
     } else if (name.equals("supportingInformation")) {
       return addSupportingInformation();
     } else if (name.equals("medicationCodeableConcept")) {

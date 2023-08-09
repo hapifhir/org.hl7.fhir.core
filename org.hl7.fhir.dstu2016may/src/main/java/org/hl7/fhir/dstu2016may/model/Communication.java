@@ -1422,14 +1422,14 @@ public class Communication extends DomainResource {
     } else if (name.equals("medium")) {
       return addMedium();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Communication.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Communication.status");
     } else if (name.equals("encounter")) {
       this.encounter = new Reference();
       return this.encounter;
     } else if (name.equals("sent")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Communication.sent");
+      throw new FHIRException("Cannot call addChild on a singleton property Communication.sent");
     } else if (name.equals("received")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Communication.received");
+      throw new FHIRException("Cannot call addChild on a singleton property Communication.received");
     } else if (name.equals("reason")) {
       return addReason();
     } else if (name.equals("subject")) {

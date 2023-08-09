@@ -1925,11 +1925,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.name");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.name");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.version");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.version");
       } else if (name.equals("releaseDate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.releaseDate");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.releaseDate");
       } else
         return super.addChild(name);
     }
@@ -2313,9 +2313,9 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.description");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.description");
       } else if (name.equals("url")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.url");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.url");
       } else if (name.equals("custodian")) {
         this.custodian = new Reference();
         return this.custodian;
@@ -3100,9 +3100,9 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("mode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.mode");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.mode");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.documentation");
       } else if (name.equals("security")) {
         this.security = new CapabilityStatementRestSecurityComponent();
         return this.security;
@@ -3115,7 +3115,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       } else if (name.equals("operation")) {
         return addOperation();
       } else if (name.equals("compartment")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.compartment");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.compartment");
       } else
         return super.addChild(name);
     }
@@ -3508,11 +3508,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("cors")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.cors");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.cors");
       } else if (name.equals("service")) {
         return addService();
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.description");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.description");
       } else
         return super.addChild(name);
     }
@@ -5162,35 +5162,35 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.type");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.type");
       } else if (name.equals("profile")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.profile");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.profile");
       } else if (name.equals("supportedProfile")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.supportedProfile");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.supportedProfile");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.documentation");
       } else if (name.equals("interaction")) {
         return addInteraction();
       } else if (name.equals("versioning")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.versioning");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.versioning");
       } else if (name.equals("readHistory")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.readHistory");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.readHistory");
       } else if (name.equals("updateCreate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.updateCreate");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.updateCreate");
       } else if (name.equals("conditionalCreate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.conditionalCreate");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.conditionalCreate");
       } else if (name.equals("conditionalRead")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.conditionalRead");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.conditionalRead");
       } else if (name.equals("conditionalUpdate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.conditionalUpdate");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.conditionalUpdate");
       } else if (name.equals("conditionalDelete")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.conditionalDelete");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.conditionalDelete");
       } else if (name.equals("referencePolicy")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.referencePolicy");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.referencePolicy");
       } else if (name.equals("searchInclude")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.searchInclude");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.searchInclude");
       } else if (name.equals("searchRevInclude")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.searchRevInclude");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.searchRevInclude");
       } else if (name.equals("searchParam")) {
         return addSearchParam();
       } else if (name.equals("operation")) {
@@ -5562,9 +5562,9 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.code");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.code");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.documentation");
       } else
         return super.addChild(name);
     }
@@ -6035,13 +6035,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.name");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.name");
       } else if (name.equals("definition")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.definition");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.definition");
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.type");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.type");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.documentation");
       } else
         return super.addChild(name);
     }
@@ -6465,11 +6465,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.name");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.name");
       } else if (name.equals("definition")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.definition");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.definition");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.documentation");
       } else
         return super.addChild(name);
     }
@@ -6763,9 +6763,9 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.code");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.code");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.documentation");
       } else
         return super.addChild(name);
     }
@@ -7229,9 +7229,9 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       if (name.equals("endpoint")) {
         return addEndpoint();
       } else if (name.equals("reliableCache")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.reliableCache");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.reliableCache");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.documentation");
       } else if (name.equals("supportedMessage")) {
         return addSupportedMessage();
       } else
@@ -7511,7 +7511,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
         this.protocol = new Coding();
         return this.protocol;
       } else if (name.equals("address")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.address");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.address");
       } else
         return super.addChild(name);
     }
@@ -7802,9 +7802,9 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("mode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.mode");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.mode");
       } else if (name.equals("definition")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.definition");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.definition");
       } else
         return super.addChild(name);
     }
@@ -8181,11 +8181,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("mode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.mode");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.mode");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.documentation");
       } else if (name.equals("profile")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.profile");
+        throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.profile");
       } else
         return super.addChild(name);
     }
@@ -10489,39 +10489,39 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.url");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.url");
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.version");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.name");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.title");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.title");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.status");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.experimental");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.date");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.description");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.description");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.purpose");
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.copyright");
     } else if (name.equals("kind")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.kind");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.kind");
     } else if (name.equals("instantiates")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.instantiates");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.instantiates");
     } else if (name.equals("imports")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.imports");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.imports");
     } else if (name.equals("software")) {
       this.software = new CapabilityStatementSoftwareComponent();
       return this.software;
@@ -10529,13 +10529,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       this.implementation = new CapabilityStatementImplementationComponent();
       return this.implementation;
     } else if (name.equals("fhirVersion")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.fhirVersion");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.fhirVersion");
     } else if (name.equals("format")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.format");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.format");
     } else if (name.equals("patchFormat")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.patchFormat");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.patchFormat");
     } else if (name.equals("implementationGuide")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.implementationGuide");
+      throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.implementationGuide");
     } else if (name.equals("rest")) {
       return addRest();
     } else if (name.equals("messaging")) {

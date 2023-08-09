@@ -277,7 +277,7 @@ public class ContactDetail extends DataType implements ICompositeType {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ContactDetail.name");
+      throw new FHIRException("Cannot call addChild on a singleton property ContactDetail.name");
     } else if (name.equals("telecom")) {
       return addTelecom();
     } else

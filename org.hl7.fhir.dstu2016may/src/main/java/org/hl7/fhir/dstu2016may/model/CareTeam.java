@@ -893,7 +893,7 @@ public class CareTeam extends DomainResource {
     } else if (name.equals("type")) {
       return addType();
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CareTeam.name");
+      throw new FHIRException("Cannot call addChild on a singleton property CareTeam.name");
     } else if (name.equals("subject")) {
       this.subject = new Reference();
       return this.subject;

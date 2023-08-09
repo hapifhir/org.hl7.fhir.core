@@ -3356,10 +3356,10 @@ public class AdverseEvent extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.status");
+          throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.status");
         }
         else if (name.equals("actuality")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.actuality");
+          throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.actuality");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -3389,10 +3389,10 @@ public class AdverseEvent extends DomainResource {
           return this.occurrence;
         }
         else if (name.equals("detected")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.detected");
+          throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.detected");
         }
         else if (name.equals("recordedDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.recordedDate");
+          throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.recordedDate");
         }
         else if (name.equals("resultingEffect")) {
           return addResultingEffect();
@@ -3419,7 +3419,7 @@ public class AdverseEvent extends DomainResource {
           return addStudy();
         }
         else if (name.equals("expectedInResearchStudy")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.expectedInResearchStudy");
+          throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.expectedInResearchStudy");
         }
         else if (name.equals("suspectEntity")) {
           return addSuspectEntity();

@@ -741,7 +741,7 @@ public class Sequence extends DomainResource {
         this.chromosome = new CodeableConcept();
         return this.chromosome;
       } else if (name.equals("genomeBuild")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.genomeBuild");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.genomeBuild");
       } else if (name.equals("referenceSeqId")) {
         this.referenceSeqId = new CodeableConcept();
         return this.referenceSeqId;
@@ -749,11 +749,11 @@ public class Sequence extends DomainResource {
         this.referenceSeqPointer = new Reference();
         return this.referenceSeqPointer;
       } else if (name.equals("referenceSeqString")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.referenceSeqString");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.referenceSeqString");
       } else if (name.equals("windowStart")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.windowStart");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.windowStart");
       } else if (name.equals("windowEnd")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.windowEnd");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.windowEnd");
       } else
         return super.addChild(name);
     }
@@ -1266,15 +1266,15 @@ public class Sequence extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("start")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.start");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.start");
       } else if (name.equals("end")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.end");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.end");
       } else if (name.equals("observedAllele")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.observedAllele");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.observedAllele");
       } else if (name.equals("referenceAllele")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.referenceAllele");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.referenceAllele");
       } else if (name.equals("cigar")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.cigar");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.cigar");
       } else
         return super.addChild(name);
     }
@@ -1625,14 +1625,14 @@ public class Sequence extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("start")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.start");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.start");
       } else if (name.equals("end")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.end");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.end");
       } else if (name.equals("score")) {
         this.score = new Quantity();
         return this.score;
       } else if (name.equals("method")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.method");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.method");
       } else
         return super.addChild(name);
     }
@@ -2031,13 +2031,13 @@ public class Sequence extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("url")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.url");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.url");
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.name");
       } else if (name.equals("variantId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.variantId");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.variantId");
       } else if (name.equals("readId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.readId");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.readId");
       } else
         return super.addChild(name);
     }
@@ -2452,11 +2452,11 @@ public class Sequence extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("precisionOfBoundaries")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.precisionOfBoundaries");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.precisionOfBoundaries");
       } else if (name.equals("reportedaCGHRatio")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.reportedaCGHRatio");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.reportedaCGHRatio");
       } else if (name.equals("length")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.length");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.length");
       } else if (name.equals("outer")) {
         this.outer = new SequenceStructureVariationOuterComponent();
         return this.outer;
@@ -2699,9 +2699,9 @@ public class Sequence extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("start")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.start");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.start");
       } else if (name.equals("end")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.end");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.end");
       } else
         return super.addChild(name);
     }
@@ -2930,9 +2930,9 @@ public class Sequence extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("start")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.start");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.start");
       } else if (name.equals("end")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Sequence.end");
+        throw new FHIRException("Cannot call addChild on a singleton property Sequence.end");
       } else
         return super.addChild(name);
     }
@@ -4227,7 +4227,7 @@ public class Sequence extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Sequence.type");
+      throw new FHIRException("Cannot call addChild on a singleton property Sequence.type");
     } else if (name.equals("patient")) {
       this.patient = new Reference();
       return this.patient;
@@ -4254,18 +4254,18 @@ public class Sequence extends DomainResource {
       this.allelicState = new CodeableConcept();
       return this.allelicState;
     } else if (name.equals("allelicFrequency")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Sequence.allelicFrequency");
+      throw new FHIRException("Cannot call addChild on a singleton property Sequence.allelicFrequency");
     } else if (name.equals("copyNumberEvent")) {
       this.copyNumberEvent = new CodeableConcept();
       return this.copyNumberEvent;
     } else if (name.equals("readCoverage")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Sequence.readCoverage");
+      throw new FHIRException("Cannot call addChild on a singleton property Sequence.readCoverage");
     } else if (name.equals("repository")) {
       return addRepository();
     } else if (name.equals("pointer")) {
       return addPointer();
     } else if (name.equals("observedSeq")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Sequence.observedSeq");
+      throw new FHIRException("Cannot call addChild on a singleton property Sequence.observedSeq");
     } else if (name.equals("observation")) {
       this.observation = new Reference();
       return this.observation;

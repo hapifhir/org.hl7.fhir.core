@@ -2265,7 +2265,7 @@ public class MedicinalProductPackaged extends DomainResource {
     } else if (name.equals("subject")) {
       return addSubject();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductPackaged.description");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductPackaged.description");
     } else if (name.equals("legalStatusOfSupply")) {
       this.legalStatusOfSupply = new CodeableConcept();
       return this.legalStatusOfSupply;

@@ -229,7 +229,7 @@ public class HealthcareService extends DomainResource {
           return this.code;
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.eligibility.comment");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.eligibility.comment");
         }
         else
           return super.addChild(name);
@@ -1876,7 +1876,7 @@ public class HealthcareService extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.active");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.active");
         }
         else if (name.equals("providedBy")) {
           this.providedBy = new Reference();
@@ -1898,13 +1898,13 @@ public class HealthcareService extends DomainResource {
           return addLocation();
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.name");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.name");
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.comment");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.comment");
         }
         else if (name.equals("extraDetails")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.extraDetails");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.extraDetails");
         }
         else if (name.equals("photo")) {
           this.photo = new Attachment();
@@ -1935,7 +1935,7 @@ public class HealthcareService extends DomainResource {
           return addReferralMethod();
         }
         else if (name.equals("appointmentRequired")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.appointmentRequired");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.appointmentRequired");
         }
         else if (name.equals("availability")) {
           return addAvailability();

@@ -555,7 +555,7 @@ public class SubstanceSpecification extends DomainResource {
         this.identifier = new Identifier();
         return this.identifier;
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.name");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.name");
       } else if (name.equals("stereochemistry")) {
         this.stereochemistry = new CodeableConcept();
         return this.stereochemistry;
@@ -563,7 +563,7 @@ public class SubstanceSpecification extends DomainResource {
         this.opticalActivity = new CodeableConcept();
         return this.opticalActivity;
       } else if (name.equals("molecularFormula")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.molecularFormula");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.molecularFormula");
       } else if (name.equals("amountQuantity")) {
         this.amount = new Quantity();
         return this.amount;
@@ -1077,7 +1077,7 @@ public class SubstanceSpecification extends DomainResource {
         this.code = new CodeableConcept();
         return this.code;
       } else if (name.equals("parameters")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.parameters");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.parameters");
       } else if (name.equals("definingSubstanceReference")) {
         this.definingSubstance = new Reference();
         return this.definingSubstance;
@@ -1797,10 +1797,10 @@ public class SubstanceSpecification extends DomainResource {
         this.opticalActivity = new CodeableConcept();
         return this.opticalActivity;
       } else if (name.equals("molecularFormula")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.molecularFormula");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.molecularFormula");
       } else if (name.equals("molecularFormulaByMoiety")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubstanceSpecification.molecularFormulaByMoiety");
+            "Cannot call addChild on a singleton property SubstanceSpecification.molecularFormulaByMoiety");
       } else if (name.equals("isotope")) {
         return addIsotope();
       } else if (name.equals("molecularWeight")) {
@@ -2819,7 +2819,7 @@ public class SubstanceSpecification extends DomainResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("representation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.representation");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.representation");
       } else if (name.equals("attachment")) {
         this.attachment = new Attachment();
         return this.attachment;
@@ -3305,9 +3305,9 @@ public class SubstanceSpecification extends DomainResource {
         this.status = new CodeableConcept();
         return this.status;
       } else if (name.equals("statusDate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.statusDate");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.statusDate");
       } else if (name.equals("comment")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.comment");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.comment");
       } else if (name.equals("source")) {
         return addSource();
       } else
@@ -4265,7 +4265,7 @@ public class SubstanceSpecification extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.name");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.name");
       } else if (name.equals("type")) {
         this.type = new CodeableConcept();
         return this.type;
@@ -4273,7 +4273,7 @@ public class SubstanceSpecification extends DomainResource {
         this.status = new CodeableConcept();
         return this.status;
       } else if (name.equals("preferred")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.preferred");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.preferred");
       } else if (name.equals("language")) {
         return addLanguage();
       } else if (name.equals("domain")) {
@@ -4629,7 +4629,7 @@ public class SubstanceSpecification extends DomainResource {
         this.status = new CodeableConcept();
         return this.status;
       } else if (name.equals("date")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.date");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.date");
       } else
         return super.addChild(name);
     }
@@ -5342,7 +5342,7 @@ public class SubstanceSpecification extends DomainResource {
         this.relationship = new CodeableConcept();
         return this.relationship;
       } else if (name.equals("isDefining")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.isDefining");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.isDefining");
       } else if (name.equals("amountQuantity")) {
         this.amount = new Quantity();
         return this.amount;
@@ -6886,11 +6886,11 @@ public class SubstanceSpecification extends DomainResource {
       this.domain = new CodeableConcept();
       return this.domain;
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.description");
+      throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.description");
     } else if (name.equals("source")) {
       return addSource();
     } else if (name.equals("comment")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubstanceSpecification.comment");
+      throw new FHIRException("Cannot call addChild on a singleton property SubstanceSpecification.comment");
     } else if (name.equals("moiety")) {
       return addMoiety();
     } else if (name.equals("property")) {

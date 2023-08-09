@@ -1760,13 +1760,13 @@ public class StructureMap extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("url")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.url");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.url");
       } else if (name.equals("mode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.mode");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.mode");
       } else if (name.equals("alias")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.alias");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.alias");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.documentation");
       } else
         return super.addChild(name);
     }
@@ -2372,13 +2372,13 @@ public class StructureMap extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.name");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.name");
       } else if (name.equals("extends")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.extends");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.extends");
       } else if (name.equals("typeMode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.typeMode");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.typeMode");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.documentation");
       } else if (name.equals("input")) {
         return addInput();
       } else if (name.equals("rule")) {
@@ -2829,13 +2829,13 @@ public class StructureMap extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.name");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.name");
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.type");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.type");
       } else if (name.equals("mode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.mode");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.mode");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.documentation");
       } else
         return super.addChild(name);
     }
@@ -3423,7 +3423,7 @@ public class StructureMap extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.name");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.name");
       } else if (name.equals("source")) {
         return addSource();
       } else if (name.equals("target")) {
@@ -3433,7 +3433,7 @@ public class StructureMap extends MetadataResource {
       } else if (name.equals("dependent")) {
         return addDependent();
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.documentation");
       } else
         return super.addChild(name);
     }
@@ -4550,13 +4550,13 @@ public class StructureMap extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("context")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.context");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.context");
       } else if (name.equals("min")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.min");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.min");
       } else if (name.equals("max")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.max");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.max");
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.type");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.type");
       } else if (name.equals("defaultValueBase64Binary")) {
         this.defaultValue = new Base64BinaryType();
         return this.defaultValue;
@@ -4708,17 +4708,17 @@ public class StructureMap extends MetadataResource {
         this.defaultValue = new Meta();
         return this.defaultValue;
       } else if (name.equals("element")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.element");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.element");
       } else if (name.equals("listMode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.listMode");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.listMode");
       } else if (name.equals("variable")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.variable");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.variable");
       } else if (name.equals("condition")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.condition");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.condition");
       } else if (name.equals("check")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.check");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.check");
       } else if (name.equals("logMessage")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.logMessage");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.logMessage");
       } else
         return super.addChild(name);
     }
@@ -5490,19 +5490,19 @@ public class StructureMap extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("context")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.context");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.context");
       } else if (name.equals("contextType")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.contextType");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.contextType");
       } else if (name.equals("element")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.element");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.element");
       } else if (name.equals("variable")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.variable");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.variable");
       } else if (name.equals("listMode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.listMode");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.listMode");
       } else if (name.equals("listRuleId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.listRuleId");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.listRuleId");
       } else if (name.equals("transform")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.transform");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.transform");
       } else if (name.equals("parameter")) {
         return addParameter();
       } else
@@ -6109,9 +6109,9 @@ public class StructureMap extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.name");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.name");
       } else if (name.equals("variable")) {
-        throw new FHIRException("Cannot call addChild on a primitive type StructureMap.variable");
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.variable");
       } else
         return super.addChild(name);
     }
@@ -7688,39 +7688,39 @@ public class StructureMap extends MetadataResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.url");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.version");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.name");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.title");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.title");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.status");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.experimental");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.date");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.description");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.description");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.purpose");
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.copyright");
     } else if (name.equals("structure")) {
       return addStructure();
     } else if (name.equals("import")) {
-      throw new FHIRException("Cannot call addChild on a primitive type StructureMap.import");
+      throw new FHIRException("Cannot call addChild on a singleton property StructureMap.import");
     } else if (name.equals("group")) {
       return addGroup();
     } else

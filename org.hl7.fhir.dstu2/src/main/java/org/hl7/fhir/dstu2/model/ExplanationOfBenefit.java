@@ -693,9 +693,9 @@ public class ExplanationOfBenefit extends DomainResource {
       this.request = new Reference();
       return this.request;
     } else if (name.equals("outcome")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.outcome");
+      throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.outcome");
     } else if (name.equals("disposition")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.disposition");
+      throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.disposition");
     } else if (name.equals("ruleset")) {
       this.ruleset = new Coding();
       return this.ruleset;
@@ -703,7 +703,7 @@ public class ExplanationOfBenefit extends DomainResource {
       this.originalRuleset = new Coding();
       return this.originalRuleset;
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.created");
+      throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.created");
     } else if (name.equals("organization")) {
       this.organization = new Reference();
       return this.organization;

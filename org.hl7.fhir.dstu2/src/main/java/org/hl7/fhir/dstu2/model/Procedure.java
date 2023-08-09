@@ -1901,7 +1901,7 @@ public class Procedure extends DomainResource {
       this.subject = new Reference();
       return this.subject;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Procedure.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Procedure.status");
     } else if (name.equals("category")) {
       this.category = new CodeableConcept();
       return this.category;
@@ -1909,7 +1909,7 @@ public class Procedure extends DomainResource {
       this.code = new CodeableConcept();
       return this.code;
     } else if (name.equals("notPerformed")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Procedure.notPerformed");
+      throw new FHIRException("Cannot call addChild on a singleton property Procedure.notPerformed");
     } else if (name.equals("reasonNotPerformed")) {
       return addReasonNotPerformed();
     } else if (name.equals("bodySite")) {

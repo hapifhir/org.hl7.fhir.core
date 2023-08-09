@@ -757,11 +757,11 @@ public class SubstanceProtein extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("subunit")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceProtein.subunit");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceProtein.subunit");
       } else if (name.equals("sequence")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceProtein.sequence");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceProtein.sequence");
       } else if (name.equals("length")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceProtein.length");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceProtein.length");
       } else if (name.equals("sequenceAttachment")) {
         this.sequenceAttachment = new Attachment();
         return this.sequenceAttachment;
@@ -769,12 +769,12 @@ public class SubstanceProtein extends DomainResource {
         this.nTerminalModificationId = new Identifier();
         return this.nTerminalModificationId;
       } else if (name.equals("nTerminalModification")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceProtein.nTerminalModification");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceProtein.nTerminalModification");
       } else if (name.equals("cTerminalModificationId")) {
         this.cTerminalModificationId = new Identifier();
         return this.cTerminalModificationId;
       } else if (name.equals("cTerminalModification")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceProtein.cTerminalModification");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceProtein.cTerminalModification");
       } else
         return super.addChild(name);
     }
@@ -1268,9 +1268,9 @@ public class SubstanceProtein extends DomainResource {
       this.sequenceType = new CodeableConcept();
       return this.sequenceType;
     } else if (name.equals("numberOfSubunits")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubstanceProtein.numberOfSubunits");
+      throw new FHIRException("Cannot call addChild on a singleton property SubstanceProtein.numberOfSubunits");
     } else if (name.equals("disulfideLinkage")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubstanceProtein.disulfideLinkage");
+      throw new FHIRException("Cannot call addChild on a singleton property SubstanceProtein.disulfideLinkage");
     } else if (name.equals("subunit")) {
       return addSubunit();
     } else

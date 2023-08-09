@@ -717,7 +717,7 @@ public class MeasureReport extends DomainResource {
       } else if (name.equals("population")) {
         return addPopulation();
       } else if (name.equals("measureScore")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.measureScore");
+        throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.measureScore");
       } else if (name.equals("stratifier")) {
         return addStratifier();
       } else if (name.equals("supplementalData")) {
@@ -1063,9 +1063,9 @@ public class MeasureReport extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.type");
+        throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.type");
       } else if (name.equals("count")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.count");
+        throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.count");
       } else if (name.equals("patients")) {
         this.patients = new Reference();
         return this.patients;
@@ -1632,11 +1632,11 @@ public class MeasureReport extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("value")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.value");
+        throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.value");
       } else if (name.equals("population")) {
         return addPopulation();
       } else if (name.equals("measureScore")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.measureScore");
+        throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.measureScore");
       } else
         return super.addChild(name);
     }
@@ -1967,9 +1967,9 @@ public class MeasureReport extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.type");
+        throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.type");
       } else if (name.equals("count")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.count");
+        throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.count");
       } else if (name.equals("patients")) {
         this.patients = new Reference();
         return this.patients;
@@ -2537,9 +2537,9 @@ public class MeasureReport extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("value")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.value");
+        throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.value");
       } else if (name.equals("count")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.count");
+        throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.count");
       } else if (name.equals("patients")) {
         this.patients = new Reference();
         return this.patients;
@@ -3303,7 +3303,7 @@ public class MeasureReport extends DomainResource {
       this.measure = new Reference();
       return this.measure;
     } else if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.type");
+      throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.type");
     } else if (name.equals("patient")) {
       this.patient = new Reference();
       return this.patient;
@@ -3311,9 +3311,9 @@ public class MeasureReport extends DomainResource {
       this.period = new Period();
       return this.period;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.status");
+      throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.status");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.date");
+      throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.date");
     } else if (name.equals("reportingOrganization")) {
       this.reportingOrganization = new Reference();
       return this.reportingOrganization;

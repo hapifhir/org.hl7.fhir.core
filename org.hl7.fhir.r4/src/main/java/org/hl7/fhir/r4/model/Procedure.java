@@ -3416,15 +3416,15 @@ public class Procedure extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("instantiatesCanonical")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Procedure.instantiatesCanonical");
+      throw new FHIRException("Cannot call addChild on a singleton property Procedure.instantiatesCanonical");
     } else if (name.equals("instantiatesUri")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Procedure.instantiatesUri");
+      throw new FHIRException("Cannot call addChild on a singleton property Procedure.instantiatesUri");
     } else if (name.equals("basedOn")) {
       return addBasedOn();
     } else if (name.equals("partOf")) {
       return addPartOf();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Procedure.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Procedure.status");
     } else if (name.equals("statusReason")) {
       this.statusReason = new CodeableConcept();
       return this.statusReason;

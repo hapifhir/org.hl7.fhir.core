@@ -1718,7 +1718,7 @@ public class Goal extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("lifecycleStatus")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Goal.lifecycleStatus");
+          throw new FHIRException("Cannot call addChild on a singleton property Goal.lifecycleStatus");
         }
         else if (name.equals("achievementStatus")) {
           this.achievementStatus = new CodeableConcept();
@@ -1728,7 +1728,7 @@ public class Goal extends DomainResource {
           return addCategory();
         }
         else if (name.equals("continuous")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Goal.continuous");
+          throw new FHIRException("Cannot call addChild on a singleton property Goal.continuous");
         }
         else if (name.equals("priority")) {
           this.priority = new CodeableConcept();
@@ -1754,10 +1754,10 @@ public class Goal extends DomainResource {
           return addTarget();
         }
         else if (name.equals("statusDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Goal.statusDate");
+          throw new FHIRException("Cannot call addChild on a singleton property Goal.statusDate");
         }
         else if (name.equals("statusReason")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Goal.statusReason");
+          throw new FHIRException("Cannot call addChild on a singleton property Goal.statusReason");
         }
         else if (name.equals("source")) {
           this.source = new Reference();

@@ -455,7 +455,7 @@ public class Account extends DomainResource {
         this.coverage = new Reference();
         return this.coverage;
       } else if (name.equals("priority")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Account.coverage.priority");
+        throw new FHIRException("Cannot call addChild on a singleton property Account.coverage.priority");
       } else
         return super.addChild(name);
     }
@@ -762,7 +762,7 @@ public class Account extends DomainResource {
         this.party = new Reference();
         return this.party;
       } else if (name.equals("onHold")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Account.guarantor.onHold");
+        throw new FHIRException("Cannot call addChild on a singleton property Account.guarantor.onHold");
       } else if (name.equals("period")) {
         this.period = new Period();
         return this.period;
@@ -1663,12 +1663,12 @@ public class Account extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Account.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Account.status");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Account.name");
+      throw new FHIRException("Cannot call addChild on a singleton property Account.name");
     } else if (name.equals("subject")) {
       return addSubject();
     } else if (name.equals("servicePeriod")) {
@@ -1680,7 +1680,7 @@ public class Account extends DomainResource {
       this.owner = new Reference();
       return this.owner;
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Account.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Account.description");
     } else if (name.equals("guarantor")) {
       return addGuarantor();
     } else if (name.equals("partOf")) {

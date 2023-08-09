@@ -1549,33 +1549,33 @@ public class VisionPrescription extends DomainResource {
         this.product = new CodeableConcept();
         return this.product;
       } else if (name.equals("eye")) {
-        throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.eye");
+        throw new FHIRException("Cannot call addChild on a singleton property VisionPrescription.lensSpecification.eye");
       } else if (name.equals("sphere")) {
-        throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.sphere");
+        throw new FHIRException("Cannot call addChild on a singleton property VisionPrescription.lensSpecification.sphere");
       } else if (name.equals("cylinder")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type VisionPrescription.lensSpecification.cylinder");
+            "Cannot call addChild on a singleton property VisionPrescription.lensSpecification.cylinder");
       } else if (name.equals("axis")) {
-        throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.axis");
+        throw new FHIRException("Cannot call addChild on a singleton property VisionPrescription.lensSpecification.axis");
       } else if (name.equals("prism")) {
         return addPrism();
       } else if (name.equals("add")) {
-        throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.add");
+        throw new FHIRException("Cannot call addChild on a singleton property VisionPrescription.lensSpecification.add");
       } else if (name.equals("power")) {
-        throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.power");
+        throw new FHIRException("Cannot call addChild on a singleton property VisionPrescription.lensSpecification.power");
       } else if (name.equals("backCurve")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type VisionPrescription.lensSpecification.backCurve");
+            "Cannot call addChild on a singleton property VisionPrescription.lensSpecification.backCurve");
       } else if (name.equals("diameter")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type VisionPrescription.lensSpecification.diameter");
+            "Cannot call addChild on a singleton property VisionPrescription.lensSpecification.diameter");
       } else if (name.equals("duration")) {
         this.duration = new Quantity();
         return this.duration;
       } else if (name.equals("color")) {
-        throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.color");
+        throw new FHIRException("Cannot call addChild on a singleton property VisionPrescription.lensSpecification.color");
       } else if (name.equals("brand")) {
-        throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.brand");
+        throw new FHIRException("Cannot call addChild on a singleton property VisionPrescription.lensSpecification.brand");
       } else if (name.equals("note")) {
         return addNote();
       } else
@@ -1908,10 +1908,10 @@ public class VisionPrescription extends DomainResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("amount")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type VisionPrescription.lensSpecification.prism.amount");
+            "Cannot call addChild on a singleton property VisionPrescription.lensSpecification.prism.amount");
       } else if (name.equals("base")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type VisionPrescription.lensSpecification.prism.base");
+            "Cannot call addChild on a singleton property VisionPrescription.lensSpecification.prism.base");
       } else
         return super.addChild(name);
     }
@@ -2579,9 +2579,9 @@ public class VisionPrescription extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.status");
+      throw new FHIRException("Cannot call addChild on a singleton property VisionPrescription.status");
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.created");
+      throw new FHIRException("Cannot call addChild on a singleton property VisionPrescription.created");
     } else if (name.equals("patient")) {
       this.patient = new Reference();
       return this.patient;
@@ -2589,7 +2589,7 @@ public class VisionPrescription extends DomainResource {
       this.encounter = new Reference();
       return this.encounter;
     } else if (name.equals("dateWritten")) {
-      throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.dateWritten");
+      throw new FHIRException("Cannot call addChild on a singleton property VisionPrescription.dateWritten");
     } else if (name.equals("prescriber")) {
       this.prescriber = new Reference();
       return this.prescriber;

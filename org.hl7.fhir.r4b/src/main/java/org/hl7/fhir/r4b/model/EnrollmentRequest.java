@@ -547,9 +547,9 @@ public class EnrollmentRequest extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EnrollmentRequest.status");
+      throw new FHIRException("Cannot call addChild on a singleton property EnrollmentRequest.status");
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EnrollmentRequest.created");
+      throw new FHIRException("Cannot call addChild on a singleton property EnrollmentRequest.created");
     } else if (name.equals("insurer")) {
       this.insurer = new Reference();
       return this.insurer;

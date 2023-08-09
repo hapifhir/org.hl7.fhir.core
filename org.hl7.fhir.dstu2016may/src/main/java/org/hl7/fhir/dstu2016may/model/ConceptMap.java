@@ -240,7 +240,7 @@ public class ConceptMap extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.name");
       } else if (name.equals("telecom")) {
         return addTelecom();
       } else
@@ -630,11 +630,11 @@ public class ConceptMap extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("system")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.system");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.system");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.version");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.version");
       } else if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.code");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.code");
       } else if (name.equals("target")) {
         return addTarget();
       } else
@@ -1276,15 +1276,15 @@ public class ConceptMap extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("system")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.system");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.system");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.version");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.version");
       } else if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.code");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.code");
       } else if (name.equals("equivalence")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.equivalence");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.equivalence");
       } else if (name.equals("comments")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.comments");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.comments");
       } else if (name.equals("dependsOn")) {
         return addDependsOn();
       } else if (name.equals("product")) {
@@ -1655,11 +1655,11 @@ public class ConceptMap extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("element")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.element");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.element");
       } else if (name.equals("system")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.system");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.system");
       } else if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.code");
+        throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.code");
       } else
         return super.addChild(name);
     }
@@ -2952,32 +2952,32 @@ public class ConceptMap extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.url");
+      throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.url");
     } else if (name.equals("identifier")) {
       this.identifier = new Identifier();
       return this.identifier;
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.version");
+      throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.name");
+      throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.name");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.experimental");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.date");
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.description");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("requirements")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.requirements");
+      throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.requirements");
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property ConceptMap.copyright");
     } else if (name.equals("sourceUri")) {
       this.source = new UriType();
       return this.source;

@@ -3863,13 +3863,13 @@ public class ExampleScenario extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("actorId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.actorId");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.actorId");
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.type");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.type");
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.name");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.description");
       } else
         return super.addChild(name);
     }
@@ -4459,13 +4459,13 @@ public class ExampleScenario extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("resourceId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.resourceId");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.resourceId");
       } else if (name.equals("resourceType")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.resourceType");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.resourceType");
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.name");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.description");
       } else if (name.equals("version")) {
         return addVersion();
       } else if (name.equals("containedInstance")) {
@@ -4762,9 +4762,9 @@ public class ExampleScenario extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("versionId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.versionId");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.versionId");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.description");
       } else
         return super.addChild(name);
     }
@@ -5042,9 +5042,9 @@ public class ExampleScenario extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("resourceId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.resourceId");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.resourceId");
       } else if (name.equals("versionId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.versionId");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.versionId");
       } else
         return super.addChild(name);
     }
@@ -5553,13 +5553,13 @@ public class ExampleScenario extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("title")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.title");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.title");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.description");
       } else if (name.equals("preConditions")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.preConditions");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.preConditions");
       } else if (name.equals("postConditions")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.postConditions");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.postConditions");
       } else if (name.equals("step")) {
         return addStep();
       } else
@@ -5971,7 +5971,7 @@ public class ExampleScenario extends MetadataResource {
       if (name.equals("process")) {
         return addProcess();
       } else if (name.equals("pause")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.pause");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.pause");
       } else if (name.equals("operation")) {
         this.operation = new ExampleScenarioProcessStepOperationComponent();
         return this.operation;
@@ -6814,21 +6814,21 @@ public class ExampleScenario extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("number")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.number");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.number");
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.type");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.type");
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.name");
       } else if (name.equals("initiator")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.initiator");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.initiator");
       } else if (name.equals("receiver")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.receiver");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.receiver");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.description");
       } else if (name.equals("initiatorActive")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.initiatorActive");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.initiatorActive");
       } else if (name.equals("receiverActive")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.receiverActive");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.receiverActive");
       } else if (name.equals("request")) {
         this.request = new ExampleScenarioInstanceContainedInstanceComponent();
         return this.request;
@@ -7221,9 +7221,9 @@ public class ExampleScenario extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("title")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.title");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.title");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.description");
       } else if (name.equals("step")) {
         return addStep();
       } else
@@ -8747,21 +8747,21 @@ public class ExampleScenario extends MetadataResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.url");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.version");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.name");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.name");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.experimental");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("useContext")) {
@@ -8769,9 +8769,9 @@ public class ExampleScenario extends MetadataResource {
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.copyright");
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.purpose");
     } else if (name.equals("actor")) {
       return addActor();
     } else if (name.equals("instance")) {
@@ -8779,7 +8779,7 @@ public class ExampleScenario extends MetadataResource {
     } else if (name.equals("process")) {
       return addProcess();
     } else if (name.equals("workflow")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.workflow");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.workflow");
     } else
       return super.addChild(name);
   }

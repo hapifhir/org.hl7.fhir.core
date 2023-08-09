@@ -680,7 +680,7 @@ public class BodyStructure extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("active")) {
-      throw new FHIRException("Cannot call addChild on a primitive type BodyStructure.active");
+      throw new FHIRException("Cannot call addChild on a singleton property BodyStructure.active");
     } else if (name.equals("morphology")) {
       this.morphology = new CodeableConcept();
       return this.morphology;
@@ -690,7 +690,7 @@ public class BodyStructure extends DomainResource {
     } else if (name.equals("locationQualifier")) {
       return addLocationQualifier();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type BodyStructure.description");
+      throw new FHIRException("Cannot call addChild on a singleton property BodyStructure.description");
     } else if (name.equals("image")) {
       return addImage();
     } else if (name.equals("patient")) {

@@ -733,15 +733,15 @@ public class Slot extends DomainResource {
       this.schedule = new Reference();
       return this.schedule;
     } else if (name.equals("freeBusyType")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Slot.freeBusyType");
+      throw new FHIRException("Cannot call addChild on a singleton property Slot.freeBusyType");
     } else if (name.equals("start")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Slot.start");
+      throw new FHIRException("Cannot call addChild on a singleton property Slot.start");
     } else if (name.equals("end")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Slot.end");
+      throw new FHIRException("Cannot call addChild on a singleton property Slot.end");
     } else if (name.equals("overbooked")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Slot.overbooked");
+      throw new FHIRException("Cannot call addChild on a singleton property Slot.overbooked");
     } else if (name.equals("comment")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Slot.comment");
+      throw new FHIRException("Cannot call addChild on a singleton property Slot.comment");
     } else
       return super.addChild(name);
   }

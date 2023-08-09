@@ -483,12 +483,12 @@ public class EffectEvidenceSynthesis extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.description");
+        throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.description");
       } else if (name.equals("numberOfStudies")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.numberOfStudies");
+        throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.numberOfStudies");
       } else if (name.equals("numberOfParticipants")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type EffectEvidenceSynthesis.numberOfParticipants");
+            "Cannot call addChild on a singleton property EffectEvidenceSynthesis.numberOfParticipants");
       } else
         return super.addChild(name);
     }
@@ -919,9 +919,9 @@ public class EffectEvidenceSynthesis extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.description");
+        throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.description");
       } else if (name.equals("exposureState")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.exposureState");
+        throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.exposureState");
       } else if (name.equals("variantState")) {
         this.variantState = new CodeableConcept();
         return this.variantState;
@@ -1455,7 +1455,7 @@ public class EffectEvidenceSynthesis extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.description");
+        throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.description");
       } else if (name.equals("type")) {
         this.type = new CodeableConcept();
         return this.type;
@@ -1463,7 +1463,7 @@ public class EffectEvidenceSynthesis extends MetadataResource {
         this.variantState = new CodeableConcept();
         return this.variantState;
       } else if (name.equals("value")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.value");
+        throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.value");
       } else if (name.equals("unitOfMeasure")) {
         this.unitOfMeasure = new CodeableConcept();
         return this.unitOfMeasure;
@@ -1933,11 +1933,11 @@ public class EffectEvidenceSynthesis extends MetadataResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("level")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.level");
+        throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.level");
       } else if (name.equals("from")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.from");
+        throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.from");
       } else if (name.equals("to")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.to");
+        throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.to");
       } else
         return super.addChild(name);
     }
@@ -5399,25 +5399,25 @@ public class EffectEvidenceSynthesis extends MetadataResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.url");
+      throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.version");
+      throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.name");
+      throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.title");
+      throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.title");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.status");
+      throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.status");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.date");
+      throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.description");
+      throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.description");
     } else if (name.equals("note")) {
       return addNote();
     } else if (name.equals("useContext")) {
@@ -5425,11 +5425,11 @@ public class EffectEvidenceSynthesis extends MetadataResource {
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.copyright");
     } else if (name.equals("approvalDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.approvalDate");
+      throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.approvalDate");
     } else if (name.equals("lastReviewDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EffectEvidenceSynthesis.lastReviewDate");
+      throw new FHIRException("Cannot call addChild on a singleton property EffectEvidenceSynthesis.lastReviewDate");
     } else if (name.equals("effectivePeriod")) {
       this.effectivePeriod = new Period();
       return this.effectivePeriod;

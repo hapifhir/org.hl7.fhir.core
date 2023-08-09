@@ -453,19 +453,19 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("system")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Coding.system");
+          throw new FHIRException("Cannot call addChild on a singleton property Coding.system");
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Coding.version");
+          throw new FHIRException("Cannot call addChild on a singleton property Coding.version");
         }
         else if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Coding.code");
+          throw new FHIRException("Cannot call addChild on a singleton property Coding.code");
         }
         else if (name.equals("display")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Coding.display");
+          throw new FHIRException("Cannot call addChild on a singleton property Coding.display");
         }
         else if (name.equals("userSelected")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Coding.userSelected");
+          throw new FHIRException("Cannot call addChild on a singleton property Coding.userSelected");
         }
         else
           return super.addChild(name);

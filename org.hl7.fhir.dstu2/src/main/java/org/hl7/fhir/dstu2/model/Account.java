@@ -782,12 +782,12 @@ public class Account extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Account.name");
+      throw new FHIRException("Cannot call addChild on a singleton property Account.name");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Account.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Account.status");
     } else if (name.equals("activePeriod")) {
       this.activePeriod = new Period();
       return this.activePeriod;
@@ -807,7 +807,7 @@ public class Account extends DomainResource {
       this.owner = new Reference();
       return this.owner;
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Account.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Account.description");
     } else
       return super.addChild(name);
   }

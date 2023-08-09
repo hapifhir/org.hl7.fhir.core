@@ -1343,7 +1343,7 @@ public class NpmPackage {
     if (npm.asBoolean("lazy-load")) {
       return true;
     }
-    if (!hasFile("other", "spec.internals")) {
+    if (!hasFile("other", "spec.internals") && folders.get("package").cachedIndex == null) {
       return false;
     }
     return true;

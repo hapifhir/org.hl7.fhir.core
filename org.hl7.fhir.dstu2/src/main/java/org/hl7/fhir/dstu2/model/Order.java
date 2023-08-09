@@ -688,7 +688,7 @@ public class Order extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Order.date");
+      throw new FHIRException("Cannot call addChild on a singleton property Order.date");
     } else if (name.equals("subject")) {
       this.subject = new Reference();
       return this.subject;

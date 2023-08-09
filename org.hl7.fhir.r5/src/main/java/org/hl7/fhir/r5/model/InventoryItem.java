@@ -429,10 +429,10 @@ public class InventoryItem extends DomainResource {
           return this.nameType;
         }
         else if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a primitive type InventoryItem.name.language");
+          throw new FHIRException("Cannot call addChild on a singleton property InventoryItem.name.language");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type InventoryItem.name.name");
+          throw new FHIRException("Cannot call addChild on a singleton property InventoryItem.name.name");
         }
         else
           return super.addChild(name);
@@ -894,10 +894,10 @@ public class InventoryItem extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a primitive type InventoryItem.description.language");
+          throw new FHIRException("Cannot call addChild on a singleton property InventoryItem.description.language");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type InventoryItem.description.description");
+          throw new FHIRException("Cannot call addChild on a singleton property InventoryItem.description.description");
         }
         else
           return super.addChild(name);
@@ -2026,10 +2026,10 @@ public class InventoryItem extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("lotNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type InventoryItem.instance.lotNumber");
+          throw new FHIRException("Cannot call addChild on a singleton property InventoryItem.instance.lotNumber");
         }
         else if (name.equals("expiry")) {
-          throw new FHIRException("Cannot call addChild on a primitive type InventoryItem.instance.expiry");
+          throw new FHIRException("Cannot call addChild on a singleton property InventoryItem.instance.expiry");
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();
@@ -3000,7 +3000,7 @@ public class InventoryItem extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type InventoryItem.status");
+          throw new FHIRException("Cannot call addChild on a singleton property InventoryItem.status");
         }
         else if (name.equals("category")) {
           return addCategory();

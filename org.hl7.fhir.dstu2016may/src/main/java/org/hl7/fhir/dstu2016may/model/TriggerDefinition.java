@@ -604,9 +604,9 @@ public class TriggerDefinition extends Type implements ICompositeType {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type TriggerDefinition.type");
+      throw new FHIRException("Cannot call addChild on a singleton property TriggerDefinition.type");
     } else if (name.equals("eventName")) {
-      throw new FHIRException("Cannot call addChild on a primitive type TriggerDefinition.eventName");
+      throw new FHIRException("Cannot call addChild on a singleton property TriggerDefinition.eventName");
     } else if (name.equals("eventTimingTiming")) {
       this.eventTiming = new Timing();
       return this.eventTiming;

@@ -792,12 +792,12 @@ public class DiagnosticOrder extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("status")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DiagnosticOrder.status");
+        throw new FHIRException("Cannot call addChild on a singleton property DiagnosticOrder.status");
       } else if (name.equals("description")) {
         this.description = new CodeableConcept();
         return this.description;
       } else if (name.equals("dateTime")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DiagnosticOrder.dateTime");
+        throw new FHIRException("Cannot call addChild on a singleton property DiagnosticOrder.dateTime");
       } else if (name.equals("actor")) {
         this.actor = new Reference();
         return this.actor;
@@ -1174,7 +1174,7 @@ public class DiagnosticOrder extends DomainResource {
         this.bodySite = new CodeableConcept();
         return this.bodySite;
       } else if (name.equals("status")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DiagnosticOrder.status");
+        throw new FHIRException("Cannot call addChild on a singleton property DiagnosticOrder.status");
       } else if (name.equals("event")) {
         return addEvent();
       } else
@@ -2109,9 +2109,9 @@ public class DiagnosticOrder extends DomainResource {
     } else if (name.equals("specimen")) {
       return addSpecimen();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DiagnosticOrder.status");
+      throw new FHIRException("Cannot call addChild on a singleton property DiagnosticOrder.status");
     } else if (name.equals("priority")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DiagnosticOrder.priority");
+      throw new FHIRException("Cannot call addChild on a singleton property DiagnosticOrder.priority");
     } else if (name.equals("event")) {
       return addEvent();
     } else if (name.equals("item")) {

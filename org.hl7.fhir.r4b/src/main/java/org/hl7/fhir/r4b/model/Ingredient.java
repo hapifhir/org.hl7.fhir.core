@@ -1245,7 +1245,7 @@ public class Ingredient extends DomainResource {
         return this.presentation;
       } else if (name.equals("presentationText")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type Ingredient.substance.strength.presentationText");
+            "Cannot call addChild on a singleton property Ingredient.substance.strength.presentationText");
       } else if (name.equals("concentrationRatio")) {
         this.concentration = new Ratio();
         return this.concentration;
@@ -1254,10 +1254,10 @@ public class Ingredient extends DomainResource {
         return this.concentration;
       } else if (name.equals("concentrationText")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type Ingredient.substance.strength.concentrationText");
+            "Cannot call addChild on a singleton property Ingredient.substance.strength.concentrationText");
       } else if (name.equals("measurementPoint")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type Ingredient.substance.strength.measurementPoint");
+            "Cannot call addChild on a singleton property Ingredient.substance.strength.measurementPoint");
       } else if (name.equals("country")) {
         return addCountry();
       } else if (name.equals("referenceStrength")) {
@@ -1721,7 +1721,7 @@ public class Ingredient extends DomainResource {
         return this.strength;
       } else if (name.equals("measurementPoint")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type Ingredient.substance.strength.referenceStrength.measurementPoint");
+            "Cannot call addChild on a singleton property Ingredient.substance.strength.referenceStrength.measurementPoint");
       } else if (name.equals("country")) {
         return addCountry();
       } else
@@ -2418,7 +2418,7 @@ public class Ingredient extends DomainResource {
       this.identifier = new Identifier();
       return this.identifier;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Ingredient.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Ingredient.status");
     } else if (name.equals("for")) {
       return addFor();
     } else if (name.equals("role")) {
@@ -2427,7 +2427,7 @@ public class Ingredient extends DomainResource {
     } else if (name.equals("function")) {
       return addFunction();
     } else if (name.equals("allergenicIndicator")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Ingredient.allergenicIndicator");
+      throw new FHIRException("Cannot call addChild on a singleton property Ingredient.allergenicIndicator");
     } else if (name.equals("manufacturer")) {
       return addManufacturer();
     } else if (name.equals("substance")) {

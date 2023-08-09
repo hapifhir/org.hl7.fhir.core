@@ -499,7 +499,7 @@ public class PaymentReconciliation extends DomainResource {
         this.payee = new Reference();
         return this.payee;
       } else if (name.equals("date")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.date");
+        throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.date");
       } else if (name.equals("amount")) {
         this.amount = new Money();
         return this.amount;
@@ -682,7 +682,7 @@ public class PaymentReconciliation extends DomainResource {
         this.type = new Coding();
         return this.type;
       } else if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.text");
+        throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.text");
       } else
         return super.addChild(name);
     }
@@ -1589,9 +1589,9 @@ public class PaymentReconciliation extends DomainResource {
       this.request = new Reference();
       return this.request;
     } else if (name.equals("outcome")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.outcome");
+      throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.outcome");
     } else if (name.equals("disposition")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.disposition");
+      throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.disposition");
     } else if (name.equals("ruleset")) {
       this.ruleset = new Coding();
       return this.ruleset;
@@ -1599,7 +1599,7 @@ public class PaymentReconciliation extends DomainResource {
       this.originalRuleset = new Coding();
       return this.originalRuleset;
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.created");
+      throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.created");
     } else if (name.equals("period")) {
       this.period = new Period();
       return this.period;

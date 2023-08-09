@@ -464,7 +464,7 @@ public class DecisionSupportRule extends DomainResource {
     } else if (name.equals("trigger")) {
       return addTrigger();
     } else if (name.equals("condition")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DecisionSupportRule.condition");
+      throw new FHIRException("Cannot call addChild on a singleton property DecisionSupportRule.condition");
     } else if (name.equals("action")) {
       return addAction();
     } else

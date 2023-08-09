@@ -1240,23 +1240,23 @@ public class Dosage extends BackboneType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Dosage.sequence");
+          throw new FHIRException("Cannot call addChild on a singleton property Dosage.sequence");
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Dosage.text");
+          throw new FHIRException("Cannot call addChild on a singleton property Dosage.text");
         }
         else if (name.equals("additionalInstruction")) {
           return addAdditionalInstruction();
         }
         else if (name.equals("patientInstruction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Dosage.patientInstruction");
+          throw new FHIRException("Cannot call addChild on a singleton property Dosage.patientInstruction");
         }
         else if (name.equals("timing")) {
           this.timing = new Timing();
           return this.timing;
         }
         else if (name.equals("asNeeded")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Dosage.asNeeded");
+          throw new FHIRException("Cannot call addChild on a singleton property Dosage.asNeeded");
         }
         else if (name.equals("asNeededFor")) {
           return addAsNeededFor();

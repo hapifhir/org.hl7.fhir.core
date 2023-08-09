@@ -1548,11 +1548,11 @@ public class NutritionProduct extends DomainResource {
       } else if (name.equals("identifier")) {
         return addIdentifier();
       } else if (name.equals("lotNumber")) {
-        throw new FHIRException("Cannot call addChild on a primitive type NutritionProduct.instance.lotNumber");
+        throw new FHIRException("Cannot call addChild on a singleton property NutritionProduct.instance.lotNumber");
       } else if (name.equals("expiry")) {
-        throw new FHIRException("Cannot call addChild on a primitive type NutritionProduct.instance.expiry");
+        throw new FHIRException("Cannot call addChild on a singleton property NutritionProduct.instance.expiry");
       } else if (name.equals("useBy")) {
-        throw new FHIRException("Cannot call addChild on a primitive type NutritionProduct.instance.useBy");
+        throw new FHIRException("Cannot call addChild on a singleton property NutritionProduct.instance.useBy");
       } else
         return super.addChild(name);
     }
@@ -2432,7 +2432,7 @@ public class NutritionProduct extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type NutritionProduct.status");
+      throw new FHIRException("Cannot call addChild on a singleton property NutritionProduct.status");
     } else if (name.equals("category")) {
       return addCategory();
     } else if (name.equals("code")) {

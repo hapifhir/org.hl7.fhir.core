@@ -2634,33 +2634,33 @@ public class Timing extends BackboneType implements ICompositeType {
         this.bounds = new Period();
         return this.bounds;
       } else if (name.equals("count")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.count");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.count");
       } else if (name.equals("countMax")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.countMax");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.countMax");
       } else if (name.equals("duration")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.duration");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.duration");
       } else if (name.equals("durationMax")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.durationMax");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.durationMax");
       } else if (name.equals("durationUnit")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.durationUnit");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.durationUnit");
       } else if (name.equals("frequency")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.frequency");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.frequency");
       } else if (name.equals("frequencyMax")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.frequencyMax");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.frequencyMax");
       } else if (name.equals("period")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.period");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.period");
       } else if (name.equals("periodMax")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.periodMax");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.periodMax");
       } else if (name.equals("periodUnit")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.periodUnit");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.periodUnit");
       } else if (name.equals("dayOfWeek")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.dayOfWeek");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.dayOfWeek");
       } else if (name.equals("timeOfDay")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.timeOfDay");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.timeOfDay");
       } else if (name.equals("when")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.when");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.when");
       } else if (name.equals("offset")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Timing.offset");
+        throw new FHIRException("Cannot call addChild on a singleton property Timing.offset");
       } else
         return super.addChild(name);
     }
@@ -3023,7 +3023,7 @@ public class Timing extends BackboneType implements ICompositeType {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("event")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Timing.event");
+      throw new FHIRException("Cannot call addChild on a singleton property Timing.event");
     } else if (name.equals("repeat")) {
       this.repeat = new TimingRepeatComponent();
       return this.repeat;

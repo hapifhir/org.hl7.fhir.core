@@ -434,7 +434,7 @@ public class Narrative extends BaseNarrative implements INarrative {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Narrative.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Narrative.status");
     } else
       return super.addChild(name);
   }

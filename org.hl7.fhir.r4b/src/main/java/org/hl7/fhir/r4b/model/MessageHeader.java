@@ -532,12 +532,12 @@ public class MessageHeader extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MessageHeader.destination.name");
+        throw new FHIRException("Cannot call addChild on a singleton property MessageHeader.destination.name");
       } else if (name.equals("target")) {
         this.target = new Reference();
         return this.target;
       } else if (name.equals("endpoint")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MessageHeader.destination.endpoint");
+        throw new FHIRException("Cannot call addChild on a singleton property MessageHeader.destination.endpoint");
       } else if (name.equals("receiver")) {
         this.receiver = new Reference();
         return this.receiver;
@@ -1033,16 +1033,16 @@ public class MessageHeader extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MessageHeader.source.name");
+        throw new FHIRException("Cannot call addChild on a singleton property MessageHeader.source.name");
       } else if (name.equals("software")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MessageHeader.source.software");
+        throw new FHIRException("Cannot call addChild on a singleton property MessageHeader.source.software");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MessageHeader.source.version");
+        throw new FHIRException("Cannot call addChild on a singleton property MessageHeader.source.version");
       } else if (name.equals("contact")) {
         this.contact = new ContactPoint();
         return this.contact;
       } else if (name.equals("endpoint")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MessageHeader.source.endpoint");
+        throw new FHIRException("Cannot call addChild on a singleton property MessageHeader.source.endpoint");
       } else
         return super.addChild(name);
     }
@@ -1384,9 +1384,9 @@ public class MessageHeader extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("identifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MessageHeader.response.identifier");
+        throw new FHIRException("Cannot call addChild on a singleton property MessageHeader.response.identifier");
       } else if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MessageHeader.response.code");
+        throw new FHIRException("Cannot call addChild on a singleton property MessageHeader.response.code");
       } else if (name.equals("details")) {
         this.details = new Reference();
         return this.details;
@@ -2284,7 +2284,7 @@ public class MessageHeader extends DomainResource {
     } else if (name.equals("focus")) {
       return addFocus();
     } else if (name.equals("definition")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MessageHeader.definition");
+      throw new FHIRException("Cannot call addChild on a singleton property MessageHeader.definition");
     } else
       return super.addChild(name);
   }

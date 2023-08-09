@@ -1859,7 +1859,7 @@ public class Practitioner extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("active")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Practitioner.active");
+      throw new FHIRException("Cannot call addChild on a singleton property Practitioner.active");
     } else if (name.equals("name")) {
       return addName();
     } else if (name.equals("telecom")) {
@@ -1867,9 +1867,9 @@ public class Practitioner extends DomainResource {
     } else if (name.equals("address")) {
       return addAddress();
     } else if (name.equals("gender")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Practitioner.gender");
+      throw new FHIRException("Cannot call addChild on a singleton property Practitioner.gender");
     } else if (name.equals("birthDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Practitioner.birthDate");
+      throw new FHIRException("Cannot call addChild on a singleton property Practitioner.birthDate");
     } else if (name.equals("photo")) {
       return addPhoto();
     } else if (name.equals("practitionerRole")) {

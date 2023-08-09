@@ -2300,13 +2300,13 @@ public class CommunicationRequest extends DomainResource {
           return this.groupIdentifier;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CommunicationRequest.status");
+          throw new FHIRException("Cannot call addChild on a singleton property CommunicationRequest.status");
         }
         else if (name.equals("category")) {
           return addCategory();
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CommunicationRequest.priority");
+          throw new FHIRException("Cannot call addChild on a singleton property CommunicationRequest.priority");
         }
         else if (name.equals("medium")) {
           return addMedium();
@@ -2337,7 +2337,7 @@ public class CommunicationRequest extends DomainResource {
           return this.occurrence;
         }
         else if (name.equals("authoredOn")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CommunicationRequest.authoredOn");
+          throw new FHIRException("Cannot call addChild on a singleton property CommunicationRequest.authoredOn");
         }
         else if (name.equals("sender")) {
           this.sender = new Reference();

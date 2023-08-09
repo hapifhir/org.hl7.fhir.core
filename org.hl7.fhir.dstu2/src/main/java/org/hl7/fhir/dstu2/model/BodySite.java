@@ -421,7 +421,7 @@ public class BodySite extends DomainResource {
     } else if (name.equals("modifier")) {
       return addModifier();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type BodySite.description");
+      throw new FHIRException("Cannot call addChild on a singleton property BodySite.description");
     } else if (name.equals("image")) {
       return addImage();
     } else
