@@ -86,7 +86,8 @@ public class CPTImporter {
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dst), cs); 
     produceDB(Utilities.changeFileExt(dst, ".db"), cs);
     
-    cs.getConcept().removeIf(cc -> !Utilities.existsInList(cc.getCode(), "metadata-kinds", "metadata-designations", "99202", "99203", "25", "P1"));
+    cs.setContent(CodeSystemContentMode.FRAGMENT);
+    cs.getConcept().removeIf(cc -> !Utilities.existsInList(cc.getCode(), "metadata-kinds", "metadata-designations", "99202", "99203", "0001A", "25", "P1", "1P", "F1"));
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.changeFileExt(dst, "-fragment.json")), cs); 
     produceDB(Utilities.changeFileExt(dst, "-fragment.db"), cs);
   }
