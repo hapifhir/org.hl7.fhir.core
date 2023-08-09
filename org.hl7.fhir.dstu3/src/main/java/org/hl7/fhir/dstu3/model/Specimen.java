@@ -921,7 +921,7 @@ public class Specimen extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Specimen.description");
+          throw new FHIRException("Cannot call addChild on a singleton property Specimen.description");
         }
         else if (name.equals("procedure")) {
           this.procedure = new CodeableConcept();
@@ -1390,7 +1390,7 @@ public class Specimen extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Specimen.description");
+          throw new FHIRException("Cannot call addChild on a singleton property Specimen.description");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -2338,7 +2338,7 @@ public class Specimen extends DomainResource {
           return this.accessionIdentifier;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Specimen.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Specimen.status");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -2349,7 +2349,7 @@ public class Specimen extends DomainResource {
           return this.subject;
         }
         else if (name.equals("receivedTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Specimen.receivedTime");
+          throw new FHIRException("Cannot call addChild on a singleton property Specimen.receivedTime");
         }
         else if (name.equals("parent")) {
           return addParent();

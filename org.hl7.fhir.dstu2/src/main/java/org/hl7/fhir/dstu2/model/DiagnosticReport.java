@@ -445,7 +445,7 @@ public class DiagnosticReport extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("comment")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DiagnosticReport.comment");
+        throw new FHIRException("Cannot call addChild on a singleton property DiagnosticReport.comment");
       } else if (name.equals("link")) {
         this.link = new Reference();
         return this.link;
@@ -1675,7 +1675,7 @@ public class DiagnosticReport extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DiagnosticReport.status");
+      throw new FHIRException("Cannot call addChild on a singleton property DiagnosticReport.status");
     } else if (name.equals("category")) {
       this.category = new CodeableConcept();
       return this.category;
@@ -1695,7 +1695,7 @@ public class DiagnosticReport extends DomainResource {
       this.effective = new Period();
       return this.effective;
     } else if (name.equals("issued")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DiagnosticReport.issued");
+      throw new FHIRException("Cannot call addChild on a singleton property DiagnosticReport.issued");
     } else if (name.equals("performer")) {
       this.performer = new Reference();
       return this.performer;
@@ -1710,7 +1710,7 @@ public class DiagnosticReport extends DomainResource {
     } else if (name.equals("image")) {
       return addImage();
     } else if (name.equals("conclusion")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DiagnosticReport.conclusion");
+      throw new FHIRException("Cannot call addChild on a singleton property DiagnosticReport.conclusion");
     } else if (name.equals("codedDiagnosis")) {
       return addCodedDiagnosis();
     } else if (name.equals("presentedForm")) {

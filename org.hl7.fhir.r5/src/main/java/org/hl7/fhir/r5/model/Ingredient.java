@@ -348,7 +348,7 @@ public class Ingredient extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("role")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.manufacturer.role");
+          throw new FHIRException("Cannot call addChild on a singleton property Ingredient.manufacturer.role");
         }
         else if (name.equals("manufacturer")) {
           this.manufacturer = new Reference();
@@ -1312,7 +1312,7 @@ public class Ingredient extends DomainResource {
           return this.presentation;
         }
         else if (name.equals("textPresentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.substance.strength.textPresentation");
+          throw new FHIRException("Cannot call addChild on a singleton property Ingredient.substance.strength.textPresentation");
         }
         else if (name.equals("concentrationRatio")) {
           this.concentration = new Ratio();
@@ -1331,14 +1331,14 @@ public class Ingredient extends DomainResource {
           return this.concentration;
         }
         else if (name.equals("textConcentration")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.substance.strength.textConcentration");
+          throw new FHIRException("Cannot call addChild on a singleton property Ingredient.substance.strength.textConcentration");
         }
         else if (name.equals("basis")) {
           this.basis = new CodeableConcept();
           return this.basis;
         }
         else if (name.equals("measurementPoint")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.substance.strength.measurementPoint");
+          throw new FHIRException("Cannot call addChild on a singleton property Ingredient.substance.strength.measurementPoint");
         }
         else if (name.equals("country")) {
           return addCountry();
@@ -1771,7 +1771,7 @@ public class Ingredient extends DomainResource {
           return this.strength;
         }
         else if (name.equals("measurementPoint")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.substance.strength.referenceStrength.measurementPoint");
+          throw new FHIRException("Cannot call addChild on a singleton property Ingredient.substance.strength.referenceStrength.measurementPoint");
         }
         else if (name.equals("country")) {
           return addCountry();
@@ -2477,7 +2477,7 @@ public class Ingredient extends DomainResource {
           return this.identifier;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Ingredient.status");
         }
         else if (name.equals("for")) {
           return addFor();
@@ -2494,10 +2494,10 @@ public class Ingredient extends DomainResource {
           return this.group;
         }
         else if (name.equals("allergenicIndicator")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.allergenicIndicator");
+          throw new FHIRException("Cannot call addChild on a singleton property Ingredient.allergenicIndicator");
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.comment");
+          throw new FHIRException("Cannot call addChild on a singleton property Ingredient.comment");
         }
         else if (name.equals("manufacturer")) {
           return addManufacturer();

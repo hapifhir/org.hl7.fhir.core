@@ -1306,7 +1306,7 @@ public class Coverage extends DomainResource {
       this.issuer = new Reference();
       return this.issuer;
     } else if (name.equals("bin")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.bin");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.bin");
     } else if (name.equals("period")) {
       this.period = new Period();
       return this.period;
@@ -1331,21 +1331,21 @@ public class Coverage extends DomainResource {
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("group")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.group");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.group");
     } else if (name.equals("plan")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.plan");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.plan");
     } else if (name.equals("subPlan")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.subPlan");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.subPlan");
     } else if (name.equals("dependent")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.dependent");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.dependent");
     } else if (name.equals("sequence")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.sequence");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.sequence");
     } else if (name.equals("exception")) {
       return addException();
     } else if (name.equals("school")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.school");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.school");
     } else if (name.equals("network")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.network");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.network");
     } else if (name.equals("contract")) {
       return addContract();
     } else

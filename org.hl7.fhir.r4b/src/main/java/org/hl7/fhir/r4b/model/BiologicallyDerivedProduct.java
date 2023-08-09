@@ -1161,7 +1161,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type BiologicallyDerivedProduct.processing.description");
+            "Cannot call addChild on a singleton property BiologicallyDerivedProduct.processing.description");
       } else if (name.equals("procedure")) {
         this.procedure = new CodeableConcept();
         return this.procedure;
@@ -1455,7 +1455,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type BiologicallyDerivedProduct.manipulation.description");
+            "Cannot call addChild on a singleton property BiologicallyDerivedProduct.manipulation.description");
       } else if (name.equals("timeDateTime")) {
         this.time = new DateTimeType();
         return this.time;
@@ -1874,12 +1874,12 @@ public class BiologicallyDerivedProduct extends DomainResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type BiologicallyDerivedProduct.storage.description");
+            "Cannot call addChild on a singleton property BiologicallyDerivedProduct.storage.description");
       } else if (name.equals("temperature")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type BiologicallyDerivedProduct.storage.temperature");
+            "Cannot call addChild on a singleton property BiologicallyDerivedProduct.storage.temperature");
       } else if (name.equals("scale")) {
-        throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.storage.scale");
+        throw new FHIRException("Cannot call addChild on a singleton property BiologicallyDerivedProduct.storage.scale");
       } else if (name.equals("duration")) {
         this.duration = new Period();
         return this.duration;
@@ -2795,16 +2795,16 @@ public class BiologicallyDerivedProduct extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("productCategory")) {
-      throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.productCategory");
+      throw new FHIRException("Cannot call addChild on a singleton property BiologicallyDerivedProduct.productCategory");
     } else if (name.equals("productCode")) {
       this.productCode = new CodeableConcept();
       return this.productCode;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.status");
+      throw new FHIRException("Cannot call addChild on a singleton property BiologicallyDerivedProduct.status");
     } else if (name.equals("request")) {
       return addRequest();
     } else if (name.equals("quantity")) {
-      throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.quantity");
+      throw new FHIRException("Cannot call addChild on a singleton property BiologicallyDerivedProduct.quantity");
     } else if (name.equals("parent")) {
       return addParent();
     } else if (name.equals("collection")) {

@@ -957,12 +957,12 @@ public class SupplyRequest extends DomainResource {
       this.source = new Reference();
       return this.source;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SupplyRequest.date");
+      throw new FHIRException("Cannot call addChild on a singleton property SupplyRequest.date");
     } else if (name.equals("identifier")) {
       this.identifier = new Identifier();
       return this.identifier;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SupplyRequest.status");
+      throw new FHIRException("Cannot call addChild on a singleton property SupplyRequest.status");
     } else if (name.equals("kind")) {
       this.kind = new CodeableConcept();
       return this.kind;

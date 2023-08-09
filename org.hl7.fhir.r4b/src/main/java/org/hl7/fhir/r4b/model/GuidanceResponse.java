@@ -1497,7 +1497,7 @@ public class GuidanceResponse extends DomainResource {
       this.module = new CodeableConcept();
       return this.module;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type GuidanceResponse.status");
+      throw new FHIRException("Cannot call addChild on a singleton property GuidanceResponse.status");
     } else if (name.equals("subject")) {
       this.subject = new Reference();
       return this.subject;
@@ -1505,7 +1505,7 @@ public class GuidanceResponse extends DomainResource {
       this.encounter = new Reference();
       return this.encounter;
     } else if (name.equals("occurrenceDateTime")) {
-      throw new FHIRException("Cannot call addChild on a primitive type GuidanceResponse.occurrenceDateTime");
+      throw new FHIRException("Cannot call addChild on a singleton property GuidanceResponse.occurrenceDateTime");
     } else if (name.equals("performer")) {
       this.performer = new Reference();
       return this.performer;

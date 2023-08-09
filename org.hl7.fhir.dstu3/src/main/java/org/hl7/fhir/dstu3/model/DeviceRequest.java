@@ -2140,14 +2140,14 @@ public class DeviceRequest extends DomainResource {
           return this.groupIdentifier;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.status");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.status");
         }
         else if (name.equals("intent")) {
           this.intent = new CodeableConcept();
           return this.intent;
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.priority");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.priority");
         }
         else if (name.equals("codeReference")) {
           this.code = new Reference();
@@ -2178,7 +2178,7 @@ public class DeviceRequest extends DomainResource {
           return this.occurrence;
         }
         else if (name.equals("authoredOn")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.authoredOn");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.authoredOn");
         }
         else if (name.equals("requester")) {
           this.requester = new DeviceRequestRequesterComponent();

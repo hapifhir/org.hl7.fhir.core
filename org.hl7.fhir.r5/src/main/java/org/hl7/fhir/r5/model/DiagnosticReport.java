@@ -684,7 +684,7 @@ public class DiagnosticReport extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DiagnosticReport.media.comment");
+          throw new FHIRException("Cannot call addChild on a singleton property DiagnosticReport.media.comment");
         }
         else if (name.equals("link")) {
           this.link = new Reference();
@@ -2161,7 +2161,7 @@ public class DiagnosticReport extends DomainResource {
           return addBasedOn();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DiagnosticReport.status");
+          throw new FHIRException("Cannot call addChild on a singleton property DiagnosticReport.status");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -2187,7 +2187,7 @@ public class DiagnosticReport extends DomainResource {
           return this.effective;
         }
         else if (name.equals("issued")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DiagnosticReport.issued");
+          throw new FHIRException("Cannot call addChild on a singleton property DiagnosticReport.issued");
         }
         else if (name.equals("performer")) {
           return addPerformer();
@@ -2218,7 +2218,7 @@ public class DiagnosticReport extends DomainResource {
           return this.composition;
         }
         else if (name.equals("conclusion")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DiagnosticReport.conclusion");
+          throw new FHIRException("Cannot call addChild on a singleton property DiagnosticReport.conclusion");
         }
         else if (name.equals("conclusionCode")) {
           return addConclusionCode();

@@ -472,10 +472,10 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("lockedDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.lockedDate");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.lockedDate");
         }
         else if (name.equals("inactive")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.inactive");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.inactive");
         }
         else if (name.equals("include")) {
           return addInclude();
@@ -484,7 +484,7 @@ public class ValueSet extends MetadataResource {
           return addExclude();
         }
         else if (name.equals("property")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.property");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.property");
         }
         else
           return super.addChild(name);
@@ -1032,10 +1032,10 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("system")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.system");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.include.system");
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.version");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.include.version");
         }
         else if (name.equals("concept")) {
           return addConcept();
@@ -1044,10 +1044,10 @@ public class ValueSet extends MetadataResource {
           return addFilter();
         }
         else if (name.equals("valueSet")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.valueSet");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.include.valueSet");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.copyright");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.include.copyright");
         }
         else
           return super.addChild(name);
@@ -1387,10 +1387,10 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.concept.code");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.include.concept.code");
         }
         else if (name.equals("display")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.concept.display");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.include.concept.display");
         }
         else if (name.equals("designation")) {
           return addDesignation();
@@ -1764,7 +1764,7 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.concept.designation.language");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.include.concept.designation.language");
         }
         else if (name.equals("use")) {
           this.use = new Coding();
@@ -1774,7 +1774,7 @@ public class ValueSet extends MetadataResource {
           return addAdditionalUse();
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.concept.designation.value");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.include.concept.designation.value");
         }
         else
           return super.addChild(name);
@@ -2095,13 +2095,13 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("property")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.filter.property");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.include.filter.property");
         }
         else if (name.equals("op")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.filter.op");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.include.filter.op");
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.filter.value");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.compose.include.filter.value");
         }
         else
           return super.addChild(name);
@@ -2754,19 +2754,19 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identifier")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.identifier");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.identifier");
         }
         else if (name.equals("next")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.next");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.next");
         }
         else if (name.equals("timestamp")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.timestamp");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.timestamp");
         }
         else if (name.equals("total")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.total");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.total");
         }
         else if (name.equals("offset")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.offset");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.offset");
         }
         else if (name.equals("parameter")) {
           return addParameter();
@@ -3145,7 +3145,7 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.parameter.name");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.parameter.name");
         }
         else if (name.equals("valueString")) {
           this.value = new StringType();
@@ -3423,10 +3423,10 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.property.code");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.property.code");
         }
         else if (name.equals("uri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.property.uri");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.property.uri");
         }
         else
           return super.addChild(name);
@@ -4138,22 +4138,22 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("system")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.contains.system");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.contains.system");
         }
         else if (name.equals("abstract")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.contains.abstract");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.contains.abstract");
         }
         else if (name.equals("inactive")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.contains.inactive");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.contains.inactive");
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.contains.version");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.contains.version");
         }
         else if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.contains.code");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.contains.code");
         }
         else if (name.equals("display")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.contains.display");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.contains.display");
         }
         else if (name.equals("designation")) {
           return addDesignation();
@@ -4594,7 +4594,7 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.contains.property.code");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.contains.property.code");
         }
         else if (name.equals("valueCode")) {
           this.value = new CodeType();
@@ -4969,7 +4969,7 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.contains.property.subProperty.code");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.expansion.contains.property.subProperty.code");
         }
         else if (name.equals("valueCode")) {
           this.value = new CodeType();
@@ -5243,10 +5243,10 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("inclusionCriteria")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.scope.inclusionCriteria");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.scope.inclusionCriteria");
         }
         else if (name.equals("exclusionCriteria")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.scope.exclusionCriteria");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.scope.exclusionCriteria");
         }
         else
           return super.addChild(name);
@@ -7289,13 +7289,13 @@ public class ValueSet extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.url");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.version");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -7306,28 +7306,28 @@ public class ValueSet extends MetadataResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.name");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.title");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.status");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.experimental");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.date");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.publisher");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.description");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -7336,22 +7336,22 @@ public class ValueSet extends MetadataResource {
           return addJurisdiction();
         }
         else if (name.equals("immutable")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.immutable");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.immutable");
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.purpose");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.copyright");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.copyrightLabel");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.approvalDate");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a singleton property ValueSet.lastReviewDate");
         }
         else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = new Period();

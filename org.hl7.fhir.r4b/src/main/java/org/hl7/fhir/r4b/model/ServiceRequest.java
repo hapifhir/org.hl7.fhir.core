@@ -2827,9 +2827,9 @@ public class ServiceRequest extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("instantiatesCanonical")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ServiceRequest.instantiatesCanonical");
+      throw new FHIRException("Cannot call addChild on a singleton property ServiceRequest.instantiatesCanonical");
     } else if (name.equals("instantiatesUri")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ServiceRequest.instantiatesUri");
+      throw new FHIRException("Cannot call addChild on a singleton property ServiceRequest.instantiatesUri");
     } else if (name.equals("basedOn")) {
       return addBasedOn();
     } else if (name.equals("replaces")) {
@@ -2838,15 +2838,15 @@ public class ServiceRequest extends DomainResource {
       this.requisition = new Identifier();
       return this.requisition;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ServiceRequest.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ServiceRequest.status");
     } else if (name.equals("intent")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ServiceRequest.intent");
+      throw new FHIRException("Cannot call addChild on a singleton property ServiceRequest.intent");
     } else if (name.equals("category")) {
       return addCategory();
     } else if (name.equals("priority")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ServiceRequest.priority");
+      throw new FHIRException("Cannot call addChild on a singleton property ServiceRequest.priority");
     } else if (name.equals("doNotPerform")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ServiceRequest.doNotPerform");
+      throw new FHIRException("Cannot call addChild on a singleton property ServiceRequest.doNotPerform");
     } else if (name.equals("code")) {
       this.code = new CodeableConcept();
       return this.code;
@@ -2883,7 +2883,7 @@ public class ServiceRequest extends DomainResource {
       this.asNeeded = new CodeableConcept();
       return this.asNeeded;
     } else if (name.equals("authoredOn")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ServiceRequest.authoredOn");
+      throw new FHIRException("Cannot call addChild on a singleton property ServiceRequest.authoredOn");
     } else if (name.equals("requester")) {
       this.requester = new Reference();
       return this.requester;
@@ -2911,7 +2911,7 @@ public class ServiceRequest extends DomainResource {
     } else if (name.equals("note")) {
       return addNote();
     } else if (name.equals("patientInstruction")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ServiceRequest.patientInstruction");
+      throw new FHIRException("Cannot call addChild on a singleton property ServiceRequest.patientInstruction");
     } else if (name.equals("relevantHistory")) {
       return addRelevantHistory();
     } else

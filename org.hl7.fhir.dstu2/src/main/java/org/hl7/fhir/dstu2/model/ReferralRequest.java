@@ -1279,11 +1279,11 @@ public class ReferralRequest extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.status");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.date");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
@@ -1305,12 +1305,12 @@ public class ReferralRequest extends DomainResource {
       this.encounter = new Reference();
       return this.encounter;
     } else if (name.equals("dateSent")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.dateSent");
+      throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.dateSent");
     } else if (name.equals("reason")) {
       this.reason = new CodeableConcept();
       return this.reason;
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.description");
     } else if (name.equals("serviceRequested")) {
       return addServiceRequested();
     } else if (name.equals("supportingInformation")) {

@@ -1008,7 +1008,7 @@ public class PaymentReconciliation extends DomainResource {
           return this.response;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.allocation.date");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.allocation.date");
         }
         else if (name.equals("responsible")) {
           this.responsible = new Reference();
@@ -1286,10 +1286,10 @@ public class PaymentReconciliation extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.processNote.type");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.processNote.type");
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.processNote.text");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.processNote.text");
         }
         else
           return super.addChild(name);
@@ -2970,7 +2970,7 @@ public class PaymentReconciliation extends DomainResource {
           return this.type;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.status");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.status");
         }
         else if (name.equals("kind")) {
           this.kind = new CodeableConcept();
@@ -2981,7 +2981,7 @@ public class PaymentReconciliation extends DomainResource {
           return this.period;
         }
         else if (name.equals("created")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.created");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.created");
         }
         else if (name.equals("enterer")) {
           this.enterer = new Reference();
@@ -3004,13 +3004,13 @@ public class PaymentReconciliation extends DomainResource {
           return this.requestor;
         }
         else if (name.equals("outcome")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.outcome");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.outcome");
         }
         else if (name.equals("disposition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.disposition");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.disposition");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.date");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.date");
         }
         else if (name.equals("location")) {
           this.location = new Reference();
@@ -3021,22 +3021,22 @@ public class PaymentReconciliation extends DomainResource {
           return this.method;
         }
         else if (name.equals("cardBrand")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.cardBrand");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.cardBrand");
         }
         else if (name.equals("accountNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.accountNumber");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.accountNumber");
         }
         else if (name.equals("expirationDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.expirationDate");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.expirationDate");
         }
         else if (name.equals("processor")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.processor");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.processor");
         }
         else if (name.equals("referenceNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.referenceNumber");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.referenceNumber");
         }
         else if (name.equals("authorization")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.authorization");
+          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.authorization");
         }
         else if (name.equals("tenderedAmount")) {
           this.tenderedAmount = new Money();

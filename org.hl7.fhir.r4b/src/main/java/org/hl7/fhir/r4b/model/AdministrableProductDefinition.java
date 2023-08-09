@@ -1544,7 +1544,7 @@ public class AdministrableProductDefinition extends DomainResource {
         return this.value;
       } else if (name.equals("supportingInformation")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type AdministrableProductDefinition.routeOfAdministration.targetSpecies.withdrawalPeriod.supportingInformation");
+            "Cannot call addChild on a singleton property AdministrableProductDefinition.routeOfAdministration.targetSpecies.withdrawalPeriod.supportingInformation");
       } else
         return super.addChild(name);
     }
@@ -2467,7 +2467,7 @@ public class AdministrableProductDefinition extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type AdministrableProductDefinition.status");
+      throw new FHIRException("Cannot call addChild on a singleton property AdministrableProductDefinition.status");
     } else if (name.equals("formOf")) {
       return addFormOf();
     } else if (name.equals("administrableDoseForm")) {

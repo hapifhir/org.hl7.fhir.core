@@ -1046,7 +1046,7 @@ public class MedicationKnowledge extends DomainResource {
         this.item = new Reference();
         return this.item;
       } else if (name.equals("isActive")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.isActive");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.isActive");
       } else if (name.equals("strength")) {
         this.strength = new Ratio();
         return this.strength;
@@ -1358,7 +1358,7 @@ public class MedicationKnowledge extends DomainResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("source")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.source");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.source");
       } else if (name.equals("cost")) {
         this.cost = new Money();
         return this.cost;
@@ -1608,7 +1608,7 @@ public class MedicationKnowledge extends DomainResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.name");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.name");
       } else
         return super.addChild(name);
     }
@@ -2599,7 +2599,7 @@ public class MedicationKnowledge extends DomainResource {
         this.characteristic = new Quantity();
         return this.characteristic;
       } else if (name.equals("value")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.value");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.value");
       } else
         return super.addChild(name);
     }
@@ -4120,7 +4120,7 @@ public class MedicationKnowledge extends DomainResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("allowed")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.allowed");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.allowed");
       } else
         return super.addChild(name);
     }
@@ -6779,7 +6779,7 @@ public class MedicationKnowledge extends DomainResource {
       this.code = new CodeableConcept();
       return this.code;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.status");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.status");
     } else if (name.equals("manufacturer")) {
       this.manufacturer = new Reference();
       return this.manufacturer;
@@ -6790,7 +6790,7 @@ public class MedicationKnowledge extends DomainResource {
       this.amount = new Quantity();
       return this.amount;
     } else if (name.equals("synonym")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.synonym");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.synonym");
     } else if (name.equals("relatedMedicationKnowledge")) {
       return addRelatedMedicationKnowledge();
     } else if (name.equals("associatedMedication")) {
@@ -6802,7 +6802,7 @@ public class MedicationKnowledge extends DomainResource {
     } else if (name.equals("ingredient")) {
       return addIngredient();
     } else if (name.equals("preparationInstruction")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.preparationInstruction");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.preparationInstruction");
     } else if (name.equals("intendedRoute")) {
       return addIntendedRoute();
     } else if (name.equals("cost")) {

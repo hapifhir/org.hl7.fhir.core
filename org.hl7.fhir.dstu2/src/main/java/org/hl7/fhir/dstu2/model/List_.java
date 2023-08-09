@@ -577,9 +577,9 @@ public class List_ extends DomainResource {
         this.flag = new CodeableConcept();
         return this.flag;
       } else if (name.equals("deleted")) {
-        throw new FHIRException("Cannot call addChild on a primitive type List_.deleted");
+        throw new FHIRException("Cannot call addChild on a singleton property List_.deleted");
       } else if (name.equals("date")) {
-        throw new FHIRException("Cannot call addChild on a primitive type List_.date");
+        throw new FHIRException("Cannot call addChild on a singleton property List_.date");
       } else if (name.equals("item")) {
         this.item = new Reference();
         return this.item;
@@ -1424,7 +1424,7 @@ public class List_ extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type List_.title");
+      throw new FHIRException("Cannot call addChild on a singleton property List_.title");
     } else if (name.equals("code")) {
       this.code = new CodeableConcept();
       return this.code;
@@ -1438,16 +1438,16 @@ public class List_ extends DomainResource {
       this.encounter = new Reference();
       return this.encounter;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type List_.status");
+      throw new FHIRException("Cannot call addChild on a singleton property List_.status");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type List_.date");
+      throw new FHIRException("Cannot call addChild on a singleton property List_.date");
     } else if (name.equals("orderedBy")) {
       this.orderedBy = new CodeableConcept();
       return this.orderedBy;
     } else if (name.equals("mode")) {
-      throw new FHIRException("Cannot call addChild on a primitive type List_.mode");
+      throw new FHIRException("Cannot call addChild on a singleton property List_.mode");
     } else if (name.equals("note")) {
-      throw new FHIRException("Cannot call addChild on a primitive type List_.note");
+      throw new FHIRException("Cannot call addChild on a singleton property List_.note");
     } else if (name.equals("entry")) {
       return addEntry();
     } else if (name.equals("emptyReason")) {

@@ -487,7 +487,7 @@ public class Signature extends Type implements ICompositeType {
     if (name.equals("type")) {
       return addType();
     } else if (name.equals("when")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Signature.when");
+      throw new FHIRException("Cannot call addChild on a singleton property Signature.when");
     } else if (name.equals("whoUri")) {
       this.who = new UriType();
       return this.who;
@@ -495,9 +495,9 @@ public class Signature extends Type implements ICompositeType {
       this.who = new Reference();
       return this.who;
     } else if (name.equals("contentType")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Signature.contentType");
+      throw new FHIRException("Cannot call addChild on a singleton property Signature.contentType");
     } else if (name.equals("blob")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Signature.blob");
+      throw new FHIRException("Cannot call addChild on a singleton property Signature.blob");
     } else
       return super.addChild(name);
   }

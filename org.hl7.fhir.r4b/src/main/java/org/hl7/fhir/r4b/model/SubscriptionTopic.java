@@ -1233,18 +1233,18 @@ public class SubscriptionTopic extends DomainResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.description");
+            "Cannot call addChild on a singleton property SubscriptionTopic.resourceTrigger.description");
       } else if (name.equals("resource")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.resource");
+        throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.resourceTrigger.resource");
       } else if (name.equals("supportedInteraction")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.supportedInteraction");
+            "Cannot call addChild on a singleton property SubscriptionTopic.resourceTrigger.supportedInteraction");
       } else if (name.equals("queryCriteria")) {
         this.queryCriteria = new SubscriptionTopicResourceTriggerQueryCriteriaComponent();
         return this.queryCriteria;
       } else if (name.equals("fhirPathCriteria")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.fhirPathCriteria");
+            "Cannot call addChild on a singleton property SubscriptionTopic.resourceTrigger.fhirPathCriteria");
       } else
         return super.addChild(name);
     }
@@ -1814,19 +1814,19 @@ public class SubscriptionTopic extends DomainResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("previous")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.queryCriteria.previous");
+            "Cannot call addChild on a singleton property SubscriptionTopic.resourceTrigger.queryCriteria.previous");
       } else if (name.equals("resultForCreate")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.queryCriteria.resultForCreate");
+            "Cannot call addChild on a singleton property SubscriptionTopic.resourceTrigger.queryCriteria.resultForCreate");
       } else if (name.equals("current")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.queryCriteria.current");
+            "Cannot call addChild on a singleton property SubscriptionTopic.resourceTrigger.queryCriteria.current");
       } else if (name.equals("resultForDelete")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.queryCriteria.resultForDelete");
+            "Cannot call addChild on a singleton property SubscriptionTopic.resourceTrigger.queryCriteria.resultForDelete");
       } else if (name.equals("requireBoth")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.queryCriteria.requireBoth");
+            "Cannot call addChild on a singleton property SubscriptionTopic.resourceTrigger.queryCriteria.requireBoth");
       } else
         return super.addChild(name);
     }
@@ -2214,12 +2214,12 @@ public class SubscriptionTopic extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.eventTrigger.description");
+        throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.eventTrigger.description");
       } else if (name.equals("event")) {
         this.event = new CodeableConcept();
         return this.event;
       } else if (name.equals("resource")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.eventTrigger.resource");
+        throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.eventTrigger.resource");
       } else
         return super.addChild(name);
     }
@@ -2711,14 +2711,14 @@ public class SubscriptionTopic extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.canFilterBy.description");
+        throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.canFilterBy.description");
       } else if (name.equals("resource")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.canFilterBy.resource");
+        throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.canFilterBy.resource");
       } else if (name.equals("filterParameter")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubscriptionTopic.canFilterBy.filterParameter");
+            "Cannot call addChild on a singleton property SubscriptionTopic.canFilterBy.filterParameter");
       } else if (name.equals("modifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.canFilterBy.modifier");
+        throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.canFilterBy.modifier");
       } else
         return super.addChild(name);
     }
@@ -3167,12 +3167,12 @@ public class SubscriptionTopic extends DomainResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("resource")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubscriptionTopic.notificationShape.resource");
+            "Cannot call addChild on a singleton property SubscriptionTopic.notificationShape.resource");
       } else if (name.equals("include")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.notificationShape.include");
+        throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.notificationShape.include");
       } else if (name.equals("revInclude")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type SubscriptionTopic.notificationShape.revInclude");
+            "Cannot call addChild on a singleton property SubscriptionTopic.notificationShape.revInclude");
       } else
         return super.addChild(name);
     }
@@ -5187,39 +5187,39 @@ public class SubscriptionTopic extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.url");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.version");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.version");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.title");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.title");
     } else if (name.equals("derivedFrom")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.derivedFrom");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.derivedFrom");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.status");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.experimental");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.date");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.description");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.description");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.purpose");
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.copyright");
     } else if (name.equals("approvalDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.approvalDate");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.approvalDate");
     } else if (name.equals("lastReviewDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.lastReviewDate");
+      throw new FHIRException("Cannot call addChild on a singleton property SubscriptionTopic.lastReviewDate");
     } else if (name.equals("effectivePeriod")) {
       this.effectivePeriod = new Period();
       return this.effectivePeriod;

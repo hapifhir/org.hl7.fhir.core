@@ -452,14 +452,14 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.name");
+          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.name");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
           return this.code;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.description");
+          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.description");
         }
         else
           return super.addChild(name);
@@ -2011,7 +2011,7 @@ public class ResearchStudy extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.title");
+          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.title");
         }
         else if (name.equals("protocol")) {
           return addProtocol();
@@ -2020,7 +2020,7 @@ public class ResearchStudy extends DomainResource {
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.status");
+          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.status");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -2041,7 +2041,7 @@ public class ResearchStudy extends DomainResource {
           return addJurisdiction();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.description");
+          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.description");
         }
         else if (name.equals("enrollment")) {
           return addEnrollment();

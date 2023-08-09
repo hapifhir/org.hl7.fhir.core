@@ -783,9 +783,9 @@ public class Consent extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("authority")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Consent.policy.authority");
+        throw new FHIRException("Cannot call addChild on a singleton property Consent.policy.authority");
       } else if (name.equals("uri")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Consent.policy.uri");
+        throw new FHIRException("Cannot call addChild on a singleton property Consent.policy.uri");
       } else
         return super.addChild(name);
     }
@@ -1110,12 +1110,12 @@ public class Consent extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("verified")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Consent.verification.verified");
+        throw new FHIRException("Cannot call addChild on a singleton property Consent.verification.verified");
       } else if (name.equals("verifiedWith")) {
         this.verifiedWith = new Reference();
         return this.verifiedWith;
       } else if (name.equals("verificationDate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Consent.verification.verificationDate");
+        throw new FHIRException("Cannot call addChild on a singleton property Consent.verification.verificationDate");
       } else
         return super.addChild(name);
     }
@@ -2075,7 +2075,7 @@ public class Consent extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Consent.provision.type");
+        throw new FHIRException("Cannot call addChild on a singleton property Consent.provision.type");
       } else if (name.equals("period")) {
         this.period = new Period();
         return this.period;
@@ -2652,7 +2652,7 @@ public class Consent extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("meaning")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Consent.provision.data.meaning");
+        throw new FHIRException("Cannot call addChild on a singleton property Consent.provision.data.meaning");
       } else if (name.equals("reference")) {
         this.reference = new Reference();
         return this.reference;
@@ -3758,7 +3758,7 @@ public class Consent extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Consent.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Consent.status");
     } else if (name.equals("scope")) {
       this.scope = new CodeableConcept();
       return this.scope;
@@ -3768,7 +3768,7 @@ public class Consent extends DomainResource {
       this.patient = new Reference();
       return this.patient;
     } else if (name.equals("dateTime")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Consent.dateTime");
+      throw new FHIRException("Cannot call addChild on a singleton property Consent.dateTime");
     } else if (name.equals("performer")) {
       return addPerformer();
     } else if (name.equals("organization")) {

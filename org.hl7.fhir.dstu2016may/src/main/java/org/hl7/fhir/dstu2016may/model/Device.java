@@ -1366,22 +1366,22 @@ public class Device extends DomainResource {
       this.udiCarrier = new Identifier();
       return this.udiCarrier;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Device.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Device.status");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
     } else if (name.equals("lotNumber")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Device.lotNumber");
+      throw new FHIRException("Cannot call addChild on a singleton property Device.lotNumber");
     } else if (name.equals("manufacturer")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Device.manufacturer");
+      throw new FHIRException("Cannot call addChild on a singleton property Device.manufacturer");
     } else if (name.equals("manufactureDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Device.manufactureDate");
+      throw new FHIRException("Cannot call addChild on a singleton property Device.manufactureDate");
     } else if (name.equals("expirationDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Device.expirationDate");
+      throw new FHIRException("Cannot call addChild on a singleton property Device.expirationDate");
     } else if (name.equals("model")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Device.model");
+      throw new FHIRException("Cannot call addChild on a singleton property Device.model");
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Device.version");
+      throw new FHIRException("Cannot call addChild on a singleton property Device.version");
     } else if (name.equals("patient")) {
       this.patient = new Reference();
       return this.patient;
@@ -1394,7 +1394,7 @@ public class Device extends DomainResource {
       this.location = new Reference();
       return this.location;
     } else if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Device.url");
+      throw new FHIRException("Cannot call addChild on a singleton property Device.url");
     } else if (name.equals("note")) {
       return addNote();
     } else

@@ -1441,13 +1441,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.software.name");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.software.name");
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.software.version");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.software.version");
         }
         else if (name.equals("releaseDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.software.releaseDate");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.software.releaseDate");
         }
         else
           return super.addChild(name);
@@ -1742,10 +1742,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.implementation.description");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.implementation.description");
         }
         else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.implementation.url");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.implementation.url");
         }
         else if (name.equals("custodian")) {
           this.custodian = new Reference();
@@ -2404,10 +2404,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.mode");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.mode");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.documentation");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.documentation");
         }
         else if (name.equals("security")) {
           this.security = new CapabilityStatementRestSecurityComponent();
@@ -2426,7 +2426,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return addOperation();
         }
         else if (name.equals("compartment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.compartment");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.compartment");
         }
         else
           return super.addChild(name);
@@ -2769,13 +2769,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("cors")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.security.cors");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.security.cors");
         }
         else if (name.equals("service")) {
           return addService();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.security.description");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.security.description");
         }
         else
           return super.addChild(name);
@@ -4141,52 +4141,52 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.type");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.type");
         }
         else if (name.equals("profile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.profile");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.profile");
         }
         else if (name.equals("supportedProfile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.supportedProfile");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.supportedProfile");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.documentation");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.documentation");
         }
         else if (name.equals("interaction")) {
           return addInteraction();
         }
         else if (name.equals("versioning")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.versioning");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.versioning");
         }
         else if (name.equals("readHistory")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.readHistory");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.readHistory");
         }
         else if (name.equals("updateCreate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.updateCreate");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.updateCreate");
         }
         else if (name.equals("conditionalCreate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.conditionalCreate");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.conditionalCreate");
         }
         else if (name.equals("conditionalRead")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.conditionalRead");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.conditionalRead");
         }
         else if (name.equals("conditionalUpdate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.conditionalUpdate");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.conditionalUpdate");
         }
         else if (name.equals("conditionalPatch")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.conditionalPatch");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.conditionalPatch");
         }
         else if (name.equals("conditionalDelete")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.conditionalDelete");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.conditionalDelete");
         }
         else if (name.equals("referencePolicy")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.referencePolicy");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.referencePolicy");
         }
         else if (name.equals("searchInclude")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchInclude");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.searchInclude");
         }
         else if (name.equals("searchRevInclude")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchRevInclude");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.searchRevInclude");
         }
         else if (name.equals("searchParam")) {
           return addSearchParam();
@@ -4507,10 +4507,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.interaction.code");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.interaction.code");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.interaction.documentation");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.interaction.documentation");
         }
         else
           return super.addChild(name);
@@ -4892,16 +4892,16 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchParam.name");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.searchParam.name");
         }
         else if (name.equals("definition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchParam.definition");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.searchParam.definition");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchParam.type");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.searchParam.type");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchParam.documentation");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.searchParam.documentation");
         }
         else
           return super.addChild(name);
@@ -5219,13 +5219,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.operation.name");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.operation.name");
         }
         else if (name.equals("definition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.operation.definition");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.operation.definition");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.operation.documentation");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.resource.operation.documentation");
         }
         else
           return super.addChild(name);
@@ -5482,10 +5482,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.interaction.code");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.interaction.code");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.interaction.documentation");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.rest.interaction.documentation");
         }
         else
           return super.addChild(name);
@@ -5870,10 +5870,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return addEndpoint();
         }
         else if (name.equals("reliableCache")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.messaging.reliableCache");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.messaging.reliableCache");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.messaging.documentation");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.messaging.documentation");
         }
         else if (name.equals("supportedMessage")) {
           return addSupportedMessage();
@@ -6121,7 +6121,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return this.protocol;
         }
         else if (name.equals("address")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.messaging.endpoint.address");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.messaging.endpoint.address");
         }
         else
           return super.addChild(name);
@@ -6371,10 +6371,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.messaging.supportedMessage.mode");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.messaging.supportedMessage.mode");
         }
         else if (name.equals("definition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.messaging.supportedMessage.definition");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.messaging.supportedMessage.definition");
         }
         else
           return super.addChild(name);
@@ -6690,13 +6690,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.document.mode");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.document.mode");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.document.documentation");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.document.documentation");
         }
         else if (name.equals("profile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.document.profile");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.document.profile");
         }
         else
           return super.addChild(name);
@@ -8854,13 +8854,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.url");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.version");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -8871,28 +8871,28 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.name");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.title");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.status");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.experimental");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.date");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.publisher");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.description");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -8901,22 +8901,22 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.purpose");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.copyright");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.copyrightLabel");
         }
         else if (name.equals("kind")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.kind");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.kind");
         }
         else if (name.equals("instantiates")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.instantiates");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.instantiates");
         }
         else if (name.equals("imports")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.imports");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.imports");
         }
         else if (name.equals("software")) {
           this.software = new CapabilityStatementSoftwareComponent();
@@ -8927,19 +8927,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return this.implementation;
         }
         else if (name.equals("fhirVersion")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.fhirVersion");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.fhirVersion");
         }
         else if (name.equals("format")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.format");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.format");
         }
         else if (name.equals("patchFormat")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.patchFormat");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.patchFormat");
         }
         else if (name.equals("acceptLanguage")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.acceptLanguage");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.acceptLanguage");
         }
         else if (name.equals("implementationGuide")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.implementationGuide");
+          throw new FHIRException("Cannot call addChild on a singleton property CapabilityStatement.implementationGuide");
         }
         else if (name.equals("rest")) {
           return addRest();

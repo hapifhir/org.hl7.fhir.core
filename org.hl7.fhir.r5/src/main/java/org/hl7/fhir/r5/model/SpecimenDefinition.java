@@ -813,28 +813,28 @@ public class SpecimenDefinition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("isDerived")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.typeTested.isDerived");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.typeTested.isDerived");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
           return this.type;
         }
         else if (name.equals("preference")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.typeTested.preference");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.typeTested.preference");
         }
         else if (name.equals("container")) {
           this.container = new SpecimenDefinitionTypeTestedContainerComponent();
           return this.container;
         }
         else if (name.equals("requirement")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.typeTested.requirement");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.typeTested.requirement");
         }
         else if (name.equals("retentionTime")) {
           this.retentionTime = new Duration();
           return this.retentionTime;
         }
         else if (name.equals("singleUse")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.typeTested.singleUse");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.typeTested.singleUse");
         }
         else if (name.equals("rejectionCriterion")) {
           return addRejectionCriterion();
@@ -1437,7 +1437,7 @@ public class SpecimenDefinition extends DomainResource {
           return this.cap;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.typeTested.container.description");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.typeTested.container.description");
         }
         else if (name.equals("capacity")) {
           this.capacity = new Quantity();
@@ -1455,7 +1455,7 @@ public class SpecimenDefinition extends DomainResource {
           return addAdditive();
         }
         else if (name.equals("preparation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.typeTested.container.preparation");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.typeTested.container.preparation");
         }
         else
           return super.addChild(name);
@@ -1984,7 +1984,7 @@ public class SpecimenDefinition extends DomainResource {
           return this.maxDuration;
         }
         else if (name.equals("instruction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.typeTested.handling.instruction");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.typeTested.handling.instruction");
         }
         else
           return super.addChild(name);
@@ -3942,14 +3942,14 @@ public class SpecimenDefinition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.url");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.url");
         }
         else if (name.equals("identifier")) {
           this.identifier = new Identifier();
           return this.identifier;
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.version");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -3960,22 +3960,22 @@ public class SpecimenDefinition extends DomainResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.name");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.title");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.title");
         }
         else if (name.equals("derivedFromCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.derivedFromCanonical");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.derivedFromCanonical");
         }
         else if (name.equals("derivedFromUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.derivedFromUri");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.derivedFromUri");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.status");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.experimental");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.experimental");
         }
         else if (name.equals("subjectCodeableConcept")) {
           this.subject = new CodeableConcept();
@@ -3986,16 +3986,16 @@ public class SpecimenDefinition extends DomainResource {
           return this.subject;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.date");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.publisher");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.description");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -4004,19 +4004,19 @@ public class SpecimenDefinition extends DomainResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.purpose");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.copyright");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.copyrightLabel");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.approvalDate");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.lastReviewDate");
         }
         else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = new Period();
@@ -4030,7 +4030,7 @@ public class SpecimenDefinition extends DomainResource {
           return addPatientPreparation();
         }
         else if (name.equals("timeAspect")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SpecimenDefinition.timeAspect");
+          throw new FHIRException("Cannot call addChild on a singleton property SpecimenDefinition.timeAspect");
         }
         else if (name.equals("collection")) {
           return addCollection();

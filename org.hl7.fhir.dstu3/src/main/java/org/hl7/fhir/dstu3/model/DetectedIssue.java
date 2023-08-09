@@ -606,7 +606,7 @@ public class DetectedIssue extends DomainResource {
           return this.action;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.date");
+          throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.date");
         }
         else if (name.equals("author")) {
           this.author = new Reference();
@@ -1429,21 +1429,21 @@ public class DetectedIssue extends DomainResource {
           return this.identifier;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.status");
+          throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.status");
         }
         else if (name.equals("category")) {
           this.category = new CodeableConcept();
           return this.category;
         }
         else if (name.equals("severity")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.severity");
+          throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.severity");
         }
         else if (name.equals("patient")) {
           this.patient = new Reference();
           return this.patient;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.date");
+          throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.date");
         }
         else if (name.equals("author")) {
           this.author = new Reference();
@@ -1453,10 +1453,10 @@ public class DetectedIssue extends DomainResource {
           return addImplicated();
         }
         else if (name.equals("detail")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.detail");
+          throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.detail");
         }
         else if (name.equals("reference")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.reference");
+          throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.reference");
         }
         else if (name.equals("mitigation")) {
           return addMitigation();

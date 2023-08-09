@@ -780,17 +780,17 @@ public class SampledData extends Type implements ICompositeType {
       this.origin = new Quantity();
       return this.origin;
     } else if (name.equals("period")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SampledData.period");
+      throw new FHIRException("Cannot call addChild on a singleton property SampledData.period");
     } else if (name.equals("factor")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SampledData.factor");
+      throw new FHIRException("Cannot call addChild on a singleton property SampledData.factor");
     } else if (name.equals("lowerLimit")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SampledData.lowerLimit");
+      throw new FHIRException("Cannot call addChild on a singleton property SampledData.lowerLimit");
     } else if (name.equals("upperLimit")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SampledData.upperLimit");
+      throw new FHIRException("Cannot call addChild on a singleton property SampledData.upperLimit");
     } else if (name.equals("dimensions")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SampledData.dimensions");
+      throw new FHIRException("Cannot call addChild on a singleton property SampledData.dimensions");
     } else if (name.equals("data")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SampledData.data");
+      throw new FHIRException("Cannot call addChild on a singleton property SampledData.data");
     } else
       return super.addChild(name);
   }

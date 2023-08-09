@@ -689,7 +689,7 @@ public class Encounter extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("status")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Encounter.status");
+        throw new FHIRException("Cannot call addChild on a singleton property Encounter.status");
       } else if (name.equals("period")) {
         this.period = new Period();
         return this.period;
@@ -1616,7 +1616,7 @@ public class Encounter extends DomainResource {
         this.use = new CodeableConcept();
         return this.use;
       } else if (name.equals("rank")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Encounter.rank");
+        throw new FHIRException("Cannot call addChild on a singleton property Encounter.rank");
       } else
         return super.addChild(name);
     }
@@ -2797,7 +2797,7 @@ public class Encounter extends DomainResource {
         this.location = new Reference();
         return this.location;
       } else if (name.equals("status")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Encounter.status");
+        throw new FHIRException("Cannot call addChild on a singleton property Encounter.status");
       } else if (name.equals("physicalType")) {
         this.physicalType = new CodeableConcept();
         return this.physicalType;
@@ -4802,7 +4802,7 @@ public class Encounter extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Encounter.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Encounter.status");
     } else if (name.equals("statusHistory")) {
       return addStatusHistory();
     } else if (name.equals("class")) {

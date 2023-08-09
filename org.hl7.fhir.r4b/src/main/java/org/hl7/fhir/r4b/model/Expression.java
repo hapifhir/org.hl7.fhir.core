@@ -529,15 +529,15 @@ public class Expression extends DataType implements ICompositeType {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Expression.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Expression.description");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Expression.name");
+      throw new FHIRException("Cannot call addChild on a singleton property Expression.name");
     } else if (name.equals("language")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Expression.language");
+      throw new FHIRException("Cannot call addChild on a singleton property Expression.language");
     } else if (name.equals("expression")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Expression.expression");
+      throw new FHIRException("Cannot call addChild on a singleton property Expression.expression");
     } else if (name.equals("reference")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Expression.reference");
+      throw new FHIRException("Cannot call addChild on a singleton property Expression.reference");
     } else
       return super.addChild(name);
   }

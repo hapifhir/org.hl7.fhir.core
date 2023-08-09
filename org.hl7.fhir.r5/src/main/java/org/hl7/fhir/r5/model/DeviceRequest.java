@@ -2023,10 +2023,10 @@ public class DeviceRequest extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("instantiatesCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.instantiatesCanonical");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.instantiatesCanonical");
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.instantiatesUri");
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
@@ -2039,23 +2039,23 @@ public class DeviceRequest extends DomainResource {
           return this.groupIdentifier;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.status");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.status");
         }
         else if (name.equals("intent")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.intent");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.intent");
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.priority");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.priority");
         }
         else if (name.equals("doNotPerform")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.doNotPerform");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.doNotPerform");
         }
         else if (name.equals("code")) {
           this.code = new CodeableReference();
           return this.code;
         }
         else if (name.equals("quantity")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.quantity");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.quantity");
         }
         else if (name.equals("parameter")) {
           return addParameter();
@@ -2081,7 +2081,7 @@ public class DeviceRequest extends DomainResource {
           return this.occurrence;
         }
         else if (name.equals("authoredOn")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.authoredOn");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.authoredOn");
         }
         else if (name.equals("requester")) {
           this.requester = new Reference();
@@ -2095,7 +2095,7 @@ public class DeviceRequest extends DomainResource {
           return addReason();
         }
         else if (name.equals("asNeeded")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceRequest.asNeeded");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceRequest.asNeeded");
         }
         else if (name.equals("asNeededFor")) {
           this.asNeededFor = new CodeableConcept();

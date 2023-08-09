@@ -999,7 +999,7 @@ public class ResearchSubject extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchSubject.status");
     } else if (name.equals("period")) {
       this.period = new Period();
       return this.period;
@@ -1010,9 +1010,9 @@ public class ResearchSubject extends DomainResource {
       this.individual = new Reference();
       return this.individual;
     } else if (name.equals("assignedArm")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.assignedArm");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchSubject.assignedArm");
     } else if (name.equals("actualArm")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.actualArm");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchSubject.actualArm");
     } else if (name.equals("consent")) {
       this.consent = new Reference();
       return this.consent;

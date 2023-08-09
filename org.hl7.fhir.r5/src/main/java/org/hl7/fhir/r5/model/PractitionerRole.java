@@ -1007,7 +1007,7 @@ public class PractitionerRole extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.active");
+          throw new FHIRException("Cannot call addChild on a singleton property PractitionerRole.active");
         }
         else if (name.equals("period")) {
           this.period = new Period();

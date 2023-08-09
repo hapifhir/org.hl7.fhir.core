@@ -860,7 +860,7 @@ public class Flag extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Flag.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Flag.status");
     } else if (name.equals("category")) {
       return addCategory();
     } else if (name.equals("code")) {

@@ -870,10 +870,10 @@ public class ObservationDefinition extends DomainResource {
         return this.unit;
       } else if (name.equals("conversionFactor")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ObservationDefinition.quantitativeDetails.conversionFactor");
+            "Cannot call addChild on a singleton property ObservationDefinition.quantitativeDetails.conversionFactor");
       } else if (name.equals("decimalPrecision")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ObservationDefinition.quantitativeDetails.decimalPrecision");
+            "Cannot call addChild on a singleton property ObservationDefinition.quantitativeDetails.decimalPrecision");
       } else
         return super.addChild(name);
     }
@@ -1537,7 +1537,7 @@ public class ObservationDefinition extends DomainResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("category")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ObservationDefinition.qualifiedInterval.category");
+            "Cannot call addChild on a singleton property ObservationDefinition.qualifiedInterval.category");
       } else if (name.equals("range")) {
         this.range = new Range();
         return this.range;
@@ -1548,7 +1548,7 @@ public class ObservationDefinition extends DomainResource {
         return addAppliesTo();
       } else if (name.equals("gender")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ObservationDefinition.qualifiedInterval.gender");
+            "Cannot call addChild on a singleton property ObservationDefinition.qualifiedInterval.gender");
       } else if (name.equals("age")) {
         this.age = new Range();
         return this.age;
@@ -1557,7 +1557,7 @@ public class ObservationDefinition extends DomainResource {
         return this.gestationalAge;
       } else if (name.equals("condition")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ObservationDefinition.qualifiedInterval.condition");
+            "Cannot call addChild on a singleton property ObservationDefinition.qualifiedInterval.condition");
       } else
         return super.addChild(name);
     }
@@ -2590,14 +2590,14 @@ public class ObservationDefinition extends DomainResource {
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("permittedDataType")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.permittedDataType");
+      throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.permittedDataType");
     } else if (name.equals("multipleResultsAllowed")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.multipleResultsAllowed");
+      throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.multipleResultsAllowed");
     } else if (name.equals("method")) {
       this.method = new CodeableConcept();
       return this.method;
     } else if (name.equals("preferredReportName")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.preferredReportName");
+      throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.preferredReportName");
     } else if (name.equals("quantitativeDetails")) {
       this.quantitativeDetails = new ObservationDefinitionQuantitativeDetailsComponent();
       return this.quantitativeDetails;

@@ -1264,21 +1264,21 @@ public class OperationDefinition extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.name");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.name");
       } else if (name.equals("use")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.use");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.use");
       } else if (name.equals("min")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.min");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.min");
       } else if (name.equals("max")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.max");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.max");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.documentation");
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.type");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.type");
       } else if (name.equals("targetProfile")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.targetProfile");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.targetProfile");
       } else if (name.equals("searchType")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.searchType");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.searchType");
       } else if (name.equals("binding")) {
         this.binding = new OperationDefinitionParameterBindingComponent();
         return this.binding;
@@ -1613,9 +1613,9 @@ public class OperationDefinition extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("strength")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.strength");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.strength");
       } else if (name.equals("valueSet")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.valueSet");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.valueSet");
       } else
         return super.addChild(name);
     }
@@ -1910,9 +1910,9 @@ public class OperationDefinition extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("source")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.source");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.source");
       } else if (name.equals("sourceId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.sourceId");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.sourceId");
       } else
         return super.addChild(name);
     }
@@ -2193,9 +2193,9 @@ public class OperationDefinition extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("parameterName")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.parameterName");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.parameterName");
       } else if (name.equals("comment")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.comment");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.comment");
       } else
         return super.addChild(name);
     }
@@ -4435,53 +4435,53 @@ public class OperationDefinition extends MetadataResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.url");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.url");
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.version");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.name");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.title");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.title");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.status");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.status");
     } else if (name.equals("kind")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.kind");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.kind");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.experimental");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.date");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.description");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.description");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.purpose");
     } else if (name.equals("affectsState")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.affectsState");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.affectsState");
     } else if (name.equals("code")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.code");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.code");
     } else if (name.equals("comment")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.comment");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.comment");
     } else if (name.equals("base")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.base");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.base");
     } else if (name.equals("resource")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.resource");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.resource");
     } else if (name.equals("system")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.system");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.system");
     } else if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.type");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.type");
     } else if (name.equals("instance")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.instance");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.instance");
     } else if (name.equals("inputProfile")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.inputProfile");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.inputProfile");
     } else if (name.equals("outputProfile")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.outputProfile");
+      throw new FHIRException("Cannot call addChild on a singleton property OperationDefinition.outputProfile");
     } else if (name.equals("parameter")) {
       return addParameter();
     } else if (name.equals("overload")) {

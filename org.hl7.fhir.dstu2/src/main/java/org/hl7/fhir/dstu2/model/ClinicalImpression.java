@@ -528,7 +528,7 @@ public class ClinicalImpression extends DomainResource {
         this.item = new CodeableConcept();
         return this.item;
       } else if (name.equals("cause")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.cause");
+        throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.cause");
       } else
         return super.addChild(name);
     }
@@ -707,7 +707,7 @@ public class ClinicalImpression extends DomainResource {
         this.item = new CodeableConcept();
         return this.item;
       } else if (name.equals("reason")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.reason");
+        throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.reason");
       } else
         return super.addChild(name);
     }
@@ -1931,11 +1931,11 @@ public class ClinicalImpression extends DomainResource {
       this.assessor = new Reference();
       return this.assessor;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.status");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.date");
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.description");
     } else if (name.equals("previous")) {
       this.previous = new Reference();
       return this.previous;
@@ -1950,9 +1950,9 @@ public class ClinicalImpression extends DomainResource {
     } else if (name.equals("investigations")) {
       return addInvestigations();
     } else if (name.equals("protocol")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.protocol");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.protocol");
     } else if (name.equals("summary")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.summary");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.summary");
     } else if (name.equals("finding")) {
       return addFinding();
     } else if (name.equals("resolved")) {
@@ -1960,7 +1960,7 @@ public class ClinicalImpression extends DomainResource {
     } else if (name.equals("ruledOut")) {
       return addRuledOut();
     } else if (name.equals("prognosis")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.prognosis");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.prognosis");
     } else if (name.equals("plan")) {
       return addPlan();
     } else if (name.equals("action")) {

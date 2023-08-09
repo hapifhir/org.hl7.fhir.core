@@ -900,14 +900,14 @@ public class OrderResponse extends DomainResource {
       this.request = new Reference();
       return this.request;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OrderResponse.date");
+      throw new FHIRException("Cannot call addChild on a singleton property OrderResponse.date");
     } else if (name.equals("who")) {
       this.who = new Reference();
       return this.who;
     } else if (name.equals("orderStatus")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OrderResponse.orderStatus");
+      throw new FHIRException("Cannot call addChild on a singleton property OrderResponse.orderStatus");
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OrderResponse.description");
+      throw new FHIRException("Cannot call addChild on a singleton property OrderResponse.description");
     } else if (name.equals("fulfillment")) {
       return addFulfillment();
     } else

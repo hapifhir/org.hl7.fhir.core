@@ -1000,7 +1000,7 @@ public class Provenance extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("role")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Provenance.role");
+        throw new FHIRException("Cannot call addChild on a singleton property Provenance.role");
       } else if (name.equals("what")) {
         this.what = new Reference();
         return this.what;
@@ -1965,9 +1965,9 @@ public class Provenance extends DomainResource {
       this.occurred = new DateTimeType();
       return this.occurred;
     } else if (name.equals("recorded")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Provenance.recorded");
+      throw new FHIRException("Cannot call addChild on a singleton property Provenance.recorded");
     } else if (name.equals("policy")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Provenance.policy");
+      throw new FHIRException("Cannot call addChild on a singleton property Provenance.policy");
     } else if (name.equals("location")) {
       this.location = new Reference();
       return this.location;

@@ -905,7 +905,7 @@ public class ActionDefinition extends Type implements ICompositeType {
         this.actionIdentifier = new Identifier();
         return this.actionIdentifier;
       } else if (name.equals("relationship")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ActionDefinition.relationship");
+        throw new FHIRException("Cannot call addChild on a singleton property ActionDefinition.relationship");
       } else if (name.equals("offsetDuration")) {
         this.offset = new Duration();
         return this.offset;
@@ -913,7 +913,7 @@ public class ActionDefinition extends Type implements ICompositeType {
         this.offset = new Range();
         return this.offset;
       } else if (name.equals("anchor")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ActionDefinition.anchor");
+        throw new FHIRException("Cannot call addChild on a singleton property ActionDefinition.anchor");
       } else
         return super.addChild(name);
     }
@@ -1372,9 +1372,9 @@ public class ActionDefinition extends Type implements ICompositeType {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("path")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ActionDefinition.path");
+        throw new FHIRException("Cannot call addChild on a singleton property ActionDefinition.path");
       } else if (name.equals("expression")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ActionDefinition.expression");
+        throw new FHIRException("Cannot call addChild on a singleton property ActionDefinition.expression");
       } else
         return super.addChild(name);
     }
@@ -2507,13 +2507,13 @@ public class ActionDefinition extends Type implements ICompositeType {
       this.actionIdentifier = new Identifier();
       return this.actionIdentifier;
     } else if (name.equals("label")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActionDefinition.label");
+      throw new FHIRException("Cannot call addChild on a singleton property ActionDefinition.label");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActionDefinition.title");
+      throw new FHIRException("Cannot call addChild on a singleton property ActionDefinition.title");
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActionDefinition.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ActionDefinition.description");
     } else if (name.equals("textEquivalent")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActionDefinition.textEquivalent");
+      throw new FHIRException("Cannot call addChild on a singleton property ActionDefinition.textEquivalent");
     } else if (name.equals("concept")) {
       return addConcept();
     } else if (name.equals("supportingEvidence")) {
@@ -2524,9 +2524,9 @@ public class ActionDefinition extends Type implements ICompositeType {
       this.relatedAction = new ActionDefinitionRelatedActionComponent();
       return this.relatedAction;
     } else if (name.equals("participantType")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActionDefinition.participantType");
+      throw new FHIRException("Cannot call addChild on a singleton property ActionDefinition.participantType");
     } else if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActionDefinition.type");
+      throw new FHIRException("Cannot call addChild on a singleton property ActionDefinition.type");
     } else if (name.equals("behavior")) {
       return addBehavior();
     } else if (name.equals("resource")) {

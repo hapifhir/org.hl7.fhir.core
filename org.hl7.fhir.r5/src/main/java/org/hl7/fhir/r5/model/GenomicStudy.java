@@ -1464,13 +1464,13 @@ public class GenomicStudy extends DomainResource {
           return this.genomeBuild;
         }
         else if (name.equals("instantiatesCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type GenomicStudy.analysis.instantiatesCanonical");
+          throw new FHIRException("Cannot call addChild on a singleton property GenomicStudy.analysis.instantiatesCanonical");
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type GenomicStudy.analysis.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a singleton property GenomicStudy.analysis.instantiatesUri");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type GenomicStudy.analysis.title");
+          throw new FHIRException("Cannot call addChild on a singleton property GenomicStudy.analysis.title");
         }
         else if (name.equals("focus")) {
           return addFocus();
@@ -1479,7 +1479,7 @@ public class GenomicStudy extends DomainResource {
           return addSpecimen();
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type GenomicStudy.analysis.date");
+          throw new FHIRException("Cannot call addChild on a singleton property GenomicStudy.analysis.date");
         }
         else if (name.equals("note")) {
           return addNote();
@@ -3535,7 +3535,7 @@ public class GenomicStudy extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type GenomicStudy.status");
+          throw new FHIRException("Cannot call addChild on a singleton property GenomicStudy.status");
         }
         else if (name.equals("type")) {
           return addType();
@@ -3549,7 +3549,7 @@ public class GenomicStudy extends DomainResource {
           return this.encounter;
         }
         else if (name.equals("startDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type GenomicStudy.startDate");
+          throw new FHIRException("Cannot call addChild on a singleton property GenomicStudy.startDate");
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
@@ -3565,16 +3565,16 @@ public class GenomicStudy extends DomainResource {
           return addReason();
         }
         else if (name.equals("instantiatesCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type GenomicStudy.instantiatesCanonical");
+          throw new FHIRException("Cannot call addChild on a singleton property GenomicStudy.instantiatesCanonical");
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type GenomicStudy.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a singleton property GenomicStudy.instantiatesUri");
         }
         else if (name.equals("note")) {
           return addNote();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type GenomicStudy.description");
+          throw new FHIRException("Cannot call addChild on a singleton property GenomicStudy.description");
         }
         else if (name.equals("analysis")) {
           return addAnalysis();

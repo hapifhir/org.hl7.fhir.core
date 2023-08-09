@@ -2260,7 +2260,7 @@ public class Condition extends DomainResource {
       this.abatement = new StringType();
       return this.abatement;
     } else if (name.equals("recordedDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Condition.recordedDate");
+      throw new FHIRException("Cannot call addChild on a singleton property Condition.recordedDate");
     } else if (name.equals("recorder")) {
       this.recorder = new Reference();
       return this.recorder;

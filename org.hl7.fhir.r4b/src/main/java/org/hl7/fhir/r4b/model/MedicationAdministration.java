@@ -1044,7 +1044,7 @@ public class MedicationAdministration extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationAdministration.dosage.text");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationAdministration.dosage.text");
       } else if (name.equals("site")) {
         this.site = new CodeableConcept();
         return this.site;
@@ -2692,11 +2692,11 @@ public class MedicationAdministration extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("instantiates")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationAdministration.instantiates");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationAdministration.instantiates");
     } else if (name.equals("partOf")) {
       return addPartOf();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationAdministration.status");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationAdministration.status");
     } else if (name.equals("statusReason")) {
       return addStatusReason();
     } else if (name.equals("category")) {

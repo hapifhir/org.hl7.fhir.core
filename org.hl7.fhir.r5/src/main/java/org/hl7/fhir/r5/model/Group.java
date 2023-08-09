@@ -736,7 +736,7 @@ public class Group extends DomainResource {
           return this.value;
         }
         else if (name.equals("exclude")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Group.characteristic.exclude");
+          throw new FHIRException("Cannot call addChild on a singleton property Group.characteristic.exclude");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -1018,7 +1018,7 @@ public class Group extends DomainResource {
           return this.period;
         }
         else if (name.equals("inactive")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Group.member.inactive");
+          throw new FHIRException("Cannot call addChild on a singleton property Group.member.inactive");
         }
         else
           return super.addChild(name);
@@ -1838,26 +1838,26 @@ public class Group extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Group.active");
+          throw new FHIRException("Cannot call addChild on a singleton property Group.active");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Group.type");
+          throw new FHIRException("Cannot call addChild on a singleton property Group.type");
         }
         else if (name.equals("membership")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Group.membership");
+          throw new FHIRException("Cannot call addChild on a singleton property Group.membership");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
           return this.code;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Group.name");
+          throw new FHIRException("Cannot call addChild on a singleton property Group.name");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Group.description");
+          throw new FHIRException("Cannot call addChild on a singleton property Group.description");
         }
         else if (name.equals("quantity")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Group.quantity");
+          throw new FHIRException("Cannot call addChild on a singleton property Group.quantity");
         }
         else if (name.equals("managingEntity")) {
           this.managingEntity = new Reference();

@@ -569,11 +569,11 @@ public class DeviceDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("deviceIdentifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.deviceIdentifier");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.deviceIdentifier");
       } else if (name.equals("issuer")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.issuer");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.issuer");
       } else if (name.equals("jurisdiction")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.jurisdiction");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.jurisdiction");
       } else
         return super.addChild(name);
     }
@@ -856,9 +856,9 @@ public class DeviceDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.name");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.name");
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.type");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.type");
       } else
         return super.addChild(name);
     }
@@ -1139,9 +1139,9 @@ public class DeviceDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("systemType")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.systemType");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.systemType");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.version");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.version");
       } else
         return super.addChild(name);
     }
@@ -2079,9 +2079,9 @@ public class DeviceDefinition extends DomainResource {
         this.substance = new CodeableConcept();
         return this.substance;
       } else if (name.equals("alternate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.alternate");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.alternate");
       } else if (name.equals("allergenicIndicator")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.allergenicIndicator");
+        throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.allergenicIndicator");
       } else
         return super.addChild(name);
     }
@@ -3914,14 +3914,14 @@ public class DeviceDefinition extends DomainResource {
     } else if (name.equals("deviceName")) {
       return addDeviceName();
     } else if (name.equals("modelNumber")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.modelNumber");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.modelNumber");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
     } else if (name.equals("specialization")) {
       return addSpecialization();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.version");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.version");
     } else if (name.equals("safety")) {
       return addSafety();
     } else if (name.equals("shelfLifeStorage")) {
@@ -3941,9 +3941,9 @@ public class DeviceDefinition extends DomainResource {
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.url");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.url");
     } else if (name.equals("onlineInformation")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.onlineInformation");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceDefinition.onlineInformation");
     } else if (name.equals("note")) {
       return addNote();
     } else if (name.equals("quantity")) {

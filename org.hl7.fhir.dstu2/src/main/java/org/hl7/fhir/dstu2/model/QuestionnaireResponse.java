@@ -590,11 +590,11 @@ public class QuestionnaireResponse extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("linkId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type QuestionnaireResponse.linkId");
+        throw new FHIRException("Cannot call addChild on a singleton property QuestionnaireResponse.linkId");
       } else if (name.equals("title")) {
-        throw new FHIRException("Cannot call addChild on a primitive type QuestionnaireResponse.title");
+        throw new FHIRException("Cannot call addChild on a singleton property QuestionnaireResponse.title");
       } else if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type QuestionnaireResponse.text");
+        throw new FHIRException("Cannot call addChild on a singleton property QuestionnaireResponse.text");
       } else if (name.equals("subject")) {
         this.subject = new Reference();
         return this.subject;
@@ -879,9 +879,9 @@ public class QuestionnaireResponse extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("linkId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type QuestionnaireResponse.linkId");
+        throw new FHIRException("Cannot call addChild on a singleton property QuestionnaireResponse.linkId");
       } else if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type QuestionnaireResponse.text");
+        throw new FHIRException("Cannot call addChild on a singleton property QuestionnaireResponse.text");
       } else if (name.equals("answer")) {
         return addAnswer();
       } else
@@ -1952,7 +1952,7 @@ public class QuestionnaireResponse extends DomainResource {
       this.questionnaire = new Reference();
       return this.questionnaire;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type QuestionnaireResponse.status");
+      throw new FHIRException("Cannot call addChild on a singleton property QuestionnaireResponse.status");
     } else if (name.equals("subject")) {
       this.subject = new Reference();
       return this.subject;
@@ -1960,7 +1960,7 @@ public class QuestionnaireResponse extends DomainResource {
       this.author = new Reference();
       return this.author;
     } else if (name.equals("authored")) {
-      throw new FHIRException("Cannot call addChild on a primitive type QuestionnaireResponse.authored");
+      throw new FHIRException("Cannot call addChild on a singleton property QuestionnaireResponse.authored");
     } else if (name.equals("source")) {
       this.source = new Reference();
       return this.source;

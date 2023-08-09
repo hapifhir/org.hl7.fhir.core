@@ -924,28 +924,28 @@ public abstract class MetadataResource extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.url");
+          throw new FHIRException("Cannot call addChild on a singleton property MetadataResource.url");
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.version");
+          throw new FHIRException("Cannot call addChild on a singleton property MetadataResource.version");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.name");
+          throw new FHIRException("Cannot call addChild on a singleton property MetadataResource.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.title");
+          throw new FHIRException("Cannot call addChild on a singleton property MetadataResource.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.status");
+          throw new FHIRException("Cannot call addChild on a singleton property MetadataResource.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.experimental");
+          throw new FHIRException("Cannot call addChild on a singleton property MetadataResource.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.date");
+          throw new FHIRException("Cannot call addChild on a singleton property MetadataResource.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.publisher");
+          throw new FHIRException("Cannot call addChild on a singleton property MetadataResource.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
@@ -957,7 +957,7 @@ public abstract class MetadataResource extends DomainResource {
           return addJurisdiction();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.description");
+          throw new FHIRException("Cannot call addChild on a singleton property MetadataResource.description");
         }
         else
           return super.addChild(name);

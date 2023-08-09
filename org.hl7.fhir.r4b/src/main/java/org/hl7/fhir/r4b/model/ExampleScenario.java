@@ -545,13 +545,13 @@ public class ExampleScenario extends CanonicalResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("actorId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.actor.actorId");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.actor.actorId");
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.actor.type");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.actor.type");
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.actor.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.actor.name");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.actor.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.actor.description");
       } else
         return super.addChild(name);
     }
@@ -1139,13 +1139,13 @@ public class ExampleScenario extends CanonicalResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("resourceId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.instance.resourceId");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.instance.resourceId");
       } else if (name.equals("resourceType")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.instance.resourceType");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.instance.resourceType");
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.instance.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.instance.name");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.instance.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.instance.description");
       } else if (name.equals("version")) {
         return addVersion();
       } else if (name.equals("containedInstance")) {
@@ -1442,10 +1442,10 @@ public class ExampleScenario extends CanonicalResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("versionId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.instance.version.versionId");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.instance.version.versionId");
       } else if (name.equals("description")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ExampleScenario.instance.version.description");
+            "Cannot call addChild on a singleton property ExampleScenario.instance.version.description");
       } else
         return super.addChild(name);
     }
@@ -1724,10 +1724,10 @@ public class ExampleScenario extends CanonicalResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("resourceId")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ExampleScenario.instance.containedInstance.resourceId");
+            "Cannot call addChild on a singleton property ExampleScenario.instance.containedInstance.resourceId");
       } else if (name.equals("versionId")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ExampleScenario.instance.containedInstance.versionId");
+            "Cannot call addChild on a singleton property ExampleScenario.instance.containedInstance.versionId");
       } else
         return super.addChild(name);
     }
@@ -2236,13 +2236,13 @@ public class ExampleScenario extends CanonicalResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("title")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.process.title");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.process.title");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.process.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.process.description");
       } else if (name.equals("preConditions")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.process.preConditions");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.process.preConditions");
       } else if (name.equals("postConditions")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.process.postConditions");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.process.postConditions");
       } else if (name.equals("step")) {
         return addStep();
       } else
@@ -2654,7 +2654,7 @@ public class ExampleScenario extends CanonicalResource {
       if (name.equals("process")) {
         return addProcess();
       } else if (name.equals("pause")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.process.step.pause");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.process.step.pause");
       } else if (name.equals("operation")) {
         this.operation = new ExampleScenarioProcessStepOperationComponent();
         return this.operation;
@@ -3498,26 +3498,26 @@ public class ExampleScenario extends CanonicalResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("number")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ExampleScenario.process.step.operation.number");
+            "Cannot call addChild on a singleton property ExampleScenario.process.step.operation.number");
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.process.step.operation.type");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.process.step.operation.type");
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.process.step.operation.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.process.step.operation.name");
       } else if (name.equals("initiator")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ExampleScenario.process.step.operation.initiator");
+            "Cannot call addChild on a singleton property ExampleScenario.process.step.operation.initiator");
       } else if (name.equals("receiver")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ExampleScenario.process.step.operation.receiver");
+            "Cannot call addChild on a singleton property ExampleScenario.process.step.operation.receiver");
       } else if (name.equals("description")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ExampleScenario.process.step.operation.description");
+            "Cannot call addChild on a singleton property ExampleScenario.process.step.operation.description");
       } else if (name.equals("initiatorActive")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ExampleScenario.process.step.operation.initiatorActive");
+            "Cannot call addChild on a singleton property ExampleScenario.process.step.operation.initiatorActive");
       } else if (name.equals("receiverActive")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ExampleScenario.process.step.operation.receiverActive");
+            "Cannot call addChild on a singleton property ExampleScenario.process.step.operation.receiverActive");
       } else if (name.equals("request")) {
         this.request = new ExampleScenarioInstanceContainedInstanceComponent();
         return this.request;
@@ -3911,10 +3911,10 @@ public class ExampleScenario extends CanonicalResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("title")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ExampleScenario.process.step.alternative.title");
+            "Cannot call addChild on a singleton property ExampleScenario.process.step.alternative.title");
       } else if (name.equals("description")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ExampleScenario.process.step.alternative.description");
+            "Cannot call addChild on a singleton property ExampleScenario.process.step.alternative.description");
       } else if (name.equals("step")) {
         return addStep();
       } else
@@ -5541,21 +5541,21 @@ public class ExampleScenario extends CanonicalResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.url");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.version");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.name");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.name");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.experimental");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("useContext")) {
@@ -5563,9 +5563,9 @@ public class ExampleScenario extends CanonicalResource {
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.copyright");
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.purpose");
     } else if (name.equals("actor")) {
       return addActor();
     } else if (name.equals("instance")) {
@@ -5573,7 +5573,7 @@ public class ExampleScenario extends CanonicalResource {
     } else if (name.equals("process")) {
       return addProcess();
     } else if (name.equals("workflow")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ExampleScenario.workflow");
+      throw new FHIRException("Cannot call addChild on a singleton property ExampleScenario.workflow");
     } else
       return super.addChild(name);
   }

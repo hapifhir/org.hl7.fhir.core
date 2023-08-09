@@ -276,7 +276,7 @@ public class RelatedPerson extends DomainResource {
         this.language = new CodeableConcept();
         return this.language;
       } else if (name.equals("preferred")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RelatedPerson.preferred");
+        throw new FHIRException("Cannot call addChild on a singleton property RelatedPerson.preferred");
       } else
         return super.addChild(name);
     }
@@ -1330,7 +1330,7 @@ public class RelatedPerson extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("active")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RelatedPerson.active");
+      throw new FHIRException("Cannot call addChild on a singleton property RelatedPerson.active");
     } else if (name.equals("patient")) {
       this.patient = new Reference();
       return this.patient;
@@ -1341,9 +1341,9 @@ public class RelatedPerson extends DomainResource {
     } else if (name.equals("telecom")) {
       return addTelecom();
     } else if (name.equals("gender")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RelatedPerson.gender");
+      throw new FHIRException("Cannot call addChild on a singleton property RelatedPerson.gender");
     } else if (name.equals("birthDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RelatedPerson.birthDate");
+      throw new FHIRException("Cannot call addChild on a singleton property RelatedPerson.birthDate");
     } else if (name.equals("address")) {
       return addAddress();
     } else if (name.equals("photo")) {
