@@ -1079,7 +1079,7 @@ public class InsurancePlan extends DomainResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("requirement")) {
-        throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.requirement");
+        throw new FHIRException("Cannot call addChild on a singleton property InsurancePlan.requirement");
       } else if (name.equals("limit")) {
         return addLimit();
       } else
@@ -2344,12 +2344,12 @@ public class InsurancePlan extends DomainResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("groupSize")) {
-        throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.groupSize");
+        throw new FHIRException("Cannot call addChild on a singleton property InsurancePlan.groupSize");
       } else if (name.equals("cost")) {
         this.cost = new Money();
         return this.cost;
       } else if (name.equals("comment")) {
-        throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.comment");
+        throw new FHIRException("Cannot call addChild on a singleton property InsurancePlan.comment");
       } else
         return super.addChild(name);
     }
@@ -4598,13 +4598,13 @@ public class InsurancePlan extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.status");
+      throw new FHIRException("Cannot call addChild on a singleton property InsurancePlan.status");
     } else if (name.equals("type")) {
       return addType();
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.name");
+      throw new FHIRException("Cannot call addChild on a singleton property InsurancePlan.name");
     } else if (name.equals("alias")) {
-      throw new FHIRException("Cannot call addChild on a primitive type InsurancePlan.alias");
+      throw new FHIRException("Cannot call addChild on a singleton property InsurancePlan.alias");
     } else if (name.equals("period")) {
       this.period = new Period();
       return this.period;

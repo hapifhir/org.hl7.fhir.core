@@ -1165,7 +1165,7 @@ Work addresses are not typically entered in this property as they are usually ro
           return addIdentifier();
         }
         else if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.active");
+          throw new FHIRException("Cannot call addChild on a singleton property Practitioner.active");
         }
         else if (name.equals("name")) {
           return addName();
@@ -1177,10 +1177,10 @@ Work addresses are not typically entered in this property as they are usually ro
           return addAddress();
         }
         else if (name.equals("gender")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.gender");
+          throw new FHIRException("Cannot call addChild on a singleton property Practitioner.gender");
         }
         else if (name.equals("birthDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.birthDate");
+          throw new FHIRException("Cannot call addChild on a singleton property Practitioner.birthDate");
         }
         else if (name.equals("photo")) {
           return addPhoto();

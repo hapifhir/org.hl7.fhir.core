@@ -333,7 +333,7 @@ public class ProcessRequest extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("sequenceLinkId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ProcessRequest.sequenceLinkId");
+        throw new FHIRException("Cannot call addChild on a singleton property ProcessRequest.sequenceLinkId");
       } else
         return super.addChild(name);
     }
@@ -1483,7 +1483,7 @@ public class ProcessRequest extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("action")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ProcessRequest.action");
+      throw new FHIRException("Cannot call addChild on a singleton property ProcessRequest.action");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("ruleset")) {
@@ -1493,7 +1493,7 @@ public class ProcessRequest extends DomainResource {
       this.originalRuleset = new Coding();
       return this.originalRuleset;
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ProcessRequest.created");
+      throw new FHIRException("Cannot call addChild on a singleton property ProcessRequest.created");
     } else if (name.equals("targetIdentifier")) {
       this.target = new Identifier();
       return this.target;
@@ -1525,15 +1525,15 @@ public class ProcessRequest extends DomainResource {
       this.response = new Reference();
       return this.response;
     } else if (name.equals("nullify")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ProcessRequest.nullify");
+      throw new FHIRException("Cannot call addChild on a singleton property ProcessRequest.nullify");
     } else if (name.equals("reference")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ProcessRequest.reference");
+      throw new FHIRException("Cannot call addChild on a singleton property ProcessRequest.reference");
     } else if (name.equals("item")) {
       return addItem();
     } else if (name.equals("include")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ProcessRequest.include");
+      throw new FHIRException("Cannot call addChild on a singleton property ProcessRequest.include");
     } else if (name.equals("exclude")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ProcessRequest.exclude");
+      throw new FHIRException("Cannot call addChild on a singleton property ProcessRequest.exclude");
     } else if (name.equals("period")) {
       this.period = new Period();
       return this.period;

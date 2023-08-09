@@ -283,9 +283,9 @@ public class Money extends Type implements ICompositeType {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("value")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Money.value");
+      throw new FHIRException("Cannot call addChild on a singleton property Money.value");
     } else if (name.equals("currency")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Money.currency");
+      throw new FHIRException("Cannot call addChild on a singleton property Money.currency");
     } else
       return super.addChild(name);
   }

@@ -2107,10 +2107,10 @@ public class ChargeItem extends DomainResource {
           return this.identifier;
         }
         else if (name.equals("definition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.definition");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.definition");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.status");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.status");
         }
         else if (name.equals("partOf")) {
           return addPartOf();
@@ -2158,21 +2158,21 @@ public class ChargeItem extends DomainResource {
           return addBodysite();
         }
         else if (name.equals("factorOverride")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.factorOverride");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.factorOverride");
         }
         else if (name.equals("priceOverride")) {
           this.priceOverride = new Money();
           return this.priceOverride;
         }
         else if (name.equals("overrideReason")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.overrideReason");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.overrideReason");
         }
         else if (name.equals("enterer")) {
           this.enterer = new Reference();
           return this.enterer;
         }
         else if (name.equals("enteredDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.enteredDate");
+          throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.enteredDate");
         }
         else if (name.equals("reason")) {
           return addReason();

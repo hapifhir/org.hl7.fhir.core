@@ -375,7 +375,7 @@ public class SearchParameter extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.name");
+        throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.name");
       } else if (name.equals("telecom")) {
         return addTelecom();
       } else
@@ -1483,35 +1483,35 @@ public class SearchParameter extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.url");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.url");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.name");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.name");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.status");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.experimental");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.date");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.date");
     } else if (name.equals("requirements")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.requirements");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.requirements");
     } else if (name.equals("code")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.code");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.code");
     } else if (name.equals("base")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.base");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.base");
     } else if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.type");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.type");
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.description");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.description");
     } else if (name.equals("xpath")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.xpath");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.xpath");
     } else if (name.equals("xpathUsage")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.xpathUsage");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.xpathUsage");
     } else if (name.equals("target")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.target");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.target");
     } else
       return super.addChild(name);
   }

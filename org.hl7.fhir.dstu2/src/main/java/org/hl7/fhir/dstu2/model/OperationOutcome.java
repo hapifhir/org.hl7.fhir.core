@@ -1245,16 +1245,16 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("severity")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationOutcome.severity");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationOutcome.severity");
       } else if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationOutcome.code");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationOutcome.code");
       } else if (name.equals("details")) {
         this.details = new CodeableConcept();
         return this.details;
       } else if (name.equals("diagnostics")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationOutcome.diagnostics");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationOutcome.diagnostics");
       } else if (name.equals("location")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OperationOutcome.location");
+        throw new FHIRException("Cannot call addChild on a singleton property OperationOutcome.location");
       } else
         return super.addChild(name);
     }

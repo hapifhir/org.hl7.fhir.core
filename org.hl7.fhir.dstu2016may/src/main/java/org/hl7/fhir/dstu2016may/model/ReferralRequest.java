@@ -1658,9 +1658,9 @@ public class ReferralRequest extends DomainResource {
       this.parent = new Identifier();
       return this.parent;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.status");
     } else if (name.equals("category")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.category");
+      throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.category");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
@@ -1677,7 +1677,7 @@ public class ReferralRequest extends DomainResource {
       this.fulfillmentTime = new Period();
       return this.fulfillmentTime;
     } else if (name.equals("authored")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.authored");
+      throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.authored");
     } else if (name.equals("requester")) {
       this.requester = new Reference();
       return this.requester;
@@ -1690,7 +1690,7 @@ public class ReferralRequest extends DomainResource {
       this.reason = new CodeableConcept();
       return this.reason;
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.description");
     } else if (name.equals("serviceRequested")) {
       return addServiceRequested();
     } else if (name.equals("supportingInformation")) {

@@ -577,7 +577,7 @@ public class Schedule extends DomainResource {
       this.planningHorizon = new Period();
       return this.planningHorizon;
     } else if (name.equals("comment")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Schedule.comment");
+      throw new FHIRException("Cannot call addChild on a singleton property Schedule.comment");
     } else
       return super.addChild(name);
   }

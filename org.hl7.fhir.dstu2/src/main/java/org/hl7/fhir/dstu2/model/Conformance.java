@@ -2033,7 +2033,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.name");
       } else if (name.equals("telecom")) {
         return addTelecom();
       } else
@@ -2310,11 +2310,11 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.name");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.version");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.version");
       } else if (name.equals("releaseDate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.releaseDate");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.releaseDate");
       } else
         return super.addChild(name);
     }
@@ -2533,9 +2533,9 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.description");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.description");
       } else if (name.equals("url")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.url");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.url");
       } else
         return super.addChild(name);
     }
@@ -3153,9 +3153,9 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("mode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.mode");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.mode");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.documentation");
       } else if (name.equals("security")) {
         this.security = new ConformanceRestSecurityComponent();
         return this.security;
@@ -3164,13 +3164,13 @@ public class Conformance extends DomainResource implements IBaseConformance {
       } else if (name.equals("interaction")) {
         return addInteraction();
       } else if (name.equals("transactionMode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.transactionMode");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.transactionMode");
       } else if (name.equals("searchParam")) {
         return addSearchParam();
       } else if (name.equals("operation")) {
         return addOperation();
       } else if (name.equals("compartment")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.compartment");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.compartment");
       } else
         return super.addChild(name);
     }
@@ -3519,11 +3519,11 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("cors")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.cors");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.cors");
       } else if (name.equals("service")) {
         return addService();
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.description");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.description");
       } else if (name.equals("certificate")) {
         return addCertificate();
       } else
@@ -3737,9 +3737,9 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.type");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.type");
       } else if (name.equals("blob")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.blob");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.blob");
       } else
         return super.addChild(name);
     }
@@ -4663,28 +4663,28 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.type");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.type");
       } else if (name.equals("profile")) {
         this.profile = new Reference();
         return this.profile;
       } else if (name.equals("interaction")) {
         return addInteraction();
       } else if (name.equals("versioning")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.versioning");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.versioning");
       } else if (name.equals("readHistory")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.readHistory");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.readHistory");
       } else if (name.equals("updateCreate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.updateCreate");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.updateCreate");
       } else if (name.equals("conditionalCreate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.conditionalCreate");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.conditionalCreate");
       } else if (name.equals("conditionalUpdate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.conditionalUpdate");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.conditionalUpdate");
       } else if (name.equals("conditionalDelete")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.conditionalDelete");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.conditionalDelete");
       } else if (name.equals("searchInclude")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.searchInclude");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.searchInclude");
       } else if (name.equals("searchRevInclude")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.searchRevInclude");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.searchRevInclude");
       } else if (name.equals("searchParam")) {
         return addSearchParam();
       } else
@@ -4955,9 +4955,9 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.code");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.code");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.documentation");
       } else
         return super.addChild(name);
     }
@@ -5549,19 +5549,19 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.name");
       } else if (name.equals("definition")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.definition");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.definition");
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.type");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.type");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.documentation");
       } else if (name.equals("target")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.target");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.target");
       } else if (name.equals("modifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.modifier");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.modifier");
       } else if (name.equals("chain")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.chain");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.chain");
       } else
         return super.addChild(name);
     }
@@ -5804,9 +5804,9 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.code");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.code");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.documentation");
       } else
         return super.addChild(name);
     }
@@ -6017,7 +6017,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.name");
       } else if (name.equals("definition")) {
         this.definition = new Reference();
         return this.definition;
@@ -6350,9 +6350,9 @@ public class Conformance extends DomainResource implements IBaseConformance {
       if (name.equals("endpoint")) {
         return addEndpoint();
       } else if (name.equals("reliableCache")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.reliableCache");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.reliableCache");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.documentation");
       } else if (name.equals("event")) {
         return addEvent();
       } else
@@ -6556,7 +6556,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
         this.protocol = new Coding();
         return this.protocol;
       } else if (name.equals("address")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.address");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.address");
       } else
         return super.addChild(name);
     }
@@ -7080,11 +7080,11 @@ public class Conformance extends DomainResource implements IBaseConformance {
         this.code = new Coding();
         return this.code;
       } else if (name.equals("category")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.category");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.category");
       } else if (name.equals("mode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.mode");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.mode");
       } else if (name.equals("focus")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.focus");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.focus");
       } else if (name.equals("request")) {
         this.request = new Reference();
         return this.request;
@@ -7092,7 +7092,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
         this.response = new Reference();
         return this.response;
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.documentation");
       } else
         return super.addChild(name);
     }
@@ -7393,9 +7393,9 @@ public class Conformance extends DomainResource implements IBaseConformance {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("mode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.mode");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.mode");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Conformance.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property Conformance.documentation");
       } else if (name.equals("profile")) {
         this.profile = new Reference();
         return this.profile;
@@ -8942,29 +8942,29 @@ public class Conformance extends DomainResource implements IBaseConformance {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.url");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.url");
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.version");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.name");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.name");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.experimental");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.date");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.date");
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.description");
     } else if (name.equals("requirements")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.requirements");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.requirements");
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.copyright");
     } else if (name.equals("kind")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.kind");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.kind");
     } else if (name.equals("software")) {
       this.software = new ConformanceSoftwareComponent();
       return this.software;
@@ -8972,11 +8972,11 @@ public class Conformance extends DomainResource implements IBaseConformance {
       this.implementation = new ConformanceImplementationComponent();
       return this.implementation;
     } else if (name.equals("fhirVersion")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.fhirVersion");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.fhirVersion");
     } else if (name.equals("acceptUnknown")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.acceptUnknown");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.acceptUnknown");
     } else if (name.equals("format")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Conformance.format");
+      throw new FHIRException("Cannot call addChild on a singleton property Conformance.format");
     } else if (name.equals("profile")) {
       return addProfile();
     } else if (name.equals("rest")) {

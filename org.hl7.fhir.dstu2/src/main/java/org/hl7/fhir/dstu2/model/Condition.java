@@ -1729,7 +1729,7 @@ public class Condition extends DomainResource {
       this.asserter = new Reference();
       return this.asserter;
     } else if (name.equals("dateRecorded")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Condition.dateRecorded");
+      throw new FHIRException("Cannot call addChild on a singleton property Condition.dateRecorded");
     } else if (name.equals("code")) {
       this.code = new CodeableConcept();
       return this.code;
@@ -1737,9 +1737,9 @@ public class Condition extends DomainResource {
       this.category = new CodeableConcept();
       return this.category;
     } else if (name.equals("clinicalStatus")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Condition.clinicalStatus");
+      throw new FHIRException("Cannot call addChild on a singleton property Condition.clinicalStatus");
     } else if (name.equals("verificationStatus")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Condition.verificationStatus");
+      throw new FHIRException("Cannot call addChild on a singleton property Condition.verificationStatus");
     } else if (name.equals("severity")) {
       this.severity = new CodeableConcept();
       return this.severity;
@@ -1784,7 +1784,7 @@ public class Condition extends DomainResource {
     } else if (name.equals("bodySite")) {
       return addBodySite();
     } else if (name.equals("notes")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Condition.notes");
+      throw new FHIRException("Cannot call addChild on a singleton property Condition.notes");
     } else
       return super.addChild(name);
   }

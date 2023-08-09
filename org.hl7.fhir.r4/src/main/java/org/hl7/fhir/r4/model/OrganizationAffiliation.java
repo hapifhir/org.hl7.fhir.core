@@ -1181,7 +1181,7 @@ public class OrganizationAffiliation extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("active")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OrganizationAffiliation.active");
+      throw new FHIRException("Cannot call addChild on a singleton property OrganizationAffiliation.active");
     } else if (name.equals("period")) {
       this.period = new Period();
       return this.period;

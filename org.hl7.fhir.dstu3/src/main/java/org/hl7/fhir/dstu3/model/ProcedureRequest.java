@@ -2698,16 +2698,16 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return this.requisition;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ProcedureRequest.status");
+          throw new FHIRException("Cannot call addChild on a singleton property ProcedureRequest.status");
         }
         else if (name.equals("intent")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ProcedureRequest.intent");
+          throw new FHIRException("Cannot call addChild on a singleton property ProcedureRequest.intent");
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ProcedureRequest.priority");
+          throw new FHIRException("Cannot call addChild on a singleton property ProcedureRequest.priority");
         }
         else if (name.equals("doNotPerform")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ProcedureRequest.doNotPerform");
+          throw new FHIRException("Cannot call addChild on a singleton property ProcedureRequest.doNotPerform");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -2745,7 +2745,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return this.asNeeded;
         }
         else if (name.equals("authoredOn")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ProcedureRequest.authoredOn");
+          throw new FHIRException("Cannot call addChild on a singleton property ProcedureRequest.authoredOn");
         }
         else if (name.equals("requester")) {
           this.requester = new ProcedureRequestRequesterComponent();

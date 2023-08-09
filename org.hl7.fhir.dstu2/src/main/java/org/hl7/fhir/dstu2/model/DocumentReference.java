@@ -367,7 +367,7 @@ public class DocumentReference extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.code");
+        throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.code");
       } else if (name.equals("target")) {
         this.target = new Reference();
         return this.target;
@@ -2317,18 +2317,18 @@ public class DocumentReference extends DomainResource {
       this.authenticator = new Reference();
       return this.authenticator;
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.created");
+      throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.created");
     } else if (name.equals("indexed")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.indexed");
+      throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.indexed");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.status");
+      throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.status");
     } else if (name.equals("docStatus")) {
       this.docStatus = new CodeableConcept();
       return this.docStatus;
     } else if (name.equals("relatesTo")) {
       return addRelatesTo();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.description");
+      throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.description");
     } else if (name.equals("securityLabel")) {
       return addSecurityLabel();
     } else if (name.equals("content")) {

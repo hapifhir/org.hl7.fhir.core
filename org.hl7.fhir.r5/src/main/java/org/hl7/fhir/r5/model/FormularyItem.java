@@ -416,7 +416,7 @@ public class FormularyItem extends DomainResource {
           return this.code;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type FormularyItem.status");
+          throw new FHIRException("Cannot call addChild on a singleton property FormularyItem.status");
         }
         else
           return super.addChild(name);

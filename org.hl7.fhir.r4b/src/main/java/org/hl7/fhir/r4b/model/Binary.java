@@ -364,12 +364,12 @@ public class Binary extends BaseBinary implements IBaseBinary {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("contentType")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Binary.contentType");
+      throw new FHIRException("Cannot call addChild on a singleton property Binary.contentType");
     } else if (name.equals("securityContext")) {
       this.securityContext = new Reference();
       return this.securityContext;
     } else if (name.equals("data")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Binary.data");
+      throw new FHIRException("Cannot call addChild on a singleton property Binary.data");
     } else
       return super.addChild(name);
   }

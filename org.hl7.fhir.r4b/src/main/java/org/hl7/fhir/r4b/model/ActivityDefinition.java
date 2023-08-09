@@ -640,7 +640,7 @@ public class ActivityDefinition extends CanonicalResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.participant.type");
+        throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.participant.type");
       } else if (name.equals("role")) {
         this.role = new CodeableConcept();
         return this.role;
@@ -935,7 +935,7 @@ public class ActivityDefinition extends CanonicalResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("path")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.dynamicValue.path");
+        throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.dynamicValue.path");
       } else if (name.equals("expression")) {
         this.expression = new Expression();
         return this.expression;
@@ -5103,21 +5103,21 @@ public class ActivityDefinition extends CanonicalResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.url");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.version");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.name");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.title");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.title");
     } else if (name.equals("subtitle")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.subtitle");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.subtitle");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.experimental");
     } else if (name.equals("subjectCodeableConcept")) {
       this.subject = new CodeableConcept();
       return this.subject;
@@ -5128,27 +5128,27 @@ public class ActivityDefinition extends CanonicalResource {
       this.subject = new CanonicalType();
       return this.subject;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.description");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.purpose");
     } else if (name.equals("usage")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.usage");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.usage");
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.copyright");
     } else if (name.equals("approvalDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.approvalDate");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.approvalDate");
     } else if (name.equals("lastReviewDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.lastReviewDate");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.lastReviewDate");
     } else if (name.equals("effectivePeriod")) {
       this.effectivePeriod = new Period();
       return this.effectivePeriod;
@@ -5165,20 +5165,20 @@ public class ActivityDefinition extends CanonicalResource {
     } else if (name.equals("relatedArtifact")) {
       return addRelatedArtifact();
     } else if (name.equals("library")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.library");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.library");
     } else if (name.equals("kind")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.kind");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.kind");
     } else if (name.equals("profile")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.profile");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.profile");
     } else if (name.equals("code")) {
       this.code = new CodeableConcept();
       return this.code;
     } else if (name.equals("intent")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.intent");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.intent");
     } else if (name.equals("priority")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.priority");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.priority");
     } else if (name.equals("doNotPerform")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.doNotPerform");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.doNotPerform");
     } else if (name.equals("timingTiming")) {
       this.timing = new Timing();
       return this.timing;
@@ -5222,7 +5222,7 @@ public class ActivityDefinition extends CanonicalResource {
     } else if (name.equals("observationResultRequirement")) {
       return addObservationResultRequirement();
     } else if (name.equals("transform")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.transform");
+      throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.transform");
     } else if (name.equals("dynamicValue")) {
       return addDynamicValue();
     } else

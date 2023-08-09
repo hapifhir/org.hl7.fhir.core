@@ -2149,9 +2149,9 @@ public class MedicinalProductAuthorization extends DomainResource {
       this.status = new CodeableConcept();
       return this.status;
     } else if (name.equals("statusDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductAuthorization.statusDate");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductAuthorization.statusDate");
     } else if (name.equals("restoreDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductAuthorization.restoreDate");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductAuthorization.restoreDate");
     } else if (name.equals("validityPeriod")) {
       this.validityPeriod = new Period();
       return this.validityPeriod;
@@ -2160,10 +2160,10 @@ public class MedicinalProductAuthorization extends DomainResource {
       return this.dataExclusivityPeriod;
     } else if (name.equals("dateOfFirstAuthorization")) {
       throw new FHIRException(
-          "Cannot call addChild on a primitive type MedicinalProductAuthorization.dateOfFirstAuthorization");
+          "Cannot call addChild on a singleton property MedicinalProductAuthorization.dateOfFirstAuthorization");
     } else if (name.equals("internationalBirthDate")) {
       throw new FHIRException(
-          "Cannot call addChild on a primitive type MedicinalProductAuthorization.internationalBirthDate");
+          "Cannot call addChild on a singleton property MedicinalProductAuthorization.internationalBirthDate");
     } else if (name.equals("legalBasis")) {
       this.legalBasis = new CodeableConcept();
       return this.legalBasis;

@@ -330,6 +330,7 @@ public class PEBuilder {
               if (defn.hasSlicing()) {
                 if (defn.getSlicing().getRules() != SlicingRules.CLOSED) {
                   res.add(pe);
+                  pe.setSlicer(true);
                 }
                 i++;
                 while (i < list.size() && list.get(i).getPath().equals(defn.getPath())) {
@@ -484,19 +485,22 @@ public class PEBuilder {
 
   protected void populateByProfile(Base base, PEDefinition definition) {
     for (PEDefinition pe : definition.children(true)) {
+      System.out.println("PopulateByProfile for "+pe.path);
       if (pe.fixedValue()) {
         if (pe.definition().hasPattern()) {
           base.setProperty(pe.schemaName(), pe.definition().getPattern());
         } else { 
           base.setProperty(pe.schemaName(), pe.definition().getFixed());
         }
-      } else {
+      } else if (!pe.isSlicer()) {
           for (int i = 0; i < pe.min(); i++) {
             Base b = null;
             if (pe.schemaName().endsWith("[x]")) {
               if (pe.types().size() == 1) {
                 b = base.addChild(pe.schemaName().replace("[x]", Utilities.capitalize(pe.types().get(0).getType())));
               }
+            } else if (!pe.isBaseList()) {
+              b = base.makeProperty(pe.schemaName().hashCode(), pe.schemaName());
             } else {
               b = base.addChild(pe.schemaName());
             }

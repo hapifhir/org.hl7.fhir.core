@@ -1562,16 +1562,16 @@ public class FamilyMemberHistory extends DomainResource {
       this.patient = new Reference();
       return this.patient;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.date");
+      throw new FHIRException("Cannot call addChild on a singleton property FamilyMemberHistory.date");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.status");
+      throw new FHIRException("Cannot call addChild on a singleton property FamilyMemberHistory.status");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.name");
+      throw new FHIRException("Cannot call addChild on a singleton property FamilyMemberHistory.name");
     } else if (name.equals("relationship")) {
       this.relationship = new CodeableConcept();
       return this.relationship;
     } else if (name.equals("gender")) {
-      throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.gender");
+      throw new FHIRException("Cannot call addChild on a singleton property FamilyMemberHistory.gender");
     } else if (name.equals("bornPeriod")) {
       this.born = new Period();
       return this.born;

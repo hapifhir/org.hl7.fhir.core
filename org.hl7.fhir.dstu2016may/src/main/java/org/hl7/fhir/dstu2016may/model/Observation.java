@@ -827,7 +827,7 @@ public class Observation extends DomainResource {
         this.age = new Range();
         return this.age;
       } else if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Observation.text");
+        throw new FHIRException("Cannot call addChild on a singleton property Observation.text");
       } else
         return super.addChild(name);
     }
@@ -1092,7 +1092,7 @@ public class Observation extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Observation.type");
+        throw new FHIRException("Cannot call addChild on a singleton property Observation.type");
       } else if (name.equals("target")) {
         this.target = new Reference();
         return this.target;
@@ -3177,7 +3177,7 @@ public class Observation extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Observation.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Observation.status");
     } else if (name.equals("category")) {
       this.category = new CodeableConcept();
       return this.category;
@@ -3197,7 +3197,7 @@ public class Observation extends DomainResource {
       this.effective = new Period();
       return this.effective;
     } else if (name.equals("issued")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Observation.issued");
+      throw new FHIRException("Cannot call addChild on a singleton property Observation.issued");
     } else if (name.equals("performer")) {
       return addPerformer();
     } else if (name.equals("valueQuantity")) {
@@ -3237,7 +3237,7 @@ public class Observation extends DomainResource {
       this.interpretation = new CodeableConcept();
       return this.interpretation;
     } else if (name.equals("comment")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Observation.comment");
+      throw new FHIRException("Cannot call addChild on a singleton property Observation.comment");
     } else if (name.equals("bodySite")) {
       this.bodySite = new CodeableConcept();
       return this.bodySite;

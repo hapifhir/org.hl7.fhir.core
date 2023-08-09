@@ -1143,9 +1143,9 @@ public class ImmunizationRecommendation extends DomainResource {
       } else if (name.equals("dateCriterion")) {
         return addDateCriterion();
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImmunizationRecommendation.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ImmunizationRecommendation.description");
       } else if (name.equals("series")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImmunizationRecommendation.series");
+        throw new FHIRException("Cannot call addChild on a singleton property ImmunizationRecommendation.series");
       } else if (name.equals("doseNumberPositiveInt")) {
         this.doseNumber = new PositiveIntType();
         return this.doseNumber;
@@ -1471,7 +1471,7 @@ public class ImmunizationRecommendation extends DomainResource {
         this.code = new CodeableConcept();
         return this.code;
       } else if (name.equals("value")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImmunizationRecommendation.value");
+        throw new FHIRException("Cannot call addChild on a singleton property ImmunizationRecommendation.value");
       } else
         return super.addChild(name);
     }
@@ -1996,7 +1996,7 @@ public class ImmunizationRecommendation extends DomainResource {
       this.patient = new Reference();
       return this.patient;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImmunizationRecommendation.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ImmunizationRecommendation.date");
     } else if (name.equals("authority")) {
       this.authority = new Reference();
       return this.authority;

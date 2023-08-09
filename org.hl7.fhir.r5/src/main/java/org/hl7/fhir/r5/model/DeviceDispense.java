@@ -1745,7 +1745,7 @@ public class DeviceDispense extends DomainResource {
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDispense.status");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceDispense.status");
         }
         else if (name.equals("statusReason")) {
           this.statusReason = new CodeableReference();
@@ -1789,10 +1789,10 @@ public class DeviceDispense extends DomainResource {
           return this.quantity;
         }
         else if (name.equals("preparedDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDispense.preparedDate");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceDispense.preparedDate");
         }
         else if (name.equals("whenHandedOver")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDispense.whenHandedOver");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceDispense.whenHandedOver");
         }
         else if (name.equals("destination")) {
           this.destination = new Reference();
@@ -1802,7 +1802,7 @@ public class DeviceDispense extends DomainResource {
           return addNote();
         }
         else if (name.equals("usageInstruction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDispense.usageInstruction");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceDispense.usageInstruction");
         }
         else if (name.equals("eventHistory")) {
           return addEventHistory();

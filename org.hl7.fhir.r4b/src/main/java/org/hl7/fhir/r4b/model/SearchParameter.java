@@ -1073,9 +1073,9 @@ public class SearchParameter extends CanonicalResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("definition")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.component.definition");
+        throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.component.definition");
       } else if (name.equals("expression")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.component.expression");
+        throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.component.expression");
       } else
         return super.addChild(name);
     }
@@ -3496,55 +3496,55 @@ public class SearchParameter extends CanonicalResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.url");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.url");
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.version");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.name");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.name");
     } else if (name.equals("derivedFrom")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.derivedFrom");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.derivedFrom");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.status");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.experimental");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.date");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.description");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.description");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.purpose");
     } else if (name.equals("code")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.code");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.code");
     } else if (name.equals("base")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.base");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.base");
     } else if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.type");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.type");
     } else if (name.equals("expression")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.expression");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.expression");
     } else if (name.equals("xpath")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.xpath");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.xpath");
     } else if (name.equals("xpathUsage")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.xpathUsage");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.xpathUsage");
     } else if (name.equals("target")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.target");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.target");
     } else if (name.equals("multipleOr")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.multipleOr");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.multipleOr");
     } else if (name.equals("multipleAnd")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.multipleAnd");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.multipleAnd");
     } else if (name.equals("comparator")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.comparator");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.comparator");
     } else if (name.equals("modifier")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.modifier");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.modifier");
     } else if (name.equals("chain")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SearchParameter.chain");
+      throw new FHIRException("Cannot call addChild on a singleton property SearchParameter.chain");
     } else if (name.equals("component")) {
       return addComponent();
     } else

@@ -916,9 +916,9 @@ public class Appointment extends DomainResource {
         this.actor = new Reference();
         return this.actor;
       } else if (name.equals("required")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Appointment.participant.required");
+        throw new FHIRException("Cannot call addChild on a singleton property Appointment.participant.required");
       } else if (name.equals("status")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Appointment.participant.status");
+        throw new FHIRException("Cannot call addChild on a singleton property Appointment.participant.status");
       } else if (name.equals("period")) {
         this.period = new Period();
         return this.period;
@@ -2900,7 +2900,7 @@ public class Appointment extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Appointment.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Appointment.status");
     } else if (name.equals("cancelationReason")) {
       this.cancelationReason = new CodeableConcept();
       return this.cancelationReason;
@@ -2918,25 +2918,25 @@ public class Appointment extends DomainResource {
     } else if (name.equals("reasonReference")) {
       return addReasonReference();
     } else if (name.equals("priority")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Appointment.priority");
+      throw new FHIRException("Cannot call addChild on a singleton property Appointment.priority");
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Appointment.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Appointment.description");
     } else if (name.equals("supportingInformation")) {
       return addSupportingInformation();
     } else if (name.equals("start")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Appointment.start");
+      throw new FHIRException("Cannot call addChild on a singleton property Appointment.start");
     } else if (name.equals("end")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Appointment.end");
+      throw new FHIRException("Cannot call addChild on a singleton property Appointment.end");
     } else if (name.equals("minutesDuration")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Appointment.minutesDuration");
+      throw new FHIRException("Cannot call addChild on a singleton property Appointment.minutesDuration");
     } else if (name.equals("slot")) {
       return addSlot();
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Appointment.created");
+      throw new FHIRException("Cannot call addChild on a singleton property Appointment.created");
     } else if (name.equals("comment")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Appointment.comment");
+      throw new FHIRException("Cannot call addChild on a singleton property Appointment.comment");
     } else if (name.equals("patientInstruction")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Appointment.patientInstruction");
+      throw new FHIRException("Cannot call addChild on a singleton property Appointment.patientInstruction");
     } else if (name.equals("basedOn")) {
       return addBasedOn();
     } else if (name.equals("participant")) {

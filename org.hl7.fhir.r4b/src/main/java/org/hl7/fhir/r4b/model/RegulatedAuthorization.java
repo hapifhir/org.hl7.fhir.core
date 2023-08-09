@@ -1496,14 +1496,14 @@ public class RegulatedAuthorization extends DomainResource {
       this.type = new CodeableConcept();
       return this.type;
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RegulatedAuthorization.description");
+      throw new FHIRException("Cannot call addChild on a singleton property RegulatedAuthorization.description");
     } else if (name.equals("region")) {
       return addRegion();
     } else if (name.equals("status")) {
       this.status = new CodeableConcept();
       return this.status;
     } else if (name.equals("statusDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RegulatedAuthorization.statusDate");
+      throw new FHIRException("Cannot call addChild on a singleton property RegulatedAuthorization.statusDate");
     } else if (name.equals("validityPeriod")) {
       this.validityPeriod = new Period();
       return this.validityPeriod;

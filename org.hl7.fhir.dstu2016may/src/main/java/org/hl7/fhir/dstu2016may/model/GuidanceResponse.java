@@ -1222,13 +1222,13 @@ public class GuidanceResponse extends DomainResource {
         this.actionIdentifier = new Identifier();
         return this.actionIdentifier;
       } else if (name.equals("label")) {
-        throw new FHIRException("Cannot call addChild on a primitive type GuidanceResponse.label");
+        throw new FHIRException("Cannot call addChild on a singleton property GuidanceResponse.label");
       } else if (name.equals("title")) {
-        throw new FHIRException("Cannot call addChild on a primitive type GuidanceResponse.title");
+        throw new FHIRException("Cannot call addChild on a singleton property GuidanceResponse.title");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type GuidanceResponse.description");
+        throw new FHIRException("Cannot call addChild on a singleton property GuidanceResponse.description");
       } else if (name.equals("textEquivalent")) {
-        throw new FHIRException("Cannot call addChild on a primitive type GuidanceResponse.textEquivalent");
+        throw new FHIRException("Cannot call addChild on a singleton property GuidanceResponse.textEquivalent");
       } else if (name.equals("concept")) {
         return addConcept();
       } else if (name.equals("supportingEvidence")) {
@@ -1241,7 +1241,7 @@ public class GuidanceResponse extends DomainResource {
       } else if (name.equals("participant")) {
         return addParticipant();
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type GuidanceResponse.type");
+        throw new FHIRException("Cannot call addChild on a singleton property GuidanceResponse.type");
       } else if (name.equals("behavior")) {
         return addBehavior();
       } else if (name.equals("resource")) {
@@ -1684,7 +1684,7 @@ public class GuidanceResponse extends DomainResource {
         this.actionIdentifier = new Identifier();
         return this.actionIdentifier;
       } else if (name.equals("relationship")) {
-        throw new FHIRException("Cannot call addChild on a primitive type GuidanceResponse.relationship");
+        throw new FHIRException("Cannot call addChild on a singleton property GuidanceResponse.relationship");
       } else if (name.equals("offsetDuration")) {
         this.offset = new Duration();
         return this.offset;
@@ -1692,7 +1692,7 @@ public class GuidanceResponse extends DomainResource {
         this.offset = new Range();
         return this.offset;
       } else if (name.equals("anchor")) {
-        throw new FHIRException("Cannot call addChild on a primitive type GuidanceResponse.anchor");
+        throw new FHIRException("Cannot call addChild on a singleton property GuidanceResponse.anchor");
       } else
         return super.addChild(name);
     }
@@ -2616,12 +2616,12 @@ public class GuidanceResponse extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("requestId")) {
-      throw new FHIRException("Cannot call addChild on a primitive type GuidanceResponse.requestId");
+      throw new FHIRException("Cannot call addChild on a singleton property GuidanceResponse.requestId");
     } else if (name.equals("module")) {
       this.module = new Reference();
       return this.module;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type GuidanceResponse.status");
+      throw new FHIRException("Cannot call addChild on a singleton property GuidanceResponse.status");
     } else if (name.equals("evaluationMessage")) {
       return addEvaluationMessage();
     } else if (name.equals("outputParameters")) {

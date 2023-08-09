@@ -1747,10 +1747,10 @@ public class Communication extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("instantiatesCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Communication.instantiatesCanonical");
+          throw new FHIRException("Cannot call addChild on a singleton property Communication.instantiatesCanonical");
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Communication.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a singleton property Communication.instantiatesUri");
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
@@ -1762,7 +1762,7 @@ public class Communication extends DomainResource {
           return addInResponseTo();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Communication.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Communication.status");
         }
         else if (name.equals("statusReason")) {
           this.statusReason = new CodeableConcept();
@@ -1772,7 +1772,7 @@ public class Communication extends DomainResource {
           return addCategory();
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Communication.priority");
+          throw new FHIRException("Cannot call addChild on a singleton property Communication.priority");
         }
         else if (name.equals("medium")) {
           return addMedium();
@@ -1793,10 +1793,10 @@ public class Communication extends DomainResource {
           return this.encounter;
         }
         else if (name.equals("sent")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Communication.sent");
+          throw new FHIRException("Cannot call addChild on a singleton property Communication.sent");
         }
         else if (name.equals("received")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Communication.received");
+          throw new FHIRException("Cannot call addChild on a singleton property Communication.received");
         }
         else if (name.equals("recipient")) {
           return addRecipient();

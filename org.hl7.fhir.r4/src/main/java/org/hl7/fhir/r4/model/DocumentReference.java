@@ -620,7 +620,7 @@ public class DocumentReference extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.code");
+        throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.code");
       } else if (name.equals("target")) {
         this.target = new Reference();
         return this.target;
@@ -2931,9 +2931,9 @@ public class DocumentReference extends DomainResource {
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.status");
+      throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.status");
     } else if (name.equals("docStatus")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.docStatus");
+      throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.docStatus");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
@@ -2943,7 +2943,7 @@ public class DocumentReference extends DomainResource {
       this.subject = new Reference();
       return this.subject;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.date");
+      throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.date");
     } else if (name.equals("author")) {
       return addAuthor();
     } else if (name.equals("authenticator")) {
@@ -2955,7 +2955,7 @@ public class DocumentReference extends DomainResource {
     } else if (name.equals("relatesTo")) {
       return addRelatesTo();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.description");
+      throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.description");
     } else if (name.equals("securityLabel")) {
       return addSecurityLabel();
     } else if (name.equals("content")) {

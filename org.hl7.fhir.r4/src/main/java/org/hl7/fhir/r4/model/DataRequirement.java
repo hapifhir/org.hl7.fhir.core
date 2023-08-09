@@ -636,11 +636,11 @@ public class DataRequirement extends Type implements ICompositeType {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("path")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.path");
+        throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.path");
       } else if (name.equals("searchParam")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.searchParam");
+        throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.searchParam");
       } else if (name.equals("valueSet")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.valueSet");
+        throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.valueSet");
       } else if (name.equals("code")) {
         return addCode();
       } else
@@ -1126,9 +1126,9 @@ public class DataRequirement extends Type implements ICompositeType {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("path")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.path");
+        throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.path");
       } else if (name.equals("searchParam")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.searchParam");
+        throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.searchParam");
       } else if (name.equals("valueDateTime")) {
         this.value = new DateTimeType();
         return this.value;
@@ -1437,9 +1437,9 @@ public class DataRequirement extends Type implements ICompositeType {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("path")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.path");
+        throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.path");
       } else if (name.equals("direction")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.direction");
+        throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.direction");
       } else
         return super.addChild(name);
     }
@@ -2303,9 +2303,9 @@ public class DataRequirement extends Type implements ICompositeType {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.type");
+      throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.type");
     } else if (name.equals("profile")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.profile");
+      throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.profile");
     } else if (name.equals("subjectCodeableConcept")) {
       this.subject = new CodeableConcept();
       return this.subject;
@@ -2313,13 +2313,13 @@ public class DataRequirement extends Type implements ICompositeType {
       this.subject = new Reference();
       return this.subject;
     } else if (name.equals("mustSupport")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.mustSupport");
+      throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.mustSupport");
     } else if (name.equals("codeFilter")) {
       return addCodeFilter();
     } else if (name.equals("dateFilter")) {
       return addDateFilter();
     } else if (name.equals("limit")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.limit");
+      throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.limit");
     } else if (name.equals("sort")) {
       return addSort();
     } else

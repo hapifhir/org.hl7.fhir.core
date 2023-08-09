@@ -379,9 +379,9 @@ public class ClaimResponse extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("sequenceLinkId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.sequenceLinkId");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.sequenceLinkId");
       } else if (name.equals("noteNumber")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.noteNumber");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.noteNumber");
       } else if (name.equals("adjudication")) {
         return addAdjudication();
       } else if (name.equals("detail")) {
@@ -743,7 +743,7 @@ public class ClaimResponse extends DomainResource {
         this.amount = new Money();
         return this.amount;
       } else if (name.equals("value")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.value");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.value");
       } else
         return super.addChild(name);
     }
@@ -1038,7 +1038,7 @@ public class ClaimResponse extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("sequenceLinkId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.sequenceLinkId");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.sequenceLinkId");
       } else if (name.equals("adjudication")) {
         return addAdjudication();
       } else if (name.equals("subDetail")) {
@@ -1393,7 +1393,7 @@ public class ClaimResponse extends DomainResource {
         this.amount = new Money();
         return this.amount;
       } else if (name.equals("value")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.value");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.value");
       } else
         return super.addChild(name);
     }
@@ -1627,7 +1627,7 @@ public class ClaimResponse extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("sequenceLinkId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.sequenceLinkId");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.sequenceLinkId");
       } else if (name.equals("adjudication")) {
         return addAdjudication();
       } else
@@ -1973,7 +1973,7 @@ public class ClaimResponse extends DomainResource {
         this.amount = new Money();
         return this.amount;
       } else if (name.equals("value")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.value");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.value");
       } else
         return super.addChild(name);
     }
@@ -2444,7 +2444,7 @@ public class ClaimResponse extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("sequenceLinkId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.sequenceLinkId");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.sequenceLinkId");
       } else if (name.equals("service")) {
         this.service = new Coding();
         return this.service;
@@ -2452,7 +2452,7 @@ public class ClaimResponse extends DomainResource {
         this.fee = new Money();
         return this.fee;
       } else if (name.equals("noteNumberLinkId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.noteNumberLinkId");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.noteNumberLinkId");
       } else if (name.equals("adjudication")) {
         return addAdjudication();
       } else if (name.equals("detail")) {
@@ -2824,7 +2824,7 @@ public class ClaimResponse extends DomainResource {
         this.amount = new Money();
         return this.amount;
       } else if (name.equals("value")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.value");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.value");
       } else
         return super.addChild(name);
     }
@@ -3430,7 +3430,7 @@ public class ClaimResponse extends DomainResource {
         this.amount = new Money();
         return this.amount;
       } else if (name.equals("value")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.value");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.value");
       } else
         return super.addChild(name);
     }
@@ -3823,11 +3823,11 @@ public class ClaimResponse extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("sequenceLinkId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.sequenceLinkId");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.sequenceLinkId");
       } else if (name.equals("detailSequenceLinkId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.detailSequenceLinkId");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.detailSequenceLinkId");
       } else if (name.equals("subdetailSequenceLinkId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.subdetailSequenceLinkId");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.subdetailSequenceLinkId");
       } else if (name.equals("code")) {
         this.code = new Coding();
         return this.code;
@@ -4119,12 +4119,12 @@ public class ClaimResponse extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("number")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.number");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.number");
       } else if (name.equals("type")) {
         this.type = new Coding();
         return this.type;
       } else if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.text");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.text");
       } else
         return super.addChild(name);
     }
@@ -4680,9 +4680,9 @@ public class ClaimResponse extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("sequence")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.sequence");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.sequence");
       } else if (name.equals("focal")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.focal");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.focal");
       } else if (name.equals("coverageIdentifier")) {
         this.coverage = new Identifier();
         return this.coverage;
@@ -4690,9 +4690,9 @@ public class ClaimResponse extends DomainResource {
         this.coverage = new Reference();
         return this.coverage;
       } else if (name.equals("businessArrangement")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.businessArrangement");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.businessArrangement");
       } else if (name.equals("preAuthRef")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.preAuthRef");
+        throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.preAuthRef");
       } else if (name.equals("claimResponse")) {
         this.claimResponse = new Reference();
         return this.claimResponse;
@@ -6288,7 +6288,7 @@ public class ClaimResponse extends DomainResource {
       this.originalRuleset = new Coding();
       return this.originalRuleset;
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.created");
+      throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.created");
     } else if (name.equals("organizationIdentifier")) {
       this.organization = new Identifier();
       return this.organization;
@@ -6308,9 +6308,9 @@ public class ClaimResponse extends DomainResource {
       this.requestOrganization = new Reference();
       return this.requestOrganization;
     } else if (name.equals("outcome")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.outcome");
+      throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.outcome");
     } else if (name.equals("disposition")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.disposition");
+      throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.disposition");
     } else if (name.equals("payeeType")) {
       this.payeeType = new Coding();
       return this.payeeType;
@@ -6336,7 +6336,7 @@ public class ClaimResponse extends DomainResource {
       this.paymentAdjustmentReason = new Coding();
       return this.paymentAdjustmentReason;
     } else if (name.equals("paymentDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.paymentDate");
+      throw new FHIRException("Cannot call addChild on a singleton property ClaimResponse.paymentDate");
     } else if (name.equals("paymentAmount")) {
       this.paymentAmount = new Money();
       return this.paymentAmount;

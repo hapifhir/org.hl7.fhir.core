@@ -373,7 +373,7 @@ public class Person extends DomainResource {
         this.target = new Reference();
         return this.target;
       } else if (name.equals("assurance")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Person.assurance");
+        throw new FHIRException("Cannot call addChild on a singleton property Person.assurance");
       } else
         return super.addChild(name);
     }
@@ -1010,9 +1010,9 @@ public class Person extends DomainResource {
     } else if (name.equals("telecom")) {
       return addTelecom();
     } else if (name.equals("gender")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Person.gender");
+      throw new FHIRException("Cannot call addChild on a singleton property Person.gender");
     } else if (name.equals("birthDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Person.birthDate");
+      throw new FHIRException("Cannot call addChild on a singleton property Person.birthDate");
     } else if (name.equals("address")) {
       return addAddress();
     } else if (name.equals("photo")) {
@@ -1022,7 +1022,7 @@ public class Person extends DomainResource {
       this.managingOrganization = new Reference();
       return this.managingOrganization;
     } else if (name.equals("active")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Person.active");
+      throw new FHIRException("Cannot call addChild on a singleton property Person.active");
     } else if (name.equals("link")) {
       return addLink();
     } else

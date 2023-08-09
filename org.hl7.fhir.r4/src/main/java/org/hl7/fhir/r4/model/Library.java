@@ -2645,21 +2645,21 @@ public class Library extends MetadataResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.url");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.version");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.name");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.title");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.title");
     } else if (name.equals("subtitle")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.subtitle");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.subtitle");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.experimental");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
@@ -2670,27 +2670,27 @@ public class Library extends MetadataResource {
       this.subject = new Reference();
       return this.subject;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.date");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.description");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.purpose");
     } else if (name.equals("usage")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.usage");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.usage");
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.copyright");
     } else if (name.equals("approvalDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.approvalDate");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.approvalDate");
     } else if (name.equals("lastReviewDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Library.lastReviewDate");
+      throw new FHIRException("Cannot call addChild on a singleton property Library.lastReviewDate");
     } else if (name.equals("effectivePeriod")) {
       this.effectivePeriod = new Period();
       return this.effectivePeriod;

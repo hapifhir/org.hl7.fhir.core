@@ -1272,12 +1272,12 @@ public class ImmunizationEvaluation extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImmunizationEvaluation.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ImmunizationEvaluation.status");
     } else if (name.equals("patient")) {
       this.patient = new Reference();
       return this.patient;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImmunizationEvaluation.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ImmunizationEvaluation.date");
     } else if (name.equals("authority")) {
       this.authority = new Reference();
       return this.authority;
@@ -1293,9 +1293,9 @@ public class ImmunizationEvaluation extends DomainResource {
     } else if (name.equals("doseStatusReason")) {
       return addDoseStatusReason();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImmunizationEvaluation.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ImmunizationEvaluation.description");
     } else if (name.equals("series")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImmunizationEvaluation.series");
+      throw new FHIRException("Cannot call addChild on a singleton property ImmunizationEvaluation.series");
     } else if (name.equals("doseNumberPositiveInt")) {
       this.doseNumber = new PositiveIntType();
       return this.doseNumber;

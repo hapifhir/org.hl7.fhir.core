@@ -382,7 +382,7 @@ public class Substance extends DomainResource {
           return this.identifier;
         }
         else if (name.equals("expiry")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Substance.expiry");
+          throw new FHIRException("Cannot call addChild on a singleton property Substance.expiry");
         }
         else if (name.equals("quantity")) {
           this.quantity = new SimpleQuantity();
@@ -1207,7 +1207,7 @@ public class Substance extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Substance.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Substance.status");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -1217,7 +1217,7 @@ public class Substance extends DomainResource {
           return this.code;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Substance.description");
+          throw new FHIRException("Cannot call addChild on a singleton property Substance.description");
         }
         else if (name.equals("instance")) {
           return addInstance();

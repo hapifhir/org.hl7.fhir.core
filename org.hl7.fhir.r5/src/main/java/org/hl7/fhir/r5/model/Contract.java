@@ -1070,13 +1070,13 @@ public class Contract extends DomainResource {
           return this.publisher;
         }
         else if (name.equals("publicationDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.contentDefinition.publicationDate");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.contentDefinition.publicationDate");
         }
         else if (name.equals("publicationStatus")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.contentDefinition.publicationStatus");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.contentDefinition.publicationStatus");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.contentDefinition.copyright");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.contentDefinition.copyright");
         }
         else
           return super.addChild(name);
@@ -1901,7 +1901,7 @@ public class Contract extends DomainResource {
           return this.identifier;
         }
         else if (name.equals("issued")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.issued");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.issued");
         }
         else if (name.equals("applies")) {
           this.applies = new Period();
@@ -1924,7 +1924,7 @@ public class Contract extends DomainResource {
           return this.subType;
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.text");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.text");
         }
         else if (name.equals("securityLabel")) {
           return addSecurityLabel();
@@ -2355,7 +2355,7 @@ public class Contract extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("number")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.securityLabel.number");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.securityLabel.number");
         }
         else if (name.equals("classification")) {
           this.classification = new Coding();
@@ -3147,13 +3147,13 @@ public class Contract extends DomainResource {
           return addAnswer();
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.offer.text");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.offer.text");
         }
         else if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.offer.linkId");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.offer.linkId");
         }
         else if (name.equals("securityLabelNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.offer.securityLabelNumber");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.offer.securityLabelNumber");
         }
         else
           return super.addChild(name);
@@ -4970,7 +4970,7 @@ public class Contract extends DomainResource {
           return addContext();
         }
         else if (name.equals("condition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.condition");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.condition");
         }
         else if (name.equals("periodType")) {
           return addPeriodType();
@@ -4982,16 +4982,16 @@ public class Contract extends DomainResource {
           return addUsePeriod();
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.text");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.text");
         }
         else if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.linkId");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.linkId");
         }
         else if (name.equals("answer")) {
           return addAnswer();
         }
         else if (name.equals("securityLabelNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.securityLabelNumber");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.securityLabelNumber");
         }
         else if (name.equals("valuedItem")) {
           return addValuedItem();
@@ -5358,7 +5358,7 @@ public class Contract extends DomainResource {
           return addCode();
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.context.text");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.context.text");
         }
         else
           return super.addChild(name);
@@ -6330,7 +6330,7 @@ public class Contract extends DomainResource {
           return this.identifier;
         }
         else if (name.equals("effectiveTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.effectiveTime");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.valuedItem.effectiveTime");
         }
         else if (name.equals("quantity")) {
           this.quantity = new Quantity();
@@ -6341,20 +6341,20 @@ public class Contract extends DomainResource {
           return this.unitPrice;
         }
         else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.factor");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.valuedItem.factor");
         }
         else if (name.equals("points")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.points");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.valuedItem.points");
         }
         else if (name.equals("net")) {
           this.net = new Money();
           return this.net;
         }
         else if (name.equals("payment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.payment");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.valuedItem.payment");
         }
         else if (name.equals("paymentDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.paymentDate");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.valuedItem.paymentDate");
         }
         else if (name.equals("responsible")) {
           this.responsible = new Reference();
@@ -6365,10 +6365,10 @@ public class Contract extends DomainResource {
           return this.recipient;
         }
         else if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.linkId");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.valuedItem.linkId");
         }
         else if (name.equals("securityLabelNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.securityLabelNumber");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.asset.valuedItem.securityLabelNumber");
         }
         else
           return super.addChild(name);
@@ -7742,7 +7742,7 @@ public class Contract extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("doNotPerform")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.doNotPerform");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.action.doNotPerform");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -7756,7 +7756,7 @@ public class Contract extends DomainResource {
           return this.intent;
         }
         else if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.linkId");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.action.linkId");
         }
         else if (name.equals("status")) {
           this.status = new CodeableConcept();
@@ -7767,7 +7767,7 @@ public class Contract extends DomainResource {
           return this.context;
         }
         else if (name.equals("contextLinkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.contextLinkId");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.action.contextLinkId");
         }
         else if (name.equals("occurrenceDateTime")) {
           this.occurrence = new DateTimeType();
@@ -7785,7 +7785,7 @@ public class Contract extends DomainResource {
           return addRequester();
         }
         else if (name.equals("requesterLinkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.requesterLinkId");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.action.requesterLinkId");
         }
         else if (name.equals("performerType")) {
           return addPerformerType();
@@ -7799,19 +7799,19 @@ public class Contract extends DomainResource {
           return this.performer;
         }
         else if (name.equals("performerLinkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.performerLinkId");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.action.performerLinkId");
         }
         else if (name.equals("reason")) {
           return addReason();
         }
         else if (name.equals("reasonLinkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.reasonLinkId");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.action.reasonLinkId");
         }
         else if (name.equals("note")) {
           return addNote();
         }
         else if (name.equals("securityLabelNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.securityLabelNumber");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.term.action.securityLabelNumber");
         }
         else
           return super.addChild(name);
@@ -11165,13 +11165,13 @@ public class Contract extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.url");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.url");
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.version");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.version");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.status");
         }
         else if (name.equals("legalState")) {
           this.legalState = new CodeableConcept();
@@ -11182,14 +11182,14 @@ public class Contract extends DomainResource {
           return this.instantiatesCanonical;
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.instantiatesUri");
         }
         else if (name.equals("contentDerivative")) {
           this.contentDerivative = new CodeableConcept();
           return this.contentDerivative;
         }
         else if (name.equals("issued")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.issued");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.issued");
         }
         else if (name.equals("applies")) {
           this.applies = new Period();
@@ -11212,16 +11212,16 @@ public class Contract extends DomainResource {
           return addSite();
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.name");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.title");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.title");
         }
         else if (name.equals("subtitle")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.subtitle");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.subtitle");
         }
         else if (name.equals("alias")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.alias");
+          throw new FHIRException("Cannot call addChild on a singleton property Contract.alias");
         }
         else if (name.equals("author")) {
           this.author = new Reference();

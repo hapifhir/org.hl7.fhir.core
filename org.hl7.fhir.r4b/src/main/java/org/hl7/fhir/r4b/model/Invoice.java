@@ -826,7 +826,7 @@ public class Invoice extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("sequence")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Invoice.lineItem.sequence");
+        throw new FHIRException("Cannot call addChild on a singleton property Invoice.lineItem.sequence");
       } else if (name.equals("chargeItemReference")) {
         this.chargeItem = new Reference();
         return this.chargeItem;
@@ -1242,12 +1242,12 @@ public class Invoice extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Invoice.lineItem.priceComponent.type");
+        throw new FHIRException("Cannot call addChild on a singleton property Invoice.lineItem.priceComponent.type");
       } else if (name.equals("code")) {
         this.code = new CodeableConcept();
         return this.code;
       } else if (name.equals("factor")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Invoice.lineItem.priceComponent.factor");
+        throw new FHIRException("Cannot call addChild on a singleton property Invoice.lineItem.priceComponent.factor");
       } else if (name.equals("amount")) {
         this.amount = new Money();
         return this.amount;
@@ -2454,9 +2454,9 @@ public class Invoice extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Invoice.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Invoice.status");
     } else if (name.equals("cancelledReason")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Invoice.cancelledReason");
+      throw new FHIRException("Cannot call addChild on a singleton property Invoice.cancelledReason");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
@@ -2467,7 +2467,7 @@ public class Invoice extends DomainResource {
       this.recipient = new Reference();
       return this.recipient;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Invoice.date");
+      throw new FHIRException("Cannot call addChild on a singleton property Invoice.date");
     } else if (name.equals("participant")) {
       return addParticipant();
     } else if (name.equals("issuer")) {
@@ -2487,7 +2487,7 @@ public class Invoice extends DomainResource {
       this.totalGross = new Money();
       return this.totalGross;
     } else if (name.equals("paymentTerms")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Invoice.paymentTerms");
+      throw new FHIRException("Cannot call addChild on a singleton property Invoice.paymentTerms");
     } else if (name.equals("note")) {
       return addNote();
     } else

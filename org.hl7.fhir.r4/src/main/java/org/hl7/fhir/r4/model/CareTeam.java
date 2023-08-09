@@ -1821,11 +1821,11 @@ public class CareTeam extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CareTeam.status");
+      throw new FHIRException("Cannot call addChild on a singleton property CareTeam.status");
     } else if (name.equals("category")) {
       return addCategory();
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CareTeam.name");
+      throw new FHIRException("Cannot call addChild on a singleton property CareTeam.name");
     } else if (name.equals("subject")) {
       this.subject = new Reference();
       return this.subject;

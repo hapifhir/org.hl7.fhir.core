@@ -909,7 +909,7 @@ public class MedicationStatement extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.text");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.text");
       } else if (name.equals("timing")) {
         this.timing = new Timing();
         return this.timing;
@@ -2040,7 +2040,7 @@ public class MedicationStatement extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.status");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.status");
     } else if (name.equals("medicationCodeableConcept")) {
       this.medication = new CodeableConcept();
       return this.medication;
@@ -2062,9 +2062,9 @@ public class MedicationStatement extends DomainResource {
     } else if (name.equals("supportingInformation")) {
       return addSupportingInformation();
     } else if (name.equals("dateAsserted")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.dateAsserted");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.dateAsserted");
     } else if (name.equals("wasNotTaken")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.wasNotTaken");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.wasNotTaken");
     } else if (name.equals("reasonNotTaken")) {
       return addReasonNotTaken();
     } else if (name.equals("reasonForUseCodeableConcept")) {

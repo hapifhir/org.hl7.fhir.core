@@ -806,7 +806,7 @@ public class AdverseEvent extends DomainResource {
         this.assessment = new CodeableConcept();
         return this.assessment;
       } else if (name.equals("productRelatedness")) {
-        throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.productRelatedness");
+        throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.productRelatedness");
       } else if (name.equals("author")) {
         this.author = new Reference();
         return this.author;
@@ -2559,7 +2559,7 @@ public class AdverseEvent extends DomainResource {
       this.identifier = new Identifier();
       return this.identifier;
     } else if (name.equals("actuality")) {
-      throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.actuality");
+      throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.actuality");
     } else if (name.equals("category")) {
       return addCategory();
     } else if (name.equals("event")) {
@@ -2572,11 +2572,11 @@ public class AdverseEvent extends DomainResource {
       this.encounter = new Reference();
       return this.encounter;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.date");
+      throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.date");
     } else if (name.equals("detected")) {
-      throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.detected");
+      throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.detected");
     } else if (name.equals("recordedDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.recordedDate");
+      throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.recordedDate");
     } else if (name.equals("resultingCondition")) {
       return addResultingCondition();
     } else if (name.equals("location")) {

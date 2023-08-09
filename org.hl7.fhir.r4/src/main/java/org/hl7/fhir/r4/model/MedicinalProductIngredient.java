@@ -979,7 +979,7 @@ public class MedicinalProductIngredient extends DomainResource {
         this.concentrationLowLimit = new Ratio();
         return this.concentrationLowLimit;
       } else if (name.equals("measurementPoint")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductIngredient.measurementPoint");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductIngredient.measurementPoint");
       } else if (name.equals("country")) {
         return addCountry();
       } else if (name.equals("referenceStrength")) {
@@ -1456,7 +1456,7 @@ public class MedicinalProductIngredient extends DomainResource {
         this.strengthLowLimit = new Ratio();
         return this.strengthLowLimit;
       } else if (name.equals("measurementPoint")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductIngredient.measurementPoint");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductIngredient.measurementPoint");
       } else if (name.equals("country")) {
         return addCountry();
       } else
@@ -2279,7 +2279,7 @@ public class MedicinalProductIngredient extends DomainResource {
       return this.role;
     } else if (name.equals("allergenicIndicator")) {
       throw new FHIRException(
-          "Cannot call addChild on a primitive type MedicinalProductIngredient.allergenicIndicator");
+          "Cannot call addChild on a singleton property MedicinalProductIngredient.allergenicIndicator");
     } else if (name.equals("manufacturer")) {
       return addManufacturer();
     } else if (name.equals("specifiedSubstance")) {

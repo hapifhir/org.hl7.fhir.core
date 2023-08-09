@@ -2994,23 +2994,23 @@ public class ResearchDefinition extends MetadataResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.url");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.version");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.name");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.title");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.title");
     } else if (name.equals("shortTitle")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.shortTitle");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.shortTitle");
     } else if (name.equals("subtitle")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.subtitle");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.subtitle");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.experimental");
     } else if (name.equals("subjectCodeableConcept")) {
       this.subject = new CodeableConcept();
       return this.subject;
@@ -3018,29 +3018,29 @@ public class ResearchDefinition extends MetadataResource {
       this.subject = new Reference();
       return this.subject;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.description");
     } else if (name.equals("comment")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.comment");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.comment");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.purpose");
     } else if (name.equals("usage")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.usage");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.usage");
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.copyright");
     } else if (name.equals("approvalDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.approvalDate");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.approvalDate");
     } else if (name.equals("lastReviewDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.lastReviewDate");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.lastReviewDate");
     } else if (name.equals("effectivePeriod")) {
       this.effectivePeriod = new Period();
       return this.effectivePeriod;
@@ -3057,7 +3057,7 @@ public class ResearchDefinition extends MetadataResource {
     } else if (name.equals("relatedArtifact")) {
       return addRelatedArtifact();
     } else if (name.equals("library")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchDefinition.library");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchDefinition.library");
     } else if (name.equals("population")) {
       this.population = new Reference();
       return this.population;

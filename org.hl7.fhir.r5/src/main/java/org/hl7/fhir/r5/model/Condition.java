@@ -1739,7 +1739,7 @@ public class Condition extends DomainResource {
           return this.abatement;
         }
         else if (name.equals("recordedDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Condition.recordedDate");
+          throw new FHIRException("Cannot call addChild on a singleton property Condition.recordedDate");
         }
         else if (name.equals("participant")) {
           return addParticipant();

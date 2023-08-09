@@ -801,7 +801,7 @@ public class MedicinalProductInteraction extends DomainResource {
     if (name.equals("subject")) {
       return addSubject();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductInteraction.description");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductInteraction.description");
     } else if (name.equals("interactant")) {
       return addInteractant();
     } else if (name.equals("type")) {

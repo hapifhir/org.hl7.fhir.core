@@ -656,7 +656,7 @@ public class PaymentNotice extends DomainResource {
       this.originalRuleset = new Coding();
       return this.originalRuleset;
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PaymentNotice.created");
+      throw new FHIRException("Cannot call addChild on a singleton property PaymentNotice.created");
     } else if (name.equals("target")) {
       this.target = new Reference();
       return this.target;

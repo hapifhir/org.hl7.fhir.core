@@ -1512,7 +1512,7 @@ public class SupplyRequest extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SupplyRequest.status");
+          throw new FHIRException("Cannot call addChild on a singleton property SupplyRequest.status");
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
@@ -1522,7 +1522,7 @@ public class SupplyRequest extends DomainResource {
           return this.category;
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SupplyRequest.priority");
+          throw new FHIRException("Cannot call addChild on a singleton property SupplyRequest.priority");
         }
         else if (name.equals("deliverFor")) {
           this.deliverFor = new Reference();
@@ -1552,7 +1552,7 @@ public class SupplyRequest extends DomainResource {
           return this.occurrence;
         }
         else if (name.equals("authoredOn")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SupplyRequest.authoredOn");
+          throw new FHIRException("Cannot call addChild on a singleton property SupplyRequest.authoredOn");
         }
         else if (name.equals("requester")) {
           this.requester = new Reference();

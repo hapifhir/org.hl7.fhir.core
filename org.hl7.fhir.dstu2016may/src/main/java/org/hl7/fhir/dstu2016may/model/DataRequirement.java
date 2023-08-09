@@ -531,7 +531,7 @@ public class DataRequirement extends Type implements ICompositeType {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("path")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.path");
+        throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.path");
       } else if (name.equals("valueSetString")) {
         this.valueSet = new StringType();
         return this.valueSet;
@@ -539,7 +539,7 @@ public class DataRequirement extends Type implements ICompositeType {
         this.valueSet = new Reference();
         return this.valueSet;
       } else if (name.equals("valueCode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.valueCode");
+        throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.valueCode");
       } else if (name.equals("valueCoding")) {
         return addValueCoding();
       } else if (name.equals("valueCodeableConcept")) {
@@ -849,7 +849,7 @@ public class DataRequirement extends Type implements ICompositeType {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("path")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.path");
+        throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.path");
       } else if (name.equals("valueDateTime")) {
         this.value = new DateTimeType();
         return this.value;
@@ -1344,12 +1344,12 @@ public class DataRequirement extends Type implements ICompositeType {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.type");
+      throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.type");
     } else if (name.equals("profile")) {
       this.profile = new Reference();
       return this.profile;
     } else if (name.equals("mustSupport")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.mustSupport");
+      throw new FHIRException("Cannot call addChild on a singleton property DataRequirement.mustSupport");
     } else if (name.equals("codeFilter")) {
       return addCodeFilter();
     } else if (name.equals("dateFilter")) {

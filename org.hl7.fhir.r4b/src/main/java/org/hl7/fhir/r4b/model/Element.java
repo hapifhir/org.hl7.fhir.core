@@ -299,7 +299,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("id")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Element.id");
+      throw new FHIRException("Cannot call addChild on a singleton property Element.id");
     } else if (name.equals("extension")) {
       return addExtension();
     } else

@@ -989,7 +989,7 @@ public class EvidenceReport extends DomainResource {
         return this.value;
       } else if (name.equals("exclude")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type EvidenceReport.subject.characteristic.exclude");
+            "Cannot call addChild on a singleton property EvidenceReport.subject.characteristic.exclude");
       } else if (name.equals("period")) {
         this.period = new Period();
         return this.period;
@@ -1294,7 +1294,7 @@ public class EvidenceReport extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.relatesTo.code");
+        throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.relatesTo.code");
       } else if (name.equals("targetIdentifier")) {
         this.target = new Identifier();
         return this.target;
@@ -2289,7 +2289,7 @@ public class EvidenceReport extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("title")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.section.title");
+        throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.section.title");
       } else if (name.equals("focus")) {
         this.focus = new CodeableConcept();
         return this.focus;
@@ -2302,7 +2302,7 @@ public class EvidenceReport extends DomainResource {
         this.text = new Narrative();
         return this.text;
       } else if (name.equals("mode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.section.mode");
+        throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.section.mode");
       } else if (name.equals("orderedBy")) {
         this.orderedBy = new CodeableConcept();
         return this.orderedBy;
@@ -3937,9 +3937,9 @@ public class EvidenceReport extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.url");
+      throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.url");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.status");
+      throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.status");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("identifier")) {
@@ -3963,7 +3963,7 @@ public class EvidenceReport extends DomainResource {
       this.subject = new EvidenceReportSubjectComponent();
       return this.subject;
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("author")) {

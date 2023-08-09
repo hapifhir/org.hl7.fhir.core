@@ -703,14 +703,14 @@ public class AdverseEvent extends DomainResource {
           return this.instance;
         }
         else if (name.equals("causality")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.causality");
+          throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.causality");
         }
         else if (name.equals("causalityAssessment")) {
           this.causalityAssessment = new CodeableConcept();
           return this.causalityAssessment;
         }
         else if (name.equals("causalityProductRelatedness")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.causalityProductRelatedness");
+          throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.causalityProductRelatedness");
         }
         else if (name.equals("causalityMethod")) {
           this.causalityMethod = new CodeableConcept();
@@ -1907,7 +1907,7 @@ public class AdverseEvent extends DomainResource {
           return this.identifier;
         }
         else if (name.equals("category")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.category");
+          throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.category");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -1918,7 +1918,7 @@ public class AdverseEvent extends DomainResource {
           return this.subject;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.date");
+          throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.date");
         }
         else if (name.equals("reaction")) {
           return addReaction();
@@ -1944,7 +1944,7 @@ public class AdverseEvent extends DomainResource {
           return this.eventParticipant;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.description");
+          throw new FHIRException("Cannot call addChild on a singleton property AdverseEvent.description");
         }
         else if (name.equals("suspectEntity")) {
           return addSuspectEntity();

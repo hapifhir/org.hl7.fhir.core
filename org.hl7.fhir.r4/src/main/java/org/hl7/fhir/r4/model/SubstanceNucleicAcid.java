@@ -699,11 +699,11 @@ public class SubstanceNucleicAcid extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("subunit")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceNucleicAcid.subunit");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceNucleicAcid.subunit");
       } else if (name.equals("sequence")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceNucleicAcid.sequence");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceNucleicAcid.sequence");
       } else if (name.equals("length")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceNucleicAcid.length");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceNucleicAcid.length");
       } else if (name.equals("sequenceAttachment")) {
         this.sequenceAttachment = new Attachment();
         return this.sequenceAttachment;
@@ -1172,14 +1172,14 @@ public class SubstanceNucleicAcid extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("connectivity")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceNucleicAcid.connectivity");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceNucleicAcid.connectivity");
       } else if (name.equals("identifier")) {
         this.identifier = new Identifier();
         return this.identifier;
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceNucleicAcid.name");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceNucleicAcid.name");
       } else if (name.equals("residueSite")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceNucleicAcid.residueSite");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceNucleicAcid.residueSite");
       } else
         return super.addChild(name);
     }
@@ -1526,9 +1526,9 @@ public class SubstanceNucleicAcid extends DomainResource {
         this.identifier = new Identifier();
         return this.identifier;
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceNucleicAcid.name");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceNucleicAcid.name");
       } else if (name.equals("residueSite")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstanceNucleicAcid.residueSite");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstanceNucleicAcid.residueSite");
       } else
         return super.addChild(name);
     }
@@ -2027,9 +2027,9 @@ public class SubstanceNucleicAcid extends DomainResource {
       this.sequenceType = new CodeableConcept();
       return this.sequenceType;
     } else if (name.equals("numberOfSubunits")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubstanceNucleicAcid.numberOfSubunits");
+      throw new FHIRException("Cannot call addChild on a singleton property SubstanceNucleicAcid.numberOfSubunits");
     } else if (name.equals("areaOfHybridisation")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubstanceNucleicAcid.areaOfHybridisation");
+      throw new FHIRException("Cannot call addChild on a singleton property SubstanceNucleicAcid.areaOfHybridisation");
     } else if (name.equals("oligoNucleotideType")) {
       this.oligoNucleotideType = new CodeableConcept();
       return this.oligoNucleotideType;

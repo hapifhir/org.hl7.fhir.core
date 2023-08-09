@@ -1131,7 +1131,7 @@ public class PackagedProductDefinition extends DomainResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("quantity")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PackagedProductDefinition.package.quantity");
+        throw new FHIRException("Cannot call addChild on a singleton property PackagedProductDefinition.package.quantity");
       } else if (name.equals("material")) {
         return addMaterial();
       } else if (name.equals("alternateMaterial")) {
@@ -2990,7 +2990,7 @@ public class PackagedProductDefinition extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PackagedProductDefinition.name");
+      throw new FHIRException("Cannot call addChild on a singleton property PackagedProductDefinition.name");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
@@ -3000,11 +3000,11 @@ public class PackagedProductDefinition extends DomainResource {
       this.status = new CodeableConcept();
       return this.status;
     } else if (name.equals("statusDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PackagedProductDefinition.statusDate");
+      throw new FHIRException("Cannot call addChild on a singleton property PackagedProductDefinition.statusDate");
     } else if (name.equals("containedItemQuantity")) {
       return addContainedItemQuantity();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PackagedProductDefinition.description");
+      throw new FHIRException("Cannot call addChild on a singleton property PackagedProductDefinition.description");
     } else if (name.equals("legalStatusOfSupply")) {
       return addLegalStatusOfSupply();
     } else if (name.equals("marketingStatus")) {
@@ -3012,7 +3012,7 @@ public class PackagedProductDefinition extends DomainResource {
     } else if (name.equals("characteristic")) {
       return addCharacteristic();
     } else if (name.equals("copackagedIndicator")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PackagedProductDefinition.copackagedIndicator");
+      throw new FHIRException("Cannot call addChild on a singleton property PackagedProductDefinition.copackagedIndicator");
     } else if (name.equals("manufacturer")) {
       return addManufacturer();
     } else if (name.equals("package")) {

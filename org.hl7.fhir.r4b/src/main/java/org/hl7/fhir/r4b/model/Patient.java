@@ -752,7 +752,7 @@ public class Patient extends DomainResource {
         this.address = new Address();
         return this.address;
       } else if (name.equals("gender")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Patient.contact.gender");
+        throw new FHIRException("Cannot call addChild on a singleton property Patient.contact.gender");
       } else if (name.equals("organization")) {
         this.organization = new Reference();
         return this.organization;
@@ -1048,7 +1048,7 @@ public class Patient extends DomainResource {
         this.language = new CodeableConcept();
         return this.language;
       } else if (name.equals("preferred")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Patient.communication.preferred");
+        throw new FHIRException("Cannot call addChild on a singleton property Patient.communication.preferred");
       } else
         return super.addChild(name);
     }
@@ -1306,7 +1306,7 @@ public class Patient extends DomainResource {
         this.other = new Reference();
         return this.other;
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Patient.link.type");
+        throw new FHIRException("Cannot call addChild on a singleton property Patient.link.type");
       } else
         return super.addChild(name);
     }
@@ -2705,15 +2705,15 @@ public class Patient extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("active")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Patient.active");
+      throw new FHIRException("Cannot call addChild on a singleton property Patient.active");
     } else if (name.equals("name")) {
       return addName();
     } else if (name.equals("telecom")) {
       return addTelecom();
     } else if (name.equals("gender")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Patient.gender");
+      throw new FHIRException("Cannot call addChild on a singleton property Patient.gender");
     } else if (name.equals("birthDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Patient.birthDate");
+      throw new FHIRException("Cannot call addChild on a singleton property Patient.birthDate");
     } else if (name.equals("deceasedBoolean")) {
       this.deceased = new BooleanType();
       return this.deceased;

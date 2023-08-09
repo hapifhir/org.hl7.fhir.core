@@ -1185,9 +1185,9 @@ public class ModuleMetadata extends Type implements ICompositeType {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.type");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.type");
       } else if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.name");
       } else if (name.equals("contact")) {
         return addContact();
       } else
@@ -1427,7 +1427,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.name");
       } else if (name.equals("telecom")) {
         return addTelecom();
       } else
@@ -1663,7 +1663,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.name");
       } else if (name.equals("telecom")) {
         return addTelecom();
       } else
@@ -1960,7 +1960,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.type");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.type");
       } else if (name.equals("document")) {
         this.document = new Attachment();
         return this.document;
@@ -3590,31 +3590,31 @@ public class ModuleMetadata extends Type implements ICompositeType {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.url");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.version");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.name");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.title");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.title");
     } else if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.type");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.type");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.experimental");
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.description");
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.purpose");
     } else if (name.equals("usage")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.usage");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.usage");
     } else if (name.equals("publicationDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.publicationDate");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.publicationDate");
     } else if (name.equals("lastReviewDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.lastReviewDate");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.lastReviewDate");
     } else if (name.equals("effectivePeriod")) {
       this.effectivePeriod = new Period();
       return this.effectivePeriod;
@@ -3625,11 +3625,11 @@ public class ModuleMetadata extends Type implements ICompositeType {
     } else if (name.equals("contributor")) {
       return addContributor();
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleMetadata.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleMetadata.copyright");
     } else if (name.equals("relatedResource")) {
       return addRelatedResource();
     } else

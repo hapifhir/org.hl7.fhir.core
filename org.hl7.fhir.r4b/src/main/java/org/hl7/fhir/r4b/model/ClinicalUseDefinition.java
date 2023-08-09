@@ -2760,7 +2760,7 @@ public class ClinicalUseDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClinicalUseDefinition.warning.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ClinicalUseDefinition.warning.description");
       } else if (name.equals("code")) {
         this.code = new CodeableConcept();
         return this.code;
@@ -3595,7 +3595,7 @@ public class ClinicalUseDefinition extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalUseDefinition.type");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalUseDefinition.type");
     } else if (name.equals("category")) {
       return addCategory();
     } else if (name.equals("subject")) {
