@@ -100,6 +100,8 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     int stepCount = 1;
     for (ExampleScenarioProcessStepComponent step: process.getStep()) {
       plantUml += toPlantUml(step, stepPrefix(prefix, step, stepCount), scen, actorsActive, actorKeys);
+      if (step.getPause())
+        plantUml += "... time passes ...\n";
       stepCount++;
     }
 
@@ -137,7 +139,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       plantUml.append("activate " + actorKeys.get(op.getReceiver()) + "\r\n");
       plantUml.append(actorKeys.get(op.getReceiver()) + " --> " + actorKeys.get(op.getInitiator()) + ": ");
       plantUml.append(creolLink("response", "#s_" + prefix, op.getDescription()));
-      plantUml.append(" (" + creolLink("payload", linkForInstance(op.getRequest())) + ")\r\n");
+      plantUml.append(" (" + creolLink("payload", linkForInstance(op.getResponse())) + ")\r\n");
       plantUml.append("deactivate " + actorKeys.get(op.getReceiver()) + "\r\n");
     }
     plantUml.append(handleDeactivation(op.getInitiator(), op.getInitiatorActive(), actorsActive, actorKeys));
