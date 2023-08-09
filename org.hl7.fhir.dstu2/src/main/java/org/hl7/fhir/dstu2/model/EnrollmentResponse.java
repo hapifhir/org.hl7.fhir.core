@@ -693,9 +693,9 @@ public class EnrollmentResponse extends DomainResource {
       this.request = new Reference();
       return this.request;
     } else if (name.equals("outcome")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EnrollmentResponse.outcome");
+      throw new FHIRException("Cannot call addChild on a singleton property EnrollmentResponse.outcome");
     } else if (name.equals("disposition")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EnrollmentResponse.disposition");
+      throw new FHIRException("Cannot call addChild on a singleton property EnrollmentResponse.disposition");
     } else if (name.equals("ruleset")) {
       this.ruleset = new Coding();
       return this.ruleset;
@@ -703,7 +703,7 @@ public class EnrollmentResponse extends DomainResource {
       this.originalRuleset = new Coding();
       return this.originalRuleset;
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EnrollmentResponse.created");
+      throw new FHIRException("Cannot call addChild on a singleton property EnrollmentResponse.created");
     } else if (name.equals("organization")) {
       this.organization = new Reference();
       return this.organization;

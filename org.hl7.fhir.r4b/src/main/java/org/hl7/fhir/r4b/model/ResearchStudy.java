@@ -652,12 +652,12 @@ public class ResearchStudy extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.arm.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.arm.name");
       } else if (name.equals("type")) {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.arm.description");
+        throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.arm.description");
       } else
         return super.addChild(name);
     }
@@ -901,7 +901,7 @@ public class ResearchStudy extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.objective.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.objective.name");
       } else if (name.equals("type")) {
         this.type = new CodeableConcept();
         return this.type;
@@ -2824,13 +2824,13 @@ public class ResearchStudy extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.title");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.title");
     } else if (name.equals("protocol")) {
       return addProtocol();
     } else if (name.equals("partOf")) {
       return addPartOf();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.status");
     } else if (name.equals("primaryPurposeType")) {
       this.primaryPurposeType = new CodeableConcept();
       return this.primaryPurposeType;
@@ -2852,7 +2852,7 @@ public class ResearchStudy extends DomainResource {
     } else if (name.equals("location")) {
       return addLocation();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.description");
     } else if (name.equals("enrollment")) {
       return addEnrollment();
     } else if (name.equals("period")) {

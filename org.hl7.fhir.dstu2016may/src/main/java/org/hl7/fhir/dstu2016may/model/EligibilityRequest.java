@@ -1103,7 +1103,7 @@ public class EligibilityRequest extends DomainResource {
       this.originalRuleset = new Coding();
       return this.originalRuleset;
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EligibilityRequest.created");
+      throw new FHIRException("Cannot call addChild on a singleton property EligibilityRequest.created");
     } else if (name.equals("targetIdentifier")) {
       this.target = new Identifier();
       return this.target;
@@ -1150,7 +1150,7 @@ public class EligibilityRequest extends DomainResource {
       this.coverage = new Reference();
       return this.coverage;
     } else if (name.equals("businessArrangement")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EligibilityRequest.businessArrangement");
+      throw new FHIRException("Cannot call addChild on a singleton property EligibilityRequest.businessArrangement");
     } else if (name.equals("servicedDate")) {
       this.serviced = new DateType();
       return this.serviced;

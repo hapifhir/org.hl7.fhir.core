@@ -499,9 +499,9 @@ public class Composition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("mode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Composition.attester.mode");
+        throw new FHIRException("Cannot call addChild on a singleton property Composition.attester.mode");
       } else if (name.equals("time")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Composition.attester.time");
+        throw new FHIRException("Cannot call addChild on a singleton property Composition.attester.time");
       } else if (name.equals("party")) {
         this.party = new Reference();
         return this.party;
@@ -804,7 +804,7 @@ public class Composition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("code")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Composition.relatesTo.code");
+        throw new FHIRException("Cannot call addChild on a singleton property Composition.relatesTo.code");
       } else if (name.equals("targetIdentifier")) {
         this.target = new Identifier();
         return this.target;
@@ -2020,7 +2020,7 @@ public class Composition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("title")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Composition.section.title");
+        throw new FHIRException("Cannot call addChild on a singleton property Composition.section.title");
       } else if (name.equals("code")) {
         this.code = new CodeableConcept();
         return this.code;
@@ -2033,7 +2033,7 @@ public class Composition extends DomainResource {
         this.text = new Narrative();
         return this.text;
       } else if (name.equals("mode")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Composition.section.mode");
+        throw new FHIRException("Cannot call addChild on a singleton property Composition.section.mode");
       } else if (name.equals("orderedBy")) {
         this.orderedBy = new CodeableConcept();
         return this.orderedBy;
@@ -3281,7 +3281,7 @@ public class Composition extends DomainResource {
       this.identifier = new Identifier();
       return this.identifier;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Composition.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Composition.status");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
@@ -3294,13 +3294,13 @@ public class Composition extends DomainResource {
       this.encounter = new Reference();
       return this.encounter;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Composition.date");
+      throw new FHIRException("Cannot call addChild on a singleton property Composition.date");
     } else if (name.equals("author")) {
       return addAuthor();
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Composition.title");
+      throw new FHIRException("Cannot call addChild on a singleton property Composition.title");
     } else if (name.equals("confidentiality")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Composition.confidentiality");
+      throw new FHIRException("Cannot call addChild on a singleton property Composition.confidentiality");
     } else if (name.equals("attester")) {
       return addAttester();
     } else if (name.equals("custodian")) {

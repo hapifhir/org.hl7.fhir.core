@@ -2454,10 +2454,10 @@ public class Procedure extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("instantiatesCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Procedure.instantiatesCanonical");
+          throw new FHIRException("Cannot call addChild on a singleton property Procedure.instantiatesCanonical");
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Procedure.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a singleton property Procedure.instantiatesUri");
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
@@ -2466,7 +2466,7 @@ public class Procedure extends DomainResource {
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Procedure.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Procedure.status");
         }
         else if (name.equals("statusReason")) {
           this.statusReason = new CodeableConcept();
@@ -2516,7 +2516,7 @@ public class Procedure extends DomainResource {
           return this.occurrence;
         }
         else if (name.equals("recorded")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Procedure.recorded");
+          throw new FHIRException("Cannot call addChild on a singleton property Procedure.recorded");
         }
         else if (name.equals("recorder")) {
           this.recorder = new Reference();

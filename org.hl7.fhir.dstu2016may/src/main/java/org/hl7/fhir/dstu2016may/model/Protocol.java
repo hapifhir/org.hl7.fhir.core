@@ -1137,9 +1137,9 @@ public class Protocol extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.name");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.description");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.description");
       } else if (name.equals("duration")) {
         this.duration = new Duration();
         return this.duration;
@@ -1150,7 +1150,7 @@ public class Protocol extends DomainResource {
         this.exit = new ProtocolStepPreconditionComponent();
         return this.exit;
       } else if (name.equals("firstActivity")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.firstActivity");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.firstActivity");
       } else if (name.equals("activity")) {
         return addActivity();
       } else if (name.equals("next")) {
@@ -1572,7 +1572,7 @@ public class Protocol extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.description");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.description");
       } else if (name.equals("condition")) {
         this.condition = new ProtocolStepPreconditionConditionComponent();
         return this.condition;
@@ -2280,11 +2280,11 @@ public class Protocol extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("alternative")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.alternative");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.alternative");
       } else if (name.equals("component")) {
         return addComponent();
       } else if (name.equals("following")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.following");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.following");
       } else if (name.equals("wait")) {
         this.wait = new Duration();
         return this.wait;
@@ -2550,9 +2550,9 @@ public class Protocol extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("sequence")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.sequence");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.sequence");
       } else if (name.equals("activity")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.activity");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.activity");
       } else
         return super.addChild(name);
     }
@@ -3213,7 +3213,7 @@ public class Protocol extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("category")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.category");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.category");
       } else if (name.equals("code")) {
         this.code = new CodeableConcept();
         return this.code;
@@ -3235,7 +3235,7 @@ public class Protocol extends DomainResource {
         this.quantity = new SimpleQuantity();
         return this.quantity;
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.description");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.description");
       } else
         return super.addChild(name);
     }
@@ -3533,9 +3533,9 @@ public class Protocol extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.description");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.description");
       } else if (name.equals("reference")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Protocol.reference");
+        throw new FHIRException("Cannot call addChild on a singleton property Protocol.reference");
       } else if (name.equals("condition")) {
         this.condition = new ProtocolStepPreconditionComponent();
         return this.condition;
@@ -4260,11 +4260,11 @@ public class Protocol extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Protocol.title");
+      throw new FHIRException("Cannot call addChild on a singleton property Protocol.title");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Protocol.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Protocol.status");
     } else if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Protocol.type");
+      throw new FHIRException("Cannot call addChild on a singleton property Protocol.type");
     } else if (name.equals("subject")) {
       this.subject = new Reference();
       return this.subject;
@@ -4272,7 +4272,7 @@ public class Protocol extends DomainResource {
       this.group = new Reference();
       return this.group;
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Protocol.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property Protocol.purpose");
     } else if (name.equals("author")) {
       this.author = new Reference();
       return this.author;

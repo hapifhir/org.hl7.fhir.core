@@ -739,7 +739,7 @@ public class ClinicalImpression extends DomainResource {
         this.itemReference = new Reference();
         return this.itemReference;
       } else if (name.equals("basis")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.finding.basis");
+        throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.finding.basis");
       } else
         return super.addChild(name);
     }
@@ -2344,7 +2344,7 @@ public class ClinicalImpression extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.status");
     } else if (name.equals("statusReason")) {
       this.statusReason = new CodeableConcept();
       return this.statusReason;
@@ -2352,7 +2352,7 @@ public class ClinicalImpression extends DomainResource {
       this.code = new CodeableConcept();
       return this.code;
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.description");
     } else if (name.equals("subject")) {
       this.subject = new Reference();
       return this.subject;
@@ -2366,7 +2366,7 @@ public class ClinicalImpression extends DomainResource {
       this.effective = new Period();
       return this.effective;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.date");
     } else if (name.equals("assessor")) {
       this.assessor = new Reference();
       return this.assessor;
@@ -2378,9 +2378,9 @@ public class ClinicalImpression extends DomainResource {
     } else if (name.equals("investigation")) {
       return addInvestigation();
     } else if (name.equals("protocol")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.protocol");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.protocol");
     } else if (name.equals("summary")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.summary");
+      throw new FHIRException("Cannot call addChild on a singleton property ClinicalImpression.summary");
     } else if (name.equals("finding")) {
       return addFinding();
     } else if (name.equals("prognosisCodeableConcept")) {

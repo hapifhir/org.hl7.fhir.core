@@ -485,7 +485,7 @@ public class EligibilityRequest extends DomainResource {
       this.originalRuleset = new Coding();
       return this.originalRuleset;
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type EligibilityRequest.created");
+      throw new FHIRException("Cannot call addChild on a singleton property EligibilityRequest.created");
     } else if (name.equals("target")) {
       this.target = new Reference();
       return this.target;

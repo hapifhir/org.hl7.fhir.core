@@ -727,7 +727,7 @@ public class FamilyMemberHistory extends DomainResource {
         this.outcome = new CodeableConcept();
         return this.outcome;
       } else if (name.equals("contributedToDeath")) {
-        throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.contributedToDeath");
+        throw new FHIRException("Cannot call addChild on a singleton property FamilyMemberHistory.contributedToDeath");
       } else if (name.equals("onsetAge")) {
         this.onset = new Age();
         return this.onset;
@@ -2466,11 +2466,11 @@ public class FamilyMemberHistory extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("instantiatesCanonical")) {
-      throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.instantiatesCanonical");
+      throw new FHIRException("Cannot call addChild on a singleton property FamilyMemberHistory.instantiatesCanonical");
     } else if (name.equals("instantiatesUri")) {
-      throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.instantiatesUri");
+      throw new FHIRException("Cannot call addChild on a singleton property FamilyMemberHistory.instantiatesUri");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.status");
+      throw new FHIRException("Cannot call addChild on a singleton property FamilyMemberHistory.status");
     } else if (name.equals("dataAbsentReason")) {
       this.dataAbsentReason = new CodeableConcept();
       return this.dataAbsentReason;
@@ -2478,9 +2478,9 @@ public class FamilyMemberHistory extends DomainResource {
       this.patient = new Reference();
       return this.patient;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.date");
+      throw new FHIRException("Cannot call addChild on a singleton property FamilyMemberHistory.date");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.name");
+      throw new FHIRException("Cannot call addChild on a singleton property FamilyMemberHistory.name");
     } else if (name.equals("relationship")) {
       this.relationship = new CodeableConcept();
       return this.relationship;
@@ -2506,7 +2506,7 @@ public class FamilyMemberHistory extends DomainResource {
       this.age = new StringType();
       return this.age;
     } else if (name.equals("estimatedAge")) {
-      throw new FHIRException("Cannot call addChild on a primitive type FamilyMemberHistory.estimatedAge");
+      throw new FHIRException("Cannot call addChild on a singleton property FamilyMemberHistory.estimatedAge");
     } else if (name.equals("deceasedBoolean")) {
       this.deceased = new BooleanType();
       return this.deceased;

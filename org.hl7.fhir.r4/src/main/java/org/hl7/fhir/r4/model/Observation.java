@@ -805,7 +805,7 @@ public class Observation extends DomainResource {
         this.age = new Range();
         return this.age;
       } else if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Observation.text");
+        throw new FHIRException("Cannot call addChild on a singleton property Observation.text");
       } else
         return super.addChild(name);
     }
@@ -4036,7 +4036,7 @@ public class Observation extends DomainResource {
     } else if (name.equals("partOf")) {
       return addPartOf();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Observation.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Observation.status");
     } else if (name.equals("category")) {
       return addCategory();
     } else if (name.equals("code")) {
@@ -4063,7 +4063,7 @@ public class Observation extends DomainResource {
       this.effective = new InstantType();
       return this.effective;
     } else if (name.equals("issued")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Observation.issued");
+      throw new FHIRException("Cannot call addChild on a singleton property Observation.issued");
     } else if (name.equals("performer")) {
       return addPerformer();
     } else if (name.equals("valueQuantity")) {

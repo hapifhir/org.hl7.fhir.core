@@ -175,7 +175,7 @@ public class ProcessResponse extends DomainResource {
         this.type = new Coding();
         return this.type;
       } else if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ProcessResponse.text");
+        throw new FHIRException("Cannot call addChild on a singleton property ProcessResponse.text");
       } else
         return super.addChild(name);
     }
@@ -971,7 +971,7 @@ public class ProcessResponse extends DomainResource {
       this.outcome = new Coding();
       return this.outcome;
     } else if (name.equals("disposition")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ProcessResponse.disposition");
+      throw new FHIRException("Cannot call addChild on a singleton property ProcessResponse.disposition");
     } else if (name.equals("ruleset")) {
       this.ruleset = new Coding();
       return this.ruleset;
@@ -979,7 +979,7 @@ public class ProcessResponse extends DomainResource {
       this.originalRuleset = new Coding();
       return this.originalRuleset;
     } else if (name.equals("created")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ProcessResponse.created");
+      throw new FHIRException("Cannot call addChild on a singleton property ProcessResponse.created");
     } else if (name.equals("organization")) {
       this.organization = new Reference();
       return this.organization;

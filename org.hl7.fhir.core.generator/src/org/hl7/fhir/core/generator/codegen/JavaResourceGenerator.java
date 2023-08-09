@@ -1083,7 +1083,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     first = false;
     write(           "if (name.equals(\""+namet+"\")) {\r\n");
     if (isPrimitive(e.typeSummary()) || e.typeSummary().startsWith("canonical("))
-      write(indent+"      throw new FHIRException(\"Cannot call addChild on a primitive type "+parent+"."+e.getName()+"\");\r\n"); 
+      write(indent+"      throw new FHIRException(\"Cannot call addChild on a singleton property "+parent+"."+e.getName()+"\");\r\n"); 
     else if (isAbstract(e.typeSummary()))
       write(indent+"      throw new FHIRException(\"Cannot call addChild on an abstract type "+parent+"."+e.getName()+"\");\r\n"); 
     else if (e.unbounded()) {

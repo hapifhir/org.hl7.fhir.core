@@ -934,11 +934,11 @@ public class Location extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("longitude")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Location.longitude");
+        throw new FHIRException("Cannot call addChild on a singleton property Location.longitude");
       } else if (name.equals("latitude")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Location.latitude");
+        throw new FHIRException("Cannot call addChild on a singleton property Location.latitude");
       } else if (name.equals("altitude")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Location.altitude");
+        throw new FHIRException("Cannot call addChild on a singleton property Location.altitude");
       } else
         return super.addChild(name);
     }
@@ -1378,13 +1378,13 @@ public class Location extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("daysOfWeek")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Location.daysOfWeek");
+        throw new FHIRException("Cannot call addChild on a singleton property Location.daysOfWeek");
       } else if (name.equals("allDay")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Location.allDay");
+        throw new FHIRException("Cannot call addChild on a singleton property Location.allDay");
       } else if (name.equals("openingTime")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Location.openingTime");
+        throw new FHIRException("Cannot call addChild on a singleton property Location.openingTime");
       } else if (name.equals("closingTime")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Location.closingTime");
+        throw new FHIRException("Cannot call addChild on a singleton property Location.closingTime");
       } else
         return super.addChild(name);
     }
@@ -2845,18 +2845,18 @@ public class Location extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Location.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Location.status");
     } else if (name.equals("operationalStatus")) {
       this.operationalStatus = new Coding();
       return this.operationalStatus;
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Location.name");
+      throw new FHIRException("Cannot call addChild on a singleton property Location.name");
     } else if (name.equals("alias")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Location.alias");
+      throw new FHIRException("Cannot call addChild on a singleton property Location.alias");
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Location.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Location.description");
     } else if (name.equals("mode")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Location.mode");
+      throw new FHIRException("Cannot call addChild on a singleton property Location.mode");
     } else if (name.equals("type")) {
       return addType();
     } else if (name.equals("telecom")) {
@@ -2879,7 +2879,7 @@ public class Location extends DomainResource {
     } else if (name.equals("hoursOfOperation")) {
       return addHoursOfOperation();
     } else if (name.equals("availabilityExceptions")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Location.availabilityExceptions");
+      throw new FHIRException("Cannot call addChild on a singleton property Location.availabilityExceptions");
     } else if (name.equals("endpoint")) {
       return addEndpoint();
     } else

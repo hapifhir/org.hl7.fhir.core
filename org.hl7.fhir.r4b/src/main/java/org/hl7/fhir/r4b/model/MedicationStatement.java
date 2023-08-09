@@ -1749,7 +1749,7 @@ public class MedicationStatement extends DomainResource {
     } else if (name.equals("partOf")) {
       return addPartOf();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.status");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.status");
     } else if (name.equals("statusReason")) {
       return addStatusReason();
     } else if (name.equals("category")) {
@@ -1774,7 +1774,7 @@ public class MedicationStatement extends DomainResource {
       this.effective = new Period();
       return this.effective;
     } else if (name.equals("dateAsserted")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.dateAsserted");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.dateAsserted");
     } else if (name.equals("informationSource")) {
       this.informationSource = new Reference();
       return this.informationSource;

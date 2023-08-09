@@ -725,9 +725,9 @@ public class RelatedPerson extends DomainResource {
     } else if (name.equals("telecom")) {
       return addTelecom();
     } else if (name.equals("gender")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RelatedPerson.gender");
+      throw new FHIRException("Cannot call addChild on a singleton property RelatedPerson.gender");
     } else if (name.equals("birthDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RelatedPerson.birthDate");
+      throw new FHIRException("Cannot call addChild on a singleton property RelatedPerson.birthDate");
     } else if (name.equals("address")) {
       return addAddress();
     } else if (name.equals("photo")) {

@@ -359,11 +359,11 @@ public class RiskEvidenceSynthesis extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.description");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.description");
       } else if (name.equals("numberOfStudies")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.numberOfStudies");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.numberOfStudies");
       } else if (name.equals("numberOfParticipants")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.numberOfParticipants");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.numberOfParticipants");
       } else
         return super.addChild(name);
     }
@@ -988,19 +988,19 @@ public class RiskEvidenceSynthesis extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.description");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.description");
       } else if (name.equals("type")) {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("value")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.value");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.value");
       } else if (name.equals("unitOfMeasure")) {
         this.unitOfMeasure = new CodeableConcept();
         return this.unitOfMeasure;
       } else if (name.equals("denominatorCount")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.denominatorCount");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.denominatorCount");
       } else if (name.equals("numeratorCount")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.numeratorCount");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.numeratorCount");
       } else if (name.equals("precisionEstimate")) {
         return addPrecisionEstimate();
       } else
@@ -1468,11 +1468,11 @@ public class RiskEvidenceSynthesis extends MetadataResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("level")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.level");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.level");
       } else if (name.equals("from")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.from");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.from");
       } else if (name.equals("to")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.to");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.to");
       } else
         return super.addChild(name);
     }
@@ -4718,25 +4718,25 @@ public class RiskEvidenceSynthesis extends MetadataResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.url");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.version");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.name");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.title");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.title");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.status");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.status");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.date");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.description");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.description");
     } else if (name.equals("note")) {
       return addNote();
     } else if (name.equals("useContext")) {
@@ -4744,11 +4744,11 @@ public class RiskEvidenceSynthesis extends MetadataResource {
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.copyright");
     } else if (name.equals("approvalDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.approvalDate");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.approvalDate");
     } else if (name.equals("lastReviewDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskEvidenceSynthesis.lastReviewDate");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskEvidenceSynthesis.lastReviewDate");
     } else if (name.equals("effectivePeriod")) {
       this.effectivePeriod = new Period();
       return this.effectivePeriod;

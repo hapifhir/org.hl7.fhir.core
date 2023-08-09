@@ -985,7 +985,7 @@ public class DeviceUseStatement extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceUseStatement.status");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceUseStatement.status");
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();
@@ -1008,7 +1008,7 @@ public class DeviceUseStatement extends DomainResource {
           return this.timing;
         }
         else if (name.equals("recordedOn")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceUseStatement.recordedOn");
+          throw new FHIRException("Cannot call addChild on a singleton property DeviceUseStatement.recordedOn");
         }
         else if (name.equals("source")) {
           this.source = new Reference();

@@ -282,7 +282,7 @@ public class OrderedDistribution extends BackboneType implements ICompositeType 
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("rankOrder")) {
-        throw new FHIRException("Cannot call addChild on a primitive type OrderedDistribution.interval.rankOrder");
+        throw new FHIRException("Cannot call addChild on a singleton property OrderedDistribution.interval.rankOrder");
       } else if (name.equals("intervalStatistic")) {
         return addIntervalStatistic();
       } else
@@ -821,11 +821,11 @@ public class OrderedDistribution extends BackboneType implements ICompositeType 
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OrderedDistribution.description");
+      throw new FHIRException("Cannot call addChild on a singleton property OrderedDistribution.description");
     } else if (name.equals("note")) {
       return addNote();
     } else if (name.equals("numberOfIntervals")) {
-      throw new FHIRException("Cannot call addChild on a primitive type OrderedDistribution.numberOfIntervals");
+      throw new FHIRException("Cannot call addChild on a singleton property OrderedDistribution.numberOfIntervals");
     } else if (name.equals("bottomOfFirstInterval")) {
       this.bottomOfFirstInterval = new Quantity();
       return this.bottomOfFirstInterval;

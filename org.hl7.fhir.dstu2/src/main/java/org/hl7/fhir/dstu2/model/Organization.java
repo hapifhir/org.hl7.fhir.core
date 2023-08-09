@@ -767,12 +767,12 @@ public class Organization extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("active")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Organization.active");
+      throw new FHIRException("Cannot call addChild on a singleton property Organization.active");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Organization.name");
+      throw new FHIRException("Cannot call addChild on a singleton property Organization.name");
     } else if (name.equals("telecom")) {
       return addTelecom();
     } else if (name.equals("address")) {

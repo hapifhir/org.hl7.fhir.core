@@ -585,7 +585,7 @@ public class SubstancePolymer extends DomainResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("isDefining")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.isDefining");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstancePolymer.isDefining");
       } else if (name.equals("amount")) {
         this.amount = new SubstanceAmount();
         return this.amount;
@@ -982,9 +982,9 @@ public class SubstancePolymer extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("numberOfUnits")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.numberOfUnits");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstancePolymer.numberOfUnits");
       } else if (name.equals("averageMolecularFormula")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.averageMolecularFormula");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstancePolymer.averageMolecularFormula");
       } else if (name.equals("repeatUnitAmountType")) {
         this.repeatUnitAmountType = new CodeableConcept();
         return this.repeatUnitAmountType;
@@ -1458,7 +1458,7 @@ public class SubstancePolymer extends DomainResource {
         this.orientationOfPolymerisation = new CodeableConcept();
         return this.orientationOfPolymerisation;
       } else if (name.equals("repeatUnit")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeatUnit");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstancePolymer.repeatUnit");
       } else if (name.equals("amount")) {
         this.amount = new SubstanceAmount();
         return this.amount;
@@ -1992,7 +1992,7 @@ public class SubstancePolymer extends DomainResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("representation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.representation");
+        throw new FHIRException("Cannot call addChild on a singleton property SubstancePolymer.representation");
       } else if (name.equals("attachment")) {
         this.attachment = new Attachment();
         return this.attachment;
@@ -2529,7 +2529,7 @@ public class SubstancePolymer extends DomainResource {
     } else if (name.equals("copolymerConnectivity")) {
       return addCopolymerConnectivity();
     } else if (name.equals("modification")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.modification");
+      throw new FHIRException("Cannot call addChild on a singleton property SubstancePolymer.modification");
     } else if (name.equals("monomerSet")) {
       return addMonomerSet();
     } else if (name.equals("repeat")) {

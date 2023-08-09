@@ -979,7 +979,7 @@ public class SupplyDelivery extends DomainResource {
       this.identifier = new Identifier();
       return this.identifier;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SupplyDelivery.status");
+      throw new FHIRException("Cannot call addChild on a singleton property SupplyDelivery.status");
     } else if (name.equals("patient")) {
       this.patient = new Reference();
       return this.patient;
@@ -999,7 +999,7 @@ public class SupplyDelivery extends DomainResource {
       this.whenPrepared = new Period();
       return this.whenPrepared;
     } else if (name.equals("time")) {
-      throw new FHIRException("Cannot call addChild on a primitive type SupplyDelivery.time");
+      throw new FHIRException("Cannot call addChild on a singleton property SupplyDelivery.time");
     } else if (name.equals("destination")) {
       this.destination = new Reference();
       return this.destination;

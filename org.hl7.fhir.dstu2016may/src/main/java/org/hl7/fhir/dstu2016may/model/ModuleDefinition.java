@@ -318,11 +318,11 @@ public class ModuleDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.name");
       } else if (name.equals("identifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.identifier");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.identifier");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.version");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.version");
       } else
         return super.addChild(name);
     }
@@ -709,11 +709,11 @@ public class ModuleDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.name");
       } else if (name.equals("identifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.identifier");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.identifier");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.version");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.version");
       } else if (name.equals("documentAttachment")) {
         this.document = new Attachment();
         return this.document;
@@ -1035,11 +1035,11 @@ public class ModuleDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.name");
       } else if (name.equals("identifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.identifier");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.identifier");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.version");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.version");
       } else
         return super.addChild(name);
     }
@@ -1438,13 +1438,13 @@ public class ModuleDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.name");
       } else if (name.equals("identifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.identifier");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.identifier");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.version");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.version");
       } else if (name.equals("codeSystem")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.codeSystem");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.codeSystem");
       } else
         return super.addChild(name);
     }
@@ -1908,13 +1908,13 @@ public class ModuleDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.name");
       } else if (name.equals("use")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.use");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.use");
       } else if (name.equals("documentation")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.documentation");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.documentation");
       } else if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.type");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.type");
       } else if (name.equals("profile")) {
         this.profile = new Reference();
         return this.profile;
@@ -2404,12 +2404,12 @@ public class ModuleDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.type");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.type");
       } else if (name.equals("profile")) {
         this.profile = new Reference();
         return this.profile;
       } else if (name.equals("mustSupport")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.mustSupport");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.mustSupport");
       } else if (name.equals("codeFilter")) {
         return addCodeFilter();
       } else if (name.equals("dateFilter")) {
@@ -2792,7 +2792,7 @@ public class ModuleDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("path")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.path");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.path");
       } else if (name.equals("valueSetString")) {
         this.valueSet = new StringType();
         return this.valueSet;
@@ -3092,7 +3092,7 @@ public class ModuleDefinition extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("path")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.path");
+        throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.path");
       } else if (name.equals("valueDateTime")) {
         this.value = new DateTimeType();
         return this.value;
@@ -3712,7 +3712,7 @@ public class ModuleDefinition extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ModuleDefinition.version");
+      throw new FHIRException("Cannot call addChild on a singleton property ModuleDefinition.version");
     } else if (name.equals("model")) {
       return addModel();
     } else if (name.equals("library")) {

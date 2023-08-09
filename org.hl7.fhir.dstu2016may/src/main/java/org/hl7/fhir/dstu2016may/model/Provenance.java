@@ -771,7 +771,7 @@ public class Provenance extends DomainResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("target")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Provenance.target");
+        throw new FHIRException("Cannot call addChild on a singleton property Provenance.target");
       } else
         return super.addChild(name);
     }
@@ -1188,14 +1188,14 @@ public class Provenance extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("role")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Provenance.role");
+        throw new FHIRException("Cannot call addChild on a singleton property Provenance.role");
       } else if (name.equals("type")) {
         this.type = new Coding();
         return this.type;
       } else if (name.equals("reference")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Provenance.reference");
+        throw new FHIRException("Cannot call addChild on a singleton property Provenance.reference");
       } else if (name.equals("display")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Provenance.display");
+        throw new FHIRException("Cannot call addChild on a singleton property Provenance.display");
       } else if (name.equals("agent")) {
         this.agent = new ProvenanceAgentComponent();
         return this.agent;
@@ -1967,7 +1967,7 @@ public class Provenance extends DomainResource {
       this.period = new Period();
       return this.period;
     } else if (name.equals("recorded")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Provenance.recorded");
+      throw new FHIRException("Cannot call addChild on a singleton property Provenance.recorded");
     } else if (name.equals("reason")) {
       return addReason();
     } else if (name.equals("activity")) {
@@ -1977,7 +1977,7 @@ public class Provenance extends DomainResource {
       this.location = new Reference();
       return this.location;
     } else if (name.equals("policy")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Provenance.policy");
+      throw new FHIRException("Cannot call addChild on a singleton property Provenance.policy");
     } else if (name.equals("agent")) {
       return addAgent();
     } else if (name.equals("entity")) {

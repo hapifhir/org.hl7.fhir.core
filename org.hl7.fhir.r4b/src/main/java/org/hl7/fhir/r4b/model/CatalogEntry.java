@@ -383,7 +383,7 @@ public class CatalogEntry extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("relationtype")) {
-        throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.relatedEntry.relationtype");
+        throw new FHIRException("Cannot call addChild on a singleton property CatalogEntry.relatedEntry.relationtype");
       } else if (name.equals("item")) {
         this.item = new Reference();
         return this.item;
@@ -1486,7 +1486,7 @@ public class CatalogEntry extends DomainResource {
       this.type = new CodeableConcept();
       return this.type;
     } else if (name.equals("orderable")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.orderable");
+      throw new FHIRException("Cannot call addChild on a singleton property CatalogEntry.orderable");
     } else if (name.equals("referencedItem")) {
       this.referencedItem = new Reference();
       return this.referencedItem;
@@ -1495,14 +1495,14 @@ public class CatalogEntry extends DomainResource {
     } else if (name.equals("classification")) {
       return addClassification();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.status");
+      throw new FHIRException("Cannot call addChild on a singleton property CatalogEntry.status");
     } else if (name.equals("validityPeriod")) {
       this.validityPeriod = new Period();
       return this.validityPeriod;
     } else if (name.equals("validTo")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.validTo");
+      throw new FHIRException("Cannot call addChild on a singleton property CatalogEntry.validTo");
     } else if (name.equals("lastUpdated")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.lastUpdated");
+      throw new FHIRException("Cannot call addChild on a singleton property CatalogEntry.lastUpdated");
     } else if (name.equals("additionalCharacteristic")) {
       return addAdditionalCharacteristic();
     } else if (name.equals("additionalClassification")) {

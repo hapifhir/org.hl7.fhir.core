@@ -523,7 +523,7 @@ public class NutritionOrder extends DomainResource {
           return addFluidConsistencyType();
         }
         else if (name.equals("instruction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.oralDiet.instruction");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.oralDiet.instruction");
         }
         else
           return super.addChild(name);
@@ -837,7 +837,7 @@ public class NutritionOrder extends DomainResource {
           return addTiming();
         }
         else if (name.equals("asNeeded")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.oralDiet.schedule.asNeeded");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.oralDiet.schedule.asNeeded");
         }
         else if (name.equals("asNeededFor")) {
           this.asNeededFor = new CodeableConcept();
@@ -1627,7 +1627,7 @@ public class NutritionOrder extends DomainResource {
           return this.type;
         }
         else if (name.equals("productName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.supplement.productName");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.supplement.productName");
         }
         else if (name.equals("schedule")) {
           this.schedule = new SupplementScheduleComponent();
@@ -1638,7 +1638,7 @@ public class NutritionOrder extends DomainResource {
           return this.quantity;
         }
         else if (name.equals("instruction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.supplement.instruction");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.supplement.instruction");
         }
         else
           return super.addChild(name);
@@ -1935,7 +1935,7 @@ public class NutritionOrder extends DomainResource {
           return addTiming();
         }
         else if (name.equals("asNeeded")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.supplement.schedule.asNeeded");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.supplement.schedule.asNeeded");
         }
         else if (name.equals("asNeededFor")) {
           this.asNeededFor = new CodeableConcept();
@@ -2572,7 +2572,7 @@ public class NutritionOrder extends DomainResource {
           return this.baseFormulaType;
         }
         else if (name.equals("baseFormulaProductName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.enteralFormula.baseFormulaProductName");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.enteralFormula.baseFormulaProductName");
         }
         else if (name.equals("deliveryDevice")) {
           return addDeliveryDevice();
@@ -2596,7 +2596,7 @@ public class NutritionOrder extends DomainResource {
           return this.maxVolumeToDeliver;
         }
         else if (name.equals("administrationInstruction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.enteralFormula.administrationInstruction");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.enteralFormula.administrationInstruction");
         }
         else
           return super.addChild(name);
@@ -2889,7 +2889,7 @@ public class NutritionOrder extends DomainResource {
           return this.type;
         }
         else if (name.equals("productName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.enteralFormula.additive.productName");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.enteralFormula.additive.productName");
         }
         else if (name.equals("quantity")) {
           this.quantity = new Quantity();
@@ -3471,7 +3471,7 @@ public class NutritionOrder extends DomainResource {
           return addTiming();
         }
         else if (name.equals("asNeeded")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.enteralFormula.administration.schedule.asNeeded");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.enteralFormula.administration.schedule.asNeeded");
         }
         else if (name.equals("asNeededFor")) {
           this.asNeededFor = new CodeableConcept();
@@ -5043,13 +5043,13 @@ public class NutritionOrder extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("instantiatesCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.instantiatesCanonical");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.instantiatesCanonical");
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.instantiatesUri");
         }
         else if (name.equals("instantiates")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.instantiates");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.instantiates");
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
@@ -5059,13 +5059,13 @@ public class NutritionOrder extends DomainResource {
           return this.groupIdentifier;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.status");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.status");
         }
         else if (name.equals("intent")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.intent");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.intent");
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.priority");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.priority");
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();
@@ -5079,7 +5079,7 @@ public class NutritionOrder extends DomainResource {
           return addSupportingInformation();
         }
         else if (name.equals("dateTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.dateTime");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.dateTime");
         }
         else if (name.equals("orderer")) {
           this.orderer = new Reference();
@@ -5098,7 +5098,7 @@ public class NutritionOrder extends DomainResource {
           return addExcludeFoodModifier();
         }
         else if (name.equals("outsideFoodAllowed")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.outsideFoodAllowed");
+          throw new FHIRException("Cannot call addChild on a singleton property NutritionOrder.outsideFoodAllowed");
         }
         else if (name.equals("oralDiet")) {
           this.oralDiet = new NutritionOrderOralDietComponent();

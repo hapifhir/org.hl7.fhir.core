@@ -438,7 +438,7 @@ public class Parameters extends Resource implements IBaseParameters {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Parameters.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Parameters.name");
       } else if (name.equals("valueBase64Binary")) {
         this.value = new Base64BinaryType();
         return this.value;

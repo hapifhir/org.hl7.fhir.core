@@ -1391,7 +1391,7 @@ public class MedicinalProductPharmaceutical extends DomainResource {
         return this.value;
       } else if (name.equals("supportingInformation")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type MedicinalProductPharmaceutical.supportingInformation");
+            "Cannot call addChild on a singleton property MedicinalProductPharmaceutical.supportingInformation");
       } else
         return super.addChild(name);
     }

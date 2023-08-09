@@ -776,7 +776,7 @@ public class Schedule extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("active")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Schedule.active");
+      throw new FHIRException("Cannot call addChild on a singleton property Schedule.active");
     } else if (name.equals("serviceCategory")) {
       return addServiceCategory();
     } else if (name.equals("serviceType")) {
@@ -789,7 +789,7 @@ public class Schedule extends DomainResource {
       this.planningHorizon = new Period();
       return this.planningHorizon;
     } else if (name.equals("comment")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Schedule.comment");
+      throw new FHIRException("Cannot call addChild on a singleton property Schedule.comment");
     } else
       return super.addChild(name);
   }

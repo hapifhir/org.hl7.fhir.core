@@ -933,15 +933,15 @@ public class Coverage extends DomainResource {
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("group")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.group");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.group");
     } else if (name.equals("plan")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.plan");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.plan");
     } else if (name.equals("subPlan")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.subPlan");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.subPlan");
     } else if (name.equals("dependent")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.dependent");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.dependent");
     } else if (name.equals("sequence")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Coverage.sequence");
+      throw new FHIRException("Cannot call addChild on a singleton property Coverage.sequence");
     } else if (name.equals("subscriber")) {
       this.subscriber = new Reference();
       return this.subscriber;

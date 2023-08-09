@@ -2525,11 +2525,11 @@ public class ChargeItem extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("definitionUri")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.definitionUri");
+      throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.definitionUri");
     } else if (name.equals("definitionCanonical")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.definitionCanonical");
+      throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.definitionCanonical");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.status");
     } else if (name.equals("partOf")) {
       return addPartOf();
     } else if (name.equals("code")) {
@@ -2567,17 +2567,17 @@ public class ChargeItem extends DomainResource {
     } else if (name.equals("bodysite")) {
       return addBodysite();
     } else if (name.equals("factorOverride")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.factorOverride");
+      throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.factorOverride");
     } else if (name.equals("priceOverride")) {
       this.priceOverride = new Money();
       return this.priceOverride;
     } else if (name.equals("overrideReason")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.overrideReason");
+      throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.overrideReason");
     } else if (name.equals("enterer")) {
       this.enterer = new Reference();
       return this.enterer;
     } else if (name.equals("enteredDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.enteredDate");
+      throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.enteredDate");
     } else if (name.equals("reason")) {
       return addReason();
     } else if (name.equals("service")) {

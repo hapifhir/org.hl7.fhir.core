@@ -1552,7 +1552,7 @@ public class CommunicationRequest extends DomainResource {
       this.requester = new Reference();
       return this.requester;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CommunicationRequest.status");
+      throw new FHIRException("Cannot call addChild on a singleton property CommunicationRequest.status");
     } else if (name.equals("encounter")) {
       this.encounter = new Reference();
       return this.encounter;
@@ -1565,7 +1565,7 @@ public class CommunicationRequest extends DomainResource {
     } else if (name.equals("reason")) {
       return addReason();
     } else if (name.equals("requestedOn")) {
-      throw new FHIRException("Cannot call addChild on a primitive type CommunicationRequest.requestedOn");
+      throw new FHIRException("Cannot call addChild on a singleton property CommunicationRequest.requestedOn");
     } else if (name.equals("subject")) {
       this.subject = new Reference();
       return this.subject;

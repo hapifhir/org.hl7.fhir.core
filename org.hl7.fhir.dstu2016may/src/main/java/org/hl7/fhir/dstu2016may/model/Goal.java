@@ -1492,11 +1492,11 @@ public class Goal extends DomainResource {
     } else if (name.equals("category")) {
       return addCategory();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Goal.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Goal.description");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Goal.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Goal.status");
     } else if (name.equals("statusDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Goal.statusDate");
+      throw new FHIRException("Cannot call addChild on a singleton property Goal.statusDate");
     } else if (name.equals("statusReason")) {
       this.statusReason = new CodeableConcept();
       return this.statusReason;

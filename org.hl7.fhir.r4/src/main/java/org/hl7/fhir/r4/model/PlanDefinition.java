@@ -4950,15 +4950,15 @@ public class PlanDefinition extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("prefix")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.prefix");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.prefix");
       } else if (name.equals("title")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.title");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.title");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.description");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.description");
       } else if (name.equals("textEquivalent")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.textEquivalent");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.textEquivalent");
       } else if (name.equals("priority")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.priority");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.priority");
       } else if (name.equals("code")) {
         return addCode();
       } else if (name.equals("reason")) {
@@ -4966,7 +4966,7 @@ public class PlanDefinition extends MetadataResource {
       } else if (name.equals("documentation")) {
         return addDocumentation();
       } else if (name.equals("goalId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.goalId");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.goalId");
       } else if (name.equals("subjectCodeableConcept")) {
         this.subject = new CodeableConcept();
         return this.subject;
@@ -5007,21 +5007,21 @@ public class PlanDefinition extends MetadataResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("groupingBehavior")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.groupingBehavior");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.groupingBehavior");
       } else if (name.equals("selectionBehavior")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.selectionBehavior");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.selectionBehavior");
       } else if (name.equals("requiredBehavior")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.requiredBehavior");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.requiredBehavior");
       } else if (name.equals("precheckBehavior")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.precheckBehavior");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.precheckBehavior");
       } else if (name.equals("cardinalityBehavior")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.cardinalityBehavior");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.cardinalityBehavior");
       } else if (name.equals("definitionCanonical")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.definition[x]");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.definition[x]");
       } else if (name.equals("definitionUri")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.definition[x]");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.definition[x]");
       } else if (name.equals("transform")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.transform");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.transform");
       } else if (name.equals("dynamicValue")) {
         return addDynamicValue();
       } else if (name.equals("action")) {
@@ -5387,7 +5387,7 @@ public class PlanDefinition extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("kind")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.kind");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.kind");
       } else if (name.equals("expression")) {
         this.expression = new Expression();
         return this.expression;
@@ -5766,9 +5766,9 @@ public class PlanDefinition extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("actionId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.actionId");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.actionId");
       } else if (name.equals("relationship")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.relationship");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.relationship");
       } else if (name.equals("offsetDuration")) {
         this.offset = new Duration();
         return this.offset;
@@ -6026,7 +6026,7 @@ public class PlanDefinition extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.type");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.type");
       } else if (name.equals("role")) {
         this.role = new CodeableConcept();
         return this.role;
@@ -6317,7 +6317,7 @@ public class PlanDefinition extends MetadataResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("path")) {
-        throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.path");
+        throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.path");
       } else if (name.equals("expression")) {
         this.expression = new Expression();
         return this.expression;
@@ -8968,24 +8968,24 @@ public class PlanDefinition extends MetadataResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.url");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.version");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.name");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.title");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.title");
     } else if (name.equals("subtitle")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.subtitle");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.subtitle");
     } else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.status");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.experimental");
     } else if (name.equals("subjectCodeableConcept")) {
       this.subject = new CodeableConcept();
       return this.subject;
@@ -8993,27 +8993,27 @@ public class PlanDefinition extends MetadataResource {
       this.subject = new Reference();
       return this.subject;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.date");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.description");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.description");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.purpose");
     } else if (name.equals("usage")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.usage");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.usage");
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.copyright");
     } else if (name.equals("approvalDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.approvalDate");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.approvalDate");
     } else if (name.equals("lastReviewDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.lastReviewDate");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.lastReviewDate");
     } else if (name.equals("effectivePeriod")) {
       this.effectivePeriod = new Period();
       return this.effectivePeriod;
@@ -9030,7 +9030,7 @@ public class PlanDefinition extends MetadataResource {
     } else if (name.equals("relatedArtifact")) {
       return addRelatedArtifact();
     } else if (name.equals("library")) {
-      throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.library");
+      throw new FHIRException("Cannot call addChild on a singleton property PlanDefinition.library");
     } else if (name.equals("goal")) {
       return addGoal();
     } else if (name.equals("action")) {

@@ -1439,7 +1439,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProductDispense.status");
+          throw new FHIRException("Cannot call addChild on a singleton property BiologicallyDerivedProductDispense.status");
         }
         else if (name.equals("originRelationshipType")) {
           this.originRelationshipType = new CodeableConcept();
@@ -1469,10 +1469,10 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
           return this.quantity;
         }
         else if (name.equals("preparedDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProductDispense.preparedDate");
+          throw new FHIRException("Cannot call addChild on a singleton property BiologicallyDerivedProductDispense.preparedDate");
         }
         else if (name.equals("whenHandedOver")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProductDispense.whenHandedOver");
+          throw new FHIRException("Cannot call addChild on a singleton property BiologicallyDerivedProductDispense.whenHandedOver");
         }
         else if (name.equals("destination")) {
           this.destination = new Reference();
@@ -1482,7 +1482,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
           return addNote();
         }
         else if (name.equals("usageInstruction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProductDispense.usageInstruction");
+          throw new FHIRException("Cannot call addChild on a singleton property BiologicallyDerivedProductDispense.usageInstruction");
         }
         else
           return super.addChild(name);

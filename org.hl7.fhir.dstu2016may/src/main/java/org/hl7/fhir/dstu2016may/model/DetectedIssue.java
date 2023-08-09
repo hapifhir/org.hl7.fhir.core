@@ -458,7 +458,7 @@ public class DetectedIssue extends DomainResource {
         this.action = new CodeableConcept();
         return this.action;
       } else if (name.equals("date")) {
-        throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.date");
+        throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.date");
       } else if (name.equals("author")) {
         this.author = new Reference();
         return this.author;
@@ -1266,13 +1266,13 @@ public class DetectedIssue extends DomainResource {
       this.category = new CodeableConcept();
       return this.category;
     } else if (name.equals("severity")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.severity");
+      throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.severity");
     } else if (name.equals("implicated")) {
       return addImplicated();
     } else if (name.equals("detail")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.detail");
+      throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.detail");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.date");
+      throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.date");
     } else if (name.equals("author")) {
       this.author = new Reference();
       return this.author;
@@ -1280,7 +1280,7 @@ public class DetectedIssue extends DomainResource {
       this.identifier = new Identifier();
       return this.identifier;
     } else if (name.equals("reference")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.reference");
+      throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.reference");
     } else if (name.equals("mitigation")) {
       return addMitigation();
     } else

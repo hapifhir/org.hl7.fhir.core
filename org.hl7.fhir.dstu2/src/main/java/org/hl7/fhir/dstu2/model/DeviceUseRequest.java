@@ -1390,7 +1390,7 @@ public class DeviceUseRequest extends DomainResource {
       this.bodySite = new Reference();
       return this.bodySite;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceUseRequest.status");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceUseRequest.status");
     } else if (name.equals("device")) {
       this.device = new Reference();
       return this.device;
@@ -1402,13 +1402,13 @@ public class DeviceUseRequest extends DomainResource {
     } else if (name.equals("indication")) {
       return addIndication();
     } else if (name.equals("notes")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceUseRequest.notes");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceUseRequest.notes");
     } else if (name.equals("prnReason")) {
       return addPrnReason();
     } else if (name.equals("orderedOn")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceUseRequest.orderedOn");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceUseRequest.orderedOn");
     } else if (name.equals("recordedOn")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceUseRequest.recordedOn");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceUseRequest.recordedOn");
     } else if (name.equals("subject")) {
       this.subject = new Reference();
       return this.subject;
@@ -1422,7 +1422,7 @@ public class DeviceUseRequest extends DomainResource {
       this.timing = new DateTimeType();
       return this.timing;
     } else if (name.equals("priority")) {
-      throw new FHIRException("Cannot call addChild on a primitive type DeviceUseRequest.priority");
+      throw new FHIRException("Cannot call addChild on a singleton property DeviceUseRequest.priority");
     } else
       return super.addChild(name);
   }

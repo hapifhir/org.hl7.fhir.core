@@ -3565,15 +3565,15 @@ public class RequestGroup extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("prefix")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.prefix");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.prefix");
       } else if (name.equals("title")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.title");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.title");
       } else if (name.equals("description")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.description");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.description");
       } else if (name.equals("textEquivalent")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.textEquivalent");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.textEquivalent");
       } else if (name.equals("priority")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.priority");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.priority");
       } else if (name.equals("code")) {
         return addCode();
       } else if (name.equals("documentation")) {
@@ -3606,15 +3606,15 @@ public class RequestGroup extends DomainResource {
         this.type = new CodeableConcept();
         return this.type;
       } else if (name.equals("groupingBehavior")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.groupingBehavior");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.groupingBehavior");
       } else if (name.equals("selectionBehavior")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.selectionBehavior");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.selectionBehavior");
       } else if (name.equals("requiredBehavior")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.requiredBehavior");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.requiredBehavior");
       } else if (name.equals("precheckBehavior")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.precheckBehavior");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.precheckBehavior");
       } else if (name.equals("cardinalityBehavior")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.cardinalityBehavior");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.cardinalityBehavior");
       } else if (name.equals("resource")) {
         this.resource = new Reference();
         return this.resource;
@@ -3937,7 +3937,7 @@ public class RequestGroup extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("kind")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.kind");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.kind");
       } else if (name.equals("expression")) {
         this.expression = new Expression();
         return this.expression;
@@ -4315,9 +4315,9 @@ public class RequestGroup extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("actionId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.actionId");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.actionId");
       } else if (name.equals("relationship")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.relationship");
+        throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.relationship");
       } else if (name.equals("offsetDuration")) {
         this.offset = new Duration();
         return this.offset;
@@ -5933,9 +5933,9 @@ public class RequestGroup extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("instantiatesCanonical")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.instantiatesCanonical");
+      throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.instantiatesCanonical");
     } else if (name.equals("instantiatesUri")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.instantiatesUri");
+      throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.instantiatesUri");
     } else if (name.equals("basedOn")) {
       return addBasedOn();
     } else if (name.equals("replaces")) {
@@ -5944,11 +5944,11 @@ public class RequestGroup extends DomainResource {
       this.groupIdentifier = new Identifier();
       return this.groupIdentifier;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.status");
+      throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.status");
     } else if (name.equals("intent")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.intent");
+      throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.intent");
     } else if (name.equals("priority")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.priority");
+      throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.priority");
     } else if (name.equals("code")) {
       this.code = new CodeableConcept();
       return this.code;
@@ -5959,7 +5959,7 @@ public class RequestGroup extends DomainResource {
       this.encounter = new Reference();
       return this.encounter;
     } else if (name.equals("authoredOn")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.authoredOn");
+      throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.authoredOn");
     } else if (name.equals("author")) {
       this.author = new Reference();
       return this.author;

@@ -224,7 +224,7 @@ public class Substance extends DomainResource {
         this.identifier = new Identifier();
         return this.identifier;
       } else if (name.equals("expiry")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Substance.expiry");
+        throw new FHIRException("Cannot call addChild on a singleton property Substance.expiry");
       } else if (name.equals("quantity")) {
         this.quantity = new SimpleQuantity();
         return this.quantity;
@@ -825,7 +825,7 @@ public class Substance extends DomainResource {
       this.code = new CodeableConcept();
       return this.code;
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Substance.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Substance.description");
     } else if (name.equals("instance")) {
       return addInstance();
     } else if (name.equals("ingredient")) {

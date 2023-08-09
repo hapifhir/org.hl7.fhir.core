@@ -881,7 +881,7 @@ public class MedicationOrder extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationOrder.text");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationOrder.text");
       } else if (name.equals("additionalInstructions")) {
         this.additionalInstructions = new CodeableConcept();
         return this.additionalInstructions;
@@ -1303,7 +1303,7 @@ public class MedicationOrder extends DomainResource {
         this.validityPeriod = new Period();
         return this.validityPeriod;
       } else if (name.equals("numberOfRepeatsAllowed")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationOrder.numberOfRepeatsAllowed");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationOrder.numberOfRepeatsAllowed");
       } else if (name.equals("quantity")) {
         this.quantity = new SimpleQuantity();
         return this.quantity;
@@ -2519,11 +2519,11 @@ public class MedicationOrder extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("dateWritten")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationOrder.dateWritten");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationOrder.dateWritten");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationOrder.status");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationOrder.status");
     } else if (name.equals("dateEnded")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationOrder.dateEnded");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationOrder.dateEnded");
     } else if (name.equals("reasonEnded")) {
       this.reasonEnded = new CodeableConcept();
       return this.reasonEnded;
@@ -2543,7 +2543,7 @@ public class MedicationOrder extends DomainResource {
       this.reason = new Reference();
       return this.reason;
     } else if (name.equals("note")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationOrder.note");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationOrder.note");
     } else if (name.equals("medicationCodeableConcept")) {
       this.medication = new CodeableConcept();
       return this.medication;

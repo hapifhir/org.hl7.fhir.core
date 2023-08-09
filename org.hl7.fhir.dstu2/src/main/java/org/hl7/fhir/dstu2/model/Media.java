@@ -930,7 +930,7 @@ public class Media extends DomainResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Media.type");
+      throw new FHIRException("Cannot call addChild on a singleton property Media.type");
     } else if (name.equals("subtype")) {
       this.subtype = new CodeableConcept();
       return this.subtype;
@@ -946,15 +946,15 @@ public class Media extends DomainResource {
       this.view = new CodeableConcept();
       return this.view;
     } else if (name.equals("deviceName")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Media.deviceName");
+      throw new FHIRException("Cannot call addChild on a singleton property Media.deviceName");
     } else if (name.equals("height")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Media.height");
+      throw new FHIRException("Cannot call addChild on a singleton property Media.height");
     } else if (name.equals("width")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Media.width");
+      throw new FHIRException("Cannot call addChild on a singleton property Media.width");
     } else if (name.equals("frames")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Media.frames");
+      throw new FHIRException("Cannot call addChild on a singleton property Media.frames");
     } else if (name.equals("duration")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Media.duration");
+      throw new FHIRException("Cannot call addChild on a singleton property Media.duration");
     } else if (name.equals("content")) {
       this.content = new Attachment();
       return this.content;

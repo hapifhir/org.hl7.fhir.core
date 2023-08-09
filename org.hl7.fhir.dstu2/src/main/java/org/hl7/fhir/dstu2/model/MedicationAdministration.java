@@ -619,7 +619,7 @@ public class MedicationAdministration extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationAdministration.text");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationAdministration.text");
       } else if (name.equals("siteCodeableConcept")) {
         this.site = new CodeableConcept();
         return this.site;
@@ -1691,7 +1691,7 @@ public class MedicationAdministration extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationAdministration.status");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationAdministration.status");
     } else if (name.equals("patient")) {
       this.patient = new Reference();
       return this.patient;
@@ -1705,7 +1705,7 @@ public class MedicationAdministration extends DomainResource {
       this.prescription = new Reference();
       return this.prescription;
     } else if (name.equals("wasNotGiven")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationAdministration.wasNotGiven");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationAdministration.wasNotGiven");
     } else if (name.equals("reasonNotGiven")) {
       return addReasonNotGiven();
     } else if (name.equals("reasonGiven")) {
@@ -1725,7 +1725,7 @@ public class MedicationAdministration extends DomainResource {
     } else if (name.equals("device")) {
       return addDevice();
     } else if (name.equals("note")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationAdministration.note");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationAdministration.note");
     } else if (name.equals("dosage")) {
       this.dosage = new MedicationAdministrationDosageComponent();
       return this.dosage;

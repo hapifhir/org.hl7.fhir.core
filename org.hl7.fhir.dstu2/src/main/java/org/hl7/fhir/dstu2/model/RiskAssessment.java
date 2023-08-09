@@ -429,7 +429,7 @@ public class RiskAssessment extends DomainResource {
         this.probability = new CodeableConcept();
         return this.probability;
       } else if (name.equals("relativeRisk")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskAssessment.relativeRisk");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskAssessment.relativeRisk");
       } else if (name.equals("whenPeriod")) {
         this.when = new Period();
         return this.when;
@@ -437,7 +437,7 @@ public class RiskAssessment extends DomainResource {
         this.when = new Range();
         return this.when;
       } else if (name.equals("rationale")) {
-        throw new FHIRException("Cannot call addChild on a primitive type RiskAssessment.rationale");
+        throw new FHIRException("Cannot call addChild on a singleton property RiskAssessment.rationale");
       } else
         return super.addChild(name);
     }
@@ -1126,7 +1126,7 @@ public class RiskAssessment extends DomainResource {
       this.subject = new Reference();
       return this.subject;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskAssessment.date");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskAssessment.date");
     } else if (name.equals("condition")) {
       this.condition = new Reference();
       return this.condition;
@@ -1147,7 +1147,7 @@ public class RiskAssessment extends DomainResource {
     } else if (name.equals("prediction")) {
       return addPrediction();
     } else if (name.equals("mitigation")) {
-      throw new FHIRException("Cannot call addChild on a primitive type RiskAssessment.mitigation");
+      throw new FHIRException("Cannot call addChild on a singleton property RiskAssessment.mitigation");
     } else
       return super.addChild(name);
   }

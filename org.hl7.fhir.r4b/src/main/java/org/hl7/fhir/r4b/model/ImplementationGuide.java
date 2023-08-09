@@ -12162,11 +12162,11 @@ public class ImplementationGuide extends CanonicalResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("uri")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.dependsOn.uri");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.dependsOn.uri");
       } else if (name.equals("packageId")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.dependsOn.packageId");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.dependsOn.packageId");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.dependsOn.version");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.dependsOn.version");
       } else
         return super.addChild(name);
     }
@@ -12445,9 +12445,9 @@ public class ImplementationGuide extends CanonicalResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("type")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.global.type");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.global.type");
       } else if (name.equals("profile")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.global.profile");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.global.profile");
       } else
         return super.addChild(name);
     }
@@ -13271,10 +13271,10 @@ public class ImplementationGuide extends CanonicalResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.grouping.name");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.grouping.name");
       } else if (name.equals("description")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.grouping.description");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.grouping.description");
       } else
         return super.addChild(name);
     }
@@ -13911,13 +13911,13 @@ public class ImplementationGuide extends CanonicalResource {
         return this.reference;
       } else if (name.equals("fhirVersion")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.resource.fhirVersion");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.resource.fhirVersion");
       } else if (name.equals("name")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.resource.name");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.resource.name");
       } else if (name.equals("description")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.resource.description");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.resource.description");
       } else if (name.equals("exampleBoolean")) {
         this.example = new BooleanType();
         return this.example;
@@ -13926,7 +13926,7 @@ public class ImplementationGuide extends CanonicalResource {
         return this.example;
       } else if (name.equals("groupingId")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.resource.groupingId");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.resource.groupingId");
       } else
         return super.addChild(name);
     }
@@ -14400,10 +14400,10 @@ public class ImplementationGuide extends CanonicalResource {
         this.name = new Reference();
         return this.name;
       } else if (name.equals("title")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.definition.page.title");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.definition.page.title");
       } else if (name.equals("generation")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.page.generation");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.page.generation");
       } else if (name.equals("page")) {
         return addPage();
       } else
@@ -14697,10 +14697,10 @@ public class ImplementationGuide extends CanonicalResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("code")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.parameter.code");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.parameter.code");
       } else if (name.equals("value")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.parameter.value");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.parameter.value");
       } else
         return super.addChild(name);
     }
@@ -15043,13 +15043,13 @@ public class ImplementationGuide extends CanonicalResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("code")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.template.code");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.template.code");
       } else if (name.equals("source")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.template.source");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.template.source");
       } else if (name.equals("scope")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.definition.template.scope");
+            "Cannot call addChild on a singleton property ImplementationGuide.definition.template.scope");
       } else
         return super.addChild(name);
     }
@@ -15612,15 +15612,15 @@ public class ImplementationGuide extends CanonicalResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("rendering")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.manifest.rendering");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.manifest.rendering");
       } else if (name.equals("resource")) {
         return addResource();
       } else if (name.equals("page")) {
         return addPage();
       } else if (name.equals("image")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.manifest.image");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.manifest.image");
       } else if (name.equals("other")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.manifest.other");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.manifest.other");
       } else
         return super.addChild(name);
     }
@@ -16011,7 +16011,7 @@ public class ImplementationGuide extends CanonicalResource {
         return this.example;
       } else if (name.equals("relativePath")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ImplementationGuide.manifest.resource.relativePath");
+            "Cannot call addChild on a singleton property ImplementationGuide.manifest.resource.relativePath");
       } else
         return super.addChild(name);
     }
@@ -16372,11 +16372,11 @@ public class ImplementationGuide extends CanonicalResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.manifest.page.name");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.manifest.page.name");
       } else if (name.equals("title")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.manifest.page.title");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.manifest.page.title");
       } else if (name.equals("anchor")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.manifest.page.anchor");
+        throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.manifest.page.anchor");
       } else
         return super.addChild(name);
     }
@@ -18228,37 +18228,37 @@ public class ImplementationGuide extends CanonicalResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.url");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.url");
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.version");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.name");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.title");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.title");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.experimental");
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.description");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.copyright");
     } else if (name.equals("packageId")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.packageId");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.packageId");
     } else if (name.equals("license")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.license");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.license");
     } else if (name.equals("fhirVersion")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.fhirVersion");
+      throw new FHIRException("Cannot call addChild on a singleton property ImplementationGuide.fhirVersion");
     } else if (name.equals("dependsOn")) {
       return addDependsOn();
     } else if (name.equals("global")) {

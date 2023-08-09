@@ -525,11 +525,11 @@ public class Meta extends Type implements IBaseMetaType {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("versionId")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Meta.versionId");
+      throw new FHIRException("Cannot call addChild on a singleton property Meta.versionId");
     } else if (name.equals("lastUpdated")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Meta.lastUpdated");
+      throw new FHIRException("Cannot call addChild on a singleton property Meta.lastUpdated");
     } else if (name.equals("profile")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Meta.profile");
+      throw new FHIRException("Cannot call addChild on a singleton property Meta.profile");
     } else if (name.equals("security")) {
       return addSecurity();
     } else if (name.equals("tag")) {

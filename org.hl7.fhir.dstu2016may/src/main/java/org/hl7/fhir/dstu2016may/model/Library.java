@@ -344,11 +344,11 @@ public class Library extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.name");
       } else if (name.equals("identifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.identifier");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.identifier");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.version");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.version");
       } else
         return super.addChild(name);
     }
@@ -778,11 +778,11 @@ public class Library extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.name");
       } else if (name.equals("identifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.identifier");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.identifier");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.version");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.version");
       } else if (name.equals("documentAttachment")) {
         this.document = new Attachment();
         return this.document;
@@ -1145,11 +1145,11 @@ public class Library extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.name");
       } else if (name.equals("identifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.identifier");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.identifier");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.version");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.version");
       } else
         return super.addChild(name);
     }
@@ -1587,13 +1587,13 @@ public class Library extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("name")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.name");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.name");
       } else if (name.equals("identifier")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.identifier");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.identifier");
       } else if (name.equals("version")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.version");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.version");
       } else if (name.equals("codeSystem")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Library.codeSystem");
+        throw new FHIRException("Cannot call addChild on a singleton property Library.codeSystem");
       } else
         return super.addChild(name);
     }

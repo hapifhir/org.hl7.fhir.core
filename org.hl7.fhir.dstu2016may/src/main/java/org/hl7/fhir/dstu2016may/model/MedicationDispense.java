@@ -961,7 +961,7 @@ public class MedicationDispense extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("text")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicationDispense.text");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicationDispense.text");
       } else if (name.equals("additionalInstructions")) {
         this.additionalInstructions = new CodeableConcept();
         return this.additionalInstructions;
@@ -2547,7 +2547,7 @@ public class MedicationDispense extends DomainResource {
       this.identifier = new Identifier();
       return this.identifier;
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationDispense.status");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationDispense.status");
     } else if (name.equals("medicationCodeableConcept")) {
       this.medication = new CodeableConcept();
       return this.medication;
@@ -2572,9 +2572,9 @@ public class MedicationDispense extends DomainResource {
       this.daysSupply = new SimpleQuantity();
       return this.daysSupply;
     } else if (name.equals("whenPrepared")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationDispense.whenPrepared");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationDispense.whenPrepared");
     } else if (name.equals("whenHandedOver")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicationDispense.whenHandedOver");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicationDispense.whenHandedOver");
     } else if (name.equals("destination")) {
       this.destination = new Reference();
       return this.destination;

@@ -1733,13 +1733,13 @@ public class ResearchElementDefinition extends MetadataResource {
       } else if (name.equals("usageContext")) {
         return addUsageContext();
       } else if (name.equals("exclude")) {
-        throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.exclude");
+        throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.exclude");
       } else if (name.equals("unitOfMeasure")) {
         this.unitOfMeasure = new CodeableConcept();
         return this.unitOfMeasure;
       } else if (name.equals("studyEffectiveDescription")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ResearchElementDefinition.studyEffectiveDescription");
+            "Cannot call addChild on a singleton property ResearchElementDefinition.studyEffectiveDescription");
       } else if (name.equals("studyEffectiveDateTime")) {
         this.studyEffective = new DateTimeType();
         return this.studyEffective;
@@ -1757,10 +1757,10 @@ public class ResearchElementDefinition extends MetadataResource {
         return this.studyEffectiveTimeFromStart;
       } else if (name.equals("studyEffectiveGroupMeasure")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ResearchElementDefinition.studyEffectiveGroupMeasure");
+            "Cannot call addChild on a singleton property ResearchElementDefinition.studyEffectiveGroupMeasure");
       } else if (name.equals("participantEffectiveDescription")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ResearchElementDefinition.participantEffectiveDescription");
+            "Cannot call addChild on a singleton property ResearchElementDefinition.participantEffectiveDescription");
       } else if (name.equals("participantEffectiveDateTime")) {
         this.participantEffective = new DateTimeType();
         return this.participantEffective;
@@ -1778,7 +1778,7 @@ public class ResearchElementDefinition extends MetadataResource {
         return this.participantEffectiveTimeFromStart;
       } else if (name.equals("participantEffectiveGroupMeasure")) {
         throw new FHIRException(
-            "Cannot call addChild on a primitive type ResearchElementDefinition.participantEffectiveGroupMeasure");
+            "Cannot call addChild on a singleton property ResearchElementDefinition.participantEffectiveGroupMeasure");
       } else
         return super.addChild(name);
     }
@@ -4706,23 +4706,23 @@ public class ResearchElementDefinition extends MetadataResource {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.url");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.url");
     } else if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("version")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.version");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.version");
     } else if (name.equals("name")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.name");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.name");
     } else if (name.equals("title")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.title");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.title");
     } else if (name.equals("shortTitle")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.shortTitle");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.shortTitle");
     } else if (name.equals("subtitle")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.subtitle");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.subtitle");
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.status");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.status");
     } else if (name.equals("experimental")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.experimental");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.experimental");
     } else if (name.equals("subjectCodeableConcept")) {
       this.subject = new CodeableConcept();
       return this.subject;
@@ -4730,29 +4730,29 @@ public class ResearchElementDefinition extends MetadataResource {
       this.subject = new Reference();
       return this.subject;
     } else if (name.equals("date")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.date");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.date");
     } else if (name.equals("publisher")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.publisher");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.publisher");
     } else if (name.equals("contact")) {
       return addContact();
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.description");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.description");
     } else if (name.equals("comment")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.comment");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.comment");
     } else if (name.equals("useContext")) {
       return addUseContext();
     } else if (name.equals("jurisdiction")) {
       return addJurisdiction();
     } else if (name.equals("purpose")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.purpose");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.purpose");
     } else if (name.equals("usage")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.usage");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.usage");
     } else if (name.equals("copyright")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.copyright");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.copyright");
     } else if (name.equals("approvalDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.approvalDate");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.approvalDate");
     } else if (name.equals("lastReviewDate")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.lastReviewDate");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.lastReviewDate");
     } else if (name.equals("effectivePeriod")) {
       this.effectivePeriod = new Period();
       return this.effectivePeriod;
@@ -4769,11 +4769,11 @@ public class ResearchElementDefinition extends MetadataResource {
     } else if (name.equals("relatedArtifact")) {
       return addRelatedArtifact();
     } else if (name.equals("library")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.library");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.library");
     } else if (name.equals("type")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.type");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.type");
     } else if (name.equals("variableType")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ResearchElementDefinition.variableType");
+      throw new FHIRException("Cannot call addChild on a singleton property ResearchElementDefinition.variableType");
     } else if (name.equals("characteristic")) {
       return addCharacteristic();
     } else

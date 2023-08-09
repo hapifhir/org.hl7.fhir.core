@@ -383,7 +383,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
           return this.coverage;
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.coverage.priority");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.coverage.priority");
         }
         else
           return super.addChild(name);
@@ -653,7 +653,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
           return this.party;
         }
         else if (name.equals("onHold")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.guarantor.onHold");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.guarantor.onHold");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -1154,20 +1154,20 @@ A coverage may only be responsible for specific types of charges, and the sequen
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.diagnosis.sequence");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.diagnosis.sequence");
         }
         else if (name.equals("condition")) {
           this.condition = new CodeableReference();
           return this.condition;
         }
         else if (name.equals("dateOfDiagnosis")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.diagnosis.dateOfDiagnosis");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.diagnosis.dateOfDiagnosis");
         }
         else if (name.equals("type")) {
           return addType();
         }
         else if (name.equals("onAdmission")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.diagnosis.onAdmission");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.diagnosis.onAdmission");
         }
         else if (name.equals("packageCode")) {
           return addPackageCode();
@@ -1688,14 +1688,14 @@ A coverage may only be responsible for specific types of charges, and the sequen
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.procedure.sequence");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.procedure.sequence");
         }
         else if (name.equals("code")) {
           this.code = new CodeableReference();
           return this.code;
         }
         else if (name.equals("dateOfService")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.procedure.dateOfService");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.procedure.dateOfService");
         }
         else if (name.equals("type")) {
           return addType();
@@ -2252,7 +2252,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
           return this.term;
         }
         else if (name.equals("estimate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.balance.estimate");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.balance.estimate");
         }
         else if (name.equals("amount")) {
           this.amount = new Money();
@@ -3414,7 +3414,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.status");
         }
         else if (name.equals("billingStatus")) {
           this.billingStatus = new CodeableConcept();
@@ -3425,7 +3425,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
           return this.type;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.name");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.name");
         }
         else if (name.equals("subject")) {
           return addSubject();
@@ -3442,7 +3442,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
           return this.owner;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.description");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.description");
         }
         else if (name.equals("guarantor")) {
           return addGuarantor();
@@ -3464,7 +3464,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
           return addBalance();
         }
         else if (name.equals("calculatedAt")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.calculatedAt");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.calculatedAt");
         }
         else
           return super.addChild(name);

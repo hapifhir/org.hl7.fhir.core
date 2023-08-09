@@ -1093,7 +1093,7 @@ public class Task extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("repetitions")) {
-        throw new FHIRException("Cannot call addChild on a primitive type Task.repetitions");
+        throw new FHIRException("Cannot call addChild on a singleton property Task.repetitions");
       } else if (name.equals("period")) {
         this.period = new Period();
         return this.period;
@@ -4608,9 +4608,9 @@ public class Task extends DomainResource {
     if (name.equals("identifier")) {
       return addIdentifier();
     } else if (name.equals("instantiatesCanonical")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.instantiatesCanonical");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.instantiatesCanonical");
     } else if (name.equals("instantiatesUri")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.instantiatesUri");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.instantiatesUri");
     } else if (name.equals("basedOn")) {
       return addBasedOn();
     } else if (name.equals("groupIdentifier")) {
@@ -4619,7 +4619,7 @@ public class Task extends DomainResource {
     } else if (name.equals("partOf")) {
       return addPartOf();
     } else if (name.equals("status")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.status");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.status");
     } else if (name.equals("statusReason")) {
       this.statusReason = new CodeableConcept();
       return this.statusReason;
@@ -4627,14 +4627,14 @@ public class Task extends DomainResource {
       this.businessStatus = new CodeableConcept();
       return this.businessStatus;
     } else if (name.equals("intent")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.intent");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.intent");
     } else if (name.equals("priority")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.priority");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.priority");
     } else if (name.equals("code")) {
       this.code = new CodeableConcept();
       return this.code;
     } else if (name.equals("description")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.description");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.description");
     } else if (name.equals("focus")) {
       this.focus = new Reference();
       return this.focus;
@@ -4648,9 +4648,9 @@ public class Task extends DomainResource {
       this.executionPeriod = new Period();
       return this.executionPeriod;
     } else if (name.equals("authoredOn")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.authoredOn");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.authoredOn");
     } else if (name.equals("lastModified")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Task.lastModified");
+      throw new FHIRException("Cannot call addChild on a singleton property Task.lastModified");
     } else if (name.equals("requester")) {
       this.requester = new Reference();
       return this.requester;

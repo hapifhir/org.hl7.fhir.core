@@ -912,13 +912,13 @@ public class ContactPoint extends Type implements ICompositeType {
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("system")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ContactPoint.system");
+      throw new FHIRException("Cannot call addChild on a singleton property ContactPoint.system");
     } else if (name.equals("value")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ContactPoint.value");
+      throw new FHIRException("Cannot call addChild on a singleton property ContactPoint.value");
     } else if (name.equals("use")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ContactPoint.use");
+      throw new FHIRException("Cannot call addChild on a singleton property ContactPoint.use");
     } else if (name.equals("rank")) {
-      throw new FHIRException("Cannot call addChild on a primitive type ContactPoint.rank");
+      throw new FHIRException("Cannot call addChild on a singleton property ContactPoint.rank");
     } else if (name.equals("period")) {
       this.period = new Period();
       return this.period;

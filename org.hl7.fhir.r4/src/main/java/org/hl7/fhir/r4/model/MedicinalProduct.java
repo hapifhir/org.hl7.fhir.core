@@ -356,7 +356,7 @@ public class MedicinalProduct extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("productName")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicinalProduct.productName");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicinalProduct.productName");
       } else if (name.equals("namePart")) {
         return addNamePart();
       } else if (name.equals("countryLanguage")) {
@@ -618,7 +618,7 @@ public class MedicinalProduct extends DomainResource {
     @Override
     public Base addChild(String name) throws FHIRException {
       if (name.equals("part")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicinalProduct.part");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicinalProduct.part");
       } else if (name.equals("type")) {
         this.type = new Coding();
         return this.type;
@@ -1447,7 +1447,7 @@ public class MedicinalProduct extends DomainResource {
         this.authorisationReferenceNumber = new Identifier();
         return this.authorisationReferenceNumber;
       } else if (name.equals("effectiveDate")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicinalProduct.effectiveDate");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicinalProduct.effectiveDate");
       } else if (name.equals("confidentialityIndicator")) {
         this.confidentialityIndicator = new CodeableConcept();
         return this.confidentialityIndicator;
@@ -2049,7 +2049,7 @@ public class MedicinalProduct extends DomainResource {
         this.status = new CodeableConcept();
         return this.status;
       } else if (name.equals("date")) {
-        throw new FHIRException("Cannot call addChild on a primitive type MedicinalProduct.date");
+        throw new FHIRException("Cannot call addChild on a singleton property MedicinalProduct.date");
       } else if (name.equals("species")) {
         this.species = new CodeableConcept();
         return this.species;
@@ -3817,7 +3817,7 @@ public class MedicinalProduct extends DomainResource {
       this.additionalMonitoringIndicator = new CodeableConcept();
       return this.additionalMonitoringIndicator;
     } else if (name.equals("specialMeasures")) {
-      throw new FHIRException("Cannot call addChild on a primitive type MedicinalProduct.specialMeasures");
+      throw new FHIRException("Cannot call addChild on a singleton property MedicinalProduct.specialMeasures");
     } else if (name.equals("paediatricUseIndicator")) {
       this.paediatricUseIndicator = new CodeableConcept();
       return this.paediatricUseIndicator;

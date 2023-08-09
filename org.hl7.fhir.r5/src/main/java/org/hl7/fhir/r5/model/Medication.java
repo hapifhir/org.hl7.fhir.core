@@ -435,7 +435,7 @@ public class Medication extends DomainResource {
           return this.item;
         }
         else if (name.equals("isActive")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.ingredient.isActive");
+          throw new FHIRException("Cannot call addChild on a singleton property Medication.ingredient.isActive");
         }
         else if (name.equals("strengthRatio")) {
           this.strength = new Ratio();
@@ -696,10 +696,10 @@ public class Medication extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("lotNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.batch.lotNumber");
+          throw new FHIRException("Cannot call addChild on a singleton property Medication.batch.lotNumber");
         }
         else if (name.equals("expirationDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.batch.expirationDate");
+          throw new FHIRException("Cannot call addChild on a singleton property Medication.batch.expirationDate");
         }
         else
           return super.addChild(name);
@@ -1278,7 +1278,7 @@ public class Medication extends DomainResource {
           return this.code;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Medication.status");
         }
         else if (name.equals("marketingAuthorizationHolder")) {
           this.marketingAuthorizationHolder = new Reference();
