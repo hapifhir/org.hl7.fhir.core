@@ -87,7 +87,7 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
       renderTable(td, x);
     }
 
-    if (st.hasResourceTrigger()) {
+    if (st.hasEventTrigger()) {
       TableData td = new TableData("Event Triggers");
       for (SubscriptionTopicEventTriggerComponent rt : st.getEventTrigger()) {
         TableRowData tr = td.addRow();
