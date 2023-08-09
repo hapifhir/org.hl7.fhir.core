@@ -4826,7 +4826,7 @@ public class FHIRPathEngine {
     for (Base item : focus) {
       result.add(item);
     }
-    for (Base item : execute(context, focus, exp.getParameters().get(0), true)) {
+    for (Base item : execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true)) {
       result.add(item);
     }
     return result;
@@ -4834,7 +4834,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcIntersect(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> other = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> other = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     for (Base item : focus) {
       if (!doContains(result, item) && doContains(other, item)) {
