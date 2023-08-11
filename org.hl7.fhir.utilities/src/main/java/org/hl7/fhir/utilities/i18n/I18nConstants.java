@@ -956,6 +956,15 @@ public class I18nConstants {
   public static final String MSG_RETIRED = "MSG_RETIRED";
   public static final String INACTIVE_CODE_WARNING = "INACTIVE_CODE_WARNING";
   public static final String SD_EXTENSION_URL_MISSING = "SD_EXTENSION_URL_MISSING";
+  public static final String MSG_EXPERIMENTAL = "MSG_EXPERIMENTAL";
+  public static final String MSG_DRAFT = "MSG_DRAFT";
+  public static final String MSG_DEPENDS_ON_DEPRECATED = "MSG_DEPENDS_ON_DEPRECATED";
+  public static final String MSG_DEPENDS_ON_WITHDRAWN = "MSG_DEPENDS_ON_WITHDRAWN";
+  public static final String MSG_DEPENDS_ON_RETIRED = "MSG_DEPENDS_ON_RETIRED";
+  public static final String MSG_DEPENDS_ON_EXPERIMENTAL = "MSG_DEPENDS_ON_EXPERIMENTAL";
+  public static final String MSG_DEPENDS_ON_DRAFT = "MSG_DEPENDS_ON_DRAFT";
+  public static final String MSG_DEPENDS_ON_EXTENSION = "MSG_DEPENDS_ON_EXTENSION";
+  public static final String MSG_DEPENDS_ON_PROFILE = "MSG_DEPENDS_ON_PROFILE";
 }
 
 

@@ -309,7 +309,7 @@ public class CompareUtilities extends BaseTestingUtilities {
       int expectedMin = countExpectedMin(expectedArray);
 
       if (actualArray.size() > expectedArray.size() || actualArray.size() < expectedMin)
-        return createNotEqualMessage("array properties count differs at " + path, Integer.toString(expectedArray.size()), Integer.toString(actualArray.size()));
+        return createNotEqualMessage("array item count differs at " + path, Integer.toString(expectedArray.size()), Integer.toString(actualArray.size()));
       int c = 0;
       for (int i = 0; i < expectedArray.size(); i++) {
         if (c >= actualArray.size()) {

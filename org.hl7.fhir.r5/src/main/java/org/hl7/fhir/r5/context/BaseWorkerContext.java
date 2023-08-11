@@ -1521,6 +1521,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
           iss.getDetails().setText(formatMessage(I18nConstants.MSG_RETIRED, ((PrimitiveType<?>) p.getValue()).asStringValue()));              
           issues.add(iss);
+        } else if (p.getName().equals("warning-experimental")) {
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
+          iss.getDetails().setText(formatMessage(I18nConstants.MSG_EXPERIMENTAL, ((PrimitiveType<?>) p.getValue()).asStringValue()));              
+          issues.add(iss);
+        } else if (p.getName().equals("warning-draft")) {
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
+          iss.getDetails().setText(formatMessage(I18nConstants.MSG_DRAFT, ((PrimitiveType<?>) p.getValue()).asStringValue()));              
+          issues.add(iss);
         } else if (p.getName().equals("cause")) {
           try {
             IssueType it = IssueType.fromCode(((StringType) p.getValue()).getValue());

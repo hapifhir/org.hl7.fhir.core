@@ -46,8 +46,8 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-  private static final String SERVER = FhirSettings.getTxFhirDevelopment();  
-// private static final String SERVER = FhirSettings.getTxFhirLocal();  
+//  private static final String SERVER = FhirSettings.getTxFhirDevelopment();  
+ private static final String SERVER = FhirSettings.getTxFhirLocal();  
 // private static final String SERVER = "https://r4.ontoserver.csiro.au/fhir";
 
   
@@ -81,6 +81,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   private JsonObjectPair setup;
   private String version = "5.0.0";
   private static TxTester tester;
+  private List<String> modes = new ArrayList<>();
 
   public ExternalTerminologyServiceTests(String name, JsonObjectPair setup) {
     this.setup = setup;
@@ -93,7 +94,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
       if (tester == null) {
         tester = new TxTester(this, SERVER, true);
       }
-      String err = tester.executeTest(setup.suite, setup.test);
+      String err = tester.executeTest(setup.suite, setup.test, modes);
       Assertions.assertTrue(err == null, err);
     } else {
       Assertions.assertTrue(true);
