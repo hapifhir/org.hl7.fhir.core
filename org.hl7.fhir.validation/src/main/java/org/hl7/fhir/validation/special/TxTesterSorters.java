@@ -124,7 +124,11 @@ public class TxTesterSorters {
     public int compare(ValueSetExpansionParameterComponent o1, ValueSetExpansionParameterComponent o2) {
       Collections.sort(o1.getExtension(), new ExtensionSorter());
       Collections.sort(o2.getExtension(), new ExtensionSorter());
-      return o1.getName().compareTo(o2.getName());
+      int res = o1.getName().compareTo(o2.getName());
+      if (res == 0) {
+        res = o1.getValue().primitiveValue().compareTo(o2.getValue().primitiveValue());
+      }
+      return res;
     }
 
   }
