@@ -93,6 +93,7 @@ public class FHIRToolingClient {
 
   public void initialize(String baseServiceUrl) throws URISyntaxException {
     base = baseServiceUrl;
+    client.setBase(base);
     resourceAddress = new ResourceAddress(baseServiceUrl);
     this.allowedVersions = supportableVersions();
     this.maxResultSetSize = -1;
