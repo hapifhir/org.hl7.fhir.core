@@ -6325,7 +6325,6 @@ public class FHIRPathEngine {
         SourcedChildDefinitions childDefinitions = profileUtilities.getChildMap(sd, element.getElement());
         for (ElementDefinition t : childDefinitions.getList()) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
-            System.out.println("t: "+t.getId());
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
                 null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue(), profile);
             while (exsd != null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
