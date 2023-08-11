@@ -122,11 +122,13 @@ public class ValueSetProcessBase {
         addToIssues(issues, makeStatusIssue(path, "withdrawn", I18nConstants.MSG_WITHDRAWN, resource));
       } else if (resource.getStatus() == PublicationStatus.RETIRED) {
         addToIssues(issues, makeStatusIssue(path, "retired", I18nConstants.MSG_RETIRED, resource));
-      } else if (resource.getExperimental() && !source.getExperimental()) {
-        addToIssues(issues, makeStatusIssue(path, "experimental", I18nConstants.MSG_EXPERIMENTAL, resource));
-      } else if ((resource.getStatus() == PublicationStatus.DRAFT || standardsStatus == StandardsStatus.DRAFT)
-          && !(source.getStatus() == PublicationStatus.DRAFT || ToolingExtensions.getStandardsStatus(source) == StandardsStatus.DRAFT)) {
-        addToIssues(issues, makeStatusIssue(path, "draft", I18nConstants.MSG_DRAFT, resource));
+      } else if (source != null) {
+        if (resource.getExperimental() && !source.getExperimental()) {
+          addToIssues(issues, makeStatusIssue(path, "experimental", I18nConstants.MSG_EXPERIMENTAL, resource));
+        } else if ((resource.getStatus() == PublicationStatus.DRAFT || standardsStatus == StandardsStatus.DRAFT)
+            && !(source.getStatus() == PublicationStatus.DRAFT || ToolingExtensions.getStandardsStatus(source) == StandardsStatus.DRAFT)) {
+          addToIssues(issues, makeStatusIssue(path, "draft", I18nConstants.MSG_DRAFT, resource));
+        }
       }
     }
   }
