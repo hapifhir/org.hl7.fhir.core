@@ -47,7 +47,7 @@ public class FhirRequestBuilderTests {
   final Request.Builder requestBuilder = new Request.Builder()
     .url(DUMMY_URL);
 
-  final FhirRequestBuilder fhirRequestBuilder = Mockito.spy(new FhirRequestBuilder(requestBuilder));
+  final FhirRequestBuilder fhirRequestBuilder = Mockito.spy(new FhirRequestBuilder(requestBuilder, "http://local/local"));
 
   @Mock
   OkHttpClient client;
