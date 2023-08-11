@@ -28,7 +28,6 @@ public class PEModelTest1343 {
     }
   }
 
-
   @Test
   public void testPatientCreate() throws Exception {
     CreatePatientFromProfile("http://interopsante.org/fhir/StructureDefinition/FrPatient");
