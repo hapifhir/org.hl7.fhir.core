@@ -114,6 +114,8 @@ public class StructuralMatch<T> {
     return this;
   }
 
-
+  public boolean isDifferent() {
+    return (left == null) != (right == null) || !messages.isEmpty();
+  }
   
 }

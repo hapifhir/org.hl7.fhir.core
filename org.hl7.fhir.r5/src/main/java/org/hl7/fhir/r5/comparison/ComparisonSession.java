@@ -32,6 +32,8 @@ public class ComparisonSession {
   private String sessiondId;
   private int count;
   private boolean debug;
+  private String forVersion;
+  private boolean annotate;
   private String title;
   private ProfileKnowledgeProvider pkpLeft;
   private ProfileKnowledgeProvider pkpRight;
@@ -164,4 +166,22 @@ public class ComparisonSession {
   public ProfileKnowledgeProvider getPkpRight() {
     return pkpRight;
   }
+
+  public String getForVersion() {
+    return forVersion;
+  }
+
+  public void setForVersion(String forVersion) {
+    this.forVersion = forVersion;
+  }
+
+  public boolean isAnnotate() {
+    return annotate;
+  }
+
+  public void setAnnotate(boolean annotate) {
+    this.annotate = annotate;
+  }
+  
+  
 }

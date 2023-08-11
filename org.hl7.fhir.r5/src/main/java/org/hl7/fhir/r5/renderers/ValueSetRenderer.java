@@ -14,8 +14,10 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -924,7 +926,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         generateCopyright(x, vs);
     }
     int index = 0;
-    if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0) {
+    if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0 && !VersionComparisonAnnotation.hasDeleted(vs.getCompose(), "include", "exclude")) {
       hasExtensions = genInclude(x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
     } else {
       XhtmlNode p = x.para();
@@ -934,12 +936,20 @@ public class ValueSetRenderer extends TerminologyRenderer {
         hasExtensions = genInclude(ul, inc, "Include", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
         index++;
       }
-      if (vs.getCompose().hasExclude()) {
+      for (Base inc : VersionComparisonAnnotation.getDeleted(vs.getCompose(), "include")) {
+        genInclude(ul, (ConceptSetComponent) inc, "Include", langs, doDesignations, maps, designations, index, vs);
+        index++;
+      }
+      if (vs.getCompose().hasExclude() || VersionComparisonAnnotation.hasDeleted(vs.getCompose(), "exclude")) {
         p = x.para();
         p.tx("This value set excludes codes based on the following rules:");
         ul = x.ul();
         for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
           hasExtensions = genInclude(ul, exc, "Exclude", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
+          index++;
+        }
+        for (Base inc : VersionComparisonAnnotation.getDeleted(vs.getCompose(), "exclude")) {
+          genInclude(ul, (ConceptSetComponent) inc, "Exclude", langs, doDesignations, maps, designations, index, vs);
           index++;
         }
       }
@@ -1131,6 +1141,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
     boolean hasExtensions = false;
     XhtmlNode li;
     li = ul.li();
+    li = VersionComparisonAnnotation.render(inc, li);
+
     Map<String, ConceptDefinitionComponent> definitions = new HashMap<>();
     
     if (inc.hasSystem()) {
@@ -1144,7 +1156,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           addCsRef(inc, li, e);
           if (inc.hasVersion()) {
             li.addText(" version ");
-            li.code(inc.getVersion()); 
+            li.code(inc.getVersion());  
           }
 
           // for performance reasons, we do all the fetching in one batch
