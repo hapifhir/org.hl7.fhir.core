@@ -16,7 +16,7 @@ public class VersionComparisonAnnotation {
     Added, Changed, Deleted;
   }
 
-  public static final String USER_DATA_NAME = "versoin-annotation";
+  public static final String USER_DATA_NAME = "version-annotation";
   
   private AnotationType type;
 //  private String comment;
@@ -47,7 +47,7 @@ public class VersionComparisonAnnotation {
     focus.setUserData(USER_DATA_NAME, new VersionComparisonAnnotation(AnotationType.Added, version));
   }
 
-  public static void markDeleted(Base parent, String name, String version, Base other) {
+  public static void markDeleted(Base parent, String version, String name, Base other) {
     VersionComparisonAnnotation vca = null;
     if (parent.hasUserData(USER_DATA_NAME)) {
       vca = (VersionComparisonAnnotation) parent.getUserData(USER_DATA_NAME);
@@ -98,15 +98,18 @@ public class VersionComparisonAnnotation {
   private XhtmlNode render(XhtmlNode x) {
     switch (type) {
     case Added:
-      XhtmlNode span = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", null);
-      span.img("icon-change-add.png", "This content has been added since version "+version);
+      XhtmlNode span = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since  "+version);
+      span.img("icon-change-add.png", "icon");
       span.tx(" Added:");
       return x;
     case Changed:
+      span = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been changed since version "+version);
+      span.img("icon-change-edit.png", "icon");
+      span.tx(" Changed:");
       return x;
     case Deleted:
-      span = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", null);
-      span.img("icon-change-remove.png", "This content has been removed since version "+version);
+      span = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been removed since version "+version);
+      span.img("icon-change-remove.png", "icon");
       span.tx(" Removed:");
       return x.strikethrough();
     default:
