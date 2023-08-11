@@ -11,7 +11,6 @@ import java.util.List;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.JsonParser;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
@@ -26,31 +25,22 @@ import org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.DataRenderer;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.TimeTracker;
-import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.w3c.dom.Document;
 
 public class MeasureValidator extends BaseValidator {
 
-  private InstanceValidator parent;
-  public MeasureValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, XVerExtensionManager xverManager, Coding jurisdiction, InstanceValidator parent) {
-    super(context, xverManager, debug);
-    source = Source.InstanceValidator;
-    this.timeTracker = timeTracker;
-    this.jurisdiction = jurisdiction;
-    this.parent = parent;
 
+  public MeasureValidator(BaseValidator parent) {
+    super(parent);
   }
 
   public boolean validateMeasure(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException {

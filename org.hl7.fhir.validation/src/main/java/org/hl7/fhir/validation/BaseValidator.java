@@ -7,8 +7,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,16 +53,20 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.JsonParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -144,18 +150,20 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected final String BUNDLE = "Bundle";
   protected final String LAST_UPDATED = "lastUpdated";
 
-
+  protected BaseValidator parent;
   protected Source source;
   protected IWorkerContext context;
   protected TimeTracker timeTracker = new TimeTracker();
   protected XVerExtensionManager xverManager;
   protected List<TrackedLocationRelatedMessage> trackedMessages = new ArrayList<>();
   protected List<ValidationMessage> messagesToRemove = new ArrayList<>();
-  private ValidationLevel level = ValidationLevel.HINTS;
+  protected ValidationLevel level = ValidationLevel.HINTS;
   protected Coding jurisdiction;
   protected boolean allowExamples;
   protected boolean forPublication;
   protected boolean debug;
+  protected boolean warnOnDraftOrExperimental; 
+  protected Set<String> statusWarnings = new HashSet<>();
 
   public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug) {
     super();
@@ -165,6 +173,24 @@ public class BaseValidator implements IValidationContextResourceLoader {
       this.xverManager = new XVerExtensionManager(context);
     }
     this.debug = debug;
+  }
+  
+  public BaseValidator(BaseValidator parent) {
+    super();
+    this.parent = parent;
+    this.context = parent.context;
+    this.xverManager = parent.xverManager;
+    this.debug = parent.debug;
+    this.source = parent.source;
+    this.timeTracker = parent.timeTracker;
+    this.trackedMessages = parent.trackedMessages;
+    this.messagesToRemove = parent.messagesToRemove;
+    this.level = parent.level;
+    this.allowExamples = parent.allowExamples;
+    this.forPublication = parent.forPublication;
+    this.debug = parent.debug;
+    this.warnOnDraftOrExperimental = parent.warnOnDraftOrExperimental;
+    this.statusWarnings = parent.statusWarnings;
   }
   
   private boolean doingLevel(IssueSeverity error) {
@@ -1277,5 +1303,42 @@ public class BaseValidator implements IValidationContextResourceLoader {
   public void setDebug(boolean debug) {
     this.debug = debug;
   }
-  
+ 
+
+  protected void checkDefinitionStatus(List<ValidationMessage> errors, Element element, String path, StructureDefinition ex, CanonicalResource source, String type) {
+    String vurl = ex.getVersionedUrl();
+
+    StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(ex);
+    if (standardsStatus == StandardsStatus.DEPRECATED) {
+      if (!statusWarnings.contains(vurl+":DEPRECATED")) {  
+        statusWarnings.add(vurl+":DEPRECATED");
+        hint(errors, "2023-08-10", IssueType.EXPIRED, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_DEPRECATED, type, vurl);
+      }
+    } else if (standardsStatus == StandardsStatus.WITHDRAWN) {
+      if (!statusWarnings.contains(vurl+":WITHDRAWN")) {  
+        statusWarnings.add(vurl+":WITHDRAWN");
+        hint(errors, "2023-08-10", IssueType.EXPIRED, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_WITHDRAWN, type, vurl);
+      }
+    } else if (ex.getStatus() == PublicationStatus.RETIRED) {
+      if (!statusWarnings.contains(vurl+":RETIRED")) {  
+        statusWarnings.add(vurl+":RETIRED");
+        hint(errors, "2023-08-10", IssueType.EXPIRED, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_RETIRED, type, vurl);
+      }
+    } else if (false && warnOnDraftOrExperimental && source != null) {
+      // for now, this is disabled; these warnings are just everywhere, and it's an intractible problem. 
+      // working this through QA in IG publisher
+      if (ex.getExperimental() && !source.getExperimental()) {
+        if (!statusWarnings.contains(vurl+":Experimental")) {  
+          statusWarnings.add(vurl+":Experimental");
+          hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_EXPERIMENTAL, type, vurl);
+        }
+      } else if (ex.getStatus() == PublicationStatus.DRAFT && source.getStatus() != PublicationStatus.DRAFT) {
+        if (!statusWarnings.contains(vurl+":Draft")) {  
+          statusWarnings.add(vurl+":Draft");
+          hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_DRAFT, type, vurl);
+        }
+      }
+    }
+  }
+
 }

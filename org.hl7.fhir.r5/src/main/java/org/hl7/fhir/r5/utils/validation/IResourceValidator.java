@@ -102,6 +102,10 @@ public interface IResourceValidator {
   boolean isForPublication();
   IResourceValidator setForPublication(boolean forPublication);
   
+  public boolean isWarnOnDraftOrExperimental();
+
+  public IResourceValidator setWarnOnDraftOrExperimental(boolean warnOnDraftOrExperimental);
+  
   /**
    * Whether being unable to resolve a profile in found in Resource.meta.profile or ElementDefinition.type.profile or targetProfile is an error or just a warning
    */
