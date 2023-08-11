@@ -351,7 +351,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     ValidationProcessInfo info = new ValidationProcessInfo(issues);
     VersionInfo vi = new VersionInfo(this);
-    checkCanonical(issues, path, valueset);
+    checkCanonical(issues, path, valueset, valueset);
 
     String system = code.hasSystem() ? code.getSystem() : getValueSetSystemOrNull();
     if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
@@ -412,7 +412,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           }
         }
       } else {
-        checkCanonical(issues, path, cs);
+        checkCanonical(issues, path, cs, valueset);
       }
       if (cs != null && cs.hasSupplements()) {
         String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getUrl());
@@ -975,7 +975,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (valueset == null) {
       return false;
     }
-    checkCanonical(info.getIssues(), path, valueset);
+    checkCanonical(info.getIssues(), path, valueset, valueset);
     Boolean result = false;
     VersionInfo vi = new VersionInfo(this);
       
@@ -1083,7 +1083,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return null;
       }
     } else {
-      checkCanonical(info.getIssues(), path, cs);
+      checkCanonical(info.getIssues(), path, cs, valueset);
       if (valueset.getCompose().hasInactive() && !valueset.getCompose().getInactive()) {
         if (CodeSystemUtilities.isInactive(cs, code)) {
           return false;

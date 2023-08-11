@@ -286,7 +286,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private boolean filterContainsCode(List<ValueSet> filters, String system, String code, ValueSetExpansionComponent exp) {
     for (ValueSet vse : filters) {
-      checkCanonical(exp, vse);
+      checkCanonical(exp, vse, focus);
       if (expansionContainsCode(vse.getExpansion().getContains(), system, code))
         return true;
     }
@@ -503,7 +503,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     focus.setExpansion(new ValueSet.ValueSetExpansionComponent());
     focus.getExpansion().setTimestampElement(DateTimeType.now());
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
-    checkCanonical(focus.getExpansion(), focus);
+    checkCanonical(focus.getExpansion(), focus, focus);
     for (ParametersParameterComponent p : expParams.getParameter()) {
       if (Utilities.existsInList(p.getName(), "includeDesignations", "excludeNested", "activeOnly", "offset", "count")) {
         focus.getExpansion().addParameter().setName(p.getName()).setValue(p.getValue());
@@ -643,7 +643,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         throw fail("Unable to find imported value set " + value);
       }
     }
-    checkCanonical(exp, vs);
+    checkCanonical(exp, vs, focus);
     if (noInactive) {
       expParams = expParams.copy();
       expParams.addParameter("activeOnly", true);
@@ -736,7 +736,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (imports.isEmpty()) // though this is not supposed to be the case
         return;
       ValueSet base = imports.get(0);
-      checkCanonical(exp, base);
+      checkCanonical(exp, base, focus);
       imports.remove(0);
       base.checkNoModifiers("Imported ValueSet", "expanding");
       copyImportContains(base.getExpansion().getContains(), null, expParams, imports, noInactive, base.getExpansion().getProperty(), base, exp);
@@ -798,7 +798,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       else
         throw failTSE("Unable to find code system " + inc.getSystem().toString());
     }
-    checkCanonical(exp, cs);
+    checkCanonical(exp, cs, focus);
     cs.checkNoModifiers("Code System", "expanding");
     if (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)
       throw failTSE("Code system " + inc.getSystem().toString() + " is incomplete");
