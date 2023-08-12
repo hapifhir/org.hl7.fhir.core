@@ -21,15 +21,8 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class CodeSystemValidator  extends BaseValidator {
 
-  private InstanceValidator parent;
-
-  public CodeSystemValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction) {
-    super(context, xverManager, debug);
-    source = Source.InstanceValidator;
-    this.timeTracker = timeTracker;
-    this.jurisdiction = jurisdiction;
-    this.parent = parent;
-
+  public CodeSystemValidator(BaseValidator parent) {
+    super(parent);
   }
 
   public boolean validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack, ValidationOptions options) {

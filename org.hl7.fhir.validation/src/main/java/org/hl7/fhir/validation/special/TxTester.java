@@ -65,10 +65,10 @@ public class TxTester {
   }
 
   public static void main(String[] args) throws Exception {
-    new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2])).execute(args[2], args[3]);
+    new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2])).execute(args[2], new ArrayList<>(), args[3]);
   }
   
-  public boolean execute(String version, String filter) throws IOException, URISyntaxException {
+  public boolean execute(String version, List<String> modes, String filter) throws IOException, URISyntaxException {
     if (output == null) {
       output = Utilities.path("[tmp]", serverId());
     }
@@ -77,6 +77,7 @@ public class TxTester {
     System.out.println("  Source for tests: "+loader.describe());
     System.out.println("  Output Directory: "+output);
     System.out.println("  Term Service Url: "+server);
+    System.out.println("  Test  Exec Modes: "+modes.toString());
     if (version != null) {
       System.out.println("  Tx  FHIR Version: "+version);
     }
@@ -91,7 +92,7 @@ public class TxTester {
       ITerminologyClient tx = connectToServer();
       boolean ok = checkClient(tx);
       for (JsonObject suite : tests.getJsonObjects("suites")) {
-        ok = runSuite(suite, tx, filter, json.forceArray("suites")) && ok;
+        ok = runSuite(suite, tx, modes, filter, json.forceArray("suites")) && ok;
       }
       TextFile.stringToFile(JsonParser.compose(json, true), Utilities.path(output, "test-results.json"));
       if (ok) {
@@ -137,20 +138,20 @@ public class TxTester {
   }
 
 
-  public String executeTest(JsonObject suite, JsonObject test) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
+  public String executeTest(JsonObject suite, JsonObject test, List<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
     error = null;
     if (tx == null) {
       tx = connectToServer();
       checkClient(tx);
     }
     List<Resource> setup = loadSetupResources(suite);
-    if (runTest(test, tx, setup, "*", null)) {
+    if (runTest(test, tx, setup, modes, "*", null)) {
       return null;      
     } else {
       return error;
     }
   }
-  private boolean runSuite(JsonObject suite, ITerminologyClient tx, String filter, JsonArray output) throws FHIRFormatError, FileNotFoundException, IOException {
+  private boolean runSuite(JsonObject suite, ITerminologyClient tx, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, FileNotFoundException, IOException {
     System.out.println("Group "+suite.asString("name"));
     JsonObject outputS = new JsonObject();
     if (output != null) {
@@ -160,12 +161,12 @@ public class TxTester {
     List<Resource> setup = loadSetupResources(suite);
     boolean ok = true;
     for (JsonObject test : suite.getJsonObjects("tests")) {
-      ok = runTest(test, tx, setup, filter, outputS.forceArray("tests")) && ok;      
+      ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;      
     }
     return ok;
   }
 
-  private boolean runTest(JsonObject test, ITerminologyClient tx, List<Resource> setup, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
+  private boolean runTest(JsonObject test, ITerminologyClient tx, List<Resource> setup, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
     JsonObject outputT = new JsonObject();
     if (output != null) {
       output.add(outputT);
@@ -175,9 +176,9 @@ public class TxTester {
     if (Utilities.noString(filter) || filter.equals("*") || test.asString("name").contains(filter)) {
       System.out.print("  Test "+test.asString("name")+": ");
       try {
-        Parameters req = (Parameters) loader.loadResource(test.asString("request"));
+        Parameters req = (Parameters) loader.loadResource(chooseParam(test, "request", modes));
 
-        String fn = test.asString("response");
+        String fn = chooseParam(test, "response", modes);
         String resp = TextFile.bytesToString(loader.loadContent(fn));
         String fp = Utilities.path("[tmp]", serverId(), fn);
         File fo = new File(fp);
@@ -215,6 +216,15 @@ public class TxTester {
       outputT.add("status", "ignored");
       return true;
     }
+  }
+
+  private String chooseParam(JsonObject test, String name, List<String> modes) {
+    for (String mode : modes) {
+      if (test.has(name+":"+mode)) {
+        return test.asString(name+":"+mode);
+      }
+    }
+    return test.asString(name);
   }
 
   private Parameters loadProfile(JsonObject test) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException {

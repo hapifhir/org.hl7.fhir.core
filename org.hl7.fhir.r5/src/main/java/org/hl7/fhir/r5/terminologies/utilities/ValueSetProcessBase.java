@@ -113,7 +113,7 @@ public class ValueSetProcessBase {
     return list;
   }
   
-  public void checkCanonical(List<OperationOutcomeIssueComponent> issues, String path, CanonicalResource resource) {
+  public void checkCanonical(List<OperationOutcomeIssueComponent> issues, String path, CanonicalResource resource, CanonicalResource source) {
     if (resource != null) {
       StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(resource);
       if (standardsStatus == StandardsStatus.DEPRECATED) {
@@ -122,6 +122,13 @@ public class ValueSetProcessBase {
         addToIssues(issues, makeStatusIssue(path, "withdrawn", I18nConstants.MSG_WITHDRAWN, resource));
       } else if (resource.getStatus() == PublicationStatus.RETIRED) {
         addToIssues(issues, makeStatusIssue(path, "retired", I18nConstants.MSG_RETIRED, resource));
+      } else if (source != null) {
+        if (resource.getExperimental() && !source.getExperimental()) {
+          addToIssues(issues, makeStatusIssue(path, "experimental", I18nConstants.MSG_EXPERIMENTAL, resource));
+        } else if ((resource.getStatus() == PublicationStatus.DRAFT || standardsStatus == StandardsStatus.DRAFT)
+            && !(source.getStatus() == PublicationStatus.DRAFT || ToolingExtensions.getStandardsStatus(source) == StandardsStatus.DRAFT)) {
+          addToIssues(issues, makeStatusIssue(path, "draft", I18nConstants.MSG_DRAFT, resource));
+        }
       }
     }
   }
@@ -150,7 +157,7 @@ public class ValueSetProcessBase {
     }    
   }
 
-  public void checkCanonical(ValueSetExpansionComponent params, CanonicalResource resource) {
+  public void checkCanonical(ValueSetExpansionComponent params, CanonicalResource resource, ValueSet source) {
     if (resource != null) {
       StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(resource);
       if (standardsStatus == StandardsStatus.DEPRECATED) {
@@ -165,6 +172,15 @@ public class ValueSetProcessBase {
         if (!params.hasParameterValue("warning-retired", resource.getVersionedUrl())) {
           params.addParameter("warning-retired", new UriType(resource.getVersionedUrl()));
         } 
+      } else if (resource.getExperimental() && !source.getExperimental()) {
+        if (!params.hasParameterValue("warning-experimental", resource.getVersionedUrl())) {
+          params.addParameter("warning-experimental", new UriType(resource.getVersionedUrl()));
+        }         
+      } else if ((resource.getStatus() == PublicationStatus.DRAFT || standardsStatus == StandardsStatus.DRAFT)
+          && !(source.getStatus() == PublicationStatus.DRAFT || ToolingExtensions.getStandardsStatus(source) == StandardsStatus.DRAFT)) {
+        if (!params.hasParameterValue("warning-draft", resource.getVersionedUrl())) {
+          params.addParameter("warning-draft", new UriType(resource.getVersionedUrl()));
+        }         
       }
     }
   }

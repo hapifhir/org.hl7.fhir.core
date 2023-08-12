@@ -117,7 +117,6 @@ public class TerminologyServiceTests {
   public void test() throws Exception {
     if (baseEngine == null) {
       baseEngine = TestUtilities.getValidationEngineNoTxServer("hl7.fhir.r5.core#5.0.0", FhirPublication.R5, "5.0.0");
-
     }
     ValidationEngine engine = new ValidationEngine(this.baseEngine);
     for (String s : setup.suite.forceArray("setup").asStrings()) {

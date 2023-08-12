@@ -498,7 +498,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
         if (!pri.getFilename().contains("ig-r4") && (loader == null || loader.wantLoad(pi, pri))) {
           try {
-            registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageInformation(pi));
+            if (!pri.hasId()) {
+              loadDefinitionItem(pri.getFilename(), new FileInputStream(pri.getFilename()), loader, null, new PackageInformation(pi));
+            } else {
+              registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageInformation(pi));
+            }
             t++;
           } catch (FHIRException e) {
             throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, pri.getFilename(), pi.name(), pi.version(), e.getMessage()), e);

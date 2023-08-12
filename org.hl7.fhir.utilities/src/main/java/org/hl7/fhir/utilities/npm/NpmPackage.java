@@ -144,6 +144,9 @@ public class NpmPackage {
     public String getSupplements() {
       return supplements;
     }
+    public boolean hasId() {
+      return !Utilities.noString(id);
+    }
     
   }
   public class IndexVersionSorter implements Comparator<JsonObject> {
