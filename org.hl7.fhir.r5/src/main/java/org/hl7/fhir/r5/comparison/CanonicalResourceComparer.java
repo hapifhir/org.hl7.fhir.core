@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.comparison.CanonicalResourceComparer.ChangeAnalysisState;
 import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -31,11 +32,26 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 public abstract class CanonicalResourceComparer extends ResourceComparer {
 
 
+  public enum ChangeAnalysisState {
+    Unknown, NotChanged, Changed, CannotEvaluate;
+
+    boolean noteable() {
+      return this == Changed || this == CannotEvaluate;
+    }
+  }
+
+
   public abstract class CanonicalResourceComparison<T extends CanonicalResource> extends ResourceComparison {
     protected T left;
     protected T right;
     protected T union;
     protected T intersection;
+    
+    private ChangeAnalysisState changedMetadata = ChangeAnalysisState.Unknown; 
+    private ChangeAnalysisState changedDefinitions = ChangeAnalysisState.Unknown;
+    private ChangeAnalysisState changedContent = ChangeAnalysisState.Unknown;
+    private ChangeAnalysisState changedContentInterpretation = ChangeAnalysisState.Unknown;
+
     protected Map<String, StructuralMatch<String>> metadata = new HashMap<>();                                             
 
     public CanonicalResourceComparison(T left, T right) {
@@ -80,6 +96,59 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       this.intersection = intersection;
     }
 
+    private ChangeAnalysisState updateState(ChangeAnalysisState newState, ChangeAnalysisState oldState) {
+      switch (newState) {
+      case CannotEvaluate:
+        return ChangeAnalysisState.CannotEvaluate;
+      case Changed:
+        if (oldState != ChangeAnalysisState.CannotEvaluate) {
+          return ChangeAnalysisState.Changed;
+        }
+        break;
+      case NotChanged:
+        if (oldState == ChangeAnalysisState.Unknown) {
+          return ChangeAnalysisState.NotChanged;
+        }
+        break;
+      case Unknown:
+      default:
+        break;
+      }
+      return oldState;
+    }
+    
+    public void updatedMetadataState(ChangeAnalysisState state) {
+      changedMetadata = updateState(state, changedMetadata);
+    }
+
+    public void updateDefinitionsState(ChangeAnalysisState state) {
+      changedDefinitions = updateState(state, changedDefinitions);
+    }
+
+    public void updateContentState(ChangeAnalysisState state) {
+      changedContent = updateState(state, changedContent);
+    }
+
+    public void updateContentInterpretationState(ChangeAnalysisState state) {
+      changedContentInterpretation = updateState(state, changedContentInterpretation);
+    }
+
+    public void updatedMetadataState(boolean state) {
+      changedMetadata = updateState(state ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedMetadata);
+    }
+
+    public void updateDefinitionsState(boolean state) {
+      changedDefinitions = updateState(state ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedDefinitions);
+    }
+
+    public void updateContentState(boolean state) {
+      changedContent = updateState(state ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedContent);
+    }
+
+    public void updateContentInterpretationState(boolean state) {
+      changedContentInterpretation = updateState(state ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedContentInterpretation);
+    }
+
     @Override
     protected String toTable() {
       String s = "";
@@ -96,34 +165,75 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
         sm.countMessages(cnts);
       }
     }
+    
+    protected String changeSummary() {
+      if (!(changedMetadata.noteable() || changedDefinitions.noteable() || changedContent.noteable() || changedContentInterpretation.noteable())) {
+        return null;
+      };
+      CommaSeparatedStringBuilder bc = new CommaSeparatedStringBuilder();
+      if (changedMetadata == ChangeAnalysisState.CannotEvaluate) {
+        bc.append("Metadata");
+      }
+      if (changedDefinitions == ChangeAnalysisState.CannotEvaluate) {
+        bc.append("Definitions");
+      }
+      if (changedContent == ChangeAnalysisState.CannotEvaluate) {
+        bc.append("Content");
+      }
+      if (changedContentInterpretation == ChangeAnalysisState.CannotEvaluate) {
+        bc.append("Interpretation");
+      }
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      if (changedMetadata == ChangeAnalysisState.Changed) {
+        b.append("Metadata");
+      }
+      if (changedDefinitions == ChangeAnalysisState.Changed) {
+        b.append("Definitions");
+      }
+      if (changedContent == ChangeAnalysisState.Changed) {
+        b.append("Content");
+      }
+      if (changedContentInterpretation == ChangeAnalysisState.Changed) {
+        b.append("Interpretation");
+      }
+      return (bc.length() == 0 ? "" : "Error Checking: "+bc.toString()+"; ")+ "Changed: "+b.toString();     
+    }
   }
 
   public CanonicalResourceComparer(ComparisonSession session) {
     super(session);
   }
 
-  protected void compareMetadata(CanonicalResource left, CanonicalResource right, Map<String, StructuralMatch<String>> comp, CanonicalResourceComparison<? extends CanonicalResource> res) {
-    comparePrimitives("url", left.getUrlElement(), right.getUrlElement(), comp, IssueSeverity.ERROR, res);
-    comparePrimitives("version", left.getVersionElement(), right.getVersionElement(), comp, IssueSeverity.ERROR, res);
-    comparePrimitives("name", left.getNameElement(), right.getNameElement(), comp, IssueSeverity.INFORMATION, res);
-    comparePrimitives("title", left.getTitleElement(), right.getTitleElement(), comp, IssueSeverity.INFORMATION, res);
-    comparePrimitives("status", left.getStatusElement(), right.getStatusElement(), comp, IssueSeverity.INFORMATION, res);
-    comparePrimitives("experimental", left.getExperimentalElement(), right.getExperimentalElement(), comp, IssueSeverity.WARNING, res);
-    comparePrimitives("date", left.getDateElement(), right.getDateElement(), comp, IssueSeverity.INFORMATION, res);
-    comparePrimitives("publisher", left.getPublisherElement(), right.getPublisherElement(), comp, IssueSeverity.INFORMATION, res);
-    comparePrimitives("description", left.getDescriptionElement(), right.getDescriptionElement(), comp, IssueSeverity.NULL, res);
-    comparePrimitives("purpose", left.getPurposeElement(), right.getPurposeElement(), comp, IssueSeverity.NULL, res);
-    comparePrimitives("copyright", left.getCopyrightElement(), right.getCopyrightElement(), comp, IssueSeverity.INFORMATION, res);
-    compareCodeableConceptList("jurisdiction", left.getJurisdiction(), right.getJurisdiction(), comp, IssueSeverity.INFORMATION, res, res.getUnion().getJurisdiction(), res.getIntersection().getJurisdiction());
+  protected boolean compareMetadata(CanonicalResource left, CanonicalResource right, Map<String, StructuralMatch<String>> comp, CanonicalResourceComparison<? extends CanonicalResource> res) {
+    var changed = false;
+    changed = comparePrimitives("url", left.getUrlElement(), right.getUrlElement(), comp, IssueSeverity.ERROR, res) || changed;
+    if (session.getForVersion() == null) {
+      changed = comparePrimitives("version", left.getVersionElement(), right.getVersionElement(), comp, IssueSeverity.ERROR, res) || changed;
+    }
+    changed = comparePrimitives("name", left.getNameElement(), right.getNameElement(), comp, IssueSeverity.INFORMATION, res) || changed;
+    changed = comparePrimitives("title", left.getTitleElement(), right.getTitleElement(), comp, IssueSeverity.INFORMATION, res) || changed;
+    changed = comparePrimitives("status", left.getStatusElement(), right.getStatusElement(), comp, IssueSeverity.INFORMATION, res) || changed;
+    changed = comparePrimitives("experimental", left.getExperimentalElement(), right.getExperimentalElement(), comp, IssueSeverity.WARNING, res) || changed;
+    if (session.getForVersion() == null) {
+      changed = comparePrimitives("date", left.getDateElement(), right.getDateElement(), comp, IssueSeverity.INFORMATION, res) || changed;
+    }
+    changed = comparePrimitives("publisher", left.getPublisherElement(), right.getPublisherElement(), comp, IssueSeverity.INFORMATION, res) || changed;
+    changed = comparePrimitives("description", left.getDescriptionElement(), right.getDescriptionElement(), comp, IssueSeverity.NULL, res) || changed;
+    changed = comparePrimitives("purpose", left.getPurposeElement(), right.getPurposeElement(), comp, IssueSeverity.NULL, res) || changed;
+    changed = comparePrimitives("copyright", left.getCopyrightElement(), right.getCopyrightElement(), comp, IssueSeverity.INFORMATION, res) || changed;
+    changed = compareCodeableConceptList("jurisdiction", left.getJurisdiction(), right.getJurisdiction(), comp, IssueSeverity.INFORMATION, res, res.getUnion().getJurisdiction(), res.getIntersection().getJurisdiction()) || changed;
+    return changed;
   }
 
-  protected void compareCodeableConceptList(String name, List<CodeableConcept> left, List<CodeableConcept> right, Map<String, StructuralMatch<String>> comp, IssueSeverity level, CanonicalResourceComparison<? extends CanonicalResource> res, List<CodeableConcept> union, List<CodeableConcept> intersection ) {
+  protected boolean compareCodeableConceptList(String name, List<CodeableConcept> left, List<CodeableConcept> right, Map<String, StructuralMatch<String>> comp, IssueSeverity level, CanonicalResourceComparison<? extends CanonicalResource> res, List<CodeableConcept> union, List<CodeableConcept> intersection ) {
+    boolean result = false;
     List<CodeableConcept> matchR = new ArrayList<>();
     StructuralMatch<String> combined = new StructuralMatch<String>();
     for (CodeableConcept l : left) {
       CodeableConcept r = findCodeableConceptInList(right, l);
       if (r == null) {
         union.add(l);
+        result = true;
         combined.getChildren().add(new StructuralMatch<String>(gen(l), vm(IssueSeverity.INFORMATION, "Removed the item '"+gen(l)+"'", fhirType()+"."+name, res.getMessages())));
       } else {
         matchR.add(r);
@@ -131,15 +241,20 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
         intersection.add(r);
         StructuralMatch<String> sm = new StructuralMatch<String>(gen(l), gen(r));
         combined.getChildren().add(sm);
+        if (sm.isDifferent()) {
+          result = true;
+        }
       }
     }
     for (CodeableConcept r : right) {
       if (!matchR.contains(r)) {
         union.add(r);
+        result = true;
         combined.getChildren().add(new StructuralMatch<String>(vm(IssueSeverity.INFORMATION, "Added the item '"+gen(r)+"'", fhirType()+"."+name, res.getMessages()), gen(r)));        
       }
     }    
-    comp.put(name, combined);    
+    comp.put(name, combined);  
+    return result;
   }
   
 
@@ -233,7 +348,7 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
   }
 
   @SuppressWarnings("rawtypes")
-  protected void comparePrimitives(String name, PrimitiveType l, PrimitiveType r, Map<String, StructuralMatch<String>> comp, IssueSeverity level, CanonicalResourceComparison<? extends CanonicalResource> res) {
+  protected boolean comparePrimitives(String name, PrimitiveType l, PrimitiveType r, Map<String, StructuralMatch<String>> comp, IssueSeverity level, CanonicalResourceComparison<? extends CanonicalResource> res) {
     StructuralMatch<String> match = null;
     if (l.isEmpty() && r.isEmpty()) {
       match = new StructuralMatch<>(null, null, null);
@@ -255,7 +370,8 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
         res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, fhirType()+"."+name, "Values for "+name+" differ: '"+l.primitiveValue()+"' vs '"+r.primitiveValue()+"'", level));
       }
     } 
-    comp.put(name, match);    
+    comp.put(name, match);  
+    return match.isDifferent();
   }
 
   protected abstract String fhirType();

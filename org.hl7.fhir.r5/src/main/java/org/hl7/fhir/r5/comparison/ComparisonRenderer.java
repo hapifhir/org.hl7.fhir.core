@@ -175,6 +175,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     vars.put("rightId", new StringType(comp.getRight().getId()));
     vars.put("leftUrl", new StringType(comp.getLeft().getUrl()));
     vars.put("rightUrl", new StringType(comp.getRight().getUrl()));
+    vars.put("summary", new StringType(comp.summary()));
     vars.put("errors", new StringType(new XhtmlComposer(true).compose(cs.renderErrors(comp))));
     vars.put("metadata", new StringType(new XhtmlComposer(true).compose(cs.renderMetadata(comp, "", ""))));
     vars.put("concepts", new StringType(new XhtmlComposer(true).compose(cs.renderConcepts(comp, "", ""))));
@@ -198,6 +199,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     vars.put("rightId", new StringType(comp.getRight().getId()));
     vars.put("leftUrl", new StringType(comp.getLeft().getUrl()));
     vars.put("rightUrl", new StringType(comp.getRight().getUrl()));
+    vars.put("summary", new StringType(comp.summary()));
     vars.put("errors", new StringType(new XhtmlComposer(true).compose(cs.renderErrors(comp))));
     vars.put("metadata", new StringType(new XhtmlComposer(true).compose(cs.renderMetadata(comp, "", ""))));
     vars.put("compose", new StringType(new XhtmlComposer(true).compose(cs.renderCompose(comp, "", ""))));

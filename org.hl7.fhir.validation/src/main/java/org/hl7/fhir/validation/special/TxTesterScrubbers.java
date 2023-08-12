@@ -53,7 +53,7 @@ public class TxTesterScrubbers {
     }
     
     @Override
-    public void visit(Resource resource) {
+    public void visit(Object context, Resource resource) {
       if (resource instanceof DomainResource) {
         DomainResource dr = (DomainResource) resource;
         dr.getExtension().removeIf(ext -> !isManagedExtension(ext));
@@ -61,7 +61,7 @@ public class TxTesterScrubbers {
     }
 
     @Override
-    public void visit(Element element) {
+    public void visit(Object context, Element element) {
       element.getExtension().removeIf(ext -> !isManagedExtension(ext));
     }
   }
@@ -69,7 +69,7 @@ public class TxTesterScrubbers {
   public static void scrubDR(DomainResource dr, boolean tight) {
     dr.setText(null);
     dr.setMeta(null);  
-    new ElementVisitor(new TxTesterScrubberVisitor(tight)).visit(dr);
+    new ElementVisitor(new TxTesterScrubberVisitor(tight)).visit(null, dr);
   }
 
   public static void scrubVS(ValueSet vs, boolean tight) {

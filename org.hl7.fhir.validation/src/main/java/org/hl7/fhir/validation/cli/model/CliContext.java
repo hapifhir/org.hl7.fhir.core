@@ -101,6 +101,8 @@ public class CliContext {
   private List<String> sources = new ArrayList<String>();
   @JsonProperty("inputs")
   private List<String> inputs = new ArrayList<String>();
+  @JsonProperty("modeParams")
+  private List<String> modeParams = new ArrayList<String>();
 
   @JsonProperty("mode")
   private EngineMode mode = EngineMode.VALIDATION;
@@ -426,6 +428,12 @@ public class CliContext {
   @JsonProperty("inputs")
   public List<String> getInputs() {
     return inputs;
+  }
+  
+
+  @JsonProperty("modeParams")
+  public List<String> getModeParams() {
+    return modeParams;
   }
 
   @JsonProperty("sources")

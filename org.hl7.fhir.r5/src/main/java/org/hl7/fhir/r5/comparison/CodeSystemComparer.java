@@ -33,7 +33,6 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
     private StructuralMatch<ConceptDefinitionComponent> combined;                                             
     private Map<String, String> propMap = new HashMap<>(); // right to left; left retains it's name
-
     public CodeSystemComparison(CodeSystem left, CodeSystem right) {
       super(left, right);
       combined = new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(); // base
@@ -54,8 +53,14 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
     @Override
     protected String summary() {
-      return "CodeSystem: "+left.present()+" vs "+right.present();
+      String res = "CodeSystem: "+left.present()+" vs "+right.present();
+      String ch = changeSummary();
+      if (ch != null) {
+        res = res + ". "+ch;
+      }
+      return res;
     }
+
 
     @Override
     protected String fhirType() {
@@ -114,14 +119,18 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     cs1.setDate(new Date());
     cs1.getProperty().addAll(cs.getProperty());
 
-    compareMetadata(left, right, res.getMetadata(), res);
-    comparePrimitives("caseSensitive", left.getCaseSensitiveElement(), right.getCaseSensitiveElement(), res.getMetadata(), IssueSeverity.ERROR, res);
-    comparePrimitives("hierarchyMeaning", left.getHierarchyMeaningElement(), right.getHierarchyMeaningElement(), res.getMetadata(), IssueSeverity.ERROR, res);
-    comparePrimitives("compositional", left.getCompositionalElement(), right.getCompositionalElement(), res.getMetadata(), IssueSeverity.WARNING, res);
-    comparePrimitives("versionNeeded", left.getVersionNeededElement(), right.getVersionNeededElement(), res.getMetadata(), IssueSeverity.INFORMATION, res);
-    comparePrimitives("content", left.getContentElement(), right.getContentElement(), res.getMetadata(), IssueSeverity.WARNING, res);
-
-    compareConcepts(left.getConcept(), right.getConcept(), res.getCombined(), res.getUnion().getConcept(), res.getIntersection().getConcept(), res.getUnion(), res.getIntersection(), res, "CodeSystem.concept");
+    boolean ch = compareMetadata(left, right, res.getMetadata(), res);
+    ch = comparePrimitives("versionNeeded", left.getVersionNeededElement(), right.getVersionNeededElement(), res.getMetadata(), IssueSeverity.INFORMATION, res) || ch;
+    ch = comparePrimitives("compositional", left.getCompositionalElement(), right.getCompositionalElement(), res.getMetadata(), IssueSeverity.WARNING, res) || ch;
+    res.updatedMetadataState(ch);
+    ch = false;
+    ch = comparePrimitives("caseSensitive", left.getCaseSensitiveElement(), right.getCaseSensitiveElement(), res.getMetadata(), IssueSeverity.ERROR, res) || ch;
+    ch = comparePrimitives("hierarchyMeaning", left.getHierarchyMeaningElement(), right.getHierarchyMeaningElement(), res.getMetadata(), IssueSeverity.ERROR, res) || ch;
+    ch = comparePrimitives("content", left.getContentElement(), right.getContentElement(), res.getMetadata(), IssueSeverity.WARNING, res);
+    
+    ch = compareConcepts(left.getConcept(), right.getConcept(), res.getCombined(), res.getUnion().getConcept(), res.getIntersection().getConcept(), res.getUnion(), res.getIntersection(), res, "CodeSystem.concept") || ch;
+    res.updateDefinitionsState(ch);
+    
     return res;
   }
 
@@ -153,13 +162,15 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
 
-  private void compareConcepts(List<ConceptDefinitionComponent> left, List<ConceptDefinitionComponent> right, StructuralMatch<ConceptDefinitionComponent> combined,
+  private boolean compareConcepts(List<ConceptDefinitionComponent> left, List<ConceptDefinitionComponent> right, StructuralMatch<ConceptDefinitionComponent> combined,
     List<ConceptDefinitionComponent> union, List<ConceptDefinitionComponent> intersection, CodeSystem csU, CodeSystem csI, CodeSystemComparison res, String path) {
+    boolean result = false;
     List<ConceptDefinitionComponent> matchR = new ArrayList<>();
     for (ConceptDefinitionComponent l : left) {
       ConceptDefinitionComponent r = findInList(right, l);
       if (r == null) {
         union.add(l);
+        res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(l, vmI(IssueSeverity.INFORMATION, "Removed this concept", path)));
       } else {
         matchR.add(r);
@@ -168,17 +179,23 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         union.add(cdM);
         intersection.add(cdI);
         StructuralMatch<ConceptDefinitionComponent> sm = new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(l, r);
-        compare(sm.getMessages(), l, r, path+".where(code='"+l.getCode()+"')", res);
+        if (compare(sm.getMessages(), l, r, path+".where(code='"+l.getCode()+"')", res)) {
+          result = true;
+        }
         combined.getChildren().add(sm);
-        compareConcepts(l.getConcept(), r.getConcept(), sm, cdM.getConcept(), cdI.getConcept(), csU, csI, res, path+".where(code='"+l.getCode()+"').concept");
+        if (compareConcepts(l.getConcept(), r.getConcept(), sm, cdM.getConcept(), cdI.getConcept(), csU, csI, res, path+".where(code='"+l.getCode()+"').concept")) {
+          result = true;
+        }
       }
     }
     for (ConceptDefinitionComponent r : right) {
       if (!matchR.contains(r)) {
         union.add(r);
+        res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(vmI(IssueSeverity.INFORMATION, "Added this concept", path), r));        
       }
     }
+    return result;
   }
 
   private ConceptDefinitionComponent findInList(List<ConceptDefinitionComponent> list, ConceptDefinitionComponent item) {
@@ -190,24 +207,30 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     return null;
   }
 
-  private void compare(List<ValidationMessage> msgs, ConceptDefinitionComponent l, ConceptDefinitionComponent r, String path, CodeSystemComparison res) {
-    compareStrings(path, msgs, l.getDisplay(), r.getDisplay(), "display", IssueSeverity.WARNING, res);
-    compareStrings(path, msgs, l.getDefinition(), r.getDefinition(), "definition", IssueSeverity.INFORMATION, res);    
+  private boolean compare(List<ValidationMessage> msgs, ConceptDefinitionComponent l, ConceptDefinitionComponent r, String path, CodeSystemComparison res) {
+    boolean result = false;
+    result = compareStrings(path, msgs, l.getDisplay(), r.getDisplay(), "display", IssueSeverity.WARNING, res) || result;
+    result = compareStrings(path, msgs, l.getDefinition(), r.getDefinition(), "definition", IssueSeverity.INFORMATION, res) || result;
+    return result;
   }
 
-  private void compareStrings(String path, List<ValidationMessage> msgs, String left, String right, String name, IssueSeverity level, CodeSystemComparison res) {
+  private boolean compareStrings(String path, List<ValidationMessage> msgs, String left, String right, String name, IssueSeverity level, CodeSystemComparison res) {
     if (!Utilities.noString(right)) {
       if (Utilities.noString(left)) {
         msgs.add(vmI(level, "Value for "+name+" added", path));
+        return true;
       } else if (!left.equals(right)) {
         if (level != IssueSeverity.NULL) {
           res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path+"."+name, "Changed value for "+name+": '"+left+"' vs '"+right+"'", level));
         }
         msgs.add(vmI(level, name+" changed from left to right", path));
+        return true;
       }
     } else if (!Utilities.noString(left)) {
       msgs.add(vmI(level, "Value for "+name+" removed", path));
+      return true;
     }
+    return false;
   }
 
   private ConceptDefinitionComponent merge(ConceptDefinitionComponent l, ConceptDefinitionComponent r, List<PropertyComponent> destProps, CodeSystemComparison res) {

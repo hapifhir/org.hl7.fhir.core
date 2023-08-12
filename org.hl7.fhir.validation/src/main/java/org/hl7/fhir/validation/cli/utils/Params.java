@@ -99,6 +99,7 @@ public class Params {
   public static final String SOURCE = "-source";
   public static final String INPUT = "-input";
   public static final String FILTER = "-filter";
+  public static final String MODE = "-mode";
   private static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
   private static final String WATCH_MODE_PARAM = "-watch-mode";
   private static final String WATCH_SCAN_DELAY = "-watch-scan-delay";
@@ -202,6 +203,13 @@ public class Params {
         else {
           String q = args[++i];
           cliContext.setLevel(ValidationLevel.fromCode(q));
+        }
+      } else if (args[i].equals(MODE)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -mode without indicating mode");
+        else {
+          String q = args[++i];
+          cliContext.getModeParams().add(q);
         }
       } else if (args[i].equals(INPUT)) {
         if (i + 1 == args.length)

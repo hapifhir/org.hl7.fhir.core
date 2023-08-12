@@ -23,6 +23,16 @@ public class Client {
   private FhirLoggingInterceptor fhirLoggingInterceptor;
   private int retryCount;
   private long timeout = DEFAULT_TIMEOUT;
+  private String base;
+  
+  public String getBase() {
+    return base;
+  }
+
+  public void setBase(String base) {
+    this.base = base;
+  }
+
 
   public ToolingClientLogger getLogger() {
     return logger;
@@ -131,7 +141,7 @@ public class Client {
 
   public <T extends Resource> Bundle executeBundleRequest(Request.Builder request, String resourceFormat,
       Headers headers, String message, int retryCount, long timeout) throws IOException {
-    return new FhirRequestBuilder(request).withLogger(fhirLoggingInterceptor).withResourceFormat(resourceFormat)
+    return new FhirRequestBuilder(request, base).withLogger(fhirLoggingInterceptor).withResourceFormat(resourceFormat)
         .withRetryCount(retryCount).withMessage(message)
         .withHeaders(headers == null ? new Headers.Builder().build() : headers)
         .withTimeout(timeout, TimeUnit.MILLISECONDS).executeAsBatch();
@@ -139,7 +149,7 @@ public class Client {
 
   public <T extends Resource> ResourceRequest<T> executeFhirRequest(Request.Builder request, String resourceFormat,
       Headers headers, String message, int retryCount, long timeout) throws IOException {
-    return new FhirRequestBuilder(request).withLogger(fhirLoggingInterceptor).withResourceFormat(resourceFormat)
+    return new FhirRequestBuilder(request, base).withLogger(fhirLoggingInterceptor).withResourceFormat(resourceFormat)
         .withRetryCount(retryCount).withMessage(message)
         .withHeaders(headers == null ? new Headers.Builder().build() : headers)
         .withTimeout(timeout, TimeUnit.MILLISECONDS).execute();

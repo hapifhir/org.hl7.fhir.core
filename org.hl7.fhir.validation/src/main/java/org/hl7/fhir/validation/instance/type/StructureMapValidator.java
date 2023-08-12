@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
@@ -29,7 +28,6 @@ import org.hl7.fhir.r5.terminologies.ConceptMapUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.structuremap.ResolvedGroup;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -38,9 +36,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class StructureMapValidator extends BaseValidator {
@@ -300,15 +296,11 @@ public class StructureMapValidator extends BaseValidator {
   private ContextUtilities cu;
   private List<StructureMap> imports = new ArrayList<>();
 
-  public StructureMapValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, FHIRPathEngine fpe, XVerExtensionManager xverManager, ProfileUtilities profileUtilities, Coding jurisdiction) {
-    super(context, xverManager, debug);
-    source = Source.InstanceValidator;
+  public StructureMapValidator(BaseValidator parent, FHIRPathEngine fpe, ProfileUtilities profileUtilities) {
+    super(parent);
     this.fpe = fpe;
-    this.timeTracker = timeTracker;
-    this.jurisdiction = jurisdiction;
     this.profileUtilities = profileUtilities;
     this.cu = new ContextUtilities(context);
-
   }
   
   public boolean isAbstractType(List<TypeRefComponent> list) {

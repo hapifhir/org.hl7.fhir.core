@@ -16,7 +16,6 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -28,6 +27,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Resource;
@@ -37,16 +37,13 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class StructureDefinitionValidator extends BaseValidator {
@@ -63,14 +60,10 @@ public class StructureDefinitionValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private boolean wantCheckSnapshotUnchanged;
 
-  public StructureDefinitionValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction, boolean forPublication) {
-    super(context, xverManager, debug);
-    source = Source.InstanceValidator;
+  public StructureDefinitionValidator(BaseValidator parent, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged) {
+    super(parent);
     this.fpe = fpe;
-    this.timeTracker = timeTracker;
     this.wantCheckSnapshotUnchanged = wantCheckSnapshotUnchanged;
-    this.jurisdiction = jurisdiction;
-    this.forPublication = forPublication;
   }
   
   public boolean validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
@@ -831,7 +824,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         
       } else {
         for (Element profile : profiles) {
-          ok = validateTypeProfile(errors, profile, code, stack.push(profile, -1, null, null), path) && ok;
+          ok = validateTypeProfile(errors, profile, code, stack.push(profile, -1, null, null), path, sd) && ok;
         }
         profiles = type.getChildrenByName("targetProfile");
         for (Element profile : profiles) {
@@ -906,7 +899,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return codes;
   }
 
-  private boolean validateTypeProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
+  private boolean validateTypeProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path, StructureDefinition source) {
     boolean ok = true;
     String p = profile.primitiveValue();
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
@@ -921,6 +914,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path) && ok;
       } else {
         if (t.getType().equals("Extension")) {
+          checkDefinitionStatus(errors, profile, path, sd, source, context.formatMessage(I18nConstants.MSG_DEPENDS_ON_EXTENSION));
           boolean isModifierDefinition = checkIsModifierExtension(sd);
           boolean isModifierContext = path.endsWith(".modifierExtension");
           if (isModifierDefinition) {
@@ -928,6 +922,8 @@ public class StructureDefinitionValidator extends BaseValidator {
           } else {
             ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), !isModifierContext, I18nConstants.SD_ED_TYPE_PROFILE_IS_MODIFIER, p, t, code, path) && ok;
           }          
+        } else {
+          checkDefinitionStatus(errors, profile, path, sd, source, context.formatMessage(I18nConstants.MSG_DEPENDS_ON_PROFILE));
         }
       }
     }

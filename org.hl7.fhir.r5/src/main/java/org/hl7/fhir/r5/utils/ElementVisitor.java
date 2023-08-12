@@ -8,8 +8,8 @@ import org.hl7.fhir.r5.model.Resource;
 public class ElementVisitor {
 
   public interface IElementVisitor {
-    public void visit(Resource resource);
-    public void visit(Element element);
+    public void visit(Object context, Resource resource);
+    public void visit(Object context, Element element);
   }
 
   private IElementVisitor visitor;
@@ -18,28 +18,28 @@ public class ElementVisitor {
     this.visitor = visitor;
   }
 
-  private void visitBase(Base base) {
+  private void visitBase(Object context, Base base) {
     for (Property p : base.children()) {
       if (p.hasValues()) {
         for (Base b : p.getValues()) {
           if (b instanceof Resource) {
-            visit((Resource) b);
+            visit(context, (Resource) b);
           } else {
-            visit((Element) b);
+            visit(context, (Element) b);
           }
         }
       }
     }
   }
 
-  public void visit(Resource res) {
-    visitor.visit(res);
-    visitBase(res);
+  public void visit(Object context, Resource res) {
+    visitor.visit(context, res);
+    visitBase(context, res);
   }
 
-  public void visit(Element e) {
-    visitor.visit(e);
-    visitBase(e);
+  public void visit(Object context, Element e) {
+    visitor.visit(context, e);
+    visitBase(context, e);
   }
 
 }

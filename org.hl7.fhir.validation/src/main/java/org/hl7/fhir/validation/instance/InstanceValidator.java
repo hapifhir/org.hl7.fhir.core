@@ -52,6 +52,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -114,6 +115,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.model.Extension;
@@ -171,6 +173,7 @@ import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.SIDUtilities;
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.UnicodeUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
@@ -1938,9 +1941,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else {
         rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", def.getIsModifier() == isModifier, I18nConstants.EXTENSION_EXT_MODIFIER_MISMATCHN);
       }
-      // two questions
+
       // 1. can this extension be used here?
       checkExtensionContext(hostContext.getAppContext(), errors, resource, container, ex, containerStack, hostContext, isModifier);
+      checkDefinitionStatus(errors, element, path, ex, profile, context.formatMessage(I18nConstants.MSG_DEPENDS_ON_EXTENSION));
 
       if (isModifier)
         rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", ex.getSnapshot().getElement().get(0).getIsModifier(), I18nConstants.EXTENSION_EXT_MODIFIER_Y, url);
@@ -1963,8 +1967,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return ex;
   }
-
- 
 
   private boolean hasExtensionSlice(StructureDefinition profile, String sliceName) {
     for (ElementDefinition ed : profile.getSnapshot().getElement()) {
@@ -5139,31 +5141,31 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public boolean checkSpecials(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode) {
     // specific known special validations
     if (element.getType().equals(BUNDLE)) {
-      return new BundleValidator(context, debug, serverBase, this, xverManager, jurisdiction).validateBundle(errors, element, stack, checkSpecials, hostContext, pct, mode);
+      return new BundleValidator(this, serverBase).validateBundle(errors, element, stack, checkSpecials, hostContext, pct, mode);
     } else if (element.getType().equals("Observation")) {
       return validateObservation(errors, element, stack);
     } else if (element.getType().equals("Questionnaire")) {
-      return new QuestionnaireValidator(context, debug, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaire(errors, element, element, stack);
+      return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaire(errors, element, element, stack);
     } else if (element.getType().equals("QuestionnaireResponse")) {
-      return new QuestionnaireValidator(context, debug, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaireResponse(hostContext, errors, element, stack);
+      return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaireResponse(hostContext, errors, element, stack);
     } else if (element.getType().equals("Measure")) {
-      return new MeasureValidator(context, debug, timeTracker, xverManager, jurisdiction, this).validateMeasure(hostContext, errors, element, stack);      
+      return new MeasureValidator(this).validateMeasure(hostContext, errors, element, stack);      
     } else if (element.getType().equals("MeasureReport")) {
-      return new MeasureValidator(context, debug, timeTracker, xverManager, jurisdiction, this).validateMeasureReport(hostContext, errors, element, stack);
+      return new MeasureValidator(this).validateMeasureReport(hostContext, errors, element, stack);
     } else if (element.getType().equals("CapabilityStatement")) {
       return validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
-      return new CodeSystemValidator(context, debug, timeTracker, this, xverManager, jurisdiction).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
+      return new CodeSystemValidator(this).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("ConceptMap")) {
-      return new ConceptMapValidator(context, debug, timeTracker, this, xverManager, jurisdiction).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
+      return new ConceptMapValidator(this).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("SearchParameter")) {
-      return new SearchParameterValidator(context, debug, timeTracker, fpe, xverManager, jurisdiction).validateSearchParameter(errors, element, stack);
+      return new SearchParameterValidator(this, fpe).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {
-      return new StructureDefinitionValidator(context, debug, timeTracker, fpe, wantCheckSnapshotUnchanged, xverManager, jurisdiction, forPublication).validateStructureDefinition(errors, element, stack);
+      return new StructureDefinitionValidator(this, fpe, wantCheckSnapshotUnchanged).validateStructureDefinition(errors, element, stack);
     } else if (element.getType().equals("StructureMap")) {
-      return new StructureMapValidator(context, debug, timeTracker, fpe, xverManager,profileUtilities, jurisdiction).validateStructureMap(errors, element, stack);
+      return new StructureMapValidator(this, fpe, profileUtilities).validateStructureMap(errors, element, stack);
     } else if (element.getType().equals("ValueSet")) {
-      return new ValueSetValidator(context, debug, timeTracker, this, xverManager, jurisdiction, allowExamples).validateValueSet(errors, element, stack);
+      return new ValueSetValidator(this).validateValueSet(errors, element, stack);
     } else {
       return true;
     }
@@ -6699,9 +6701,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     codingObserver.setCheckIPSCodes(checkIPSCodes);
   }
 
-
   public InstanceValidator setForPublication(boolean forPublication) {
     this.forPublication = forPublication;
+    if (forPublication) {
+      warnOnDraftOrExperimental = true;
+    }
     return this;
   }
+
+  public boolean isWarnOnDraftOrExperimental() {
+    return warnOnDraftOrExperimental;
+  }
+
+  public InstanceValidator setWarnOnDraftOrExperimental(boolean warnOnDraftOrExperimental) {
+    this.warnOnDraftOrExperimental = warnOnDraftOrExperimental;
+    return this;
+  }
+  
+  
 }

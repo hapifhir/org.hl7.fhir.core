@@ -867,4 +867,9 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return res;
   }
 
+
+  public XhtmlNode strikethrough() {
+    return addTag("s");
+  }
+
 }

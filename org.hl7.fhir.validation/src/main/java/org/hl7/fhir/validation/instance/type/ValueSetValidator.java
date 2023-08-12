@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.instance.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -11,16 +10,13 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.codesystem.CodeSystemChecker;
 import org.hl7.fhir.validation.codesystem.GeneralCodeSystemChecker;
 import org.hl7.fhir.validation.codesystem.SnomedCTChecker;
@@ -54,15 +50,8 @@ public class ValueSetValidator extends BaseValidator {
     
   }
 
-  private InstanceValidator parent;
-
-  public ValueSetValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction, boolean allowExamples) {
-    super(context, xverManager, debug);
-    source = Source.InstanceValidator;
-    this.timeTracker = timeTracker;
-    this.parent = parent;
-    this.jurisdiction = jurisdiction;
-    this.allowExamples = allowExamples;
+  public ValueSetValidator(InstanceValidator parent) {
+    super(parent);
   }
   
   public boolean validateValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
@@ -169,7 +158,7 @@ public class ValueSetValidator extends BaseValidator {
         }
         cc++;
       }    
-      if (parent.isValidateValueSetCodesOnTxServer() && batch.size() > 0 & !context.isNoTerminologyServer()) {
+      if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && batch.size() > 0 & !context.isNoTerminologyServer()) {
         long t = System.currentTimeMillis();
         if (parent.isDebug()) {
           System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
