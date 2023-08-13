@@ -914,7 +914,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         Parameters pIn = new Parameters();
         pIn.addParameter().setName("coding").setValue(t.getCoding());
         if (options.isGuessSystem()) {
-          pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
+          pIn.addParameter().setName("inferSystem").setValue(new BooleanType(true));
         }
         if (vs != null) {
           pIn.addParameter().setName("valueSet").setResource(vs);
@@ -1030,7 +1030,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       Parameters pIn = new Parameters();
       pIn.addParameter().setName("coding").setValue(code);
       if (options.isGuessSystem()) {
-        pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
+        pIn.addParameter().setName("inferSystem").setValue(new BooleanType(true));
       }
       setTerminologyOptions(options, pIn);
       res = validateOnServer(vs, pIn, options);
