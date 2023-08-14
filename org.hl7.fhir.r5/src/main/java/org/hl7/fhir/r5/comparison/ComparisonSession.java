@@ -107,9 +107,9 @@ public class ComparisonSession {
           throw new FHIRException("Unable to compare resources of type "+left.fhirType()+" and "+right.fhirType());
         }
       } catch (Throwable e) {
-        if (debug) {
+//        if (debug) {
           e.printStackTrace();
-        }
+//        }
         ResourceComparer.PlaceHolderComparison csc = new ResourceComparer.PlaceHolderComparison(left, right, e);
         compares.put(key, csc);
         return csc;      

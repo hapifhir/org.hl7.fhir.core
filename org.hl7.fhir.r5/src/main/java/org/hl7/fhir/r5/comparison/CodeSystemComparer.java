@@ -10,7 +10,9 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
@@ -31,6 +33,8 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
   public class CodeSystemComparison extends CanonicalResourceComparison<CodeSystem> {
 
+    private StructuralMatch<PropertyComponent> properties; 
+    private StructuralMatch<CodeSystemFilterComponent> filters;                                             
     private StructuralMatch<ConceptDefinitionComponent> combined;                                             
     private Map<String, String> propMap = new HashMap<>(); // right to left; left retains it's name
     public CodeSystemComparison(CodeSystem left, CodeSystem right) {
@@ -44,6 +48,14 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
     public StructuralMatch<ConceptDefinitionComponent> getCombined() {
       return combined;
+    }
+
+    public StructuralMatch<PropertyComponent> getProperties() {
+      return properties;
+    }
+
+    public StructuralMatch<CodeSystemFilterComponent> getFilters() {
+      return filters;
     }
 
     @Override
@@ -87,7 +99,6 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     if (right == null)
       throw new DefinitionException("No CodeSystem provided (right)");
     
-    
     CodeSystemComparison res = new CodeSystemComparison(left, right);
     session.identify(res);
     CodeSystem cs = new CodeSystem();
@@ -119,18 +130,29 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     cs1.setDate(new Date());
     cs1.getProperty().addAll(cs.getProperty());
 
-    boolean ch = compareMetadata(left, right, res.getMetadata(), res);
-    ch = comparePrimitives("versionNeeded", left.getVersionNeededElement(), right.getVersionNeededElement(), res.getMetadata(), IssueSeverity.INFORMATION, res) || ch;
-    ch = comparePrimitives("compositional", left.getCompositionalElement(), right.getCompositionalElement(), res.getMetadata(), IssueSeverity.WARNING, res) || ch;
-    res.updatedMetadataState(ch);
+
+    List<String> chMetadata = new ArrayList<>();
+    boolean ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata);
+    if (comparePrimitives("versionNeeded", left.getVersionNeededElement(), right.getVersionNeededElement(), res.getMetadata(), IssueSeverity.INFORMATION, res)) {
+      ch = true;
+      chMetadata.add("versionNeeded");
+    }
+    if (comparePrimitives("compositional", left.getCompositionalElement(), right.getCompositionalElement(), res.getMetadata(), IssueSeverity.WARNING, res)) {
+      ch = true;
+      chMetadata.add("compositional");
+    }
+    res.updatedMetadataState(ch, chMetadata);
     ch = false;
-    ch = comparePrimitives("caseSensitive", left.getCaseSensitiveElement(), right.getCaseSensitiveElement(), res.getMetadata(), IssueSeverity.ERROR, res) || ch;
-    ch = comparePrimitives("hierarchyMeaning", left.getHierarchyMeaningElement(), right.getHierarchyMeaningElement(), res.getMetadata(), IssueSeverity.ERROR, res) || ch;
-    ch = comparePrimitives("content", left.getContentElement(), right.getContentElement(), res.getMetadata(), IssueSeverity.WARNING, res);
+    ch = comparePrimitivesWithTracking("caseSensitive", left.getCaseSensitiveElement(), right.getCaseSensitiveElement(), res.getMetadata(), IssueSeverity.ERROR, res, right, session.getForVersion()) || ch;
+    ch = comparePrimitivesWithTracking("hierarchyMeaning", left.getHierarchyMeaningElement(), right.getHierarchyMeaningElement(), res.getMetadata(), IssueSeverity.ERROR, res, right, session.getForVersion()) || ch;
+    ch = comparePrimitivesWithTracking("content", left.getContentElement(), right.getContentElement(), res.getMetadata(), IssueSeverity.WARNING, res, right, session.getForVersion());
     
-    ch = compareConcepts(left.getConcept(), right.getConcept(), res.getCombined(), res.getUnion().getConcept(), res.getIntersection().getConcept(), res.getUnion(), res.getIntersection(), res, "CodeSystem.concept") || ch;
+    ch = compareProperties(left.getProperty(), right.getProperty(), res.getProperties(), res.getUnion().getProperty(), res.getIntersection().getProperty(), res.getUnion(), res.getIntersection(), res, "CodeSystem.property", right) || ch;
+    ch = compareFilters(left.getFilter(), right.getFilter(), res.getFilters(), res.getUnion().getFilter(), res.getIntersection().getFilter(), res.getUnion(), res.getIntersection(), res, "CodeSystem.filter", right) || ch;
+    ch = compareConcepts(left.getConcept(), right.getConcept(), res.getCombined(), res.getUnion().getConcept(), res.getIntersection().getConcept(), res.getUnion(), res.getIntersection(), res, "CodeSystem.concept", right) || ch;
     res.updateDefinitionsState(ch);
-    
+
+    VersionComparisonAnnotation.annotate(right, session.getForVersion(), res);
     return res;
   }
 
@@ -161,10 +183,81 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     return null;
   }
 
+  private boolean compareProperties(List<PropertyComponent> left, List<PropertyComponent> right, StructuralMatch<PropertyComponent> combined,
+    List<PropertyComponent> union, List<PropertyComponent> intersection, CodeSystem csU, CodeSystem csI, CodeSystemComparison res, String path, Base parent) {
+    boolean def = false;
+    List<PropertyComponent> matchR = new ArrayList<>();
+    for (PropertyComponent l : left) {
+      PropertyComponent r = findInList(right, l);
+      if (r == null) {
+        union.add(l);
+        res.updateContentState(true);
+        combined.getChildren().add(new StructuralMatch<CodeSystem.PropertyComponent>(l, vmI(IssueSeverity.INFORMATION, "Removed this concept", path)));
+        VersionComparisonAnnotation.markDeleted(parent, session.getForVersion(), "concept", l);
+      } else {
+        matchR.add(r);
+        PropertyComponent cdM = merge(l, r, res);
+        PropertyComponent cdI = intersect(l, r, res);
+        union.add(cdM);
+        intersection.add(cdI);
+        StructuralMatch<PropertyComponent> sm = new StructuralMatch<CodeSystem.PropertyComponent>(l, r);
+        if (compare(sm.getMessages(), l, r, path+".where(code='"+l.getCode()+"')", res, parent)) {
+          def = true;
+        }
+        combined.getChildren().add(sm);
+      }
+    }
+    for (PropertyComponent r : right) {
+      if (!matchR.contains(r)) {
+        union.add(r);
+        res.updateContentState(true);
+        combined.getChildren().add(new StructuralMatch<CodeSystem.PropertyComponent>(vmI(IssueSeverity.INFORMATION, "Added this concept", path), r));    
+        VersionComparisonAnnotation.markAdded(r, session.getForVersion());     
+      }
+    }
+    return def;
+  }
 
+
+  private boolean compareFilters(List<CodeSystemFilterComponent> left, List<CodeSystemFilterComponent> right, StructuralMatch<CodeSystemFilterComponent> combined,
+    List<CodeSystemFilterComponent> union, List<CodeSystemFilterComponent> intersection, CodeSystem csU, CodeSystem csI, CodeSystemComparison res, String path, Base parent) {
+    boolean def = false;
+    List<CodeSystemFilterComponent> matchR = new ArrayList<>();
+    for (CodeSystemFilterComponent l : left) {
+      CodeSystemFilterComponent r = findInList(right, l);
+      if (r == null) {
+        union.add(l);
+        res.updateContentState(true);
+        combined.getChildren().add(new StructuralMatch<CodeSystem.CodeSystemFilterComponent>(l, vmI(IssueSeverity.INFORMATION, "Removed this concept", path)));
+        VersionComparisonAnnotation.markDeleted(parent, session.getForVersion(), "concept", l);
+      } else {
+        matchR.add(r);
+        CodeSystemFilterComponent cdM = merge(l, r, res);
+        CodeSystemFilterComponent cdI = intersect(l, r, res);
+        union.add(cdM);
+        intersection.add(cdI);
+        StructuralMatch<CodeSystemFilterComponent> sm = new StructuralMatch<CodeSystem.CodeSystemFilterComponent>(l, r);
+        if (compare(sm.getMessages(), l, r, path+".where(code='"+l.getCode()+"')", res, parent)) {
+          def = true;
+        }
+        combined.getChildren().add(sm);
+      }
+    }
+    for (CodeSystemFilterComponent r : right) {
+      if (!matchR.contains(r)) {
+        union.add(r);
+        res.updateContentState(true);
+        combined.getChildren().add(new StructuralMatch<CodeSystem.CodeSystemFilterComponent>(vmI(IssueSeverity.INFORMATION, "Added this concept", path), r));    
+        VersionComparisonAnnotation.markAdded(r, session.getForVersion());     
+      }
+    }
+    return def;
+  }
+
+  
   private boolean compareConcepts(List<ConceptDefinitionComponent> left, List<ConceptDefinitionComponent> right, StructuralMatch<ConceptDefinitionComponent> combined,
-    List<ConceptDefinitionComponent> union, List<ConceptDefinitionComponent> intersection, CodeSystem csU, CodeSystem csI, CodeSystemComparison res, String path) {
-    boolean result = false;
+    List<ConceptDefinitionComponent> union, List<ConceptDefinitionComponent> intersection, CodeSystem csU, CodeSystem csI, CodeSystemComparison res, String path, Base parent) {
+    boolean def = false;
     List<ConceptDefinitionComponent> matchR = new ArrayList<>();
     for (ConceptDefinitionComponent l : left) {
       ConceptDefinitionComponent r = findInList(right, l);
@@ -172,6 +265,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         union.add(l);
         res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(l, vmI(IssueSeverity.INFORMATION, "Removed this concept", path)));
+        VersionComparisonAnnotation.markDeleted(parent, session.getForVersion(), "concept", l);
       } else {
         matchR.add(r);
         ConceptDefinitionComponent cdM = merge(l, r, csU.getProperty(), res);
@@ -179,12 +273,12 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         union.add(cdM);
         intersection.add(cdI);
         StructuralMatch<ConceptDefinitionComponent> sm = new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(l, r);
-        if (compare(sm.getMessages(), l, r, path+".where(code='"+l.getCode()+"')", res)) {
-          result = true;
+        if (compare(sm.getMessages(), l, r, path+".where(code='"+l.getCode()+"')", res, parent)) {
+          def = true;
         }
         combined.getChildren().add(sm);
-        if (compareConcepts(l.getConcept(), r.getConcept(), sm, cdM.getConcept(), cdI.getConcept(), csU, csI, res, path+".where(code='"+l.getCode()+"').concept")) {
-          result = true;
+        if (compareConcepts(l.getConcept(), r.getConcept(), sm, cdM.getConcept(), cdI.getConcept(), csU, csI, res, path+".where(code='"+l.getCode()+"').concept", r)) {
+          def = true;
         }
       }
     }
@@ -192,11 +286,22 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
       if (!matchR.contains(r)) {
         union.add(r);
         res.updateContentState(true);
-        combined.getChildren().add(new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(vmI(IssueSeverity.INFORMATION, "Added this concept", path), r));        
+        combined.getChildren().add(new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(vmI(IssueSeverity.INFORMATION, "Added this concept", path), r));    
+        VersionComparisonAnnotation.markAdded(r, session.getForVersion());     
       }
     }
-    return result;
+    return def;
   }
+  
+  private CodeSystemFilterComponent findInList(List<CodeSystemFilterComponent> list, CodeSystemFilterComponent item) {
+    for (CodeSystemFilterComponent t : list) {
+      if (t.getCode().equals(item.getCode())) {
+        return t;
+      }
+    }
+    return null;
+  }
+
 
   private ConceptDefinitionComponent findInList(List<ConceptDefinitionComponent> list, ConceptDefinitionComponent item) {
     for (ConceptDefinitionComponent t : list) {
@@ -207,27 +312,58 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     return null;
   }
 
-  private boolean compare(List<ValidationMessage> msgs, ConceptDefinitionComponent l, ConceptDefinitionComponent r, String path, CodeSystemComparison res) {
+
+  private PropertyComponent findInList(List<PropertyComponent> list, PropertyComponent item) {
+    for (PropertyComponent t : list) {
+      if (t.getCode().equals(item.getCode())) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+  private boolean compare(List<ValidationMessage> msgs, ConceptDefinitionComponent l, ConceptDefinitionComponent r, String path, CodeSystemComparison res, Base parent) {
     boolean result = false;
-    result = compareStrings(path, msgs, l.getDisplay(), r.getDisplay(), "display", IssueSeverity.WARNING, res) || result;
-    result = compareStrings(path, msgs, l.getDefinition(), r.getDefinition(), "definition", IssueSeverity.INFORMATION, res) || result;
+    result = compareStrings(path, msgs, l.getDisplay(), r.getDisplay(), "display", IssueSeverity.WARNING, res, parent, l.getDisplayElement(), r.getDisplayElement()) || result;
+    result = compareStrings(path, msgs, l.getDefinition(), r.getDefinition(), "definition", IssueSeverity.INFORMATION, res, parent, l.getDefinitionElement(), r.getDefinitionElement()) || result;
+    // todo: designations, properties
     return result;
   }
 
-  private boolean compareStrings(String path, List<ValidationMessage> msgs, String left, String right, String name, IssueSeverity level, CodeSystemComparison res) {
+  private boolean compare(List<ValidationMessage> msgs, PropertyComponent l, PropertyComponent r, String path, CodeSystemComparison res, Base parent) {
+    boolean result = false;
+    result = compareStrings(path, msgs, l.getUri(), r.getUri(), "uri", IssueSeverity.WARNING, res, parent, l.getUriElement(), r.getUriElement()) || result;
+    result = compareStrings(path, msgs, l.hasType() ? l.getType().toCode() : null, r.hasType() ? r.getType().toCode() : null, "type", IssueSeverity.ERROR, res, parent, l.getTypeElement(), r.getTypeElement()) || result;
+    result = compareStrings(path, msgs, l.getDescription(), r.getDescription(), "description", IssueSeverity.WARNING, res, parent, l.getDescriptionElement(), r.getDescriptionElement()) || result;
+    return result;
+  }
+
+  private boolean compare(List<ValidationMessage> msgs, CodeSystemFilterComponent l, CodeSystemFilterComponent r, String path, CodeSystemComparison res, Base parent) {
+    boolean result = false;
+    result = compareStrings(path, msgs, l.getDescription(), r.getDescription(), "description", IssueSeverity.WARNING, res, parent, l.getDescriptionElement(), r.getDescriptionElement()) || result;
+// todo: repeating
+//    result = compareStrings(path, msgs, l.hasOperator() ? l.getOperator().toCode() : null, r.hasType() ? r.getType().toCode() : null, "type", IssueSeverity.ERROR, res, parent, l.getTypeElement(), r.getTypeElement()) || result;
+    result = compareStrings(path, msgs, l.getValue(), r.getValue(), "value", IssueSeverity.WARNING, res, parent, l.getValueElement(), r.getValueElement()) || result;
+    return result;
+  }
+
+  private boolean compareStrings(String path, List<ValidationMessage> msgs, String left, String right, String name, IssueSeverity level, CodeSystemComparison res, Base parent, Base l, Base r) {
     if (!Utilities.noString(right)) {
       if (Utilities.noString(left)) {
-        msgs.add(vmI(level, "Value for "+name+" added", path));
+        msgs.add(vmI(level, "Value for "+name+" added", path));   
+        VersionComparisonAnnotation.markAdded(r, session.getForVersion());     
         return true;
       } else if (!left.equals(right)) {
         if (level != IssueSeverity.NULL) {
           res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path+"."+name, "Changed value for "+name+": '"+left+"' vs '"+right+"'", level));
         }
         msgs.add(vmI(level, name+" changed from left to right", path));
+        VersionComparisonAnnotation.markChanged(r, session.getForVersion());   
         return true;
       }
     } else if (!Utilities.noString(left)) {
       msgs.add(vmI(level, "Value for "+name+" removed", path));
+      VersionComparisonAnnotation.markDeleted(parent, session.getForVersion(), "concept", l);
       return true;
     }
     return false;
@@ -246,6 +382,23 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     return cd;
   }
 
+  private PropertyComponent merge(PropertyComponent l, PropertyComponent r, CodeSystemComparison res) {
+    PropertyComponent cd = l.copy();
+    if (!l.hasDescription() && r.hasDescription()) {
+      cd.setDescription(r.getDescription());
+    }
+    return cd;
+  }
+
+
+  private CodeSystemFilterComponent merge(CodeSystemFilterComponent l, CodeSystemFilterComponent r, CodeSystemComparison res) {
+    CodeSystemFilterComponent cd = l.copy();
+    if (!l.hasDescription() && r.hasDescription()) {
+      cd.setDescription(r.getDescription());
+    }
+    return cd;
+  }
+
   private ConceptDefinitionComponent intersect(ConceptDefinitionComponent l, ConceptDefinitionComponent r, CodeSystemComparison res) {
     ConceptDefinitionComponent cd = l.copy();
     if (l.hasDisplay() && !r.hasDisplay()) {
@@ -256,6 +409,22 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     }
     intersectProps(cd, l, r, res);
     //    mergeDesignations(cd, l, r);
+    return cd;
+  }
+
+  private PropertyComponent intersect(PropertyComponent l, PropertyComponent r, CodeSystemComparison res) {
+    PropertyComponent cd = l.copy();
+    if (l.hasDescription() && !r.hasDescription()) {
+      cd.setDescription(null);
+    }
+    return cd;
+  }
+
+  private CodeSystemFilterComponent intersect(CodeSystemFilterComponent l, CodeSystemFilterComponent r, CodeSystemComparison res) {
+    CodeSystemFilterComponent cd = l.copy();
+    if (l.hasDescription() && !r.hasDescription()) {
+      cd.setDescription(null);
+    }
     return cd;
   }
 
@@ -341,7 +510,8 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
   private ConceptPropertyComponent findRightProp(List<ConceptPropertyComponent> rightProperties, ConceptPropertyComponent lp, CodeSystemComparison res) {
     for (ConceptPropertyComponent p : rightProperties) {
-      if (res.getPropMap().get(p.getCode()).equals(lp.getCode())) {
+      String rp = res.getPropMap().get(p.getCode());
+      if (rp != null && rp.equals(lp.getCode())) {
         return p;
       }
     }
