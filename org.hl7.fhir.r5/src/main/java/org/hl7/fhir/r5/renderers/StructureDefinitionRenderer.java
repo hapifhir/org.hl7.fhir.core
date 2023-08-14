@@ -2727,30 +2727,24 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return ed.getPath().substring(ed.getPath().indexOf(".")+1);
   }
 
-  public static String formatTypeSpecifiers(IWorkerContext context, ElementDefinition d) {
-    StringBuilder b = new StringBuilder();
+  public XhtmlNode formatTypeSpecifiers(IWorkerContext context, ElementDefinition d) {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     boolean first = true;
     for (Extension e : d.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
-      if (first) first = false; else b.append("<br/>");
+      if (first) first = false; else x.br();
       String cond = ToolingExtensions.readStringExtension(e, "condition");
       String type = ToolingExtensions.readStringExtension(e, "type");
-      b.append("If <code>");
-      b.append(Utilities.escapeXml(cond));
-      b.append("</code> then the type is ");
+      x.tx("If ");
+      x.code().tx(cond);
+      x.tx(" then the type is ");
       StructureDefinition sd = context.fetchTypeDefinition(type);
       if (sd == null) {
-        b.append("<code>");
-        b.append(Utilities.escapeXml(type));
-        b.append("</code>");
+        x.code().tx(type);
       } else {
-        b.append("<a href=\"");
-        b.append(sd.getWebPath());
-        b.append("\">");
-        b.append(Utilities.escapeXml(sd.getTypeName()));        
-        b.append("</a>");
+        x.ah(sd.getWebPath()).tx(sd.getTypeName());
       }
     }
-    return b.toString();
+    return first ? null : x;
   }
 
   public XhtmlNode generateExtensionTable(String defFile, StructureDefinition ed, String imageFolder, boolean inlineGraphics, boolean full, String corePath, String imagePath, Set<String> outputTracker, RenderingContext rc) throws IOException, FHIRException {

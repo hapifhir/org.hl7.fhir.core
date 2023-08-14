@@ -1234,33 +1234,34 @@ public class ValueSetRenderer extends TerminologyRenderer {
                 li.tx(", ");
               }
             }
+            XhtmlNode wli = VersionComparisonAnnotation.render(f, li);
             if (f.getOp() == FilterOperator.EXISTS) {
               if (f.getValue().equals("true")) {
-                li.tx(f.getProperty()+" exists");
+                wli.tx(f.getProperty()+" exists");
               } else {
-                li.tx(f.getProperty()+" doesn't exist");
+                wli.tx(f.getProperty()+" doesn't exist");
               }
             } else {
-              li.tx(f.getProperty()+" "+describe(f.getOp())+" ");
+              wli.tx(f.getProperty()+" "+describe(f.getOp())+" ");
               if (e != null && codeExistsInValueSet(e, f.getValue())) {
                 String href = getContext().fixReference(getCsRef(e));
                 if (href.contains("#"))
                   href = href + "-"+Utilities.nmtokenize(f.getValue());
                 else
                   href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(f.getValue());
-                li.ah(href).addText(f.getValue());
+                wli.ah(href).addText(f.getValue());
               } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
-                li.addText(f.getValue());
+                wli.addText(f.getValue());
                 ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), inc.getVersion(), f.getValue(), null);
                 if (vr.isOk()) {
-                  li.tx(" ("+vr.getDisplay()+")");
+                  wli.tx(" ("+vr.getDisplay()+")");
                 }
               }
               else
-                li.addText(f.getValue());
+                wli.addText(f.getValue());
               String disp = ToolingExtensions.getDisplayHint(f);
               if (disp != null)
-                li.tx(" ("+disp+")");
+                wli.tx(" ("+disp+")");
             }
           }
         }
@@ -1273,7 +1274,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
             first = false;
           else
             li.tx(", ");
-          AddVsRef(vs.asStringValue(), li, vsRes);
+          XhtmlNode wli = VersionComparisonAnnotation.render(vs, li);
+          AddVsRef(vs.asStringValue(), wli, vsRes);
         }
       }
       if (inc.hasExtension(ToolingExtensions.EXT_EXPAND_RULES) || inc.hasExtension(ToolingExtensions.EXT_EXPAND_GROUP)) {
@@ -1289,12 +1291,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
             first = false;
           else
             li.tx(", ");
-          AddVsRef(vs.asStringValue(), li, vsRes);
+          XhtmlNode wli = VersionComparisonAnnotation.render(vs, li);
+          AddVsRef(vs.asStringValue(), wli, vsRes);
         }
       } else {
         XhtmlNode xul = li.ul();
         for (UriType vs : inc.getValueSet()) {
-          AddVsRef(vs.asStringValue(), xul.li(), vsRes);
+          XhtmlNode wli = VersionComparisonAnnotation.render(vs,  xul.li());
+          AddVsRef(vs.asStringValue(), wli, vsRes);
         }
         
       }
