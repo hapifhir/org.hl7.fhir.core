@@ -965,6 +965,7 @@ public class I18nConstants {
   public static final String MSG_DEPENDS_ON_DRAFT = "MSG_DEPENDS_ON_DRAFT";
   public static final String MSG_DEPENDS_ON_EXTENSION = "MSG_DEPENDS_ON_EXTENSION";
   public static final String MSG_DEPENDS_ON_PROFILE = "MSG_DEPENDS_ON_PROFILE";
+  public static final String VALIDATION_VAL_STATUS_INCONSISTENT = "VALIDATION_VAL_STATUS_INCONSISTENT";
 }
 
 

@@ -469,7 +469,7 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     } else {
       VersionComparisonAnnotation.markChanged(r, version);
       match = new StructuralMatch<>(l.primitiveValue(), r.primitiveValue(), vmI(level, "Values Differ", fhirType()+"."+name));
-      if (level != IssueSeverity.NULL) {
+      if (level != IssueSeverity.NULL && res != null) {
         res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, fhirType()+"."+name, "Values for "+name+" differ: '"+l.primitiveValue()+"' vs '"+r.primitiveValue()+"'", level));
       }
     } 

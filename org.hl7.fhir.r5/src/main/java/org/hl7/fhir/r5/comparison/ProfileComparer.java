@@ -171,12 +171,9 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
       StructuralMatch<ElementDefinitionNode> sm = new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(left, ln.current()), new ElementDefinitionNode(right, rn.current()));
       compareElements(res, sm, ln.path(), null, ln, rn);
       res.combined = sm;
-    }
-    if (left.getType().equals(right.getType())) {
-      DefinitionNavigator ln = new DefinitionNavigator(session.getContextLeft(), left, true);
-      DefinitionNavigator rn = new DefinitionNavigator(session.getContextRight(), right, true);
-      StructuralMatch<ElementDefinitionNode> sm = new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(left, ln.current()), new ElementDefinitionNode(right, rn.current()));
-      ch = compareElements(res, sm, ln.path(), null, ln, rn) || ch;
+      ln = new DefinitionNavigator(session.getContextLeft(), left, true);
+      rn = new DefinitionNavigator(session.getContextRight(), right, true);
+      ch = compareDiff(ln.path(), null, ln, rn) || ch;
       // we don't preserve the differences - we only want the annotations
     }
     res.updateDefinitionsState(ch);
@@ -256,12 +253,12 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
 
     }
     subset.setMustSupport(left.current().getMustSupport() || right.current().getMustSupport());
-    def = comparePrimitivesWithTracking("mustSupport", left.current().getMustSupportElement(), right.current().getMustSupportElement(), null, IssueSeverity.INFORMATION, comp, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("mustSupport", left.current().getMustSupportElement(), right.current().getMustSupportElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
 
     ElementDefinition superset = subset.copy();
 
-    def = comparePrimitivesWithTracking("min", left.current().getMinElement(), right.current().getMinElement(), null, IssueSeverity.INFORMATION, comp, right.current(), session.getForVersion()) || def;
-    def = comparePrimitivesWithTracking("max", left.current().getMaxElement(), right.current().getMaxElement(), null, IssueSeverity.INFORMATION, comp, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("min", left.current().getMinElement(), right.current().getMinElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("max", left.current().getMaxElement(), right.current().getMaxElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
 
     // compare and intersect
     int leftMin = left.current().getMin();
@@ -354,7 +351,7 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
 //    return null;
     return def;
   }
-
+  
 
   private boolean compareChildren(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, IOException, FHIRFormatError {
     boolean def = false;
@@ -391,6 +388,126 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
     return def;
   }
 
+
+  private boolean compareDiff(String path, String sliceName, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, FHIRFormatError, IOException {
+    assert(path != null);  
+    assert(left != null);
+    assert(right != null);
+    assert(left.path().equals(right.path()));
+
+    boolean def = false;
+    
+    // not allowed to be different:   
+//    ruleEqual(comp, res, left.current().getDefaultValue(), right.current().getDefaultValue(), "defaultValue", path);
+//    ruleEqual(comp, res, left.current().getMeaningWhenMissingElement(), right.current().getMeaningWhenMissingElement(), "meaningWhenMissing", path);
+//    ruleEqual(comp, res, left.current().getIsModifierElement(), right.current().getIsModifierElement(), "isModifier", path); - this check belongs in the core
+//    ruleEqual(comp, res, left.current().getIsSummaryElement(), right.current().getIsSummaryElement(), "isSummary", path); - so does this
+
+    // descriptive properties from ElementDefinition - merge them:
+    comparePrimitivesWithTracking("label", left.current().getLabelElement(), right.current().getLabelElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion());
+    def = comparePrimitivesWithTracking("short", left.current().getShortElement(), right.current().getShortElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("definition", left.current().getDefinitionElement(), right.current().getDefinitionElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("comment", left.current().getCommentElement(), right.current().getCommentElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("requirements", left.current().getRequirementsElement(), right.current().getRequirementsElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("mustSupport", left.current().getMustSupportElement(), right.current().getMustSupportElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("min", left.current().getMinElement(), right.current().getMinElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("max", left.current().getMaxElement(), right.current().getMaxElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+
+    // add the children
+    def = compareDiffChildren(path, left, right) || def;
+//
+//    // now process the slices
+//    if (left.current().hasSlicing() || right.current().hasSlicing()) {
+//      assert sliceName == null;
+//      if (isExtension(left.path()))
+//        return compareExtensions(outcome, path, superset, subset, left, right);
+//      //      return true;
+//      else {
+//        ElementDefinitionSlicingComponent slicingL = left.current().getSlicing();
+//        ElementDefinitionSlicingComponent slicingR = right.current().getSlicing();
+//        // well, this is tricky. If one is sliced, and the other is not, then in general, the union just ignores the slices, and the intersection is the slices.
+//        if (left.current().hasSlicing() && !right.current().hasSlicing()) { 
+//          // the super set is done. Any restrictions in the slices are irrelevant to what the super set says, except that we're going sum up the value sets if we can (for documentation purposes) (todo)
+//          // the minimum set is the slicing specified in the slicer
+//          subset.setSlicing(slicingL);
+//          // stick everything from the right to do with the slices to the subset 
+//          copySlices(outcome.subset.getSnapshot().getElement(), left.getStructure().getSnapshot().getElement(), left.slices());
+//        } else if (!left.current().hasSlicing() && right.current().hasSlicing()) { 
+//          // the super set is done. Any restrictions in the slices are irrelevant to what the super set says, except that we're going sum up the value sets if we can (for documentation purposes) (todo)
+//          // the minimum set is the slicing specified in the slicer
+//          subset.setSlicing(slicingR);
+//          // stick everything from the right to do with the slices to the subset 
+//          copySlices(outcome.subset.getSnapshot().getElement(), right.getStructure().getSnapshot().getElement(), right.slices());
+//        } else if (isTypeSlicing(slicingL) || isTypeSlicing(slicingR)) {
+//          superset.getSlicing().setRules(SlicingRules.OPEN).setOrdered(false).addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
+//          subset.getSlicing().setRules(slicingL.getRules() == SlicingRules.CLOSED || slicingR.getRules() == SlicingRules.CLOSED ? SlicingRules.OPEN : SlicingRules.CLOSED).setOrdered(false).addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
+//
+//          // the superset is the union of the types 
+//          // the subset is the intersection of them 
+//          List<DefinitionNavigator> handled = new ArrayList<>();
+//          for (DefinitionNavigator t : left.slices()) {
+//            DefinitionNavigator r = findMatchingSlice(right.slices(), t);
+//            if (r == null) {
+//              copySlice(outcome.superset.getSnapshot().getElement(), left.getStructure().getSnapshot().getElement(), t);              
+//            } else {
+//              handled.add(r);
+//              ret = compareElements(outcome, path+":"+t.current().getSliceName(), t, r, t.current().getSliceName()) && ret;
+//            }
+//          }
+//          for (DefinitionNavigator t : right.slices()) {
+//            if (!handled.contains(t)) {
+//              copySlice(outcome.superset.getSnapshot().getElement(), right.getStructure().getSnapshot().getElement(), t);
+//            }
+//          }
+//        } else if (slicingMatches(slicingL, slicingR)) {
+//          // if it's the same, we can try matching the slices - though we might have to give up without getting matches correct
+//          // there amy be implied consistency we can't reason about 
+//          throw new DefinitionException("Slicing matches but is not handled yet at "+left.current().getId()+": ("+ProfileUtilities.summarizeSlicing(slicingL)+")");
+//        } else  {
+//          // if the slicing is different, we can't compare them - or can we?
+//          throw new DefinitionException("Slicing doesn't match at "+left.current().getId()+": ("+ProfileUtilities.summarizeSlicing(slicingL)+" / "+ProfileUtilities.summarizeSlicing(slicingR)+")");
+//        }
+//      }
+//      // todo: name 
+//    }
+//    return ret;
+//
+//    // TODO Auto-generated method stub
+//    return null;
+    return def;
+  }
+
+
+  private boolean compareDiffChildren(String path, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, IOException, FHIRFormatError {
+    boolean def = false;
+    
+    List<DefinitionNavigator> lc = left.children();
+    List<DefinitionNavigator> rc = right.children();
+    // it's possible that one of these profiles walks into a data type and the other doesn't
+    // if it does, we have to load the children for that data into the profile that doesn't 
+    // walk into it
+    if (lc.isEmpty() && !rc.isEmpty() && right.current().getType().size() == 1 && left.hasTypeChildren(right.current().getType().get(0), left.getStructure()))
+      lc = left.childrenFromType(right.current().getType().get(0), right.getStructure());
+    if (rc.isEmpty() && !lc.isEmpty() && left.current().getType().size() == 1 && right.hasTypeChildren(left.current().getType().get(0), right.getStructure()))
+      rc = right.childrenFromType(left.current().getType().get(0), left.getStructure());
+    
+    List<DefinitionNavigator> matchR = new ArrayList<>();
+    for (DefinitionNavigator l : lc) {
+      DefinitionNavigator r = findInList(rc, l);
+      if (r == null) {
+        // todo
+      } else {
+        def = compareDiff(l.path(), null, l, r) || def;
+      }
+    }
+    for (DefinitionNavigator r : rc) {
+      if (!matchR.contains(r)) {
+        // todo
+      }
+    }
+    return def;
+  }
+
   private DefinitionNavigator findInList(List<DefinitionNavigator> rc, DefinitionNavigator l) {
     for (DefinitionNavigator t : rc) {
       if (tail(t.current().getPath()).equals(tail(l.current().getPath()))) {
@@ -400,18 +517,18 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
     return null;
   }
 
-  private void ruleEqual(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, DataType vLeft, DataType vRight, String name, String path) throws IOException {
-    if (vLeft == null && vRight == null) {
-      // nothing
-    } else if (vLeft == null) {
-      vm(IssueSeverity.ERROR, "Added "+name, path, comp.getMessages(), res.getMessages());
-    } else if (vRight == null) {
-      vm(IssueSeverity.ERROR, "Removed "+name, path, comp.getMessages(), res.getMessages());
-    } else if (!Base.compareDeep(vLeft, vRight, false)) {
-      vm(IssueSeverity.ERROR, name+" must be the same ("+toString(vLeft, true)+"/"+toString(vRight, false)+")", path, comp.getMessages(), res.getMessages());
-    }
-  }
-
+//  private void ruleEqual(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, DataType vLeft, DataType vRight, String name, String path) throws IOException {
+//    if (vLeft == null && vRight == null) {
+//      // nothing
+//    } else if (vLeft == null) {
+//      vm(IssueSeverity.ERROR, "Added "+name, path, comp.getMessages(), res.getMessages());
+//    } else if (vRight == null) {
+//      vm(IssueSeverity.ERROR, "Removed "+name, path, comp.getMessages(), res.getMessages());
+//    } else if (!Base.compareDeep(vLeft, vRight, false)) {
+//      vm(IssueSeverity.ERROR, name+" must be the same ("+toString(vLeft, true)+"/"+toString(vRight, false)+")", path, comp.getMessages(), res.getMessages());
+//    }
+//  }
+//
   private String toString(DataType val, boolean left) throws IOException {
     if (val instanceof PrimitiveType) 
       return "'" + ((PrimitiveType) val).getValueAsString()+"'";
