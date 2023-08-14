@@ -872,4 +872,24 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return addTag("s");
   }
 
+
+  public XhtmlNode svg() {
+    return addTag("svg");
+  }
+
+
+  public XhtmlNode path(String value) {
+    return addTag("path").attribute("d", value);
+    
+  }
+
+
+  public void copyAllContent(XhtmlNode other) {
+    getChildNodes().addAll(other.getChildNodes());
+    getAttributes().putAll(other.getAttributes());
+    if (!Utilities.noString(other.getContent())) {
+      tx(other.getContent());
+    }    
+  }
+
 }
