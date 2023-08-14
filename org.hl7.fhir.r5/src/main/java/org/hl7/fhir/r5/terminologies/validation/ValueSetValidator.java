@@ -244,10 +244,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       if (result == null) {
         msg = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), b.toString());
-        info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, unknownSystems.isEmpty() ? IssueType.INVALID : IssueType.NOTFOUND, path, msg));
+        info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, unknownSystems.isEmpty() ? IssueType.CODEINVALID : IssueType.NOTFOUND, path, msg));
       } else if (!result) {
         msg = context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), b.toString());
-        info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, unknownSystems.isEmpty() ? IssueType.INVALID : IssueType.NOTFOUND, path, msg));
+        info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, unknownSystems.isEmpty() ? IssueType.CODEINVALID : IssueType.NOTFOUND, path, msg));
       }
     }
     if (info.hasErrors()) {
@@ -488,7 +488,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 //            {
               String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), code.toString());
               res.addToMessage(msg).setSeverity(IssueSeverity.ERROR);
-              res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
+              res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
               res.setDefinition(null);
               res.setSystem(null);
               res.setDisplay(null);
@@ -507,7 +507,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       } else if ((res != null && !res.isOk())) {
         String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), code.toString());
         res.setMessage(res.getMessage()+"; "+msg);
-        res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
+        res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
       }
     }
     if (res != null && res.getSeverity() == IssueSeverity.INFORMATION) {
@@ -638,10 +638,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (cc == null) {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
         String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, code.getCode(), cs.getUrl());
-        return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".code", msg));        
+        return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg));        
       } else {
         String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_, code.getCode(), cs.getUrl());
-        return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".code", msg));
+        return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg));
       }
     }
     Coding vc = new Coding().setCode(cc.getCode()).setSystem(cs.getUrl()).setVersion(cs.getVersion()).setDisplay(getPreferredDisplay(cc, cs));
@@ -698,10 +698,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     if (b.count() == 0) {
       String msg = context.formatMessagePlural(options.getLanguages().size(), I18nConstants.NO_VALID_DISPLAY_FOUND, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary());
-      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg));      
+      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.CODEINVALID, path+".display", msg));      
     } else {
       String msg = context.formatMessagePlural(b.count(), ws ? I18nConstants.DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF : I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
-      return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg));
+      return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(dispWarning(), IssueType.CODEINVALID, path+".display", msg));
     }
   }
 
