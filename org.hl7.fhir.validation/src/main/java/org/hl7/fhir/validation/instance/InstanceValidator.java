@@ -5139,7 +5139,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean checkSpecials(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode) {
-    // specific known special validations
+    if (VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(element.getType())) {
+      Base base = element.getExtensionValue(ToolingExtensions.EXT_STANDARDS_STATUS);
+      String standardsStatus = base != null && base.isPrimitive() ? base.primitiveValue() : null;
+      String status = element.getNamedChildValue("status");
+      if (!Utilities.noString(status) && !Utilities.noString(standardsStatus)) {
+        warning(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT, status, standardsStatus);
+      }
+    }
     if (element.getType().equals(BUNDLE)) {
       return new BundleValidator(this, serverBase).validateBundle(errors, element, stack, checkSpecials, hostContext, pct, mode);
     } else if (element.getType().equals("Observation")) {
@@ -5169,6 +5176,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       return true;
     }
+  }
+
+  private boolean statusCodesConsistent(String status, String standardsStatus) {
+    switch (standardsStatus) {
+    case "draft": return Utilities.existsInList(status, "draft");
+    case "normative": return Utilities.existsInList(status, "active");
+    case "trial-use": return Utilities.existsInList(status, "draft", "active");
+    case "informative": return Utilities.existsInList(status, "draft", "active", "retired");
+    case "deprecated": return Utilities.existsInList(status, "retired");
+    case "withdrawn": return Utilities.existsInList(status, "retired");
+    case "external": return Utilities.existsInList(status, "draft", "active", "retired");
+    }
+    return true;
   }
 
   private ResourceValidationTracker getResourceTracker(Element element) {
