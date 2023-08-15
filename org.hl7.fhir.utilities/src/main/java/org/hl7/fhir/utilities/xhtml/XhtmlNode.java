@@ -363,6 +363,10 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return hasAttributes() && getAttributes().containsKey(name);
   }
 
+  public boolean hasAttribute(String name, String value) {
+    return hasAttributes() && getAttributes().containsKey(name) && value.equals(getAttributes().get(name));
+  }
+
   public String getAttribute(String name) {
     return hasAttributes() ? getAttributes().get(name) : null;
   }
@@ -569,18 +573,25 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     throw new UnsupportedOperationException();
   }
 
-  /**
-   * NOT SUPPORTED - Throws {@link UnsupportedOperationException}
-   */
+  private Map<String, Object> userData;
+  
   public Object getUserData(String theName) {
-    throw new UnsupportedOperationException();
+    if (hasUserData(theName)) {
+      return userData.get(theName);
+    } else {
+      return null;
+    }
   }
 
-  /**
-   * NOT SUPPORTED - Throws {@link UnsupportedOperationException}
-   */
+  public boolean hasUserData(String theName) {
+    return userData != null && userData.containsKey(theName);
+  }
+
   public void setUserData(String theName, Object theValue) {
-    throw new UnsupportedOperationException();
+    if (userData == null) {
+      userData = new HashMap<>();
+    }
+    userData.put(theName, theValue);
   }
 
 
@@ -892,4 +903,23 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }    
   }
 
+  public boolean isClass(String name) {
+    return hasAttribute("class", name);
+  }
+
+
+  public void styleCells(XhtmlNode x) {
+    setUserData("cells", x);    
+  }
+
+
+  public XhtmlNode td() {
+    XhtmlNode x = addTag("td");
+    XhtmlNode t = (XhtmlNode) getUserData("cells");
+    if (t != null) {
+      x.copyAllContent(t);
+    }
+    return x;
+  }
+  
 }
