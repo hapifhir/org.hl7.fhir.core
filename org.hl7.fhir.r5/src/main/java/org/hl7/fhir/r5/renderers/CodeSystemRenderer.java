@@ -398,7 +398,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       tr.setAttribute("style", "background-color: #ffeeee");
     }
     
-    XhtmlNode td = tr.td();
+    XhtmlNode td = VersionComparisonAnnotation.renderRow(c, t, tr);
     if (hasHierarchy) {
       td.addText(Integer.toString(level+1));
       td = tr.td();
@@ -407,9 +407,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     String link = isSupplement ? getLinkForCode(cs.getSupplements(), null, c.getCode()) : null;
     if (link != null) {
-      td.ah(link).attribute("style", "white-space:nowrap").addText(c.getCode());
+      td.ah(link).style( "white-space:nowrap").addText(c.getCode());
     } else {
-      VersionComparisonAnnotation.render(c, td.attribute("style", "white-space:nowrap")).addText(c.getCode());
+      td.style("white-space:nowrap").addText(c.getCode());
     }      
     XhtmlNode a;
     if (c.hasCodeElement()) {
@@ -579,7 +579,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       td = tr.td();
       String s = Utilities.padLeft("", '\u00A0', (level+1)*2);
       td.addText(s);
-      td.attribute("style", "white-space:nowrap");
+      td.style("white-space:nowrap");
       a = td.ah("#"+cs.getId()+"-" + Utilities.nmtokenize(cc.getCode()));
       a.addText(cc.getCode());
       if (hasDisplay) {

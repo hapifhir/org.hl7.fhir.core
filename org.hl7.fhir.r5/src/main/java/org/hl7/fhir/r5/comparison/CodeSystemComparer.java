@@ -33,8 +33,8 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
   public class CodeSystemComparison extends CanonicalResourceComparison<CodeSystem> {
 
-    private StructuralMatch<PropertyComponent> properties; 
-    private StructuralMatch<CodeSystemFilterComponent> filters;                                             
+    private StructuralMatch<PropertyComponent> properties = new StructuralMatch<PropertyComponent>(); 
+    private StructuralMatch<CodeSystemFilterComponent> filters = new StructuralMatch<CodeSystemFilterComponent>();                                             
     private StructuralMatch<ConceptDefinitionComponent> combined;                                             
     private Map<String, String> propMap = new HashMap<>(); // right to left; left retains it's name
     public CodeSystemComparison(CodeSystem left, CodeSystem right) {
