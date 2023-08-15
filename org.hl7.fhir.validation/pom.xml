@@ -211,7 +211,6 @@
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
-            <version>3.1.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
