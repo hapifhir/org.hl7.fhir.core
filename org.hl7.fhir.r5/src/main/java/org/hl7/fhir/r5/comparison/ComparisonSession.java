@@ -115,6 +115,7 @@ public class ComparisonSession {
         return csc;      
       }
     } else if (left != null) {
+      VersionComparisonAnnotation.markDeleted(null, forVersion, left.fhirType(), left); // todo: waht?
       String key = key(left.getUrl(), left.getVersion(), left.getUrl(), left.getVersion());
       if (compares.containsKey(key)) {
         return compares.get(key);
@@ -123,6 +124,7 @@ public class ComparisonSession {
       compares.put(key, csc);
       return csc;      
     } else {
+      VersionComparisonAnnotation.markAdded(right, forVersion);
       String key = key(right.getUrl(), right.getVersion(), right.getUrl(), right.getVersion());
       if (compares.containsKey(key)) {
         return compares.get(key);
