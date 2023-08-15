@@ -114,7 +114,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     cs1.setStatus(left.getStatus());
     cs1.setDate(new Date());
 
-    compareMetadata(left, right, res.getMetadata(), res);
+    compareMetadata(left, right, res.getMetadata(), res, new ArrayList<>());
     comparePrimitives("kind", left.getKindElement(), right.getKindElement(), res.getMetadata(), IssueSeverity.ERROR, res);
     compareCanonicalList("instantiates", left.getInstantiates(), right.getInstantiates(), res.getMetadata(), IssueSeverity.ERROR, res, cs.getInstantiates(), cs1.getInstantiates());
     compareCanonicalList("imports", left.getImports(), right.getImports(), res.getMetadata(), IssueSeverity.ERROR, res, cs.getImports(), cs1.getImports());

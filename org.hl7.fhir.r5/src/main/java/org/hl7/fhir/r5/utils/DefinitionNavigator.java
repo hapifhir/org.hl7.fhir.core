@@ -54,21 +54,24 @@ public class DefinitionNavigator {
   private List<String> names = new ArrayList<String>();
   private TypeRefComponent typeOfChildren;
   private String path;
+  private boolean diff;
   
-  public DefinitionNavigator(IWorkerContext context, StructureDefinition structure) throws DefinitionException {
-    if (!structure.hasSnapshot())
+  public DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff) throws DefinitionException {
+    if (!diff && !structure.hasSnapshot())
       throw new DefinitionException("Snapshot required");
     this.context = context;
     this.structure = structure;
     this.index = 0;
+    this.diff = diff;
     this.path = current().getPath();
     names.add(nameTail());
   }
   
-  private DefinitionNavigator(IWorkerContext context, StructureDefinition structure, int index, String path, List<String> names, String type) {
+  private DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff, int index, String path, List<String> names, String type) {
     this.path = path;
     this.context = context;
     this.structure = structure;
+    this.diff = diff;
     this.index = index;
     if (type == null)
       for (String name : names)
@@ -96,8 +99,16 @@ public class DefinitionNavigator {
   public List<String> getNames() {
     return names;
   }
+  
+  private List<ElementDefinition> list() {
+    if (diff) {
+      return structure.getDifferential().getElement();      
+    } else {
+      return structure.getSnapshot().getElement();
+    }    
+  }
   public ElementDefinition current() {
-    return structure.getSnapshot().getElement().get(index);
+   return list().get(index);      
   }
   
   public List<DefinitionNavigator> slices() throws DefinitionException {
@@ -119,14 +130,15 @@ public class DefinitionNavigator {
     String prefix = current().getPath()+".";
     Map<String, DefinitionNavigator> nameMap = new HashMap<String, DefinitionNavigator>();
 
-    for (int i = index + 1; i < structure.getSnapshot().getElement().size(); i++) {
-      String path = structure.getSnapshot().getElement().get(i).getPath();
+    for (int i = index + 1; i < list().size(); i++) {
+      String path = list().get(i).getPath();
       if (path.startsWith(prefix) && !path.substring(prefix.length()).contains(".")) {
-        DefinitionNavigator dn = new DefinitionNavigator(context, structure, i, this.path+"."+tail(path), names, null);
+        DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, i, this.path+"."+tail(path), names, null);
         
         if (nameMap.containsKey(path)) {
           DefinitionNavigator master = nameMap.get(path);
-          if (!master.current().hasSlicing()) 
+          ElementDefinition cm = master.current();
+          if (!cm.hasSlicing()) 
             throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
           if (master.slices == null) 
             master.slices = new ArrayList<DefinitionNavigator>();
@@ -180,7 +192,7 @@ public class DefinitionNavigator {
     typeOfChildren = null;
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode(), src);
     if (sd != null) {
-      DefinitionNavigator dn = new DefinitionNavigator(context, sd, 0, path, names, sd.getType());
+      DefinitionNavigator dn = new DefinitionNavigator(context, sd, diff, 0, path, names, sd.getType());
       typeChildren = dn.children();
     } else
       throw new DefinitionException("Unable to find definition for "+type.getWorkingCode()+(type.hasProfile() ? "("+type.getProfile()+")" : ""));

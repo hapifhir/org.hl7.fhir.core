@@ -316,7 +316,7 @@ public class CompareUtilities extends BaseTestingUtilities {
           if (i == expectedArray.size() - 1 && isOptional(expectedArray.get(i))) {
             return null; // this is OK 
           } else {
-            return "One or more array items did not match at "+path;
+            return "One or more array items did not match at "+path+" starting at index "+i;
           }
         }
         String s = compareNodes(path + "[" + Integer.toString(i) + "]", expectedArray.get(i), actualArray.get(c));
