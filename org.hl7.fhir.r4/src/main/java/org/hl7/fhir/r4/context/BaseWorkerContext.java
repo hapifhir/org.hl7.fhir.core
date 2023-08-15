@@ -523,7 +523,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return doValidateCode(options, code, vs, false);
   }
 
-  public ValidationResult doValidateCode(ValidationOptions options, Coding code, ValueSet vs, boolean implySystem) {
+  public ValidationResult doValidateCode(ValidationOptions options, Coding code, ValueSet vs, boolean inferSystem) {
     CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
     ValidationResult res = null;
     if (txCache != null)
@@ -553,8 +553,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     try {
       Parameters pIn = new Parameters();
       pIn.addParameter().setName("coding").setValue(code);
-      if (implySystem)
-        pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
+      if (inferSystem)
+        pIn.addParameter().setName("inferSystem").setValue(new BooleanType(true));
       if (options != null)
         setTerminologyOptions(options, pIn);
       res = validateOnServer(vs, pIn);

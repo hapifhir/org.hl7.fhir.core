@@ -11,6 +11,7 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.comparison.CanonicalResourceComparer.ChangeAnalysisState;
 import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
@@ -52,7 +53,8 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     private ChangeAnalysisState changedContent = ChangeAnalysisState.Unknown;
     private ChangeAnalysisState changedContentInterpretation = ChangeAnalysisState.Unknown;
 
-    protected Map<String, StructuralMatch<String>> metadata = new HashMap<>();                                             
+    protected Map<String, StructuralMatch<String>> metadata = new HashMap<>();
+    private List<String> chMetadataFields;                                             
 
     public CanonicalResourceComparison(T left, T right) {
       super(left.getId(), right.getId());
@@ -133,8 +135,9 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       changedContentInterpretation = updateState(state, changedContentInterpretation);
     }
 
-    public void updatedMetadataState(boolean state) {
+    public void updatedMetadataState(boolean state, List<String> chMetadataFields) {
       changedMetadata = updateState(state ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedMetadata);
+      this.chMetadataFields = chMetadataFields;
     }
 
     public void updateDefinitionsState(boolean state) {
@@ -147,6 +150,27 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
 
     public void updateContentInterpretationState(boolean state) {
       changedContentInterpretation = updateState(state ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedContentInterpretation);
+    }
+
+    public boolean anyUpdates() {
+      return changedMetadata.noteable() || changedDefinitions.noteable() || changedContent.noteable() || changedContentInterpretation.noteable();
+    }
+    
+    
+    public ChangeAnalysisState getChangedMetadata() {
+      return changedMetadata;
+    }
+
+    public ChangeAnalysisState getChangedDefinitions() {
+      return changedDefinitions;
+    }
+
+    public ChangeAnalysisState getChangedContent() {
+      return changedContent;
+    }
+
+    public ChangeAnalysisState getChangedContentInterpretation() {
+      return changedContentInterpretation;
     }
 
     @Override
@@ -198,30 +222,76 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       }
       return (bc.length() == 0 ? "" : "Error Checking: "+bc.toString()+"; ")+ "Changed: "+b.toString();     
     }
+
+    public String getMetadataFieldsAsText() {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      if (chMetadataFields != null) {
+        for (String s : chMetadataFields) {
+          b.append(s);
+        }
+      }
+      return b.toString();
+    }
   }
 
   public CanonicalResourceComparer(ComparisonSession session) {
     super(session);
   }
 
-  protected boolean compareMetadata(CanonicalResource left, CanonicalResource right, Map<String, StructuralMatch<String>> comp, CanonicalResourceComparison<? extends CanonicalResource> res) {
+  protected boolean compareMetadata(CanonicalResource left, CanonicalResource right, Map<String, StructuralMatch<String>> comp, CanonicalResourceComparison<? extends CanonicalResource> res, List<String> changes) {
     var changed = false;
-    changed = comparePrimitives("url", left.getUrlElement(), right.getUrlElement(), comp, IssueSeverity.ERROR, res) || changed;
-    if (session.getForVersion() == null) {
-      changed = comparePrimitives("version", left.getVersionElement(), right.getVersionElement(), comp, IssueSeverity.ERROR, res) || changed;
+    if (comparePrimitives("url", left.getUrlElement(), right.getUrlElement(), comp, IssueSeverity.ERROR, res)) {
+      changed = true;
+      changes.add("url");
     }
-    changed = comparePrimitives("name", left.getNameElement(), right.getNameElement(), comp, IssueSeverity.INFORMATION, res) || changed;
-    changed = comparePrimitives("title", left.getTitleElement(), right.getTitleElement(), comp, IssueSeverity.INFORMATION, res) || changed;
-    changed = comparePrimitives("status", left.getStatusElement(), right.getStatusElement(), comp, IssueSeverity.INFORMATION, res) || changed;
-    changed = comparePrimitives("experimental", left.getExperimentalElement(), right.getExperimentalElement(), comp, IssueSeverity.WARNING, res) || changed;
     if (session.getForVersion() == null) {
-      changed = comparePrimitives("date", left.getDateElement(), right.getDateElement(), comp, IssueSeverity.INFORMATION, res) || changed;
+      if (comparePrimitives("version", left.getVersionElement(), right.getVersionElement(), comp, IssueSeverity.ERROR, res)) {
+        changed = true;
+        changes.add("version");
+      }
     }
-    changed = comparePrimitives("publisher", left.getPublisherElement(), right.getPublisherElement(), comp, IssueSeverity.INFORMATION, res) || changed;
-    changed = comparePrimitives("description", left.getDescriptionElement(), right.getDescriptionElement(), comp, IssueSeverity.NULL, res) || changed;
-    changed = comparePrimitives("purpose", left.getPurposeElement(), right.getPurposeElement(), comp, IssueSeverity.NULL, res) || changed;
-    changed = comparePrimitives("copyright", left.getCopyrightElement(), right.getCopyrightElement(), comp, IssueSeverity.INFORMATION, res) || changed;
-    changed = compareCodeableConceptList("jurisdiction", left.getJurisdiction(), right.getJurisdiction(), comp, IssueSeverity.INFORMATION, res, res.getUnion().getJurisdiction(), res.getIntersection().getJurisdiction()) || changed;
+    if (comparePrimitives("name", left.getNameElement(), right.getNameElement(), comp, IssueSeverity.INFORMATION, res)) {
+      changed = true;
+      changes.add("name");
+    }
+    if (comparePrimitives("title", left.getTitleElement(), right.getTitleElement(), comp, IssueSeverity.INFORMATION, res)) {
+      changed = true;
+      changes.add("title");
+    }
+    if (comparePrimitives("status", left.getStatusElement(), right.getStatusElement(), comp, IssueSeverity.INFORMATION, res)) {
+      changed = true;
+      changes.add("status");
+    }
+    if (comparePrimitives("experimental", left.getExperimentalElement(), right.getExperimentalElement(), comp, IssueSeverity.WARNING, res)) {
+      changed = true;
+      changes.add("experimental");
+    }
+    if (session.getForVersion() == null) {
+      if (comparePrimitives("date", left.getDateElement(), right.getDateElement(), comp, IssueSeverity.INFORMATION, res)) {
+        changed = true;
+        changes.add("date");
+      }
+    }
+    if (comparePrimitives("publisher", left.getPublisherElement(), right.getPublisherElement(), comp, IssueSeverity.INFORMATION, res)) {
+      changed = true;
+      changes.add("publisher");
+    }
+    if (comparePrimitives("description", left.getDescriptionElement(), right.getDescriptionElement(), comp, IssueSeverity.NULL, res)) {
+      changed = true;
+      changes.add("description");
+    }
+    if (comparePrimitives("purpose", left.getPurposeElement(), right.getPurposeElement(), comp, IssueSeverity.NULL, res)) {
+      changed = true;
+      changes.add("purpose");
+    }
+    if (comparePrimitives("copyright", left.getCopyrightElement(), right.getCopyrightElement(), comp, IssueSeverity.INFORMATION, res)) {
+      changed = true;
+      changes.add("copyright");
+    }
+    if (compareCodeableConceptList("jurisdiction", left.getJurisdiction(), right.getJurisdiction(), comp, IssueSeverity.INFORMATION, res, res.getUnion().getJurisdiction(), res.getIntersection().getJurisdiction())) {
+      changed = true;
+      changes.add("jurisdiction");
+    }
     return changed;
   }
 
@@ -371,6 +441,41 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       }
     } 
     comp.put(name, match);  
+    return match.isDifferent();
+  }
+
+
+  @SuppressWarnings("rawtypes")
+  protected boolean comparePrimitivesWithTracking(String name, PrimitiveType l, PrimitiveType r, Map<String, StructuralMatch<String>> comp, IssueSeverity level, CanonicalResourceComparison<? extends CanonicalResource> res, Base parent, String version) {
+    StructuralMatch<String> match = null;
+    if (l.isEmpty() && r.isEmpty()) {
+      match = new StructuralMatch<>(null, null, null);
+    } else if (l.isEmpty()) {
+      match = new StructuralMatch<>(null, r.primitiveValue(), vmI(IssueSeverity.INFORMATION, "Added the item '"+r.primitiveValue()+"'", fhirType()+"."+name));
+      VersionComparisonAnnotation.markAdded(r, version);
+    } else if (r.isEmpty()) {
+      match = new StructuralMatch<>(l.primitiveValue(), null, vmI(IssueSeverity.INFORMATION, "Removed the item '"+l.primitiveValue()+"'", fhirType()+"."+name));
+      VersionComparisonAnnotation.markDeleted(parent, version, name, l);
+    } else if (!l.hasValue() && !r.hasValue()) {
+      match = new StructuralMatch<>(null, null, vmI(IssueSeverity.INFORMATION, "No Value", fhirType()+"."+name));
+    } else if (!l.hasValue()) {
+      match = new StructuralMatch<>(null, r.primitiveValue(), vmI(IssueSeverity.INFORMATION, "No Value on Left", fhirType()+"."+name));
+      VersionComparisonAnnotation.markAdded(r, version);
+    } else if (!r.hasValue()) {
+      match = new StructuralMatch<>(l.primitiveValue(), null, vmI(IssueSeverity.INFORMATION, "No Value on Right", fhirType()+"."+name));
+      VersionComparisonAnnotation.markDeleted(parent, version, name, l);
+    } else if (l.getValue().equals(r.getValue())) {
+      match = new StructuralMatch<>(l.primitiveValue(), r.primitiveValue(), null);
+    } else {
+      VersionComparisonAnnotation.markChanged(r, version);
+      match = new StructuralMatch<>(l.primitiveValue(), r.primitiveValue(), vmI(level, "Values Differ", fhirType()+"."+name));
+      if (level != IssueSeverity.NULL && res != null) {
+        res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, fhirType()+"."+name, "Values for "+name+" differ: '"+l.primitiveValue()+"' vs '"+r.primitiveValue()+"'", level));
+      }
+    } 
+    if (comp != null) {
+      comp.put(name, match);
+    }
     return match.isDifferent();
   }
 

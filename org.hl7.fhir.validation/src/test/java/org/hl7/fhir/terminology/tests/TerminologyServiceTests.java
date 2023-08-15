@@ -181,7 +181,7 @@ public class TerminologyServiceTests {
         e.setCode(IssueType.BUSINESSRULE);
         break;
       case CODESYSTEM_UNSUPPORTED:
-        e.setCode(IssueType.INVALID);
+        e.setCode(IssueType.CODEINVALID);
         break;
       case INTERNAL_ERROR:
         e.setCode(IssueType.EXCEPTION);

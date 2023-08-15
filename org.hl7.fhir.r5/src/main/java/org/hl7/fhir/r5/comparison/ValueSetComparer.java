@@ -124,18 +124,26 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     vs1.setStatus(left.getStatus());
     vs1.setDate(new Date());
    
-    var ch = compareMetadata(left, right, res.getMetadata(), res);
+    List<String> chMetadata = new ArrayList<>();
+    var ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata);
     var def = false;
-    ch = comparePrimitives("immutable", left.getImmutableElement(), right.getImmutableElement(), res.getMetadata(), IssueSeverity.WARNING, res) || ch;
+    if (comparePrimitives("immutable", left.getImmutableElement(), right.getImmutableElement(), res.getMetadata(), IssueSeverity.WARNING, res)) {
+      ch = true;
+      chMetadata.add("immutable");
+    }
     if (left.hasCompose() || right.hasCompose()) {
-      ch = comparePrimitives("compose.lockedDate", left.getCompose().getLockedDateElement(), right.getCompose().getLockedDateElement(), res.getMetadata(), IssueSeverity.WARNING, res) || ch;
+      if (comparePrimitives("compose.lockedDate", left.getCompose().getLockedDateElement(), right.getCompose().getLockedDateElement(), res.getMetadata(), IssueSeverity.WARNING, res)) {
+        ch = true;
+        chMetadata.add("compose.lockedDate");
+      }
       def = comparePrimitives("compose.inactive", left.getCompose().getInactiveElement(), right.getCompose().getInactiveElement(), res.getMetadata(), IssueSeverity.WARNING, res) || def;      
     }
-    res.updatedMetadataState(ch);
+    res.updatedMetadataState(ch, chMetadata);
         
     def = compareCompose(left.getCompose(), right.getCompose(), res, res.getUnion().getCompose(), res.getIntersection().getCompose()) || def;
     res.updateDefinitionsState(def);
     compareExpansions(left, right, res);
+    VersionComparisonAnnotation.annotate(right, session.getForVersion(), res);
     return res;
   }
 
@@ -149,9 +157,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         union.getInclude().add(l);
         res.updateContentState(true);
         res.getIncludes().getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed Include", "ValueSet.compose.include")));
-        if (session.isAnnotate()) {
-          VersionComparisonAnnotation.markDeleted(right, session.getForVersion(), "include", l);
-        }
+        VersionComparisonAnnotation.markDeleted(right, session.getForVersion(), "include", l);
       } else {
         matchR.add(r);
         ConceptSetComponent csM = new ConceptSetComponent();
@@ -168,9 +174,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         union.getInclude().add(r);
         res.updateContentState(true);
         res.getIncludes().getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added Include", "ValueSet.compose.include"), r));  
-        if (session.isAnnotate()) {
-          VersionComparisonAnnotation.markAdded(r, session.getForVersion());
-        }
+        VersionComparisonAnnotation.markAdded(r, session.getForVersion());
       }
     }
     
@@ -247,6 +251,9 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         union.getValueSet().add(l);
         res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed ValueSet", "ValueSet.compose.include.valueSet")));
+        if (session.isAnnotate()) {
+          VersionComparisonAnnotation.markDeleted(right, session.getForVersion(), "valueset", l);
+        }
       } else {
         matchVSR.add(r);
         if (l.getValue().equals(r.getValue())) {
@@ -260,7 +267,11 @@ public class ValueSetComparer extends CanonicalResourceComparer {
           union.getValueSet().add(r);
           res.updateContentState(true);
           StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r, vmI(IssueSeverity.INFORMATION, "Values are different", "ValueSet.compose.include.valueSet"));
-          combined.getChildren().add(sm);
+          combined.getChildren().add(sm);            
+          if (session.isAnnotate()) {
+            VersionComparisonAnnotation.markChanged(r, session.getForVersion());
+          }           
+
         }
       }
     }
@@ -268,7 +279,8 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       if (!matchVSR.contains(r)) {
         union.getValueSet().add(r);
         res.updateContentState(true);
-        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Add ValueSet", "ValueSet.compose.include.valueSet"), r));        
+        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Add ValueSet", "ValueSet.compose.include.valueSet"), r));  
+        VersionComparisonAnnotation.markAdded(r, session.getForVersion());
       }
     }
     
@@ -279,6 +291,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         union.getConcept().add(l);
         res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed this Concept", "ValueSet.compose.include.concept")));
+        VersionComparisonAnnotation.markDeleted(right, session.getForVersion(), "concept", l);
       } else {
         matchCR.add(r);
         if (l.getCode().equals(r.getCode())) {
@@ -297,6 +310,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
           combined.getChildren().add(sm);
           res.updateContentState(true);
           compareConcepts(l, r, sm, null, null);
+         VersionComparisonAnnotation.markChanged(r, session.getForVersion());
         }
       }
     }
@@ -304,7 +318,8 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       if (!matchCR.contains(r)) {
         union.getConcept().add(r);
         res.updateContentState(true);
-        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added this Concept", "ValueSet.compose.include.concept"), r));        
+        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added this Concept", "ValueSet.compose.include.concept"), r)); 
+        VersionComparisonAnnotation.markAdded(r, session.getForVersion());
       }
     }
     
@@ -315,6 +330,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         union.getFilter().add(l);
         res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed this item", "ValueSet.compose.include.filter")));
+        VersionComparisonAnnotation.markDeleted(right, session.getForVersion(), "filter", l);
       } else {
         matchFR.add(r);
         if (l.getProperty().equals(r.getProperty()) && l.getOp().equals(r.getOp())) {
@@ -325,7 +341,8 @@ public class ValueSetComparer extends CanonicalResourceComparer {
           StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
           combined.getChildren().add(sm);
           if (!compareFilters(l, r, sm, cu, ci)) {
-            res.updateContentState(true);            
+            res.updateContentState(true);       
+            VersionComparisonAnnotation.markChanged(r, session.getForVersion());
           }
         } else {
           union.getFilter().add(l);
@@ -341,7 +358,8 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       if (!matchFR.contains(r)) {
         union.getFilter().add(r);
         res.updateContentState(true);
-        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added this item", "ValueSet.compose.include.filter"), r));        
+        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added this item", "ValueSet.compose.include.filter"), r));  
+        VersionComparisonAnnotation.markAdded(r, session.getForVersion());
       }
     }
     return def;

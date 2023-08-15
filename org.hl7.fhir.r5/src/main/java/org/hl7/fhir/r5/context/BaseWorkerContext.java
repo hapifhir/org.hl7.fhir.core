@@ -1271,7 +1271,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Parameters pIn = new Parameters();
     pIn.addParameter().setName("coding").setValue(coding);
     if (options.isGuessSystem()) {
-      pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
+      pIn.addParameter().setName("inferSystem").setValue(new BooleanType(true));
     }
     setTerminologyOptions(options, pIn);
     return pIn;
@@ -1288,7 +1288,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Parameters pIn = new Parameters();
     pIn.addParameter().setName("coding").setValue(codingValidationRequest.getCoding());
     if (options.isGuessSystem()) {
-      pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
+      pIn.addParameter().setName("inferSystem").setValue(new BooleanType(true));
     }
     if (valueSet != null) {
       pIn.addParameter().setName("valueSet").setResource(valueSet);
@@ -1301,7 +1301,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Parameters pIn = new Parameters();
     pIn.addParameter().setName("coding").setValue(codingValidationRequest.getCoding());
     if (options.isGuessSystem()) {
-      pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
+      pIn.addParameter().setName("inferSystem").setValue(new BooleanType(true));
     }
     if (vsUrl != null) {
       pIn.addParameter().setName("url").setValue(new CanonicalType(vsUrl));
