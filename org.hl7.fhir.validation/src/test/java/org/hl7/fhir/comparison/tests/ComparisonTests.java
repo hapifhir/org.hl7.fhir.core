@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
@@ -45,10 +45,22 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.renderers.CodeSystemRenderer;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
+import org.hl7.fhir.r5.renderers.ValueSetRenderer;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
+import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.model.*;
+import org.hl7.fhir.utilities.json.parser.*;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -56,14 +68,13 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import java.nio.charset.StandardCharsets;
 
-import com.google.common.base.Charsets;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 public class ComparisonTests {
 
@@ -73,9 +84,9 @@ public class ComparisonTests {
     String contents = TestingUtilities.loadTestResource("comparison", "manifest.json");
 
     Map<String, JsonObject> examples = new HashMap<String, JsonObject>();
-    manifest = (JsonObject) new com.google.gson.JsonParser().parse(contents);
-    for (Entry<String, JsonElement> e : manifest.getAsJsonObject("test-cases").entrySet()) {
-      examples.put(e.getKey(), e.getValue().getAsJsonObject());
+    manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
+    for (JsonProperty e : manifest.getJsonObject("test-cases").getProperties()) {
+      examples.put(e.getName(), e.getValue().asJsonObject());
     }
 
     List<String> names = new ArrayList<String>(examples.size());
@@ -97,6 +108,8 @@ public class ComparisonTests {
   private static final String HEADER = "<html><link href=\"http://hl7.org/fhir/fhir.css\" rel=\"stylesheet\"/><body>";
   private static final String BREAK = "<hr/>";
   private static final String FOOTER = "</body></html>";
+  private String prefix;
+  private String suffix;
 
   @ParameterizedTest(name = "{index}: id {0}")
   @MethodSource("data")
@@ -104,7 +117,7 @@ public class ComparisonTests {
     TestingUtilities.injectCorePackageLoader();
     this.content = content;
 
-    if (content.has("use-test") && !content.get("use-test").getAsBoolean())
+    if (content.has("use-test") && !content.asBoolean("use-test"))
       return;
 
     if (context == null) {
@@ -132,9 +145,17 @@ public class ComparisonTests {
     System.out.println("---- " + name + " ----------------------------------------------------------------");
     CanonicalResource left = load("left");
     CanonicalResource right = load("right");
+    prefix = loadResource("html-prefix.html");
+    suffix = loadResource("html-suffix.html");
 
     ComparisonSession session = new ComparisonSession(context, context, "Comparison Tests", null, null);
-
+    if (content.has("version")) {
+      session.setForVersion(content.getJsonObject("version").asString("stated"));
+      session.setAnnotate(true);
+    }
+    RenderingContext lrc = new RenderingContext(context, new MarkDownProcessor(Dialect.COMMON_MARK), null, "http://hl7.org/fhir", "", "en", ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER);
+    lrc.setDestDir(Utilities.path("[tmp]", "comparison"));
+    
     if (left instanceof CodeSystem && right instanceof CodeSystem) {
       CodeSystemComparer cs = new CodeSystemComparer(session);
       CodeSystemComparison csc = cs.compare((CodeSystem) left, (CodeSystem) right);
@@ -147,6 +168,8 @@ public class ComparisonTests {
       String xml2 = new XhtmlComposer(true).compose(cs.renderConcepts(csc, "", ""));
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Concepts") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
+      new CodeSystemRenderer(lrc).render(right);
+      checkOutput(content.getJsonObject("version").asString("filename"), right);
     } else if (left instanceof ValueSet && right instanceof ValueSet) {
       ValueSetComparer cs = new ValueSetComparer(session);
       ValueSetComparison csc = cs.compare((ValueSet) left, (ValueSet) right);
@@ -159,6 +182,8 @@ public class ComparisonTests {
       String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Definition") + xml2 + BREAK + hd("Expansion") + xml3 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
+      new ValueSetRenderer(lrc).render(right);
+      checkOutput(content.getJsonObject("version").asString("filename"), right);
     } else if (left instanceof StructureDefinition && right instanceof StructureDefinition) {
       ProfileUtilities utils = new ProfileUtilities(context, null, null);
       genSnapshot(utils, (StructureDefinition) left);
@@ -174,6 +199,14 @@ public class ComparisonTests {
 //      String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Structure") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
+
+      lrc.setStructureMode(StructureDefinitionRendererMode.DATA_DICT);
+      new StructureDefinitionRenderer(lrc).render(right);
+      checkOutput(content.getJsonObject("version").asString("filename-dd"), right);
+      
+      lrc.setStructureMode(StructureDefinitionRendererMode.SUMMARY);
+      new StructureDefinitionRenderer(lrc).render(right);
+      checkOutput(content.getJsonObject("version").asString("filename-tree"), right);
     } else if (left instanceof CapabilityStatement && right instanceof CapabilityStatement) {
       CapabilityStatementComparer pc = new CapabilityStatementComparer(session);
       CapabilityStatementComparison csc = pc.compare((CapabilityStatement) left, (CapabilityStatement) right);
@@ -191,6 +224,18 @@ public class ComparisonTests {
     }
   }
 
+  private void checkOutput(String name, CanonicalResource right) throws Exception {
+    String output = prefix+ new XhtmlComposer(false, true).compose(right.getText().getDiv()) + suffix;
+    String an = Utilities.path("[tmp]", "comparison", name);
+    TextFile.stringToFile(output, an);
+    String expected = loadResource(name);
+    String en = Utilities.path("[tmp]", "comparison", Utilities.changeFileExt(name, ".expected.html"));
+    TextFile.stringToFile(expected, en);
+    
+    String msg = CompareUtilities.checkXMLIsSame(en, an);
+    Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
+    
+  }
   private void genSnapshot(ProfileUtilities utils, StructureDefinition sd) {
     StructureDefinition base = context.fetchTypeDefinition(sd.getType());
     utils.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/r4", sd.present());
@@ -201,13 +246,18 @@ public class ComparisonTests {
   }
 
   private CanonicalResource load(String name) throws IOException {
-    JsonObject details = content.getAsJsonObject(name);
-    String src = TestingUtilities.loadTestResource("comparison", details.get("source").getAsString());
-    return (CanonicalResource) loadResource(details.get("source").getAsString(), src, details.get("version").getAsString());
+    JsonObject details = content.getJsonObject(name);
+    String src = TestingUtilities.loadTestResource("comparison", details.asString("source"));
+    return (CanonicalResource) loadResource(details.asString("source"), src, details.asString("version"));
+  }
+
+  private String loadResource(String name) throws IOException {
+    String src = TestingUtilities.loadTestResource("comparison", name);
+    return src;
   }
 
   public Resource loadResource(String filename, String contents, String ver) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
-    try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
+    try (InputStream inputStream = IOUtils.toInputStream(contents, StandardCharsets.UTF_8)) {
       if (filename.contains(".json")) {
         if (Constants.VERSION.equals(ver) || "5.0".equals(ver))
           return new JsonParser().parse(inputStream);
@@ -239,7 +289,7 @@ public class ComparisonTests {
   }
 
   private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus) {
-    JsonObject output = focus.getAsJsonObject("output");
+    JsonObject output = focus.getJsonObject("output");
     int ec = 0;
     int wc = 0;
     int hc = 0;
@@ -265,11 +315,11 @@ public class ComparisonTests {
         }
       }
     }
-    Assertions.assertEquals(output.get("errorCount").getAsInt(), ec, "Expected " + Integer.toString(output.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".");
+    Assertions.assertEquals(output.asInteger("errorCount"), ec, "Expected " + Integer.toString(output.asInteger("errorCount")) + " errors, but found " + Integer.toString(ec) + ".");
     if (output.has("warningCount"))
-      Assertions.assertEquals(output.get("warningCount").getAsInt(), wc, "Expected " + Integer.toString(output.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".");
+      Assertions.assertEquals(output.asInteger("warningCount"), wc, "Expected " + Integer.toString(output.asInteger("warningCount")) + " warnings, but found " + Integer.toString(wc) + ".");
     if (output.has("infoCount"))
-      Assertions.assertEquals(output.get("infoCount").getAsInt(), hc, "Expected " + Integer.toString(output.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".");
+      Assertions.assertEquals(output.asInteger("infoCount"), hc, "Expected " + Integer.toString(output.asInteger("infoCount")) + " hints, but found " + Integer.toString(hc) + ".");
   }
 
 }

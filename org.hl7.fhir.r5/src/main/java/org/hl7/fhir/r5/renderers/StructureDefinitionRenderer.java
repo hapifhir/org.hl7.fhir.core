@@ -1,28 +1,35 @@
 package org.hl7.fhir.r5.renderers;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
-import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementChoiceGroup;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ExtensionContext;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.formats.IParser;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
@@ -43,6 +50,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.IntegerType;
@@ -55,10 +63,9 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.UsageContext;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
-import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
-import org.hl7.fhir.r5.renderers.ObligationsRenderer.ObligationDetail;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.InternalMarkdownProcessor;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
@@ -78,10 +85,9 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableGenerationMode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Title;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.utilities.xhtml.XhtmlNodeList;
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 public class StructureDefinitionRenderer extends ResourceRenderer {
 
@@ -148,16 +154,176 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   //
   //  }
 
+  public class InternalMarkdownProcessor implements IMarkdownProcessor {
 
+    @Override
+    public String processMarkdown(String location, PrimitiveType md) throws FHIRException {
+      return context.getMarkdown().process(md.primitiveValue(), location);
+    }
+
+    @Override
+    public String processMarkdown(String location, String text) throws FHIRException {
+      return context.getMarkdown().process(text, location);
+    }
+  }
+
+  private enum ListItemStatus { New, Unchanged, Removed};
+
+  private abstract class ItemWithStatus {
+    ListItemStatus status = ListItemStatus.New; // new, unchanged, removed    
+
+    protected abstract void renderDetails(XhtmlNode f);
+    protected abstract boolean matches(ItemWithStatus other);
+
+    public void render(XhtmlNode x) {
+      XhtmlNode f = x;
+      if (status == ListItemStatus.Unchanged) {
+        f = unchanged(f);
+      } else if (status == ListItemStatus.Removed) {
+        f = removed(f);
+      }
+      renderDetails(f);
+    }
+  }
+
+  protected class StatusList<T extends ItemWithStatus> extends ArrayList<T> implements List<T> {
+
+    public boolean merge(T item) {
+      if (item == null) {
+        return false;
+      }
+      boolean found = false;
+      for (T t : this) {
+        if (t.matches(item)) {
+          found = true;
+          t.status = ListItemStatus.Unchanged;
+        }
+      }
+      if (!found) {
+        item.status = ListItemStatus.Removed;
+        return add(item);        
+      } else {
+        return false;
+      }
+    }
+    
+    public boolean add(T item) {
+      if (item != null) {
+        return super.add(item);
+      } else {
+        return false;
+      }
+    }
+  }
+
+  private class ResolvedCanonical extends ItemWithStatus {
+    String url; // what we used to resolve
+    CanonicalResource cr; // what we resolved
+
+    public ResolvedCanonical(String url, CanonicalResource cr) {
+      this.url = url;
+      this.cr = cr;
+    }
+    public void renderDetails(XhtmlNode f) {
+      if (cr != null && cr.hasWebPath()) {
+        f.ah(cr.getWebPath()).tx(cr.present());
+      } else {
+        f.code().tx(url);            
+      }
+    }
+    protected boolean matches(ItemWithStatus other) {
+      return ((ResolvedCanonical) other).url.equals(url);
+    }
+  }
+
+  private class InvariantWithStatus extends ItemWithStatus {
+    ElementDefinitionConstraintComponent value;
+    protected InvariantWithStatus(ElementDefinitionConstraintComponent value) {
+      this.value = value;
+    }
+
+    protected boolean matches(ItemWithStatus other) {
+      return ((InvariantWithStatus) other).value.equalsDeep(value);
+    }
+    
+    public void renderDetails(XhtmlNode f) {
+      f.b().attribute("title", "Formal Invariant Identifier").tx(value.getKey());
+      f.tx(": ");
+      f.tx(value.getHuman());
+      f.tx(" (");
+      if (status == ListItemStatus.New) {
+        f.code().tx(value.getExpression());
+      } else {
+        f.tx(value.getExpression());
+      }
+      f.tx(")");      
+    }
+  }
+  
+  private class DiscriminatorWithStatus extends ItemWithStatus {
+    ElementDefinitionSlicingDiscriminatorComponent value;
+    protected DiscriminatorWithStatus(ElementDefinitionSlicingDiscriminatorComponent value) {
+      this.value = value;
+    }
+
+    protected boolean matches(ItemWithStatus other) {
+      return ((DiscriminatorWithStatus) other).value.equalsDeep(value);
+    }
+    
+    public void renderDetails(XhtmlNode f) {
+      f.tx(value.getType().toCode());
+      f.tx(" @ ");
+      f.tx(value.getPath());
+    }
+  }
+  
+  private class ValueWithStatus extends ItemWithStatus {
+    PrimitiveType value;
+    protected ValueWithStatus(PrimitiveType value) {
+      this.value = value;
+    }
+
+    protected boolean matches(ItemWithStatus other) {
+      return ((ValueWithStatus) other).value.equalsDeep(value);
+    }
+    
+    public void renderDetails(XhtmlNode f) {
+      if (value.hasUserData("render.link")) {
+        f = f.ah(value.getUserString("render.link"));
+      }
+      f.tx(value.asStringValue());
+    }
+  }
+  
 
   private List<String> keyRows = new ArrayList<>();
+  private Map<String, Map<String, ElementDefinition>> sdMapCache = new HashMap<>();
+  private IMarkdownProcessor hostMd;
 
   public StructureDefinitionRenderer(RenderingContext context) {
     super(context);
+    hostMd = new InternalMarkdownProcessor();
   }
 
   public StructureDefinitionRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
+  }
+
+  
+  public Map<String, Map<String, ElementDefinition>> getSdMapCache() {
+    return sdMapCache;
+  }
+
+  public void setSdMapCache(Map<String, Map<String, ElementDefinition>> sdMapCache) {
+    this.sdMapCache = sdMapCache;
+  }
+
+  public IMarkdownProcessor getHostMd() {
+    return hostMd;
+  }
+
+  public void setHostMd(IMarkdownProcessor hostMd) {
+    this.hostMd = hostMd;
   }
 
   public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
@@ -165,8 +331,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   public boolean render(XhtmlNode x, StructureDefinition sd) throws FHIRFormatError, DefinitionException, IOException {
-    x.getChildNodes().add(generateTable(context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false, 
+    if (context.getStructureMode() == StructureDefinitionRendererMode.DATA_DICT) {
+      renderDict(sd, sd.getDifferential().getElement(), x.table("dict"), false, GEN_MODE_DIFF, "");
+    } else {
+      x.getChildNodes().add(generateTable(context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false, 
         context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context, ""));
+    }
     return true;
   }
 
@@ -200,9 +370,19 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   //  private static final boolean TABLE_FORMAT_FOR_FIXED_VALUES = false;
   public static final String CONSTRAINT_CHAR = "C";
   public static final String CONSTRAINT_STYLE = "padding-left: 3px; padding-right: 3px; border: 1px maroon solid; font-weight: bold; color: #301212; background-color: #fdf4f4;";
+  public static final int GEN_MODE_SNAP = 1;
+  public static final int GEN_MODE_DIFF = 2;
+  public static final int GEN_MODE_MS = 3;
+  public static final int GEN_MODE_KEY = 4;
+  public static final String RIM_MAPPING = "http://hl7.org/v3";
+  public static final String v2_MAPPING = "http://hl7.org/v2";
+  public static final String LOINC_MAPPING = "http://loinc.org";
+  public static final String SNOMED_MAPPING = "http://snomed.info";
+
   private final boolean ADD_REFERENCE_TO_TABLE = true;
 
   private boolean useTableForFixedValues = true;
+  private String corePath;
 
   public static class UnusedTracker {
     private boolean used;
@@ -2227,6 +2407,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
 
 
+
+
   protected boolean isPrimitive(String value) {
     StructureDefinition sd = context.getWorker().fetchTypeDefinition(value);
     if (sd == null) // might be running before all SDs are available
@@ -2727,7 +2909,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return ed.getPath().substring(ed.getPath().indexOf(".")+1);
   }
 
-  public XhtmlNode formatTypeSpecifiers(IWorkerContext context, ElementDefinition d) {
+  public XhtmlNode formatTypeSpecifiers(ElementDefinition d) {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     boolean first = true;
     for (Extension e : d.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
@@ -2737,7 +2919,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       x.tx("If ");
       x.code().tx(cond);
       x.tx(" then the type is ");
-      StructureDefinition sd = context.fetchTypeDefinition(type);
+      StructureDefinition sd = context.getContext().fetchTypeDefinition(type);
       if (sd == null) {
         x.code().tx(type);
       } else {
@@ -2890,6 +3072,1316 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return null;
   }
 
+  public void renderDict(StructureDefinition sd, List<ElementDefinition> elements, XhtmlNode t, boolean incProfiledOut, int mode, String anchorPrefix) throws FHIRException, IOException {
+    int i = 0;
+    Map<String, ElementDefinition> allAnchors = new HashMap<>();
+    List<ElementDefinition> excluded = new ArrayList<>();
+    List<ElementDefinition> stack = new ArrayList<>(); // keeps track of parents, for anchor generation
+    
+    for (ElementDefinition ec : elements) {
+      addToStack(stack, ec);
+      generateAnchors(stack, allAnchors);
+      checkInScope(stack, excluded);
+    }
+    for (ElementDefinition ec : elements) {
+      if ((incProfiledOut || !"0".equals(ec.getMax())) && !excluded.contains(ec)) {
+        ElementDefinition compareElement = null;
+        if (mode==GEN_MODE_DIFF)
+          compareElement = getBaseElement(ec, sd.getBaseDefinition());
+        else if (mode==GEN_MODE_KEY)
+          compareElement = getRootElement(ec);
 
+        List<String> anchors = makeAnchors(ec, anchorPrefix);
+        String title = ec.getId();
+        XhtmlNode tr = t.tr();
+        XhtmlNode sp = tr.td("structure").colspan(2).spanClss("self-link-parent");
+        for (String s : anchors) {
+          sp.an(s).tx(" ");
+        }
+        sp.span("color: grey", null).tx(Integer.toString(i++));
+        sp.b().tx(". "+title);
+        link(sp, ec.getId(), anchorPrefix);
+        if (isProfiledExtension(ec)) {
+          StructureDefinition extDefn = context.getContext().fetchResource(StructureDefinition.class, ec.getType().get(0).getProfile().get(0).getValue());
+          if (extDefn == null) {
+            generateElementInner(t, sd, ec, 1, null, compareElement, null);
+          } else {
+            ElementDefinition valueDefn = getExtensionValueDefinition(extDefn);
+            ElementDefinition compareValueDefn = null;
+            try {
+              StructureDefinition compareExtDefn = context.getContext().fetchResource(StructureDefinition.class, compareElement.getType().get(0).getProfile().get(0).getValue());
+              compareValueDefn = getExtensionValueDefinition(extDefn);
+            } catch (Exception except) {}
+            generateElementInner(t, sd, ec, valueDefn == null || valueDefn.prohibited() ? 2 : 3, valueDefn, compareElement, compareValueDefn);
+            // generateElementInner(b, extDefn, extDefn.getSnapshot().getElement().get(0), valueDefn == null ? 2 : 3, valueDefn);
+          }
+        } else {
+          generateElementInner(t, sd, ec, mode, null, compareElement, null);
+          if (ec.hasSlicing()) {
+            generateSlicing(t, sd, ec, ec.getSlicing(), compareElement, mode);
+          }
+        }
+      }
+      t.tx("\r\n");
+      i++;
+    }
+  }
+
+  public ElementDefinition getElementById(String url, String id) {
+    Map<String, ElementDefinition> sdCache = sdMapCache.get(url);
+
+    if (sdCache == null) {
+      StructureDefinition sd = (StructureDefinition) context.getContext().fetchResource(StructureDefinition.class, url);
+      if (sd == null) {
+        if (url.equals("http://hl7.org/fhir/StructureDefinition/Base")) {
+          sd = (StructureDefinition) context.getContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Element");                
+        }
+        if (sd == null) {
+          throw new FHIRException("Unable to retrieve StructureDefinition with URL " + url);
+        }
+      }
+      sdCache = new HashMap<String, ElementDefinition>();
+      sdMapCache.put(url, sdCache);
+      String webroot = sd.getUserString("webroot");
+      for (ElementDefinition e : sd.getSnapshot().getElement()) {
+        context.getProfileUtilities().updateURLs(sd.getUrl(), webroot, e);
+        sdCache.put(e.getId(), e);
+      }
+    }
+    return sdCache.get(id);
+  }
+
+
+  // Returns the ElementDefinition for the 'parent' of the current element
+  private ElementDefinition getBaseElement(ElementDefinition e, String url) {
+    if (e.hasUserData(ProfileUtilities.UD_DERIVATION_POINTER)) {
+      return getElementById(url, e.getUserString(ProfileUtilities.UD_DERIVATION_POINTER));
+    }
+    return null;
+  }
+
+  // Returns the ElementDefinition for the 'root' ancestor of the current element
+  private ElementDefinition getRootElement(ElementDefinition e) {
+    if (!e.hasBase())
+      return null;
+    String basePath = e.getBase().getPath();
+    String url = "http://hl7.org/fhir/StructureDefinition/" + (basePath.contains(".") ? basePath.substring(0, basePath.indexOf(".")) : basePath);
+    try {
+      return getElementById(url, basePath);
+    } catch (FHIRException except) {
+      // Likely a logical model, so this is ok
+      return null;
+    }
+  }
+  private void checkInScope(List<ElementDefinition> stack, List<ElementDefinition> excluded) {
+    if (stack.size() > 2) {
+      ElementDefinition parent = stack.get(stack.size()-2);
+      ElementDefinition focus = stack.get(stack.size()-1);
+
+      if (excluded.contains(parent) || "0".equals(parent.getMax())) {
+        excluded.add(focus);
+      }
+    }
+  }
+
+  private void generateAnchors(List<ElementDefinition> stack, Map<String, ElementDefinition> allAnchors) {
+    List<String> list = new ArrayList<>();
+    list.add(stack.get(0).getId()); // initialise
+    for (int i = 1; i < stack.size(); i++) {
+      ElementDefinition ed = stack.get(i);
+      List<String> aliases = new ArrayList<>();
+      String name = tail(ed.getPath());
+      if (name.endsWith("[x]")) {
+        aliases.add(name);
+        Set<String> tl = new HashSet<String>(); // guard against duplicate type names - can happn in some versions
+        for (TypeRefComponent tr : ed.getType()) {
+          String tc = tr.getWorkingCode();
+          if (!tl.contains(tc)) {
+            aliases.add(name.replace("[x]", Utilities.capitalize(tc)));
+            aliases.add(name+":"+name.replace("[x]", Utilities.capitalize(tc)));
+            tl.add(tc);
+          }
+        }
+      } else if (ed.hasSliceName()) {
+        aliases.add(name+":"+ed.getSliceName());
+        // names.add(name); no good generating this?
+      } else {
+        aliases.add(name);
+      }
+      List<String> generated = new ArrayList<>();
+      for (String l : list) {
+        for (String a : aliases) {
+          generated.add(l+"."+a);
+        }
+      }
+      list.clear();
+      list.addAll(generated);
+    }
+    ElementDefinition ed = stack.get(stack.size()-1);
+
+    // now we have all the possible names, but some of them might be inappropriate if we've
+    // already generated a type slicer. On the other hand, if we've already done that, we're
+    // going to steal any type specific ones off it.
+    List<String> removed = new ArrayList<>();
+    for (String s : list) {
+      if (!allAnchors.containsKey(s)) {
+        allAnchors.put(s, ed);
+      } else if (s.endsWith("[x]")) {
+        // that belongs on the earlier element
+        removed.add(s);
+      } else {
+        // we delete it from the other
+        @SuppressWarnings("unchecked")
+        List<String> other = (List<String>) allAnchors.get(s).getUserData("dict.generator.anchors");
+        other.remove(s);
+        allAnchors.put(s, ed);
+      }
+    }
+    list.removeAll(removed);
+    ed.setUserData("dict.generator.anchors", list);
+  }
+
+  private void addToStack(List<ElementDefinition> stack, ElementDefinition ec) {
+    while (!stack.isEmpty() && !isParent(stack.get(stack.size()-1), ec)) {
+      stack.remove(stack.size()-1);
+    }
+    stack.add(ec);
+  }
+
+  private boolean isParent(ElementDefinition ed, ElementDefinition ec) {      
+    return ec.getPath().startsWith(ed.getPath()+".");
+  }
+
+  private List<String> makeAnchors(ElementDefinition ed, String anchorPrefix) {
+    List<String> list = (List<String>) ed.getUserData("dict.generator.anchors");
+    List<String>  res = new ArrayList<>();
+    res.add(anchorPrefix + ed.getId());
+    for (String s : list) {
+      if (!s.equals(ed.getId())) {
+        res.add(anchorPrefix + s);
+      }
+    }
+    return res;
+  }
+
+
+
+  private void link(XhtmlNode x, String id, String anchorPrefix) {
+    var ah = x.ah("#" + anchorPrefix + id);
+    ah.attribute("title", "link to here");
+    ah.attribute("class", "self-link");
+    var svg = ah.svg();
+    svg.attribute("viewBox", "0 0 1792 1792");
+    svg.attribute("width", "16");
+    svg.attribute("height", "16");
+    svg.attribute("class", "self-link");
+    svg.path("M1520 1216q0-40-28-68l-208-208q-28-28-68-28-42 0-72 32 3 3 19 18.5t21.5 21.5 15 19 13 25.5 3.5 27.5q0 40-28 68t-68 28q-15 0-27.5-3.5t-25.5-13-19-15-21.5-21.5-18.5-19q-33 31-33 73 0 40 28 68l206 207q27 27 68 27 40 0 68-26l147-146q28-28 28-67zm-703-705q0-40-28-68l-206-207q-28-28-68-28-39 0-68 27l-147 146q-28 28-28 67 0 40 28 68l208 208q27 27 68 27 42 0 72-31-3-3-19-18.5t-21.5-21.5-15-19-13-25.5-3.5-27.5q0-40 28-68t68-28q15 0 27.5 3.5t25.5 13 19 15 21.5 21.5 18.5 19q33-31 33-73zm895 705q0 120-85 203l-147 146q-83 83-203 83-121 0-204-85l-206-207q-83-83-83-203 0-123 88-209l-88-88q-86 88-208 88-120 0-204-84l-208-208q-84-84-84-204t85-203l147-146q83-83 203-83 121 0 204 85l206 207q83 83 83 203 0 123-88 209l88 88q86-88 208-88 120 0 204 84l208 208q84 84 84 204z");     
+  }
+
+  private boolean isProfiledExtension(ElementDefinition ec) {
+    return ec.getType().size() == 1 && "Extension".equals(ec.getType().get(0).getWorkingCode()) && ec.getType().get(0).hasProfile();
+  }
+
+  private ElementDefinition getExtensionValueDefinition(StructureDefinition extDefn) {
+    for (ElementDefinition ed : extDefn.getSnapshot().getElement()) {
+      if (ed.getPath().startsWith("Extension.value"))
+        return ed;
+    }
+    return null;
+  }
+      
+  public XhtmlNode compareMarkdown(String location, PrimitiveType md, PrimitiveType compare, int mode) throws FHIRException, IOException {
+    if (compare == null || mode == GEN_MODE_DIFF) {
+      if (md.hasValue()) {
+        String xhtml = hostMd.processMarkdown(location, md);
+        XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+        VersionComparisonAnnotation.renderDiv(md, x).add(new XhtmlParser().parseFragment(xhtml));
+        return x;
+      } else {
+        return null;
+      }
+    } else if (areEqual(compare, md)) {
+      if (md.hasValue()) {
+        String xhtml = "<div>"+hostMd.processMarkdown(location, md)+"</div>";
+        XhtmlNode div = new XhtmlParser().parseFragment(xhtml);
+        for (XhtmlNode n : div.getChildNodes()) {
+          if (n.getNodeType() == NodeType.Element) {
+            n.style(unchangedStyle());
+          }
+        }
+        return div;
+      } else {
+        return null;
+      }
+    } else {
+      XhtmlNode ndiv = new XhtmlNode(NodeType.Element, "div");
+      if (md.hasValue()) {
+        String xhtml = "<div>"+hostMd.processMarkdown(location, md)+"</div>";
+        XhtmlNode div = new XhtmlParser().parseFragment(xhtml);
+        ndiv.copyAllContent(div);
+      }
+      if (compare.hasValue()) {
+        String xhtml = "<div>"+hostMd.processMarkdown(location, compare)+"</div>";
+        XhtmlNode div = new XhtmlParser().parseFragment(xhtml);
+        for (XhtmlNode n : div.getChildNodes()) {
+          if (n.getNodeType() == NodeType.Element) {
+            n.style(removedStyle());
+          }
+        }
+        ndiv.br();
+        ndiv.copyAllContent(div);
+      }
+      return ndiv;
+    }
+  }
+
+  private boolean areEqual(PrimitiveType compare, PrimitiveType md) {
+    if (compare == null && md == null) {
+      return true;
+    } else if (compare != null && md != null) {
+      String one = compare.getValueAsString();
+      String two = md.getValueAsString();
+      if (one == null && two == null) {
+        return true;
+      } else if (one != null && one.equals(two)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public XhtmlNode compareString(String newStr, Base source, String nLink, String name, Base parent, String oldStr, String oLink, int mode) {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    if (mode != GEN_MODE_KEY) {
+      if (newStr != null) {
+        VersionComparisonAnnotation.render(source, x).ah(nLink).tx(newStr);
+      } else if (VersionComparisonAnnotation.hasDeleted(parent, name)) {
+        PrimitiveType p = (PrimitiveType) VersionComparisonAnnotation.getDeletedItem(parent, name);
+        VersionComparisonAnnotation.render(p, x).tx(p.primitiveValue());        
+      } else {
+        return null;
+      }
+    } else if (oldStr==null || oldStr.isEmpty()) {
+      if (newStr==null || newStr.isEmpty()) {
+        return null;
+      } else {
+        VersionComparisonAnnotation.render(source, x).ah(nLink).tx(newStr);
+      }
+    } else if (oldStr!=null && !oldStr.isEmpty() && (newStr==null || newStr.isEmpty())) {
+      if (mode == GEN_MODE_DIFF) {
+        return null;
+      } else {
+        removed(x).ah(oLink).tx(oldStr);
+      }
+    } else if (oldStr.equals(newStr)) {
+      if (mode==GEN_MODE_DIFF) {
+        return null;
+      } else {
+        unchanged(x).ah(nLink).tx(newStr);
+      }
+    } else if (newStr.startsWith(oldStr)) {
+      unchanged(x).ah(oLink).tx(oldStr);
+      VersionComparisonAnnotation.render(source, x).ah(nLink).tx(newStr.substring(oldStr.length()));
+    } else {
+      // TODO: improve comparision in this fall-through case, by looking for matches in sub-paragraphs?
+      VersionComparisonAnnotation.render(source, x).ah(nLink).tx(newStr);
+      removed(x).ah(oLink).tx(oldStr);
+    }
+    return x;
+  }
+
+  public boolean compareString(XhtmlNode x, String newStr, Base source, String nLink, String name, Base parent, String oldStr, String oLink, int mode) {
+    XhtmlNode x1 = compareString(newStr, source, nLink, name, parent, oldStr, oLink, mode);
+    if (x1 == null) {
+      return false;
+    } else {
+      x.getChildNodes().addAll(x1.getChildNodes());
+      return true;
+    }
+  }
+
+  public XhtmlNode unchanged(XhtmlNode x) {
+    return x.span(unchangedStyle());
+  }
+
+  private String unchangedStyle() {
+    return "color:DarkGray";
+  }
+
+  public XhtmlNode removed(XhtmlNode x) {
+    return x.span(removedStyle());
+  }
+
+  private String removedStyle() {
+    return "color:DarkGray;text-decoration:line-through";
+  }
+
+  private void generateElementInner(XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue) throws FHIRException, IOException {
+    boolean root = !d.getPath().contains(".");
+    boolean slicedExtension = d.hasSliceName() && (d.getPath().endsWith(".extension") || d.getPath().endsWith(".modifierExtension"));
+//    int slicedExtensionMode = (mode == GEN_MODE_KEY) && slicedExtension ? GEN_MODE_SNAP : mode; // see ProfileUtilities.checkExtensionDoco / Task 3970
+    if (d.hasSliceName()) {
+      tableRow(tbl, "SliceName", "profiling.html#slicing").tx(d.getSliceName());
+    }
+    tableRow(tbl, "Definition", null, compareMarkdown(sd.getName(), d.getDefinitionElement(), (compare==null) || slicedExtension ? null : compare.getDefinitionElement(), mode));
+    tableRow(tbl, "Short", null, compareString(d.hasShort() ? d.getShort() : null, d.getShortElement(), null, "short", d, compare!= null && compare.hasShortElement() ? compare.getShort() : null, null, mode));
+    tableRow(tbl, "Note", null, businessIdWarning(sd.getName(), tail(d.getPath())));
+    tableRow(tbl, "Control", "conformance-rules.html#conformance", describeCardinality(d, compare, mode)); 
+    tableRow(tbl, "Binding", "terminologies.html", describeBinding(sd, d, d.getPath(), compare, mode));
+    if (d.hasContentReference()) {
+      tableRow(tbl, "Type", null, "See " + d.getContentReference().substring(1));
+    } else {
+      tableRow(tbl, "Type", "datatypes.html", describeTypes(d.getType(), false, compare, mode, value, compareValue, sd)); 
+    }
+    if (d.hasExtension(ToolingExtensions.EXT_DEF_TYPE)) {
+      tableRow(tbl, "Default Type", "datatypes.html", ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DEF_TYPE));          
+    }
+    if (d.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
+      tableRow(tbl, Utilities.pluralize("Type Specifier", d.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC).size()), "datatypes.html", formatTypeSpecifiers(d));          
+    }
+    if (d.getPath().endsWith("[x]") && !d.prohibited()) {
+      tableRow(tbl, "[x] Note", null).ahWithText("See ", spec("formats.html#choice"), null, "Choice of Data Types", " for further information about how to use [x]");
+    }
+    tableRow(tbl, "Is Modifier", "conformance-rules.html#ismodifier", displayBoolean(d.getIsModifier(), d.getIsModifierElement(), "isModifier", d, null, mode));
+    if (d.getMustHaveValue()) {
+      tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)");
+    } else if (d.hasValueAlternatives()) {
+      tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", renderCanonicalList(d.getValueAlternatives()));      
+    } else if (hasPrimitiveTypes(d)) {
+      tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", "This primitive element may be present, or absent, or replaced by an extension");            
+    }
+    if (ToolingExtensions.hasAllowedUnits(d)) {      
+      tableRow(tbl, "Allowed Units", "http://hl7.org/fhir/extensions/StructureDefinition-elementdefinition-allowedUnits.html", describeAllowedUnits(d));        
+    }
+    tableRow(tbl, "Must Support", "conformance-rules.html#mustSupport", displayBoolean(d.getMustSupport(), d.getMustSupportElement(), "mustSupport", d, compare==null ? null : compare.getMustSupportElement(), mode));
+    if (d.getMustSupport()) {
+      if (hasMustSupportTypes(d.getType())) {
+        tableRow(tbl, "Must Support Types", "datatypes.html", describeTypes(d.getType(), true, compare, mode, null, null, sd));
+      } else if (hasChoices(d.getType())) {
+        tableRow(tbl, "Must Support Types", "datatypes.html", "No must-support rules about the choice of types/profiles");
+      }
+    }
+    if (root && sd.getKind() == StructureDefinitionKind.LOGICAL) {
+      tableRow(tbl, "Logical Model", null, ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_LOGICAL_TARGET) ? "This logical model can be the target of a reference" : "This logical model cannot be the target of a reference");
+    }
+
+    if (root && sd.hasExtension(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
+      tableRow(tbl, "Impose Profile", "http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-imposeProfile.html", 
+          renderCanonicalListExt(sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)));
+    }
+    if (root && sd.hasExtension(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE)) {
+      tableRow(tbl, "Complies with Profile", "http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-compliesWithProfile.html", 
+          renderCanonicalListExt(sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE)));
+    }
+    tableRow(tbl, "Obligations", null, describeObligations(d, root, sd));   
+
+    if (d.hasExtension(ToolingExtensions.EXT_EXTENSION_STYLE)) {
+      String es = d.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE);
+      if ("named-elements".equals(es)) {
+        if (context.hasLink(KnownLinkType.JSON_NAMES)) {
+          tableRow(tbl, "Extension Style", context.getLink(KnownLinkType.JSON_NAMES), "This element can be extended by named JSON elements");
+        } else {
+          tableRow(tbl, "Extension Style", ToolingExtensions.WEB_EXTENSION_STYLE, "This element can be extended by named JSON elements");
+        }
+      }
+    }
+
+    if (!d.getPath().contains(".") && ToolingExtensions.hasExtension(sd, ToolingExtensions.EXT_BINDING_STYLE)) {
+      tableRow(tbl, "Binding Style", ToolingExtensions.WEB_BINDING_STYLE, 
+          "This type can be bound to a value set using the " + ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_BINDING_STYLE)+" binding style");            
+    }
+
+    if (d.hasExtension(ToolingExtensions.EXT_DATE_FORMAT)) {
+      tableRow(tbl, "Date Format", null, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DATE_FORMAT));
+    }
+    String ide = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_ID_EXPECTATION);
+    if (ide != null) {
+      if (ide.equals("optional")) {
+        tableRow(tbl, "ID Expectation", null, "Id may or not be present (this is the default for elements but not resources)");
+      } else if (ide.equals("required")) {
+        tableRow(tbl, "ID Expectation", null, "Id is required to be present (this is the default for resources but not elements)");
+      } else if (ide.equals("required")) {
+        tableRow(tbl, "ID Expectation", null, "An ID is not allowed in this context");
+      }
+    }
+    // tooling extensions for formats
+    if (ToolingExtensions.hasExtensions(d, ToolingExtensions.EXT_JSON_EMPTY, ToolingExtensions.EXT_JSON_PROP_KEY, ToolingExtensions.EXT_JSON_NULLABLE, 
+        ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) {
+      tableRow(tbl, "JSON Format", null,  describeJson(d));          
+    }
+    if (d.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE) || sd.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE) || d.hasExtension(ToolingExtensions.EXT_XML_NAME) || (root && sd.hasExtension(ToolingExtensions.EXT_XML_NO_ORDER)) ||
+        d.hasRepresentation()) {
+      tableRow(tbl, "XML Format", null, describeXml(sd, d, root));          
+    }
+
+    if (d.hasExtension(ToolingExtensions.EXT_IMPLIED_PREFIX)) {
+      tableRow(tbl, "String Format", null).codeWithText("When this element is read ", ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_IMPLIED_PREFIX), "is prefixed to the value before validation");                
+    }
+
+    if (d.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
+      StandardsStatus ss = StandardsStatus.fromCode(d.getExtensionString(ToolingExtensions.EXT_STANDARDS_STATUS));
+      //      gc.addStyledText("Standards Status = "+ss.toDisplay(), ss.getAbbrev(), "black", ss.getColor(), baseSpecUrl()+, true);
+      StructureDefinition sdb = context.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      if (sdb != null) {
+        StandardsStatus base = determineStandardsStatus(sdb, (ElementDefinition) d.getUserData("derived.pointer"));
+        if (base != null) {
+          tableRow(tbl, "Standards Status", "versions.html#std-process", ss.toDisplay()+" (from "+base.toDisplay()+")");
+        } else {
+          tableRow(tbl, "Standards Status", "versions.html#std-process", ss.toDisplay());          
+        }
+      } else {
+        tableRow(tbl, "Standards Status", "versions.html#std-process", ss.toDisplay());
+      }
+    }
+    if (mode != GEN_MODE_DIFF && d.hasIsSummary()) {
+      tableRow(tbl, "Summary", "search.html#summary", Boolean.toString(d.getIsSummary()));
+    }
+    tableRow(tbl, "Requirements", null, compareMarkdown(sd.getName(), d.getRequirementsElement(), (compare==null) || slicedExtension ? null : compare.getRequirementsElement(), mode));
+    tableRow(tbl, "Alternate Names", null, compareSimpleTypeLists(d.getAlias(), ((compare==null) || slicedExtension ? null : compare.getAlias()), mode));
+    tableRow(tbl, "Comments", null, compareMarkdown(sd.getName(), d.getCommentElement(), (compare==null) || slicedExtension ? null : compare.getCommentElement(), mode));
+    tableRow(tbl, "Max Length", null, compareString(d.hasMaxLength() ? toStr(d.getMaxLength()) : null, d.getMaxLengthElement(), null, "maxLength", d, compare!= null && compare.hasMaxLengthElement() ? toStr(compare.getMaxLength()) : null, null, mode));
+    tableRow(tbl, "Default Value", null, encodeValue(d.getDefaultValue(), "defaultValue", d, compare==null ? null : compare.getDefaultValue(), mode));
+    tableRow(tbl, "Meaning if Missing", null, d.getMeaningWhenMissing());
+    tableRow(tbl, "Fixed Value", null, encodeValue(d.getFixed(), "fixed", d, compare==null ? null : compare.getFixed(), mode));
+    tableRow(tbl, "Pattern Value", null, encodeValue(d.getPattern(), "pattern", d, compare==null ? null : compare.getPattern(), mode));
+    tableRow(tbl, "Example", null, encodeValues(d.getExample()));
+    tableRow(tbl, "Invariants", null, invariants(d.getConstraint(), compare==null ? null : compare.getConstraint(), mode));
+    tableRow(tbl, "LOINC Code", null, getMapping(sd, d, LOINC_MAPPING, compare, mode));
+    tableRow(tbl, "SNOMED-CT Code", null, getMapping(sd, d, SNOMED_MAPPING, compare, mode));
+  }
+
+  private String spec(String name) {
+    return Utilities.pathURL(VersionUtilities.getSpecUrl(context.getWorker().getVersion()) , name);
+  }
+
+  private XhtmlNode describeXml(StructureDefinition profile, ElementDefinition d, boolean root) {
+    XhtmlNode ret = new XhtmlNode(NodeType.Element, "div");
+    for (PropertyRepresentation pr : PropertyRepresentation.values()) {
+      if (d.hasRepresentation(pr)) {
+        switch (pr) {
+        case CDATEXT:
+          ret.tx("This property is represented as CDA Text in the XML.");
+          break;
+        case TYPEATTR:
+          ret.codeWithText("The type of this property is determined using the ", "xsi:type", "attribute.");
+          break;
+        case XHTML:
+          ret.tx("This property is represented as XHTML Text in the XML.");
+          break;
+        case XMLATTR:
+          ret.tx("In the XML format, this property is represented as an attribute.");
+          break;
+        case XMLTEXT:
+          ret.tx("In the XML format, this property is represented as unadorned text.");
+          break;
+        default:
+        }
+      }
+    }
+    String name = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_XML_NAMESPACE);
+    if (name == null && root) {
+      name = ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_XML_NAMESPACE);
+    }
+    if (name != null) {
+      ret.codeWithText("In the XML format, this property has the namespace ", name, ".");
+    }
+    name = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_XML_NAME);
+    if (name != null) {
+      ret.codeWithText("In the XML format, this property has the actual name", name, ".");
+    }
+    boolean no = root && ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_XML_NO_ORDER);
+    if (no) {
+      ret.tx("The children of this property can appear in any order in the XML.");
+    }
+    return ret;
+  }
+
+  private XhtmlNode describeJson(ElementDefinition d) {
+    XhtmlNode ret = new XhtmlNode(NodeType.Element, "div");
+    var ul = ret.ul();
+    boolean list = ToolingExtensions.countExtensions(d, ToolingExtensions.EXT_JSON_EMPTY, ToolingExtensions.EXT_JSON_PROP_KEY, ToolingExtensions.EXT_JSON_NULLABLE, ToolingExtensions.EXT_JSON_NAME) > 1;
+
+    String code = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_JSON_EMPTY);
+    if (code != null) {
+      switch (code) {
+      case "present":
+        ul.li().tx("The JSON Array for this property is present even when there are no items in the instance (e.g. as an empty array)");
+        break;
+      case "absent":
+        ul.li().tx("The JSON Array for this property is not present when there are no items in the instance (e.g. never as an empty array)");
+        break;
+      case "either":
+        ul.li().tx("The JSON Array for this property may be present even when there are no items in the instance (e.g. may be present as an empty array)");
+        break;
+      }
+    }
+    String jn = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_JSON_NAME);
+    if (jn != null) {
+      if (d.getPath().contains(".")) {
+        ul.li().codeWithText("This property appears in JSON with the property name ", jn, null);
+      } else {
+        ul.li().codeWithText("This type can appear in JSON with the property name ", jn, " (in elements using named extensions)");          
+      }
+    }
+    code = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_JSON_PROP_KEY);
+    if (code != null) {
+      ul.li().codeWithText("This repeating object is represented as a single JSON object with named properties. The name of the property (key) is the value of the ", code, " child");
+    }
+    if (ToolingExtensions.readBoolExtension(d, ToolingExtensions.EXT_JSON_NULLABLE)) {
+      ul.li().tx("This object can be represented as null in the JSON structure (which counts as 'present' for cardinality purposes)");
+    }
+    if (ToolingExtensions.readBoolExtension(d, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) {
+      ul.li().tx("The type of this element is inferred from the JSON type in the instance");
+    }
+
+    switch (ul.getChildNodes().size()) {
+    case 0: return null;
+    case 1: return ul.getChildNodes().get(0);
+    default: return ret;
+    }
+  }
+
+  private XhtmlNode describeObligations(ElementDefinition d, boolean root, StructureDefinition sdx) throws IOException {
+    XhtmlNode ret = new XhtmlNode(NodeType.Element, "div");
+    ObligationsRenderer obr = new ObligationsRenderer(corePath, sdx, d.getPath(), context, hostMd, this);
+    obr.seeObligations(d.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS));
+    obr.seeRootObligations(d.getId(), sdx.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS));
+    if (obr.hasObligations() || (root && (sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG) || sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_INHERITS)))) {
+      XhtmlNode ul = ret.ul();
+      if (root) {
+        if (sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) {
+          ul.li().tx("This is an obligation profile that only contains obligations and additional bindings");           
+        } 
+        for (Extension ext : sdx.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS)) {
+          String iu = ext.getValue().primitiveValue();
+          XhtmlNode bb = ul.li();
+          bb.tx("This profile picks up obligations and additional bindings from ");           
+          StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, iu); 
+          if (sd == null) { 
+            bb.code().tx(iu);                     
+          } else if (sd.hasWebPath()) { 
+            bb.ah(sd.getWebPath()).tx(sd.present());
+          } else { 
+            bb.ah(iu).tx(sd.present());
+          } 
+        }  
+        if (ul.isEmpty()) {
+          ret.remove(ul);
+        }
+      }
+      if (obr.hasObligations()) {
+        XhtmlNode tbl = ret.table("grid");
+        obr.renderTable(tbl.getChildNodes(), true);
+        if (tbl.isEmpty()) {
+          ret.remove(tbl);
+        }
+      }
+      return ret.hasChildren() ? ret : null;
+    } else {
+      return null;
+    }
+  }
+
+  private XhtmlNode describeAllowedUnits(ElementDefinition d) {
+    XhtmlNode ret = new XhtmlNode(NodeType.Element, "div");
+    DataType au = ToolingExtensions.getAllowedUnits(d);
+    if (au instanceof CanonicalType) {
+      String url = ((CanonicalType) au).asStringValue();
+      ValueSet vs = context.getContext().fetchResource(ValueSet.class, url);
+      ret.tx("Value set ");         
+      genCT(ret, url, vs);
+      return ret;
+    } else if (au instanceof CodeableConcept) {
+      CodeableConcept cc = (CodeableConcept) au;
+      if (cc.getCoding().size() != 1) {
+        ret.tx("One of:");
+      }
+      ret.tx(summarise(cc));
+      return ret;
+    }
+    return null;
+  }
+
+  private void genCT(XhtmlNode x, String url, CanonicalResource cr) {
+    if (cr == null) {
+      x.code().tx(url);
+    } else if (!cr.hasWebPath()) {
+      x.ah(url).tx(cr.present());
+    } else {
+      x.ah(cr.getWebPath()).tx(cr.present());
+    }
+  }
+
+  private boolean hasPrimitiveTypes(ElementDefinition d) {
+    for (TypeRefComponent tr : d.getType()) {
+      if (isPrimitive(tr.getCode())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  private XhtmlNode renderCanonicalListExt(List<Extension> list) {
+    List<CanonicalType> clist = new ArrayList<>();
+    for (Extension ext : list) {
+      if (ext.hasValueCanonicalType()) {
+        clist.add(ext.getValueCanonicalType());
+      }
+    }
+    return renderCanonicalList(clist);
+  }
+
+  private XhtmlNode renderCanonicalList(List<CanonicalType> list) {
+    XhtmlNode ret = new XhtmlNode(NodeType.Element, "div");
+    ret.tx("This primitive type may be present, or absent, or replaced by one of the following extensions: ");
+    var ul = ret.ul();
+    for (CanonicalType ct : list) {
+      CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class,  ct.getValue());
+      genCT(ul.li(), ct.getValue(), cr);      
+    }
+    return ret;
+  }
+
+  private StandardsStatus determineStandardsStatus(StructureDefinition sd, ElementDefinition ed) {
+    if (ed != null && ed.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
+      return StandardsStatus.fromCode(ed.getExtensionString(ToolingExtensions.EXT_STANDARDS_STATUS));
+    }
+    while (sd != null) {
+      if (sd.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
+        return ToolingExtensions.getStandardsStatus(sd);
+      }
+      sd = context.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    }
+    return null;
+  }
+
+  private boolean hasChoices(List<TypeRefComponent> types) {
+    for (TypeRefComponent type : types) {
+      if (type.getProfile().size() > 1 || type.getTargetProfile().size() > 1) {
+        return true;
+      }
+    }
+    return types.size() > 1;
+  }
+
+  private String sliceOrderString(ElementDefinitionSlicingComponent slicing) {
+    if (slicing.getOrdered())
+      return "ordered";
+    else
+      return "unordered";
+  }
+  
+  private void generateSlicing(XhtmlNode tbl, StructureDefinition profile, ElementDefinition ed, ElementDefinitionSlicingComponent slicing, ElementDefinition compare, int mode) throws IOException {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    
+    x.codeWithText("This element introduces a set of slices on ", ed.getPath(), ". The slices are ");
+    String newOrdered = sliceOrderString(slicing);
+    String oldOrdered = (compare==null || !compare.hasSlicing()) ? null : sliceOrderString(compare.getSlicing());
+    compareString(x, newOrdered, slicing.getOrderedElement(), null, null, null, oldOrdered, null, mode);
+    x.tx(" and ");
+    compareString(x, slicing.hasRules() ? slicing.getRules().getDisplay() : null, slicing.getRulesElement(), null, "rules", slicing, compare!=null && compare.hasSlicing() && compare.getSlicing().hasRules() ? compare.getSlicing().getRules().getDisplay() : null, null, mode);
+    
+    if (slicing.hasDiscriminator()) {
+      x.tx(", and can be differentiated using the following discriminators: ");
+      StatusList<DiscriminatorWithStatus> list = new StatusList<>();
+      for (ElementDefinitionSlicingDiscriminatorComponent d : slicing.getDiscriminator()) {
+        list.add(new DiscriminatorWithStatus(d));
+      }
+      if (compare != null) {      
+        for (ElementDefinitionSlicingDiscriminatorComponent d : slicing.getDiscriminator()) {
+          list.merge(new DiscriminatorWithStatus(d));
+        }
+      }
+      x.tx(", and can be differentiated using the following discriminators: ");
+      var ul = x.ul();
+      for (DiscriminatorWithStatus rc : list) {
+        rc.render(x.li());
+      }
+    } else {
+      x.tx(", and defines no discriminators to differentiate the slices");
+    }
+    tableRow(tbl, "Slicing", "profiling.html#slicing", x);
+  }
+
+  private XhtmlNode tableRow(XhtmlNode x, String name, String defRef) throws IOException {
+    var tr = x.tr();
+    addFirstCell(name, defRef, tr);
+    return tr.td();
+  }
+  
+
+  private void tableRow(XhtmlNode x, String name, String defRef, XhtmlNode possibleTd) throws IOException {
+    if (possibleTd != null && !possibleTd.isEmpty()) {
+      var tr = x.tr();
+      addFirstCell(name, defRef, tr);
+      tr.td().copyAllContent(possibleTd);
+    }
+  }
+
+  private void tableRow(XhtmlNode x, String name, String defRef, String text) throws IOException {
+    if (!Utilities.noString(text)) {
+      var tr = x.tr();
+      addFirstCell(name, defRef, tr);
+      tr.td().tx(text);
+    }
+  }
+
+  private void addFirstCell(String name, String defRef, XhtmlNode tr) {
+    var td = tr.td();
+    if (name.length() <= 16) {
+     td.style("white-space: nowrap");
+    }
+    if (defRef == null) {
+      td.tx(name);
+    } else if (Utilities.isAbsoluteUrl(defRef)) {
+      td.ah(defRef).tx(name);
+    } else {
+      td.ah(corePath+defRef).tx(name);
+    }
+  }
+
+  private String head(String path) {
+    if (path.contains("."))
+      return path.substring(0, path.indexOf("."));
+    else
+      return path;
+  }
+  private String nottail(String path) {
+    if (path.contains("."))
+      return path.substring(0, path.lastIndexOf("."));
+    else
+      return path;
+  }
+
+  private XhtmlNode businessIdWarning(String resource, String name) {
+    if (name.equals("identifier")) {
+      XhtmlNode ret = new XhtmlNode(NodeType.Element, "div");
+      ret.tx("This is a business identifier, not a resource identifier (see ");
+      ret.ah(corePath + "resource.html#identifiers").tx("discussion");
+      ret.tx(")");
+      return ret;
+    } 
+    if (name.equals("version")) {// && !resource.equals("Device"))
+      XhtmlNode ret = new XhtmlNode(NodeType.Element, "div");
+      ret.tx("This is a business versionId, not a resource version id (see ");
+      ret.ah(corePath + "resource.html#versions").tx("discussion");
+      ret.tx(")");
+      return ret;
+    }
+    return null;
+  }
+
+  private XhtmlNode describeCardinality(ElementDefinition d, ElementDefinition compare, int mode) {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    if (compare==null || mode==GEN_MODE_DIFF) {
+      if (!d.hasMax() && !d.hasMin())
+        return null;
+      else if (d.getMax() == null) {
+        VersionComparisonAnnotation.render(d.getMinElement(), x).tx(toStr(d.getMin()));
+        x.tx("..?");
+      } else {
+        VersionComparisonAnnotation.render(d.getMinElement(), x).tx(toStr(d.getMin()));
+        x.tx( "..");
+        VersionComparisonAnnotation.render(d.getMaxElement(), x).tx( d.getMax());
+      }
+    } else {
+      if (!(mode==GEN_MODE_DIFF && (d.getMin()==compare.getMin() || d.getMin()==0))) {
+        compareString(x, toStr(d.getMin()), d.getMinElement(), null, "min", d, toStr(compare.getMin()), null, mode);
+      }
+      x.tx("..");
+      if (!(mode==GEN_MODE_DIFF && (d.getMax().equals(compare.getMax()) || "1".equals(d.getMax())))) {
+        compareString(x, d.getMax(), d.getMaxElement(), null, "max", d, compare.getMax(), null, mode);
+      }
+    }
+    XhtmlNode t = compareSimpleTypeLists(d.getCondition(), compare == null ? null : compare.getCondition(), mode);
+    if (t != null) {
+      x.br();
+      x.tx("This element is affected by the following invariants: "); 
+      x.copyAllContent(t);
+    }    
+    return x;
+  }
+  
+  private boolean hasMustSupportTypes(List<TypeRefComponent> types) {
+    for (TypeRefComponent tr : types) {
+      if (isMustSupport(tr)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private XhtmlNode describeTypes(List<TypeRefComponent> types, boolean mustSupportOnly, ElementDefinition compare, int mode, ElementDefinition value, ElementDefinition compareValue, StructureDefinition sd) throws FHIRException {
+    if (types.isEmpty())
+      return null;
+
+    List<TypeRefComponent> compareTypes = compare==null ? new ArrayList<>() : compare.getType();
+    XhtmlNode ret = new XhtmlNode(NodeType.Element, "div");
+    if ((!mustSupportOnly && types.size() == 1 && compareTypes.size() <=1) || (mustSupportOnly && mustSupportCount(types) == 1)) {
+      if (!mustSupportOnly || isMustSupport(types.get(0))) {
+        describeType(ret, types.get(0), mustSupportOnly, compareTypes.size()==0 ? null : compareTypes.get(0), mode, sd);
+      }
+    } else {
+      boolean first = true;
+      ret.tx("Choice of: ");
+      Map<String,TypeRefComponent> map = new HashMap<String, TypeRefComponent>();
+      for (TypeRefComponent t : compareTypes) {
+        map.put(t.getCode(), t);
+      }
+      for (TypeRefComponent t : types) {
+        TypeRefComponent compareType = map.get(t.getCode());
+        if (compareType!=null)
+          map.remove(t.getCode());
+        if (!mustSupportOnly || isMustSupport(t)) {
+          if (first) {
+            first = false;
+          } else {
+            ret.tx(", ");
+          }
+          describeType(ret, t, mustSupportOnly, compareType, mode, sd);
+        }
+      }
+      for (TypeRefComponent t : map.values()) {
+        ret.tx(", ");
+        describeType(removed(ret), t, mustSupportOnly, null, mode, sd);
+      }
+    }
+    if (value != null) {
+      XhtmlNode xt = processSecondary(mode, value, compareValue, mode, sd);
+      if (xt != null) {
+        ret.copyAllContent(xt);
+      }    
+    }
+    return ret;
+  }
+  
+  private XhtmlNode processSecondary(int mode, ElementDefinition value, ElementDefinition compareValue, int compMode, StructureDefinition sd) throws FHIRException {
+    switch (mode) {
+    case 1:
+      return null;
+    case 2:
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+      x.tx(" (Complex Extension)");
+      return x;
+    case 3:
+      x = new XhtmlNode(NodeType.Element, "div");
+      x.tx(" (Extension Type: ");
+      x.copyAllContent(describeTypes(value.getType(), false, compareValue, compMode, null, null, sd));
+      x.tx(")");
+      return x;
+    default:
+      return null;
+    }
+  }
+
+
+  private int mustSupportCount(List<TypeRefComponent> types) {
+    int c = 0;
+    for (TypeRefComponent tr : types) {
+      if (isMustSupport(tr)) {
+        c++;
+      }
+    }
+    return c;
+  }
+
+  
+  private void describeType(XhtmlNode x, TypeRefComponent t, boolean mustSupportOnly, TypeRefComponent compare, int mode, StructureDefinition sd) throws FHIRException {
+    if (t.getWorkingCode() == null) {
+      return;
+    }
+    if (t.getWorkingCode().startsWith("=")) {
+      return;
+    }
+
+    boolean ts = false;
+    if (t.getWorkingCode().startsWith("xs:")) {
+      ts = compareString(x, t.getWorkingCode(), t.getCodeElement(), null, "code", t, compare==null ? null : compare.getWorkingCode(), null, mode);
+    } else {
+      ts = compareString(x, t.getWorkingCode(), t.getCodeElement(), getTypeLink(t, sd), "code", t, compare==null ? null : compare.getWorkingCode(), compare==null ? null : getTypeLink(compare, sd), mode);
+    }
+    
+    if ((!mustSupportOnly && (t.hasProfile() || (compare!=null && compare.hasProfile()))) || isMustSupport(t.getProfile())) {
+      StatusList<ResolvedCanonical> profiles = analyseProfiles(t.getProfile(), compare == null ? null : compare.getProfile(), mustSupportOnly, mode);      
+      if (profiles.size() > 0) {
+        if (!ts) {
+          getTypeLink(unchanged(x), t, sd);
+          ts = true;
+        }
+        x.tx("(");
+        boolean first = true;
+        for (ResolvedCanonical rc : profiles) {
+          if (first) first = false; else x.tx(", ");
+          rc.render(x);
+        }
+        x.tx(")");
+      }
+    }
+    
+    if ((!mustSupportOnly && (t.hasTargetProfile() || (compare!=null && compare.hasTargetProfile()))) || isMustSupport(t.getTargetProfile())) {
+      List<ResolvedCanonical> profiles = analyseProfiles(t.getTargetProfile(), compare == null ? null : compare.getTargetProfile(), mustSupportOnly, mode);      
+      if (profiles.size() > 0) {
+        if (!ts) {
+          getTypeLink(unchanged(x), t, sd);
+        }
+        x.tx("("); // todo: double use of "(" is problematic
+        boolean first = true;
+        for (ResolvedCanonical rc : profiles) {
+          if (first) first = false; else x.tx(", ");
+          rc.render(x);
+        }
+        x.tx(")");
+      }
+
+      if (!t.getAggregation().isEmpty() || (compare!=null && !compare.getAggregation().isEmpty())) {
+        
+        for (Enumeration<AggregationMode> a :t.getAggregation()) {
+          a.setUserData("render.link", corePath + "codesystem-resource-aggregation-mode.html#content");
+        }
+        if (compare!=null) {
+          for (Enumeration<AggregationMode> a : compare.getAggregation()) {
+            a.setUserData("render.link", corePath + "codesystem-resource-aggregation-mode.html#content");
+          }
+        }
+        var xt = compareSimpleTypeLists(t.getAggregation(), compare == null ? null : compare.getAggregation(), mode);
+        if (xt != null) {
+          x.copyAllContent(xt);
+        }
+      }
+    }
+  }
+
+  private StatusList<ResolvedCanonical> analyseProfiles(List<CanonicalType> newProfiles, List<CanonicalType> oldProfiles, boolean mustSupportOnly, int mode) {
+    StatusList<ResolvedCanonical> profiles = new StatusList<ResolvedCanonical>();
+    for (CanonicalType pt : newProfiles) {
+      ResolvedCanonical rc = fetchProfile(pt, mustSupportOnly);
+      profiles.add(rc);
+    }
+    if (oldProfiles!=null && mode != GEN_MODE_DIFF) {
+      for (CanonicalType pt : oldProfiles) {
+        profiles.merge(fetchProfile(pt, mustSupportOnly));
+      }
+    }
+    return profiles;
+  }
+
+  private ResolvedCanonical fetchProfile(CanonicalType pt, boolean mustSupportOnly) {
+    if (!pt.hasValue()) {
+      return null;
+    }
+    if (!mustSupportOnly || isMustSupport(pt)) {
+      StructureDefinition p = context.getContext().fetchResource(StructureDefinition.class, pt.getValue());
+      return new ResolvedCanonical(pt.getValue(), p);
+    } else {
+      return null;
+    }
+  }
+//
+//  private String getTypeProfile(CanonicalType pt, boolean mustSupportOnly) {
+//    StringBuilder b = new StringBuilder();
+//    if (!mustSupportOnly || isMustSupport(pt)) {
+//      StructureDefinition p = context.getContext().fetchResource(StructureDefinition.class, pt.getValue());
+//      if (p == null)
+//        b.append(pt.getValue());
+//      else {
+//        String pth = p.getWebPath();
+//        b.append("<a href=\"" + Utilities.escapeXml(pth) + "\" title=\"" + pt.getValue() + "\">");
+//        b.append(p.getName());
+//        b.append("</a>");
+//      }
+//    }
+//    return b.toString();
+//  }
+
+  private void getTypeLink(XhtmlNode x, TypeRefComponent t, StructureDefinition sd) {
+    String s = context.getPkp().getLinkFor(sd.getWebPath(), t.getWorkingCode());
+    if (s != null) {
+      x.ah(s).tx(t.getWorkingCode());
+    } else {
+      x.code().tx(t.getWorkingCode());
+    }
+  }
+  
+
+  private String getTypeLink(TypeRefComponent t, StructureDefinition sd) {
+    String s = context.getPkp().getLinkFor(sd.getWebPath(), t.getWorkingCode());
+    return s;
+  }
+
+  private XhtmlNode displayBoolean(boolean value, BooleanType source, String name, Base parent, BooleanType compare, int mode) {
+    String newValue = value ? "true" : source.hasValue() ? "false" : null;
+    String oldValue = compare==null || compare.getValue()==null ? null : (compare.getValue()!=true ? null : "true");
+    return compareString(newValue, source, null, name, parent, oldValue, null, mode);
+  }
+
+
+  private XhtmlNode invariants(List<ElementDefinitionConstraintComponent> originalList, List<ElementDefinitionConstraintComponent> compareList, int mode) {
+    StatusList<InvariantWithStatus> list = new StatusList<>();
+    for (ElementDefinitionConstraintComponent v : originalList) {
+      if (!v.isEmpty()) {
+        list.add(new InvariantWithStatus(v));
+      }
+    }
+    if (compareList != null && mode != GEN_MODE_DIFF) {
+      for (ElementDefinitionConstraintComponent v : compareList) {
+        list.merge(new InvariantWithStatus(v));
+      }
+    }
+    if (list.size() == 0) {
+      return null;
+    }
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    boolean first = true;
+    for (InvariantWithStatus t : list) {
+      if (first) first = false; else x.br();
+      t.render(x);
+    }
+    return x;
+  }
+
+  private XhtmlNode describeBinding(StructureDefinition sd, ElementDefinition d, String path, ElementDefinition compare, int mode) throws FHIRException, IOException {
+    if (!d.hasBinding())
+      return null;
+    else {
+      ElementDefinitionBindingComponent binding = d.getBinding();
+      ElementDefinitionBindingComponent compBinding = compare == null ? null : compare.getBinding();
+      XhtmlNode bindingDesc = null;
+      if (binding.hasDescription()) {
+        StringType newBinding = PublicationHacker.fixBindingDescriptions(context.getContext(), binding.getDescriptionElement());
+        if (mode == GEN_MODE_SNAP || mode == GEN_MODE_MS) {
+          bindingDesc = new XhtmlNode(NodeType.Element, "div");
+          bindingDesc.add(new XhtmlParser().parseFragment(hostMd.processMarkdown("Binding.description", newBinding)));
+        } else {
+          StringType oldBinding = compBinding != null && compBinding.hasDescription() ? PublicationHacker.fixBindingDescriptions(context.getContext(), compBinding.getDescriptionElement()) : null;
+          bindingDesc = compareMarkdown("Binding.description", newBinding, oldBinding, mode);
+        }
+      }
+      if (!binding.hasValueSet())
+        return bindingDesc;
+      
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+      var nsp = x.span();
+      renderBinding(nsp, binding, path, sd);      
+      if (compBinding!=null ) {
+        var osp = x.span();
+        renderBinding(osp, compBinding, path, sd);
+        if (osp.allText().equals(nsp.allText())) {
+          nsp.style(unchangedStyle());
+          x.remove(osp);
+        } else {
+          osp.style(removedStyle());
+        }
+      }
+      if (bindingDesc != null) {
+        if (isSimpleContent(bindingDesc)) {
+          x.tx(": ");
+          x.copyAllContent(bindingDesc.getChildNodes().get(0));
+        } else {
+          x.br();
+          x.copyAllContent(bindingDesc);
+        }
+      }
+
+      AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, sd, d.getPath(), context, hostMd, this);
+
+      if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) {
+        abr.seeMaxBinding(ToolingExtensions.getExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), compBinding==null ? null : ToolingExtensions.getExtension(compBinding, ToolingExtensions.EXT_MAX_VALUESET), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS);
+      }
+      if (binding.hasExtension(ToolingExtensions.EXT_MIN_VALUESET)) {
+        abr.seeMinBinding(ToolingExtensions.getExtension(binding, ToolingExtensions.EXT_MIN_VALUESET), compBinding==null ? null : ToolingExtensions.getExtension(compBinding, ToolingExtensions.EXT_MIN_VALUESET), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS);
+      }
+      if (binding.hasExtension(ToolingExtensions.EXT_BINDING_ADDITIONAL)) {
+        abr.seeAdditionalBindings(binding.getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL), compBinding==null ? null : compBinding.getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS);
+      }
+
+      if (abr.hasBindings()) {
+        var tbl = x.table("grid");
+        abr.render(tbl.getChildNodes(), true);
+      }
+      return x;
+    }
+  }
+
+
+  private boolean isSimpleContent(XhtmlNode bindingDesc) {
+    return bindingDesc.getChildNodes().size() == 1 && bindingDesc.getChildNodes().get(0).isPara();
+  }
+
+  private void renderBinding(XhtmlNode span, ElementDefinitionBindingComponent binding, String path, StructureDefinition sd) {
+    BindingResolution br = context.getPkp().resolveBinding(sd, binding, path);
+    span.tx(conf(binding));
+    if (br.url == null) {
+      span.code().tx(br.display);
+    } else {
+      span.ah(br.url).tx(br.display);
+    }
+    span.tx(confTail(binding));
+
+  }
+
+  private String stripPara(String s) {
+    if (s.startsWith("<p>")) {
+      s = s.substring(3);
+    }
+    if (s.trim().endsWith("</p>")) {
+      s = s.substring(0, s.lastIndexOf("</p>")-1) + s.substring(s.lastIndexOf("</p>") +4);
+    }
+    return s;
+  }
+
+  private String confTail(ElementDefinitionBindingComponent def) {
+    if (def.getStrength() == BindingStrength.EXTENSIBLE)
+      return "; other codes may be used where these codes are not suitable";
+    else
+      return "";
+  }
+
+  private String conf(ElementDefinitionBindingComponent def) {
+    if (def.getStrength() == null) {
+      return "For codes, see ";
+    }
+    switch (def.getStrength()) {
+    case EXAMPLE:
+      return "For example codes, see ";
+    case PREFERRED:
+      return "The codes SHOULD be taken from ";
+    case EXTENSIBLE:
+      return "The codes SHALL be taken from ";
+    case REQUIRED:
+      return "The codes SHALL be taken from ";
+    default:
+      return "?sd-conf?";
+    }
+  }
+
+  private String encodeValues(List<ElementDefinitionExampleComponent> examples) throws FHIRException, IOException {
+    StringBuilder b = new StringBuilder();
+    boolean first = false;
+    for (ElementDefinitionExampleComponent ex : examples) {
+      if (first)
+        first = false;
+      else
+        b.append("<br/>");
+      b.append("<b>" + Utilities.escapeXml(ex.getLabel()) + "</b>:" + encodeValue(ex.getValue()) + "\r\n");
+    }
+    return b.toString();
+
+  }
+
+  private XhtmlNode encodeValue(DataType value, String name, Base parent, DataType compare, int mode) throws FHIRException, IOException {
+    String oldValue = encodeValue(compare);
+    String newValue = encodeValue(value);
+    return compareString(newValue, value, null, name, parent, oldValue, null, mode);
+  }
+
+  private String encodeValue(DataType value) throws FHIRException, IOException {
+    if (value == null || value.isEmpty())
+      return null;
+    if (value instanceof PrimitiveType)
+      return Utilities.escapeXml(((PrimitiveType) value).asStringValue());
+
+    ByteArrayOutputStream bs = new ByteArrayOutputStream();
+    XmlParser parser = new XmlParser();
+    parser.setOutputStyle(OutputStyle.PRETTY);
+    parser.compose(bs, null, value);
+    String[] lines = bs.toString().split("\\r?\\n");
+    StringBuilder b = new StringBuilder();
+    for (String s : lines) {
+      if (!Utilities.noString(s) && !s.startsWith("<?")) { // eliminate the xml header
+        b.append(Utilities.escapeXml(s).replace(" ", "&nbsp;") + "<br/>");
+      }
+    }
+    return b.toString();
+
+  }
+
+  private XhtmlNode getMapping(StructureDefinition profile, ElementDefinition d, String uri, ElementDefinition compare, int mode) {
+    String id = null;
+    for (StructureDefinitionMappingComponent m : profile.getMapping()) {
+      if (m.hasUri() && m.getUri().equals(uri))
+        id = m.getIdentity();
+    }
+    if (id == null)
+      return null;
+    String newMap = null;
+    for (ElementDefinitionMappingComponent m : d.getMapping()) {
+      if (m.getIdentity().equals(id)) {
+        newMap = m.getMap();
+        break;
+      }
+    }
+    if (compare==null)
+      return new XhtmlNode(NodeType.Element, "div").tx(newMap);
+    String oldMap = null;
+    for (ElementDefinitionMappingComponent m : compare.getMapping()) {
+      if (m.getIdentity().equals(id)) {
+        oldMap = m.getMap();
+        break;
+      }
+    }
+
+    return compareString(Utilities.escapeXml(newMap), null, null, "mapping", d, Utilities.escapeXml(oldMap), null, mode);
+  }
+
+  private XhtmlNode compareSimpleTypeLists(List<? extends PrimitiveType> original, List<? extends PrimitiveType> compare, int mode) {
+    return compareSimpleTypeLists(original, compare, mode, ", ");
+  }
+
+ 
+  private XhtmlNode compareSimpleTypeLists(List<? extends PrimitiveType> originalList, List<? extends PrimitiveType> compareList, int mode, String separator) {
+    StatusList<ValueWithStatus> list = new StatusList<>();
+    for (PrimitiveType v : originalList) {
+      if (!v.isEmpty()) {
+        list.add(new ValueWithStatus(v));
+      }
+    }
+    if (compareList != null && mode != GEN_MODE_DIFF) {
+      for (PrimitiveType v : compareList) {
+        list.merge(new ValueWithStatus(v));
+      }      
+    }
+    if (list.size() == 0) {
+      return null;
+    }
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    boolean first = true;
+    for (ValueWithStatus t : list) {
+      if (first) first = false; else x.tx(separator);
+      t.render(x);
+    }
+    return x;
+  }
+  
+
+  private String summarise(CodeableConcept cc) throws FHIRException {
+    if (cc.getCoding().size() == 1 && cc.getText() == null) {
+      return summarise(cc.getCoding().get(0));
+    } else if (cc.hasText()) {
+      return "\"" + cc.getText() + "\"";
+    } else if (cc.getCoding().size() > 0) {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (Coding c : cc.getCoding()) {
+        b.append(summarise(c));
+      }
+      return b.toString();
+    } else {
+      throw new FHIRException("Error describing concept - not done yet (no codings, no text)");
+    }
+  }
+
+  private String summarise(Coding coding) throws FHIRException {
+    if ("http://snomed.info/sct".equals(coding.getSystem()))
+      return "" + translate("sd.summary", "SNOMED CT code") + " " + coding.getCode() + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")");
+    if ("http://loinc.org".equals(coding.getSystem()))
+      return "" + translate("sd.summary", "LOINC code") + " " + coding.getCode() + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")");
+    if ("http://unitsofmeasure.org/".equals(coding.getSystem()))
+      return " (" + translate("sd.summary", "UCUM") + ": " + coding.getCode() + ")";
+    CodeSystem cs = context.getContext().fetchCodeSystem(coding.getSystem());
+    if (cs == null)
+      return "<span title=\"" + coding.getSystem() + "\">" + coding.getCode() + "</a>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")");
+    else
+      return "<a title=\"" + cs.present() + "\" href=\"" + Utilities.escapeXml(cs.getWebPath()) + "#" + cs.getId() + "-" + coding.getCode() + "\">" + coding.getCode() + "</a>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")");
+  }
 
 }
