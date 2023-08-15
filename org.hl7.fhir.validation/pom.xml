@@ -225,7 +225,10 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson_version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
