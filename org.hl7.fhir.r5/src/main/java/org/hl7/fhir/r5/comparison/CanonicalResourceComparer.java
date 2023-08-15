@@ -232,6 +232,10 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       }
       return b.toString();
     }
+
+    public boolean noUpdates() {
+      return !(changedMetadata.noteable() || changedDefinitions.noteable() || !changedContent.noteable() || !changedContentInterpretation.noteable());
+    }
   }
 
   public CanonicalResourceComparer(ComparisonSession session) {

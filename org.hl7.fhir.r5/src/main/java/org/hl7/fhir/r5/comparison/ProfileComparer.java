@@ -173,7 +173,7 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
       res.combined = sm;
       ln = new DefinitionNavigator(session.getContextLeft(), left, true);
       rn = new DefinitionNavigator(session.getContextRight(), right, true);
-      ch = compareDiff(ln.path(), null, ln, rn) || ch;
+      ch = compareDiff(ln.path(), null, ln, rn, res) || ch;
       // we don't preserve the differences - we only want the annotations
     }
     res.updateDefinitionsState(ch);
@@ -389,7 +389,7 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
   }
 
 
-  private boolean compareDiff(String path, String sliceName, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, FHIRFormatError, IOException {
+  private boolean compareDiff(String path, String sliceName, DefinitionNavigator left, DefinitionNavigator right, ProfileComparison res) throws DefinitionException, FHIRFormatError, IOException {
     assert(path != null);  
     assert(left != null);
     assert(right != null);
@@ -414,7 +414,7 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
     def = comparePrimitivesWithTracking("max", left.current().getMaxElement(), right.current().getMaxElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
 
     // add the children
-    def = compareDiffChildren(path, left, right) || def;
+    def = compareDiffChildren(path, left, right, right.current(), res) || def;
 //
 //    // now process the slices
 //    if (left.current().hasSlicing() || right.current().hasSlicing()) {
@@ -478,31 +478,26 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
   }
 
 
-  private boolean compareDiffChildren(String path, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, IOException, FHIRFormatError {
+  private boolean compareDiffChildren(String path, DefinitionNavigator left, DefinitionNavigator right, Base parent, ProfileComparison res) throws DefinitionException, IOException, FHIRFormatError {
     boolean def = false;
     
     List<DefinitionNavigator> lc = left.children();
     List<DefinitionNavigator> rc = right.children();
-    // it's possible that one of these profiles walks into a data type and the other doesn't
-    // if it does, we have to load the children for that data into the profile that doesn't 
-    // walk into it
-    if (lc.isEmpty() && !rc.isEmpty() && right.current().getType().size() == 1 && left.hasTypeChildren(right.current().getType().get(0), left.getStructure()))
-      lc = left.childrenFromType(right.current().getType().get(0), right.getStructure());
-    if (rc.isEmpty() && !lc.isEmpty() && left.current().getType().size() == 1 && right.hasTypeChildren(left.current().getType().get(0), right.getStructure()))
-      rc = right.childrenFromType(left.current().getType().get(0), left.getStructure());
-    
+
     List<DefinitionNavigator> matchR = new ArrayList<>();
     for (DefinitionNavigator l : lc) {
       DefinitionNavigator r = findInList(rc, l);
       if (r == null) {
-        // todo
+        VersionComparisonAnnotation.markDeleted(parent, session.getForVersion(), "element", l.current());
+        res.updateContentState(true);
       } else {
-        def = compareDiff(l.path(), null, l, r) || def;
+        def = compareDiff(l.path(), null, l, r, res) || def;
       }
     }
     for (DefinitionNavigator r : rc) {
       if (!matchR.contains(r)) {
-        // todo
+        VersionComparisonAnnotation.markAdded(r.current(), session.getForVersion());
+        res.updateContentState(true);
       }
     }
     return def;
