@@ -79,6 +79,7 @@ public class RenderingContext {
     SUMMARY, // 5 cells: tree/name | flags | cardinality | type | details
     BINDINGS, // tree/name + column for each kind of binding found, cells are lists of bindings 
     OBLIGATIONS, // tree/name + column for each actor that has obligations
+    DATA_DICT,  // detailed element view 
   }
 
   public enum ExampleScenarioRendererMode {
@@ -131,6 +132,7 @@ public class RenderingContext {
      */
     LINKS
   }
+
 
   public enum KnownLinkType {
     SELF,  // absolute link to where the content is to be found (only used in a few circumstances when making external references to tools)

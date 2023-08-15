@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent;
@@ -57,6 +58,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.ibm.icu.impl.locale.StringTokenIterator;
 
 public class ValueSetRenderer extends TerminologyRenderer {
 
@@ -1175,50 +1177,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
             hasExtensions = true;
           addMapHeaders(addTableHeaderRowStandard(t, false, true, hasDefinition, hasComments, false, false, null, langs, designations, doDesignations), maps);
           for (ConceptReferenceComponent c : inc.getConcept()) {
-            XhtmlNode tr = t.tr();
-            XhtmlNode td = tr.td();
-            ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
-            addCodeToTable(false, inc.getSystem(), c.getCode(), c.hasDisplay()? c.getDisplay() : cc != null ? cc.getDisplay() : "", td);
-
-            td = tr.td();
-            if (!Utilities.noString(c.getDisplay()))
-              td.addText(c.getDisplay());
-            else if (cc != null && !Utilities.noString(cc.getDisplay()))
-              td.addText(cc.getDisplay());
-
-            if (hasDefinition) {
-              td = tr.td();
-              if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
-                smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
-              } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
-                smartAddText(td, cc.getDefinition());
-              }
-            }
-            if (hasComments) {
-              td = tr.td();
-              if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
-                smartAddText(td, "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
-              }
-            }
-            if (doDesignations) {
-              addDesignationsToRow(c, designations, tr);
-              addLangaugesToRow(c, langs, tr);
-            }
-            for (UsedConceptMap m : maps) {
-              td = tr.td();
-              List<TargetElementComponentWrapper> mappings = findMappingsForCode(c.getCode(), m.getMap());
-              boolean first = true;
-              for (TargetElementComponentWrapper mapping : mappings) {
-                if (!first)
-                    td.br();
-                first = false;
-                XhtmlNode span = td.span(null, mapping.comp.getRelationship().toString());
-                span.addText(getCharForRelationship(mapping.comp));
-                addRefToCode(td, mapping.group.getTarget(), m.getLink(), mapping.comp.getCode()); 
-                if (!Utilities.noString(mapping.comp.getComment()))
-                  td.i().tx("("+mapping.comp.getComment()+")");
-              }
-            }
+            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, c);
+          }
+          for (Base b : VersionComparisonAnnotation.getDeleted(inc, "concept" )) {
+            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, (ConceptReferenceComponent) b);            
           }
         }
         if (inc.getFilter().size() > 0) {
@@ -1304,6 +1266,58 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
     return hasExtensions;
+  }
+
+  private void renderConcept(ConceptSetComponent inc, List<String> langs, boolean doDesignations,
+      List<UsedConceptMap> maps, Map<String, String> designations, Map<String, ConceptDefinitionComponent> definitions,
+      XhtmlNode t, boolean hasComments, boolean hasDefinition, ConceptReferenceComponent c) {
+    XhtmlNode tr = t.tr();
+    XhtmlNode td = VersionComparisonAnnotation.renderRow(c, t, tr);
+    ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
+    addCodeToTable(false, inc.getSystem(), c.getCode(), c.hasDisplay()? c.getDisplay() : cc != null ? cc.getDisplay() : "", td);
+
+    td = tr.td();
+    if (!Utilities.noString(c.getDisplay()))
+      VersionComparisonAnnotation.render(c.getDisplayElement(), td).addText(c.getDisplay());
+    else if (VersionComparisonAnnotation.hasDeleted(c, "display")) {
+      StringType d = (StringType) VersionComparisonAnnotation.getDeletedItem(c, "display"); 
+      VersionComparisonAnnotation.render(d, td).addText(d.primitiveValue());
+    } else if (cc != null && !Utilities.noString(cc.getDisplay()))
+      td.style("color: #cccccc").addText(cc.getDisplay());
+
+    if (hasDefinition) {
+      td = tr.td();
+      if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
+        smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
+      } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
+        smartAddText(td, cc.getDefinition());
+      }
+    }
+    if (hasComments) {
+      td = tr.td();
+      if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
+        smartAddText(td, "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
+      }
+    }
+    if (doDesignations) {
+      addDesignationsToRow(c, designations, tr);
+      addLangaugesToRow(c, langs, tr);
+    }
+    for (UsedConceptMap m : maps) {
+      td = tr.td();
+      List<TargetElementComponentWrapper> mappings = findMappingsForCode(c.getCode(), m.getMap());
+      boolean first = true;
+      for (TargetElementComponentWrapper mapping : mappings) {
+        if (!first)
+            td.br();
+        first = false;
+        XhtmlNode span = td.span(null, mapping.comp.getRelationship().toString());
+        span.addText(getCharForRelationship(mapping.comp));
+        addRefToCode(td, mapping.group.getTarget(), m.getLink(), mapping.comp.getCode()); 
+        if (!Utilities.noString(mapping.comp.getComment()))
+          td.i().tx("("+mapping.comp.getComment()+")");
+      }
+    }
   }
 
   public void addDesignationsToRow(ConceptReferenceComponent c, Map<String, String> designations, XhtmlNode tr) {

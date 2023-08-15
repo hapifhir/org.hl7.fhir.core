@@ -138,8 +138,8 @@ public class DefinitionNavigator {
         if (nameMap.containsKey(path)) {
           DefinitionNavigator master = nameMap.get(path);
           ElementDefinition cm = master.current();
-          if (!cm.hasSlicing()) 
-            throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
+//          if (!cm.hasSlicing()) 
+//            throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
           if (master.slices == null) 
             master.slices = new ArrayList<DefinitionNavigator>();
           master.slices.add(dn);
