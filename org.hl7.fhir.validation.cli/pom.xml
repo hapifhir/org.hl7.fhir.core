@@ -235,6 +235,20 @@
         </dependency>
 
         <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio</artifactId>
+            <optional>false</optional>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio-jvm</artifactId>
+            <optional>false</optional>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>ST4</artifactId>
             <version>4.1</version>

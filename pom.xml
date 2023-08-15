@@ -26,7 +26,7 @@
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
         <maven_surefire_version>3.0.0-M5</maven_surefire_version>
         <maven_clean_version>3.1.0</maven_clean_version>
-        <okhttp.version>4.10.0</okhttp.version>
+        <okhttp.version>4.11.0</okhttp.version>
         <jacoco_version>0.8.9</jacoco_version>
         <lombok_version>1.18.22</lombok_version>
         <byte_buddy_version>1.12.14</byte_buddy_version>
@@ -165,11 +165,11 @@
                 <version>${saxon_he_version}</version>
             </dependency>
 
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.30</version>
-</dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>8.0.30</version>
+            </dependency>
 
             <!-- Apache POI -->
             <dependency>
@@ -206,14 +206,37 @@
                         <groupId>org.jetbrains</groupId>
                         <artifactId>annotations</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>com.squareup.okio</groupId>
+                        <artifactId>okio</artifactId>
+                    </exclusion>
+                    <!-- Excluding brotli impl until https://github.com/square/okhttp/issues/7738 is resolved -->
+                    <exclusion>
+                        <groupId>com.squareup.okhttp3</groupId>
+                        <artifactId>okhttp-brotli</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.squareup.okio</groupId>
+                        <artifactId>okio-jvm</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
 
-            <!-- Included because okttp3 used a vulnerable version -->
+            <!-- Included because okttp3 used vulnerable versions -->
             <dependency>
                 <groupId>org.jetbrains</groupId>
                 <artifactId>annotations</artifactId>
                 <version>16.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okio</groupId>
+                <artifactId>okio</artifactId>
+                <version>3.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okio</groupId>
+                <artifactId>okio-jvm</artifactId>
+                <version>3.4.0</version>
             </dependency>
 
             <dependency>

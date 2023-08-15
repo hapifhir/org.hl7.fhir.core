@@ -173,6 +173,18 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio-jvm</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Lombok Until I get Around to Rewriting Everything in Kotlin -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -208,11 +220,7 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson_version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf</artifactId>
-            <version>3.1.1.RELEASE</version>
-        </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
