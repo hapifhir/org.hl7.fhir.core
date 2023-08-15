@@ -54,7 +54,8 @@ public abstract class XhtmlFluent {
   }
   
   public XhtmlNode td() {
-    return addTag("td");
+    XhtmlNode x = addTag("td");
+    return x;
   }
   
   public XhtmlNode td(String clss) {
