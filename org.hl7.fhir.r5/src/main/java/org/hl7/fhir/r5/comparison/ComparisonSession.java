@@ -10,7 +10,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.comparison.CapabilityStatementComparer.CapabilityStatementComparison;
 import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
-import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
+import org.hl7.fhir.r5.comparison.StructureDefinitionComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
@@ -94,7 +94,7 @@ public class ComparisonSession {
           compares.put(key, csc);
           return csc;
         } else if (left instanceof StructureDefinition && right instanceof StructureDefinition) {
-          ProfileComparer cs = new ProfileComparer(this, new ProfileUtilities(contextLeft, null, pkpLeft), new ProfileUtilities(contextRight, null, pkpRight));
+          StructureDefinitionComparer cs = new StructureDefinitionComparer(this, new ProfileUtilities(contextLeft, null, pkpLeft), new ProfileUtilities(contextRight, null, pkpRight));
           ProfileComparison csc = cs.compare((StructureDefinition) left, (StructureDefinition) right);
           compares.put(key, csc);
           return csc;

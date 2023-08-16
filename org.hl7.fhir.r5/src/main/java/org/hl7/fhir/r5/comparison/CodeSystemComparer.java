@@ -132,7 +132,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
 
     List<String> chMetadata = new ArrayList<>();
-    boolean ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata);
+    boolean ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata, right, session.getForVersion());
     if (comparePrimitives("versionNeeded", left.getVersionNeededElement(), right.getVersionNeededElement(), res.getMetadata(), IssueSeverity.INFORMATION, res)) {
       ch = true;
       chMetadata.add("versionNeeded");

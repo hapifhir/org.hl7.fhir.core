@@ -38,6 +38,7 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Resource;
@@ -48,6 +49,7 @@ public class DefinitionNavigator {
   private IWorkerContext context;
   private StructureDefinition structure;
   private int index;
+  private boolean indexMatches; // 
   private List<DefinitionNavigator> children;
   private List<DefinitionNavigator> typeChildren;
   private List<DefinitionNavigator> slices;
@@ -63,7 +65,13 @@ public class DefinitionNavigator {
     this.structure = structure;
     this.index = 0;
     this.diff = diff;
-    this.path = current().getPath();
+    if (diff) {
+      this.path = structure.getType(); // fragile?
+      indexMatches = this.path.equals(list().get(0).getPath());
+    } else {
+      indexMatches = true;
+      this.path = current().getPath(); // first element
+    }
     names.add(nameTail());
   }
   
@@ -73,6 +81,7 @@ public class DefinitionNavigator {
     this.structure = structure;
     this.diff = diff;
     this.index = index;
+    this.indexMatches = true;
     if (type == null)
       for (String name : names)
         this.names.add(name+"."+nameTail());
@@ -108,7 +117,7 @@ public class DefinitionNavigator {
     }    
   }
   public ElementDefinition current() {
-   return list().get(index);      
+   return indexMatches ? list().get(index) : null;      
   }
   
   public List<DefinitionNavigator> slices() throws DefinitionException {
@@ -127,23 +136,33 @@ public class DefinitionNavigator {
 
   private void loadChildren() throws DefinitionException {
     children = new ArrayList<DefinitionNavigator>();
-    String prefix = current().getPath()+".";
+    String prefix = path+".";
     Map<String, DefinitionNavigator> nameMap = new HashMap<String, DefinitionNavigator>();
 
-    for (int i = index + 1; i < list().size(); i++) {
+    DefinitionNavigator last = null;
+    for (int i = indexMatches ? index + 1 : index; i < list().size(); i++) {
       String path = list().get(i).getPath();
-      if (path.startsWith(prefix) && !path.substring(prefix.length()).contains(".")) {
-        DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, i, this.path+"."+tail(path), names, null);
-        
-        if (nameMap.containsKey(path)) {
-          DefinitionNavigator master = nameMap.get(path);
-          ElementDefinition cm = master.current();
-//          if (!cm.hasSlicing()) 
-//            throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
-          if (master.slices == null) 
-            master.slices = new ArrayList<DefinitionNavigator>();
-          master.slices.add(dn);
-        } else {
+      if (path.startsWith(prefix)) {
+        if (!path.substring(prefix.length()).contains(".")) {
+          // immediate child
+          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, i, this.path+"."+tail(path), names, null);
+          last = dn;
+
+          if (nameMap.containsKey(path)) {
+            DefinitionNavigator master = nameMap.get(path);
+            ElementDefinition cm = master.current();
+            //          if (!cm.hasSlicing()) 
+            //            throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
+            if (master.slices == null) 
+              master.slices = new ArrayList<DefinitionNavigator>();
+            master.slices.add(dn);
+          } else {
+            nameMap.put(path, dn);
+            children.add(dn);
+          }
+        } else if (last == null || !path.startsWith(last.path)) {
+          // implied child
+          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, i, this.path+"."+tail(path), names, null);
           nameMap.put(path, dn);
           children.add(dn);
         }
@@ -220,6 +239,11 @@ public class DefinitionNavigator {
   @Override
   public String toString() {
     return current().getId();
+  }
+
+  public Base parent() {
+    // TODO Auto-generated method stub
+    return null;
   }
   
 
