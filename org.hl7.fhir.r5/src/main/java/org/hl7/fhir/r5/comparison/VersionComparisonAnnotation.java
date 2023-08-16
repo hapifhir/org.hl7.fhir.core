@@ -37,13 +37,15 @@ public class VersionComparisonAnnotation {
     this.type = type;
     this.version = version;
   }
-  
 
   public static void annotate(Base base, String version, CanonicalResourceComparison<? extends CanonicalResource> comp) {
     if (version != null) {
-      VersionComparisonAnnotation vca = new VersionComparisonAnnotation(comp.noUpdates() ? AnotationType.NoChange : AnotationType.Changed, version);
+      VersionComparisonAnnotation vca = (VersionComparisonAnnotation) base.getUserData(USER_DATA_NAME);
+      if (vca == null) {
+        vca = new VersionComparisonAnnotation(comp.noUpdates() ? AnotationType.NoChange : AnotationType.Changed, version);
+        base.setUserData(USER_DATA_NAME, vca);
+      }
       vca.comp = comp;
-      base.setUserData(USER_DATA_NAME, vca);
     }
   }
   
@@ -248,7 +250,7 @@ public class VersionComparisonAnnotation {
     }
   }
 
-  public static void renderSummary(Base base, XhtmlNode x, String version) {
+  public static void renderSummary(Base base, XhtmlNode x, String version, String... metadataFields) {
     if (base.hasUserData(USER_DATA_NAME)) {
       VersionComparisonAnnotation self = (VersionComparisonAnnotation) base.getUserData(USER_DATA_NAME);
       switch (self.type) {
@@ -258,9 +260,14 @@ public class VersionComparisonAnnotation {
         spanInner.tx(" Added");
         return;
       case Changed:
-        spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since  "+version);
-        spanInner.img("icon-change-edit.png", "icon");
-        spanInner.tx(" Changed");
+        if (self.comp.noChangeOtherThanMetadata(metadataFields)) {
+          x.span("color: #eeeeee").tx("n/c");
+          return;
+        } else {
+          spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since  "+version);
+          spanInner.img("icon-change-edit.png", "icon");
+          spanInner.tx(" Changed");
+        }
         return;
       case Deleted:
         spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since  "+version);
@@ -277,4 +284,5 @@ public class VersionComparisonAnnotation {
   }
 
 
+  
 }
