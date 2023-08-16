@@ -52,22 +52,29 @@ public class TxTesterSorters {
     }
   }
 
-  
-
   public static class OperationIssueSorter implements Comparator<OperationOutcomeIssueComponent> {
 
     @Override
     public int compare(OperationOutcomeIssueComponent o1, OperationOutcomeIssueComponent o2) {
-      if (o1.hasSeverity() && o2.hasSeverity() && o1.getSeverity() != o2.getSeverity()) {
-        return o1.getSeverity().compareTo(o2.getSeverity());
+      String s1 = o1.hasSeverity() ? o1.getSeverity().toCode() : "";
+      String s2 = o2.hasSeverity() ? o2.getSeverity().toCode() : "";
+      int ret = s1.compareTo(s2);
+      if (ret == 0) {
+        s1 = o1.hasCode() ? o1.getCode().toCode() : "";
+        s2 = o2.hasCode() ? o2.getCode().toCode() : "";
+        ret = s1.compareTo(s2);
+        if (ret == 0) {
+          s1 = o1.hasLocation() ? o1.getLocation().get(0).primitiveValue() : "";
+          s2 = o2.hasLocation() ? o2.getLocation().get(0).primitiveValue() : "";
+          ret = s1.compareTo(s2);
+          if (ret == 0) {
+            s1 = o1.getDetails().hasText() ? o1.getDetails().getText() : "";
+            s2 = o2.getDetails().hasText() ? o2.getDetails().getText() : "";
+            ret = s1.compareTo(s2);            
+          }
+        }
       }
-      if (o1.hasCode() && o2.hasCode() && o1.getCode() != o2.getCode()) {
-        return o1.getCode().compareTo(o2.getCode());
-      }
-      if (o1.getDetails().hasText() && o2.getDetails().hasText() && !o1.getDetails().getText().equals(o2.getDetails().getText())) {
-        return o1.getDetails().getText().compareTo(o2.getDetails().getText());
-      }
-      return 0;
+      return ret;
     }
   }
 
