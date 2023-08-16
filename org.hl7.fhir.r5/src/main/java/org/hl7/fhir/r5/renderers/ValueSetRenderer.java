@@ -447,17 +447,18 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion, Resource vs) {
     Multimap<String, String> versions = HashMultimap.create();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
-      if (p.getName().equals("version")) {
+      if (p.getName().startsWith("used-") || p.getName().equals("version")) {
+        String name = p.getName().equals("version") ? "system" : p.getName().substring(5);
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2 && !Utilities.noString(parts[0]))
-          versions.put(parts[0], parts[1]);
+          versions.put(name+"|"+parts[0], parts[1]);
       }
     }
     if (versions.size() > 0) {
       XhtmlNode div = null;
       XhtmlNode ul = null;
       boolean first = true;
-      for (String s : versions.keySet()) {
+      for (String s : Utilities.sorted(versions.keySet())) {
         if (versions.size() == 1 && versions.get(s).size() == 1) {
           for (String v : versions.get(s)) { // though there'll only be one
             XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
@@ -480,6 +481,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private void expRef(XhtmlNode x, String u, String v, Resource source) {
+    String t = u.substring(0, u.indexOf("|"));
+    u = u.substring(u.indexOf("|")+1);
     // TODO Auto-generated method stub
     if (u.equals("http://snomed.info/sct")) {
       String[] parts = v.split("\\/");
@@ -504,23 +507,23 @@ public class ValueSetRenderer extends TerminologyRenderer {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
-          x.ah(cr.getWebPath()).tx(cr.present()+" (no version) ("+cr.fhirType()+")");          
+          x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" (no version) ("+cr.fhirType()+")");          
         } else {
-          x.tx(describeSystem(u)+" (no version) ("+cr.fhirType()+")");
+          x.tx(t+" "+describeSystem(u)+" (no version) ("+cr.fhirType()+")");
         }
       } else {
-        x.tx(describeSystem(u)+" (no version)");
+        x.tx(t+" "+describeSystem(u)+" (no version)");
       }
     } else {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
-          x.ah(cr.getWebPath()).tx(cr.present()+" v"+v+" ("+cr.fhirType()+")");          
+          x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" v"+v+" ("+cr.fhirType()+")");          
         } else {
-          x.tx(describeSystem(u)+" v"+v+" ("+cr.fhirType()+")");
+          x.tx(t+" "+describeSystem(u)+" v"+v+" ("+cr.fhirType()+")");
         }
       } else {
-        x.tx(describeSystem(u)+" version "+v);
+        x.tx(t+" "+describeSystem(u)+" version "+v);
       }
     }
   }
