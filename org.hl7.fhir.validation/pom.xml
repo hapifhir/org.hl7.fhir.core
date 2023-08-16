@@ -173,6 +173,18 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio-jvm</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Lombok Until I get Around to Rewriting Everything in Kotlin -->
         <dependency>
             <groupId>org.projectlombok</groupId>
