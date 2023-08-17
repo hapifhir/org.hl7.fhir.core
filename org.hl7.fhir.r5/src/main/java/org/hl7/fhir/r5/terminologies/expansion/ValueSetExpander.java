@@ -663,8 +663,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
       UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
-      if (!existsInParams(exp.getParameter(), "version", u))
-        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
+      if (!existsInParams(exp.getParameter(), "used-valueset", u))
+        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-valueset").setValue(u));
     }
     for (Extension ex : vso.getValueset().getExpansion().getExtension()) {
       if (ex.getUrl().equals(ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
@@ -777,8 +777,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
     ValueSet vs = vso.getValueset();
     if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
       UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
-      if (!existsInParams(exp.getParameter(), "version", u)) {
-        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
+      if (!existsInParams(exp.getParameter(), "used-valueset", u)) {
+        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-valueset").setValue(u));
       }
     }
     for (ValueSetExpansionParameterComponent p : vso.getValueset().getExpansion().getParameter()) {
@@ -812,13 +812,14 @@ public class ValueSetExpander extends ValueSetProcessBase {
       throw failTSE("Code system " + inc.getSystem().toString() + " is incomplete");
     if (cs.hasVersion() || REPORT_VERSION_ANYWAY) {
       UriType u = new UriType(cs.getUrl() + (cs.hasVersion() ? "|"+cs.getVersion() : ""));
-      if (!existsInParams(exp.getParameter(), "version", u))
-        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
+      if (!existsInParams(exp.getParameter(), "used-codesystem", u))
+        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-codesystem").setValue(u));
       if (cs.hasUserData("supplements.installed")) {
         for (String s : cs.getUserString("supplements.installed").split("\\,")) {
           u = new UriType(s);
-          if (!existsInParams(exp.getParameter(), "version", u))
-            exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(u));
+          if (!existsInParams(exp.getParameter(), "used-supplement", u)) {
+            exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-supplement").setValue(u));
+          }
         }
       }
     }

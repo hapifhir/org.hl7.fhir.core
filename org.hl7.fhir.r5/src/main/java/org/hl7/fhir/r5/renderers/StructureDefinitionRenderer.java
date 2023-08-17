@@ -3094,7 +3094,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         List<String> anchors = makeAnchors(ec, anchorPrefix);
         String title = ec.getId();
         XhtmlNode tr = t.tr();
-        XhtmlNode sp = tr.td("structure").colspan(2).spanClss("self-link-parent");
+        XhtmlNode sp = VersionComparisonAnnotation.render(ec, tr.td("structure").colspan(2).spanClss("self-link-parent"));
         for (String s : anchors) {
           sp.an(s).tx(" ");
         }
@@ -3104,7 +3104,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (isProfiledExtension(ec)) {
           StructureDefinition extDefn = context.getContext().fetchResource(StructureDefinition.class, ec.getType().get(0).getProfile().get(0).getValue());
           if (extDefn == null) {
-            generateElementInner(t, sd, ec, 1, null, compareElement, null);
+            generateElementInner(t, sd, ec, 1, null, compareElement, null, false);
           } else {
             ElementDefinition valueDefn = getExtensionValueDefinition(extDefn);
             ElementDefinition compareValueDefn = null;
@@ -3112,18 +3112,33 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               StructureDefinition compareExtDefn = context.getContext().fetchResource(StructureDefinition.class, compareElement.getType().get(0).getProfile().get(0).getValue());
               compareValueDefn = getExtensionValueDefinition(extDefn);
             } catch (Exception except) {}
-            generateElementInner(t, sd, ec, valueDefn == null || valueDefn.prohibited() ? 2 : 3, valueDefn, compareElement, compareValueDefn);
+            generateElementInner(t, sd, ec, valueDefn == null || valueDefn.prohibited() ? 2 : 3, valueDefn, compareElement, compareValueDefn, false);
             // generateElementInner(b, extDefn, extDefn.getSnapshot().getElement().get(0), valueDefn == null ? 2 : 3, valueDefn);
           }
         } else {
-          generateElementInner(t, sd, ec, mode, null, compareElement, null);
+          generateElementInner(t, sd, ec, mode, null, compareElement, null, false);
           if (ec.hasSlicing()) {
-            generateSlicing(t, sd, ec, ec.getSlicing(), compareElement, mode);
+            generateSlicing(t, sd, ec, ec.getSlicing(), compareElement, mode, false);
           }
         }
       }
       t.tx("\r\n");
       i++;
+    }
+    for (Base b : VersionComparisonAnnotation.getDeleted(sd, "element")) {
+      ElementDefinition ec = (ElementDefinition) b;
+      String title = ec.getId();
+      XhtmlNode tr = t.tr();
+      XhtmlNode sp = VersionComparisonAnnotation.render(ec, tr.td("structure").colspan(2).spanClss("self-link-parent"));
+      sp.span("color: grey", null).tx(Integer.toString(i++));
+      sp.b().tx(". "+title);
+      
+      generateElementInner(t, sd, ec, mode, null, null, null, true);
+      if (ec.hasSlicing()) {
+        generateSlicing(t, sd, ec, ec.getSlicing(), null, mode, true);
+      }
+      
+      t.tx("\r\n");
     }
   }
 
@@ -3416,106 +3431,106 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return "color:DarkGray;text-decoration:line-through";
   }
 
-  private void generateElementInner(XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue) throws FHIRException, IOException {
+  private void generateElementInner(XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue, boolean strikethrough) throws FHIRException, IOException {
     boolean root = !d.getPath().contains(".");
     boolean slicedExtension = d.hasSliceName() && (d.getPath().endsWith(".extension") || d.getPath().endsWith(".modifierExtension"));
 //    int slicedExtensionMode = (mode == GEN_MODE_KEY) && slicedExtension ? GEN_MODE_SNAP : mode; // see ProfileUtilities.checkExtensionDoco / Task 3970
     if (d.hasSliceName()) {
-      tableRow(tbl, "SliceName", "profiling.html#slicing").tx(d.getSliceName());
+      tableRow(tbl, "SliceName", "profiling.html#slicing", strikethrough).tx(d.getSliceName());
     }
-    tableRow(tbl, "Definition", null, compareMarkdown(sd.getName(), d.getDefinitionElement(), (compare==null) || slicedExtension ? null : compare.getDefinitionElement(), mode));
-    tableRow(tbl, "Short", null, compareString(d.hasShort() ? d.getShort() : null, d.getShortElement(), null, "short", d, compare!= null && compare.hasShortElement() ? compare.getShort() : null, null, mode));
-    tableRow(tbl, "Note", null, businessIdWarning(sd.getName(), tail(d.getPath())));
-    tableRow(tbl, "Control", "conformance-rules.html#conformance", describeCardinality(d, compare, mode)); 
-    tableRow(tbl, "Binding", "terminologies.html", describeBinding(sd, d, d.getPath(), compare, mode));
+    tableRow(tbl, "Definition", null, strikethrough, compareMarkdown(sd.getName(), d.getDefinitionElement(), (compare==null) || slicedExtension ? null : compare.getDefinitionElement(), mode));
+    tableRow(tbl, "Short", null, strikethrough, compareString(d.hasShort() ? d.getShort() : null, d.getShortElement(), null, "short", d, compare!= null && compare.hasShortElement() ? compare.getShort() : null, null, mode));
+    tableRow(tbl, "Note", null, strikethrough, businessIdWarning(sd.getName(), tail(d.getPath())));
+    tableRow(tbl, "Control", "conformance-rules.html#conformance", strikethrough, describeCardinality(d, compare, mode)); 
+    tableRow(tbl, "Binding", "terminologies.html", strikethrough, describeBinding(sd, d, d.getPath(), compare, mode));
     if (d.hasContentReference()) {
-      tableRow(tbl, "Type", null, "See " + d.getContentReference().substring(1));
+      tableRow(tbl, "Type", null, strikethrough, "See " + d.getContentReference().substring(1));
     } else {
-      tableRow(tbl, "Type", "datatypes.html", describeTypes(d.getType(), false, compare, mode, value, compareValue, sd)); 
+      tableRow(tbl, "Type", "datatypes.html", strikethrough, describeTypes(d.getType(), false, compare, mode, value, compareValue, sd)); 
     }
     if (d.hasExtension(ToolingExtensions.EXT_DEF_TYPE)) {
-      tableRow(tbl, "Default Type", "datatypes.html", ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DEF_TYPE));          
+      tableRow(tbl, "Default Type", "datatypes.html", strikethrough, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DEF_TYPE));          
     }
     if (d.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
-      tableRow(tbl, Utilities.pluralize("Type Specifier", d.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC).size()), "datatypes.html", formatTypeSpecifiers(d));          
+      tableRow(tbl, Utilities.pluralize("Type Specifier", d.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC).size()), "datatypes.html", strikethrough, formatTypeSpecifiers(d));          
     }
     if (d.getPath().endsWith("[x]") && !d.prohibited()) {
-      tableRow(tbl, "[x] Note", null).ahWithText("See ", spec("formats.html#choice"), null, "Choice of Data Types", " for further information about how to use [x]");
+      tableRow(tbl, "[x] Note", null, strikethrough).ahWithText("See ", spec("formats.html#choice"), null, "Choice of Data Types", " for further information about how to use [x]");
     }
-    tableRow(tbl, "Is Modifier", "conformance-rules.html#ismodifier", displayBoolean(d.getIsModifier(), d.getIsModifierElement(), "isModifier", d, null, mode));
+    tableRow(tbl, "Is Modifier", "conformance-rules.html#ismodifier", strikethrough, displayBoolean(d.getIsModifier(), d.getIsModifierElement(), "isModifier", d, null, mode));
     if (d.getMustHaveValue()) {
-      tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)");
+      tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", strikethrough, "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)");
     } else if (d.hasValueAlternatives()) {
-      tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", renderCanonicalList(d.getValueAlternatives()));      
+      tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", strikethrough, renderCanonicalList(d.getValueAlternatives()));      
     } else if (hasPrimitiveTypes(d)) {
-      tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", "This primitive element may be present, or absent, or replaced by an extension");            
+      tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", strikethrough, "This primitive element may be present, or absent, or replaced by an extension");            
     }
     if (ToolingExtensions.hasAllowedUnits(d)) {      
-      tableRow(tbl, "Allowed Units", "http://hl7.org/fhir/extensions/StructureDefinition-elementdefinition-allowedUnits.html", describeAllowedUnits(d));        
+      tableRow(tbl, "Allowed Units", "http://hl7.org/fhir/extensions/StructureDefinition-elementdefinition-allowedUnits.html", strikethrough, describeAllowedUnits(d));        
     }
-    tableRow(tbl, "Must Support", "conformance-rules.html#mustSupport", displayBoolean(d.getMustSupport(), d.getMustSupportElement(), "mustSupport", d, compare==null ? null : compare.getMustSupportElement(), mode));
+    tableRow(tbl, "Must Support", "conformance-rules.html#mustSupport", strikethrough, displayBoolean(d.getMustSupport(), d.getMustSupportElement(), "mustSupport", d, compare==null ? null : compare.getMustSupportElement(), mode));
     if (d.getMustSupport()) {
       if (hasMustSupportTypes(d.getType())) {
-        tableRow(tbl, "Must Support Types", "datatypes.html", describeTypes(d.getType(), true, compare, mode, null, null, sd));
+        tableRow(tbl, "Must Support Types", "datatypes.html", strikethrough, describeTypes(d.getType(), true, compare, mode, null, null, sd));
       } else if (hasChoices(d.getType())) {
-        tableRow(tbl, "Must Support Types", "datatypes.html", "No must-support rules about the choice of types/profiles");
+        tableRow(tbl, "Must Support Types", "datatypes.html", strikethrough, "No must-support rules about the choice of types/profiles");
       }
     }
     if (root && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-      tableRow(tbl, "Logical Model", null, ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_LOGICAL_TARGET) ? "This logical model can be the target of a reference" : "This logical model cannot be the target of a reference");
+      tableRow(tbl, "Logical Model", null, strikethrough, ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_LOGICAL_TARGET) ? "This logical model can be the target of a reference" : "This logical model cannot be the target of a reference");
     }
 
     if (root && sd.hasExtension(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
-      tableRow(tbl, "Impose Profile", "http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-imposeProfile.html", 
+      tableRow(tbl, "Impose Profile", "http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-imposeProfile.html", strikethrough, 
           renderCanonicalListExt(sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)));
     }
     if (root && sd.hasExtension(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE)) {
-      tableRow(tbl, "Complies with Profile", "http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-compliesWithProfile.html", 
+      tableRow(tbl, "Complies with Profile", "http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-compliesWithProfile.html", strikethrough, 
           renderCanonicalListExt(sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE)));
     }
-    tableRow(tbl, "Obligations", null, describeObligations(d, root, sd));   
+    tableRow(tbl, "Obligations", null, strikethrough, describeObligations(d, root, sd));   
 
     if (d.hasExtension(ToolingExtensions.EXT_EXTENSION_STYLE)) {
       String es = d.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE);
       if ("named-elements".equals(es)) {
         if (context.hasLink(KnownLinkType.JSON_NAMES)) {
-          tableRow(tbl, "Extension Style", context.getLink(KnownLinkType.JSON_NAMES), "This element can be extended by named JSON elements");
+          tableRow(tbl, "Extension Style", context.getLink(KnownLinkType.JSON_NAMES), strikethrough, "This element can be extended by named JSON elements");
         } else {
-          tableRow(tbl, "Extension Style", ToolingExtensions.WEB_EXTENSION_STYLE, "This element can be extended by named JSON elements");
+          tableRow(tbl, "Extension Style", ToolingExtensions.WEB_EXTENSION_STYLE, strikethrough, "This element can be extended by named JSON elements");
         }
       }
     }
 
     if (!d.getPath().contains(".") && ToolingExtensions.hasExtension(sd, ToolingExtensions.EXT_BINDING_STYLE)) {
-      tableRow(tbl, "Binding Style", ToolingExtensions.WEB_BINDING_STYLE, 
+      tableRow(tbl, "Binding Style", ToolingExtensions.WEB_BINDING_STYLE, strikethrough, 
           "This type can be bound to a value set using the " + ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_BINDING_STYLE)+" binding style");            
     }
 
     if (d.hasExtension(ToolingExtensions.EXT_DATE_FORMAT)) {
-      tableRow(tbl, "Date Format", null, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DATE_FORMAT));
+      tableRow(tbl, "Date Format", null, strikethrough, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DATE_FORMAT));
     }
     String ide = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_ID_EXPECTATION);
     if (ide != null) {
       if (ide.equals("optional")) {
-        tableRow(tbl, "ID Expectation", null, "Id may or not be present (this is the default for elements but not resources)");
+        tableRow(tbl, "ID Expectation", null, strikethrough, "Id may or not be present (this is the default for elements but not resources)");
       } else if (ide.equals("required")) {
-        tableRow(tbl, "ID Expectation", null, "Id is required to be present (this is the default for resources but not elements)");
+        tableRow(tbl, "ID Expectation", null, strikethrough, "Id is required to be present (this is the default for resources but not elements)");
       } else if (ide.equals("required")) {
-        tableRow(tbl, "ID Expectation", null, "An ID is not allowed in this context");
+        tableRow(tbl, "ID Expectation", null, strikethrough, "An ID is not allowed in this context");
       }
     }
     // tooling extensions for formats
     if (ToolingExtensions.hasExtensions(d, ToolingExtensions.EXT_JSON_EMPTY, ToolingExtensions.EXT_JSON_PROP_KEY, ToolingExtensions.EXT_JSON_NULLABLE, 
         ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) {
-      tableRow(tbl, "JSON Format", null,  describeJson(d));          
+      tableRow(tbl, "JSON Format", null, strikethrough,  describeJson(d));          
     }
     if (d.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE) || sd.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE) || d.hasExtension(ToolingExtensions.EXT_XML_NAME) || (root && sd.hasExtension(ToolingExtensions.EXT_XML_NO_ORDER)) ||
         d.hasRepresentation()) {
-      tableRow(tbl, "XML Format", null, describeXml(sd, d, root));          
+      tableRow(tbl, "XML Format", null, strikethrough, describeXml(sd, d, root));          
     }
 
     if (d.hasExtension(ToolingExtensions.EXT_IMPLIED_PREFIX)) {
-      tableRow(tbl, "String Format", null).codeWithText("When this element is read ", ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_IMPLIED_PREFIX), "is prefixed to the value before validation");                
+      tableRow(tbl, "String Format", null, strikethrough).codeWithText("When this element is read ", ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_IMPLIED_PREFIX), "is prefixed to the value before validation");                
     }
 
     if (d.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
@@ -3525,29 +3540,29 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (sdb != null) {
         StandardsStatus base = determineStandardsStatus(sdb, (ElementDefinition) d.getUserData("derived.pointer"));
         if (base != null) {
-          tableRow(tbl, "Standards Status", "versions.html#std-process", ss.toDisplay()+" (from "+base.toDisplay()+")");
+          tableRow(tbl, "Standards Status", "versions.html#std-process", strikethrough, ss.toDisplay()+" (from "+base.toDisplay()+")");
         } else {
-          tableRow(tbl, "Standards Status", "versions.html#std-process", ss.toDisplay());          
+          tableRow(tbl, "Standards Status", "versions.html#std-process", strikethrough, ss.toDisplay());          
         }
       } else {
-        tableRow(tbl, "Standards Status", "versions.html#std-process", ss.toDisplay());
+        tableRow(tbl, "Standards Status", "versions.html#std-process", strikethrough, ss.toDisplay());
       }
     }
     if (mode != GEN_MODE_DIFF && d.hasIsSummary()) {
-      tableRow(tbl, "Summary", "search.html#summary", Boolean.toString(d.getIsSummary()));
+      tableRow(tbl, "Summary", "search.html#summary", strikethrough, Boolean.toString(d.getIsSummary()));
     }
-    tableRow(tbl, "Requirements", null, compareMarkdown(sd.getName(), d.getRequirementsElement(), (compare==null) || slicedExtension ? null : compare.getRequirementsElement(), mode));
-    tableRow(tbl, "Alternate Names", null, compareSimpleTypeLists(d.getAlias(), ((compare==null) || slicedExtension ? null : compare.getAlias()), mode));
-    tableRow(tbl, "Comments", null, compareMarkdown(sd.getName(), d.getCommentElement(), (compare==null) || slicedExtension ? null : compare.getCommentElement(), mode));
-    tableRow(tbl, "Max Length", null, compareString(d.hasMaxLength() ? toStr(d.getMaxLength()) : null, d.getMaxLengthElement(), null, "maxLength", d, compare!= null && compare.hasMaxLengthElement() ? toStr(compare.getMaxLength()) : null, null, mode));
-    tableRow(tbl, "Default Value", null, encodeValue(d.getDefaultValue(), "defaultValue", d, compare==null ? null : compare.getDefaultValue(), mode));
-    tableRow(tbl, "Meaning if Missing", null, d.getMeaningWhenMissing());
-    tableRow(tbl, "Fixed Value", null, encodeValue(d.getFixed(), "fixed", d, compare==null ? null : compare.getFixed(), mode));
-    tableRow(tbl, "Pattern Value", null, encodeValue(d.getPattern(), "pattern", d, compare==null ? null : compare.getPattern(), mode));
-    tableRow(tbl, "Example", null, encodeValues(d.getExample()));
-    tableRow(tbl, "Invariants", null, invariants(d.getConstraint(), compare==null ? null : compare.getConstraint(), mode));
-    tableRow(tbl, "LOINC Code", null, getMapping(sd, d, LOINC_MAPPING, compare, mode));
-    tableRow(tbl, "SNOMED-CT Code", null, getMapping(sd, d, SNOMED_MAPPING, compare, mode));
+    tableRow(tbl, "Requirements", null, strikethrough, compareMarkdown(sd.getName(), d.getRequirementsElement(), (compare==null) || slicedExtension ? null : compare.getRequirementsElement(), mode));
+    tableRow(tbl, "Alternate Names", null, strikethrough, compareSimpleTypeLists(d.getAlias(), ((compare==null) || slicedExtension ? null : compare.getAlias()), mode));
+    tableRow(tbl, "Comments", null, strikethrough, compareMarkdown(sd.getName(), d.getCommentElement(), (compare==null) || slicedExtension ? null : compare.getCommentElement(), mode));
+    tableRow(tbl, "Max Length", null, strikethrough, compareString(d.hasMaxLength() ? toStr(d.getMaxLength()) : null, d.getMaxLengthElement(), null, "maxLength", d, compare!= null && compare.hasMaxLengthElement() ? toStr(compare.getMaxLength()) : null, null, mode));
+    tableRow(tbl, "Default Value", null, strikethrough, encodeValue(d.getDefaultValue(), "defaultValue", d, compare==null ? null : compare.getDefaultValue(), mode));
+    tableRow(tbl, "Meaning if Missing", null, strikethrough, d.getMeaningWhenMissing());
+    tableRow(tbl, "Fixed Value", null, strikethrough, encodeValue(d.getFixed(), "fixed", d, compare==null ? null : compare.getFixed(), mode));
+    tableRow(tbl, "Pattern Value", null, strikethrough, encodeValue(d.getPattern(), "pattern", d, compare==null ? null : compare.getPattern(), mode));
+    tableRow(tbl, "Example", null, strikethrough, encodeValues(d.getExample()));
+    tableRow(tbl, "Invariants", null, strikethrough, invariants(d.getConstraint(), compare==null ? null : compare.getConstraint(), mode));
+    tableRow(tbl, "LOINC Code", null, strikethrough, getMapping(sd, d, LOINC_MAPPING, compare, mode));
+    tableRow(tbl, "SNOMED-CT Code", null, strikethrough, getMapping(sd, d, SNOMED_MAPPING, compare, mode));
   }
 
   private String spec(String name) {
@@ -3772,7 +3787,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return "unordered";
   }
   
-  private void generateSlicing(XhtmlNode tbl, StructureDefinition profile, ElementDefinition ed, ElementDefinitionSlicingComponent slicing, ElementDefinition compare, int mode) throws IOException {
+  private void generateSlicing(XhtmlNode tbl, StructureDefinition profile, ElementDefinition ed, ElementDefinitionSlicingComponent slicing, ElementDefinition compare, int mode, boolean strikethrough) throws IOException {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     
     x.codeWithText("This element introduces a set of slices on ", ed.getPath(), ". The slices are ");
@@ -3801,27 +3816,36 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else {
       x.tx(", and defines no discriminators to differentiate the slices");
     }
-    tableRow(tbl, "Slicing", "profiling.html#slicing", x);
+    tableRow(tbl, "Slicing", "profiling.html#slicing", strikethrough, x);
   }
 
-  private XhtmlNode tableRow(XhtmlNode x, String name, String defRef) throws IOException {
+  private XhtmlNode tableRow(XhtmlNode x, String name, String defRef, boolean strikethrough) throws IOException {
     var tr = x.tr();
+    if (strikethrough) {
+      tr.style("text-decoration: line-through");
+    }
     addFirstCell(name, defRef, tr);
     return tr.td();
   }
   
 
-  private void tableRow(XhtmlNode x, String name, String defRef, XhtmlNode possibleTd) throws IOException {
+  private void tableRow(XhtmlNode x, String name, String defRef, boolean strikethrough, XhtmlNode possibleTd) throws IOException {
     if (possibleTd != null && !possibleTd.isEmpty()) {
       var tr = x.tr();
+      if (strikethrough) {
+        tr.style("text-decoration: line-through");
+      }
       addFirstCell(name, defRef, tr);
       tr.td().copyAllContent(possibleTd);
     }
   }
 
-  private void tableRow(XhtmlNode x, String name, String defRef, String text) throws IOException {
+  private void tableRow(XhtmlNode x, String name, String defRef, boolean strikethrough, String text) throws IOException {
     if (!Utilities.noString(text)) {
       var tr = x.tr();
+      if (strikethrough) {
+        tr.style("text-decoration: line-through");
+      }
       addFirstCell(name, defRef, tr);
       tr.td().tx(text);
     }

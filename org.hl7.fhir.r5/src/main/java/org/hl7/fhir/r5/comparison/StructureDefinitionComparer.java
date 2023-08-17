@@ -56,7 +56,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import kotlin.NotImplementedError;
 
-public class ProfileComparer extends CanonicalResourceComparer implements ProfileKnowledgeProvider {
+public class StructureDefinitionComparer extends CanonicalResourceComparer implements ProfileKnowledgeProvider {
 
   public class ProfileComparison extends CanonicalResourceComparison<StructureDefinition> {
 
@@ -113,7 +113,7 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
   private ProfileUtilities utilsLeft;
   private ProfileUtilities utilsRight;
 
-  public ProfileComparer(ComparisonSession session, ProfileUtilities utilsLeft, ProfileUtilities utilsRight) {
+  public StructureDefinitionComparer(ComparisonSession session, ProfileUtilities utilsLeft, ProfileUtilities utilsRight) {
     super(session);
     this.utilsLeft = utilsLeft;
     this.utilsRight = utilsRight;
@@ -147,7 +147,7 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
     sd1.setDate(new Date());
 
     List<String> chMetadata = new ArrayList<>();
-    boolean ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata);
+    boolean ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata, right, session.getForVersion());
     if (comparePrimitives("fhirVersion", left.getFhirVersionElement(), right.getFhirVersionElement(), res.getMetadata(), IssueSeverity.WARNING, res)) {
       ch = true;
       chMetadata.add("fhirVersion");
@@ -173,7 +173,7 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
       res.combined = sm;
       ln = new DefinitionNavigator(session.getContextLeft(), left, true);
       rn = new DefinitionNavigator(session.getContextRight(), right, true);
-      ch = compareDiff(ln.path(), null, ln, rn, res) || ch;
+      ch = compareDiff(ln.path(), null, ln, rn, res, right) || ch;
       // we don't preserve the differences - we only want the annotations
     }
     res.updateDefinitionsState(ch);
@@ -389,7 +389,7 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
   }
 
 
-  private boolean compareDiff(String path, String sliceName, DefinitionNavigator left, DefinitionNavigator right, ProfileComparison res) throws DefinitionException, FHIRFormatError, IOException {
+  private boolean compareDiff(String path, String sliceName, DefinitionNavigator left, DefinitionNavigator right, ProfileComparison res, Base parent) throws DefinitionException, FHIRFormatError, IOException {
     assert(path != null);  
     assert(left != null);
     assert(right != null);
@@ -403,18 +403,25 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
 //    ruleEqual(comp, res, left.current().getIsModifierElement(), right.current().getIsModifierElement(), "isModifier", path); - this check belongs in the core
 //    ruleEqual(comp, res, left.current().getIsSummaryElement(), right.current().getIsSummaryElement(), "isSummary", path); - so does this
 
-    // descriptive properties from ElementDefinition - merge them:
-    comparePrimitivesWithTracking("label", left.current().getLabelElement(), right.current().getLabelElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion());
-    def = comparePrimitivesWithTracking("short", left.current().getShortElement(), right.current().getShortElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-    def = comparePrimitivesWithTracking("definition", left.current().getDefinitionElement(), right.current().getDefinitionElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-    def = comparePrimitivesWithTracking("comment", left.current().getCommentElement(), right.current().getCommentElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-    def = comparePrimitivesWithTracking("requirements", left.current().getRequirementsElement(), right.current().getRequirementsElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-    def = comparePrimitivesWithTracking("mustSupport", left.current().getMustSupportElement(), right.current().getMustSupportElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-    def = comparePrimitivesWithTracking("min", left.current().getMinElement(), right.current().getMinElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-    def = comparePrimitivesWithTracking("max", left.current().getMaxElement(), right.current().getMaxElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-
+    if (left.current() == null && right.current() == null) {
+      // both are sparse at this point, do nothing
+    } else if (left.current() == null) {
+      VersionComparisonAnnotation.markAdded(right.current(), session.getForVersion());      
+    } else if (right.current() == null) {
+      VersionComparisonAnnotation.markDeleted(right.parent(), session.getForVersion(), "element", left.current());            
+    } else {
+      // descriptive properties from ElementDefinition - merge them:
+      comparePrimitivesWithTracking("label", left.current().getLabelElement(), right.current().getLabelElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion());
+      def = comparePrimitivesWithTracking("short", left.current().getShortElement(), right.current().getShortElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+      def = comparePrimitivesWithTracking("definition", left.current().getDefinitionElement(), right.current().getDefinitionElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+      def = comparePrimitivesWithTracking("comment", left.current().getCommentElement(), right.current().getCommentElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+      def = comparePrimitivesWithTracking("requirements", left.current().getRequirementsElement(), right.current().getRequirementsElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+      def = comparePrimitivesWithTracking("mustSupport", left.current().getMustSupportElement(), right.current().getMustSupportElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+      def = comparePrimitivesWithTracking("min", left.current().getMinElement(), right.current().getMinElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+      def = comparePrimitivesWithTracking("max", left.current().getMaxElement(), right.current().getMaxElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+    }
     // add the children
-    def = compareDiffChildren(path, left, right, right.current(), res) || def;
+    def = compareDiffChildren(path, left, right, right.current() == null ? parent : right.current(), res) || def;
 //
 //    // now process the slices
 //    if (left.current().hasSlicing() || right.current().hasSlicing()) {
@@ -491,7 +498,8 @@ public class ProfileComparer extends CanonicalResourceComparer implements Profil
         VersionComparisonAnnotation.markDeleted(parent, session.getForVersion(), "element", l.current());
         res.updateContentState(true);
       } else {
-        def = compareDiff(l.path(), null, l, r, res) || def;
+        matchR.add(r);
+        def = compareDiff(l.path(), null, l, r, res, parent) || def;
       }
     }
     for (DefinitionNavigator r : rc) {

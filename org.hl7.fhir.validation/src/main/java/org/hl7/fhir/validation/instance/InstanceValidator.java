@@ -5144,7 +5144,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String standardsStatus = base != null && base.isPrimitive() ? base.primitiveValue() : null;
       String status = element.getNamedChildValue("status");
       if (!Utilities.noString(status) && !Utilities.noString(standardsStatus)) {
-        warning(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT, status, standardsStatus);
+        if (warning(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT, status, standardsStatus)) {
+          hint(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesDeeplyConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT_HINT, status, standardsStatus);          
+        }
       }
     }
     if (element.getType().equals(BUNDLE)) {
@@ -5187,6 +5189,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     case "deprecated": return Utilities.existsInList(status, "retired");
     case "withdrawn": return Utilities.existsInList(status, "retired");
     case "external": return Utilities.existsInList(status, "draft", "active", "retired");
+    }
+    return true;
+  }
+
+  private boolean statusCodesDeeplyConsistent(String status, String standardsStatus) {
+    switch (standardsStatus) {
+    case "draft": return Utilities.existsInList(status, "draft");
+    case "normative": return Utilities.existsInList(status, "active");
+    case "trial-use": return Utilities.existsInList(status, "active");
+    case "informative": return Utilities.existsInList(status, "draft", "active");
+    case "deprecated": return Utilities.existsInList(status, "retired");
+    case "withdrawn": return Utilities.existsInList(status, "retired");
+    case "external": return Utilities.existsInList(status, "draft", "active");
     }
     return true;
   }

@@ -28,8 +28,8 @@ import org.hl7.fhir.r5.comparison.CapabilityStatementComparer.CapabilityStatemen
 import org.hl7.fhir.r5.comparison.CodeSystemComparer;
 import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r5.comparison.ComparisonSession;
-import org.hl7.fhir.r5.comparison.ProfileComparer;
-import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
+import org.hl7.fhir.r5.comparison.StructureDefinitionComparer;
+import org.hl7.fhir.r5.comparison.StructureDefinitionComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
@@ -188,7 +188,7 @@ public class ComparisonTests {
       ProfileUtilities utils = new ProfileUtilities(context, null, null);
       genSnapshot(utils, (StructureDefinition) left);
       genSnapshot(utils, (StructureDefinition) right);
-      ProfileComparer pc = new ProfileComparer(session, utils, utils);
+      StructureDefinitionComparer pc = new StructureDefinitionComparer(session, utils, utils);
       ProfileComparison csc = pc.compare((StructureDefinition) left, (StructureDefinition) right);
       new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
       new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
