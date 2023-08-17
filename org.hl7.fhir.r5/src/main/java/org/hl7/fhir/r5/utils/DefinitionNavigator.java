@@ -151,7 +151,7 @@ public class DefinitionNavigator {
           if (nameMap.containsKey(path)) {
             DefinitionNavigator master = nameMap.get(path);
             ElementDefinition cm = master.current();
-            if (diff && cm.hasSliceName()) { 
+            if (diff) { 
               // slice name - jumped straight into slicing
               children.add(dn);
             } else {

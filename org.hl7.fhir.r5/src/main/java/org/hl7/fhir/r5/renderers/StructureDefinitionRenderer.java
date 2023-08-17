@@ -4257,6 +4257,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           bindingDesc = new XhtmlNode(NodeType.Element, "div");
           bindingDesc.add(new XhtmlParser().parseFragment(hostMd.processMarkdown("Binding.description", newBinding)));
         } else {
+
           StringType oldBinding = compBinding != null && compBinding.hasDescription() ? PublicationHacker.fixBindingDescriptions(context.getContext(), compBinding.getDescriptionElement()) : null;
           bindingDesc = compareMarkdown("Binding.description", newBinding, oldBinding, mode);
         }

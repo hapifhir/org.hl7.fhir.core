@@ -35,7 +35,7 @@ public class VersionComparisonAnnotation {
   public void changed(Base orig) {
     assert type == AnotationType.NoChange;
     type = AnotationType.Changed;
-    if (original != null && orig.isPrimitive() && orig.primitiveValue().length() < 120) { // arbitrary, but we don't a whack of markdown 
+    if (orig != null && orig.isPrimitive() && orig.primitiveValue().length() < 120) { // arbitrary, but we don't a whack of markdown 
       this.original = orig.primitiveValue();
     }
   }
