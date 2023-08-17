@@ -255,6 +255,7 @@ public class RenderingContext {
     res.copyButton = copyButton;
     res.pkp = pkp;
     res.defaultStandardsStatus = defaultStandardsStatus;
+    res.changeVersion = changeVersion;
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
     return res;
