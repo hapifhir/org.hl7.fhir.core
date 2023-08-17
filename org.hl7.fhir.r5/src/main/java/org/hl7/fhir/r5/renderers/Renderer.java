@@ -194,48 +194,37 @@ public class Renderer extends TranslatingUtilities {
     }
   }
 
-//
-//
-//public static CanonicalResourceComparison<? extends CanonicalResource> artifactComparison(Base base) {
-//  if (base.hasUserData(USER_DATA_NAME)) {
-//    VersionComparisonAnnotation self = (VersionComparisonAnnotation) base.getUserData(USER_DATA_NAME);
-//    return self.comp;
-//  } else {
-//    return null;
-//  }
-//}
-//
-//public static void renderSummary(Base base, XhtmlNode x, String version, String... metadataFields) {
-//  if (base.hasUserData(USER_DATA_NAME)) {
-//    VersionComparisonAnnotation self = (VersionComparisonAnnotation) base.getUserData(USER_DATA_NAME);
-//    switch (self.type) {
-//    case Added:
-//      XhtmlNode spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since "+version);
-//      spanInner.img("icon-change-add.png", "icon");
-//      spanInner.tx(" Added");
-//      return;
-//    case Changed:
-//      if (self.comp.noChangeOtherThanMetadata(metadataFields)) {
-//        x.span("color: #eeeeee").tx("n/c");
-//        return;
-//      } else {
-//        spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been changed since "+version+(self.original != null ? " (was '"+(self.original.primitiveValue())+"')" : ""));
-//        spanInner.img("icon-change-edit.png", "icon");
-//        spanInner.tx(" Changed");
-//      }
-//      return;
-//    case Deleted:
-//      spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since "+version);
-//      spanInner.img("icon-change-remove.png", "icon");
-//      spanInner.tx(" Removed");
-//      return;
-//    default:
-//      x.span("color: #eeeeee").tx("n/c");
-//      return;
-//    }
-//  } else {
-//    x.span("color: #eeeeee").tx("--");
-//  }
-//}
+  public static void renderStatusSummary(Base base, XhtmlNode x, String version, String... metadataFields) {
+    if (base.hasUserData(VersionComparisonAnnotation.USER_DATA_NAME)) {
+      VersionComparisonAnnotation self = (VersionComparisonAnnotation) base.getUserData(VersionComparisonAnnotation.USER_DATA_NAME);
+      switch (self.getType()) {
+      case Added:
+        XhtmlNode spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since "+version);
+        spanInner.img("icon-change-add.png", "icon");
+        spanInner.tx(" Added");
+        return;
+      case Changed:
+        if (self.getComp().noChangeOtherThanMetadata(metadataFields)) {
+          x.span("color: #eeeeee").tx("n/c");
+          return;
+        } else {
+          spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been changed since "+version+(self.getOriginal() != null ? " (was '"+(self.getOriginal())+"')" : ""));
+          spanInner.img("icon-change-edit.png", "icon");
+          spanInner.tx(" Changed");
+        }
+        return;
+      case Deleted:
+        spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since "+version);
+        spanInner.img("icon-change-remove.png", "icon");
+        spanInner.tx(" Removed");
+        return;
+      default:
+        x.span("color: #eeeeee").tx("n/c");
+        return;
+      }
+    } else {
+      x.span("color: #eeeeee").tx("--");
+    }
+  }
 
 }

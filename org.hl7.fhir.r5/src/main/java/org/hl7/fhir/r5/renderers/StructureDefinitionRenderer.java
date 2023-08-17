@@ -3476,7 +3476,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private void generateElementInner(XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue, boolean strikethrough) throws FHIRException, IOException {
-    System.out.println(d.getPath());
     boolean root = !d.getPath().contains(".");
     boolean slicedExtension = d.hasSliceName() && (d.getPath().endsWith(".extension") || d.getPath().endsWith(".modifierExtension"));
 //    int slicedExtensionMode = (mode == GEN_MODE_KEY) && slicedExtension ? GEN_MODE_SNAP : mode; // see ProfileUtilities.checkExtensionDoco / Task 3970
