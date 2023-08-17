@@ -315,9 +315,12 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private String compareNodes(String path, JsonElement expectedJsonElement, JsonElement actualJsonElement) {
-    if (actualJsonElement.getClass() != expectedJsonElement.getClass())
-      return createNotEqualMessage("properties differ at " + path, expectedJsonElement.getClass().getName(), actualJsonElement.getClass().getName());
-    else if (actualJsonElement instanceof JsonPrimitive) {
+    if (!(expectedJsonElement instanceof JsonPrimitive && actualJsonElement instanceof JsonPrimitive)) {
+      if (actualJsonElement.getClass() != expectedJsonElement.getClass()) {
+        return createNotEqualMessage("properties differ at " + path, expectedJsonElement.getClass().getName(), actualJsonElement.getClass().getName());
+      }
+    }
+    if (actualJsonElement instanceof JsonPrimitive) {
       JsonPrimitive actualJsonPrimitive = (JsonPrimitive) actualJsonElement;
       JsonPrimitive expectedJsonPrimitive = (JsonPrimitive) expectedJsonElement;
       if (actualJsonPrimitive.isJsonBoolean() && expectedJsonPrimitive.isJsonBoolean()) {
@@ -333,8 +336,11 @@ public class CompareUtilities extends BaseTestingUtilities {
       } else if (actualJsonPrimitive.isJsonNumber() && expectedJsonPrimitive.isJsonNumber()) {
         if (!actualJsonPrimitive.asString().equals(expectedJsonPrimitive.asString()))
           return createNotEqualMessage("number property values differ at " + path, expectedJsonPrimitive.asString(), actualJsonPrimitive.asString());
-      } else
+      } else if (expectedJsonElement instanceof JsonNull) {
+        return actualJsonPrimitive instanceof JsonNull ? null : createNotEqualMessage("null Properties differ at " + path, "null", actualJsonPrimitive.asString());
+      } else {
         return createNotEqualMessage("property types differ at " + path, expectedJsonPrimitive.asString(), actualJsonPrimitive.asString());
+      }
     } else if (actualJsonElement instanceof JsonObject) {
       String s = compareObjects(path, (JsonObject) expectedJsonElement, (JsonObject) actualJsonElement);
       if (!Utilities.noString(s))
@@ -363,8 +369,7 @@ public class CompareUtilities extends BaseTestingUtilities {
           c++;
         }
       }
-    } else if (actualJsonElement instanceof JsonNull) {
-
+    
     } else
       return "unhandled property " + actualJsonElement.getClass().getName();
     return null;

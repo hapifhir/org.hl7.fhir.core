@@ -187,6 +187,7 @@ public class RenderingContext {
   private DateTimeFormatter dateYearMonthFormat;
   private boolean copyButton;
   private ProfileKnowledgeProvider pkp;
+  private String changeVersion;
   
   private Map<KnownLinkType, String> links = new HashMap<>();
   /**
@@ -709,4 +710,14 @@ public class RenderingContext {
     return this;
   }
 
+  public String getChangeVersion() {
+    return changeVersion;
+  }
+
+  public RenderingContext setChangeVersion(String changeVersion) {
+    this.changeVersion = changeVersion;
+    return this;
+  }
+
+  
 }

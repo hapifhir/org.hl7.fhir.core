@@ -154,12 +154,14 @@ public class ComparisonTests {
 
     ComparisonSession session = new ComparisonSession(context, context, "Comparison Tests", null, null);
     if (content.has("version")) {
-      session.setForVersion(content.getJsonObject("version").asString("stated"));
       session.setAnnotate(true);
     }
     RenderingContext lrc = new RenderingContext(context, new MarkDownProcessor(Dialect.COMMON_MARK), null, "http://hl7.org/fhir", "", "en", ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER);
     lrc.setDestDir(Utilities.path("[tmp]", "comparison"));
     lrc.setPkp(new TestProfileKnowledgeProvider(context));
+    if (content.has("version")) {
+      lrc.setChangeVersion(content.getJsonObject("version").asString("stated"));
+    }
     
     if (left instanceof CodeSystem && right instanceof CodeSystem) {
       CodeSystemComparer cs = new CodeSystemComparer(session);
@@ -205,14 +207,14 @@ public class ComparisonTests {
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Structure") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
       
-      lrc.setStructureMode(StructureDefinitionRendererMode.SUMMARY);
-      new StructureDefinitionRenderer(lrc).render(right);
-      checkOutput(content.getJsonObject("version").asString("filename-tree"), right);
-      
 
       lrc.setStructureMode(StructureDefinitionRendererMode.DATA_DICT);
       new StructureDefinitionRenderer(lrc).render(right);
       checkOutput(content.getJsonObject("version").asString("filename-dd"), right);
+      
+      lrc.setStructureMode(StructureDefinitionRendererMode.SUMMARY);
+      new StructureDefinitionRenderer(lrc).render(right);
+      checkOutput(content.getJsonObject("version").asString("filename-tree"), right);
     } else if (left instanceof CapabilityStatement && right instanceof CapabilityStatement) {
       CapabilityStatementComparer pc = new CapabilityStatementComparer(session);
       CapabilityStatementComparison csc = pc.compare((CapabilityStatement) left, (CapabilityStatement) right);

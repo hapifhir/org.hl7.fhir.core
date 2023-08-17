@@ -151,11 +151,18 @@ public class DefinitionNavigator {
           if (nameMap.containsKey(path)) {
             DefinitionNavigator master = nameMap.get(path);
             ElementDefinition cm = master.current();
-            //          if (!cm.hasSlicing()) 
-            //            throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
-            if (master.slices == null) 
-              master.slices = new ArrayList<DefinitionNavigator>();
-            master.slices.add(dn);
+            if (diff && cm.hasSliceName()) { 
+              // slice name - jumped straight into slicing
+              children.add(dn);
+            } else {
+              if (!cm.hasSlicing()) {
+                throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
+              }
+              if (master.slices == null) {
+                master.slices = new ArrayList<DefinitionNavigator>();
+              }
+              master.slices.add(dn);
+            }
           } else {
             nameMap.put(path, dn);
             children.add(dn);
@@ -238,7 +245,11 @@ public class DefinitionNavigator {
 
   @Override
   public String toString() {
-    return current().getId();
+    return getId();
+  }
+
+  public String getId() {
+    return current() == null ? path : current().hasSliceName() ? current().getPath()+":"+current().getSliceName() : current().getPath();
   }
 
   public Base parent() {
